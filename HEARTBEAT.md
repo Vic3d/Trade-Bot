@@ -3,9 +3,10 @@
 ## Trading-Checks (rotierend, 2-4x täglich)
 
 - [ ] Aktive Positionen: Stops gefährdet? Trailing Stop fällig? (projekt-trading.md)
-- [ ] Strategie-Check: News vs. Thesen in strategien.md — Statuswechsel?
+- [ ] Strategie-Check: News vs. Thesen in strategien.md — Statuswechsel? → strategy-changelog.md updaten!
 - [ ] Watchlist: Neue Signale bei RHM.DE, RIO.L, BHP.L, BAYN.DE?
 - [ ] Iran-Krise: Neue Eskalation auf liveuamap.com? Portfolio-Impact?
+- [ ] Offene Prognosen in albert-accuracy.md — bewertbar? Ergebnis nachtragen!
 
 ## Projekt-Checks (1x täglich)
 

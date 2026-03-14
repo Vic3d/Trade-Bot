@@ -100,6 +100,24 @@ Heartbeat-Checks in `memory/heartbeat-state.json` tracken (Unix-Timestamps).
 
 Periodisch (alle paar Tage): Daily-Files reviewen, MEMORY.md aktualisieren.
 
+## 📈 Trading — Learning-System (PFLICHT)
+
+### Bei jeder Empfehlung / Prognose:
+1. Sofort in `memory/albert-accuracy.md` unter "Offene Prognosen" eintragen (BEVOR Ergebnis bekannt)
+2. Horizont angeben (wann ist die Prognose bewertbar?)
+
+### Bei Strategie-Statuswechsel (🟢↔🟡↔🔴):
+1. `memory/strategy-changelog.md` updaten — Datum, alter/neuer Status, Begründung, Auslöser
+2. Victor sofort informieren
+
+### Bei Positionsabschluss (Kauf/Verkauf):
+1. `memory/trade-decisions.md` — Ergebnis + Lektion nachtragen
+2. `memory/albert-accuracy.md` — zugehörige Prognose als ✅/❌ markieren, Trefferquote updaten
+
+### Keine mentalen Notizen — alles in Dateien.
+
+---
+
 ## 📈 Trading — Pflichtregeln
 
 **Namen + Ticker:** IMMER vollständiger Name + Ticker in Klammern. Nie nur Ticker allein.
