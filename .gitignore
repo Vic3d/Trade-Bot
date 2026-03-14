@@ -26,3 +26,5 @@ Thumbs.db
 ## Separate Repos — haben eigene GitHub-Backups
 josh-dashboard/
 wtv-prototype/
+memory/newswire.db
+memory/*.db
