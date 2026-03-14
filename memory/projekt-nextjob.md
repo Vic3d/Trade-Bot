@@ -1,8 +1,11 @@
 # Projekt: NextJob — KI-Umschulungsplattform
 
 **Angelegt:** 2026-03-08 | **Zuletzt aktualisiert:** 2026-03-08
-**Status:** 💡 Konzeptphase
+**Status:** 💡 Konzeptphase → **Wird zu KERN von PrivatTeacher Ecosystem!** (14.03.2026)
 **Beteiligte:** Victor (Lead), Albert (Konzept + Dokumentation)
+**Connection:** NextJob + PrivatTeacher = "Human Resilience in AI Era" System
+  - NextJob = Diagnose + Matching + Job-Placement
+  - PrivatTeacher = Reskilling (optimal personalisiertes Lernen)
 **Inspiration:** Radar-Chart KI-Job-Exposition (Business & Finance, Legal, Office & Admin stark exponiert)
 
 ---

@@ -258,6 +258,84 @@
 - **Nächste Automatisierung:** Umkehrkerze-Detektor (Intraday 5min-Kerze-Analyse)
 - **Deep-Dive Trigger:** AG > $25 → Reuters Metals/Mining News crawlen für Fundamental-Check
 
+## LANGZEITVISION (Neu: 14.03.2026)
+
+### "Human Resilience in the AI Era" — Das 10-Jahres-Projekt
+
+**Victor's Kerngedanke:**
+> KI ersetzt Jobs. Das ist Realität.
+> Aber Menschen sind nicht einfach "Ausgaben, die man optimiert".
+> 
+> Was wenn wir ein System bauen, das nicht sagt:
+> "Hier ist ein neuer Job, passe dich an" (zynisch, top-down)
+> 
+> Sondern sagt:
+> "Wer bist du WIRKLICH? Was sind deine echten Stärken? 
+> Lass uns DEINE beste nächste Karriere finden — und dich dahin bringen."
+
+**Das Problem (2026-2035):**
+- McKinsey: 300M Vollzeitstellen weltweit durch KI ersetzt
+- Deutschland: 4-6M Jobs stark exponiert (Büro, Verwaltung, Recht, Finanzen)
+- Bestehende Lösungen: Generisch, teuer, ineffektiv, nicht personalisiert
+
+**Die Lösung: Integriertes Ökosystem mit 5 Engines**
+
+1. **Diagnostic Engine** (NextJob)
+   - Erkenne echte Stärken: Skills + Values + Learning Style + Job-Risiko
+   - Input: "Ich bin 35, Buchhalter, Angst vor KI"
+   - Output: {strengths, values, risk: 0.85}
+
+2. **Job-Intelligence Engine** (NextJob)
+   - 5.000+ Jobs mit AI-Resistance Scores (0.0-1.0)
+   - "Was ist sicher? Was wird automatisiert?"
+
+3. **Matching Engine** (NextJob)
+   - Gegeben deine Stärken → Top 10 Jobs für DICH
+   - Output: [Rank 1: Sales Manager (0.92 fit), Rank 2: UX Researcher (0.78 fit), ...]
+
+4. **Reskilling Engine** (PrivatTeacher)
+   - Optimal personalisiertes Lernen (3-6 Wochen statt Monate)
+   - Spaced Repetition + Interleaving + Elaboration (Science-based)
+   - AI-Tutor + Human Mentor (1:1, 2x/week)
+
+5. **Job-Placement Engine** (NextJob)
+   - Real Job Offers (gefiltert auf dich)
+   - Salary Negotiation
+   - Onboarding Support
+
+**PLUS: Continuous Learning**
+- Nicht "Umschulung einmalig", sondern "Lernen für die Karriere"
+- Quarterly: "Brauchst du neue Skills? Welche Jobs sind neu sicher?"
+
+**TAM (Total Addressable Market):**
+- Europe: 10M AI-exposed → €30/month = €300M/year
+- US: 50M → $1.5B/year
+- Global: 500M → $15B/year
+
+**Verbindung zu deinen Projekten:**
+- **NextJob** (existing, 08.03.2026) = Diagnose + Matching + Placement
+- **PrivatTeacher** (MVP 14.03.2026) = Core Learning Engine (Reskilling)
+- **Integration** (Q2 2026) = Beide Systeme zusammen = Full Solution
+
+**Differenzierung (vs. Konkurrenz):**
+- ❌ LinkedIn Learning: Generic (nicht personalisiert)
+- ❌ Coursera: Overwhelming Choice
+- ❌ Bootcamps: Teuer (€15k), nicht für alle
+- ❌ Career Coaches: Teuer (€500-1000/hour), 1:20 Ratio
+- ✅ Wir: Personalisiert + Skalierbar + Affordable (€19-49/month) + Outcome-Focused
+
+**Roadmap:**
+- 2026: MVP + Integration (100 users)
+- 2027: 10k users + B2B Pilots
+- 2028: 100k users + B2G + Neural Networks
+- 2029-2035: 5M+ users, 50+ Vertikals, 20+ Countries
+
+Detaillierte Docs:
+- `/memory/langzeit-vision.md` — Die vollständige Vision (5 Engines, Business Model, Roadmap)
+- `/memory/ecosystem-human-resilience.md` — Wie alles zusammenhängt (NextJob + PrivatTeacher + Integration)
+
+---
+
 ## Präferenzen
 
 - **Modell-Sparsamkeit:** Routine-Tasks (Health Checks, Status, einfache Abfragen) mit Sonnet. Opus nur für komplexe/wichtige Aufgaben.

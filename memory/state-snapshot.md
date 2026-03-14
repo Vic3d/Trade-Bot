@@ -1,66 +1,85 @@
-# State Snapshot — 2026-03-13 21:22 UTC (Last Tracker Run)
-*Automatisch generiert um 23:00. Nicht manuell bearbeiten. Aktualisiert durch Cron NewsWire Price Tracker.*
+# State Snapshot — Zuletzt aktualisiert 14.03.2026 20:00 UTC
 
-## Offene Positionen
-- **NVDA** LONG @ 167.88€ | ⚠️ KEIN STOP | S3
-  _Nvidia — KI-Infrastruktur. Kein Stop gesetzt (HALTEN bis Earnings 27.05.2026)_
-- **MSFT** LONG @ 351.85€ | Stop 338.0€ | S3
-  _Microsoft — KI-Infrastruktur. Stop 338€ in TR_
-- **PLTR** LONG @ 132.11€ | Stop 127.0€ | S3
-  _Palantir — KI/Defense. Stop 127€ in TR (eng!)_
-- **EQNR** LONG @ 27.04€ | Stop 27.0€ | S1
-  _Equinor ASA — Iran/Öl-Thesis S1. Stop 27€ = Breakeven (von 25€ nachgezogen)_
-- **BAYN.DE** LONG @ 39.95€ | Stop 38.0€ | S-
-  _Bayer AG — kein Strategie-Tag. Stop 38€ in TR_
-- **RIO.L** LONG @ 76.92€ | Stop 73.0€ | S5
-  _Stop 73€ — MUSS in TR gesetzt werden!_
+## 📊 Portfolio-Status (Echtzeit)
 
-## Makro-Kontext (21:22 UTC)
-- VIX: 27.19 🟠 (orange — +0.15)
-- DXY: 100.495
-- Brent: $103.86
+### Kritische Positionen
+| Ticker | Entry | Kurs | P&L | Stop | Action | Priority |
+|--------|-------|------|-----|------|--------|----------|
+| **NVDA** | 167,88€ | 157,85€ | -6,0% | ❌ NONE | **SET 151€ SOFORT** | 🔴 KRITISCH |
+| **A2QQ9R** | — | 25,25€ | +12,7% | ❌ NONE | **SET 23€ SOFORT** | 🔴 KRITISCH |
+| MSFT | 351,85€ | 346,40€ | -1,5% | 338€ (2,8% weg) | Nachziehen → 342€ | 🟡 HOCH |
+| PLTR | 132,11€ | 132,19€ | +0,1% | 127€ (2,3% weg) | Nachziehen → 129€ | 🟡 HOCH |
+| BAYN.DE | 39,95€ | 38,63€ | -3,3% | 38€ (1,7% weg) | Nachziehen → 36,50€ | 🟡 HOCH |
+| EQNR | 27,04€ | 30,40€ | +12,4% | 27€ (Breakeven) | RSI 79! Gewinnmitnahme 31€/32€ prüfen | 🟢 ACTIVE |
+| RIO.L | 76,92€ | 77,16€ | +0,3% | 73€ | HOLD | 🟢 STABLE |
 
-## Tracker — 21:22 UTC Run
-- Events geprüft: 100 | Kurse aktualisiert: 41
-- DB-Qualität: 253 Events total | Entry-Preis: 253 | 4h-Preis: 194 | 1d-Preis: 0
-- Status: ✅ Normal (kein High-Score Alert)
-
-## NewsWire — Letzte 24h
-- 201 Events | 30 bullish | 2 bearish | 0 high-score (≥3)
-- **Top Events:**
-  ✅ [RHM.DE] score=2 | Rheinmetall: Experte sagt, wann die Aktie wieder deutlich steigt - Capital.de
-  ✅ [RHM.DE] score=2 | Rheinmetall-Aktie: Die Star-Trek-Strategie des Rüstungsriesen - WirtschaftsWoche
-  ✅ [RHM.DE] score=2 | Rheinmetall Aktie Prognose: Schuldenbremse-Wende, 500-Mrd.-€-Fonds - Capital.com
-  ✅ [RHM.DE] score=2 | Rheinmetall nach dem Rücksetzer – kaufen oder verkaufen? - Der Aktionär
-  ✅ [EQNR,DR0.DE] score=2 | Yen Trades at Weakest Since July 2024 as Iran War Escalates
-
-## Empfehlungen — Offene Auswertungen
-_Keine offenen Empfehlungen_
-
-## Letzte NewsWire Analyse
-```
-16:01 UTC — Multi-Strategie (Cron 30-Min-Zyklus)
-
-**RHM.DE** (Rheinmetall AG) | Convergence: 6/7 ✅ HIGH CONVICTION
-- 5 direkte Bullish-Events: Schuldenbremsen-Wende (500-Mrd-€), JP Morgan Overweight, Analyst-Kursziele
-- Kurs: 1.588€ +1,96% bis +2,52% (Xetra)
-- CRV: 1.760€ Ziel vs. 1.550€ Stop = 1:4,5 (stark)
-- Handlung: BEOBACHTEN, kein Nachkauf nötig
-
-**EQNR** (Equinor ASA) | Convergence: 4/7 🟡 MEDIUM
-- Brent $100.98, Hormuz-Blockade-Gedankenspiel (indirekter Katalysator)
-- Position läuft @27.04€ (Stop 27.0€ = zu eng!)
-- ⚠️ PROBLEM: Stop @ Breakeven, Volatilität hohe. Nachbesserung empfohlen
-- Ziel: Öl über $102, dann EQNR über 27,50€
-
-**DR0.DE** (Deutsche Rohstoff) | Convergence: 3/7 🟡 MEDIUM-LOW
-- Gleicher Öl-Katalysator wie EQNR (indirekter)
-- Rohstoff-Generalist, nicht klares Play
-- Handlung: BEOBACHTEN, kein Handlungsbedarf
-```
-
-## ⚠️ Offene Aufgaben (beim nächsten Session-Start prüfen)
-- 🔴 **NVDA**: Kein Stop gesetzt! Entry 167.88€ — SOFORT in TR setzen
+### Watchlist
+- **RHM.DE:** Über Nacht beobachten (1.570€ Entry, Stop 1.520€, Rüstungs-Thesis bestätigt)
+- **AG (First Majestic Silver):** Entry A 26-29$, watchlist
+- **ISPA.DE (Silber):** Ausbruch über 36,90€ oder Rücklauf 35,80€
+- **XOM, VLO, VRTX:** Watchlist, Setup abwarten
 
 ---
-_Nächster Snapshot: morgen 23:00 | DB: memory/newswire.db_
+
+## 🌍 Geopolitik Status (Stand Sa 14.03, 20:00 UTC)
+
+### Iran-Konflikt: 🔴 **TIER-1 ESKALATION — LIVE**
+- **Israel Airstrikes:** Isfahan + Tabriz (heute, ~14:00 UTC)
+- **Iran Retaliation:** 5 ballistische Raketen-Wellen seit Mitternacht
+- **Hormuz:** Blockiert + Trump fordert internationale Flotte
+- **Ceasefire:** NEIN — Mojtaba Khamenei (Hardliner) neuer Supreme Leader
+- **Szenario:** B/C wahrscheinlich (2-6 Monate Konflikt)
+- **Öl-Thesis:** ✅ BESTÄTIGT — EQNR/DR0 HALTEN
+
+### Ukraine-Konflikt: 🟡 **Steady-State, RHM-Theta aktiv**
+- Routine clashes auf 10+ Fronten (Attrition)
+- PLTR Defense weiterhin relevant
+
+### Lebanon: 🔴 **Proxy-Eskalation — Israel Ground Invasion prep**
+- Hezbollah Rockets + Israeli Airstrikes intensivieren
+- Israel prepares large-scale ground invasion South of Litani
+
+### China/Taiwan: 🟡 **Neutral — routine exercises**
+- Kein akutes Kriegsszenario
+
+### Venezuela: 🟡 **Trump erkennt Rodríguez an — Ölfluss normalisiert (bearish langfristig)**
+- Venezuela Oil rückläufig → Ölpreis-Decke $90-95 mittelfristig
+
+---
+
+## 🎯 Nächste Woche (KW12: 17-23.03.2026)
+
+### Events
+- **Mi 19.03:** ECB Interest Rate Decision (EUR-Bewegung)
+- **Fr 21.03:** PPI Inflation USA (bullish Öl wenn warm)
+- **NO Fed Powell events** → Positiv für Tech
+
+### Geopolitik-Monitoring
+- Täglich: liveuamap.com Iran/Ukraine/Lebanon/Israel checken
+- EQNR RSI 79: Profit-taking wahrscheinlich → Tranchen bei 31€/32€ vorbereiten
+- NVDA + A2QQ9R: Stops SOFORT setzen vor Montag 17:00 UTC
+
+---
+
+## ⚠️ Immediate TODO (DIESE WOCHE)
+
+1. ✅ **NVDA:** STOP 151€ SOFORT in Trade Republic setzen (kein Mental Stop!)
+2. ✅ **A2QQ9R:** STOP 23€ SOFORT in Trade Republic setzen
+3. ✅ **MSFT:** Trailing Stop 342€ (von 338€ → 4€ breiter)
+4. ✅ **PLTR:** Trailing Stop 129€ (von 127€ → 2€ breiter)
+5. ✅ **BAYN.DE:** Trailing Stop 36,50€ (von 38€ → enger!)
+6. ⏳ **EQNR:** Gewinnmitnahme-Plan für 31€/32€ vorbereiten (RSI 79)
+7. ⏳ **RHM.DE:** Über Nacht monitoren (Rüstungs-Thesis, enge Stops)
+
+---
+
+## 📝 Session Notes
+
+**Sa 14.03.2026, 20:00 UTC — Wochenend-News-Check Cron abgelaufen:**
+- Geopolitik-Radar: 7 Regionen via web_fetch — IRAN 🔴 TIER-1 ESKALATION
+- Google News RSS: 5 Queries durchgelaufen
+- Full analysis → `memory/wochenend-news-2026-03-14.md`
+- CRITICAL FINDING: NVDA + A2QQ9R haben NO STOPS — Gap-Down-Risiko über Wochenende
+
+**Letzte Aktualisierung:** 2026-03-14 20:00 UTC  
+**Nächste Geplante Aktion:** Sonntag 15.03 22:00 UTC (Wochenstrategie-Review)
