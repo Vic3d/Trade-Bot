@@ -10,20 +10,33 @@ Dieses Dokument erklärt wie ein frischer Albert aus dem GitHub-Backup vollstän
 
 ## Für Albert: Wiederherstellungs-Prozedur
 
-### Schritt 1 — Repo klonen
+### Schritt 1 — SSH-Key generieren + bei GitHub hinterlegen
 
 ```bash
-git clone git@github-vic3d:Vic3d/Trade-Bot.git /data/.openclaw/workspace
-```
+# Neuen Key generieren
+ssh-keygen -t ed25519 -C "albert-vic3d@openclaw" -f ~/.ssh/id_ed25519_vic3d -N ""
 
-Falls der SSH-Host noch nicht konfiguriert ist:
-```bash
+# Public Key ausgeben → bei GitHub hinterlegen:
+# https://github.com/settings/ssh/new (Account: Vic3d)
+cat ~/.ssh/id_ed25519_vic3d.pub
+
+# SSH-Config eintragen
 cat >> ~/.ssh/config << 'EOF'
 Host github-vic3d
   HostName github.com
   User git
   IdentityFile ~/.ssh/id_ed25519_vic3d
 EOF
+
+# Verbindung testen
+ssh -T git@github-vic3d
+# Erwartet: "Hi Vic3d! You've successfully authenticated..."
+```
+
+### Schritt 2 — Repo klonen
+
+```bash
+git clone git@github-vic3d:Vic3d/Trade-Bot.git /data/.openclaw/workspace
 ```
 
 ### Schritt 2 — Pflichtlektüre (in dieser Reihenfolge)
