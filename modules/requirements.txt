@@ -1,0 +1,13 @@
+# HumanScraper Dependencies
+# Basis (Pflicht)
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=5.1.0
+
+# Browser-Automation (für JS-heavy Sites / Cloudflare)
+playwright>=1.42.0
+playwright-stealth>=1.0.6
+
+# Async-Support (für FastAPI Integration)
+httpx>=0.27.0
+aiohttp>=3.9.0

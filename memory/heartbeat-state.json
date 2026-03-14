@@ -1,0 +1,23 @@
+{
+  "lastChecks": {
+    "trading": 1773172871,
+    "email_dashboard": 1741360352,
+    "memory": 1741360352
+  },
+  "lastPrices": {
+    "NVDA_eur": 159.05,
+    "MSFT_eur": 349.28,
+    "PLTR_eur": 130.10,
+    "EQNR_eur": 27.98,
+    "RHM_eur": 1653.0,
+    "RIO_eur": 78.95,
+    "BAYN_eur": 39.625,
+    "EURUSD": 1.1617
+  },
+  "notes": {
+    "pltr_status": "130.10€ — Stop 127€ (2.4% weg). Leicht erholt, kein Alarm.",
+    "msft_status": "349.28€ — Stop 338€ (3.2% weg). Unter Einstieg (-0.7%).",
+    "nvda_status": "159.05€ — kein Stop, Hold bis Earnings.",
+    "next_event": "Abend-Report 22:00 — Trailing Stop Review"
+  }
+}

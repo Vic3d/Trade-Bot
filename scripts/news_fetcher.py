@@ -1,0 +1,251 @@
+"""
+news_fetcher.py — Zentraler News-Aggregator für Albert
+Quellen: Bloomberg RSS, Finnhub, Polygon, Google News RSS
+Verwendung: exec('open("/data/.openclaw/workspace/scripts/news_fetcher.py").read()')
+oder: exec(open('/data/.openclaw/workspace/scripts/news_fetcher.py').read())
+"""
+import urllib.request, json, xml.etree.ElementTree as ET, urllib.parse, os, time
+
+POLYGON  = os.getenv('POLYGON_KEY',  'UratMpPH0sxlZeDYcSaiXsK_g6C1_7ml')
+FINNHUB  = os.getenv('FINNHUB_KEY',  'd6o6lm1r01qu09ciaj3gd6o6lm1r01qu09ciaj40')
+
+def _get(url, timeout=8):
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read()
+    except Exception as e:
+        return None
+
+# ── Bloomberg RSS ──────────────────────────────────────────────────────────────
+BLOOMBERG_FEEDS = {
+    'markets':    'https://feeds.bloomberg.com/markets/news.rss',
+    'energy':     'https://feeds.bloomberg.com/energy/news.rss',
+    'technology': 'https://feeds.bloomberg.com/technology/news.rss',
+    'politics':   'https://feeds.bloomberg.com/politics/news.rss',
+}
+
+# ── Reuters RSS ────────────────────────────────────────────────────────────────
+REUTERS_FEEDS = {
+    'markets':    'https://feeds.reuters.com/markets/',
+    'energy':     'https://feeds.reuters.com/energy/',
+    'mining':     'https://feeds.reuters.com/business/mining/',
+    'metals':     'https://feeds.reuters.com/metals/',
+}
+
+def bloomberg(categories=None, n=3):
+    """Fetch Bloomberg RSS. categories: list of keys from BLOOMBERG_FEEDS."""
+    if categories is None:
+        categories = ['markets', 'energy']
+    results = []
+    for cat in categories:
+        url = BLOOMBERG_FEEDS.get(cat)
+        if not url: continue
+        raw = _get(url)
+        if not raw: continue
+        try:
+            root = ET.fromstring(raw)
+            for item in root.findall('.//item')[:n]:
+                title = item.findtext('title', '')
+                pub   = item.findtext('pubDate', '')[:22]
+                results.append({'source': f'Bloomberg/{cat}', 'title': title, 'date': pub})
+        except: pass
+    return results
+
+def reuters(categories=None, n=3):
+    """Fetch Reuters RSS. categories: list of keys from REUTERS_FEEDS."""
+    if categories is None:
+        categories = ['markets', 'energy']
+    results = []
+    for cat in categories:
+        url = REUTERS_FEEDS.get(cat)
+        if not url: continue
+        raw = _get(url)
+        if not raw: continue
+        try:
+            root = ET.fromstring(raw)
+            for item in root.findall('.//item')[:n]:
+                title = item.findtext('title', '')
+                pub   = item.findtext('pubDate', '')[:22]
+                results.append({'source': f'Reuters/{cat}', 'title': title, 'date': pub})
+        except: pass
+    return results
+
+# ── Charttechnik: Umkehrkerze-Detektor ────────────────────────────────────────
+def detect_reversal_candle(ticker, interval_minutes=5, lookback=20):
+    """
+    Erkennt bullische Umkehrkerzen (Hammer, Engulfing, Morning Star etc.)
+    Gibt (pattern_name, confidence) oder (None, 0) zurück
+    """
+    import json, urllib.request
+    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval={interval_minutes}m&range=1d'
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.load(r)
+        candles = data['chart']['result'][0]['indicators']['quote'][0]
+        opens = candles.get('open', [])
+        closes = candles.get('close', [])
+        highs = candles.get('high', [])
+        lows = candles.get('low', [])
+        
+        # Letzten lookback Kerzen filtern (nur gültige)
+        valid_candles = []
+        for i in range(len(opens)):
+            if all(v is not None for v in [opens[i], closes[i], highs[i], lows[i]]):
+                valid_candles.append((opens[i], closes[i], highs[i], lows[i]))
+        valid_candles = valid_candles[-lookback:]
+        
+        if len(valid_candles) < 2:
+            return None, 0
+        
+        # Letzter Kerze
+        o, c, h, l = valid_candles[-1]
+        body = abs(c - o)
+        wick_lower = min(o, c) - l
+        wick_upper = h - max(o, c)
+        range_total = h - l
+        
+        if range_total == 0:
+            return None, 0
+        
+        # Pattern-Erkennung
+        # 1. HAMMER: kleiner Body, großer unterer Docht, wenig oben
+        if wick_lower > body * 2 and wick_upper < body:
+            return 'HAMMER', 0.85
+        
+        # 2. INVERTED HAMMER: kleiner Body, großer oberer Docht
+        if wick_upper > body * 2 and wick_lower < body:
+            return 'INVERTED_HAMMER', 0.70
+        
+        # 3. BULLISH ENGULFING: aktuelle Kerze schließt über vorherige auf, öffnet unter
+        if len(valid_candles) >= 2:
+            o_prev, c_prev, _, _ = valid_candles[-2]
+            if c > c_prev and o < o_prev and c > o:
+                return 'BULLISH_ENGULFING', 0.80
+        
+        # 4. MORNING STAR: 3-Kerzen-Pattern
+        if len(valid_candles) >= 3:
+            o1, c1, _, l1 = valid_candles[-3]
+            o2, c2, _, l2 = valid_candles[-2]
+            o3, c3, _, _ = valid_candles[-1]
+            if c1 > o1 and c2 < max(o1, c1) and l2 < l1 and c3 > c2:
+                return 'MORNING_STAR', 0.75
+        
+        return None, 0
+    except:
+        return None, 0
+
+# ── Finnhub ────────────────────────────────────────────────────────────────────
+def finnhub_company(symbol, days_back=2, n=3):
+    """Company news from Finnhub."""
+    from_dt = time.strftime('%Y-%m-%d', time.gmtime(time.time() - days_back*86400))
+    to_dt   = time.strftime('%Y-%m-%d', time.gmtime())
+    url = f'https://finnhub.io/api/v1/company-news?symbol={symbol}&from={from_dt}&to={to_dt}&token={FINNHUB}'
+    raw = _get(url)
+    if not raw: return []
+    try:
+        data = json.loads(raw)
+        return [{'source': a.get('source','Finnhub'), 'title': a.get('headline',''), 'date': time.strftime('%Y-%m-%d', time.gmtime(a.get('datetime',0)))} for a in data[:n]]
+    except: return []
+
+def finnhub_market(keywords=None, n=5):
+    """General market news from Finnhub, filtered by keywords."""
+    if keywords is None:
+        keywords = ['oil','iran','hormuz','nvidia','palantir','rheinmetall','rio tinto','bayer','equinor','silver','gold','copper']
+    url = f'https://finnhub.io/api/v1/news?category=general&token={FINNHUB}'
+    raw = _get(url)
+    if not raw: return []
+    try:
+        data = json.loads(raw)
+        results = []
+        for a in data:
+            text = (a.get('headline','') + ' ' + a.get('summary','')).lower()
+            if any(k in text for k in keywords):
+                results.append({'source': a.get('source','Finnhub'), 'title': a.get('headline',''), 'date': ''})
+                if len(results) >= n: break
+        return results
+    except: return []
+
+# ── Polygon ────────────────────────────────────────────────────────────────────
+def polygon_company(ticker, n=3):
+    """Company news from Polygon.io."""
+    url = f'https://api.polygon.io/v2/reference/news?ticker={ticker}&limit={n}&order=desc&sort=published_utc&apiKey={POLYGON}'
+    raw = _get(url)
+    if not raw: return []
+    try:
+        data = json.loads(raw)
+        return [{'source': a.get('publisher',{}).get('name','Polygon'), 'title': a.get('title',''), 'date': a.get('published_utc','')[:10]} for a in data.get('results',[])]
+    except: return []
+
+# ── Google News RSS ────────────────────────────────────────────────────────────
+def google_news(query, lang='de', n=3):
+    """Google News RSS fallback."""
+    q = urllib.parse.quote(query)
+    url = f'https://news.google.com/rss/search?q={q}&hl={lang}&gl=DE&ceid=DE:{lang}'
+    raw = _get(url)
+    if not raw: return []
+    try:
+        root = ET.fromstring(raw)
+        return [{'source': i.findtext('source','Google'), 'title': i.findtext('title',''), 'date': i.findtext('pubDate','')[:16]} for i in root.findall('.//item')[:n]]
+    except: return []
+
+# ── Kombiniert: alle Quellen für ein Ticker-Set ────────────────────────────────
+def news_for_portfolio(us_tickers=None, extra_queries=None, bloomberg_cats=None):
+    """
+    Sammelt News für US-Tickers (Polygon+Finnhub) + Queries (Google) + Bloomberg.
+    Returns: dict mit source → list of {source, title, date}
+    """
+    if us_tickers is None:
+        us_tickers = ['NVDA', 'MSFT', 'PLTR', 'EQNR', 'RIO']
+    if extra_queries is None:
+        extra_queries = ['Rheinmetall Aktie', 'Bayer Aktie', 'Iran Hormuz Ölpreis']
+    if bloomberg_cats is None:
+        bloomberg_cats = ['markets', 'energy', 'technology']
+
+    out = {}
+
+    # Bloomberg (breit)
+    bl = bloomberg(bloomberg_cats, n=4)
+    if bl:
+        out['Bloomberg'] = bl
+
+    # Finnhub Market (gefiltert)
+    fm = finnhub_market(n=6)
+    if fm:
+        out['Finnhub-Market'] = fm
+
+    # Pro Ticker: Polygon + Finnhub
+    for t in us_tickers:
+        news = polygon_company(t, n=2) + finnhub_company(t, n=2)
+        # Deduplizieren nach Titel
+        seen = set()
+        deduped = []
+        for a in news:
+            if a['title'] not in seen:
+                seen.add(a['title'])
+                deduped.append(a)
+        if deduped:
+            out[t] = deduped
+
+    # Google News für DE-Aktien + Geopolitik
+    for q in extra_queries:
+        news = google_news(q, n=2)
+        if news:
+            out[f'Google:{q[:20]}'] = news
+
+    return out
+
+def format_news(news_dict, max_per_source=2):
+    """Formatiert News-Dict für Discord-Ausgabe."""
+    lines = []
+    for source, items in news_dict.items():
+        lines.append(f'**{source}:**')
+        for item in items[:max_per_source]:
+            date = f" ({item['date']})" if item.get('date') else ''
+            lines.append(f"  · {item['title']}{date}")
+    return '\n'.join(lines)
+
+if __name__ == '__main__':
+    news = news_for_portfolio()
+    print(format_news(news))

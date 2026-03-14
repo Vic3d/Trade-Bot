@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="300">
+<title>Schutzeichel — Kundenanfragen</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+
+  /* Login-Screen */
+  #login-screen{position:fixed;inset:0;background:#0f172a;display:flex;align-items:center;justify-content:center;z-index:9999}
+  #login-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:40px 36px;width:340px;text-align:center}
+  #login-box h2{color:#fff;font-size:20px;margin-bottom:6px}
+  #login-box p{color:#64748b;font-size:13px;margin-bottom:24px}
+  #login-box input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;font-size:15px;margin-bottom:12px;outline:none}
+  #login-box input:focus{border-color:#3b82f6}
+  #login-box button{width:100%;padding:11px;border-radius:8px;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer}
+  #login-box button:hover{background:#2563eb}
+  #login-error{color:#f87171;font-size:13px;margin-top:10px;display:none}
+
+  /* App */
+  #app{display:none}
+  .topbar{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+  .topbar-title{font-size:17px;font-weight:700;color:#fff}
+  .topbar-sub{font-size:12px;color:#64748b;margin-top:2px}
+  .topbar-right{display:flex;align-items:center;gap:12px}
+  .badge-total{background:#ef4444;color:#fff;padding:3px 11px;border-radius:20px;font-size:12px;font-weight:700}
+
+  .stats-bar{display:flex;gap:0;border-bottom:1px solid #1e293b}
+  .stat-box{flex:1;padding:14px 20px;border-right:1px solid #1e293b;text-align:center}
+  .stat-box:last-child{border-right:none}
+  .stat-num{font-size:26px;font-weight:800;color:#fff}
+  .stat-label{font-size:11px;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+
+  .group-section{border-bottom:1px solid #1e293b}
+  .group-header{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;user-select:none}
+  .group-header:hover{background:#ffffff08}
+  .group-icon{font-size:16px}
+  .group-label{font-size:14px;font-weight:700;flex:1}
+  .group-count{background:#334155;color:#94a3b8;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:600}
+  .group-new{background:#ef4444;color:#fff;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:700}
+
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:1px solid #1e293b;background:#0d1b2a}
+  .email-row td{padding:10px 12px;border-bottom:1px solid #0f172a;vertical-align:middle}
+  .email-row:hover td{background:#1e293b55}
+  .email-row:last-child td{border-bottom:none}
+
+  .td-postfach{width:90px}
+  .td-content{max-width:0;width:100%}
+  .td-date{width:130px;white-space:nowrap;color:#64748b;font-size:12px}
+  .td-size{width:60px;text-align:right;color:#475569;font-size:11px}
+
+  .badge-postfach{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap}
+  .badge-new{display:inline-block;background:#ef4444;color:#fff;padding:1px 6px;border-radius:5px;font-size:10px;font-weight:700;margin-right:6px;vertical-align:middle}
+
+  .email-text{font-size:13px;color:#cbd5e1;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .email-text:hover{color:#fff}
+
+  .logout-btn{background:none;border:1px solid #334155;color:#94a3b8;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer}
+  .logout-btn:hover{border-color:#64748b;color:#e2e8f0}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div id="login-box">
+    <h2>🔐 Schutzeichel</h2>
+    <p>Posteingang — Kundenanfragen</p>
+    <input type="password" id="pw-input" placeholder="Passwort" onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()">Anmelden</button>
+    <div id="login-error">Falsches Passwort</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">📬 Schutzeichel — Kundenanfragen
+        
+      </div>
+      <div class="topbar-sub">Zuletzt aktualisiert: 13.03.2026 18:00 · automatisch alle 5 Min.</div>
+    </div>
+    <div class="topbar-right">
+      <button class="logout-btn" onclick="logout()">Abmelden</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="stat-num">13</div>
+      <div class="stat-label">Gesamt</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:#bfdbfe">2</div>
+      <div class="stat-label">INFO2</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:#a7f3d0">11</div>
+      <div class="stat-label">AUFTRAG</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:#fca5a5">0</div>
+      <div class="stat-label">Neu erkannt</div>
+    </div>
+  </div>
+
+  
+        <div class="group-section">
+          <div class="group-header" style="border-left:4px solid #0891b2;background:#0c4a6e22;">
+            <span class="group-icon">🏢</span>
+            <span class="group-label" style="color:#22d3ee;">B&O Auftrag</span>
+            <span class="group-count">7</span>
+            
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:90px">Postfach</th>
+                <th>Absender / Betreff</th>
+                <th style="width:130px">Datum</th>
+                <th style="width:60px">Größe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWWAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">12.03.2026 17:38</td>
+                <td class="td-size">43 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWOAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 18:47</td>
+                <td class="td-size">43 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWMAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 15:07</td>
+                <td class="td-size">42 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWKAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 09:52</td>
+                <td class="td-size">42 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWJAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 09:48</td>
+                <td class="td-size">43 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWIAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 09:47</td>
+                <td class="td-size">42 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWHAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">noreply-bohandwe... Handwerkerkopplung: Schadstoffhi...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 09:42</td>
+                <td class="td-size">42 KB</td>
+              </tr></tbody>
+          </table>
+        </div>
+        <div class="group-section">
+          <div class="group-header" style="border-left:4px solid #4d7c0f;background:#1a2e0522;">
+            <span class="group-icon">📋</span>
+            <span class="group-label" style="color:#a3e635;">TSP</span>
+            <span class="group-count">2</span>
+            
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:90px">Postfach</th>
+                <th>Absender / Betreff</th>
+                <th style="width:130px">Datum</th>
+                <th style="width:60px">Größe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#1e3a5f;color:#bfdbfe;">INFO2</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAACdwMQ7w/jHR5bOKSAmqB%2ByBwBa6yShIvq1RJXslxqUWEtzAAAAAAEMAABa6yShIvq1RJXslxqUWEtzAAJAUT0gAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">zahlungsavise@bo... TSP - TechnikServicePlus GmbH - ...</span></a>
+                </td>
+                <td class="td-date">12.03.2026 12:34</td>
+                <td class="td-size">134 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWZAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">Risadelli, Sandr... Als Anlage erhalten Sie: BuO_Auf...</span></a>
+                </td>
+                <td class="td-date">13.03.2026 10:45</td>
+                <td class="td-size">159 KB</td>
+              </tr></tbody>
+          </table>
+        </div>
+        <div class="group-section">
+          <div class="group-header" style="border-left:4px solid #7c3aed;background:#2e106522;">
+            <span class="group-icon">👤</span>
+            <span class="group-label" style="color:#c084fc;">Direktanfrage</span>
+            <span class="group-count">4</span>
+            
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:90px">Postfach</th>
+                <th>Absender / Betreff</th>
+                <th style="width:130px">Datum</th>
+                <th style="width:60px">Größe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#1e3a5f;color:#bfdbfe;">INFO2</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAACdwMQ7w/jHR5bOKSAmqB%2ByBwBa6yShIvq1RJXslxqUWEtzAAAAAAEMAABa6yShIvq1RJXslxqUWEtzAAJAUT0fAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">m.gertz@pertec.d... freier HLS-Monteur mit A-Schweiß...</span></a>
+                </td>
+                <td class="td-date">12.03.2026 09:42</td>
+                <td class="td-size">250 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWRAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">Daniela Schaefer WG: Heizung Scheunemann, Otto-We...</span></a>
+                </td>
+                <td class="td-date">12.03.2026 10:07</td>
+                <td class="td-size">59 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWQAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">Hansen, Pascal Auftrag: 269781868</span></a>
+                </td>
+                <td class="td-date">12.03.2026 07:45</td>
+                <td class="td-size">46 KB</td>
+              </tr>
+              <tr class="email-row" style="font-weight:400;">
+                <td class="td-postfach">
+                  <span class="badge-postfach" style="background:#064e3b;color:#a7f3d0;">AUFTRAG</span>
+                </td>
+                <td class="td-content">
+                  
+                  <a href="https://mail.phx-hosting.de/owa/?ae=Item&t=IPM.Note&id=RgAAAAD8AFk9Xm6LQLM1kxOudp2HBwCs%2BctTDVF7SKm5XCTMnsOlAAAAAAEMAACs%2BctTDVF7SKm5XCTMnsOlAAI%2B2tWGAAAJ&a=Open" target="_blank" style="color:inherit;text-decoration:none;"><span class="email-text">Daniela Schaefer Termine Überprüfung Heizungsanla...</span></a>
+                </td>
+                <td class="td-date">11.03.2026 08:49</td>
+                <td class="td-size">54 KB</td>
+              </tr></tbody>
+          </table>
+        </div>
+</div>
+
+<script>
+const PASS = "Schutzeichel2026";
+function checkPw(){
+  const v = document.getElementById('pw-input').value;
+  if(v === PASS){
+    sessionStorage.setItem('auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('login-error').style.display='none';
+  } else {
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+function logout(){
+  sessionStorage.removeItem('auth');
+  location.reload();
+}
+// Auto-Login wenn Session noch aktiv
+if(sessionStorage.getItem('auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+}
+// Collapsible groups
+document.querySelectorAll('.group-header').forEach(h=>{
+  h.addEventListener('click',()=>{
+    const t=h.nextElementSibling;
+    if(t)t.style.display=t.style.display==='none'?'':'none';
+  });
+});
+</script>
+</body>
+</html>

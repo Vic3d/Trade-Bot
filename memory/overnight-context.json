@@ -1,0 +1,172 @@
+{
+  "generated": "2026-03-13T21:00:54.413549",
+  "market_context": {
+    "vix": 27.2,
+    "brent_usd": 100.98,
+    "dxy": 100.168,
+    "us_close_status": "CLOSED",
+    "market_sentiment": "VOLATILE (VIX 25-30 band)"
+  },
+  "positions": {
+    "NVDA": {
+      "name": "Nvidia",
+      "current_price": 157.85,
+      "pnl_pct": -6.0,
+      "overall": "NEUTRAL/ABWARTEN",
+      "score": -1,
+      "signals": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "MSFT": {
+      "name": "Microsoft",
+      "current_price": 346.4,
+      "pnl_pct": -1.5,
+      "overall": "VORSICHT/HALTEN",
+      "score": -2,
+      "signals": {
+        "trend": "bearish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "PLTR": {
+      "name": "Palantir",
+      "current_price": 132.19,
+      "pnl_pct": 0.1,
+      "overall": "VORSICHT/HALTEN",
+      "score": -2,
+      "signals": {
+        "trend": "bearish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "EQNR": {
+      "name": "Equinor ASA",
+      "current_price": 30.4,
+      "pnl_pct": 12.4,
+      "overall": "NEUTRAL/ABWARTEN",
+      "score": 0,
+      "signals": {
+        "trend": "bullish",
+        "volume": "neutral",
+        "news": "bullish",
+        "macro": "bearish",
+        "mean_reversion": "bearish",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "BAYN.DE": {
+      "name": "Bayer AG",
+      "current_price": 38.63,
+      "pnl_pct": -3.3,
+      "overall": "VORSICHT/HALTEN",
+      "score": -3,
+      "signals": {
+        "trend": "neutral",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "RIO.L": {
+      "name": "Rio Tinto",
+      "current_price": 77.16,
+      "pnl_pct": 0.3,
+      "overall": "NEUTRAL/ABWARTEN",
+      "score": 0,
+      "signals": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "bullish",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "A2QQ9R": {
+      "name": "Invesco Solar Energy ETF",
+      "current_price": 25.245,
+      "pnl_pct": 12.7,
+      "overall": "VORSICHT/HALTEN",
+      "score": -2,
+      "signals": {
+        "trend": "bullish",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "A3D42Y": {
+      "name": "VanEck Oil Services ETF",
+      "current_price": 26.585,
+      "pnl_pct": -4.7,
+      "overall": "NEUTRAL/ABWARTEN",
+      "score": 0,
+      "signals": {
+        "trend": "bullish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "A14WU5": {
+      "name": "L&G Cyber Security ETF",
+      "current_price": 26.46,
+      "pnl_pct": -8.2,
+      "overall": "VORSICHT/HALTEN",
+      "score": -3,
+      "signals": {
+        "trend": "neutral",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "A2DWAW": {
+      "name": "iShares Biotechnology ETF",
+      "current_price": 7.266,
+      "pnl_pct": 3.8,
+      "overall": "NEUTRAL/ABWARTEN",
+      "score": -1,
+      "signals": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    }
+  }
+}

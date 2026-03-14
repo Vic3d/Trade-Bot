@@ -1,0 +1,258 @@
+{
+  "timestamp": "2026-03-13T21:01:21.026577",
+  "report_type": "evening_close",
+  "vix": 27.2,
+  "portfolio_status": {
+    "total_positions": 10,
+    "red_signals": 5,
+    "yellow_signals": 3,
+    "green_signals": 2,
+    "overnight_risk_level": "MEDIUM-HIGH"
+  },
+  "critical_positions": [
+    {
+      "ticker": "BAYN.DE",
+      "reason": "Too tight stop (1.7%), illiquid, geopolitical"
+    },
+    {
+      "ticker": "MSFT",
+      "reason": "Clear downtrend, VIX volatile"
+    },
+    {
+      "ticker": "A2QQ9R",
+      "reason": "NO STOP SET, +12.7% unprotected"
+    }
+  ],
+  "analyses": {
+    "NVDA": {
+      "current_price": 157.85,
+      "overall_signal": "NEUTRAL/ABWARTEN",
+      "total_score": -1,
+      "bull_count": 0,
+      "bear_count": 1,
+      "pnl_pct": -6.0,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "MSFT": {
+      "current_price": 346.4,
+      "overall_signal": "VORSICHT/HALTEN",
+      "total_score": -2,
+      "bull_count": 0,
+      "bear_count": 2,
+      "pnl_pct": -1.5,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "bearish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "PLTR": {
+      "current_price": 132.19,
+      "overall_signal": "VORSICHT/HALTEN",
+      "total_score": -2,
+      "bull_count": 0,
+      "bear_count": 2,
+      "pnl_pct": 0.1,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "bearish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "EQNR": {
+      "current_price": 30.4,
+      "overall_signal": "NEUTRAL/ABWARTEN",
+      "total_score": 0,
+      "bull_count": 2,
+      "bear_count": 2,
+      "pnl_pct": 12.4,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "bullish",
+        "volume": "neutral",
+        "news": "bullish",
+        "macro": "bearish",
+        "mean_reversion": "bearish",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "BAYN.DE": {
+      "current_price": 38.63,
+      "overall_signal": "VORSICHT/HALTEN",
+      "total_score": -3,
+      "bull_count": 0,
+      "bear_count": 3,
+      "pnl_pct": -3.3,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "neutral",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "RIO.L": {
+      "current_price": 77.16,
+      "overall_signal": "NEUTRAL/ABWARTEN",
+      "total_score": 0,
+      "bull_count": 1,
+      "bear_count": 1,
+      "pnl_pct": 0.3,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "bullish",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "A2QQ9R": {
+      "current_price": 25.245,
+      "overall_signal": "VORSICHT/HALTEN",
+      "total_score": -2,
+      "bull_count": 1,
+      "bear_count": 3,
+      "pnl_pct": 12.7,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "bullish",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "A3D42Y": {
+      "current_price": 26.585,
+      "overall_signal": "NEUTRAL/ABWARTEN",
+      "total_score": 0,
+      "bull_count": 1,
+      "bear_count": 1,
+      "pnl_pct": -4.7,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "bullish",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    },
+    "A14WU5": {
+      "current_price": 26.46,
+      "overall_signal": "VORSICHT/HALTEN",
+      "total_score": -3,
+      "bull_count": 0,
+      "bear_count": 3,
+      "pnl_pct": -8.2,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "neutral",
+        "volume": "bearish",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "bearish"
+      }
+    },
+    "A2DWAW": {
+      "current_price": 7.266,
+      "overall_signal": "NEUTRAL/ABWARTEN",
+      "total_score": -1,
+      "bull_count": 0,
+      "bear_count": 1,
+      "pnl_pct": 3.8,
+      "rsi": null,
+      "ema20": null,
+      "ema50": null,
+      "ema200": null,
+      "atr": null,
+      "stop_recommendation": null,
+      "signals_by_dimension": {
+        "trend": "neutral",
+        "volume": "neutral",
+        "news": "neutral",
+        "macro": "bearish",
+        "mean_reversion": "neutral",
+        "event": "neutral",
+        "risk": "neutral"
+      }
+    }
+  }
+}

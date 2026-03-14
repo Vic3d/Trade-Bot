@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-03-13T10:50:48.472541",
+  "total_events_analyzed": 15,
+  "ticker_accuracy": {
+    "EQNR": {
+      "accuracy": 88.9,
+      "avg_move_4h_pct": 1.59,
+      "total": 9
+    },
+    "RHM.DE": {
+      "accuracy": 100.0,
+      "avg_move_4h_pct": 1.44,
+      "total": 6
+    }
+  },
+  "strategy_accuracy": {
+    "1": {
+      "correct": 8,
+      "wrong": 1,
+      "total": 9
+    },
+    "2": {
+      "correct": 6,
+      "wrong": 0,
+      "total": 6
+    }
+  },
+  "top_keywords_by_accuracy": {
+    "iran": {
+      "accuracy": 100.0,
+      "correct": 7,
+      "wrong": 0,
+      "total": 7,
+      "signal_strength": "strong"
+    },
+    "rheinmetall": {
+      "accuracy": 100.0,
+      "correct": 6,
+      "wrong": 0,
+      "total": 6,
+      "signal_strength": "strong"
+    },
+    "aktie": {
+      "accuracy": 100.0,
+      "correct": 6,
+      "wrong": 0,
+      "total": 6,
+      "signal_strength": "strong"
+    }
+  },
+  "noise_keywords": []
+}
