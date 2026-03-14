@@ -18,3 +18,11 @@ memory/*.pid
 ## OS
 .DS_Store
 Thumbs.db
+
+## Embedded Git Repos — als normaler Ordner includen
+!josh-dashboard/
+!wtv-prototype/
+-e 
+## Separate Repos — haben eigene GitHub-Backups
+josh-dashboard/
+wtv-prototype/
