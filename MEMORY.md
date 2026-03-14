@@ -110,7 +110,7 @@
 - Tech: HTML5/CSS3/Vanilla JS + localStorage (no backend)
 - GitHub: `git@github.com:Vic3d/Lern-Bot.git`
 - Dashboard: `dashboard/index.html`
-- Projektfile: `memory/projekt-lernbot-akad.md`
+- Projektfile: `memory/projekt-lernbot.md`
 
 ### VetFlow
 - Frühe Planung, Vincent + Schmobro
