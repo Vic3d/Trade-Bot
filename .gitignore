@@ -1,4 +1,20 @@
+## Credentials — NIEMALS committen
 secrets/
 *.env
 *.key
 *.pem
+
+## Python
+__pycache__/
+*.pyc
+*.pyo
+
+## Logs + DB (zu groß / nicht relevant für Restore)
+memory/newswire.db
+memory/newswire.log
+memory/newswire.pid
+memory/*.pid
+
+## OS
+.DS_Store
+Thumbs.db
