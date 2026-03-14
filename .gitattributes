@@ -1,0 +1,11 @@
+# Zeilenenden einheitlich auf LF normalisieren
+* text=auto eol=lf
+
+# Binärdateien — nicht normalisieren
+*.db binary
+*.pyc binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
