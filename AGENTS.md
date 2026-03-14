@@ -114,6 +114,14 @@ Periodisch (alle paar Tage): Daily-Files reviewen, MEMORY.md aktualisieren.
 1. `memory/trade-decisions.md` — Ergebnis + Lektion nachtragen
 2. `memory/albert-accuracy.md` — zugehörige Prognose als ✅/❌ markieren, Trefferquote updaten
 
+### Bei Strategie-Entscheidung (neu, Änderung, Exit, Entry-Plan):
+1. `memory/entscheidungs-log.md` — Eintrag anlegen mit:
+   - **Entscheidung:** Was wurde beschlossen?
+   - **Kontext:** Welche Nachrichten / Victor-Aussagen / Argumente waren ausschlaggebend? (wörtlich oder sinngemäß)
+   - **Kern-Reasoning:** Warum war das überzeugend?
+   - **Lesson:** Was kann man daraus ableiten?
+2. Kein Marktrauschen — nur echte Wendepunkte
+
 ### Keine mentalen Notizen — alles in Dateien.
 
 ### Backup & Restore:
