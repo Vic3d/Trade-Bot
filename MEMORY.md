@@ -93,6 +93,14 @@
 - Techspec: `memory/nextjob-techspec.md`
 - Details: `memory/projekt-nextjob.md`
 
+### TFA Lernbot
+- **Status:** ✅ Live & funktioniert (preview.dobro-work.com/tfa)
+- Prüfungsvorbereitung für Lienna (TFA-Abschlussprüfung 2026)
+- 258 MC-Fragen, Discord-Integration (tägl. 13:00 + 18:30 Cron)
+- Tech: Node.js + Express + JSON-Storage
+- Codebase: `/home/node/openclaw/tfa-lernbot/`
+- Projektfile: `memory/projekt-tfa-lernbot.md`
+
 ### VetFlow
 - Frühe Planung, Vincent + Schmobro
 
