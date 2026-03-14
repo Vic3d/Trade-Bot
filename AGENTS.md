@@ -130,6 +130,27 @@ Periodisch (alle paar Tage): Daily-Files reviewen, MEMORY.md aktualisieren.
 
 ---
 
+## Entscheidungs-Log (Pflicht bei Strategieänderungen)
+
+Bei jeder dieser Situationen → Eintrag in `memory/entscheidungs-log.md`:
+- Trade eröffnet oder geschlossen (mit Begründung)
+- Strategie geändert oder aufgegeben
+- Stop/Ziel nachgezogen oder angepasst
+- Wichtige Diskussion die zu einer Entscheidung geführt hat
+
+**Format:**
+```
+## YYYY-MM-DD — [Titel]
+**Entscheidung:** Was wurde entschieden?
+**Kontext:** Relevante Nachrichten/Argumente (wörtlich wenn möglich)
+**Kern-Reasoning:** Warum diese Entscheidung?
+**Lesson:** (optional) Was wurde gelernt?
+```
+
+Nicht für: Routine-Checks, Kursbewegungen ohne Handlung, tägliche Updates.
+
+---
+
 ## 📈 Trading — Pflichtregeln
 
 **Namen + Ticker:** IMMER vollständiger Name + Ticker in Klammern. Nie nur Ticker allein.
