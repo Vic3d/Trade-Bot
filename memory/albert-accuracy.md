@@ -1,65 +1,71 @@
-# Albert Accuracy Tracker
-*System eingerichtet: 2026-03-14*
-
-Jede explizite Empfehlung oder Prognose wird hier geloggt — BEVOR das Ergebnis bekannt ist.
-Ziel: ehrliche Rückschau, kein Survivorship-Bias.
-
-## Auswertung (automatisch)
-
-| Metrik | Wert |
-|--------|------|
-| Empfehlungen gesamt | 0 |
-| Korrekt | 0 |
-| Falsch | 0 |
-| Offen | 0 |
-| **Trefferquote** | **–** |
-
-*Wird manuell aktualisiert wenn Empfehlungen bewertet werden.*
+# Albert Accuracy — Empfehlungs-Tracker
+*Wie gut sind meine Trading-Empfehlungen wirklich?*
 
 ---
 
-## Format für neue Einträge
+## Wie es funktioniert
 
-```
-### YYYY-MM-DD — [Aktie/Thema] — [Empfehlungstyp]
-**Prognose:** [Was ich konkret gesagt habe]
-**Begründung:** [Kurz: warum]
-**Horizont:** [Wann bewertbar — z.B. "Xetra Mo", "Earnings 27.05.", "1 Woche"]
-**Ergebnis:** [leer bis bekannt]
-**Korrekt:** [✅ / ❌ / ~teilweise — wird nachgetragen]
-**Lektion:** [optional — was ich daraus lerne]
-```
+1. **Empfehlung loggen** — BEVOR das Ergebnis bekannt ist (Morgen-Briefing, Abend-Report)
+2. **Outcome eintragen** — wenn Position geschlossen oder Setup verfallen
+3. **Wöchentliche Auswertung** — Sonntag, automatisch
 
 ---
 
-## Offene Prognosen
+## Kategorien
 
-### 2026-03-14 — Equinor ASA (EQNR) — Kursprognose
-**Prognose:** Wochenend-Gap-up bei Xetra-Eröffnung Montag durch Kharg Island Bombardierung. Ölpreis steigt, EQNR reagiert positiv aber mit hoher Volatilität.
-**Begründung:** Kharg Island = ~90% iranisches Öl. Bombardierung = Angebotschock. EQNR als westlicher Ölproduzent profitiert kurzfristig.
-**Horizont:** Mo 2026-03-16, 10:00 Xetra-Check
-**Ergebnis:** [offen]
-**Korrekt:** [offen]
+| Kategorie | Beschreibung |
+|-----------|-------------|
+| KAUF | Kaufempfehlung für Aktie/Setup |
+| HALTEN | Empfehlung Position zu halten |
+| VERKAUFEN | Empfehlung Position zu schließen |
+| STOP_ANPASSEN | Empfehlung Stop nachzuziehen |
+| WATCHLIST | Entry-Setup beobachten |
 
-### 2026-03-14 — Gesamtmarkt — Risikoeinschätzung
-**Prognose:** VIX-Spike Mo/Di durch Iran-Eskalation. Tech-Positionen (NVDA, MSFT, PLTR) unter kurzfristigem Druck.
-**Begründung:** Geopolitischer Schock → Risk-off → Rotation aus Growth in defensive Werte
-**Horizont:** Mo-Di 2026-03-16/17
-**Ergebnis:** [offen]
-**Korrekt:** [offen]
-
----
-
-## Abgeschlossene Prognosen
-
-*Noch keine.*
+| Outcome | Bedeutung |
+|---------|-----------|
+| KORREKT | Empfehlung war richtig UND aus den richtigen Gründen |
+| GLUECK | Empfehlung war "richtig" aber aus falschen Gründen |
+| FALSCH | Empfehlung war falsch |
+| VERFALLEN | Setup nie eingetreten, nicht beurteilbar |
+| OFFEN | Noch kein Ergebnis |
 
 ---
 
-## Lektion-Archiv (destilliert aus Fehlern)
+## Empfehlungen
 
-| Datum | Fehler | Lektion |
-|-------|--------|---------|
-| 2026-03-11 | RHM Stop mental statt real → zu spät ausgeführt | Stops IMMER sofort in TR setzen |
-| 2026-03-11 | Averaging-Down-Überlegung bei RHM | Nie unter Stop nachkaufen — Dirks Regel |
+### 2026-03-14 — Equinor ASA (EQNR) — HALTEN + Beobachten
+**Datum:** 14.03.2026, 09:12 UTC
+**Kurs:** ~28,03€ (letzter bekannter Kurs, Wochenende)
+**Empfehlung:** HALTEN — Kharg Island Bombing → Ölpreis-Spike erwartet. EQNR profitiert kurzfristig.
+**Begründung:** ~90% iranische Ölexporte über Kharg Island. Unterbrechung → Brent steigt → EQNR folgt.
+**Risiko:** Trump-Aussage nicht unabhängig bestätigt. Gap könnte ausbleiben oder schnell revertieren.
+**Stop:** 25,00€ real in TR gesetzt.
+**Ergebnis:** OFFEN
+**Outcome-Datum:** [wird nachgetragen nach Mo 09:00]
 
+---
+
+## Statistik
+
+| Zeitraum | Empfehlungen | Korrekt | Glück | Falsch | Verfallen | Quote |
+|----------|-------------|---------|-------|--------|-----------|-------|
+| 2026-03 | 1 | 0 | 0 | 0 | 0 | – |
+| Gesamt | 1 | 0 | 0 | 0 | 0 | – |
+
+*Mindestens 10 Empfehlungen für aussagekräftige Quote.*
+
+---
+
+## Lektionen aus Fehlern
+
+*(Wird befüllt sobald Outcomes bekannt)*
+
+---
+
+## Wöchentliche Reviews
+
+*(Automatisch sonntags via Cron)*
+
+---
+
+*Verknüpft mit: memory/trade-decisions.md | memory/strategy-changelog.md*

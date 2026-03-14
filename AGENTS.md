@@ -116,6 +116,10 @@ Periodisch (alle paar Tage): Daily-Files reviewen, MEMORY.md aktualisieren.
 
 ### Keine mentalen Notizen — alles in Dateien.
 
+### Backup & Restore:
+- Auto-Backup: täglich 13:00 + 23:00 → GitHub `Vic3d/Trade-Bot`
+- Bei Restore: `RESTORE.md` lesen — komplette Schritt-für-Schritt-Anleitung
+
 ---
 
 ## 📈 Trading — Pflichtregeln
