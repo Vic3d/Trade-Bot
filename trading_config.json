@@ -1,0 +1,159 @@
+{
+  "positions": {
+    "NVDA": {
+      "name": "Nvidia",
+      "yahoo": "NVDA",
+      "currency": "USD",
+      "entry_eur": 167.88,
+      "stop_eur": null,
+      "targets_eur": [],
+      "alerts": {
+        "stufe1_below_usd": 180.00,
+        "stufe2_above_usd": 190.00
+      },
+      "notes": "HALTEN bis Earnings 27.05.2026"
+    },
+    "MSFT": {
+      "name": "Microsoft",
+      "yahoo": "MSFT",
+      "currency": "USD",
+      "entry_eur": 351.85,
+      "stop_eur": 338.00,
+      "targets_eur": [387, 404],
+      "alerts": {},
+      "notes": ""
+    },
+    "PLTR": {
+      "name": "Palantir",
+      "yahoo": "PLTR",
+      "currency": "USD",
+      "entry_eur": 132.11,
+      "stop_eur": 127.00,
+      "targets_eur": [159],
+      "alerts": {
+        "ziel1_above_usd": 185.00
+      },
+      "notes": "Stop nachgezogen 09.03."
+    },
+    "EQNR": {
+      "name": "Equinor ASA",
+      "yahoo": "EQNR.OL",
+      "currency": "NOK",
+      "entry_eur": 27.04,
+      "stop_eur": 28.50,
+      "targets_eur": [],
+      "alerts": {},
+      "notes": "Buy-back Q1 läuft"
+    },
+    "BAYN.DE": {
+      "name": "Bayer AG",
+      "onvista": "https://www.onvista.de/aktien/Bayer-Aktie-DE000BAY0017",
+      "currency": "EUR",
+      "entry_eur": 39.95,
+      "stop_eur": 38.00,
+      "targets_eur": [44],
+      "alerts": {},
+      "notes": "Stop real in TR"
+    },
+    "RIO.L": {
+      "name": "Rio Tinto",
+      "yahoo": "RIO.L",
+      "currency": "GBP",
+      "entry_eur": 76.92,
+      "stop_eur": 73.00,
+      "targets_eur": [85],
+      "alerts": {},
+      "notes": "⚠️ Stop 73€ in TR setzen!"
+    },
+    "RHM.DE": {
+      "name": "Rheinmetall AG",
+      "onvista": "https://www.onvista.de/aktien/Rheinmetall-AG-Aktie-DE0007030009",
+      "currency": "EUR",
+      "entry_eur": 1570.00,
+      "stop_eur": 1520.00,
+      "targets_eur": [1750, 1900],
+      "alerts": {},
+      "notes": "Re-Entry 12.03. nach Exit 11.03."
+    },
+    "A2QQ9R": {
+      "name": "Invesco Solar Energy ETF",
+      "yahoo": "TAN",
+      "currency": "USD",
+      "entry_eur": 22.40,
+      "stop_eur": null,
+      "targets_eur": [28],
+      "alerts": {},
+      "notes": "⚠️ KEIN STOP — Breakeven 22,40€ setzen!"
+    },
+    "A3D42Y": {
+      "name": "VanEck Oil Services ETF",
+      "yahoo": "OIH",
+      "currency": "USD",
+      "entry_eur": 27.90,
+      "stop_eur": 24.00,
+      "targets_eur": [],
+      "alerts": {},
+      "notes": ""
+    },
+    "A14WU5": {
+      "name": "L&G Cyber Security ETF",
+      "yahoo": "CIBR",
+      "currency": "USD",
+      "entry_eur": 28.80,
+      "stop_eur": 25.95,
+      "targets_eur": [],
+      "alerts": {},
+      "notes": "Stop 2% weg — eng"
+    },
+    "A2DWAW": {
+      "name": "iShares Biotech ETF",
+      "yahoo": "IBB",
+      "currency": "USD",
+      "entry_eur": 7.00,
+      "stop_eur": 6.30,
+      "targets_eur": [],
+      "alerts": {},
+      "notes": ""
+    }
+  },
+  "watchlist": {
+    "AG": {
+      "name": "First Majestic Silver",
+      "yahoo": "AG",
+      "currency": "USD",
+      "entry_a_above_usd": 27.80,
+      "entry_b_below_usd": 24.30,
+      "candlestick_detect": true,
+      "notes": "Umkehrkerze-Bestätigung nötig"
+    },
+    "BHP.L": {
+      "name": "BHP Group",
+      "yahoo": "BHP.L",
+      "currency": "GBP",
+      "entry_b_below_eur": 28.00,
+      "notes": "Kupfer/Lithium-Setup, 20W-MA ~27.57€"
+    },
+    "ASML": {
+      "name": "ASML Holding",
+      "yahoo": "ASML",
+      "currency": "USD",
+      "entry_below_eur": 1175,
+      "notes": "EMA50-Zone. Auf Umkehrkerze warten."
+    }
+  },
+  "macro": {
+    "wti_ticker": "CL=F",
+    "vix_ticker": "^VIX",
+    "wti_30m_alert_pct": 3.0,
+    "wti_daily_alert_pct": 5.0,
+    "vix_spike_delta": 5.0
+  },
+  "settings": {
+    "stop_warn_pct": 3.0,
+    "stop_critical_pct": 1.5,
+    "trailing_start_pct": 5.0,
+    "trailing_secure_pct": 10.0,
+    "discord_target": "452053147620343808",
+    "check_interval_min": 15
+  }
+}

@@ -129,6 +129,13 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 **Risiko:** Gap-down wenn Eskalation übertrieben war | Gap-up wenn Hormuz-Schließung droht
 **Ergebnis:** [offen — Xetra Mo 09:00 prüfen]
 
+### 2026-03-15 18:00 — Microsoft (MSFT) — Stop-Warnung
+**Kurs:** 340,50€ | **Entry:** 351,85€ | **P&L:** -3.2%
+**Alert:** Stop-Warnung | **Stop:** 338,00€
+**Strategie:** S3
+**Kontext:** VIX: 26.4 | WTI: $91.20 | Conviction: 45/100 [Schwaches Signal — Vorsicht]
+
+
 ---
 
 *Dieses Log wird bei jeder relevanten Entscheidung aktualisiert.*

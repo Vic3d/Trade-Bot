@@ -1,0 +1,6 @@
+[2026-03-15 15:34:12] Fetching 13 Yahoo tickers + Onvista...
+[2026-03-15 15:34:33] ALERT FAILED: Command '['openclaw', 'message', 'send', '--channel', 'discord', '--target', '452053147620343808', '--message', '⚡ Stop-Nähe: Microsoft (MSFT) @ 346.28€ | Stop: 338.0€ | 2.4% Abstand']' timed out after 15 seconds
+[2026-03-15 15:34:48] ALERT FAILED: Command '['openclaw', 'message', 'send', '--channel', 'discord', '--target', '452053147620343808', '--message', '📈 Trailing Stop fällig: Equinor ASA (EQNR) @ 30.39€ | P&L: +12.4% (>5.0%) | Stop auf Breakeven (27.04€) nachziehen!']' timed out after 15 seconds
+[2026-03-15 15:35:03] ALERT FAILED: Command '['openclaw', 'message', 'send', '--channel', 'discord', '--target', '452053147620343808', '--message', '🔒 Gewinn sichern: Equinor ASA (EQNR) @ 30.39€ | P&L: +12.4% (>10.0%) | 50% Gewinn sichern → Stop auf 28.71€']' timed out after 15 seconds
+[2026-03-15 15:35:18] ALERT FAILED: Command '['openclaw', 'message', 'send', '--channel', 'discord', '--target', '452053147620343808', '--message', '⚡ Stop-Nähe: Bayer AG (BAYN.DE) @ 38.63€ | Stop: 38.0€ | 1.7% Abstand']' timed out after 15 seconds
+[2026-03-15 15:35:25] ALERT SENT: 🔔 ENTRY B: First Majestic Silver (AG) @ $22.56 (<24.3) — Rücklauf-Zone!...

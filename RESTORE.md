@@ -39,6 +39,29 @@ ssh -T git@github-vic3d
 git clone git@github-vic3d:Vic3d/Trade-Bot.git /data/.openclaw/workspace
 ```
 
+### Schritt 2b — Separate Repos klonen
+
+```bash
+# LearnFlow (Lernplattform) — eigenes Repo
+git clone git@github-vic3d:Vic3d/Lern-Bot.git /data/.openclaw/workspace/lernbot/
+```
+
+### Secrets-Checkliste (Victor muss bereitstellen)
+
+Nach dem Klonen fehlen diese Dateien (bewusst nicht in Git):
+
+- [ ] `secrets/josh-credentials.env` — B&O Portal + Hero Software Login (von Victor)
+- [ ] `.env` mit:
+  - `ANTHROPIC_API_KEY` — für LearnFlow KI-Features (Anthropic Console)
+  - `POLYGON_KEY` — für NewsWire Analyst (polygon.io)
+  - `FINNHUB_KEY` — für NewsWire Analyst (finnhub.io)
+  - `OPENAI_API_KEY` — optional, für Premium TTS in LearnFlow
+- [ ] SSH-Keys:
+  - `/data/.ssh/id_ed25519_vic3d` — GitHub Zugang (Vic3d Account)
+  - `/home/node/openclaw/.ssh-keys/id_ed25519` — GitHub dobro-de + Hetzner
+  - `/home/node/openclaw/.ssh-keys/id_ed25519_bbde` — GitHub bb-de (Josh Dashboard)
+- [ ] `memory/email-accounts.md` — OWA Zugangsdaten (manuell wiederherstellen)
+
 ### Schritt 2 — Pflichtlektüre (in dieser Reihenfolge)
 
 1. `SOUL.md` — wer ich bin
@@ -66,6 +89,15 @@ git clone git@github-vic3d:Vic3d/Trade-Bot.git /data/.openclaw/workspace
 ⚠️ **Wichtig:** Cron-Jobs leben im OpenClaw-System, nicht im Git-Repo.
 Nach einem vollständigen Reset müssen diese neu eingerichtet werden.
 Die Konfiguration dafür steht in `memory/state-snapshot.md`.
+
+### Schritt 4b — Cron-Jobs wiederherstellen
+
+Cron-Jobs leben im OpenClaw-System, nicht im Git. Nach Reset:
+1. Öffne `memory/cron-export.json`
+2. Für jeden Job: `cron(action=add, job={...})` im Chat aufrufen
+3. Oder sage: "Albert, stelle alle Crons aus cron-export.json wieder her"
+
+Verifiziere: `cron(action=list)` — sollte ~21 Jobs zeigen.
 
 ### Schritt 5 — Bestätigung
 

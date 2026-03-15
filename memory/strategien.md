@@ -37,7 +37,7 @@ Oberflächliche News reichen nicht. Bei jeder relevanten Meldung die These-Auswi
 
 ## STRATEGIE 1: Iran-Konflikt → Öl & Silber
 
-**Status: 🟢 STARK** *(Stand: 12.03.2026, 22:00 Uhr — Israel massive Airstrikes in Teheran)*
+**Status: 🟢🔥 STARK 🔥** *(Stand: 15.03.2026, 18:00 Uhr)*
 
 **These:**
 Solange der Iran-Konflikt anhält und die Straße von Hormuz unter Druck steht, bleibt Öl strukturell gestützt. Silber profitiert als sicherer Hafen + industrielle Nachfrage.
@@ -110,6 +110,7 @@ Iran/Golf-Öl ist leichtes Öl (~30-35° API) — wie Brent.
 
 ---
 
+| 15.03. | Israel expandiert Strikes auf Westiran, Iran-FM: keine Verhandlungen, Trump droht Kharg Island Zerstörung, IEA Notreserven aktiviert | Eskalation fortgesetzt — kein De-Eskalations-Signal. Kharg-Island-Drohung = nukleares Preisniveau-Risiko für Öl | 🟢🔥 |
 ## STRATEGIE 2: Europäische Aufrüstung → Rüstung
 
 **Status: 🟢 STARK** *(Stand: 08.03.2026)*
@@ -194,7 +195,7 @@ KI-Infrastruktur wächst strukturell — Rechenzentren, GPU-Bedarf, NVDA als Hau
 
 ## STRATEGIE 4: Geopolitische Unsicherheit → Silber/Gold (sicherer Hafen)
 
-**Status: 🟡 NEUTRAL** *(Stand: 08.03.2026 — noch keine Position)*
+**Status: 🟢 STARK** *(Stand: 15.03.2026, 18:00 Uhr)*
 
 **These:**
 Bei geopolitischer Eskalation + Inflationsdruck steigen sichere Häfen. Silber hat zusätzlich industriellen Hebel (Solar, EVs). Gold als Reserve.
@@ -227,6 +228,7 @@ Bei geopolitischer Eskalation + Inflationsdruck steigen sichere Häfen. Silber h
 
 ---
 
+| 15.03. | Gold/Silber scharf hoch auf Safe-Haven-Nachfrage + schwachem USD. First Majestic Silver (AG) $22,56 — in Entry-B-Zone (<$24,30) | Safe-Haven-Thesis bestätigt. USD schwach = Silber stark. AG Entry-B-Signal AKTIV — auf Umkehrkerze warten | 🟢 |
 ## STRATEGIE 5: Rohstoff-Superzyklus → Basismetalle (Kupfer/Lithium)
 
 **Status: 🟡 BEOBACHTEN** *(Stand: 10.03.2026, 14:30 Uhr — Oyu Tolgoi Renegotiation-Risiko)*

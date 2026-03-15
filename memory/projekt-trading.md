@@ -285,10 +285,11 @@ Je kleiner der EMA an dem eine Aktie Unterstützung findet, desto stärker ist s
 ### Equinor (EQNR)
 - **Einstieg:** 04.03.2026 @ 27,04€ (Xetra)
 - **Kursquelle:** EQNR.OL (NOK) ÷ EURNOK=X
-- **Stop:** **27,00€** ← nachgezogen 12.03.2026 (@28,47€, +5,3% Gewinn)
-- **Ziel 1:** 29,50€ (+9%) | **Ziel 2:** 31–32€ (+15-18%)
+- **Stop:** **28,50€** ← nachgezogen 15.03.2026 (Kurs 30,39€, +12,4% Gewinn → Dirk-Regel: >10% = 50% Gewinn sichern)
+- Vorher: 27,00€ (12.03.) → 25,00€ (10.03.) → 28,50€ (09.03.) → initial
+- **Ziel 1:** ~~29,50€~~ ✅ ERREICHT | **Ziel 2:** 31–32€ (+15-18%)
 - **Trade-Logik:** Geopolitik Öl/Gas (Iran-Eskalation + Hormuz-Blockade) — Nordsee-Leichtöl EQNR ist einzigartige Prämie-Profiteur
-- **Status:** HALTEN — Trailing Stop nach Breakeven verschoben (Gewinnschutz), nicht aufstocken
+- **Status:** HALTEN — Stop 28,50€ sichert 1,46€/Aktie Gewinn. Ziel 2 (31-32€) im Blick. Iran-These 🟢🔥
 
 ---
 

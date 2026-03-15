@@ -1,0 +1,237 @@
+[
+  {
+    "name": "Morgen-Briefing",
+    "schedule": { "kind": "cron", "expr": "0 8 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Morgen-Briefing]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 180
+    }
+  },
+  {
+    "name": "Xetra Opening",
+    "schedule": { "kind": "cron", "expr": "0 10 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Xetra Opening]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "Strategie-Check",
+    "schedule": { "kind": "cron", "expr": "30 11,14 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Strategie-Check]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 240
+    }
+  },
+  {
+    "name": "E-Mail Monitor 14-17",
+    "schedule": { "kind": "cron", "expr": "0 14-17 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: E-Mail Monitor 14-17]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "US Opening",
+    "schedule": { "kind": "cron", "expr": "30 16 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: US Opening]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 240
+    }
+  },
+  {
+    "name": "Portfolio Risk",
+    "schedule": { "kind": "cron", "expr": "30 17 * * 5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Portfolio Risk]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "E-Mail Monitor 18:00",
+    "schedule": { "kind": "cron", "expr": "0 18 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: E-Mail Monitor 18:00]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "Korrelationsmatrix",
+    "schedule": { "kind": "cron", "expr": "0 19 * * 5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Korrelationsmatrix]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 90
+    }
+  },
+  {
+    "name": "Strategy Learner",
+    "schedule": { "kind": "cron", "expr": "0 20 * * 5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Strategy Learner]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "NewsWire Analyst",
+    "schedule": { "kind": "cron", "expr": "0 9,12,16,20 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: NewsWire Analyst]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "Transcript Analyzer",
+    "schedule": { "kind": "cron", "expr": "0 9,13,17,21 * * *", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Transcript Analyzer]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 180
+    }
+  },
+  {
+    "name": "Trading Monitor v2",
+    "schedule": { "kind": "cron", "expr": "*/15 8-22 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Trading Monitor v2]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 90
+    }
+  },
+  {
+    "name": "Abend-Report",
+    "schedule": { "kind": "cron", "expr": "0 22 * * 1-5", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Abend-Report]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 180
+    },
+    "delivery": { "mode": "announce", "channel": "discord", "to": "1475255728313864413" }
+  },
+  {
+    "name": "Tagesabschluss",
+    "schedule": { "kind": "cron", "expr": "0 23 * * *", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Tagesabschluss]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    },
+    "delivery": { "mode": "announce", "channel": "discord", "to": "1475255728313864413" }
+  },
+  {
+    "name": "Daily Backup",
+    "schedule": { "kind": "cron", "expr": "0 23 * * *", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job ID: 80365b26]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 60
+    }
+  },
+  {
+    "name": "Midday Backup",
+    "schedule": { "kind": "cron", "expr": "0 13 * * *", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job ID: f26760c2]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 60
+    }
+  },
+  {
+    "name": "Wöchentliche Review Sa",
+    "schedule": { "kind": "cron", "expr": "0 10 * * 6", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Wöchentliche Review Sa]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 300
+    },
+    "delivery": { "mode": "announce", "channel": "discord", "to": "1475255728313864413" }
+  },
+  {
+    "name": "Wochenend-News Sa",
+    "schedule": { "kind": "cron", "expr": "0 19 * * 6", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Wochenend-News Sa]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 300
+    }
+  },
+  {
+    "name": "Wöchentliche Review+Strategie So",
+    "schedule": { "kind": "cron", "expr": "0 20 * * 0", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Wöchentliche Review+Strategie So]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 300
+    }
+  },
+  {
+    "name": "Job-Cleanup Sa",
+    "schedule": { "kind": "cron", "expr": "0 9 * * 6", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: Job-Cleanup Sa]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 120
+    }
+  },
+  {
+    "name": "NVDA Earnings Reminder",
+    "schedule": { "kind": "once", "at": "2026-05-26T15:00:00", "tz": "Europe/Berlin" },
+    "sessionTarget": "isolated",
+    "deleteAfterRun": true,
+    "payload": {
+      "kind": "agentTurn",
+      "message": "[ORIGINAL PROMPT - siehe Cron-Job: NVDA Earnings Reminder]",
+      "model": "anthropic/claude-haiku-4-5",
+      "timeoutSeconds": 60
+    }
+  }
+]
