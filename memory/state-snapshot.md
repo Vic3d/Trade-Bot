@@ -1,85 +1,133 @@
-# State Snapshot — Zuletzt aktualisiert 14.03.2026 20:00 UTC
+# State Snapshot — Aktuelle Position (15.03.2026 20:00)
 
-## 📊 Portfolio-Status (Echtzeit)
+## Portfolio-Übersicht (Echtzeit)
 
-### Kritische Positionen
-| Ticker | Entry | Kurs | P&L | Stop | Action | Priority |
-|--------|-------|------|-----|------|--------|----------|
-| **NVDA** | 167,88€ | 157,85€ | -6,0% | ❌ NONE | **SET 151€ SOFORT** | 🔴 KRITISCH |
-| **A2QQ9R** | — | 25,25€ | +12,7% | ❌ NONE | **SET 23€ SOFORT** | 🔴 KRITISCH |
-| MSFT | 351,85€ | 346,40€ | -1,5% | 338€ (2,8% weg) | Nachziehen → 342€ | 🟡 HOCH |
-| PLTR | 132,11€ | 132,19€ | +0,1% | 127€ (2,3% weg) | Nachziehen → 129€ | 🟡 HOCH |
-| BAYN.DE | 39,95€ | 38,63€ | -3,3% | 38€ (1,7% weg) | Nachziehen → 36,50€ | 🟡 HOCH |
-| EQNR | 27,04€ | 30,40€ | +12,4% | 27€ (Breakeven) | RSI 79! Gewinnmitnahme 31€/32€ prüfen | 🟢 ACTIVE |
-| RIO.L | 76,92€ | 77,16€ | +0,3% | 73€ | HOLD | 🟢 STABLE |
-
-### Watchlist
-- **RHM.DE:** Über Nacht beobachten (1.570€ Entry, Stop 1.520€, Rüstungs-Thesis bestätigt)
-- **AG (First Majestic Silver):** Entry A 26-29$, watchlist
-- **ISPA.DE (Silber):** Ausbruch über 36,90€ oder Rücklauf 35,80€
-- **XOM, VLO, VRTX:** Watchlist, Setup abwarten
+**Aktuelles Datum:** Sonntag, 15.03.2026 20:00 UTC+1  
+**VIX:** 27,19 🟠 (orange band)  
+**WTI:** $98,71 | **Brent:** $103,86  
+**EUR/USD:** 1,1423
 
 ---
 
-## 🌍 Geopolitik Status (Stand Sa 14.03, 20:00 UTC)
+## 📊 Aktive Positionen (11 gesamt)
 
-### Iran-Konflikt: 🔴 **TIER-1 ESKALATION — LIVE**
-- **Israel Airstrikes:** Isfahan + Tabriz (heute, ~14:00 UTC)
-- **Iran Retaliation:** 5 ballistische Raketen-Wellen seit Mitternacht
-- **Hormuz:** Blockiert + Trump fordert internationale Flotte
-- **Ceasefire:** NEIN — Mojtaba Khamenei (Hardliner) neuer Supreme Leader
-- **Szenario:** B/C wahrscheinlich (2-6 Monate Konflikt)
-- **Öl-Thesis:** ✅ BESTÄTIGT — EQNR/DR0 HALTEN
+### Öl & Rohstoffe (2 Positionen) — S1 & S5
 
-### Ukraine-Konflikt: 🟡 **Steady-State, RHM-Theta aktiv**
-- Routine clashes auf 10+ Fronten (Attrition)
-- PLTR Defense weiterhin relevant
+| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
+|------|------|-------|-----|------|------|--------|
+| **EQNR** | 30,39€ | 27,04€ | +12,4% | 28,50€ ✅ | 32,00€ | 🟢 STARK |
+| **RIO.L** | 77,21€ | 76,92€ | +0,4% | ⚠️ 73€ (nicht in TR!) | 85€ / 95€ | 🟡 STABIL |
 
-### Lebanon: 🔴 **Proxy-Eskalation — Israel Ground Invasion prep**
-- Hezbollah Rockets + Israeli Airstrikes intensivieren
-- Israel prepares large-scale ground invasion South of Litani
+### Tech (3 Positionen) — S3
 
-### China/Taiwan: 🟡 **Neutral — routine exercises**
-- Kein akutes Kriegsszenario
+| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
+|------|------|-------|-----|------|------|--------|
+| **NVDA** | 157,85€ | 167,88€ | -6,0% | ⚠️ KEIN STOP! | — | 🟡 HOLD |
+| **MSFT** | 346,28€ | 351,85€ | -1,6% | 338€ ✅ | 387€ | 🟡 HOLD |
+| **PLTR** | 132,15€ | 132,11€ | +0,03% | 127€ ✅ eng | 159€ | 🟡 HALTEN |
 
-### Venezuela: 🟡 **Trump erkennt Rodríguez an — Ölfluss normalisiert (bearish langfristig)**
-- Venezuela Oil rückläufig → Ölpreis-Decke $90-95 mittelfristig
+### Pharma & Defense (2 Positionen) — S2 & Spez.
 
----
+| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
+|------|------|-------|-----|------|------|--------|
+| **BAYN.DE** | 38,63€ | 39,95€ | -3,3% | 38€ zu eng! | 44€ / 46€ | 🟡 HALTEN |
+| **RHM.DE** | 1.592,50€ | — | — | — | — | 👀 WATCHLIST |
 
-## 🎯 Nächste Woche (KW12: 17-23.03.2026)
+### ETFs (4 Positionen) — Diversifikation
 
-### Events
-- **Mi 19.03:** ECB Interest Rate Decision (EUR-Bewegung)
-- **Fr 21.03:** PPI Inflation USA (bullish Öl wenn warm)
-- **NO Fed Powell events** → Positiv für Tech
-
-### Geopolitik-Monitoring
-- Täglich: liveuamap.com Iran/Ukraine/Lebanon/Israel checken
-- EQNR RSI 79: Profit-taking wahrscheinlich → Tranchen bei 31€/32€ vorbereiten
-- NVDA + A2QQ9R: Stops SOFORT setzen vor Montag 17:00 UTC
+| Name | Kurs | Entry | P&L | Stop | Status |
+|------|------|-------|-----|------|--------|
+| **A2QQ9R (Solar)** | 25,25€ | 22,40€ | +12,7% | ⚠️ KEIN STOP! | 🟢 BULLISH |
+| **A3D42Y (Oil Services)** | 26,59€ | 27,91€ | -4,7% | 24€ ✅ | 🟡 HALTEN |
+| **A14WU5 (Cyber)** | 26,46€ | 28,80€ | -8,2% | 25,95€ eng! | 🔴 SCHWACH |
+| **A2DWAW (Biotech)** | 7,27€ | 7,00€ | +3,8% | 6,30€ ✅ | 🟡 NEUTRAL |
 
 ---
 
-## ⚠️ Immediate TODO (DIESE WOCHE)
+## 🎯 Kritische Montag-Aktionen (16.03. vor 09:00 Xetra)
 
-1. ✅ **NVDA:** STOP 151€ SOFORT in Trade Republic setzen (kein Mental Stop!)
-2. ✅ **A2QQ9R:** STOP 23€ SOFORT in Trade Republic setzen
-3. ✅ **MSFT:** Trailing Stop 342€ (von 338€ → 4€ breiter)
-4. ✅ **PLTR:** Trailing Stop 129€ (von 127€ → 2€ breiter)
-5. ✅ **BAYN.DE:** Trailing Stop 36,50€ (von 38€ → enger!)
-6. ⏳ **EQNR:** Gewinnmitnahme-Plan für 31€/32€ vorbereiten (RSI 79)
-7. ⏳ **RHM.DE:** Über Nacht monitoren (Rüstungs-Thesis, enge Stops)
+**MUSTS (Stops in Trade Republic):**
+1. ✅ EQNR 28,50€ — verifizieren (aktuell)
+2. ⚠️ NVDA 153€ — **NEU SETZEN** (KEIN STOP!)
+3. ⚠️ A2QQ9R 23€ — **NEU SETZEN** (KEIN STOP!)
+4. ⚠️ RIO.L 73€ — **NEU SETZEN** (KEIN STOP!)
+5. ⚠️ BAYN.DE 36,50€ — nachziehen (von 38€)
+
+**SHOULD:**
+6. ⚠️ PLTR: Stop 127€ Monitor (nur 3,8% weg)
+7. ⚠️ A14WU5 Stop 25€ nachziehen (von 25,95€)
 
 ---
 
-## 📝 Session Notes
+## 📈 Strategien-Status KW12
 
-**Sa 14.03.2026, 20:00 UTC — Wochenend-News-Check Cron abgelaufen:**
-- Geopolitik-Radar: 7 Regionen via web_fetch — IRAN 🔴 TIER-1 ESKALATION
-- Google News RSS: 5 Queries durchgelaufen
-- Full analysis → `memory/wochenend-news-2026-03-14.md`
-- CRITICAL FINDING: NVDA + A2QQ9R haben NO STOPS — Gap-Down-Risiko über Wochenende
+| Strategie | Status | Conviction | Aktion |
+|-----------|--------|-----------|--------|
+| **S1: Iran-Öl** | 🟢🔥 STARK | 9/10 | EQNR Tranchen-Verkauf @ 31,50€, dann Ziel 32€ |
+| **S2: Rüstung** | 🟢 STARK | 8/10 | RHM Watchlist — Entry >1.626€ oder Rücklauf 1.530€ |
+| **S3: KI-Infra** | 🟡 NEUTRAL | 5/10 | NVDA/MSFT/PLTR Hold bis Earnings, kein Add VIX >25 |
+| **S4: Silber** | 🟡 SCHWACH | 3/10 | AG/ISPA Watchlist — trigger nicht aktiv |
+| **S5: Rohstoffe** | 🟡 STABIL | 6/10 | RIO Ziel 85€, Oyu-Tolgoi Monitor |
+| **S6: Solar** | 🟢 AKTIV | 6/10 | A2QQ9R Stop 23€, Ziel 28€ |
+| **S7: Biotech** | 🟡 NEUTRAL | 3/10 | A2DWAW Halten, kein Katalysator |
 
-**Letzte Aktualisierung:** 2026-03-14 20:00 UTC  
-**Nächste Geplante Aktion:** Sonntag 15.03 22:00 UTC (Wochenstrategie-Review)
+---
+
+## 💬 Wichtigste Learnings dieser Woche
+
+1. **Mental Stops funktionieren nicht** — RHM-Beispiel
+   - Stop 1.595€ nur notiert, nicht in TR → Unterschritten → −4,4%
+   - **Neue Regel:** Alle Stops MÜSSEN real in TR sein
+
+2. **Öl-Parabolik endet in Mean Reversion, aber echte Struktur-Schocks halten länger**
+   - WTI: $90 → $119 (Spike) → $85 (Selling) → aktuell $98
+   - Iran-Öl hat aber strukturelle Prämie → EQNR +12,4% hält
+
+3. **Stop-Breite zu Volatilität passend**
+   - BAYN.DE 1,7% Stop bei VIX 27 = Whipsaw-Falle
+   - Neue Regel: VIX 25+ = min 4% Stop | VIX 30+ = min 6% Stop
+
+4. **VIX-Regel befolgt:** Keine Tech-Nachkäufe solange VIX >25 ✅
+
+---
+
+## 👀 Watchlist (nächste Kandidaten)
+
+| Name | Setup | Entry | Stop | Ziel | Trigger |
+|------|-------|-------|------|------|---------|
+| **RHM.DE** | Ausbruch oder Rücklauf | >1.626€ oder ~1.530€ | 1.570€ | 1.750€ | Volumen |
+| **AG (First Majestic)** | Silber-Pump | $25–26 | $21 | $32–42 | Silver +3% |
+| **ISPA.DE (Silber ETF)** | Ausbruch | >36,90€ | 34,50€ | 40€+ | Iran-Safe-Haven |
+| **Meta (META)** | Dirks Power-of-Three | — | — | — | EMA-Setup |
+| **ASML** | Kupfer-Konkurrenz-Vorteil | — | — | — | Rücklauf zu EMA50 |
+
+---
+
+## 🚨 Overnight-Risiken (Wochenende)
+
+**Geopolitik-Events die Montag-Gap verursachen können:**
+- ✅ Iran-Eskalation weiter (Isfahan-Nuke-Anlage getroffen?)
+- ✅ US-Deeskalations-Signal (Kharg-Island-Drohung wird zurückgenommen?)
+- ✅ Öl-Gap-Down Montag (Venezuela-Öl-Fluss steigt?)
+
+**Portfolio-Hedges für Montag:**
+- Alle Stops in TR = automatischer Schutz
+- EQNR Tranchen-Verkauf @ 31,50€ = Gewinn-Realisierung
+- Tech Hold = Geduld auf VIX-Erholung
+
+---
+
+## 📋 Nächste Review
+
+**Wöchentlich:** Sonntag 22.03.2026 20:00 (KW12 Review)  
+**Tägliche Checks:** Xetra 10:00, US Opening 16:30  
+**Intraday-Alerts:** Alle 15 Min Mo-Fr 09:00–17:00 (Stop-Gefährdung, Ziel-Alerts)
+
+---
+
+**State-Snapshot aktualisiert:** 15.03.2026 20:30 UTC+1  
+**Von:** Albert 🎩
+
+
+---
+**KW12-Review:** 2026-03-15 20:30 | Öl-Strategie 🟢, Tech-Hold bis VIX <22, Rüstung Watch

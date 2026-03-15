@@ -191,15 +191,20 @@
 - Polygon: Company News (5 calls/min, US-Aktien ~1-2h fresh)
 - **Discord Chat-Channel für Cron-Delivery: 1475255728313864413** (DM-Channel 1468584443198570689 hat keinen Bot-Zugriff!)
 
-## Cron-Zeitplan (Stand 07.03.2026)
-- 08:00 Mo-Fr: Morgen-Briefing
-- 10:00 Mo-Fr: Xetra Opening-Check
-- 16:30 Mo-Fr: US Opening-Check
-- 22:00 Mo-Fr: Abend-Report
-- 23:00 täglich: Tagesabschluss
-- 10:00 Sa: Wöchentliche Review
-- 19:00 Sa: Wochenend-News-Sammlung
-- 22:00 So: Wochenstrategie
+## Cron-Zeitplan (Stand 15.03.2026 — NEUDESIGN)
+**Großer Umbau 15.03.2026:** Trading Monitor v2 (einzelnes Python-Script statt 21 spezialisierte Crons)
+- Resultate: **634 → 60 Runs/Tag**, **1,6M → 50k Tokens/Tag**, Token-Effizienz +3.000%
+- Alte Stop-/Intraday-/Umkehrkerze-Crons alle gelöscht, ersetzt durch unified Monitor
+- 08:00 Mo-Fr: Morgen-Briefing (Sonnet)
+- 10:00 Mo-Fr: Xetra Opening-Check (Sonnet)
+- 15m Mo-Fr 08-22h: Trading Monitor v2 (Haiku) — Stops, Entries, Trailing, Patterns, Macro (aus `trading_monitor.py` + `trading_config.json`)
+- 16:30 Mo-Fr: US Opening-Check (Sonnet)
+- 22:00 Mo-Fr: Abend-Report (Sonnet)
+- 23:00 täglich: Tagesabschluss (Sonnet) — DB-Summary, Accuracy Report, MEMORY Update
+- 10:00 Sa: Wöchentliche Review (Sonnet)
+- 20:00 So: Wochenstrategie (Sonnet)
+- 4x täglich: NewsWire Analyzer (Haiku) — Theme-Tracking (Iran/Öl, Rüstung, KI, Rohstoffe)
+- 4x täglich: Transcript Analyzer (Haiku, optional) — wenn Dirk/Eriksen Material eintrifft
 
 ## Infrastruktur / Module
 
@@ -236,15 +241,18 @@
 - First Majestic Silver (AG): Entry-Zone $26–29 aktiv, Stop ~20,50€, Ziel 25,86€/32,76€, CRV 4:1
 - ASML Holding (ASML): Warten auf Rücklauf ~1.160€ (EMA50), CRV 5:1
 
-## Trading-Lektionen (Stand 13.03.2026)
+## Trading-Lektionen (Stand 15.03.2026)
 - **Stop IMMER real in TR setzen** — mentale Stops versagen wenn Markt schnell dreht (RHM-Lektion 11.03.)
 - **Trailing Stop nach +5% Gewinn** — Stop auf Breakeven/EMA nachziehen (Dirk 7H Regel). EQNR-Beispiel: +5,3% Gewinn → Stop von 25€ auf 27€ gezogen (12.03.). Schützt Gewinne, lässt Rest laufen.
-- **RSI 75+ + Wochenende = kritisches Risiko** — EQNR am 13.03.: RSI 79, +12,4% über 5 Tage → sehr hohe Wahrscheinlichkeit für Profit-taking über Wochenende. Position mit Stop überwachen.
+- **RSI 75+ + Wochenende = kritisches Risiko** — EQNR am 13.03.: RSI 79, +12,4% über 5 Tage → sehr hohe Wahrscheinlichkeit für Profit-taking über Wochenende. NVDA + A2QQ9R ohne Stops am 13.03. waren exposiert. Position mit Stop überwachen, NIEMALS ohne Schutz über 2-3 Tage gehen.
+- **Enge Stops bei VIX > 25 = Whipsaw-Anfälligkeit** — PLTR @ Stop 127€ (1,6% weg) bei VIX 27 ist zu eng. Regel: VIX 25-30 → 5-8% Stop-Buffer, nicht 2-3%. Breiter halten.
 - **Drumpelmiller-Pattern (AI-Rotation)** — "Big Spender" KI-Unternehmen werden verkauft, "Profitable" KI gekauft. NVDA + PLTR = Winners in diesem Regime. Thesis bestätigt 11.03–13.03.
 - **VIX 25-30 = Tech defensiv** — Bei hoher Geopolitik-Volatilität: Tech muss breiter gestreut werden, nicht konzentriert (NVDA/MSFT/PLTR gemischt halten). Kein Nachkauf Tech solange VIX > 28.
+- **Conviction Score System** (ab 15.03.2026) — jede Position hat Conviction 0-5. Bewertet Sicherheit/Überzeugungsgrad. Feeds in Trade Journal + Monitoring.
 - **Versprechen atomar absichern** — Sub-Agent/Cron sofort anlegen, nie nur im Chat zusagen
 - **Kein Averaging Down unter Stop** — Dirks Regel, konsequent einhalten
 - **Verlustreiche Woche ≠ Revenge Trade** — nur echte Setups handeln
+- **Trade Journal + Accuracy Tracking** (ab 15.03.2026) — jede Prognose/Empfehlung in `albert-accuracy.md` eintragen SOFORT, mit Horizont + Ergebnis später. Statistik: 33% Win-Rate (3 geschlossen, 11 offen, Stand 15.03.). Trefferquote monitoren, nicht verstecken.
 
 ## Watchlist-Setups (aktiv seit 13.03.2026)
 
@@ -314,8 +322,17 @@
 
 **Verbindung zu deinen Projekten:**
 - **NextJob** (existing, 08.03.2026) = Diagnose + Matching + Placement
-- **PrivatTeacher** (MVP 14.03.2026) = Core Learning Engine (Reskilling)
-- **Integration** (Q2 2026) = Beide Systeme zusammen = Full Solution
+- **LearnFlow** (MVP 15.03.2026, Codename: "PrivatTeacher v1") = Core Learning Engine (Reskilling)
+  - **KI-Features Live (15.03.2026):** Kapitel-Summaries (Claude, gecacht), Quiz (5 Fragen: 3 MC + 2 Freitext), Erklär-Modus (Text markieren → Claude erklärt), Auth (Anonymous + Magic Link), Event-Tracking (jede Interaktion = Datenpunkt)
+  - **Supabase Backend:** profiles, documents, chapters, events (RLS activated)
+  - **Status:** Code komplett (Commits: d01270a + 8d229aa), Supabase-Projekt noch Setup, PDF-Upload + Test ausstehend
+- **Fusion NextJob + LearnFlow (Entscheidung 15.03.2026):** Nicht zwei separate Produkte, sondern EIN Ökosystem
+  - LearnFlow (UI + Learning) + NextJob (Diagnostik + Job-Matching) = integriert von Anfang an
+  - Jede Quiz-Antwort / Lerninteraktion = Diagnostik-Datenpunkt für Job-Matching
+  - Phase 1a: localStorage → PostgreSQL + Auth + Event-Logging (2-3 Wo)
+  - Phase 2: Quiz-Generator (Claude API), Spaced Repetition, Diagnostik-Dashboard (Stärken-Radar)
+  - Phase 3: Job-Matching (5.000+ Jobs mit AI-Resistance Scores)
+- **Integration** (Q2-Q3 2026) = Beide Systeme zusammen = Full Human Resilience Solution
 
 **Differenzierung (vs. Konkurrenz):**
 - ❌ LinkedIn Learning: Generic (nicht personalisiert)
