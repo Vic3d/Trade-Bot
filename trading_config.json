@@ -8,8 +8,8 @@
       "stop_eur": null,
       "targets_eur": [],
       "alerts": {
-        "stufe1_below_usd": 180.00,
-        "stufe2_above_usd": 190.00
+        "stufe1_below_usd": 180.0,
+        "stufe2_above_usd": 190.0
       },
       "notes": "HALTEN bis Earnings 27.05.2026"
     },
@@ -18,8 +18,11 @@
       "yahoo": "MSFT",
       "currency": "USD",
       "entry_eur": 351.85,
-      "stop_eur": 338.00,
-      "targets_eur": [387, 404],
+      "stop_eur": 338.0,
+      "targets_eur": [
+        387,
+        404
+      ],
       "alerts": {},
       "notes": ""
     },
@@ -28,10 +31,12 @@
       "yahoo": "PLTR",
       "currency": "USD",
       "entry_eur": 132.11,
-      "stop_eur": 127.00,
-      "targets_eur": [159],
+      "stop_eur": 127.0,
+      "targets_eur": [
+        159
+      ],
       "alerts": {
-        "ziel1_above_usd": 185.00
+        "ziel1_above_usd": 185.0
       },
       "notes": "Stop nachgezogen 09.03."
     },
@@ -40,18 +45,20 @@
       "yahoo": "EQNR.OL",
       "currency": "NOK",
       "entry_eur": 27.04,
-      "stop_eur": 28.50,
+      "stop_eur": 30.0,
       "targets_eur": [],
       "alerts": {},
-      "notes": "Buy-back Q1 läuft"
+      "notes": "Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuft"
     },
     "BAYN.DE": {
       "name": "Bayer AG",
       "onvista": "https://www.onvista.de/aktien/Bayer-Aktie-DE000BAY0017",
       "currency": "EUR",
       "entry_eur": 39.95,
-      "stop_eur": 38.00,
-      "targets_eur": [44],
+      "stop_eur": 38.0,
+      "targets_eur": [
+        44
+      ],
       "alerts": {},
       "notes": "Stop real in TR"
     },
@@ -60,8 +67,10 @@
       "yahoo": "RIO.L",
       "currency": "GBP",
       "entry_eur": 76.92,
-      "stop_eur": 73.00,
-      "targets_eur": [85],
+      "stop_eur": 73.0,
+      "targets_eur": [
+        85
+      ],
       "alerts": {},
       "notes": "⚠️ Stop 73€ in TR setzen!"
     },
@@ -69,19 +78,27 @@
       "name": "Rheinmetall AG",
       "onvista": "https://www.onvista.de/aktien/Rheinmetall-AG-Aktie-DE0007030009",
       "currency": "EUR",
-      "entry_eur": 1570.00,
-      "stop_eur": 1520.00,
-      "targets_eur": [1750, 1900],
+      "entry_eur": 1570.0,
+      "stop_eur": 1520.0,
+      "targets_eur": [
+        1750,
+        1900
+      ],
       "alerts": {},
-      "notes": "Re-Entry 12.03. nach Exit 11.03."
+      "notes": "VERKAUFT 16.03. @ ~1605€ (+2,2%) | Watchlist Re-Entry >1626€",
+      "status": "CLOSED",
+      "exit_eur": 1605.0,
+      "exit_date": "2026-03-16"
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
       "yahoo": "TAN",
       "currency": "USD",
-      "entry_eur": 22.40,
+      "entry_eur": 22.4,
       "stop_eur": null,
-      "targets_eur": [28],
+      "targets_eur": [
+        28
+      ],
       "alerts": {},
       "notes": "⚠️ KEIN STOP — Breakeven 22,40€ setzen!"
     },
@@ -89,8 +106,8 @@
       "name": "VanEck Oil Services ETF",
       "yahoo": "OIH",
       "currency": "USD",
-      "entry_eur": 27.90,
-      "stop_eur": 24.00,
+      "entry_eur": 27.9,
+      "stop_eur": 24.0,
       "targets_eur": [],
       "alerts": {},
       "notes": ""
@@ -99,7 +116,7 @@
       "name": "L&G Cyber Security ETF",
       "yahoo": "CIBR",
       "currency": "USD",
-      "entry_eur": 28.80,
+      "entry_eur": 28.8,
       "stop_eur": 25.95,
       "targets_eur": [],
       "alerts": {},
@@ -109,8 +126,8 @@
       "name": "iShares Biotech ETF",
       "yahoo": "IBB",
       "currency": "USD",
-      "entry_eur": 7.00,
-      "stop_eur": 6.30,
+      "entry_eur": 7.0,
+      "stop_eur": 6.3,
       "targets_eur": [],
       "alerts": {},
       "notes": ""
@@ -121,8 +138,8 @@
       "name": "First Majestic Silver",
       "yahoo": "AG",
       "currency": "USD",
-      "entry_a_above_usd": 27.80,
-      "entry_b_below_usd": 24.30,
+      "entry_a_above_usd": 27.8,
+      "entry_b_below_usd": 24.3,
       "candlestick_detect": true,
       "notes": "Umkehrkerze-Bestätigung nötig"
     },
@@ -130,7 +147,7 @@
       "name": "BHP Group",
       "yahoo": "BHP.L",
       "currency": "GBP",
-      "entry_b_below_eur": 28.00,
+      "entry_b_below_eur": 28.0,
       "notes": "Kupfer/Lithium-Setup, 20W-MA ~27.57€"
     },
     "ASML": {

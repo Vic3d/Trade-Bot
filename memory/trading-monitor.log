@@ -138,3 +138,256 @@
 [2026-03-16 11:45:12] EMA FEHLER A14WU5: HTTP Error 404: Not Found
 [2026-03-16 11:45:12] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
 [2026-03-16 11:45:12] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 12:00:46] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 12:00:54] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 12:00:54] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 12:00:54] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 12:00:54] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 12:00:54] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 12:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 12:15:09] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 12:15:09] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 12:15:09] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 12:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 12:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 12:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 12:30:18] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 12:30:18] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 12:30:18] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 12:30:18] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 12:30:18] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 12:45:05] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 12:45:15] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 12:45:15] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 12:45:15] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 12:45:15] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 12:45:15] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 13:00:14] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 13:00:22] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 13:00:22] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 13:00:22] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 13:00:22] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 13:00:23] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 13:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 13:15:09] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 13:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 13:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 13:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 13:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 13:31:08] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 13:31:17] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 13:31:17] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 13:31:17] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 13:31:17] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 13:31:17] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 13:45:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 13:45:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 13:45:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 13:45:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 13:45:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 13:45:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 14:00:12] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 14:00:23] Yahoo FEHLER TAN: <urlopen error _ssl.c:1012: The handshake operation timed out>
+[2026-03-16 14:00:28] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 14:00:29] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 14:00:29] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 14:00:29] ALERT QUEUED: 📈 Trailing Stop fällig: Rheinmetall AG (RHM.DE) @ 1649.00€ | P&L: +5.0% (>5.0%) ...
+[2026-03-16 14:00:29] ALERT QUEUED: 🛢️ ÖL TAGES-ALERT: WTI -5.2% ($99.33 → $94.18)...
+[2026-03-16 14:00:29] State Snapshot geschrieben: 10 Positionen, 2 Alerts
+[2026-03-16 14:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 14:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 14:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 14:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 14:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 14:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 14:30:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 14:30:11] Yahoo FEHLER EQNR.OL: <urlopen error _ssl.c:1012: The handshake operation timed out>
+[2026-03-16 14:30:18] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 14:30:18] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 14:30:18] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 14:30:18] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 14:30:18] State Snapshot geschrieben: 10 Positionen, 0 Alerts
+[2026-03-16 14:45:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 14:45:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 14:45:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 14:45:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 14:45:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 14:45:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 15:00:18] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 15:00:25] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 15:00:26] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 15:00:26] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 15:00:26] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 15:00:26] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 15:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 15:15:12] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 15:15:12] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 15:15:12] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 15:15:12] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 15:15:13] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 15:31:26] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 15:31:34] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 15:31:34] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 15:31:34] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 15:31:34] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 15:31:35] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 15:45:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 15:45:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 15:45:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 15:45:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 15:45:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 15:45:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 16:00:21] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 16:00:29] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 16:00:29] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 16:00:29] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 16:00:29] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 16:00:29] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 16:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 16:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 16:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 16:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 16:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 16:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 16:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 16:30:14] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 16:30:15] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 16:30:15] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 16:30:15] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 16:30:15] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 16:45:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 16:45:13] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 16:45:13] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 16:45:13] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 16:45:13] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 16:45:13] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 17:00:10] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 17:00:18] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 17:00:18] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 17:00:18] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 17:00:18] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 17:00:19] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 17:15:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 17:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 17:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 17:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 17:15:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 17:15:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 17:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 17:30:11] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 17:30:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 17:30:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 17:30:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 17:30:12] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 17:45:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 17:45:12] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 17:45:12] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 17:45:12] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 17:45:12] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 17:45:13] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 18:00:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 18:00:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 18:00:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 18:00:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 18:00:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 18:00:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 18:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 18:15:13] Yahoo FEHLER AG: <urlopen error _ssl.c:1012: The handshake operation timed out>
+[2026-03-16 18:15:18] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 18:15:18] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 18:15:19] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 18:15:19] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 18:15:19] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 18:30:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 18:30:09] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 18:30:09] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 18:30:09] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 18:30:09] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 18:30:09] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 18:45:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 18:45:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 18:45:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 18:45:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 18:45:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 18:45:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 19:00:10] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 19:00:19] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 19:00:19] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 19:00:19] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 19:00:19] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 19:00:19] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 19:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 19:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 19:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 19:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 19:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 19:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 19:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 19:30:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 19:30:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 19:30:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 19:30:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 19:30:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 19:45:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 19:45:11] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 19:45:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 19:45:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 19:45:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 19:45:12] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 20:00:19] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 20:00:27] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 20:00:27] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 20:00:27] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 20:00:27] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 20:00:27] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 20:00:27] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 20:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 20:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 20:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 20:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 20:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 20:15:10] ALERT QUEUED: 🕯️ UMKEHRKERZE: First Majestic Silver (AG) — CLOSE_NEAR_HIGH @ $22.21! Entry-Bes...
+[2026-03-16 20:15:10] State Snapshot geschrieben: 11 Positionen, 1 Alerts
+[2026-03-16 20:15:10] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 20:30:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 20:30:09] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 20:30:09] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 20:30:09] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 20:30:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 20:30:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 20:30:10] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 20:45:04] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 20:45:11] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 20:45:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 20:45:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 20:45:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 20:45:11] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 20:45:11] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 21:00:49] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 21:00:57] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 21:00:57] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 21:00:58] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 21:00:58] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 21:00:58] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 21:00:58] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 21:15:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 21:15:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 21:15:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 21:15:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 21:15:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 21:15:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 21:15:10] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 21:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 21:30:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 21:30:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 21:30:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 21:30:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 21:30:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 21:30:10] Overnight Context geschrieben: 16.03.2026
+[2026-03-16 21:45:02] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-16 21:45:10] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-16 21:45:10] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-16 21:45:10] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-16 21:45:10] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-16 21:45:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-16 21:45:10] Overnight Context geschrieben: 16.03.2026

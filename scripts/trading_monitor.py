@@ -222,6 +222,9 @@ def check_positions(config: dict, prices: dict, fx: dict, state: dict,
     macro_vix = prices.get('^VIX', {}).get('price')
 
     for key, pos in config.get('positions', {}).items():
+        # Geschlossene Positionen überspringen
+        if pos.get('status') == 'CLOSED':
+            continue
         name = pos['name']
         ticker = f"{name} ({key})"
         stop = pos.get('stop_eur')

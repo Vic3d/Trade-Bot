@@ -1,172 +1,136 @@
 {
-  "generated": "2026-03-13T21:00:54.413549",
-  "market_context": {
-    "vix": 27.2,
-    "brent_usd": 100.98,
-    "dxy": 100.168,
-    "us_close_status": "CLOSED",
-    "market_sentiment": "VOLATILE (VIX 25-30 band)"
-  },
-  "positions": {
-    "NVDA": {
-      "name": "Nvidia",
-      "current_price": 157.85,
-      "pnl_pct": -6.0,
-      "overall": "NEUTRAL/ABWARTEN",
-      "score": -1,
-      "signals": {
-        "trend": "neutral",
-        "volume": "neutral",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
+  "generated": "2026-03-16T21:00:24.897278Z",
+  "timestamp_cet": "2026-03-16 22:00 CET",
+  "timestamp_utc": "2026-03-16 21:00 UTC",
+  "prices": {
+    "timestamp": "2026-03-16T20:45:11.594849+00:00",
+    "fx": {
+      "EURUSD": 1.1509,
+      "EURNOK": 11.1239,
+      "GBPEUR": 1.1579
+    },
+    "macro": {
+      "wti": 93.85,
+      "vix": 23.51
+    },
+    "positions": {
+      "NVDA": {
+        "name": "Nvidia",
+        "price_eur": 159.2,
+        "price_raw": 183.22,
+        "entry_eur": 167.88,
+        "pnl_pct": -5.17,
+        "stop_eur": null,
+        "conviction": 50
+      },
+      "MSFT": {
+        "name": "Microsoft",
+        "price_eur": 347.51,
+        "price_raw": 399.95,
+        "entry_eur": 351.85,
+        "pnl_pct": -1.23,
+        "stop_eur": 338.0,
+        "conviction": 30
+      },
+      "PLTR": {
+        "name": "Palantir",
+        "price_eur": 132.7,
+        "price_raw": 152.72,
+        "entry_eur": 132.11,
+        "pnl_pct": 0.44,
+        "stop_eur": 127.0,
+        "conviction": 70
+      },
+      "EQNR": {
+        "name": "Equinor ASA",
+        "price_eur": 31.31,
+        "price_raw": 348.3,
+        "entry_eur": 27.04,
+        "pnl_pct": 15.79,
+        "stop_eur": 28.5,
+        "conviction": 100
+      },
+      "BAYN.DE": {
+        "name": "Bayer AG",
+        "price_eur": 40.1,
+        "price_raw": 40.1,
+        "entry_eur": 39.95,
+        "pnl_pct": 0.38,
+        "stop_eur": 38.0,
+        "conviction": 70
+      },
+      "RIO.L": {
+        "name": "Rio Tinto",
+        "price_eur": 77.51,
+        "price_raw": 6694.0,
+        "entry_eur": 76.92,
+        "pnl_pct": 0.77,
+        "stop_eur": 73.0,
+        "conviction": 50
+      },
+      "RHM.DE": {
+        "name": "Rheinmetall AG",
+        "price_eur": 1629.5,
+        "price_raw": 1629.5,
+        "entry_eur": 1570.0,
+        "pnl_pct": 3.79,
+        "stop_eur": 1520.0,
+        "conviction": 70
+      },
+      "A2QQ9R": {
+        "name": "Invesco Solar Energy ETF",
+        "price_eur": 49.31,
+        "price_raw": 56.75,
+        "entry_eur": 22.4,
+        "pnl_pct": 120.13,
+        "stop_eur": null,
+        "conviction": 70
+      },
+      "A3D42Y": {
+        "name": "VanEck Oil Services ETF",
+        "price_eur": 323.72,
+        "price_raw": 372.57,
+        "entry_eur": 27.9,
+        "pnl_pct": 1060.29,
+        "stop_eur": 24.0,
+        "conviction": 90
+      },
+      "A14WU5": {
+        "name": "L&G Cyber Security ETF",
+        "price_eur": 56.04,
+        "price_raw": 64.5,
+        "entry_eur": 28.8,
+        "pnl_pct": 94.59,
+        "stop_eur": 25.95,
+        "conviction": 90
+      },
+      "A2DWAW": {
+        "name": "iShares Biotech ETF",
+        "price_eur": 145.23,
+        "price_raw": 167.14,
+        "entry_eur": 7.0,
+        "pnl_pct": 1974.65,
+        "stop_eur": 6.3,
+        "conviction": 70
       }
     },
-    "MSFT": {
-      "name": "Microsoft",
-      "current_price": 346.4,
-      "pnl_pct": -1.5,
-      "overall": "VORSICHT/HALTEN",
-      "score": -2,
-      "signals": {
-        "trend": "bearish",
-        "volume": "neutral",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
-      }
-    },
-    "PLTR": {
-      "name": "Palantir",
-      "current_price": 132.19,
-      "pnl_pct": 0.1,
-      "overall": "VORSICHT/HALTEN",
-      "score": -2,
-      "signals": {
-        "trend": "bearish",
-        "volume": "neutral",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
-      }
-    },
-    "EQNR": {
-      "name": "Equinor ASA",
-      "current_price": 30.4,
-      "pnl_pct": 12.4,
-      "overall": "NEUTRAL/ABWARTEN",
-      "score": 0,
-      "signals": {
-        "trend": "bullish",
-        "volume": "neutral",
-        "news": "bullish",
-        "macro": "bearish",
-        "mean_reversion": "bearish",
-        "event": "neutral",
-        "risk": "neutral"
-      }
-    },
-    "BAYN.DE": {
-      "name": "Bayer AG",
-      "current_price": 38.63,
-      "pnl_pct": -3.3,
-      "overall": "VORSICHT/HALTEN",
-      "score": -3,
-      "signals": {
-        "trend": "neutral",
-        "volume": "bearish",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "bearish"
-      }
-    },
-    "RIO.L": {
-      "name": "Rio Tinto",
-      "current_price": 77.16,
-      "pnl_pct": 0.3,
-      "overall": "NEUTRAL/ABWARTEN",
-      "score": 0,
-      "signals": {
-        "trend": "neutral",
-        "volume": "neutral",
-        "news": "bullish",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
-      }
-    },
-    "A2QQ9R": {
-      "name": "Invesco Solar Energy ETF",
-      "current_price": 25.245,
-      "pnl_pct": 12.7,
-      "overall": "VORSICHT/HALTEN",
-      "score": -2,
-      "signals": {
-        "trend": "bullish",
-        "volume": "bearish",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "bearish"
-      }
-    },
-    "A3D42Y": {
-      "name": "VanEck Oil Services ETF",
-      "current_price": 26.585,
-      "pnl_pct": -4.7,
-      "overall": "NEUTRAL/ABWARTEN",
-      "score": 0,
-      "signals": {
-        "trend": "bullish",
-        "volume": "neutral",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
-      }
-    },
-    "A14WU5": {
-      "name": "L&G Cyber Security ETF",
-      "current_price": 26.46,
-      "pnl_pct": -8.2,
-      "overall": "VORSICHT/HALTEN",
-      "score": -3,
-      "signals": {
-        "trend": "neutral",
-        "volume": "bearish",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "bearish"
-      }
-    },
-    "A2DWAW": {
-      "name": "iShares Biotechnology ETF",
-      "current_price": 7.266,
-      "pnl_pct": 3.8,
-      "overall": "NEUTRAL/ABWARTEN",
-      "score": -1,
-      "signals": {
-        "trend": "neutral",
-        "volume": "neutral",
-        "news": "neutral",
-        "macro": "bearish",
-        "mean_reversion": "neutral",
-        "event": "neutral",
-        "risk": "neutral"
+    "watchlist": {
+      "AG": {
+        "name": "First Majestic Silver",
+        "price_eur": 19.3,
+        "price_raw": 22.21
+      },
+      "BHP.L": {
+        "name": "BHP Group",
+        "price_eur": 30.34,
+        "price_raw": 2620.0
+      },
+      "ASML": {
+        "name": "ASML Holding",
+        "price_eur": 1195.2,
+        "price_raw": 1375.56
       }
     }
-  }
+  },
+  "report_type": "evening_16_march_2026"
 }

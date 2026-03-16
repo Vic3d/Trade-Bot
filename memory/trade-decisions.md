@@ -220,6 +220,13 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 **Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
 
 
+### 2026-03-16 15:00 — Rheinmetall AG (RHM.DE) — Trailing-Signal
+**Kurs:** 1649,00€ | **Entry:** 1570,00€ | **P&L:** +5.0%
+**Alert:** Trailing-Signal | **Stop:** 1520,00€
+**Strategie:** S2
+**Kontext:** VIX: 24.4 | WTI: $94.18 | Conviction: 90/100 [Starkes Signal]
+
+
 ---
 
 *Dieses Log wird bei jeder relevanten Entscheidung aktualisiert.*
