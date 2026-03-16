@@ -1,133 +1,73 @@
-# State Snapshot — Aktuelle Position (15.03.2026 20:00)
-
-## Portfolio-Übersicht (Echtzeit)
-
-**Aktuelles Datum:** Sonntag, 15.03.2026 20:00 UTC+1  
-**VIX:** 27,19 🟠 (orange band)  
-**WTI:** $98,71 | **Brent:** $103,86  
-**EUR/USD:** 1,1423
+# State Snapshot — Trading Bot
+**Zuletzt aktualisiert:** 2026-03-16 11:45 UTC
+**Positionen:** 11 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
 
 ---
 
-## 📊 Aktive Positionen (11 gesamt)
+## Portfolio (11 Positionen)
 
-### Öl & Rohstoffe (2 Positionen) — S1 & S5
+| Aktie | Kurs | Entry | P&L | Stop | Conviction | Letzter Alert |
+|---|---|---|---|---|---|---|
+| Nvidia (NVDA) | 156.94€ | 167.88€ | -6.5% | — | 40 | — |
+| Microsoft (MSFT) | 344.41€ | 351.85€ | -2.1% | 338.00€ | 20 | — |
+| Palantir (PLTR) | 131.43€ | 132.11€ | -0.5% | 127.00€ | 60 | — |
+| Equinor ASA (EQNR) | 31.21€ | 27.04€ | +15.4% | 28.50€ | 100 | — |
+| Bayer AG (BAYN.DE) | 40.02€ | 39.95€ | +0.2% | 38.00€ | 60 | — |
+| Rio Tinto (RIO.L) | 77.65€ | 76.92€ | +0.9% | 73.00€ | 40 | — |
+| Rheinmetall AG (RHM.DE) | 1618.00€ | 1570.00€ | +3.1% | 1520.00€ | 60 | — |
+| Invesco Solar Energy ETF (A2QQ9R) | 48.22€ | 22.40€ | +115.3% | — | 60 | — |
+| VanEck Oil Services ETF (A3D42Y) | 323.14€ | 27.90€ | +1058.2% | 24.00€ | 80 | — |
+| L&G Cyber Security ETF (A14WU5) | 56.73€ | 28.80€ | +97.0% | 25.95€ | 80 | — |
+| iShares Biotech ETF (A2DWAW) | 144.11€ | 7.00€ | +1958.7% | 6.30€ | 60 | — |
 
-| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
-|------|------|-------|-----|------|------|--------|
-| **EQNR** | 30,39€ | 27,04€ | +12,4% | 28,50€ ✅ | 32,00€ | 🟢 STARK |
-| **RIO.L** | 77,21€ | 76,92€ | +0,4% | ⚠️ 73€ (nicht in TR!) | 85€ / 95€ | 🟡 STABIL |
+## Watchlist
 
-### Tech (3 Positionen) — S3
+| Aktie | Kurs | Signal | Status |
+|---|---|---|---|
+| First Majestic Silver (AG) | 22.56 USD | Entry B aktiv (<$24.3) | Beobachten |
+| BHP Group (BHP.L) | 2629.0 GBP | Kein Signal | Beobachten |
+| ASML Holding (ASML) | 1345.69 USD | Kein Signal | Beobachten |
 
-| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
-|------|------|-------|-----|------|------|--------|
-| **NVDA** | 157,85€ | 167,88€ | -6,0% | ⚠️ KEIN STOP! | — | 🟡 HOLD |
-| **MSFT** | 346,28€ | 351,85€ | -1,6% | 338€ ✅ | 387€ | 🟡 HOLD |
-| **PLTR** | 132,15€ | 132,11€ | +0,03% | 127€ ✅ eng | 159€ | 🟡 HALTEN |
+## Makro
 
-### Pharma & Defense (2 Positionen) — S2 & Spez.
+| Indikator | Wert | Trend | Signal |
+|---|---|---|---|
+| VIX | 25.6 | ↑ | 🟡 Erhöht |
+| WTI | $97.33 | ↑ | 🔴 Nahe $100 |
+| EUR/USD | 1.1485 | — | Neutral |
 
-| Name | Kurs | Entry | P&L | Stop | Ziel | Status |
-|------|------|-------|-----|------|------|--------|
-| **BAYN.DE** | 38,63€ | 39,95€ | -3,3% | 38€ zu eng! | 44€ / 46€ | 🟡 HALTEN |
-| **RHM.DE** | 1.592,50€ | — | — | — | — | 👀 WATCHLIST |
+## Strategien-Status
 
-### ETFs (4 Positionen) — Diversifikation
+| # | Strategie | Status | Letztes Update |
+|---|---|---|---|
+| S1 | Iran/Öl | 🟢🔥 | Heute |
+| S2 | Rüstung | 🟢 | Heute |
+| S3 | KI-Halbleiter | 🟢 | Heute |
+| S4 | Silber/Gold | 🟢 | Heute |
+| S5 | Rohstoffe/Kupfer | 🟡 | Heute |
+| S6 | Solar/Energie | 🟢 | Heute |
+| S7 | Biotech | 🟡 | Heute |
 
-| Name | Kurs | Entry | P&L | Stop | Status |
-|------|------|-------|-----|------|--------|
-| **A2QQ9R (Solar)** | 25,25€ | 22,40€ | +12,7% | ⚠️ KEIN STOP! | 🟢 BULLISH |
-| **A3D42Y (Oil Services)** | 26,59€ | 27,91€ | -4,7% | 24€ ✅ | 🟡 HALTEN |
-| **A14WU5 (Cyber)** | 26,46€ | 28,80€ | -8,2% | 25,95€ eng! | 🔴 SCHWACH |
-| **A2DWAW (Biotech)** | 7,27€ | 7,00€ | +3,8% | 6,30€ ✅ | 🟡 NEUTRAL |
+## Offene Alerts / Handlungsbedarf
 
----
+- ⚠️ Microsoft (MSFT): 1.9% über Stop 338.00€ — Montag 09:00 beobachten
 
-## 🎯 Kritische Montag-Aktionen (16.03. vor 09:00 Xetra)
+## Letzte Conviction Scores
 
-**MUSTS (Stops in Trade Republic):**
-1. ✅ EQNR 28,50€ — verifizieren (aktuell)
-2. ⚠️ NVDA 153€ — **NEU SETZEN** (KEIN STOP!)
-3. ⚠️ A2QQ9R 23€ — **NEU SETZEN** (KEIN STOP!)
-4. ⚠️ RIO.L 73€ — **NEU SETZEN** (KEIN STOP!)
-5. ⚠️ BAYN.DE 36,50€ — nachziehen (von 38€)
-
-**SHOULD:**
-6. ⚠️ PLTR: Stop 127€ Monitor (nur 3,8% weg)
-7. ⚠️ A14WU5 Stop 25€ nachziehen (von 25,95€)
-
----
-
-## 📈 Strategien-Status KW12
-
-| Strategie | Status | Conviction | Aktion |
-|-----------|--------|-----------|--------|
-| **S1: Iran-Öl** | 🟢🔥 STARK | 9/10 | EQNR Tranchen-Verkauf @ 31,50€, dann Ziel 32€ |
-| **S2: Rüstung** | 🟢 STARK | 8/10 | RHM Watchlist — Entry >1.626€ oder Rücklauf 1.530€ |
-| **S3: KI-Infra** | 🟡 NEUTRAL | 5/10 | NVDA/MSFT/PLTR Hold bis Earnings, kein Add VIX >25 |
-| **S4: Silber** | 🟡 SCHWACH | 3/10 | AG/ISPA Watchlist — trigger nicht aktiv |
-| **S5: Rohstoffe** | 🟡 STABIL | 6/10 | RIO Ziel 85€, Oyu-Tolgoi Monitor |
-| **S6: Solar** | 🟢 AKTIV | 6/10 | A2QQ9R Stop 23€, Ziel 28€ |
-| **S7: Biotech** | 🟡 NEUTRAL | 3/10 | A2DWAW Halten, kein Katalysator |
-
----
-
-## 💬 Wichtigste Learnings dieser Woche
-
-1. **Mental Stops funktionieren nicht** — RHM-Beispiel
-   - Stop 1.595€ nur notiert, nicht in TR → Unterschritten → −4,4%
-   - **Neue Regel:** Alle Stops MÜSSEN real in TR sein
-
-2. **Öl-Parabolik endet in Mean Reversion, aber echte Struktur-Schocks halten länger**
-   - WTI: $90 → $119 (Spike) → $85 (Selling) → aktuell $98
-   - Iran-Öl hat aber strukturelle Prämie → EQNR +12,4% hält
-
-3. **Stop-Breite zu Volatilität passend**
-   - BAYN.DE 1,7% Stop bei VIX 27 = Whipsaw-Falle
-   - Neue Regel: VIX 25+ = min 4% Stop | VIX 30+ = min 6% Stop
-
-4. **VIX-Regel befolgt:** Keine Tech-Nachkäufe solange VIX >25 ✅
+| Ticker | Score | Empfehlung |
+|---|---|---|
+| NVDA | 40 | Schwaches Signal — Vorsicht |
+| MSFT | 20 | Schwaches Signal — Vorsicht |
+| PLTR | 60 | Moderates Signal |
+| EQNR | 100 | Starkes Signal |
+| BAYN.DE | 60 | Moderates Signal |
+| RIO.L | 40 | Schwaches Signal — Vorsicht |
+| RHM.DE | 60 | Moderates Signal |
+| A2QQ9R | 60 | Moderates Signal |
+| A3D42Y | 80 | Starkes Signal |
+| A14WU5 | 80 | Starkes Signal |
+| A2DWAW | 60 | Moderates Signal |
 
 ---
-
-## 👀 Watchlist (nächste Kandidaten)
-
-| Name | Setup | Entry | Stop | Ziel | Trigger |
-|------|-------|-------|------|------|---------|
-| **RHM.DE** | Ausbruch oder Rücklauf | >1.626€ oder ~1.530€ | 1.570€ | 1.750€ | Volumen |
-| **AG (First Majestic)** | Silber-Pump | $25–26 | $21 | $32–42 | Silver +3% |
-| **ISPA.DE (Silber ETF)** | Ausbruch | >36,90€ | 34,50€ | 40€+ | Iran-Safe-Haven |
-| **Meta (META)** | Dirks Power-of-Three | — | — | — | EMA-Setup |
-| **ASML** | Kupfer-Konkurrenz-Vorteil | — | — | — | Rücklauf zu EMA50 |
-
----
-
-## 🚨 Overnight-Risiken (Wochenende)
-
-**Geopolitik-Events die Montag-Gap verursachen können:**
-- ✅ Iran-Eskalation weiter (Isfahan-Nuke-Anlage getroffen?)
-- ✅ US-Deeskalations-Signal (Kharg-Island-Drohung wird zurückgenommen?)
-- ✅ Öl-Gap-Down Montag (Venezuela-Öl-Fluss steigt?)
-
-**Portfolio-Hedges für Montag:**
-- Alle Stops in TR = automatischer Schutz
-- EQNR Tranchen-Verkauf @ 31,50€ = Gewinn-Realisierung
-- Tech Hold = Geduld auf VIX-Erholung
-
----
-
-## 📋 Nächste Review
-
-**Wöchentlich:** Sonntag 22.03.2026 20:00 (KW12 Review)  
-**Tägliche Checks:** Xetra 10:00, US Opening 16:30  
-**Intraday-Alerts:** Alle 15 Min Mo-Fr 09:00–17:00 (Stop-Gefährdung, Ziel-Alerts)
-
----
-
-**State-Snapshot aktualisiert:** 15.03.2026 20:30 UTC+1  
-**Von:** Albert 🎩
-
-
----
-**KW12-Review:** 2026-03-15 20:30 | Öl-Strategie 🟢, Tech-Hold bis VIX <22, Rüstung Watch
+*Wird automatisch bei jedem Monitor-Lauf (alle 15 Min) überschrieben.*
+*Nächster Agent: Lies diese Datei zuerst — sie ist die Basis für Morgen-Briefing + Strategie-Checks.*

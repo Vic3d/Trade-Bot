@@ -1,15 +1,24 @@
 {
-  "date": "2026-03-15",
+  "date": "2026-03-16",
   "alerts_sent_today": [
     "MSFT_STOP_WARN",
     "EQNR_TRAIL_5",
     "EQNR_TRAIL_10",
-    "BAYN.DE_STOP_WARN",
-    "WL_AG_ENTRY_B_USD"
+    "A2QQ9R_ZIEL1",
+    "A2QQ9R_TRAIL_5",
+    "A2QQ9R_TRAIL_10",
+    "A3D42Y_TRAIL_5",
+    "A3D42Y_TRAIL_10",
+    "A14WU5_TRAIL_5",
+    "A14WU5_TRAIL_10",
+    "A2DWAW_TRAIL_5",
+    "A2DWAW_TRAIL_10",
+    "WL_AG_ENTRY_B_USD",
+    "WL_ASML_ENTRY"
   ],
-  "run_count": 1,
-  "prev_wti": 98.71,
-  "wti_open": 98.71,
+  "run_count": 20,
+  "prev_wti": 97.33,
+  "wti_open": 99.33,
   "vix_open": 27.19,
-  "last_run": "2026-03-15T15:35:25.016793+00:00"
+  "last_run": "2026-03-16T11:45:12.488692+00:00"
 }

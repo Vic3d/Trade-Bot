@@ -136,6 +136,90 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 **Kontext:** VIX: 26.4 | WTI: $91.20 | Conviction: 45/100 [Schwaches Signal — Vorsicht]
 
 
+### 2026-03-16 08:01 — Microsoft (MSFT) — Stop-Warnung
+**Kurs:** 345,94€ | **Entry:** 351,85€ | **P&L:** -1.7%
+**Alert:** Stop-Warnung | **Stop:** 338,00€
+**Strategie:** S3
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 20/100 [Schwaches Signal — Vorsicht]
+
+
+### 2026-03-16 08:01 — Equinor ASA (EQNR) — Trailing-Signal
+**Kurs:** 30,43€ | **Entry:** 27,04€ | **P&L:** +12.5%
+**Alert:** Trailing-Signal | **Stop:** 28,50€
+**Strategie:** S1
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 100/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — Equinor ASA (EQNR) — Trailing-Signal
+**Kurs:** 30,43€ | **Entry:** 27,04€ | **P&L:** +12.5%
+**Alert:** Trailing-Signal | **Stop:** 28,50€
+**Strategie:** S1
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 100/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — Invesco Solar Energy ETF (A2QQ9R) — Target-Reached
+**Kurs:** 48,43€ | **Entry:** 22,40€ | **P&L:** +116.2%
+**Alert:** Target-Reached | **Stop:** —
+**Strategie:** S1/S6
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
+
+
+### 2026-03-16 08:01 — Invesco Solar Energy ETF (A2QQ9R) — Trailing-Signal
+**Kurs:** 48,43€ | **Entry:** 22,40€ | **P&L:** +116.2%
+**Alert:** Trailing-Signal | **Stop:** —
+**Strategie:** S1/S6
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
+
+
+### 2026-03-16 08:01 — Invesco Solar Energy ETF (A2QQ9R) — Trailing-Signal
+**Kurs:** 48,43€ | **Entry:** 22,40€ | **P&L:** +116.2%
+**Alert:** Trailing-Signal | **Stop:** —
+**Strategie:** S1/S6
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
+
+
+### 2026-03-16 08:01 — VanEck Oil Services ETF (A3D42Y) — Trailing-Signal
+**Kurs:** 324,58€ | **Entry:** 27,90€ | **P&L:** +1063.4%
+**Alert:** Trailing-Signal | **Stop:** 24,00€
+**Strategie:** S1
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 80/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — VanEck Oil Services ETF (A3D42Y) — Trailing-Signal
+**Kurs:** 324,58€ | **Entry:** 27,90€ | **P&L:** +1063.4%
+**Alert:** Trailing-Signal | **Stop:** 24,00€
+**Strategie:** S1
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 80/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — L&G Cyber Security ETF (A14WU5) — Trailing-Signal
+**Kurs:** 56,98€ | **Entry:** 28,80€ | **P&L:** +97.8%
+**Alert:** Trailing-Signal | **Stop:** 25,95€
+**Strategie:** S3
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 80/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — L&G Cyber Security ETF (A14WU5) — Trailing-Signal
+**Kurs:** 56,98€ | **Entry:** 28,80€ | **P&L:** +97.8%
+**Alert:** Trailing-Signal | **Stop:** 25,95€
+**Strategie:** S3
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 80/100 [Starkes Signal]
+
+
+### 2026-03-16 08:01 — iShares Biotech ETF (A2DWAW) — Trailing-Signal
+**Kurs:** 144,75€ | **Entry:** 7,00€ | **P&L:** +1967.9%
+**Alert:** Trailing-Signal | **Stop:** 6,30€
+**Strategie:** S7
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
+
+
+### 2026-03-16 08:01 — iShares Biotech ETF (A2DWAW) — Trailing-Signal
+**Kurs:** 144,75€ | **Entry:** 7,00€ | **P&L:** +1967.9%
+**Alert:** Trailing-Signal | **Stop:** 6,30€
+**Strategie:** S7
+**Kontext:** VIX: 27.2 | WTI: $99.33 | Conviction: 60/100 [Moderates Signal]
+
+
 ---
 
 *Dieses Log wird bei jeder relevanten Entscheidung aktualisiert.*
