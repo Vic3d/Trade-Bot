@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build Trading Dashboard v2 — Tabs (Echt + Paper), klar & verständlich."""
 
-import sqlite3, json
+import sqlite3, json, urllib.request, time
 from pathlib import Path
 from datetime import datetime
 
@@ -9,10 +9,56 @@ WS = Path('/data/.openclaw/workspace')
 DATA = WS / 'data'
 OUT = WS / 'trading-dashboard' / 'index.html'
 
+def yahoo_price(ticker):
+    """Fetch current price from Yahoo Finance."""
+    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=1d'
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=8) as r:
+            d = json.load(r)
+        meta = d['chart']['result'][0]['meta']
+        return meta['regularMarketPrice'], meta.get('currency', 'USD')
+    except:
+        return None, None
+
+def get_live_prices():
+    """Fetch all live prices and FX rates."""
+    prices = {}
+    # FX rates
+    for fx in ['EURUSD=X', 'EURNOK=X', 'EURGBP=X']:
+        p, _ = yahoo_price(fx)
+        prices[fx] = p or 1.0
+        time.sleep(0.2)
+    
+    # All portfolio tickers
+    tickers = ['NVDA', 'MSFT', 'PLTR', 'EQNR.OL', 'RIO.L', 'BAYN.DE',
+               'OXY', 'HII', 'PAAS', 'MOS', 'HAG.DE', 'TTE.PA']
+    for t in tickers:
+        p, ccy = yahoo_price(t)
+        if p:
+            # Convert to EUR
+            if ccy == 'USD':
+                prices[t] = p / prices['EURUSD=X']
+            elif ccy == 'NOK':
+                prices[t] = p / prices['EURNOK=X']
+            elif ccy in ('GBp', 'GBX'):
+                prices[t] = (p / 100) / prices['EURGBP=X']
+            elif ccy == 'GBP':
+                prices[t] = p / prices['EURGBP=X']
+            else:
+                prices[t] = p
+        time.sleep(0.2)
+    return prices
+
 def load_data():
     d = {}
     # Real portfolio
     d['real'] = json.loads((WS / 'trading_config.json').read_text()).get('positions', {})
+    
+    # Live prices
+    print("📡 Hole Live-Kurse von Yahoo Finance...")
+    d['prices'] = get_live_prices()
+    print(f"   {len(d['prices'])} Kurse geladen")
     
     # Paper portfolio from SQLite
     db = sqlite3.connect(str(DATA / 'trading.db'))
@@ -49,6 +95,7 @@ def build_html(d):
     sector = d.get('sector_rotation', {})
     sentiment = d.get('sentiment', {})
     backtest = d.get('backtest_results', {})
+    prices = d.get('prices', {})
     
     # Calculate paper fund value
     starting = fund.get('starting_capital', 1000)
@@ -80,27 +127,51 @@ def build_html(d):
         'PS4': '#f1c40f', 'PS5': '#8b4513'
     }
     
-    # Build real portfolio rows
+    # Build real portfolio rows with live prices
     real_rows = ""
+    real_total_entry = 0
+    real_total_current = 0
     for ticker, pos in real.items():
         if pos.get('status') == 'CLOSED':
             continue
         name = pos.get('name', ticker)
-        entry = pos.get('entry_eur', '?')
+        entry = pos.get('entry_eur', 0)
         stop = pos.get('stop_eur')
         targets = pos.get('targets_eur', [])
         target_str = f"{targets[0]}€" if targets else "—"
         notes = pos.get('notes', '')
         stop_str = f"{stop}€" if stop else '<span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span>'
         stop_class = '' if stop else 'style="background:rgba(255,68,68,0.1)"'
+        
+        # Live price lookup
+        yahoo_t = pos.get('yahoo', ticker)
+        current = prices.get(yahoo_t, prices.get(ticker, None))
+        if current and entry:
+            pnl_pct = ((current - entry) / entry) * 100
+            pnl_color = '#00ff88' if pnl_pct >= 0 else '#ff4444'
+            pnl_icon = '📈' if pnl_pct >= 0 else '📉'
+            price_str = f"{current:.2f}€"
+            pnl_str = f'<span style="color:{pnl_color};font-weight:bold">{pnl_icon} {pnl_pct:+.1f}%</span>'
+            real_total_entry += entry
+            real_total_current += current
+        else:
+            price_str = "—"
+            pnl_str = "—"
+            real_total_entry += entry or 0
+            real_total_current += entry or 0
+        
         real_rows += f"""<tr {stop_class}>
             <td><strong>{ticker}</strong></td>
             <td>{name}</td>
             <td>{entry}€</td>
+            <td><strong>{price_str}</strong></td>
+            <td>{pnl_str}</td>
             <td>{stop_str}</td>
             <td>{target_str}</td>
-            <td style="font-size:0.85em;color:#888">{notes[:50]}</td>
+            <td style="font-size:0.85em;color:#888">{notes[:40]}</td>
         </tr>"""
+    
+    real_total_pnl_pct = ((real_total_current - real_total_entry) / real_total_entry * 100) if real_total_entry else 0
     
     # Build open paper positions rows
     open_rows = ""
@@ -293,6 +364,36 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
         <strong>Win-Rate</strong> = wie viel Prozent der Trades profitabel waren.
     </div>
     
+    <!-- Sind die Kurse echt? -->
+    <div class="explain" style="border-left-color:#ffaa00">
+        <strong>⚠️ Sind die Gewinne echt?</strong><br>
+        Die Kurse sind <strong>echte Marktpreise</strong> von Yahoo Finance zum Zeitpunkt des Kaufs/Verkaufs. 
+        ABER: In der Realität wären die Gewinne <strong>etwas niedriger</strong> (ca. 2-5%), weil:<br>
+        • <strong>Spread</strong> — Unterschied zwischen Kauf- und Verkaufskurs (0,05-0,3%)<br>
+        • <strong>Slippage</strong> — Man bekommt nie genau den angezeigten Preis<br>
+        • <strong>Timing</strong> — Man kann nicht perfekt am Tageshoch verkaufen<br>
+        • <strong>Gebühren</strong> — 3€ pro Trade bei Trade Republic (bereits eingerechnet)
+    </div>
+    
+    <!-- Strategie-Erklärungen -->
+    <div class="explain" style="border-left-color:#2ecc71">
+        <strong>🧠 Die 5 Strategien erklärt:</strong><br><br>
+        <span class="badge" style="background:#3498db">PS1</span> <strong>Iran/Öl-Geopolitik</strong><br>
+        Solange der Iran-Konflikt die Straße von Hormuz bedroht, bleibt Öl teuer → Ölproduzenten (OXY, TotalEnergies) profitieren.<br><br>
+        
+        <span class="badge" style="background:#e67e22">PS2</span> <strong>Tanker-Lag-These</strong><br>
+        Wenn Öl steigt, steigen Tankerschiffe 2-4 Wochen SPÄTER. Wir kaufen Tanker-Aktien (FRO, DHT) bevor sie nachziehen.<br><br>
+        
+        <span class="badge" style="background:#2ecc71">PS3</span> <strong>NATO/EU-Rüstung</strong><br>
+        Europa erhöht Verteidigungsbudgets massiv → Rüstungsfirmen (Kratos, Hensoldt, Huntington Ingalls) bekommen mehr Aufträge.<br><br>
+        
+        <span class="badge" style="background:#f1c40f;color:#000">PS4</span> <strong>Edelmetalle/Miner</strong><br>
+        Bei hoher Unsicherheit (VIX hoch) fliehen Anleger in Gold/Silber → Minenunternehmen (Hecla, Pan American Silver) profitieren.<br><br>
+        
+        <span class="badge" style="background:#8b4513">PS5</span> <strong>Dünger/Agrar-Superzyklus</strong><br>
+        Russische Kali-Sanktionen + steigende Lebensmittelnachfrage → westliche Düngerproduzenten (Mosaic) profitieren.
+    </div>
+    
     <!-- Fund Overview Cards -->
     <div class="cards">
         <div class="card">
@@ -405,46 +506,55 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
     
     <div class="explain">
         <strong>💡 Victors echtes Portfolio.</strong> Diese Positionen sind mit echtem Geld in Trade Republic gekauft. 
-        Albert überwacht sie und warnt bei Problemen.
+        Kurse sind live von Yahoo Finance. Albert überwacht und warnt bei Problemen.
     </div>
     
-    <div class="section">
-        <h2>📈 Aktive Positionen</h2>
-        <div class="explain">
-            <strong>Entry</strong> = Kaufpreis &nbsp;|&nbsp; 
-            <strong>Stop</strong> = Automatischer Verkauf bei Verlust &nbsp;|&nbsp; 
-            <strong>Ziel</strong> = Gewinnziel &nbsp;|&nbsp;
-            <span style="color:#ff4444">⚠️ KEIN STOP</span> = Gefährlich! Ungeschützte Position.
-        </div>
-        <table>
-            <tr>
-                <th>Ticker</th>
-                <th>Name</th>
-                <th>Entry</th>
-                <th>Stop</th>
-                <th>Ziel</th>
-                <th>Notiz</th>
-            </tr>
-            {real_rows}
-        </table>
-    </div>
-    
-    <div class="cards" style="margin-top:24px">
-        <div class="card">
-            <div class="label">Markt-Regime</div>
-            <div class="value" style="color:{regime_color}">{regime_name}</div>
-            <div class="sub">VIX: {vix}</div>
-        </div>
+    <!-- Real Portfolio Cards -->
+    <div class="cards">
         <div class="card">
             <div class="label">Positionen</div>
             <div class="value">{sum(1 for p in real.values() if p.get('status') != 'CLOSED')}</div>
             <div class="sub">aktiv</div>
         </div>
         <div class="card">
+            <div class="label">Gesamt-Trend</div>
+            <div class="value {'green' if real_total_pnl_pct >= 0 else 'red'}">{real_total_pnl_pct:+.1f}%</div>
+            <div class="sub">seit Kauf (Durchschnitt)</div>
+        </div>
+        <div class="card">
+            <div class="label">Markt-Regime</div>
+            <div class="value" style="color:{regime_color}">{regime_name}</div>
+            <div class="sub">VIX: {vix}</div>
+        </div>
+        <div class="card">
             <div class="label">Ohne Stop ⚠️</div>
             <div class="value red">{sum(1 for p in real.values() if not p.get('stop_eur') and p.get('status') != 'CLOSED')}</div>
             <div class="sub">ungeschützt</div>
         </div>
+    </div>
+    
+    <div class="section">
+        <h2>📈 Aktive Positionen (Live-Kurse)</h2>
+        <div class="explain">
+            <strong>Entry</strong> = Kaufpreis &nbsp;|&nbsp; 
+            <strong>Aktuell</strong> = Jetziger Kurs (Yahoo Finance) &nbsp;|&nbsp;
+            <strong>P&L</strong> = Gewinn/Verlust seit Kauf &nbsp;|&nbsp;
+            <strong>Stop</strong> = Automatischer Verkauf bei Verlust &nbsp;|&nbsp;
+            <span style="color:#ff4444">⚠️ KEIN STOP</span> = Gefährlich!
+        </div>
+        <table>
+            <tr>
+                <th>Ticker</th>
+                <th>Name</th>
+                <th>Entry</th>
+                <th>Aktuell</th>
+                <th>Gewinn/Verlust</th>
+                <th>Stop</th>
+                <th>Ziel</th>
+                <th>Notiz</th>
+            </tr>
+            {real_rows}
+        </table>
     </div>
 </div>
 

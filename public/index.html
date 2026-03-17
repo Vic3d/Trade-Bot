@@ -64,7 +64,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
 <div class="header">
     <h1>🎩 Albert Trading System</h1>
     <div class="subtitle">
-        Stand: 17.03.2026 22:27 &nbsp;|&nbsp; 
+        Stand: 17.03.2026 22:33 &nbsp;|&nbsp; 
         VIX: <strong>23.51</strong> &nbsp;
         <span class="regime-badge" style="background:#ffaa00">ELEVATED</span>
     </div>
@@ -86,6 +86,36 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         Er kauft und verkauft Aktien nach 5 Strategien (PS1–PS5). 
         Jeder Trade hat einen <strong>Stop</strong> (Verlustgrenze) und ein <strong>Ziel</strong> (Gewinnziel). 
         <strong>Win-Rate</strong> = wie viel Prozent der Trades profitabel waren.
+    </div>
+    
+    <!-- Sind die Kurse echt? -->
+    <div class="explain" style="border-left-color:#ffaa00">
+        <strong>⚠️ Sind die Gewinne echt?</strong><br>
+        Die Kurse sind <strong>echte Marktpreise</strong> von Yahoo Finance zum Zeitpunkt des Kaufs/Verkaufs. 
+        ABER: In der Realität wären die Gewinne <strong>etwas niedriger</strong> (ca. 2-5%), weil:<br>
+        • <strong>Spread</strong> — Unterschied zwischen Kauf- und Verkaufskurs (0,05-0,3%)<br>
+        • <strong>Slippage</strong> — Man bekommt nie genau den angezeigten Preis<br>
+        • <strong>Timing</strong> — Man kann nicht perfekt am Tageshoch verkaufen<br>
+        • <strong>Gebühren</strong> — 3€ pro Trade bei Trade Republic (bereits eingerechnet)
+    </div>
+    
+    <!-- Strategie-Erklärungen -->
+    <div class="explain" style="border-left-color:#2ecc71">
+        <strong>🧠 Die 5 Strategien erklärt:</strong><br><br>
+        <span class="badge" style="background:#3498db">PS1</span> <strong>Iran/Öl-Geopolitik</strong><br>
+        Solange der Iran-Konflikt die Straße von Hormuz bedroht, bleibt Öl teuer → Ölproduzenten (OXY, TotalEnergies) profitieren.<br><br>
+        
+        <span class="badge" style="background:#e67e22">PS2</span> <strong>Tanker-Lag-These</strong><br>
+        Wenn Öl steigt, steigen Tankerschiffe 2-4 Wochen SPÄTER. Wir kaufen Tanker-Aktien (FRO, DHT) bevor sie nachziehen.<br><br>
+        
+        <span class="badge" style="background:#2ecc71">PS3</span> <strong>NATO/EU-Rüstung</strong><br>
+        Europa erhöht Verteidigungsbudgets massiv → Rüstungsfirmen (Kratos, Hensoldt, Huntington Ingalls) bekommen mehr Aufträge.<br><br>
+        
+        <span class="badge" style="background:#f1c40f;color:#000">PS4</span> <strong>Edelmetalle/Miner</strong><br>
+        Bei hoher Unsicherheit (VIX hoch) fliehen Anleger in Gold/Silber → Minenunternehmen (Hecla, Pan American Silver) profitieren.<br><br>
+        
+        <span class="badge" style="background:#8b4513">PS5</span> <strong>Dünger/Agrar-Superzyklus</strong><br>
+        Russische Kali-Sanktionen + steigende Lebensmittelnachfrage → westliche Düngerproduzenten (Mosaic) profitieren.
     </div>
     
     <!-- Fund Overview Cards -->
@@ -367,22 +397,49 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
     
     <div class="explain">
         <strong>💡 Victors echtes Portfolio.</strong> Diese Positionen sind mit echtem Geld in Trade Republic gekauft. 
-        Albert überwacht sie und warnt bei Problemen.
+        Kurse sind live von Yahoo Finance. Albert überwacht und warnt bei Problemen.
+    </div>
+    
+    <!-- Real Portfolio Cards -->
+    <div class="cards">
+        <div class="card">
+            <div class="label">Positionen</div>
+            <div class="value">10</div>
+            <div class="sub">aktiv</div>
+        </div>
+        <div class="card">
+            <div class="label">Gesamt-Trend</div>
+            <div class="value red">-0.8%</div>
+            <div class="sub">seit Kauf (Durchschnitt)</div>
+        </div>
+        <div class="card">
+            <div class="label">Markt-Regime</div>
+            <div class="value" style="color:#ffaa00">ELEVATED</div>
+            <div class="sub">VIX: 23.51</div>
+        </div>
+        <div class="card">
+            <div class="label">Ohne Stop ⚠️</div>
+            <div class="value red">2</div>
+            <div class="sub">ungeschützt</div>
+        </div>
     </div>
     
     <div class="section">
-        <h2>📈 Aktive Positionen</h2>
+        <h2>📈 Aktive Positionen (Live-Kurse)</h2>
         <div class="explain">
             <strong>Entry</strong> = Kaufpreis &nbsp;|&nbsp; 
-            <strong>Stop</strong> = Automatischer Verkauf bei Verlust &nbsp;|&nbsp; 
-            <strong>Ziel</strong> = Gewinnziel &nbsp;|&nbsp;
-            <span style="color:#ff4444">⚠️ KEIN STOP</span> = Gefährlich! Ungeschützte Position.
+            <strong>Aktuell</strong> = Jetziger Kurs (Yahoo Finance) &nbsp;|&nbsp;
+            <strong>P&L</strong> = Gewinn/Verlust seit Kauf &nbsp;|&nbsp;
+            <strong>Stop</strong> = Automatischer Verkauf bei Verlust &nbsp;|&nbsp;
+            <span style="color:#ff4444">⚠️ KEIN STOP</span> = Gefährlich!
         </div>
         <table>
             <tr>
                 <th>Ticker</th>
                 <th>Name</th>
                 <th>Entry</th>
+                <th>Aktuell</th>
+                <th>Gewinn/Verlust</th>
                 <th>Stop</th>
                 <th>Ziel</th>
                 <th>Notiz</th>
@@ -391,6 +448,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>NVDA</strong></td>
             <td>Nvidia</td>
             <td>167.88€</td>
+            <td><strong>157.62€</strong></td>
+            <td><span style="color:#ff4444;font-weight:bold">📉 -6.1%</span></td>
             <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888">HALTEN bis Earnings 27.05.2026</td>
@@ -398,6 +457,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>MSFT</strong></td>
             <td>Microsoft</td>
             <td>351.85€</td>
+            <td><strong>346.05€</strong></td>
+            <td><span style="color:#ff4444;font-weight:bold">📉 -1.6%</span></td>
             <td>338.0€</td>
             <td>387€</td>
             <td style="font-size:0.85em;color:#888"></td>
@@ -405,6 +466,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>PLTR</strong></td>
             <td>Palantir</td>
             <td>132.11€</td>
+            <td><strong>134.36€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
             <td>127.0€</td>
             <td>159€</td>
             <td style="font-size:0.85em;color:#888">Stop nachgezogen 09.03.</td>
@@ -412,13 +475,17 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>EQNR</strong></td>
             <td>Equinor ASA</td>
             <td>27.04€</td>
+            <td><strong>32.12€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +18.8%</span></td>
             <td>30.0€</td>
             <td>—</td>
-            <td style="font-size:0.85em;color:#888">Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuf</td>
+            <td style="font-size:0.85em;color:#888">Stop auf 30€ nachgezogen 16.03. | Buy-ba</td>
         </tr><tr >
             <td><strong>BAYN.DE</strong></td>
             <td>Bayer AG</td>
             <td>39.95€</td>
+            <td><strong>40.21€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +0.7%</span></td>
             <td>38.0€</td>
             <td>44€</td>
             <td style="font-size:0.85em;color:#888">Stop real in TR</td>
@@ -426,6 +493,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>RIO.L</strong></td>
             <td>Rio Tinto</td>
             <td>76.92€</td>
+            <td><strong>78.24€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
             <td>73.0€</td>
             <td>85€</td>
             <td style="font-size:0.85em;color:#888">⚠️ Stop 73€ in TR setzen!</td>
@@ -433,6 +502,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>A2QQ9R</strong></td>
             <td>Invesco Solar Energy ETF</td>
             <td>22.4€</td>
+            <td><strong>—</strong></td>
+            <td>—</td>
             <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
             <td>28€</td>
             <td style="font-size:0.85em;color:#888">⚠️ KEIN STOP — Breakeven 22,40€ setzen!</td>
@@ -440,6 +511,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>A3D42Y</strong></td>
             <td>VanEck Oil Services ETF</td>
             <td>27.9€</td>
+            <td><strong>—</strong></td>
+            <td>—</td>
             <td>24.0€</td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888"></td>
@@ -447,6 +520,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>A14WU5</strong></td>
             <td>L&G Cyber Security ETF</td>
             <td>28.8€</td>
+            <td><strong>—</strong></td>
+            <td>—</td>
             <td>25.95€</td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888">Stop 2% weg — eng</td>
@@ -454,29 +529,13 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>A2DWAW</strong></td>
             <td>iShares Biotech ETF</td>
             <td>7.0€</td>
+            <td><strong>—</strong></td>
+            <td>—</td>
             <td>6.3€</td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888"></td>
         </tr>
         </table>
-    </div>
-    
-    <div class="cards" style="margin-top:24px">
-        <div class="card">
-            <div class="label">Markt-Regime</div>
-            <div class="value" style="color:#ffaa00">ELEVATED</div>
-            <div class="sub">VIX: 23.51</div>
-        </div>
-        <div class="card">
-            <div class="label">Positionen</div>
-            <div class="value">10</div>
-            <div class="sub">aktiv</div>
-        </div>
-        <div class="card">
-            <div class="label">Ohne Stop ⚠️</div>
-            <div class="value red">2</div>
-            <div class="sub">ungeschützt</div>
-        </div>
     </div>
 </div>
 
