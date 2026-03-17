@@ -198,12 +198,66 @@ def get_closed_positions(limit=10):
     return rows
 
 
-def get_current_price(ticker):
-    """Get latest price from DB."""
+def get_current_price_raw(ticker):
+    """Get latest price from DB in ORIGINAL currency (USD/EUR/GBP/NOK)."""
     closes = get_closes(ticker, days=3)
     if closes:
         return closes[-1]
     return None
+
+
+# Currency mapping for tickers
+TICKER_CURRENCY = {
+    'NVDA': 'USD', 'MSFT': 'USD', 'PLTR': 'USD', 'OXY': 'USD', 'FRO': 'USD',
+    'DHT': 'USD', 'KTOS': 'USD', 'HII': 'USD', 'HL': 'USD', 'PAAS': 'USD',
+    'MOS': 'USD', 'CF': 'USD', 'HAL': 'USD', 'SLB': 'USD', 'GOLD': 'USD',
+    'WPM': 'USD', 'CLF': 'USD', 'ENPH': 'USD', 'PLUG': 'USD', 'MP': 'USD',
+    'UUUU': 'USD', 'EXK': 'USD',
+    'RHM.DE': 'EUR', 'BAYN.DE': 'EUR', 'HAG.DE': 'EUR', 'BAS.DE': 'EUR',
+    'AIR.PA': 'EUR', 'TTE.PA': 'EUR', 'ENI.MI': 'EUR',
+    'RIO.L': 'GBp', 'BHP.L': 'GBp', 'BA.L': 'GBp', 'SHEL.L': 'GBp',
+    'GLEN.L': 'GBp', 'AAL.L': 'GBp',
+    'EQNR.OL': 'NOK',
+}
+
+# FX cache (refreshed per run)
+_fx_cache = {}
+
+def _get_fx_rates():
+    """Get EUR exchange rates from DB or cache."""
+    global _fx_cache
+    if _fx_cache:
+        return _fx_cache
+    
+    eurusd = get_current_price_raw('EURUSD=X')
+    eurgbp = get_current_price_raw('EURGBP=X')
+    eurnok = get_current_price_raw('EURNOK=X')
+    
+    _fx_cache = {
+        'USD': eurusd or 1.15,
+        'GBp': (eurgbp or 0.86) * 100,  # GBp = pence, 1 GBP = 100 GBp
+        'GBP': eurgbp or 0.86,
+        'NOK': eurnok or 11.05,
+        'EUR': 1.0,
+    }
+    return _fx_cache
+
+
+def get_current_price(ticker):
+    """Get latest price from DB converted to EUR."""
+    raw_price = get_current_price_raw(ticker)
+    if raw_price is None:
+        return None
+    
+    ccy = TICKER_CURRENCY.get(ticker, 'USD')
+    fx = _get_fx_rates()
+    
+    if ccy == 'EUR':
+        return raw_price
+    elif ccy in fx:
+        return raw_price / fx[ccy]
+    else:
+        return raw_price  # fallback
 
 
 def count_trades_this_week():
@@ -536,6 +590,8 @@ def get_portfolio_status():
 
 def run_daily(execute=True):
     """Full daily run: check positions, find entries, update state."""
+    global _fx_cache
+    _fx_cache = {}  # Reset FX cache for fresh rates
     init_tables()
     _sync_from_paper_portfolio_md()
 
