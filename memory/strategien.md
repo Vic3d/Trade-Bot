@@ -119,7 +119,7 @@ Iran/Golf-Öl ist leichtes Öl (~30-35° API) — wie Brent.
 Europa rüstet auf — NATO-Druck, Ukraine-Krieg, jetzt Iran-Konflikt. Rüstungsbudgets steigen strukturell über Jahre. Rheinmetall ist der direkteste Profiteur im deutschen Markt.
 
 **Aktive Positionen:**
-- Rheinmetall AG (RHM.DE) — Watchlist, Kaufsignal A: >1.626€
+- ~~Rheinmetall AG (RHM.DE)~~ — **VERKAUFT 16.03.2026 @ 1.605€ (+2,2%)** | Re-Entry Watchlist: Kaufsignal A >1.626€ (Bestätigung + Volumen)
 
 **Bestätigende Events:** ✅
 - Neue Kriegsschauplätze (Iran, Libanon, Ukraine gleichzeitig)
@@ -145,6 +145,7 @@ Europa rüstet auf — NATO-Druck, Ukraine-Krieg, jetzt Iran-Konflikt. Rüstungs
 | 11.03. 11:31 | **Rheinmetall FY2025 Zahlen-Tag: Rekordgewinn + überraschend hohe Dividende (WiWo, Aktionär)** — Rüstungsboom treibt Konzern. Kurs 1.553€ = -5,2% UNTER Entry A Signal 1.626€. "Buy the rumor, sell the news"-Bewegung nach Vorab-Rally. | Fundamentals STÄRKER als erwartet — Thesis 🟢 klar bestätigt. Entry A momentan nicht aktiv (Kurs unter Signal-Level). Thesis-Bestätigung durch Zahlen. Wenn Kurs wieder >1.626€ → Entry A Signal reaktiviert. | 🟢 |
 | 11.03. 14:31 | **RHM.DE 1.544€** — weiterhin unter Entry A 1.626€. "Umsatz und Gewinn gestiegen, durchwachsene Prognose, Dividende überraschend hoch" (finanzen.net). Kurs bleibt nach Zahlen-Abverkauf gedrückt. | Thesis 🟢 stabil. Entry A (>1.626€) noch nicht aktiv. Post-Earnings-Konsolidierung normal. | 🟢 |
 | 12.03. 10:30 | **RHM.DE 1.565€** (-1,3%). "Germany's Rheinmetall predicts $16.8B annual order boom, will 'focus entirely' on defense" (Reuters/WSJ). Order-Boom ist Rekord-Confirmation. Post-Earnings-Konsolidierung nach FY2025 Zahlen läuft noch. VIX 25,11 unterstützt. | Thesis 🟢 fundamental noch stärker. Kurs unter Entry A = Kaufchance bei Rückkauf >1.626€. Thesis unverändert. | 🟢 |
+| 16.03. | **RHM.DE verkauft @ 1.605€** — Re-Entry Position (Entry 1.570€) geschlossen, +2,2% Gewinn. Thesis bleibt 🟢. Kurs steigt weiter → Re-Entry Watchlist aktiv: Signal A >1.626€ + Volumenbestätigung. | Position CLOSED. Keine aktive Haltung mehr. Nächster Entry nur bei neuem Signal. | 🟡 (Watchlist) |
 
 ---
 

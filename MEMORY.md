@@ -235,7 +235,7 @@
 | Rio Tinto (RIO.L) | 78,98€ | 76,92€ | +2,7% | ❌ kein Stop! | Stop 73€ in TR setzen! |
 
 **Geschlossen:**
-- Rheinmetall AG (RHM.DE): Entry 1.635€ → Exit ~1.563€ (11.03.) | Verlust –4,4% | Watchlist Re-Entry: Signal A >1.625€+Vol, Signal B 1.480–1.520€
+- Rheinmetall AG (RHM.DE): **GESCHLOSSEN** | Trade 1: Entry 1.635€ → Exit 1.563€ (11.03.) –4,4% | Trade 2 (Re-Entry): Entry 1.570€ → Exit 1.605€ (16.03.) +2,2% | Watchlist: Re-Entry Signal A >1.626€ + Volumen
 
 **Watchlist (Setups aktiv):**
 - First Majestic Silver (AG): Entry-Zone $26–29 aktiv, Stop ~20,50€, Ziel 25,86€/32,76€, CRV 4:1
@@ -352,6 +352,11 @@ Detaillierte Docs:
 - `/memory/ecosystem-human-resilience.md` — Wie alles zusammenhängt (NextJob + PrivatTeacher + Integration)
 
 ---
+
+## Trade Republic — Kostenstruktur
+- **1€ pro Trade** (Kauf, Verkauf, Stop-Order jeweils 1€)
+- **Round Trip:** ~3€ (Entry + Stop + Exit)
+- **Konsequenz:** Positionen unter 50€ Volumen vermeiden, sonst fressen Kosten die Rendite
 
 ## Präferenzen
 
