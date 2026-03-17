@@ -438,6 +438,57 @@ def check_positions(execute=True):
     return exits, trailing_updates
 
 
+def check_strategy_health():
+    """
+    Prüft ob Strategien laut strategy_monitor 🔴 GESCHWÄCHT sind.
+    Wenn ja → alle offenen Positionen in dieser Strategie als Exit-Kandidaten markieren.
+    """
+    exit_candidates = []
+
+    monitor_path = DATA_DIR / "strategy_monitor_last_run.json"
+    if not monitor_path.exists():
+        return exit_candidates
+
+    try:
+        data = json.loads(monitor_path.read_text())
+        strategies = data.get('strategies', {})
+        run_time = data.get('timestamp', '')
+
+        # Nur frische Daten verwenden (max 12h alt)
+        if run_time:
+            run_dt = datetime.fromisoformat(run_time)
+            age_hours = (datetime.now() - run_dt).total_seconds() / 3600
+            if age_hours > 12:
+                print(f"  ⚠ Strategy-Monitor-Daten sind {age_hours:.0f}h alt — ignoriere")
+                return exit_candidates
+
+        weak_strategies = {
+            ps_id for ps_id, result in strategies.items()
+            if result.get('status') == 'GESCHWÄCHT'
+        }
+
+        if not weak_strategies:
+            return exit_candidates
+
+        positions = get_open_positions()
+        for pos in positions:
+            strategy = pos['strategy'] or ''
+            if strategy in weak_strategies:
+                strat_data = strategies.get(strategy, {})
+                exit_candidates.append({
+                    'ticker': pos['ticker'],
+                    'id': pos['id'],
+                    'strategy': strategy,
+                    'strategy_score': strat_data.get('score', 0),
+                    'reason': f"STRATEGIE GESCHWÄCHT: {strategy} Score {strat_data.get('score', 0)}/100",
+                })
+
+    except Exception as e:
+        print(f"  ⚠ Strategy-Health-Check Fehler: {e}")
+
+    return exit_candidates
+
+
 def check_thesis_broken():
     """Check if any position's unified score dropped below 30."""
     positions = get_open_positions()
@@ -635,7 +686,25 @@ def run_daily(execute=True):
     else:
         log(f"\n  Keine Trailing-Updates")
 
-    # 2. Check thesis broken (skip in check-only to avoid slow unified scoring)
+    # 2a. Check strategy health (strategy_monitor.py Ergebnis)
+    strategy_exits = check_strategy_health()
+    if strategy_exits:
+        log(f"\n🔴 STRATEGIE GESCHWÄCHT:")
+        for se in strategy_exits:
+            price = get_current_price(se['ticker'])
+            price_str = f"{price:.2f}€" if price else "n/a"
+            log(f"  - {se['ticker']} ({se['strategy']}): {se['reason']} | Aktuell {price_str}")
+            if execute and price:
+                result = close_position(se['id'], price, se['reason'])
+                if result:
+                    emoji = "🟢" if result['pnl_eur'] > 0 else "🔴"
+                    log(f"    {emoji} GESCHLOSSEN: Entry {result['entry']:.2f}€ → Exit {result['exit']:.2f}€ | P&L {result['pnl_pct']:+.1f}% ({result['pnl_eur']:+.2f}€)")
+            elif not execute:
+                log(f"    [check-only — würde schließen]")
+    else:
+        log(f"\n✅ Strategien: alle OK (oder kein frischer Monitor-Run)")
+
+    # 2b. Check thesis broken via unified_scorer (skip in check-only)
     thesis_broken = []
     if execute:
         thesis_broken = check_thesis_broken()
