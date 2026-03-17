@@ -147,3 +147,15 @@
 | 16.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 16.03.2026 15:47 |
 | 16.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 16.03.2026 15:47 |
 | 16.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 16.03.2026 16:07 |
+| 17.03.2026 14:00 | **INFO2** | zahlungsavise@bo... TSP - TechnikServicePlus GmbH - ... | 17.03.2026 13:39 |
+| 17.03.2026 14:00 | **INFO2** | Christian Kulesz... WG: Auftrag | 17.03.2026 11:36 |
+| 17.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 17.03.2026 13:42 |
+| 17.03.2026 14:00 | **AUFTRAG** | Christian Kulesz... WG: Auftrag | 17.03.2026 11:36 |
+| 17.03.2026 14:00 | **AUFTRAG** | Christian Kulesz... AW: Heizung Scheunemann, Otto-We... | 17.03.2026 11:11 |
+| 17.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 17.03.2026 09:32 |
+| 17.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 17.03.2026 09:12 |
+| 17.03.2026 14:00 | **AUFTRAG** | Gaus, Vladislav AW: Termin | 17.03.2026 06:45 |
+| 17.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 16.03.2026 22:32 |
+| 17.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 16.03.2026 18:52 |
+| 17.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 17.03.2026 16:22 |
+| 17.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 17.03.2026 16:07 |

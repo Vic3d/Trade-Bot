@@ -116,11 +116,16 @@
 - Frühe Planung, Vincent + Schmobro
 
 ### Josh Dashboard (Gebr. Schutzeichel Back-Office)
-- **Status:** Gebaut, lokal getestet ✅ | Vercel-Deploy steht aus (05.03.2026)
+- **Status:** ✅ Live auf Vercel (16.03.2026 neu gebaut + deployed)
+- **URL:** https://josh-dashboard-three.vercel.app
 - Victor arbeitet als Back-Office bei Josh (SHK-Betrieb Gebr. Schutzeichel)
 - Aufgaben: B&O Portal (bohwk.de), Hero Software, Superchat überwachen
 - Dashboard: `/data/.openclaw/workspace/josh-dashboard/` (Vercel Serverless, kein Playwright)
-- GitHub: `bb-de/josh-dashboard` (Victors Account: Vicbb-de) — Push noch ausstehend
+- GitHub: `bb-de/josh-dashboard` (Victors Account: Vicbb-de)
+- 4 Tabs: 📋 Alle Aufträge | 📞 Anschreiben | 🗺️ Routen | 👷 Monteure
+- B&O API: JSON-API (/api/orders) — 85 offene Aufträge, 47 noch anzuschreiben
+- Techniker-IDs: Ramiz (158931), Nico (158934), Adem (158932), Nicolai (158933)
+- PLZ→Region Mapping: 191 PLZ aus 1.293 B&O-Aufträgen abgeleitet
 - SSH-Key für bb-de: `/home/node/openclaw/.ssh-keys/id_ed25519_bbde`
 - Credentials: `/data/.openclaw/workspace/secrets/josh-credentials.env`
 - B&O Login: Feld heißt `Loginname` (nicht UserName!), braucht ASP.NET_SessionId aus Redirect

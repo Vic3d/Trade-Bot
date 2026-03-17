@@ -13,11 +13,12 @@
     "A2DWAW_TRAIL_5",
     "A2DWAW_TRAIL_10",
     "WL_AG_ENTRY_B_USD",
-    "MSFT_STOP_WARN"
+    "MSFT_STOP_WARN",
+    "WL_AG_CANDLE_CLOSE_NEAR_HIGH"
   ],
-  "run_count": 20,
-  "prev_wti": 96.16,
+  "run_count": 60,
+  "prev_wti": 95.3,
   "wti_open": 97.57,
   "vix_open": 23.51,
-  "last_run": "2026-03-17T11:45:12.264116+00:00"
+  "last_run": "2026-03-17T21:45:10.774134+00:00"
 }

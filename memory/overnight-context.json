@@ -1,72 +1,75 @@
 {
-  "generated": "2026-03-16T21:00:24.897278Z",
-  "timestamp_cet": "2026-03-16 22:00 CET",
-  "timestamp_utc": "2026-03-16 21:00 UTC",
+  "generated": "2026-03-17T21:00:15.138Z",
+  "timestamp_cet": "2026-03-17 22:00 CET",
+  "timestamp_utc": "2026-03-17 21:00 UTC",
+  "session": "Abend-Report 17.03.2026",
   "prices": {
-    "timestamp": "2026-03-16T20:45:11.594849+00:00",
+    "timestamp": "2026-03-17T20:45:10.641723+00:00",
     "fx": {
-      "EURUSD": 1.1509,
-      "EURNOK": 11.1239,
-      "GBPEUR": 1.1579
+      "EURUSD": 1.1543,
+      "EURNOK": 11.0507,
+      "GBPEUR": 1.1574
     },
     "macro": {
-      "wti": 93.85,
-      "vix": 23.51
+      "wti": 95.36,
+      "vix": 22.37
     },
     "positions": {
       "NVDA": {
         "name": "Nvidia",
-        "price_eur": 159.2,
-        "price_raw": 183.22,
+        "price_eur": 157.61,
+        "price_raw": 181.93,
         "entry_eur": 167.88,
-        "pnl_pct": -5.17,
+        "pnl_pct": -6.12,
         "stop_eur": null,
-        "conviction": 50
+        "status": "🔴 CRITICAL: No Stop Set",
+        "action": "Set Stop 151€ Monday 09:15"
       },
       "MSFT": {
         "name": "Microsoft",
-        "price_eur": 347.51,
-        "price_raw": 399.95,
+        "price_eur": 346.02,
+        "price_raw": 399.41,
         "entry_eur": 351.85,
-        "pnl_pct": -1.23,
+        "pnl_pct": -1.66,
         "stop_eur": 338.0,
-        "conviction": 30
+        "status": "🟡 Hold"
       },
       "PLTR": {
         "name": "Palantir",
-        "price_eur": 132.7,
-        "price_raw": 152.72,
+        "price_eur": 134.35,
+        "price_raw": 155.08,
         "entry_eur": 132.11,
-        "pnl_pct": 0.44,
+        "pnl_pct": 1.7,
         "stop_eur": 127.0,
-        "conviction": 70
+        "status": "🟡 Hold"
       },
       "EQNR": {
         "name": "Equinor ASA",
-        "price_eur": 31.31,
-        "price_raw": 348.3,
+        "price_eur": 32.13,
+        "price_raw": 355.1,
         "entry_eur": 27.04,
-        "pnl_pct": 15.79,
+        "pnl_pct": 18.84,
         "stop_eur": 28.5,
-        "conviction": 100
+        "status": "🟢 Breakeven Secured +2.63€",
+        "geopolitics": "Israel escalation confirmed (kill order Hezbollah), Iran Hormuz-threat intact"
       },
       "BAYN.DE": {
         "name": "Bayer AG",
-        "price_eur": 40.1,
-        "price_raw": 40.1,
+        "price_eur": 40.16,
+        "price_raw": 40.16,
         "entry_eur": 39.95,
-        "pnl_pct": 0.38,
+        "pnl_pct": 0.53,
         "stop_eur": 38.0,
-        "conviction": 70
+        "status": "🟡 Hold"
       },
       "RIO.L": {
         "name": "Rio Tinto",
-        "price_eur": 77.51,
-        "price_raw": 6694.0,
+        "price_eur": 78.21,
+        "price_raw": 6757.0,
         "entry_eur": 76.92,
-        "pnl_pct": 0.77,
+        "pnl_pct": 1.67,
         "stop_eur": 73.0,
-        "conviction": 50
+        "status": "🟡 Hold"
       },
       "RHM.DE": {
         "name": "Rheinmetall AG",
@@ -75,62 +78,70 @@
         "entry_eur": 1570.0,
         "pnl_pct": 3.79,
         "stop_eur": 1520.0,
-        "conviction": 70
+        "status": "🟢 Hold +59.50€"
       },
       "A2QQ9R": {
         "name": "Invesco Solar Energy ETF",
-        "price_eur": 49.31,
-        "price_raw": 56.75,
+        "price_eur": 50.02,
+        "price_raw": 57.74,
         "entry_eur": 22.4,
-        "pnl_pct": 120.13,
+        "pnl_pct": 123.31,
         "stop_eur": null,
-        "conviction": 70
+        "status": "🔴 CRITICAL: No Stop Set +123%",
+        "action": "Set Stop 44€ Monday 09:15 — Profit Taking Risk High"
       },
       "A3D42Y": {
         "name": "VanEck Oil Services ETF",
-        "price_eur": 323.72,
-        "price_raw": 372.57,
+        "price_eur": 334.08,
+        "price_raw": 385.63,
         "entry_eur": 27.9,
-        "pnl_pct": 1060.29,
+        "pnl_pct": 1097.42,
         "stop_eur": 24.0,
-        "conviction": 90
+        "status": "🟢 Secure +1097% — Paper Fund TP'd 30%"
       },
       "A14WU5": {
         "name": "L&G Cyber Security ETF",
-        "price_eur": 56.04,
-        "price_raw": 64.5,
+        "price_eur": 56.29,
+        "price_raw": 64.97,
         "entry_eur": 28.8,
-        "pnl_pct": 94.59,
+        "pnl_pct": 95.43,
         "stop_eur": 25.95,
-        "conviction": 90
+        "status": "🟢 Secure +95% — Paper Fund TP'd 30%"
       },
       "A2DWAW": {
         "name": "iShares Biotech ETF",
-        "price_eur": 145.23,
-        "price_raw": 167.14,
+        "price_eur": 144.82,
+        "price_raw": 167.17,
         "entry_eur": 7.0,
-        "pnl_pct": 1974.65,
+        "pnl_pct": 1968.91,
         "stop_eur": 6.3,
-        "conviction": 70
-      }
-    },
-    "watchlist": {
-      "AG": {
-        "name": "First Majestic Silver",
-        "price_eur": 19.3,
-        "price_raw": 22.21
-      },
-      "BHP.L": {
-        "name": "BHP Group",
-        "price_eur": 30.34,
-        "price_raw": 2620.0
-      },
-      "ASML": {
-        "name": "ASML Holding",
-        "price_eur": 1195.2,
-        "price_raw": 1375.56
+        "status": "🟢 Secure +1969% — Paper Fund TP'd 30%"
       }
     }
   },
-  "report_type": "evening_16_march_2026"
+  "overnight_risks": [
+    "🔴 NVDA no stop: Gap-down Monday likely",
+    "🔴 A2QQ9R no stop: Solar ETF profit-taking risk",
+    "🟡 Iran escalation over weekend: Öl könnte spiken"
+  ],
+  "morning_checklist": [
+    "✅ Set NVDA Stop 151€",
+    "✅ Set A2QQ9R Stop 44€",
+    "✅ Check Iran news",
+    "✅ Monitor VIX opening (22.37 stable)",
+    "✅ Check WTI (95.36 solid)"
+  ],
+  "paper_fund_status": {
+    "value": "1107.54€",
+    "gain": "+10.8%",
+    "active_positions": 10,
+    "top_performer": "KTOS +24.5%, HII +16.3%, FRO +18.6%",
+    "cash_reserve": "118.62€ (11.8%)"
+  },
+  "strategy_status": {
+    "S1_Iran_Oil": "🟡 Neutral — EQNR +18.8% secured via Stop",
+    "S2_Defense": "🟢 Strong — RHM +3.8%, Paper Defense +16-24%",
+    "S3_AI_Tech": "🔴 Weak — NVDA -6.1%, MSFT -1.7%",
+    "Overall": "Mixed, Oil/Defense strong, Tech weak, Geopolitics drives"
+  }
 }
