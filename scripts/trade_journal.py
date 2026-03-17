@@ -1,470 +1,404 @@
 #!/usr/bin/env python3
 """
-Trade Journal — Automatisches Logging für den Trading Monitor
-=============================================================
-Wird von trading_monitor.py aufgerufen wenn ein Alert ausgelöst wird.
-Schreibt in:
-  - memory/trade-decisions.md  (Alert-Log, append)
-  - memory/albert-accuracy.md  (Prognose-Tracking, update)
-
-Autor: Albert 🎩 | v1.0 | 15.03.2026
+trade_journal.py — Paper & Real Trade Journal (SQLite)
+Paper Trading System Phase 1.3 + Cross-Learning
 """
 
-import json
-import re
-from datetime import datetime, timezone
+import sqlite3
+import sys
+from datetime import datetime
 from pathlib import Path
 
-WORKSPACE = Path('/data/.openclaw/workspace')
-DECISIONS_PATH = WORKSPACE / 'memory' / 'trade-decisions.md'
-ACCURACY_PATH = WORKSPACE / 'memory' / 'albert-accuracy.md'
-STRATEGIES_PATH = WORKSPACE / 'memory' / 'strategien.md'
+DB_PATH = Path("/data/.openclaw/workspace/data/trading.db")
 
 
-# ─── Hilfsfunktionen ─────────────────────────────────────────────────
-
-def _load_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding='utf-8')
-    except FileNotFoundError:
-        return ''
+def get_db():
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
-def _write_text(path: Path, content: str):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding='utf-8')
+def init_tables():
+    conn = get_db()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS trades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT NOT NULL,
+            strategy TEXT,
+            direction TEXT DEFAULT 'LONG',
+            entry_price REAL,
+            entry_date TEXT,
+            exit_price REAL,
+            exit_date TEXT,
+            stop REAL,
+            target REAL,
+            shares REAL,
+            pnl_eur REAL,
+            pnl_pct REAL,
+            status TEXT DEFAULT 'OPEN',
+            thesis TEXT,
+            result TEXT,
+            lessons TEXT,
+            trade_type TEXT DEFAULT 'paper'
+        )
+    """)
+    conn.commit()
+    # Migration: add trade_type column if missing
+    _migrate_trade_type(conn)
+    conn.close()
 
 
-def _now_berlin() -> str:
-    """Gibt aktuelle Zeit als YYYY-MM-DD HH:MM zurück (UTC+1 approximiert)."""
-    from datetime import timedelta
-    now = datetime.now(timezone.utc) + timedelta(hours=1)
-    return now.strftime('%Y-%m-%d %H:%M')
+def _migrate_trade_type(conn):
+    """Add trade_type column to existing DB if it doesn't exist."""
+    cursor = conn.execute("PRAGMA table_info(trades)")
+    columns = [row[1] for row in cursor.fetchall()]
+    if "trade_type" not in columns:
+        conn.execute("ALTER TABLE trades ADD COLUMN trade_type TEXT DEFAULT 'paper'")
+        conn.commit()
+        print("🔄 Migration: trade_type Spalte hinzugefügt (Default: 'paper')")
 
 
-# ─── Trade Decisions Log ─────────────────────────────────────────────
+def open_trade(ticker, strategy, direction, entry_price, stop, target, shares, thesis, trade_type="paper"):
+    """Open a new paper or real trade."""
+    if trade_type not in ("paper", "real"):
+        print(f"❌ Ungültiger trade_type: {trade_type}. Erlaubt: 'paper', 'real'")
+        return None
+    init_tables()
+    conn = get_db()
+    entry_date = datetime.now().strftime("%Y-%m-%d")
+    conn.execute(
+        """INSERT INTO trades (ticker, strategy, direction, entry_price, entry_date, 
+           stop, target, shares, status, thesis, trade_type) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+        (ticker.upper(), strategy.upper(), direction.upper(), entry_price, entry_date,
+         stop, target, shares, "OPEN", thesis, trade_type)
+    )
+    conn.commit()
+    trade_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+    conn.close()
 
-def log_alert(alert_data: dict):
-    """
-    Schreibt einen Alert-Eintrag in memory/trade-decisions.md.
+    risk = abs(entry_price - stop) * shares
+    reward = abs(target - entry_price) * shares
+    crv = reward / risk if risk > 0 else 0
 
-    alert_data keys:
-      ticker      str   "MSFT"
-      name        str   "Microsoft"
-      alert_type  str   "Stop-Warnung" | "Stop-Breach" | "Trailing-Signal" |
-                         "Watchlist-Entry" | "Target-Reached"
-      price_eur   float Aktueller Kurs in EUR
-      entry_eur   float Entry-Kurs in EUR (0 wenn unbekannt)
-      pnl_pct     float P&L in % (0.0 wenn N/A)
-      stop_eur    float|None Stop-Kurs
-      vix         float|None VIX-Wert
-      wti         float|None WTI-Preis in USD
-      conviction  dict|None  Ergebnis von conviction_score() (optional)
-      strategy    str   "S1" / "S2" / ... / "S7" (optional, wird auto-erkannt wenn fehlt)
-    """
-    ts = _now_berlin()
-    ticker = alert_data.get('ticker', '?')
-    name = alert_data.get('name', ticker)
-    alert_type = alert_data.get('alert_type', 'Alert')
-    price_eur = alert_data.get('price_eur', 0.0)
-    entry_eur = alert_data.get('entry_eur', 0.0)
-    pnl_pct = alert_data.get('pnl_pct', 0.0)
-    stop_eur = alert_data.get('stop_eur')
-    vix = alert_data.get('vix')
-    wti = alert_data.get('wti')
-    conviction = alert_data.get('conviction')
+    type_label = "📝 PAPER" if trade_type == "paper" else "💰 REAL"
+    print(f"✅ Trade #{trade_id} eröffnet ({type_label}):")
+    print(f"   {direction} {shares}x {ticker} @ {entry_price:.2f}")
+    print(f"   Stop: {stop:.2f} | Target: {target:.2f}")
+    print(f"   Risiko: {risk:.2f} | Chance: {reward:.2f} | CRV: {crv:.1f}:1")
+    print(f"   Strategie: {strategy} | These: {thesis}")
+    return trade_id
 
-    # Strategie auto-erkennen wenn nicht mitgegeben
-    strategy = alert_data.get('strategy') or _detect_strategy(ticker)
 
-    # Kontext-Zeile
-    kontext_parts = []
-    if vix is not None:
-        kontext_parts.append(f"VIX: {vix:.1f}")
-    if wti is not None:
-        kontext_parts.append(f"WTI: ${wti:.2f}")
-    if conviction:
-        score = conviction.get('score', '?')
-        rec = conviction.get('recommendation', '')
-        kontext_parts.append(f"Conviction: {score}/100 [{rec}]")
-    kontext_str = ' | '.join(kontext_parts) if kontext_parts else 'Keine Macro-Daten'
+def close_trade(trade_id, exit_price, result="", lessons=""):
+    """Close an existing trade."""
+    init_tables()
+    conn = get_db()
+    trade = conn.execute("SELECT * FROM trades WHERE id = ?", (trade_id,)).fetchone()
+    if not trade:
+        print(f"❌ Trade #{trade_id} nicht gefunden")
+        return
 
-    # P&L-String
-    pnl_sign = '+' if pnl_pct >= 0 else ''
-    pnl_str = f"{pnl_sign}{pnl_pct:.1f}%"
+    if trade["status"] != "OPEN":
+        print(f"⚠ Trade #{trade_id} ist bereits {trade['status']}")
+        return
 
-    # Preis-Strings
-    price_str = f"{price_eur:.2f}€".replace('.', ',')
-    entry_str = f"{entry_eur:.2f}€".replace('.', ',') if entry_eur else "—"
-    stop_str = f"{stop_eur:.2f}€".replace('.', ',') if stop_eur else "—"
+    entry = trade["entry_price"]
+    shares = trade["shares"]
+    direction = trade["direction"]
 
-    entry_text = f"""
-### {ts} — {name} ({ticker}) — {alert_type}
-**Kurs:** {price_str} | **Entry:** {entry_str} | **P&L:** {pnl_str}
-**Alert:** {alert_type} | **Stop:** {stop_str}
-**Strategie:** {strategy}
-**Kontext:** {kontext_str}
-
-"""
-
-    # Append an trade-decisions.md
-    existing = _load_text(DECISIONS_PATH)
-    if not existing:
-        existing = "# Trade Decisions — Alert-Log\n\n"
-
-    # Vor dem letzten "*Dieses Log...*"-Footer einfügen wenn vorhanden
-    footer_marker = '*Dieses Log wird bei jeder'
-    if footer_marker in existing:
-        insert_pos = existing.rfind('\n---\n')
-        if insert_pos == -1:
-            insert_pos = existing.rfind(footer_marker)
-        new_content = existing[:insert_pos] + entry_text + existing[insert_pos:]
+    if direction == "LONG":
+        pnl = (exit_price - entry) * shares
+        pnl_pct = (exit_price / entry - 1) * 100
     else:
-        new_content = existing.rstrip() + '\n' + entry_text
+        pnl = (entry - exit_price) * shares
+        pnl_pct = (1 - exit_price / entry) * 100
 
-    _write_text(DECISIONS_PATH, new_content)
+    exit_date = datetime.now().strftime("%Y-%m-%d")
+    status = "WIN" if pnl > 0 else "LOSS"
 
-    # Accuracy updaten wenn Exit-Signal
-    if alert_type in ('Stop-Breach', 'Target-Reached'):
-        _close_accuracy_entry(ticker, name, price_eur, pnl_pct, alert_type, ts[:10])
-
-
-def _detect_strategy(ticker: str) -> str:
-    """Versucht die Strategie anhand des Tickers zu erraten."""
-    mapping = {
-        'EQNR': 'S1', 'DR0.DE': 'S1', 'ISPA.DE': 'S1', 'AG': 'S1',
-        'A2QQ9R': 'S1/S6', 'A3D42Y': 'S1',
-        'RHM.DE': 'S2',
-        'NVDA': 'S3', 'MSFT': 'S3', 'PLTR': 'S3',
-        'ISPA': 'S4', 'GLD': 'S4',
-        'RIO.L': 'S5', 'BHP.L': 'S5',
-        'A14WU5': 'S3', 'A2DWAW': 'S7',
-        'BAYN.DE': 'S2',
-    }
-    return mapping.get(ticker, 'S?')
-
-
-# ─── Accuracy Tracking ───────────────────────────────────────────────
-
-def _parse_accuracy(text: str) -> dict:
-    """Parst die Accuracy-Datei in ein strukturiertes Dict."""
-    result = {
-        'header': '',
-        'open_rows': [],      # list of dicts
-        'closed_rows': [],    # list of dicts
-        'raw': text,
-    }
-    if not text or text.strip() == '':
-        return result
-
-    # Header (alles vor der Offene-Prognosen-Tabelle)
-    open_section = re.search(r'## Offene Prognosen', text)
-    if open_section:
-        result['header'] = text[:open_section.start()]
-
-    # Offene Prognosen Zeilen parsen
-    open_match = re.search(
-        r'## Offene Prognosen.*?\|.*?\|.*?\n((?:\|.*\n)*)',
-        text, re.DOTALL
+    conn.execute(
+        """UPDATE trades SET exit_price=?, exit_date=?, pnl_eur=?, pnl_pct=?, 
+           status=?, result=?, lessons=? WHERE id=?""",
+        (exit_price, exit_date, round(pnl, 2), round(pnl_pct, 2), status, result, lessons, trade_id)
     )
-    if open_match:
-        for row in open_match.group(1).split('\n'):
-            row = row.strip()
-            if row.startswith('|') and '---' not in row and row != '|':
-                cols = [c.strip() for c in row.split('|') if c.strip()]
-                if len(cols) >= 7:
-                    result['open_rows'].append({
-                        'datum': cols[0],
-                        'aktie': cols[1],
-                        'richtung': cols[2],
-                        'entry': cols[3],
-                        'ziel': cols[4],
-                        'stop': cols[5],
-                        'status': cols[6],
-                        'ticker': _extract_ticker(cols[1]),
-                    })
+    conn.commit()
+    conn.close()
 
-    # Abgeschlossene Prognosen
-    closed_match = re.search(
-        r'## Abgeschlossene Prognosen.*?\|.*?\|.*?\n((?:\|.*\n)*)',
-        text, re.DOTALL
-    )
-    if closed_match:
-        for row in closed_match.group(1).split('\n'):
-            row = row.strip()
-            if row.startswith('|') and '---' not in row and row != '|':
-                cols = [c.strip() for c in row.split('|') if c.strip()]
-                if len(cols) >= 7:
-                    result['closed_rows'].append({
-                        'datum': cols[0],
-                        'aktie': cols[1],
-                        'richtung': cols[2],
-                        'entry': cols[3],
-                        'exit': cols[4],
-                        'pnl': cols[5],
-                        'result': cols[6],
-                    })
+    trade_type = trade["trade_type"] or "paper"
+    type_label = "📝 PAPER" if trade_type == "paper" else "💰 REAL"
+    emoji = "🟢" if pnl > 0 else "🔴"
+    print(f"{emoji} Trade #{trade_id} geschlossen ({type_label}):")
+    print(f"   {trade['ticker']} {direction}: {entry:.2f} → {exit_price:.2f}")
+    print(f"   P&L: {pnl:+.2f} EUR ({pnl_pct:+.1f}%)")
+    print(f"   Ergebnis: {result}")
+    if lessons:
+        print(f"   Lektion: {lessons}")
 
+
+def get_open_trades():
+    """List all open trades."""
+    init_tables()
+    conn = get_db()
+    trades = conn.execute("SELECT * FROM trades WHERE status = 'OPEN' ORDER BY entry_date").fetchall()
+    conn.close()
+    return trades
+
+
+def _build_stats(trades):
+    """Compute stats from a list of closed trade rows."""
+    if not trades:
+        return {"total": 0, "message": "Keine geschlossenen Trades"}
+
+    wins = [t for t in trades if t["status"] == "WIN"]
+    losses = [t for t in trades if t["status"] == "LOSS"]
+
+    total = len(trades)
+    win_rate = len(wins) / total * 100 if total > 0 else 0
+    avg_win = sum(t["pnl_pct"] for t in wins) / len(wins) if wins else 0
+    avg_loss = sum(t["pnl_pct"] for t in losses) / len(losses) if losses else 0
+    total_pnl = sum(t["pnl_eur"] for t in trades)
+    avg_crv = abs(avg_win / avg_loss) if avg_loss != 0 else 0
+
+    return {
+        "total": total,
+        "wins": len(wins),
+        "losses": len(losses),
+        "win_rate": round(win_rate, 1),
+        "avg_win_pct": round(avg_win, 2),
+        "avg_loss_pct": round(avg_loss, 2),
+        "total_pnl_eur": round(total_pnl, 2),
+        "realized_crv": round(avg_crv, 2),
+    }
+
+
+def get_stats(trade_type="all"):
+    """Overall trading statistics, filterable by trade_type ('paper', 'real', 'all')."""
+    init_tables()
+    conn = get_db()
+    if trade_type == "all":
+        closed = conn.execute("SELECT * FROM trades WHERE status IN ('WIN','LOSS')").fetchall()
+    else:
+        closed = conn.execute(
+            "SELECT * FROM trades WHERE status IN ('WIN','LOSS') AND trade_type = ?",
+            (trade_type,)
+        ).fetchall()
+    conn.close()
+    return _build_stats(closed)
+
+
+def get_stats_by_strategy(trade_type="all"):
+    """Stats broken down by strategy, with paper/real comparison."""
+    init_tables()
+    conn = get_db()
+    strategies = conn.execute("SELECT DISTINCT strategy FROM trades WHERE status IN ('WIN','LOSS')").fetchall()
+    result = {}
+
+    for s in strategies:
+        strat = s["strategy"]
+
+        if trade_type == "all":
+            trades = conn.execute(
+                "SELECT * FROM trades WHERE strategy = ? AND status IN ('WIN','LOSS')", (strat,)
+            ).fetchall()
+        else:
+            trades = conn.execute(
+                "SELECT * FROM trades WHERE strategy = ? AND status IN ('WIN','LOSS') AND trade_type = ?",
+                (strat, trade_type)
+            ).fetchall()
+
+        if not trades:
+            continue
+
+        # Always compute paper vs real breakdown
+        paper_trades = [t for t in trades if (t["trade_type"] or "paper") == "paper"]
+        real_trades = [t for t in trades if (t["trade_type"] or "paper") == "real"]
+
+        wins = [t for t in trades if t["status"] == "WIN"]
+        losses = [t for t in trades if t["status"] == "LOSS"]
+        total = len(trades)
+        win_rate = len(wins) / total * 100 if total > 0 else 0
+        avg_win = sum(t["pnl_pct"] for t in wins) / len(wins) if wins else 0
+        avg_loss = sum(t["pnl_pct"] for t in losses) / len(losses) if losses else 0
+        total_pnl = sum(t["pnl_eur"] for t in trades)
+
+        paper_wins = [t for t in paper_trades if t["status"] == "WIN"]
+        paper_wr = len(paper_wins) / len(paper_trades) * 100 if paper_trades else 0
+        real_wins = [t for t in real_trades if t["status"] == "WIN"]
+        real_wr = len(real_wins) / len(real_trades) * 100 if real_trades else 0
+
+        result[strat] = {
+            "total": total,
+            "wins": len(wins),
+            "losses": len(losses),
+            "win_rate": round(win_rate, 1),
+            "avg_win_pct": round(avg_win, 2),
+            "avg_loss_pct": round(avg_loss, 2),
+            "total_pnl_eur": round(total_pnl, 2),
+            "paper_trades": len(paper_trades),
+            "paper_win_rate": round(paper_wr, 1),
+            "real_trades": len(real_trades),
+            "real_win_rate": round(real_wr, 1),
+        }
+
+    conn.close()
     return result
 
 
-def _extract_ticker(aktie_str: str) -> str:
-    """Extrahiert Ticker aus 'Nvidia (NVDA)' → 'NVDA'."""
-    match = re.search(r'\(([^)]+)\)', aktie_str)
-    return match.group(1) if match else aktie_str
+def get_closed_trades(trade_type="all"):
+    """Get all closed trades, optionally filtered by type."""
+    init_tables()
+    conn = get_db()
+    if trade_type == "all":
+        trades = conn.execute("SELECT * FROM trades WHERE status IN ('WIN','LOSS') ORDER BY exit_date").fetchall()
+    else:
+        trades = conn.execute(
+            "SELECT * FROM trades WHERE status IN ('WIN','LOSS') AND trade_type = ? ORDER BY exit_date",
+            (trade_type,)
+        ).fetchall()
+    conn.close()
+    return trades
 
 
-def _build_accuracy_file(open_rows: list, closed_rows: list) -> str:
-    """Baut die komplette accuracy.md neu auf."""
-    # Statistik berechnen
-    total = len(closed_rows)
-    wins = sum(1 for r in closed_rows if '✅' in r.get('result', ''))
-    losses = sum(1 for r in closed_rows if '❌' in r.get('result', ''))
-    win_pct = (wins / total * 100) if total > 0 else 0
-
-    # Avg Win/Loss berechnen
-    win_pnls = []
-    loss_pnls = []
-    for r in closed_rows:
-        pnl_str = r.get('pnl', '0%').replace('%', '').replace('+', '').replace(',', '.')
-        try:
-            val = float(pnl_str)
-            if val >= 0:
-                win_pnls.append(val)
-            else:
-                loss_pnls.append(abs(val))
-        except ValueError:
-            pass
-
-    avg_win = f"+{sum(win_pnls)/len(win_pnls):.1f}%" if win_pnls else "—"
-    avg_loss = f"-{sum(loss_pnls)/len(loss_pnls):.1f}%" if loss_pnls else "—"
-    ratio = f"{sum(win_pnls)/len(win_pnls) / (sum(loss_pnls)/len(loss_pnls)):.1f}:1" if win_pnls and loss_pnls else "—"
-
-    now = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
-
-    # Offene Prognosen-Tabelle
-    open_table = "| Datum | Aktie | Richtung | Entry | Ziel | Stop | Status |\n"
-    open_table += "|---|---|---|---|---|---|---|\n"
-    for r in open_rows:
-        open_table += f"| {r['datum']} | {r['aktie']} | {r['richtung']} | {r['entry']} | {r['ziel']} | {r['stop']} | {r['status']} |\n"
-
-    # Abgeschlossene Prognosen-Tabelle
-    closed_table = "| Datum | Aktie | Richtung | Entry | Exit | P&L | ✅/❌ |\n"
-    closed_table += "|---|---|---|---|---|---|---|\n"
-    for r in closed_rows:
-        closed_table += f"| {r['datum']} | {r['aktie']} | {r['richtung']} | {r['entry']} | {r['exit']} | {r['pnl']} | {r['result']} |\n"
-
-    content = f"""# Albert Accuracy Report
-*Letzte Aktualisierung: {now}*
-
-Tracking aller Empfehlungen und Trade-Entscheidungen. Wird automatisch von trading_monitor.py aktualisiert.
-
----
-
-## Offene Prognosen
-
-{open_table}
-## Abgeschlossene Prognosen
-
-{closed_table}
-## Statistik
-
-- **Gesamt:** {total} Trades | ✅ {wins} ({win_pct:.0f}%) | ❌ {losses} ({100-win_pct:.0f}%)
-- **Avg Win:** {avg_win} | **Avg Loss:** {avg_loss} | **Win/Loss Ratio:** {ratio}
-- **Offene Positionen:** {len(open_rows)}
-"""
-    return content
+def print_open_trades():
+    trades = get_open_trades()
+    if not trades:
+        print("📋 Keine offenen Trades")
+        return
+    print(f"📋 {len(trades)} offene Trades:")
+    print(f"{'ID':>4} {'Typ':<6} {'Ticker':<10} {'Dir':<5} {'Entry':>8} {'Stop':>8} {'Target':>8} {'Shares':>7} {'Strat':<6} Datum")
+    print("-" * 90)
+    for t in trades:
+        tt = (t['trade_type'] or 'paper').upper()[:5]
+        print(f"{t['id']:>4} {tt:<6} {t['ticker']:<10} {t['direction']:<5} {t['entry_price']:>8.2f} "
+              f"{t['stop']:>8.2f} {t['target']:>8.2f} {t['shares']:>7.2f} {t['strategy']:<6} {t['entry_date']}")
+        if t['thesis']:
+            print(f"     These: {t['thesis']}")
 
 
-def add_open_position(ticker: str, name: str, date: str, direction: str,
-                      entry_eur: float, target_eur: float | None,
-                      stop_eur: float | None):
-    """
-    Fügt eine neue offene Position zur Accuracy-Tabelle hinzu.
-    Wird aufgerufen wenn Victor eine neue Position eröffnet.
-    """
-    text = _load_text(ACCURACY_PATH)
-    parsed = _parse_accuracy(text)
+def print_stats(trade_type="all"):
+    if trade_type == "all":
+        # Show paper, real, and combined
+        for tt, label in [("paper", "📝 Paper"), ("real", "💰 Real"), ("all", "📊 Gesamt")]:
+            stats = get_stats(tt)
+            if stats.get("total", 0) == 0:
+                if tt != "all":
+                    continue
+                print(f"{label}: Noch keine geschlossenen Trades")
+                return
+            print(f"\n{label} Trading-Statistik:")
+            print(f"   Trades: {stats['total']} ({stats['wins']}W / {stats['losses']}L)")
+            print(f"   Win-Rate: {stats['win_rate']}%")
+            print(f"   Avg Win: {stats['avg_win_pct']:+.2f}%")
+            print(f"   Avg Loss: {stats['avg_loss_pct']:+.2f}%")
+            print(f"   CRV realisiert: {stats['realized_crv']:.2f}:1")
+            print(f"   Total P&L: {stats['total_pnl_eur']:+.2f} EUR")
+    else:
+        stats = get_stats(trade_type)
+        if stats.get("total", 0) == 0:
+            label = "📝 Paper" if trade_type == "paper" else "💰 Real"
+            print(f"{label}: Noch keine geschlossenen Trades")
+            return
+        label = "📝 Paper" if trade_type == "paper" else "💰 Real"
+        print(f"\n{label} Trading-Statistik:")
+        print(f"   Trades: {stats['total']} ({stats['wins']}W / {stats['losses']}L)")
+        print(f"   Win-Rate: {stats['win_rate']}%")
+        print(f"   Avg Win: {stats['avg_win_pct']:+.2f}%")
+        print(f"   Avg Loss: {stats['avg_loss_pct']:+.2f}%")
+        print(f"   CRV realisiert: {stats['realized_crv']:.2f}:1")
+        print(f"   Total P&L: {stats['total_pnl_eur']:+.2f} EUR")
 
-    # Prüfen ob bereits vorhanden
-    for row in parsed['open_rows']:
-        if row.get('ticker') == ticker:
-            return  # Bereits eingetragen
-
-    entry_str = f"{entry_eur:.2f}€".replace('.', ',')
-    target_str = f"{target_eur:.0f}€" if target_eur else "—"
-    stop_str = f"{stop_eur:.2f}€".replace('.', ',') if stop_eur else "—"
-
-    new_row = {
-        'datum': date,
-        'aktie': f"{name} ({ticker})",
-        'richtung': 'LONG',
-        'entry': entry_str,
-        'ziel': target_str,
-        'stop': stop_str,
-        'status': '⏳ Offen',
-        'ticker': ticker,
-    }
-    parsed['open_rows'].append(new_row)
-    _write_text(ACCURACY_PATH, _build_accuracy_file(parsed['open_rows'], parsed['closed_rows']))
+    by_strat = get_stats_by_strategy(trade_type)
+    if by_strat:
+        print("\n📊 Nach Strategie (Paper vs Real):")
+        for strat, s in sorted(by_strat.items()):
+            paper_info = f"Paper: {s['paper_trades']}T WR {s['paper_win_rate']}%" if s['paper_trades'] > 0 else "Paper: —"
+            real_info = f"Real: {s['real_trades']}T WR {s['real_win_rate']}%" if s['real_trades'] > 0 else "Real: —"
+            print(f"   {strat}: {s['total']}T ({s['wins']}W/{s['losses']}L) "
+                  f"WR {s['win_rate']}% | P&L {s['total_pnl_eur']:+.2f}€ | {paper_info} | {real_info}")
 
 
-def _close_accuracy_entry(ticker: str, name: str, exit_price_eur: float,
-                           pnl_pct: float, reason: str, date: str):
-    """
-    Schließt eine offene Position und verschiebt sie in Abgeschlossene Prognosen.
-    """
-    text = _load_text(ACCURACY_PATH)
-    if not text:
+def print_all_trades():
+    """List all trades (open + closed)."""
+    init_tables()
+    conn = get_db()
+    trades = conn.execute("SELECT * FROM trades ORDER BY entry_date DESC").fetchall()
+    conn.close()
+
+    if not trades:
+        print("📋 Keine Trades vorhanden")
         return
 
-    parsed = _parse_accuracy(text)
+    print(f"📋 Alle Trades ({len(trades)}):")
+    print(f"{'ID':>4} {'Typ':<6} {'Status':<6} {'Ticker':<10} {'Dir':<5} {'Entry':>8} {'Exit':>8} {'P&L%':>8} {'P&L€':>10} {'Strat':<5}")
+    print("-" * 85)
+    for t in trades:
+        exit_p = f"{t['exit_price']:.2f}" if t['exit_price'] else "—"
+        pnl_pct = f"{t['pnl_pct']:+.1f}%" if t['pnl_pct'] is not None else "—"
+        pnl_eur = f"{t['pnl_eur']:+.2f}" if t['pnl_eur'] is not None else "—"
+        status_emoji = {"OPEN": "🔵", "WIN": "🟢", "LOSS": "🔴"}.get(t['status'], "⚪")
+        tt = (t['trade_type'] or 'paper').upper()[:5]
+        print(f"{t['id']:>4} {tt:<6} {status_emoji}{t['status']:<5} {t['ticker']:<10} {t['direction']:<5} "
+              f"{t['entry_price']:>8.2f} {exit_p:>8} {pnl_pct:>8} {pnl_eur:>10} {t['strategy']:<5}")
 
-    # Offene Position finden
-    found = None
-    remaining_open = []
-    for row in parsed['open_rows']:
-        if row.get('ticker') == ticker or ticker in row.get('aktie', ''):
-            found = row
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage:")
+        print("  python3 trade_journal.py open TICKER STRATEGY DIR ENTRY STOP TARGET SHARES \"THESIS\" [--type paper|real]")
+        print("  python3 trade_journal.py close ID EXIT_PRICE \"RESULT\" \"LESSONS\"")
+        print("  python3 trade_journal.py list")
+        print("  python3 trade_journal.py stats [--type paper|real|all]")
+        sys.exit(1)
+
+    cmd = sys.argv[1].lower()
+
+    # Parse --type flag from anywhere in args
+    trade_type_filter = "all"
+    remaining_args = []
+    i = 2
+    while i < len(sys.argv):
+        if sys.argv[i] == "--type" and i + 1 < len(sys.argv):
+            trade_type_filter = sys.argv[i + 1].lower()
+            i += 2
         else:
-            remaining_open.append(row)
+            remaining_args.append(sys.argv[i])
+            i += 1
 
-    if not found:
-        return
+    if cmd == "open":
+        if len(remaining_args) < 7:
+            print("Usage: python3 trade_journal.py open TICKER STRATEGY DIR ENTRY STOP TARGET SHARES [THESIS] [--type paper|real]")
+            sys.exit(1)
+        ticker = remaining_args[0]
+        strategy = remaining_args[1]
+        direction = remaining_args[2]
+        entry = float(remaining_args[3])
+        stop = float(remaining_args[4])
+        target = float(remaining_args[5])
+        shares = float(remaining_args[6])
+        thesis = remaining_args[7] if len(remaining_args) > 7 else ""
+        tt = trade_type_filter if trade_type_filter != "all" else "paper"
+        open_trade(ticker, strategy, direction, entry, stop, target, shares, thesis, trade_type=tt)
 
-    pnl_sign = '+' if pnl_pct >= 0 else ''
-    result_icon = '✅' if pnl_pct >= 0 else '❌'
-    exit_str = f"{exit_price_eur:.2f}€".replace('.', ',')
+    elif cmd == "close":
+        if len(remaining_args) < 2:
+            print("Usage: python3 trade_journal.py close ID EXIT_PRICE [RESULT] [LESSONS]")
+            sys.exit(1)
+        trade_id = int(remaining_args[0])
+        exit_price = float(remaining_args[1])
+        result = remaining_args[2] if len(remaining_args) > 2 else ""
+        lessons = remaining_args[3] if len(remaining_args) > 3 else ""
+        close_trade(trade_id, exit_price, result, lessons)
 
-    closed_row = {
-        'datum': f"{found['datum']}–{date[5:]}",  # "04.03–15.03"
-        'aktie': found['aktie'],
-        'richtung': found['richtung'],
-        'entry': found['entry'],
-        'exit': exit_str,
-        'pnl': f"{pnl_sign}{pnl_pct:.1f}%",
-        'result': result_icon,
-    }
-    parsed['closed_rows'].append(closed_row)
-    parsed['open_rows'] = remaining_open
+    elif cmd == "list":
+        print_all_trades()
 
-    _write_text(ACCURACY_PATH, _build_accuracy_file(parsed['open_rows'], parsed['closed_rows']))
+    elif cmd == "stats":
+        print_stats(trade_type_filter)
 
+    elif cmd == "open-list":
+        print_open_trades()
 
-# ─── Bulk-Import der Bestands-Trades ────────────────────────────────
-
-def import_historical_trades():
-    """
-    Trägt alle bisherigen Trades rückwirkend in albert-accuracy.md ein.
-    Einmalig ausführen — idempotent (prüft ob bereits vorhanden).
-    """
-    text = _load_text(ACCURACY_PATH)
-    parsed = _parse_accuracy(text)
-
-    existing_tickers = {r.get('ticker', '') for r in parsed['open_rows']}
-    existing_closed = {r.get('aktie', '') for r in parsed['closed_rows']}
-
-    # ─── Offene Positionen ───────────────────────────────────────────
-    open_positions = [
-        # (ticker, name, datum, entry_eur, target_eur, stop_eur)
-        ('NVDA',    'Nvidia',                       '25.02.', 167.88, None,    None),
-        ('MSFT',    'Microsoft',                    '04.03.', 351.85, 387.00,  338.00),
-        ('PLTR',    'Palantir',                     '04.03.', 132.11, 159.00,  127.00),
-        ('EQNR',    'Equinor ASA',                  '04.03.', 27.04,  31.00,   25.00),
-        ('BAYN.DE', 'Bayer AG',                     '10.03.', 39.95,  44.00,   38.00),
-        ('RIO.L',   'Rio Tinto',                    '09.03.', 76.92,  85.00,   73.00),
-        ('RHM.DE',  'Rheinmetall AG (2)',            '12.03.', 1570.00, 1750.00, 1520.00),
-        ('A2QQ9R',  'Invesco Solar Energy ETF',     '13.03.', 22.40,  28.00,   None),
-        ('A3D42Y',  'VanEck Oil Services ETF',      '13.03.', 27.90,  None,    24.00),
-        ('A14WU5',  'L&G Cyber Security ETF',       '13.03.', 28.80,  None,    25.95),
-        ('A2DWAW',  'iShares Biotech ETF',          '13.03.', 7.00,   None,    6.30),
-    ]
-
-    added_open = 0
-    for ticker, name, datum, entry, target, stop in open_positions:
-        if ticker not in existing_tickers:
-            entry_str = f"{entry:.2f}€".replace('.', ',')
-            target_str = f"{target:.0f}€" if target else "—"
-            stop_str = f"{stop:.2f}€".replace('.', ',') if stop else "—"
-            parsed['open_rows'].append({
-                'datum': datum,
-                'aktie': f"{name} ({ticker})",
-                'richtung': 'LONG',
-                'entry': entry_str,
-                'ziel': target_str,
-                'stop': stop_str,
-                'status': '⏳ Offen',
-                'ticker': ticker,
-            })
-            added_open += 1
-
-    # ─── Abgeschlossene Trades ───────────────────────────────────────
-    closed_trades = [
-        # (datum, aktie_str, richtung, entry_str, exit_str, pnl_str, result)
-        ('09.03–11.03', 'Rheinmetall AG (RHM.DE)',      'LONG', '1.635€',  '~1.563€',  '-4,4%', '❌'),
-        ('04.03–10.03', 'Deutsche Rohstoff AG (DR0.DE)','LONG', '76,35€',  '~77,00€',  '+0,85%','✅'),
-        ('10.03–10.03', 'Deutsche Rohstoff AG (DR0.DE)','LONG', '82,15€',  '~79,00€',  '-3,8%', '❌'),
-    ]
-
-    added_closed = 0
-    for datum, aktie, richtung, entry, exit_p, pnl, result in closed_trades:
-        key = f"{datum}_{aktie}"
-        if key not in existing_closed and not any(
-            r.get('datum') == datum and aktie in r.get('aktie', '')
-            for r in parsed['closed_rows']
-        ):
-            parsed['closed_rows'].append({
-                'datum': datum,
-                'aktie': aktie,
-                'richtung': richtung,
-                'entry': entry,
-                'exit': exit_p,
-                'pnl': pnl,
-                'result': result,
-            })
-            added_closed += 1
-
-    _write_text(ACCURACY_PATH, _build_accuracy_file(parsed['open_rows'], parsed['closed_rows']))
-    print(f"[trade_journal] Import: {added_open} offene + {added_closed} abgeschlossene Trades eingetragen.")
-    return added_open + added_closed
-
-
-# ─── Test / Demo ─────────────────────────────────────────────────────
-
-if __name__ == '__main__':
-    print("=== Trade Journal — Selbsttest ===\n")
-
-    # 1. Historische Trades importieren
-    print("1. Importiere historische Trades...")
-    n = import_historical_trades()
-    print(f"   → {n} Einträge importiert\n")
-
-    # 2. Dummy-Alert loggen
-    print("2. Teste log_alert() mit Dummy-Alert...")
-    dummy_alert = {
-        'ticker': 'MSFT',
-        'name': 'Microsoft',
-        'alert_type': 'Stop-Warnung',
-        'price_eur': 340.50,
-        'entry_eur': 351.85,
-        'pnl_pct': -3.22,
-        'stop_eur': 338.00,
-        'vix': 26.4,
-        'wti': 91.20,
-        'conviction': {
-            'score': 45,
-            'recommendation': 'Schwaches Signal — Vorsicht',
-            'factors': {'vix': -10, 'stop_abstand': -20, 'strategie': 0, 'trend': 0, 'volume': 0}
-        },
-        'strategy': 'S3',
-    }
-    log_alert(dummy_alert)
-    print("   → Alert geloggt in memory/trade-decisions.md\n")
-
-    # 3. Accuracy-Datei anzeigen
-    print("3. Aktuelle albert-accuracy.md:")
-    print("-" * 60)
-    content = ACCURACY_PATH.read_text(encoding='utf-8') if ACCURACY_PATH.exists() else "(leer)"
-    print(content[:1500])
-    print("=" * 60)
-    print("Selbsttest abgeschlossen. ✅")
+    else:
+        print(f"Unbekannter Befehl: {cmd}")
+        sys.exit(1)

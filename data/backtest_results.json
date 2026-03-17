@@ -1,0 +1,1357 @@
+{
+  "timestamp": "2026-03-17T20:00:26.188580",
+  "strategy_summaries": [
+    {
+      "strategy": "PS1",
+      "name": "Iran/\u00d6l",
+      "verdict": "PROFITABEL",
+      "avg_pnl_default": 16.55,
+      "avg_winrate_default": 100.0,
+      "tickers_profitable": 1,
+      "tickers_total": 1
+    },
+    {
+      "strategy": "PS2",
+      "name": "Tanker-Lag",
+      "verdict": "PROFITABEL",
+      "avg_pnl_default": 2.12,
+      "avg_winrate_default": 50.0,
+      "tickers_profitable": 1,
+      "tickers_total": 1
+    },
+    {
+      "strategy": "PS3",
+      "name": "NATO/Defense",
+      "verdict": "PROFITABEL",
+      "avg_pnl_default": 15.03,
+      "avg_winrate_default": 100.0,
+      "tickers_profitable": 1,
+      "tickers_total": 1
+    },
+    {
+      "strategy": "PS4",
+      "name": "Edelmetalle/Miner",
+      "verdict": "UNPROFITABEL",
+      "avg_pnl_default": 0,
+      "avg_winrate_default": 0,
+      "tickers_profitable": 0,
+      "tickers_total": 0
+    },
+    {
+      "strategy": "PS5",
+      "name": "D\u00fcnger/Agrar",
+      "verdict": "UNPROFITABEL",
+      "avg_pnl_default": 0,
+      "avg_winrate_default": 0,
+      "tickers_profitable": 0,
+      "tickers_total": 0
+    }
+  ],
+  "detailed_results": {
+    "PS1": {
+      "name": "Iran/\u00d6l",
+      "tickers": [
+        "OXY",
+        "TTE.PA"
+      ],
+      "default_params": {
+        "rsi_buy": 40,
+        "sma": 50,
+        "stop": 10,
+        "target": 15,
+        "trailing": 5
+      },
+      "verdict": "PROFITABEL",
+      "results": [
+        {
+          "ticker": "OXY",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "OXY",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "OXY",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "OXY",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "OXY",
+          "variant": "RSI50_SMA20",
+          "trades": 8,
+          "win_rate": 50.0,
+          "total_pnl": -8.21,
+          "max_dd": 33.26,
+          "avg_win": 6.83,
+          "avg_loss": -8.88,
+          "sharpe": -0.35,
+          "crv": 0.77,
+          "exit_reasons": {
+            "STOP": 4,
+            "TRAILING": 3,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "OXY",
+          "variant": "RSI55_SMA50",
+          "trades": 8,
+          "win_rate": 62.5,
+          "total_pnl": 1.79,
+          "max_dd": 33.75,
+          "avg_win": 7.11,
+          "avg_loss": -11.25,
+          "sharpe": 0.05,
+          "crv": 0.63,
+          "exit_reasons": {
+            "STOP": 3,
+            "TRAILING": 4,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "Default",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 16.55,
+          "max_dd": 0,
+          "avg_win": 16.55,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "Tight",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 10.55,
+          "max_dd": 0,
+          "avg_win": 10.55,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "Wide",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 23.94,
+          "max_dd": 0,
+          "avg_win": 23.94,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "RSI50_SMA20",
+          "trades": 4,
+          "win_rate": 75.0,
+          "total_pnl": 6.23,
+          "max_dd": 8.05,
+          "avg_win": 4.76,
+          "avg_loss": -8.05,
+          "sharpe": 0.47,
+          "crv": 0.59,
+          "exit_reasons": {
+            "STOP": 1,
+            "TRAILING": 3
+          }
+        },
+        {
+          "ticker": "TTE.PA",
+          "variant": "RSI55_SMA50",
+          "trades": 6,
+          "win_rate": 66.7,
+          "total_pnl": 1.27,
+          "max_dd": 21.04,
+          "avg_win": 5.58,
+          "avg_loss": -10.52,
+          "sharpe": 0.04,
+          "crv": 0.53,
+          "exit_reasons": {
+            "STOP": 2,
+            "TRAILING": 3,
+            "TARGET": 1
+          }
+        }
+      ],
+      "best_variants": {
+        "OXY": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 1.79,
+          "win_rate": 62.5
+        },
+        "TTE.PA": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 6.23,
+          "win_rate": 75.0
+        }
+      }
+    },
+    "PS2": {
+      "name": "Tanker-Lag",
+      "tickers": [
+        "FRO",
+        "DHT"
+      ],
+      "default_params": {
+        "rsi_buy": 45,
+        "sma": 20,
+        "stop": 10,
+        "target": 12,
+        "trailing": 4
+      },
+      "verdict": "PROFITABEL",
+      "results": [
+        {
+          "ticker": "FRO",
+          "variant": "Default",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": 2.12,
+          "max_dd": 15.17,
+          "avg_win": 17.29,
+          "avg_loss": -15.17,
+          "sharpe": 0.28,
+          "crv": 1.14,
+          "exit_reasons": {
+            "STOP": 1,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "FRO",
+          "variant": "Tight",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": 8.64,
+          "max_dd": 8.65,
+          "avg_win": 17.29,
+          "avg_loss": -8.65,
+          "sharpe": 1.47,
+          "crv": 2.0,
+          "exit_reasons": {
+            "STOP": 1,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "FRO",
+          "variant": "Wide",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": 9.4,
+          "max_dd": 15.17,
+          "avg_win": 24.57,
+          "avg_loss": -15.17,
+          "sharpe": 0.97,
+          "crv": 1.62,
+          "exit_reasons": {
+            "STOP": 1,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "FRO",
+          "variant": "TrailOnly",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": 3.89,
+          "max_dd": 15.17,
+          "avg_win": 19.06,
+          "avg_loss": -15.17,
+          "sharpe": 0.43,
+          "crv": 1.26,
+          "exit_reasons": {
+            "STOP": 1,
+            "TRAILING": 1
+          }
+        },
+        {
+          "ticker": "FRO",
+          "variant": "RSI50_SMA20",
+          "trades": 8,
+          "win_rate": 50.0,
+          "total_pnl": 19.29,
+          "max_dd": 20.29,
+          "avg_win": 14.28,
+          "avg_loss": -9.46,
+          "sharpe": 0.99,
+          "crv": 1.51,
+          "exit_reasons": {
+            "STOP": 4,
+            "TRAILING": 1,
+            "TARGET": 3
+          }
+        },
+        {
+          "ticker": "FRO",
+          "variant": "RSI55_SMA50",
+          "trades": 15,
+          "win_rate": 66.7,
+          "total_pnl": 16.55,
+          "max_dd": 39.48,
+          "avg_win": 7.56,
+          "avg_loss": -11.82,
+          "sharpe": 0.42,
+          "crv": 0.64,
+          "exit_reasons": {
+            "STOP": 5,
+            "TRAILING": 7,
+            "TARGET": 3
+          }
+        },
+        {
+          "ticker": "DHT",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "DHT",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "DHT",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "DHT",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "DHT",
+          "variant": "RSI50_SMA20",
+          "trades": 6,
+          "win_rate": 83.3,
+          "total_pnl": 41.37,
+          "max_dd": 9.46,
+          "avg_win": 10.17,
+          "avg_loss": -9.46,
+          "sharpe": 2.25,
+          "crv": 1.07,
+          "exit_reasons": {
+            "TRAILING": 2,
+            "STOP": 1,
+            "TARGET": 3
+          }
+        },
+        {
+          "ticker": "DHT",
+          "variant": "RSI55_SMA50",
+          "trades": 9,
+          "win_rate": 55.6,
+          "total_pnl": -6.93,
+          "max_dd": 24.85,
+          "avg_win": 7.67,
+          "avg_loss": -11.32,
+          "sharpe": -0.19,
+          "crv": 0.68,
+          "exit_reasons": {
+            "STOP": 4,
+            "TRAILING": 4,
+            "TARGET": 1
+          }
+        }
+      ],
+      "best_variants": {
+        "FRO": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 19.29,
+          "win_rate": 50.0
+        },
+        "DHT": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 41.37,
+          "win_rate": 83.3
+        }
+      }
+    },
+    "PS3": {
+      "name": "NATO/Defense",
+      "tickers": [
+        "KTOS",
+        "HII",
+        "HAG.DE",
+        "BA.L"
+      ],
+      "default_params": {
+        "rsi_buy": 40,
+        "sma": 50,
+        "stop": 8,
+        "target": 15,
+        "trailing": 5
+      },
+      "verdict": "PROFITABEL",
+      "results": [
+        {
+          "ticker": "KTOS",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "KTOS",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "KTOS",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "KTOS",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "KTOS",
+          "variant": "RSI50_SMA20",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": -5.74,
+          "max_dd": 8.8,
+          "avg_win": 3.06,
+          "avg_loss": -8.8,
+          "sharpe": -2.22,
+          "crv": 0.35,
+          "exit_reasons": {
+            "STOP": 1,
+            "TRAILING": 1
+          }
+        },
+        {
+          "ticker": "KTOS",
+          "variant": "RSI55_SMA50",
+          "trades": 15,
+          "win_rate": 73.3,
+          "total_pnl": 66.78,
+          "max_dd": 22.74,
+          "avg_win": 10.57,
+          "avg_loss": -12.38,
+          "sharpe": 1.56,
+          "crv": 0.85,
+          "exit_reasons": {
+            "TRAILING": 5,
+            "TARGET": 6,
+            "STOP": 4
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "Default",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 15.03,
+          "max_dd": 0,
+          "avg_win": 15.03,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "Tight",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 6.31,
+          "max_dd": 0,
+          "avg_win": 6.31,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TRAILING": 1
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "Wide",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 23.22,
+          "max_dd": 0,
+          "avg_win": 23.22,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "TrailOnly",
+          "trades": 1,
+          "win_rate": 100.0,
+          "total_pnl": 14.38,
+          "max_dd": 0,
+          "avg_win": 14.38,
+          "avg_loss": 0,
+          "sharpe": 0,
+          "crv": 0,
+          "exit_reasons": {
+            "TRAILING": 1
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "RSI50_SMA20",
+          "trades": 5,
+          "win_rate": 40.0,
+          "total_pnl": -40.12,
+          "max_dd": 58.09,
+          "avg_win": 10.65,
+          "avg_loss": -20.47,
+          "sharpe": -1.32,
+          "crv": 0.52,
+          "exit_reasons": {
+            "STOP": 3,
+            "TRAILING": 1,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "HII",
+          "variant": "RSI55_SMA50",
+          "trades": 9,
+          "win_rate": 77.8,
+          "total_pnl": 34.65,
+          "max_dd": 49.22,
+          "avg_win": 12.03,
+          "avg_loss": -24.77,
+          "sharpe": 0.7,
+          "crv": 0.49,
+          "exit_reasons": {
+            "TRAILING": 2,
+            "STOP": 2,
+            "TARGET": 5
+          }
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "RSI50_SMA20",
+          "trades": 6,
+          "win_rate": 66.7,
+          "total_pnl": 38.28,
+          "max_dd": 17.02,
+          "avg_win": 13.82,
+          "avg_loss": -8.51,
+          "sharpe": 1.86,
+          "crv": 1.62,
+          "exit_reasons": {
+            "STOP": 2,
+            "TRAILING": 1,
+            "TARGET": 3
+          }
+        },
+        {
+          "ticker": "HAG.DE",
+          "variant": "RSI55_SMA50",
+          "trades": 15,
+          "win_rate": 60.0,
+          "total_pnl": 26.85,
+          "max_dd": 35.07,
+          "avg_win": 10.77,
+          "avg_loss": -11.68,
+          "sharpe": 0.64,
+          "crv": 0.92,
+          "exit_reasons": {
+            "STOP": 6,
+            "TRAILING": 5,
+            "TARGET": 4
+          }
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "RSI50_SMA20",
+          "trades": 6,
+          "win_rate": 83.3,
+          "total_pnl": 30.99,
+          "max_dd": 8.65,
+          "avg_win": 7.93,
+          "avg_loss": -8.65,
+          "sharpe": 1.95,
+          "crv": 0.92,
+          "exit_reasons": {
+            "TRAILING": 3,
+            "STOP": 1,
+            "TARGET": 2
+          }
+        },
+        {
+          "ticker": "BA.L",
+          "variant": "RSI55_SMA50",
+          "trades": 9,
+          "win_rate": 66.7,
+          "total_pnl": 8.34,
+          "max_dd": 19.46,
+          "avg_win": 6.75,
+          "avg_loss": -10.72,
+          "sharpe": 0.26,
+          "crv": 0.63,
+          "exit_reasons": {
+            "STOP": 3,
+            "TRAILING": 5,
+            "TARGET": 1
+          }
+        }
+      ],
+      "best_variants": {
+        "KTOS": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 66.78,
+          "win_rate": 73.3
+        },
+        "HII": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 34.65,
+          "win_rate": 77.8
+        },
+        "HAG.DE": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 38.28,
+          "win_rate": 66.7
+        },
+        "BA.L": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 30.99,
+          "win_rate": 83.3
+        }
+      }
+    },
+    "PS4": {
+      "name": "Edelmetalle/Miner",
+      "tickers": [
+        "HL",
+        "PAAS",
+        "GOLD",
+        "WPM"
+      ],
+      "default_params": {
+        "rsi_buy": 35,
+        "sma": 50,
+        "stop": 12,
+        "target": 20,
+        "trailing": 6
+      },
+      "verdict": "UNPROFITABEL",
+      "results": [
+        {
+          "ticker": "HL",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HL",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HL",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HL",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "HL",
+          "variant": "RSI50_SMA20",
+          "trades": 3,
+          "win_rate": 66.7,
+          "total_pnl": 22.66,
+          "max_dd": 12.72,
+          "avg_win": 17.69,
+          "avg_loss": -12.72,
+          "sharpe": 1.96,
+          "crv": 1.39,
+          "exit_reasons": {
+            "STOP": 1,
+            "TARGET": 2
+          }
+        },
+        {
+          "ticker": "HL",
+          "variant": "RSI55_SMA50",
+          "trades": 16,
+          "win_rate": 62.5,
+          "total_pnl": 24.57,
+          "max_dd": 35.66,
+          "avg_win": 10.67,
+          "avg_loss": -13.69,
+          "sharpe": 0.51,
+          "crv": 0.78,
+          "exit_reasons": {
+            "STOP": 6,
+            "TARGET": 5,
+            "TRAILING": 5
+          }
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "RSI50_SMA20",
+          "trades": 6,
+          "win_rate": 66.7,
+          "total_pnl": 35.25,
+          "max_dd": 10.4,
+          "avg_win": 13.67,
+          "avg_loss": -9.72,
+          "sharpe": 2.43,
+          "crv": 1.41,
+          "exit_reasons": {
+            "STOP": 2,
+            "TRAILING": 1,
+            "TARGET": 3
+          }
+        },
+        {
+          "ticker": "PAAS",
+          "variant": "RSI55_SMA50",
+          "trades": 18,
+          "win_rate": 72.2,
+          "total_pnl": 57.65,
+          "max_dd": 24.85,
+          "avg_win": 9.13,
+          "avg_loss": -12.2,
+          "sharpe": 1.17,
+          "crv": 0.75,
+          "exit_reasons": {
+            "TRAILING": 7,
+            "TARGET": 6,
+            "STOP": 5
+          }
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "RSI50_SMA20",
+          "trades": 7,
+          "win_rate": 71.4,
+          "total_pnl": 29.55,
+          "max_dd": 14.95,
+          "avg_win": 8.9,
+          "avg_loss": -7.47,
+          "sharpe": 1.62,
+          "crv": 1.19,
+          "exit_reasons": {
+            "TARGET": 2,
+            "TRAILING": 4,
+            "STOP": 1
+          }
+        },
+        {
+          "ticker": "GOLD",
+          "variant": "RSI55_SMA50",
+          "trades": 9,
+          "win_rate": 55.6,
+          "total_pnl": 28.36,
+          "max_dd": 21.81,
+          "avg_win": 14.25,
+          "avg_loss": -10.72,
+          "sharpe": 0.76,
+          "crv": 1.33,
+          "exit_reasons": {
+            "STOP": 4,
+            "TARGET": 4,
+            "TRAILING": 1
+          }
+        },
+        {
+          "ticker": "WPM",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "WPM",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "WPM",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "WPM",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "WPM",
+          "variant": "RSI50_SMA20",
+          "trades": 2,
+          "win_rate": 50.0,
+          "total_pnl": 6.82,
+          "max_dd": 8.2,
+          "avg_win": 15.02,
+          "avg_loss": -8.2,
+          "sharpe": 0.88,
+          "crv": 1.83,
+          "exit_reasons": {
+            "STOP": 1,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "WPM",
+          "variant": "RSI55_SMA50",
+          "trades": 13,
+          "win_rate": 84.6,
+          "total_pnl": 79.68,
+          "max_dd": 10.61,
+          "avg_win": 9.15,
+          "avg_loss": -10.51,
+          "sharpe": 2.28,
+          "crv": 0.87,
+          "exit_reasons": {
+            "TRAILING": 7,
+            "STOP": 2,
+            "TARGET": 4
+          }
+        }
+      ],
+      "best_variants": {
+        "HL": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 24.57,
+          "win_rate": 62.5
+        },
+        "PAAS": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 57.65,
+          "win_rate": 72.2
+        },
+        "GOLD": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 29.55,
+          "win_rate": 71.4
+        },
+        "WPM": {
+          "variant": "RSI55_SMA50",
+          "total_pnl": 79.68,
+          "win_rate": 84.6
+        }
+      }
+    },
+    "PS5": {
+      "name": "D\u00fcnger/Agrar",
+      "tickers": [
+        "MOS",
+        "CF"
+      ],
+      "default_params": {
+        "rsi_buy": 40,
+        "sma": 50,
+        "stop": 10,
+        "target": 18,
+        "trailing": 5
+      },
+      "verdict": "UNPROFITABEL",
+      "results": [
+        {
+          "ticker": "MOS",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "MOS",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "MOS",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "MOS",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "MOS",
+          "variant": "RSI50_SMA20",
+          "trades": 5,
+          "win_rate": 60.0,
+          "total_pnl": 1.38,
+          "max_dd": 17.29,
+          "avg_win": 6.22,
+          "avg_loss": -8.64,
+          "sharpe": 0.09,
+          "crv": 0.72,
+          "exit_reasons": {
+            "STOP": 2,
+            "TRAILING": 2,
+            "TARGET": 1
+          }
+        },
+        {
+          "ticker": "MOS",
+          "variant": "RSI55_SMA50",
+          "trades": 12,
+          "win_rate": 33.3,
+          "total_pnl": -61.35,
+          "max_dd": 70.87,
+          "avg_win": 7.49,
+          "avg_loss": -11.42,
+          "sharpe": -1.98,
+          "crv": 0.66,
+          "exit_reasons": {
+            "STOP": 8,
+            "TARGET": 1,
+            "TRAILING": 3
+          }
+        },
+        {
+          "ticker": "CF",
+          "variant": "Default",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "CF",
+          "variant": "Tight",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "CF",
+          "variant": "Wide",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "CF",
+          "variant": "TrailOnly",
+          "trades": 0,
+          "win_rate": 0,
+          "total_pnl": 0,
+          "max_dd": 0,
+          "avg_win": 0,
+          "avg_loss": 0,
+          "sharpe": 0
+        },
+        {
+          "ticker": "CF",
+          "variant": "RSI50_SMA20",
+          "trades": 8,
+          "win_rate": 50.0,
+          "total_pnl": 3.94,
+          "max_dd": 20.57,
+          "avg_win": 10.31,
+          "avg_loss": -9.33,
+          "sharpe": 0.15,
+          "crv": 1.11,
+          "exit_reasons": {
+            "STOP": 4,
+            "TRAILING": 2,
+            "TARGET": 2
+          }
+        },
+        {
+          "ticker": "CF",
+          "variant": "RSI55_SMA50",
+          "trades": 8,
+          "win_rate": 50.0,
+          "total_pnl": -14.7,
+          "max_dd": 33.13,
+          "avg_win": 7.38,
+          "avg_loss": -11.05,
+          "sharpe": -0.55,
+          "crv": 0.67,
+          "exit_reasons": {
+            "STOP": 4,
+            "TRAILING": 3,
+            "TARGET": 1
+          }
+        }
+      ],
+      "best_variants": {
+        "MOS": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 1.38,
+          "win_rate": 60.0
+        },
+        "CF": {
+          "variant": "RSI50_SMA20",
+          "total_pnl": 3.94,
+          "win_rate": 50.0
+        }
+      }
+    }
+  }
+}

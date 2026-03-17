@@ -1,0 +1,562 @@
+{
+  "timestamp": "2026-03-17T20:01:00.120638",
+  "date": "2026-03-17",
+  "results": [
+    {
+      "ticker": "OXY",
+      "score": 13,
+      "articles": 10,
+      "positive": 5,
+      "negative": 1,
+      "neutral": 4,
+      "top_headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool"
+    },
+    {
+      "ticker": "KTOS",
+      "score": 4,
+      "articles": 10,
+      "positive": 4,
+      "negative": 2,
+      "neutral": 4,
+      "top_headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN"
+    },
+    {
+      "ticker": "HL",
+      "score": 26,
+      "articles": 10,
+      "positive": 7,
+      "negative": 0,
+      "neutral": 3,
+      "top_headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget"
+    },
+    {
+      "ticker": "MOS",
+      "score": -5,
+      "articles": 10,
+      "positive": 2,
+      "negative": 4,
+      "neutral": 4,
+      "top_headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st"
+    },
+    {
+      "ticker": "HAG.DE",
+      "score": 13,
+      "articles": 10,
+      "positive": 4,
+      "negative": 0,
+      "neutral": 6,
+      "top_headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS"
+    },
+    {
+      "ticker": "TTE.PA",
+      "score": 4,
+      "articles": 10,
+      "positive": 2,
+      "negative": 0,
+      "neutral": 8,
+      "top_headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks"
+    }
+  ],
+  "detailed_results": [
+    {
+      "ticker": "OXY",
+      "score": 13,
+      "articles": 10,
+      "positive": 5,
+      "negative": 1,
+      "neutral": 4,
+      "top_headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool",
+      "details": [
+        {
+          "headline": "Occidental Petroleum (NYSE:OXY) Price Target Raised to $72.00 - MarketBeat",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 17:51:50 GMT"
+        },
+        {
+          "headline": "Mizuho Raises Price Target for Occidental Petroleum (OXY) to $72 | OXY Stock News - GuruFocus",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 18:58:48 GMT"
+        },
+        {
+          "headline": "Occidental Petroleum (OXY) Stock Declines While Market Improves: Some Information for Investors - Yahoo Finance",
+          "score": -1,
+          "keywords": [
+            "declines"
+          ],
+          "date": "Mon, 16 Mar 2026 21:50:03 GMT"
+        },
+        {
+          "headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool",
+          "score": 4,
+          "keywords": [
+            "+dividend",
+            "+buy"
+          ],
+          "date": "Tue, 17 Mar 2026 13:05:00 GMT"
+        },
+        {
+          "headline": "Wells Fargo double upgrades this oil and gas stock on improved capital efficiency and Permian productivity - CNBC",
+          "score": 3,
+          "keywords": [
+            "+upgrade"
+          ],
+          "date": "Thu, 12 Mar 2026 11:35:23 GMT"
+        },
+        {
+          "headline": "Wells Fargo upgrades Occidental Petroleum stock rating on capital efficiency - Investing.com",
+          "score": 3,
+          "keywords": [
+            "+upgrade"
+          ],
+          "date": "Thu, 12 Mar 2026 11:56:59 GMT"
+        },
+        {
+          "headline": "Occidental Petroleum Stock Surged 40%, Here’s Why - Trefis",
+          "score": 2,
+          "keywords": [
+            "+surge"
+          ],
+          "date": "Thu, 12 Mar 2026 18:19:21 GMT"
+        },
+        {
+          "headline": "What's Behind The 40% Rise In OXY Stock? - Forbes",
+          "score": 0,
+          "keywords": [],
+          "date": "Fri, 13 Mar 2026 15:48:23 GMT"
+        },
+        {
+          "headline": "What Warren Buffett Saw In Occidental Petroleum -- And Why The Thesis Still Holds - Seeking Alpha",
+          "score": 0,
+          "keywords": [],
+          "date": "Thu, 12 Mar 2026 12:17:44 GMT"
+        },
+        {
+          "headline": "Occidental Petroleum Stock Surges Thursday: What's Driving The Action? - Sahm",
+          "score": 2,
+          "keywords": [
+            "+surge"
+          ],
+          "date": "Fri, 13 Mar 2026 06:14:38 GMT"
+        }
+      ]
+    },
+    {
+      "ticker": "KTOS",
+      "score": 4,
+      "articles": 10,
+      "positive": 4,
+      "negative": 2,
+      "neutral": 4,
+      "top_headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN",
+      "details": [
+        {
+          "headline": "Why Kratos Defense Stock Popped, Then Dropped - The Motley Fool",
+          "score": 0,
+          "keywords": [],
+          "date": "Mon, 16 Mar 2026 16:28:00 GMT"
+        },
+        {
+          "headline": "Why Kratos Defense Stock Popped, Then Dropped - Yahoo Finance",
+          "score": 0,
+          "keywords": [],
+          "date": "Mon, 16 Mar 2026 15:48:10 GMT"
+        },
+        {
+          "headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Tue, 17 Mar 2026 10:56:55 GMT"
+        },
+        {
+          "headline": "Fred Alger Management LLC Sells 156,297 Shares of Kratos Defense & Security Solutions, Inc. $KTOS - MarketBeat",
+          "score": -2,
+          "keywords": [
+            "sell"
+          ],
+          "date": "Tue, 17 Mar 2026 08:47:48 GMT"
+        },
+        {
+          "headline": "Kratos Defense Extends Tumble On $1.2 Billion Fundraising Plans - Investor's Business Daily",
+          "score": 0,
+          "keywords": [],
+          "date": "Fri, 27 Feb 2026 08:00:00 GMT"
+        },
+        {
+          "headline": "2 Defense Stocks to Buy in March - AOL.com",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Tue, 17 Mar 2026 03:12:10 GMT"
+        },
+        {
+          "headline": "Jarvis, Kratos defense director, sells $443k in KTOS stock - Investing.com",
+          "score": -2,
+          "keywords": [
+            "sell"
+          ],
+          "date": "Fri, 13 Mar 2026 23:52:45 GMT"
+        },
+        {
+          "headline": "2 Under-the-Radar Defense Stocks That Could Double as Military Budgets Surge - The Motley Fool",
+          "score": 2,
+          "keywords": [
+            "+surge"
+          ],
+          "date": "Sun, 15 Mar 2026 11:43:00 GMT"
+        },
+        {
+          "headline": "MIRAE ASSET GLOBAL ETFS HOLDINGS Ltd. Purchases 444,956 Shares of Kratos Defense & Security Solutions, Inc. $KTOS - MarketBeat",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 11:02:23 GMT"
+        },
+        {
+          "headline": "Kratos Defense & Security Solutions (NASDAQ:KTOS) Stock Price Up 2.3% - Time to Buy? - MarketBeat",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Mon, 16 Mar 2026 21:36:02 GMT"
+        }
+      ]
+    },
+    {
+      "ticker": "HL",
+      "score": 26,
+      "articles": 10,
+      "positive": 7,
+      "negative": 0,
+      "neutral": 3,
+      "top_headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget",
+      "details": [
+        {
+          "headline": "Hecla Mining (HL) Valuation Check After Record Revenue And Return To Profitability - simplywall.st",
+          "score": 5,
+          "keywords": [
+            "+revenue",
+            "+record",
+            "+profit"
+          ],
+          "date": "Tue, 17 Mar 2026 11:27:57 GMT"
+        },
+        {
+          "headline": "MIRAE ASSET GLOBAL ETFS HOLDINGS Ltd. Buys 6,472,566 Shares of Hecla Mining Company $HL - MarketBeat",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Tue, 17 Mar 2026 11:10:12 GMT"
+        },
+        {
+          "headline": "Hecla Mining Stock To $15? - Trefis",
+          "score": 0,
+          "keywords": [],
+          "date": "Thu, 12 Mar 2026 13:49:52 GMT"
+        },
+        {
+          "headline": "Hecla Mining Company (HL) Achieves Record Revenue and Bounces to Profitability on Robust Silver Operation - Yahoo Finance",
+          "score": 5,
+          "keywords": [
+            "+revenue",
+            "+record",
+            "+profit"
+          ],
+          "date": "Fri, 13 Mar 2026 07:44:08 GMT"
+        },
+        {
+          "headline": "Why Hecla Mining Dropped Again Today - The Motley Fool",
+          "score": 0,
+          "keywords": [],
+          "date": "Wed, 11 Mar 2026 17:43:00 GMT"
+        },
+        {
+          "headline": "Hecla Mining: Great Company, Wrong Price (NYSE:HL) - Seeking Alpha",
+          "score": 0,
+          "keywords": [],
+          "date": "Wed, 25 Feb 2026 08:00:00 GMT"
+        },
+        {
+          "headline": "Is It Too Late To Consider Hecla Mining (HL) After Its 256% One Year Surge - Sahm",
+          "score": 2,
+          "keywords": [
+            "+surge"
+          ],
+          "date": "Sat, 14 Mar 2026 21:40:19 GMT"
+        },
+        {
+          "headline": "Hecla Mining Co (NYSE:HL) Identified as a Strong Growth Candidate by Navellier's 'Little Book' Method - ChartMill",
+          "score": 4,
+          "keywords": [
+            "+strong",
+            "+growth"
+          ],
+          "date": "Mon, 16 Mar 2026 11:32:30 GMT"
+        },
+        {
+          "headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget",
+          "score": 6,
+          "keywords": [
+            "+breakthrough",
+            "+earnings",
+            "+record"
+          ],
+          "date": "Tue, 17 Mar 2026 00:34:04 GMT"
+        },
+        {
+          "headline": "Is 15.1% Fall In Hecla Mining (HL) Stock A Buying Opportunity? - Trefis",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Thu, 12 Mar 2026 13:53:12 GMT"
+        }
+      ]
+    },
+    {
+      "ticker": "MOS",
+      "score": -5,
+      "articles": 10,
+      "positive": 2,
+      "negative": 4,
+      "neutral": 4,
+      "top_headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st",
+      "details": [
+        {
+          "headline": "Moore Capital Management LP Cuts Stake in The Mosaic Company $MOS - MarketBeat",
+          "score": -1,
+          "keywords": [
+            "cuts"
+          ],
+          "date": "Tue, 17 Mar 2026 11:14:26 GMT"
+        },
+        {
+          "headline": "Why Mosaic Co Stock Is Quietly Surging Higher - TipRanks",
+          "score": 1,
+          "keywords": [
+            "+higher"
+          ],
+          "date": "Tue, 17 Mar 2026 16:18:58 GMT"
+        },
+        {
+          "headline": "Mosaic Co. stock underperforms Monday when compared to competitors - MarketWatch",
+          "score": -3,
+          "keywords": [
+            "underperform"
+          ],
+          "date": "Mon, 16 Mar 2026 20:30:00 GMT"
+        },
+        {
+          "headline": "The Mosaic Company (MOS) Faces Mixed Reviews as 2026 Forecast Looms - Yahoo Finance",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 30 Dec 2025 08:00:00 GMT"
+        },
+        {
+          "headline": "Mosaic (MOS) Analyst Rating: CIBC Raises Price Target to $32.00 - GuruFocus",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 18:44:44 GMT"
+        },
+        {
+          "headline": "Bank of Nova Scotia Cuts Stake in The Mosaic Company $MOS - MarketBeat",
+          "score": -1,
+          "keywords": [
+            "cuts"
+          ],
+          "date": "Tue, 17 Mar 2026 07:41:32 GMT"
+        },
+        {
+          "headline": "The Mosaic Company On My Investment Watchlist For Post-Iran War Recovery (NYSE:MOS) - Seeking Alpha",
+          "score": 0,
+          "keywords": [],
+          "date": "Wed, 11 Mar 2026 09:47:44 GMT"
+        },
+        {
+          "headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st",
+          "score": 2,
+          "keywords": [
+            "+dividend"
+          ],
+          "date": "Sun, 15 Mar 2026 13:29:46 GMT"
+        },
+        {
+          "headline": "Mosaic Co. stock underperforms Friday when compared to competitors - MarketWatch",
+          "score": -3,
+          "keywords": [
+            "underperform"
+          ],
+          "date": "Fri, 13 Mar 2026 20:30:00 GMT"
+        },
+        {
+          "headline": "Why Mosaic Co Stock Is Sliding Again Today - TipRanks",
+          "score": 0,
+          "keywords": [],
+          "date": "Mon, 16 Mar 2026 14:49:17 GMT"
+        }
+      ]
+    },
+    {
+      "ticker": "HAG.DE",
+      "score": 13,
+      "articles": 10,
+      "positive": 4,
+      "negative": 0,
+      "neutral": 6,
+      "top_headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS",
+      "details": [
+        {
+          "headline": "HENSOLDT Stock Forecast | Record Orders - Capital.com",
+          "score": 2,
+          "keywords": [
+            "+record"
+          ],
+          "date": "Tue, 17 Mar 2026 11:37:10 GMT"
+        },
+        {
+          "headline": "Defense Contractor Hensoldt Looks to Automotive Sector for Engineering Talent - primaryignition.com",
+          "score": 3,
+          "keywords": [
+            "+contract"
+          ],
+          "date": "Tue, 17 Mar 2026 11:30:20 GMT"
+        },
+        {
+          "headline": "Hensoldt (XTRA:HAG) Valuation Check After Recent Share Price Swings - Yahoo Finance",
+          "score": 0,
+          "keywords": [],
+          "date": "Sun, 15 Mar 2026 05:11:00 GMT"
+        },
+        {
+          "headline": "Is It Time To Reassess Hensoldt (XTRA:HAG) After Defense Sector Optimism? - simplywall.st",
+          "score": 0,
+          "keywords": [],
+          "date": "Sat, 14 Mar 2026 09:33:33 GMT"
+        },
+        {
+          "headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS",
+          "score": 6,
+          "keywords": [
+            "+expansion",
+            "+record",
+            "+surge"
+          ],
+          "date": "Tue, 17 Mar 2026 04:41:59 GMT"
+        },
+        {
+          "headline": "Hensoldt: Why The Market Is Too Focused On 2026 And Not 2030 (OTCMKTS:HAGHY) - Seeking Alpha",
+          "score": 0,
+          "keywords": [],
+          "date": "Thu, 08 Jan 2026 08:00:00 GMT"
+        },
+        {
+          "headline": "Hensoldt Shares: A Surge in Orders Tests Production Limits - primaryignition.com",
+          "score": 2,
+          "keywords": [
+            "+surge"
+          ],
+          "date": "Mon, 16 Mar 2026 08:24:34 GMT"
+        },
+        {
+          "headline": "HENSOLDT Stock Forecast | FY2025 Results and 2026 Guidance - Capital.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 10 Mar 2026 09:28:00 GMT"
+        },
+        {
+          "headline": "Hensoldt’s Strategic Push to Meet Soaring Defense Demand - primaryignition.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Fri, 13 Mar 2026 09:06:34 GMT"
+        },
+        {
+          "headline": "Hensoldt Stock Forecast 2025–2030 | Future Outlook - Capital.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Thu, 11 Dec 2025 08:00:00 GMT"
+        }
+      ]
+    },
+    {
+      "ticker": "TTE.PA",
+      "score": 4,
+      "articles": 10,
+      "positive": 2,
+      "negative": 0,
+      "neutral": 8,
+      "top_headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks",
+      "details": [
+        {
+          "headline": "TotalEnergies Share Price on Euronext - TotalEnergies.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Fri, 13 Mar 2026 07:00:00 GMT"
+        },
+        {
+          "headline": "TotalEnergies SE: Disclosure of Transactions in Own Shares - Yahoo Finance",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 07:00:00 GMT"
+        },
+        {
+          "headline": "What's Going On With TotalEnergies Stock Tuesday? - Benzinga",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 11:32:00 GMT"
+        },
+        {
+          "headline": "TotalEnergies Quiluma Start Up Adds LNG Diversity For Europe And Asia - simplywall.st",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 12:27:57 GMT"
+        },
+        {
+          "headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Tue, 17 Mar 2026 07:37:18 GMT"
+        },
+        {
+          "headline": "Is TotalEnergies SE (TTE) A Good Stock To Buy Now? - Yahoo Finance",
+          "score": 2,
+          "keywords": [
+            "+buy"
+          ],
+          "date": "Mon, 16 Mar 2026 01:46:00 GMT"
+        },
+        {
+          "headline": "New Angola gas project will ship LNG to Europe and Asia - Stock Titan",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 17 Mar 2026 08:26:00 GMT"
+        },
+        {
+          "headline": "Information for ADR holders - TotalEnergies.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Tue, 03 Mar 2026 08:00:00 GMT"
+        },
+        {
+          "headline": "What's Going On With TotalEnergies Stock Monday? - TotalEnergies (NYSE:TTE) - Benzinga",
+          "score": 0,
+          "keywords": [],
+          "date": "Mon, 16 Mar 2026 10:49:00 GMT"
+        },
+        {
+          "headline": "TotalEnergies announces the commencement of trading of its ordinary shares on the NYSE - TotalEnergies.com",
+          "score": 0,
+          "keywords": [],
+          "date": "Mon, 08 Dec 2025 08:00:00 GMT"
+        }
+      ]
+    }
+  ],
+  "portfolio_score": 55,
+  "portfolio_label": "BULLISH"
+}

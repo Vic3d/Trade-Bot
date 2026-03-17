@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-03-17T20:18:02.028147",
+  "date": "17.03.2026",
+  "sectors": [
+    {
+      "sector": "Energy",
+      "tickers": [
+        "OXY",
+        "TTE.PA",
+        "EQNR.OL",
+        "SHEL.L",
+        "ENI.MI"
+      ],
+      "perf_1w": 7.94,
+      "perf_1m": 22.65,
+      "perf_3m": 38.63,
+      "avg_rsi": 79.3,
+      "momentum": 18.49,
+      "signal": "🟢 STRONG TREND"
+    },
+    {
+      "sector": "Fertilizer",
+      "tickers": [
+        "MOS",
+        "CF"
+      ],
+      "perf_1w": 7.83,
+      "perf_1m": 11.67,
+      "perf_3m": 30.88,
+      "avg_rsi": 56.5,
+      "momentum": 13.59,
+      "signal": "🟢 STRONG TREND"
+    },
+    {
+      "sector": "Solar",
+      "tickers": [
+        "ENPH",
+        "PLUG"
+      ],
+      "perf_1w": 5.47,
+      "perf_1m": 12.02,
+      "perf_3m": 19.58,
+      "avg_rsi": 55.5,
+      "momentum": 10.26,
+      "signal": "🟢 STRONG TREND"
+    },
+    {
+      "sector": "Tanker",
+      "tickers": [
+        "FRO",
+        "DHT"
+      ],
+      "perf_1w": -6.47,
+      "perf_1m": 9.45,
+      "perf_3m": 43.9,
+      "avg_rsi": 51.4,
+      "momentum": 8.38,
+      "signal": "🟢 STRONG TREND"
+    },
+    {
+      "sector": "Defense",
+      "tickers": [
+        "KTOS",
+        "HII",
+        "HAG.DE",
+        "BA.L",
+        "RHM.DE"
+      ],
+      "perf_1w": 1.61,
+      "perf_1m": 3.28,
+      "perf_3m": 19.92,
+      "avg_rsi": 53.4,
+      "momentum": 5.77,
+      "signal": "🟢 STRONG TREND"
+    },
+    {
+      "sector": "Mining",
+      "tickers": [
+        "RIO.L",
+        "BHP.L",
+        "GLEN.L",
+        "MP",
+        "UUUU"
+      ],
+      "perf_1w": -3.47,
+      "perf_1m": -1.67,
+      "perf_3m": 22.46,
+      "avg_rsi": 46.3,
+      "momentum": 2.25,
+      "signal": "🟢 MODERATE"
+    },
+    {
+      "sector": "Pharma",
+      "tickers": [
+        "BAYN.DE",
+        "BAS.DE"
+      ],
+      "perf_1w": 3.26,
+      "perf_1m": -8.79,
+      "perf_3m": 9.37,
+      "avg_rsi": 50.4,
+      "momentum": 0.87,
+      "signal": "🟡 STABLE"
+    },
+    {
+      "sector": "Tech",
+      "tickers": [
+        "NVDA",
+        "MSFT",
+        "PLTR"
+      ],
+      "perf_1w": -0.41,
+      "perf_1m": 5.44,
+      "perf_3m": -9.45,
+      "avg_rsi": 48.9,
+      "momentum": -0.46,
+      "signal": "🟡 LAGGING"
+    },
+    {
+      "sector": "Metals",
+      "tickers": [
+        "HL",
+        "PAAS",
+        "GOLD",
+        "WPM",
+        "CLF",
+        "AAL.L"
+      ],
+      "perf_1w": -8.28,
+      "perf_1m": -12.0,
+      "perf_3m": 10.44,
+      "avg_rsi": 37.3,
+      "momentum": -5.65,
+      "signal": "🔴 AVOID"
+    }
+  ],
+  "recommendations": {
+    "overweight": [
+      "Energy",
+      "Fertilizer",
+      "Solar",
+      "Tanker",
+      "Defense"
+    ],
+    "underweight": [
+      "Metals"
+    ],
+    "watch": []
+  }
+}

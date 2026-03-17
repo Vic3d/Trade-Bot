@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-03-17T19:48:13.397643",
+  "macro": {
+    "VIX": {
+      "price": 23.51,
+      "rsi": 52.9
+    },
+    "WTI": {
+      "price": 93.5,
+      "rsi": 67.9
+    },
+    "EUR/USD": {
+      "price": 1.14,
+      "rsi": 29.0
+    }
+  },
+  "warnings": [
+    "NVDA (Nvidia) Score unter 50 → Position unter Beobachtung",
+    "MSFT (Microsoft) Score unter 50 → Position unter Beobachtung",
+    "EQNR (Equinor ASA) RSI 79 über 70 → überkauft, Trailing prüfen",
+    "BAYN.DE (Bayer AG) Score unter 50 → Position unter Beobachtung",
+    "RIO.L (Rio Tinto) Score unter 50 → Position unter Beobachtung"
+  ],
+  "top_picks": [
+    {
+      "ticker": "HAL",
+      "score": 85,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "OXY",
+      "score": 75,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "CF",
+      "score": 75,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "DHT",
+      "score": 65,
+      "strategies": [
+        "PS2"
+      ]
+    },
+    {
+      "ticker": "HII",
+      "score": 65,
+      "strategies": [
+        "PS3"
+      ]
+    },
+    {
+      "ticker": "MOS",
+      "score": 65,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "BAS.DE",
+      "score": 65,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "BA.L",
+      "score": 65,
+      "strategies": [
+        "PS3"
+      ]
+    },
+    {
+      "ticker": "GLEN.L",
+      "score": 65,
+      "strategies": [
+        "PS1"
+      ]
+    },
+    {
+      "ticker": "FRO",
+      "score": 60,
+      "strategies": [
+        "PS2"
+      ]
+    }
+  ]
+}

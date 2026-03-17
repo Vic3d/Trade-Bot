@@ -1,0 +1,169 @@
+{
+  "timestamp": "2026-03-17T21:38:06.035598",
+  "date": "2026-03-17 21:38",
+  "regime": "ELEVATED",
+  "vix": 23.51,
+  "position_factor": 0.75,
+  "exits": [
+    {
+      "ticker": "FRO",
+      "entry": 26.4,
+      "exit": 31.8,
+      "pnl_eur": 5.16,
+      "pnl_pct": 20.6,
+      "reason": "TARGET HIT @ 31.83"
+    },
+    {
+      "ticker": "DHT",
+      "entry": 14.74,
+      "exit": 17.47,
+      "pnl_eur": 15.54,
+      "pnl_pct": 18.7,
+      "reason": "TARGET HIT @ 17.49"
+    },
+    {
+      "ticker": "KTOS",
+      "entry": 76.57,
+      "exit": 89.44,
+      "pnl_eur": 5.82,
+      "pnl_pct": 16.9,
+      "reason": "TARGET HIT @ 89.53"
+    },
+    {
+      "ticker": "HL",
+      "entry": 17.15,
+      "exit": 19.86,
+      "pnl_eur": 9.64,
+      "pnl_pct": 15.9,
+      "reason": "TARGET HIT @ 19.88"
+    }
+  ],
+  "trailing_updates": [
+    {
+      "ticker": "OXY",
+      "pnl_pct": 13.1,
+      "old_stop": 45.57,
+      "new_stop": 53.16,
+      "reason": "+10% → Trail auf +5%"
+    },
+    {
+      "ticker": "HII",
+      "pnl_pct": 14.6,
+      "old_stop": 327.28,
+      "new_stop": 381.82,
+      "reason": "+10% → Trail auf +5%"
+    },
+    {
+      "ticker": "PAAS",
+      "pnl_pct": 14.9,
+      "old_stop": 44.18,
+      "new_stop": 51.54,
+      "reason": "+10% → Trail auf +5%"
+    },
+    {
+      "ticker": "MOS",
+      "pnl_pct": 9.0,
+      "old_stop": 22.5,
+      "new_stop": 25.38,
+      "reason": "+5% → Stop auf Breakeven"
+    }
+  ],
+  "thesis_broken": [],
+  "new_entries": [],
+  "status": {
+    "timestamp": "2026-03-17T21:38:06.035551",
+    "date": "2026-03-17 21:38",
+    "cash": 635.88,
+    "invested": 555.0,
+    "unrealized_pnl": 24.34,
+    "realized_pnl": 55.09,
+    "portfolio_value": 1233.21,
+    "performance_pct": 23.3,
+    "positions": [
+      {
+        "id": 1,
+        "ticker": "OXY",
+        "strategy": "PS1",
+        "entry": 50.63,
+        "current": 57.25,
+        "shares": 1.9751,
+        "stop": 53.16,
+        "target": 58.22,
+        "pnl_eur": 10.08,
+        "pnl_pct": 13.1,
+        "value": 113.07
+      },
+      {
+        "id": 5,
+        "ticker": "HII",
+        "strategy": "PS3",
+        "entry": 363.64,
+        "current": 416.59,
+        "shares": 0.2062,
+        "stop": 381.82,
+        "target": 418.19,
+        "pnl_eur": 7.92,
+        "pnl_pct": 14.6,
+        "value": 85.9
+      },
+      {
+        "id": 7,
+        "ticker": "PAAS",
+        "strategy": "PS1",
+        "entry": 49.09,
+        "current": 56.41,
+        "shares": 1.6297,
+        "stop": 51.54,
+        "target": 56.45,
+        "pnl_eur": 8.93,
+        "pnl_pct": 14.9,
+        "value": 91.93
+      },
+      {
+        "id": 8,
+        "ticker": "MOS",
+        "strategy": "PS1",
+        "entry": 25.38,
+        "current": 27.67,
+        "shares": 3.9402,
+        "stop": 25.38,
+        "target": 32.0,
+        "pnl_eur": 6.02,
+        "pnl_pct": 9.0,
+        "value": 109.03
+      },
+      {
+        "id": 9,
+        "ticker": "HAG.DE",
+        "strategy": "PS3",
+        "entry": 82.15,
+        "current": 82.3,
+        "shares": 1.2173,
+        "stop": 74.0,
+        "target": 98.0,
+        "pnl_eur": -2.82,
+        "pnl_pct": 0.2,
+        "value": 100.18
+      },
+      {
+        "id": 10,
+        "ticker": "TTE.PA",
+        "strategy": "PS1",
+        "entry": 74.48,
+        "current": 72.4,
+        "shares": 1.3428,
+        "stop": 67.5,
+        "target": 88.0,
+        "pnl_eur": -5.79,
+        "pnl_pct": -2.8,
+        "value": 97.22
+      }
+    ],
+    "open_count": 6,
+    "closed_count": 4,
+    "win_rate": 100.0,
+    "wins": 4,
+    "losses": 0
+  },
+  "output": "\n=== AUTO-TRADER RUN — 2026-03-17 21:38 ===\n📊 REGIME: ELEVATED (VIX 23.51) | Position-Size: 75%\n\n🔴 EXITS:\n  🟢 FRO: TARGET HIT @ 31.83 | Entry 26.40€ | P&L +20.6% (+5.16€)\n  🟢 DHT: TARGET HIT @ 17.49 | Entry 14.74€ | P&L +18.7% (+15.54€)\n  🟢 KTOS: TARGET HIT @ 89.53 | Entry 76.57€ | P&L +16.9% (+5.82€)\n  🟢 HL: TARGET HIT @ 19.88 | Entry 17.15€ | P&L +15.9% (+9.64€)\n\n🟢 TRAILING:\n  - OXY: +13.1% → +10% → Trail auf +5% (Stop 45.57 → 53.16)\n  - HII: +14.6% → +10% → Trail auf +5% (Stop 327.28 → 381.82)\n  - PAAS: +14.9% → +10% → Trail auf +5% (Stop 44.18 → 51.54)\n  - MOS: +9.0% → +5% → Stop auf Breakeven (Stop 22.50 → 25.38)\n\n🆕 NEW ENTRIES: [keine — 10/2 diese Woche]\n\n💰 FUND STATUS:\n  Cash: 635.88€ | Invested: 555.00€ | Unrealized: +24.34€ | Realized: +55.09€\n  Portfolio Value: ~1233€ | Performance: +23.3%\n\n📋 JOURNAL:\n  6 offene Trades | 4 geschlossene | Win-Rate: 100% (4/4)"
+}
