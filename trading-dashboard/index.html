@@ -5,3442 +5,497 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎩 Albert Trading System</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #1a1a2e; color: #e0e0e0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; padding: 12px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1a1a2e; color:#e0e0e0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
 
-.header {
-  background: linear-gradient(135deg, #16213e 0%, #1a1a3e 100%);
-  border-radius: 12px; padding: 20px 28px; margin-bottom: 16px;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-  border: 1px solid #2a2a4e;
-}
-.header h1 { font-size: 1.5em; letter-spacing: 0.5px; }
-.header .meta { font-size: 1.05em; color: #ccc; margin-top: 4px; }
-.regime-badge {
-  padding: 8px 20px; border-radius: 24px; font-weight: bold; font-size: 1em;
-  border: 2px solid;
-}
-.regime-CALM { background: #00ff8820; color: #00ff88; border-color: #00ff8855; }
-.regime-NORMAL { background: #4488ff20; color: #4488ff; border-color: #4488ff55; }
-.regime-ELEVATED { background: #ffaa0020; color: #ffaa00; border-color: #ffaa0055; }
-.regime-PANIC { background: #ff444420; color: #ff4444; border-color: #ff444455; }
-.regime-UNKNOWN { background: #66666620; color: #aaa; border-color: #66666655; }
+/* Header */
+.header { background:#16213e; padding:20px 24px; border-bottom:2px solid #0f3460; }
+.header h1 { font-size:1.5em; margin-bottom:8px; }
+.header .subtitle { color:#888; font-size:0.9em; }
+.regime-badge { display:inline-block; padding:4px 12px; border-radius:12px; font-weight:bold; font-size:0.85em; }
 
-.full-width { grid-column: 1 / -1; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+/* Tabs */
+.tabs { display:flex; background:#16213e; border-bottom:2px solid #0f3460; position:sticky; top:0; z-index:100; }
+.tab { padding:16px 32px; cursor:pointer; font-size:1.1em; font-weight:600; color:#888; border-bottom:3px solid transparent; transition:all 0.2s; }
+.tab:hover { color:#e0e0e0; background:rgba(255,255,255,0.05); }
+.tab.active { color:#00ff88; border-bottom-color:#00ff88; }
+.tab-content { display:none; padding:24px; }
+.tab-content.active { display:block; }
 
-.card {
-  background: #16213e; border-radius: 12px; padding: 18px;
-  border: 1px solid #2a2a4e; position: relative; overflow: hidden;
-}
-.card h2 {
-  font-size: 1.05em; margin-bottom: 14px; color: #ddd;
-  padding-bottom: 8px; border-bottom: 1px solid #2a2a4e;
-}
-.chart-container {
-  width: 100%; position: relative;
-}
-.chart-container canvas {
-  width: 100%; height: 100%;
-}
+/* Cards */
+.cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin-bottom:24px; }
+.card { background:#16213e; border-radius:12px; padding:20px; text-align:center; }
+.card .label { color:#888; font-size:0.8em; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.card .value { font-size:1.8em; font-weight:bold; }
+.card .sub { color:#888; font-size:0.85em; margin-top:4px; }
+.green { color:#00ff88; }
+.red { color:#ff4444; }
+.yellow { color:#ffaa00; }
 
-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
-th { text-align: left; padding: 6px 8px; border-bottom: 1px solid #333; color: #aaa; font-weight: 600; }
-td { padding: 5px 8px; border-bottom: 1px solid #222; }
-.green { color: #00ff88; }
-.red { color: #ff4444; }
-.yellow { color: #ffaa00; }
-.neutral { color: #aaa; }
+/* Tables */
+.section { margin-bottom:32px; }
+.section h2 { font-size:1.2em; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid #2a2a4a; }
+table { width:100%; border-collapse:collapse; font-size:0.9em; }
+th { background:#0f3460; padding:12px; text-align:left; font-weight:600; font-size:0.85em; text-transform:uppercase; letter-spacing:0.5px; }
+td { padding:10px 12px; border-bottom:1px solid #2a2a4a; }
+tr:hover { background:rgba(255,255,255,0.03); }
+tr:nth-child(even) { background:rgba(255,255,255,0.02); }
 
-.tooltip {
-  position: absolute; background: #0d1117ee; color: #e0e0e0; padding: 8px 12px;
-  border-radius: 6px; font-size: 0.8em; pointer-events: none; display: none;
-  border: 1px solid #444; z-index: 100; white-space: nowrap;
+/* Badges */
+.badge { display:inline-block; padding:2px 10px; border-radius:10px; font-size:0.8em; font-weight:bold; color:#fff; }
+
+/* Explanation boxes */
+.explain { background:#16213e; border-left:4px solid #3498db; padding:16px; border-radius:0 8px 8px 0; margin-bottom:24px; font-size:0.9em; line-height:1.6; }
+.explain strong { color:#3498db; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cards { grid-template-columns:repeat(2, 1fr); }
+    .tab { padding:12px 16px; font-size:0.95em; }
+    table { font-size:0.8em; }
+    td, th { padding:8px 6px; }
+    .header { padding:16px; }
 }
-
-.timestamp { text-align: center; color: #555; font-size: 0.8em; margin-top: 16px; }
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
-  <div>
-    <h1>🎩 ALBERT TRADING SYSTEM</h1>
-    <div class="meta">
-      Portfolio: <strong>1233€</strong> | Cash: 636€ |
-      P&L: <span class="green">+23.3%</span>
+    <h1>🎩 Albert Trading System</h1>
+    <div class="subtitle">
+        Stand: 17.03.2026 22:27 &nbsp;|&nbsp; 
+        VIX: <strong>23.51</strong> &nbsp;
+        <span class="regime-badge" style="background:#ffaa00">ELEVATED</span>
     </div>
-  </div>
-  <div class="regime-badge regime-ELEVATED">VIX: 23.51 — ELEVATED</div>
 </div>
 
-<div class="grid">
-
-  <!-- Chart 1: Portfolio Performance (full width) -->
-  <div class="card full-width">
-    <h2>📈 Portfolio-Performance (30 Tage)</h2>
-    <div class="chart-container" style="height: 280px;">
-      <canvas id="chart-performance"></canvas>
-      <div class="tooltip" id="tooltip-performance"></div>
-    </div>
-  </div>
-
-  <!-- Chart 3: Positions P&L -->
-  <div class="card">
-    <h2>💰 Positions-P&L</h2>
-    <div class="chart-container" style="height: 260px;">
-      <canvas id="chart-pnl"></canvas>
-      <div class="tooltip" id="tooltip-pnl"></div>
-    </div>
-  </div>
-
-  <!-- Chart 8: Portfolio Allocation Donut -->
-  <div class="card">
-    <h2>🍩 Portfolio-Allokation</h2>
-    <div class="chart-container" style="height: 260px;">
-      <canvas id="chart-allocation"></canvas>
-      <div class="tooltip" id="tooltip-allocation"></div>
-    </div>
-  </div>
-
-  <!-- Chart 2: Sector Rotation -->
-  <div class="card">
-    <h2>🔄 Sektor-Rotation (Momentum)</h2>
-    <div class="chart-container" style="height: 280px;">
-      <canvas id="chart-sectors"></canvas>
-      <div class="tooltip" id="tooltip-sectors"></div>
-    </div>
-  </div>
-
-  <!-- Chart 5: Strategy Performance -->
-  <div class="card">
-    <h2>🧪 Strategie-Performance</h2>
-    <div class="chart-container" style="height: 280px;">
-      <canvas id="chart-strategies"></canvas>
-      <div class="tooltip" id="tooltip-strategies"></div>
-    </div>
-  </div>
-
-  <!-- Chart 4: Sentiment Barometer -->
-  <div class="card">
-    <h2>📰 Sentiment-Barometer</h2>
-    <div class="chart-container" style="height: 260px;">
-      <canvas id="chart-sentiment"></canvas>
-      <div class="tooltip" id="tooltip-sentiment"></div>
-    </div>
-  </div>
-
-  <!-- Chart 6: Correlation Heatmap -->
-  <div class="card">
-    <h2>🔗 Korrelations-Heatmap</h2>
-    <div class="chart-container" style="height: 300px;">
-      <canvas id="chart-correlations"></canvas>
-      <div class="tooltip" id="tooltip-correlations"></div>
-    </div>
-  </div>
-
-  <!-- Chart 7: Regime Timeline (full width) -->
-  <div class="card full-width">
-    <h2>🌡️ Regime-Timeline (30 Tage)</h2>
-    <div class="chart-container" style="height: 100px;">
-      <canvas id="chart-regime"></canvas>
-      <div class="tooltip" id="tooltip-regime"></div>
-    </div>
-  </div>
-
-  <!-- Positions Table -->
-  <div class="card">
-    <h2>📈 Positionen</h2>
-    <table>
-      <thead><tr><th>Ticker</th><th>Strat</th><th>Entry</th><th>Aktuell</th><th>P&L</th><th>Stop</th></tr></thead>
-      <tbody id="positions-body"></tbody>
-    </table>
-  </div>
-
-  <!-- Last Trades -->
-  <div class="card">
-    <h2>📓 Letzte Trades</h2>
-    <div id="last-trades"></div>
-  </div>
-
+<!-- Tab Navigation -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('paper')">🧪 Paper Trades</div>
+    <div class="tab" onclick="switchTab('real')">📈 Echtes Portfolio</div>
 </div>
 
-<div class="timestamp">Generiert: 17.03.2026 21:45 CET | Alle Daten aus Albert Trading System</div>
+<!-- TAB: Paper Trades -->
+<div id="tab-paper" class="tab-content active">
+    
+    <!-- Was bedeuten die Zahlen? -->
+    <div class="explain">
+        <strong>💡 So liest du das Dashboard:</strong><br>
+        Albert verwaltet ein imaginäres Portfolio mit 1.000€ Startkapital. 
+        Er kauft und verkauft Aktien nach 5 Strategien (PS1–PS5). 
+        Jeder Trade hat einen <strong>Stop</strong> (Verlustgrenze) und ein <strong>Ziel</strong> (Gewinnziel). 
+        <strong>Win-Rate</strong> = wie viel Prozent der Trades profitabel waren.
+    </div>
+    
+    <!-- Fund Overview Cards -->
+    <div class="cards">
+        <div class="card">
+            <div class="label">Startkapital</div>
+            <div class="value">1.000€</div>
+        </div>
+        <div class="card">
+            <div class="label">Aktueller Wert</div>
+            <div class="value green">1191€</div>
+            <div class="sub green">+19.1%</div>
+        </div>
+        <div class="card">
+            <div class="label">Bares Geld</div>
+            <div class="value">636€</div>
+            <div class="sub">64% vom Fund</div>
+        </div>
+        <div class="card">
+            <div class="label">Realisierter Gewinn</div>
+            <div class="value green">+55€</div>
+            <div class="sub">aus 4 geschl. Trades</div>
+        </div>
+        <div class="card">
+            <div class="label">Win-Rate</div>
+            <div class="value green">100%</div>
+            <div class="sub">4 ✅ / 0 ❌</div>
+        </div>
+        <div class="card">
+            <div class="label">Offene Positionen</div>
+            <div class="value">6</div>
+            <div class="sub">555€ investiert</div>
+        </div>
+    </div>
+    
+    <!-- Geschlossene Trades -->
+    <div class="section">
+        <h2>💰 Abgeschlossene Trades — Was hat Albert gehandelt?</h2>
+        <div class="explain">
+            <strong>Buy-In</strong> = Einkaufspreis &nbsp;|&nbsp; 
+            <strong>Exit</strong> = Verkaufspreis &nbsp;|&nbsp; 
+            <strong>P&L</strong> = Gewinn oder Verlust &nbsp;|&nbsp;
+            ✅ = Gewinn &nbsp;|&nbsp; ❌ = Verlust
+        </div>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Aktie</th>
+                <th>Strategie</th>
+                <th>Buy-In</th>
+                <th>Exit</th>
+                <th>Stück</th>
+                <th>Gewinn/Verlust</th>
+                <th>P&L %</th>
+                <th>Grund</th>
+                <th>Datum</th>
+            </tr>
+            <tr>
+            <td>1</td>
+            <td><strong>FRO</strong></td>
+            <td><span class="badge" style="background:#e67e22">PS2</span></td>
+            <td>26.40€</td>
+            <td>31.80€</td>
+            <td>1.5111</td>
+            <td style="color:#00ff88;font-weight:bold">✅ +5.16€</td>
+            <td style="color:#00ff88;font-weight:bold">+20.4%</td>
+            <td>🎯 Ziel erreicht @ 31.83</td>
+            <td>2026-03-17</td>
+        </tr><tr>
+            <td>2</td>
+            <td><strong>DHT</strong></td>
+            <td><span class="badge" style="background:#e67e22">PS2</span></td>
+            <td>14.74€</td>
+            <td>17.47€</td>
+            <td>6.7843</td>
+            <td style="color:#00ff88;font-weight:bold">✅ +15.54€</td>
+            <td style="color:#00ff88;font-weight:bold">+18.5%</td>
+            <td>🎯 Ziel erreicht @ 17.49</td>
+            <td>2026-03-17</td>
+        </tr><tr>
+            <td>3</td>
+            <td><strong>KTOS</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span></td>
+            <td>76.57€</td>
+            <td>89.44€</td>
+            <td>0.6856</td>
+            <td style="color:#00ff88;font-weight:bold">✅ +5.82€</td>
+            <td style="color:#00ff88;font-weight:bold">+16.8%</td>
+            <td>🎯 Ziel erreicht @ 89.53</td>
+            <td>2026-03-17</td>
+        </tr><tr>
+            <td>4</td>
+            <td><strong>HL</strong></td>
+            <td><span class="badge" style="background:#3498db">PS1</span></td>
+            <td>17.15€</td>
+            <td>19.86€</td>
+            <td>4.6647</td>
+            <td style="color:#00ff88;font-weight:bold">✅ +9.64€</td>
+            <td style="color:#00ff88;font-weight:bold">+15.8%</td>
+            <td>🎯 Ziel erreicht @ 19.88</td>
+            <td>2026-03-17</td>
+        </tr>
+        </table>
+        
+    </div>
+    
+    <!-- Offene Positionen -->
+    <div class="section">
+        <h2>📊 Offene Positionen — Was hält Albert gerade?</h2>
+        <div class="explain">
+            <strong>Stop</strong> = Wenn der Kurs hierhin fällt, wird automatisch verkauft (Verlustbegrenzung)<br>
+            <strong>Ziel</strong> = Wenn der Kurs hierhin steigt, wird Gewinn mitgenommen<br>
+            <strong>Volumen</strong> = Wie viel Geld steckt in dieser Position
+        </div>
+        <table>
+            <tr>
+                <th>Aktie</th>
+                <th>Strategie</th>
+                <th>Einkauf</th>
+                <th>Stück</th>
+                <th>Stop</th>
+                <th>Ziel</th>
+                <th>Volumen</th>
+            </tr>
+            <tr>
+            <td><strong>HAG.DE</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
+            <td>82.15€</td>
+            <td>1.2173</td>
+            <td>74.00€</td>
+            <td>98.00€</td>
+            <td>100€</td>
+        </tr><tr>
+            <td><strong>HII</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
+            <td>363.64€</td>
+            <td>0.2062</td>
+            <td>381.82€</td>
+            <td>418.19€</td>
+            <td>75€</td>
+        </tr><tr>
+            <td><strong>MOS</strong></td>
+            <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
+            <td>25.38€</td>
+            <td>3.9402</td>
+            <td>25.38€</td>
+            <td>32.00€</td>
+            <td>100€</td>
+        </tr><tr>
+            <td><strong>OXY</strong></td>
+            <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
+            <td>50.63€</td>
+            <td>1.9751</td>
+            <td>53.16€</td>
+            <td>58.22€</td>
+            <td>100€</td>
+        </tr><tr>
+            <td><strong>PAAS</strong></td>
+            <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
+            <td>49.09€</td>
+            <td>1.6297</td>
+            <td>51.54€</td>
+            <td>56.45€</td>
+            <td>80€</td>
+        </tr><tr>
+            <td><strong>TTE.PA</strong></td>
+            <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
+            <td>74.48€</td>
+            <td>1.3428</td>
+            <td>67.50€</td>
+            <td>88.00€</td>
+            <td>100€</td>
+        </tr>
+        </table>
+    </div>
+    
+    <!-- Strategie-Übersicht -->
+    <div class="section">
+        <h2>🧠 Strategie-Übersicht — Welche Strategie funktioniert?</h2>
+        <div class="explain">
+            Albert handelt nach 5 Strategien. Jede hat eine andere These warum bestimmte Aktien steigen sollten.<br>
+            <strong>Win-Rate</strong> = Prozent der profitablen Trades. Über 50% = die Strategie funktioniert.
+        </div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Strategie</th>
+                <th>Trades</th>
+                <th>✅</th>
+                <th>❌</th>
+                <th>Win-Rate</th>
+                <th>⌀ Gewinn</th>
+                <th>⌀ Verlust</th>
+                <th>Gesamt</th>
+            </tr>
+            <tr>
+            <td><span class="badge" style="background:#3498db">PS1</span></td>
+            <td>Iran/Öl</td>
+            <td>1</td>
+            <td style="color:#00ff88">1</td>
+            <td style="color:#ff4444">0</td>
+            <td style="color:#00ff88;font-weight:bold">
+                100%
+                <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
+                    <div style="background:#00ff88;width:100.0%;height:8px;border-radius:4px"></div>
+                </div>
+            </td>
+            <td style="color:#00ff88">+15.8%</td>
+            <td style="color:#ff4444">0.0%</td>
+            <td style="color:#00ff88;font-weight:bold">+9.64€</td>
+        </tr><tr>
+            <td><span class="badge" style="background:#e67e22">PS2</span></td>
+            <td>Tanker-Lag</td>
+            <td>2</td>
+            <td style="color:#00ff88">2</td>
+            <td style="color:#ff4444">0</td>
+            <td style="color:#00ff88;font-weight:bold">
+                100%
+                <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
+                    <div style="background:#00ff88;width:100.0%;height:8px;border-radius:4px"></div>
+                </div>
+            </td>
+            <td style="color:#00ff88">+19.5%</td>
+            <td style="color:#ff4444">0.0%</td>
+            <td style="color:#00ff88;font-weight:bold">+20.70€</td>
+        </tr><tr>
+            <td><span class="badge" style="background:#2ecc71">PS3</span></td>
+            <td>NATO/Defense</td>
+            <td>1</td>
+            <td style="color:#00ff88">1</td>
+            <td style="color:#ff4444">0</td>
+            <td style="color:#00ff88;font-weight:bold">
+                100%
+                <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
+                    <div style="background:#00ff88;width:100.0%;height:8px;border-radius:4px"></div>
+                </div>
+            </td>
+            <td style="color:#00ff88">+16.8%</td>
+            <td style="color:#ff4444">0.0%</td>
+            <td style="color:#00ff88;font-weight:bold">+5.82€</td>
+        </tr><tr>
+            <td><span class="badge" style="background:#f1c40f">PS4</span></td>
+            <td>Edelmetalle</td>
+            <td>0</td>
+            <td style="color:#00ff88">0</td>
+            <td style="color:#ff4444">0</td>
+            <td style="color:#ff4444;font-weight:bold">
+                0%
+                <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
+                    <div style="background:#ff4444;width:5%;height:8px;border-radius:4px"></div>
+                </div>
+            </td>
+            <td style="color:#00ff88">+0.0%</td>
+            <td style="color:#ff4444">0.0%</td>
+            <td style="color:#00ff88;font-weight:bold">+0.00€</td>
+        </tr><tr>
+            <td><span class="badge" style="background:#8b4513">PS5</span></td>
+            <td>Dünger/Agrar</td>
+            <td>0</td>
+            <td style="color:#00ff88">0</td>
+            <td style="color:#ff4444">0</td>
+            <td style="color:#ff4444;font-weight:bold">
+                0%
+                <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
+                    <div style="background:#ff4444;width:5%;height:8px;border-radius:4px"></div>
+                </div>
+            </td>
+            <td style="color:#00ff88">+0.0%</td>
+            <td style="color:#ff4444">0.0%</td>
+            <td style="color:#00ff88;font-weight:bold">+0.00€</td>
+        </tr>
+        </table>
+    </div>
+    
+</div>
 
+<!-- TAB: Echtes Portfolio -->
+<div id="tab-real" class="tab-content">
+    
+    <div class="explain">
+        <strong>💡 Victors echtes Portfolio.</strong> Diese Positionen sind mit echtem Geld in Trade Republic gekauft. 
+        Albert überwacht sie und warnt bei Problemen.
+    </div>
+    
+    <div class="section">
+        <h2>📈 Aktive Positionen</h2>
+        <div class="explain">
+            <strong>Entry</strong> = Kaufpreis &nbsp;|&nbsp; 
+            <strong>Stop</strong> = Automatischer Verkauf bei Verlust &nbsp;|&nbsp; 
+            <strong>Ziel</strong> = Gewinnziel &nbsp;|&nbsp;
+            <span style="color:#ff4444">⚠️ KEIN STOP</span> = Gefährlich! Ungeschützte Position.
+        </div>
+        <table>
+            <tr>
+                <th>Ticker</th>
+                <th>Name</th>
+                <th>Entry</th>
+                <th>Stop</th>
+                <th>Ziel</th>
+                <th>Notiz</th>
+            </tr>
+            <tr style="background:rgba(255,68,68,0.1)">
+            <td><strong>NVDA</strong></td>
+            <td>Nvidia</td>
+            <td>167.88€</td>
+            <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
+            <td>—</td>
+            <td style="font-size:0.85em;color:#888">HALTEN bis Earnings 27.05.2026</td>
+        </tr><tr >
+            <td><strong>MSFT</strong></td>
+            <td>Microsoft</td>
+            <td>351.85€</td>
+            <td>338.0€</td>
+            <td>387€</td>
+            <td style="font-size:0.85em;color:#888"></td>
+        </tr><tr >
+            <td><strong>PLTR</strong></td>
+            <td>Palantir</td>
+            <td>132.11€</td>
+            <td>127.0€</td>
+            <td>159€</td>
+            <td style="font-size:0.85em;color:#888">Stop nachgezogen 09.03.</td>
+        </tr><tr >
+            <td><strong>EQNR</strong></td>
+            <td>Equinor ASA</td>
+            <td>27.04€</td>
+            <td>30.0€</td>
+            <td>—</td>
+            <td style="font-size:0.85em;color:#888">Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuf</td>
+        </tr><tr >
+            <td><strong>BAYN.DE</strong></td>
+            <td>Bayer AG</td>
+            <td>39.95€</td>
+            <td>38.0€</td>
+            <td>44€</td>
+            <td style="font-size:0.85em;color:#888">Stop real in TR</td>
+        </tr><tr >
+            <td><strong>RIO.L</strong></td>
+            <td>Rio Tinto</td>
+            <td>76.92€</td>
+            <td>73.0€</td>
+            <td>85€</td>
+            <td style="font-size:0.85em;color:#888">⚠️ Stop 73€ in TR setzen!</td>
+        </tr><tr style="background:rgba(255,68,68,0.1)">
+            <td><strong>A2QQ9R</strong></td>
+            <td>Invesco Solar Energy ETF</td>
+            <td>22.4€</td>
+            <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
+            <td>28€</td>
+            <td style="font-size:0.85em;color:#888">⚠️ KEIN STOP — Breakeven 22,40€ setzen!</td>
+        </tr><tr >
+            <td><strong>A3D42Y</strong></td>
+            <td>VanEck Oil Services ETF</td>
+            <td>27.9€</td>
+            <td>24.0€</td>
+            <td>—</td>
+            <td style="font-size:0.85em;color:#888"></td>
+        </tr><tr >
+            <td><strong>A14WU5</strong></td>
+            <td>L&G Cyber Security ETF</td>
+            <td>28.8€</td>
+            <td>25.95€</td>
+            <td>—</td>
+            <td style="font-size:0.85em;color:#888">Stop 2% weg — eng</td>
+        </tr><tr >
+            <td><strong>A2DWAW</strong></td>
+            <td>iShares Biotech ETF</td>
+            <td>7.0€</td>
+            <td>6.3€</td>
+            <td>—</td>
+            <td style="font-size:0.85em;color:#888"></td>
+        </tr>
+        </table>
+    </div>
+    
+    <div class="cards" style="margin-top:24px">
+        <div class="card">
+            <div class="label">Markt-Regime</div>
+            <div class="value" style="color:#ffaa00">ELEVATED</div>
+            <div class="sub">VIX: 23.51</div>
+        </div>
+        <div class="card">
+            <div class="label">Positionen</div>
+            <div class="value">10</div>
+            <div class="sub">aktiv</div>
+        </div>
+        <div class="card">
+            <div class="label">Ohne Stop ⚠️</div>
+            <div class="value red">2</div>
+            <div class="sub">ungeschützt</div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
 <script>
-const DATA = {
-  "auto_trader": {
-    "timestamp": "2026-03-17T21:38:06.035598",
-    "date": "2026-03-17 21:38",
-    "regime": "ELEVATED",
-    "vix": 23.51,
-    "position_factor": 0.75,
-    "exits": [
-      {
-        "ticker": "FRO",
-        "entry": 26.4,
-        "exit": 31.8,
-        "pnl_eur": 5.16,
-        "pnl_pct": 20.6,
-        "reason": "TARGET HIT @ 31.83"
-      },
-      {
-        "ticker": "DHT",
-        "entry": 14.74,
-        "exit": 17.47,
-        "pnl_eur": 15.54,
-        "pnl_pct": 18.7,
-        "reason": "TARGET HIT @ 17.49"
-      },
-      {
-        "ticker": "KTOS",
-        "entry": 76.57,
-        "exit": 89.44,
-        "pnl_eur": 5.82,
-        "pnl_pct": 16.9,
-        "reason": "TARGET HIT @ 89.53"
-      },
-      {
-        "ticker": "HL",
-        "entry": 17.15,
-        "exit": 19.86,
-        "pnl_eur": 9.64,
-        "pnl_pct": 15.9,
-        "reason": "TARGET HIT @ 19.88"
-      }
-    ],
-    "trailing_updates": [
-      {
-        "ticker": "OXY",
-        "pnl_pct": 13.1,
-        "old_stop": 45.57,
-        "new_stop": 53.16,
-        "reason": "+10% → Trail auf +5%"
-      },
-      {
-        "ticker": "HII",
-        "pnl_pct": 14.6,
-        "old_stop": 327.28,
-        "new_stop": 381.82,
-        "reason": "+10% → Trail auf +5%"
-      },
-      {
-        "ticker": "PAAS",
-        "pnl_pct": 14.9,
-        "old_stop": 44.18,
-        "new_stop": 51.54,
-        "reason": "+10% → Trail auf +5%"
-      },
-      {
-        "ticker": "MOS",
-        "pnl_pct": 9.0,
-        "old_stop": 22.5,
-        "new_stop": 25.38,
-        "reason": "+5% → Stop auf Breakeven"
-      }
-    ],
-    "thesis_broken": [],
-    "new_entries": [],
-    "status": {
-      "timestamp": "2026-03-17T21:38:06.035551",
-      "date": "2026-03-17 21:38",
-      "cash": 635.88,
-      "invested": 555.0,
-      "unrealized_pnl": 24.34,
-      "realized_pnl": 55.09,
-      "portfolio_value": 1233.21,
-      "performance_pct": 23.3,
-      "positions": [
-        {
-          "id": 1,
-          "ticker": "OXY",
-          "strategy": "PS1",
-          "entry": 50.63,
-          "current": 57.25,
-          "shares": 1.9751,
-          "stop": 53.16,
-          "target": 58.22,
-          "pnl_eur": 10.08,
-          "pnl_pct": 13.1,
-          "value": 113.07
-        },
-        {
-          "id": 5,
-          "ticker": "HII",
-          "strategy": "PS3",
-          "entry": 363.64,
-          "current": 416.59,
-          "shares": 0.2062,
-          "stop": 381.82,
-          "target": 418.19,
-          "pnl_eur": 7.92,
-          "pnl_pct": 14.6,
-          "value": 85.9
-        },
-        {
-          "id": 7,
-          "ticker": "PAAS",
-          "strategy": "PS1",
-          "entry": 49.09,
-          "current": 56.41,
-          "shares": 1.6297,
-          "stop": 51.54,
-          "target": 56.45,
-          "pnl_eur": 8.93,
-          "pnl_pct": 14.9,
-          "value": 91.93
-        },
-        {
-          "id": 8,
-          "ticker": "MOS",
-          "strategy": "PS1",
-          "entry": 25.38,
-          "current": 27.67,
-          "shares": 3.9402,
-          "stop": 25.38,
-          "target": 32.0,
-          "pnl_eur": 6.02,
-          "pnl_pct": 9.0,
-          "value": 109.03
-        },
-        {
-          "id": 9,
-          "ticker": "HAG.DE",
-          "strategy": "PS3",
-          "entry": 82.15,
-          "current": 82.3,
-          "shares": 1.2173,
-          "stop": 74.0,
-          "target": 98.0,
-          "pnl_eur": -2.82,
-          "pnl_pct": 0.2,
-          "value": 100.18
-        },
-        {
-          "id": 10,
-          "ticker": "TTE.PA",
-          "strategy": "PS1",
-          "entry": 74.48,
-          "current": 72.4,
-          "shares": 1.3428,
-          "stop": 67.5,
-          "target": 88.0,
-          "pnl_eur": -5.79,
-          "pnl_pct": -2.8,
-          "value": 97.22
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    // Highlight correct tab
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => {
+        if ((tab === 'paper' && t.textContent.includes('Paper')) || 
+            (tab === 'real' && t.textContent.includes('Echt'))) {
+            t.classList.add('active');
         }
-      ],
-      "open_count": 6,
-      "closed_count": 4,
-      "win_rate": 100.0,
-      "wins": 4,
-      "losses": 0
-    },
-    "output": "\n=== AUTO-TRADER RUN — 2026-03-17 21:38 ===\n📊 REGIME: ELEVATED (VIX 23.51) | Position-Size: 75%\n\n🔴 EXITS:\n  🟢 FRO: TARGET HIT @ 31.83 | Entry 26.40€ | P&L +20.6% (+5.16€)\n  🟢 DHT: TARGET HIT @ 17.49 | Entry 14.74€ | P&L +18.7% (+15.54€)\n  🟢 KTOS: TARGET HIT @ 89.53 | Entry 76.57€ | P&L +16.9% (+5.82€)\n  🟢 HL: TARGET HIT @ 19.88 | Entry 17.15€ | P&L +15.9% (+9.64€)\n\n🟢 TRAILING:\n  - OXY: +13.1% → +10% → Trail auf +5% (Stop 45.57 → 53.16)\n  - HII: +14.6% → +10% → Trail auf +5% (Stop 327.28 → 381.82)\n  - PAAS: +14.9% → +10% → Trail auf +5% (Stop 44.18 → 51.54)\n  - MOS: +9.0% → +5% → Stop auf Breakeven (Stop 22.50 → 25.38)\n\n🆕 NEW ENTRIES: [keine — 10/2 diese Woche]\n\n💰 FUND STATUS:\n  Cash: 635.88€ | Invested: 555.00€ | Unrealized: +24.34€ | Realized: +55.09€\n  Portfolio Value: ~1233€ | Performance: +23.3%\n\n📋 JOURNAL:\n  6 offene Trades | 4 geschlossene | Win-Rate: 100% (4/4)"
-  },
-  "regime": {
-    "regime": "ELEVATED",
-    "vix": 23.51,
-    "date": "2026-03-16",
-    "position_size_factor": 0.75,
-    "stop_factor": 1.5,
-    "description": "Breitere Stops (+50%), kleinere Positionen (75%), nur starke Setups",
-    "strategy_compatibility": {
-      "PS1": {
-        "compatible": true,
-        "reason": "Öl profitiert von Krisen (ideal für dieses Regime)"
-      },
-      "PS2": {
-        "compatible": true,
-        "reason": "Tanker brauchen stabilen Ölmarkt"
-      },
-      "PS3": {
-        "compatible": true,
-        "reason": "Defense profitiert von Krisen (ideal für dieses Regime)"
-      },
-      "PS4": {
-        "compatible": true,
-        "reason": "Metalle NUR bei hohem VIX (ideal für dieses Regime)"
-      },
-      "PS5": {
-        "compatible": true,
-        "reason": "Dünger braucht stabile Nachfrage"
-      }
-    },
-    "position_sizing": {
-      "base_size": 150,
-      "adjusted_size": 112.5,
-      "factor": 0.75,
-      "regime": "ELEVATED"
-    },
-    "regime_history_30d": [
-      {
-        "date": "2026-03-03",
-        "from": "NORMAL",
-        "to": "ELEVATED",
-        "vix_from": 21.4,
-        "vix_to": 23.6
-      },
-      {
-        "date": "2026-03-04",
-        "from": "ELEVATED",
-        "to": "NORMAL",
-        "vix_from": 23.6,
-        "vix_to": 21.1
-      },
-      {
-        "date": "2026-03-05",
-        "from": "NORMAL",
-        "to": "ELEVATED",
-        "vix_from": 21.1,
-        "vix_to": 23.8
-      }
-    ],
-    "timestamp": "2026-03-17T20:00:36.245800"
-  },
-  "correlations": {
-    "timestamp": "2026-03-17T20:00:50.974996",
-    "days": 30,
-    "tickers": [
-      "OXY",
-      "FRO",
-      "DHT",
-      "KTOS",
-      "HII",
-      "HL",
-      "PAAS",
-      "MOS",
-      "HAG.DE",
-      "TTE.PA"
-    ],
-    "correlation_matrix": {
-      "OXY": {
-        "OXY": 1.0,
-        "FRO": 0.08,
-        "DHT": -0.03,
-        "KTOS": 0.43,
-        "HII": 0.42,
-        "HL": 0.43,
-        "PAAS": 0.53,
-        "MOS": 0.69,
-        "HAG.DE": 0.16,
-        "TTE.PA": 0.44
-      },
-      "FRO": {
-        "OXY": 0.08,
-        "FRO": 1.0,
-        "DHT": 0.83,
-        "KTOS": 0.33,
-        "HII": 0.43,
-        "HL": 0.59,
-        "PAAS": 0.5,
-        "MOS": -0.15,
-        "HAG.DE": 0.34,
-        "TTE.PA": 0.25
-      },
-      "DHT": {
-        "OXY": -0.03,
-        "FRO": 0.83,
-        "DHT": 1.0,
-        "KTOS": 0.22,
-        "HII": 0.28,
-        "HL": 0.37,
-        "PAAS": 0.32,
-        "MOS": -0.21,
-        "HAG.DE": 0.09,
-        "TTE.PA": 0.07
-      },
-      "KTOS": {
-        "OXY": 0.43,
-        "FRO": 0.33,
-        "DHT": 0.22,
-        "KTOS": 1.0,
-        "HII": 0.68,
-        "HL": 0.4,
-        "PAAS": 0.36,
-        "MOS": 0.23,
-        "HAG.DE": 0.54,
-        "TTE.PA": 0.28
-      },
-      "HII": {
-        "OXY": 0.42,
-        "FRO": 0.43,
-        "DHT": 0.28,
-        "KTOS": 0.68,
-        "HII": 1.0,
-        "HL": 0.43,
-        "PAAS": 0.49,
-        "MOS": 0.21,
-        "HAG.DE": 0.38,
-        "TTE.PA": 0.33
-      },
-      "HL": {
-        "OXY": 0.43,
-        "FRO": 0.59,
-        "DHT": 0.37,
-        "KTOS": 0.4,
-        "HII": 0.43,
-        "HL": 1.0,
-        "PAAS": 0.93,
-        "MOS": 0.3,
-        "HAG.DE": 0.34,
-        "TTE.PA": 0.15
-      },
-      "PAAS": {
-        "OXY": 0.53,
-        "FRO": 0.5,
-        "DHT": 0.32,
-        "KTOS": 0.36,
-        "HII": 0.49,
-        "HL": 0.93,
-        "PAAS": 1.0,
-        "MOS": 0.43,
-        "HAG.DE": 0.28,
-        "TTE.PA": 0.08
-      },
-      "MOS": {
-        "OXY": 0.69,
-        "FRO": -0.15,
-        "DHT": -0.21,
-        "KTOS": 0.23,
-        "HII": 0.21,
-        "HL": 0.3,
-        "PAAS": 0.43,
-        "MOS": 1.0,
-        "HAG.DE": 0.0,
-        "TTE.PA": 0.26
-      },
-      "HAG.DE": {
-        "OXY": 0.16,
-        "FRO": 0.34,
-        "DHT": 0.09,
-        "KTOS": 0.54,
-        "HII": 0.38,
-        "HL": 0.34,
-        "PAAS": 0.28,
-        "MOS": 0.0,
-        "HAG.DE": 1.0,
-        "TTE.PA": 0.12
-      },
-      "TTE.PA": {
-        "OXY": 0.44,
-        "FRO": 0.25,
-        "DHT": 0.07,
-        "KTOS": 0.28,
-        "HII": 0.33,
-        "HL": 0.15,
-        "PAAS": 0.08,
-        "MOS": 0.26,
-        "HAG.DE": 0.12,
-        "TTE.PA": 1.0
-      }
-    },
-    "clusters": [
-      {
-        "tickers": [
-          "FRO",
-          "DHT"
-        ],
-        "sector": "Tanker",
-        "max_correlation": 0.83,
-        "pct_of_portfolio": 20.0
-      },
-      {
-        "tickers": [
-          "HL",
-          "PAAS"
-        ],
-        "sector": "Metalle",
-        "max_correlation": 0.93,
-        "pct_of_portfolio": 20.0
-      }
-    ],
-    "diversification_suggestions": [
-      {
-        "ticker": "BAYN.DE",
-        "sector": "Pharma",
-        "avg_abs_correlation": 0.09,
-        "max_abs_correlation": 0.18
-      },
-      {
-        "ticker": "ENPH",
-        "sector": "Green",
-        "avg_abs_correlation": 0.12,
-        "max_abs_correlation": 0.26
-      },
-      {
-        "ticker": "MSFT",
-        "sector": "Tech",
-        "avg_abs_correlation": 0.14,
-        "max_abs_correlation": 0.34
-      },
-      {
-        "ticker": "CLF",
-        "sector": "Metalle",
-        "avg_abs_correlation": 0.17,
-        "max_abs_correlation": 0.42
-      },
-      {
-        "ticker": "PLUG",
-        "sector": "Green",
-        "avg_abs_correlation": 0.17,
-        "max_abs_correlation": 0.4
-      }
-    ]
-  },
-  "sentiment": {
-    "timestamp": "2026-03-17T20:01:00.120638",
-    "date": "2026-03-17",
-    "results": [
-      {
-        "ticker": "OXY",
-        "score": 13,
-        "articles": 10,
-        "positive": 5,
-        "negative": 1,
-        "neutral": 4,
-        "top_headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool"
-      },
-      {
-        "ticker": "KTOS",
-        "score": 4,
-        "articles": 10,
-        "positive": 4,
-        "negative": 2,
-        "neutral": 4,
-        "top_headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN"
-      },
-      {
-        "ticker": "HL",
-        "score": 26,
-        "articles": 10,
-        "positive": 7,
-        "negative": 0,
-        "neutral": 3,
-        "top_headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget"
-      },
-      {
-        "ticker": "MOS",
-        "score": -5,
-        "articles": 10,
-        "positive": 2,
-        "negative": 4,
-        "neutral": 4,
-        "top_headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st"
-      },
-      {
-        "ticker": "HAG.DE",
-        "score": 13,
-        "articles": 10,
-        "positive": 4,
-        "negative": 0,
-        "neutral": 6,
-        "top_headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS"
-      },
-      {
-        "ticker": "TTE.PA",
-        "score": 4,
-        "articles": 10,
-        "positive": 2,
-        "negative": 0,
-        "neutral": 8,
-        "top_headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks"
-      }
-    ],
-    "detailed_results": [
-      {
-        "ticker": "OXY",
-        "score": 13,
-        "articles": 10,
-        "positive": 5,
-        "negative": 1,
-        "neutral": 4,
-        "top_headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool",
-        "details": [
-          {
-            "headline": "Occidental Petroleum (NYSE:OXY) Price Target Raised to $72.00 - MarketBeat",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 17:51:50 GMT"
-          },
-          {
-            "headline": "Mizuho Raises Price Target for Occidental Petroleum (OXY) to $72 | OXY Stock News - GuruFocus",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 18:58:48 GMT"
-          },
-          {
-            "headline": "Occidental Petroleum (OXY) Stock Declines While Market Improves: Some Information for Investors - Yahoo Finance",
-            "score": -1,
-            "keywords": [
-              "declines"
-            ],
-            "date": "Mon, 16 Mar 2026 21:50:03 GMT"
-          },
-          {
-            "headline": "The Smartest Dividend Stocks to Buy With $150 Right Now - The Motley Fool",
-            "score": 4,
-            "keywords": [
-              "+dividend",
-              "+buy"
-            ],
-            "date": "Tue, 17 Mar 2026 13:05:00 GMT"
-          },
-          {
-            "headline": "Wells Fargo double upgrades this oil and gas stock on improved capital efficiency and Permian productivity - CNBC",
-            "score": 3,
-            "keywords": [
-              "+upgrade"
-            ],
-            "date": "Thu, 12 Mar 2026 11:35:23 GMT"
-          },
-          {
-            "headline": "Wells Fargo upgrades Occidental Petroleum stock rating on capital efficiency - Investing.com",
-            "score": 3,
-            "keywords": [
-              "+upgrade"
-            ],
-            "date": "Thu, 12 Mar 2026 11:56:59 GMT"
-          },
-          {
-            "headline": "Occidental Petroleum Stock Surged 40%, Here’s Why - Trefis",
-            "score": 2,
-            "keywords": [
-              "+surge"
-            ],
-            "date": "Thu, 12 Mar 2026 18:19:21 GMT"
-          },
-          {
-            "headline": "What's Behind The 40% Rise In OXY Stock? - Forbes",
-            "score": 0,
-            "keywords": [],
-            "date": "Fri, 13 Mar 2026 15:48:23 GMT"
-          },
-          {
-            "headline": "What Warren Buffett Saw In Occidental Petroleum -- And Why The Thesis Still Holds - Seeking Alpha",
-            "score": 0,
-            "keywords": [],
-            "date": "Thu, 12 Mar 2026 12:17:44 GMT"
-          },
-          {
-            "headline": "Occidental Petroleum Stock Surges Thursday: What's Driving The Action? - Sahm",
-            "score": 2,
-            "keywords": [
-              "+surge"
-            ],
-            "date": "Fri, 13 Mar 2026 06:14:38 GMT"
-          }
-        ]
-      },
-      {
-        "ticker": "KTOS",
-        "score": 4,
-        "articles": 10,
-        "positive": 4,
-        "negative": 2,
-        "neutral": 4,
-        "top_headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN",
-        "details": [
-          {
-            "headline": "Why Kratos Defense Stock Popped, Then Dropped - The Motley Fool",
-            "score": 0,
-            "keywords": [],
-            "date": "Mon, 16 Mar 2026 16:28:00 GMT"
-          },
-          {
-            "headline": "Why Kratos Defense Stock Popped, Then Dropped - Yahoo Finance",
-            "score": 0,
-            "keywords": [],
-            "date": "Mon, 16 Mar 2026 15:48:10 GMT"
-          },
-          {
-            "headline": "Is Kratos Defense & Security Solutions, Inc. (KTOS) the best drone stock to buy for the next 3 years? - MSN",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Tue, 17 Mar 2026 10:56:55 GMT"
-          },
-          {
-            "headline": "Fred Alger Management LLC Sells 156,297 Shares of Kratos Defense & Security Solutions, Inc. $KTOS - MarketBeat",
-            "score": -2,
-            "keywords": [
-              "sell"
-            ],
-            "date": "Tue, 17 Mar 2026 08:47:48 GMT"
-          },
-          {
-            "headline": "Kratos Defense Extends Tumble On $1.2 Billion Fundraising Plans - Investor's Business Daily",
-            "score": 0,
-            "keywords": [],
-            "date": "Fri, 27 Feb 2026 08:00:00 GMT"
-          },
-          {
-            "headline": "2 Defense Stocks to Buy in March - AOL.com",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Tue, 17 Mar 2026 03:12:10 GMT"
-          },
-          {
-            "headline": "Jarvis, Kratos defense director, sells $443k in KTOS stock - Investing.com",
-            "score": -2,
-            "keywords": [
-              "sell"
-            ],
-            "date": "Fri, 13 Mar 2026 23:52:45 GMT"
-          },
-          {
-            "headline": "2 Under-the-Radar Defense Stocks That Could Double as Military Budgets Surge - The Motley Fool",
-            "score": 2,
-            "keywords": [
-              "+surge"
-            ],
-            "date": "Sun, 15 Mar 2026 11:43:00 GMT"
-          },
-          {
-            "headline": "MIRAE ASSET GLOBAL ETFS HOLDINGS Ltd. Purchases 444,956 Shares of Kratos Defense & Security Solutions, Inc. $KTOS - MarketBeat",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 11:02:23 GMT"
-          },
-          {
-            "headline": "Kratos Defense & Security Solutions (NASDAQ:KTOS) Stock Price Up 2.3% - Time to Buy? - MarketBeat",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Mon, 16 Mar 2026 21:36:02 GMT"
-          }
-        ]
-      },
-      {
-        "ticker": "HL",
-        "score": 26,
-        "articles": 10,
-        "positive": 7,
-        "negative": 0,
-        "neutral": 3,
-        "top_headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget",
-        "details": [
-          {
-            "headline": "Hecla Mining (HL) Valuation Check After Record Revenue And Return To Profitability - simplywall.st",
-            "score": 5,
-            "keywords": [
-              "+revenue",
-              "+record",
-              "+profit"
-            ],
-            "date": "Tue, 17 Mar 2026 11:27:57 GMT"
-          },
-          {
-            "headline": "MIRAE ASSET GLOBAL ETFS HOLDINGS Ltd. Buys 6,472,566 Shares of Hecla Mining Company $HL - MarketBeat",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Tue, 17 Mar 2026 11:10:12 GMT"
-          },
-          {
-            "headline": "Hecla Mining Stock To $15? - Trefis",
-            "score": 0,
-            "keywords": [],
-            "date": "Thu, 12 Mar 2026 13:49:52 GMT"
-          },
-          {
-            "headline": "Hecla Mining Company (HL) Achieves Record Revenue and Bounces to Profitability on Robust Silver Operation - Yahoo Finance",
-            "score": 5,
-            "keywords": [
-              "+revenue",
-              "+record",
-              "+profit"
-            ],
-            "date": "Fri, 13 Mar 2026 07:44:08 GMT"
-          },
-          {
-            "headline": "Why Hecla Mining Dropped Again Today - The Motley Fool",
-            "score": 0,
-            "keywords": [],
-            "date": "Wed, 11 Mar 2026 17:43:00 GMT"
-          },
-          {
-            "headline": "Hecla Mining: Great Company, Wrong Price (NYSE:HL) - Seeking Alpha",
-            "score": 0,
-            "keywords": [],
-            "date": "Wed, 25 Feb 2026 08:00:00 GMT"
-          },
-          {
-            "headline": "Is It Too Late To Consider Hecla Mining (HL) After Its 256% One Year Surge - Sahm",
-            "score": 2,
-            "keywords": [
-              "+surge"
-            ],
-            "date": "Sat, 14 Mar 2026 21:40:19 GMT"
-          },
-          {
-            "headline": "Hecla Mining Co (NYSE:HL) Identified as a Strong Growth Candidate by Navellier's 'Little Book' Method - ChartMill",
-            "score": 4,
-            "keywords": [
-              "+strong",
-              "+growth"
-            ],
-            "date": "Mon, 16 Mar 2026 11:32:30 GMT"
-          },
-          {
-            "headline": "Hecla Mining Shares Rise 1.38% on Record Earnings and Green Tech Breakthrough Trading Volume Ranks 368th - Bitget",
-            "score": 6,
-            "keywords": [
-              "+breakthrough",
-              "+earnings",
-              "+record"
-            ],
-            "date": "Tue, 17 Mar 2026 00:34:04 GMT"
-          },
-          {
-            "headline": "Is 15.1% Fall In Hecla Mining (HL) Stock A Buying Opportunity? - Trefis",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Thu, 12 Mar 2026 13:53:12 GMT"
-          }
-        ]
-      },
-      {
-        "ticker": "MOS",
-        "score": -5,
-        "articles": 10,
-        "positive": 2,
-        "negative": 4,
-        "neutral": 4,
-        "top_headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st",
-        "details": [
-          {
-            "headline": "Moore Capital Management LP Cuts Stake in The Mosaic Company $MOS - MarketBeat",
-            "score": -1,
-            "keywords": [
-              "cuts"
-            ],
-            "date": "Tue, 17 Mar 2026 11:14:26 GMT"
-          },
-          {
-            "headline": "Why Mosaic Co Stock Is Quietly Surging Higher - TipRanks",
-            "score": 1,
-            "keywords": [
-              "+higher"
-            ],
-            "date": "Tue, 17 Mar 2026 16:18:58 GMT"
-          },
-          {
-            "headline": "Mosaic Co. stock underperforms Monday when compared to competitors - MarketWatch",
-            "score": -3,
-            "keywords": [
-              "underperform"
-            ],
-            "date": "Mon, 16 Mar 2026 20:30:00 GMT"
-          },
-          {
-            "headline": "The Mosaic Company (MOS) Faces Mixed Reviews as 2026 Forecast Looms - Yahoo Finance",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 30 Dec 2025 08:00:00 GMT"
-          },
-          {
-            "headline": "Mosaic (MOS) Analyst Rating: CIBC Raises Price Target to $32.00 - GuruFocus",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 18:44:44 GMT"
-          },
-          {
-            "headline": "Bank of Nova Scotia Cuts Stake in The Mosaic Company $MOS - MarketBeat",
-            "score": -1,
-            "keywords": [
-              "cuts"
-            ],
-            "date": "Tue, 17 Mar 2026 07:41:32 GMT"
-          },
-          {
-            "headline": "The Mosaic Company On My Investment Watchlist For Post-Iran War Recovery (NYSE:MOS) - Seeking Alpha",
-            "score": 0,
-            "keywords": [],
-            "date": "Wed, 11 Mar 2026 09:47:44 GMT"
-          },
-          {
-            "headline": "Mosaic (MOS) Is Up 11.4% After Rare Earths Pivot And Dividend Update - Has The Bull Case Changed? - simplywall.st",
-            "score": 2,
-            "keywords": [
-              "+dividend"
-            ],
-            "date": "Sun, 15 Mar 2026 13:29:46 GMT"
-          },
-          {
-            "headline": "Mosaic Co. stock underperforms Friday when compared to competitors - MarketWatch",
-            "score": -3,
-            "keywords": [
-              "underperform"
-            ],
-            "date": "Fri, 13 Mar 2026 20:30:00 GMT"
-          },
-          {
-            "headline": "Why Mosaic Co Stock Is Sliding Again Today - TipRanks",
-            "score": 0,
-            "keywords": [],
-            "date": "Mon, 16 Mar 2026 14:49:17 GMT"
-          }
-        ]
-      },
-      {
-        "ticker": "HAG.DE",
-        "score": 13,
-        "articles": 10,
-        "positive": 4,
-        "negative": 0,
-        "neutral": 6,
-        "top_headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS",
-        "details": [
-          {
-            "headline": "HENSOLDT Stock Forecast | Record Orders - Capital.com",
-            "score": 2,
-            "keywords": [
-              "+record"
-            ],
-            "date": "Tue, 17 Mar 2026 11:37:10 GMT"
-          },
-          {
-            "headline": "Defense Contractor Hensoldt Looks to Automotive Sector for Engineering Talent - primaryignition.com",
-            "score": 3,
-            "keywords": [
-              "+contract"
-            ],
-            "date": "Tue, 17 Mar 2026 11:30:20 GMT"
-          },
-          {
-            "headline": "Hensoldt (XTRA:HAG) Valuation Check After Recent Share Price Swings - Yahoo Finance",
-            "score": 0,
-            "keywords": [],
-            "date": "Sun, 15 Mar 2026 05:11:00 GMT"
-          },
-          {
-            "headline": "Is It Time To Reassess Hensoldt (XTRA:HAG) After Defense Sector Optimism? - simplywall.st",
-            "score": 0,
-            "keywords": [],
-            "date": "Sat, 14 Mar 2026 09:33:33 GMT"
-          },
-          {
-            "headline": "Hensoldt AG Stock Surges 5% Amid Capacity Expansion and Record Orders - AD HOC NEWS",
-            "score": 6,
-            "keywords": [
-              "+expansion",
-              "+record",
-              "+surge"
-            ],
-            "date": "Tue, 17 Mar 2026 04:41:59 GMT"
-          },
-          {
-            "headline": "Hensoldt: Why The Market Is Too Focused On 2026 And Not 2030 (OTCMKTS:HAGHY) - Seeking Alpha",
-            "score": 0,
-            "keywords": [],
-            "date": "Thu, 08 Jan 2026 08:00:00 GMT"
-          },
-          {
-            "headline": "Hensoldt Shares: A Surge in Orders Tests Production Limits - primaryignition.com",
-            "score": 2,
-            "keywords": [
-              "+surge"
-            ],
-            "date": "Mon, 16 Mar 2026 08:24:34 GMT"
-          },
-          {
-            "headline": "HENSOLDT Stock Forecast | FY2025 Results and 2026 Guidance - Capital.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 10 Mar 2026 09:28:00 GMT"
-          },
-          {
-            "headline": "Hensoldt’s Strategic Push to Meet Soaring Defense Demand - primaryignition.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Fri, 13 Mar 2026 09:06:34 GMT"
-          },
-          {
-            "headline": "Hensoldt Stock Forecast 2025–2030 | Future Outlook - Capital.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Thu, 11 Dec 2025 08:00:00 GMT"
-          }
-        ]
-      },
-      {
-        "ticker": "TTE.PA",
-        "score": 4,
-        "articles": 10,
-        "positive": 2,
-        "negative": 0,
-        "neutral": 8,
-        "top_headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks",
-        "details": [
-          {
-            "headline": "TotalEnergies Share Price on Euronext - TotalEnergies.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Fri, 13 Mar 2026 07:00:00 GMT"
-          },
-          {
-            "headline": "TotalEnergies SE: Disclosure of Transactions in Own Shares - Yahoo Finance",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 07:00:00 GMT"
-          },
-          {
-            "headline": "What's Going On With TotalEnergies Stock Tuesday? - Benzinga",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 11:32:00 GMT"
-          },
-          {
-            "headline": "TotalEnergies Quiluma Start Up Adds LNG Diversity For Europe And Asia - simplywall.st",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 12:27:57 GMT"
-          },
-          {
-            "headline": "TotalEnergies Buys Back €95 Million of Shares on Paris Market - TipRanks",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Tue, 17 Mar 2026 07:37:18 GMT"
-          },
-          {
-            "headline": "Is TotalEnergies SE (TTE) A Good Stock To Buy Now? - Yahoo Finance",
-            "score": 2,
-            "keywords": [
-              "+buy"
-            ],
-            "date": "Mon, 16 Mar 2026 01:46:00 GMT"
-          },
-          {
-            "headline": "New Angola gas project will ship LNG to Europe and Asia - Stock Titan",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 17 Mar 2026 08:26:00 GMT"
-          },
-          {
-            "headline": "Information for ADR holders - TotalEnergies.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Tue, 03 Mar 2026 08:00:00 GMT"
-          },
-          {
-            "headline": "What's Going On With TotalEnergies Stock Monday? - TotalEnergies (NYSE:TTE) - Benzinga",
-            "score": 0,
-            "keywords": [],
-            "date": "Mon, 16 Mar 2026 10:49:00 GMT"
-          },
-          {
-            "headline": "TotalEnergies announces the commencement of trading of its ordinary shares on the NYSE - TotalEnergies.com",
-            "score": 0,
-            "keywords": [],
-            "date": "Mon, 08 Dec 2025 08:00:00 GMT"
-          }
-        ]
-      }
-    ],
-    "portfolio_score": 55,
-    "portfolio_label": "BULLISH"
-  },
-  "backtest": {
-    "timestamp": "2026-03-17T20:00:26.188580",
-    "strategy_summaries": [
-      {
-        "strategy": "PS1",
-        "name": "Iran/Öl",
-        "verdict": "PROFITABEL",
-        "avg_pnl_default": 16.55,
-        "avg_winrate_default": 100.0,
-        "tickers_profitable": 1,
-        "tickers_total": 1
-      },
-      {
-        "strategy": "PS2",
-        "name": "Tanker-Lag",
-        "verdict": "PROFITABEL",
-        "avg_pnl_default": 2.12,
-        "avg_winrate_default": 50.0,
-        "tickers_profitable": 1,
-        "tickers_total": 1
-      },
-      {
-        "strategy": "PS3",
-        "name": "NATO/Defense",
-        "verdict": "PROFITABEL",
-        "avg_pnl_default": 15.03,
-        "avg_winrate_default": 100.0,
-        "tickers_profitable": 1,
-        "tickers_total": 1
-      },
-      {
-        "strategy": "PS4",
-        "name": "Edelmetalle/Miner",
-        "verdict": "UNPROFITABEL",
-        "avg_pnl_default": 0,
-        "avg_winrate_default": 0,
-        "tickers_profitable": 0,
-        "tickers_total": 0
-      },
-      {
-        "strategy": "PS5",
-        "name": "Dünger/Agrar",
-        "verdict": "UNPROFITABEL",
-        "avg_pnl_default": 0,
-        "avg_winrate_default": 0,
-        "tickers_profitable": 0,
-        "tickers_total": 0
-      }
-    ],
-    "detailed_results": {
-      "PS1": {
-        "name": "Iran/Öl",
-        "tickers": [
-          "OXY",
-          "TTE.PA"
-        ],
-        "default_params": {
-          "rsi_buy": 40,
-          "sma": 50,
-          "stop": 10,
-          "target": 15,
-          "trailing": 5
-        },
-        "verdict": "PROFITABEL",
-        "results": [
-          {
-            "ticker": "OXY",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "OXY",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "OXY",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "OXY",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "OXY",
-            "variant": "RSI50_SMA20",
-            "trades": 8,
-            "win_rate": 50.0,
-            "total_pnl": -8.21,
-            "max_dd": 33.26,
-            "avg_win": 6.83,
-            "avg_loss": -8.88,
-            "sharpe": -0.35,
-            "crv": 0.77,
-            "exit_reasons": {
-              "STOP": 4,
-              "TRAILING": 3,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "OXY",
-            "variant": "RSI55_SMA50",
-            "trades": 8,
-            "win_rate": 62.5,
-            "total_pnl": 1.79,
-            "max_dd": 33.75,
-            "avg_win": 7.11,
-            "avg_loss": -11.25,
-            "sharpe": 0.05,
-            "crv": 0.63,
-            "exit_reasons": {
-              "STOP": 3,
-              "TRAILING": 4,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "Default",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 16.55,
-            "max_dd": 0,
-            "avg_win": 16.55,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "Tight",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 10.55,
-            "max_dd": 0,
-            "avg_win": 10.55,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "Wide",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 23.94,
-            "max_dd": 0,
-            "avg_win": 23.94,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "RSI50_SMA20",
-            "trades": 4,
-            "win_rate": 75.0,
-            "total_pnl": 6.23,
-            "max_dd": 8.05,
-            "avg_win": 4.76,
-            "avg_loss": -8.05,
-            "sharpe": 0.47,
-            "crv": 0.59,
-            "exit_reasons": {
-              "STOP": 1,
-              "TRAILING": 3
-            }
-          },
-          {
-            "ticker": "TTE.PA",
-            "variant": "RSI55_SMA50",
-            "trades": 6,
-            "win_rate": 66.7,
-            "total_pnl": 1.27,
-            "max_dd": 21.04,
-            "avg_win": 5.58,
-            "avg_loss": -10.52,
-            "sharpe": 0.04,
-            "crv": 0.53,
-            "exit_reasons": {
-              "STOP": 2,
-              "TRAILING": 3,
-              "TARGET": 1
-            }
-          }
-        ],
-        "best_variants": {
-          "OXY": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 1.79,
-            "win_rate": 62.5
-          },
-          "TTE.PA": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 6.23,
-            "win_rate": 75.0
-          }
-        }
-      },
-      "PS2": {
-        "name": "Tanker-Lag",
-        "tickers": [
-          "FRO",
-          "DHT"
-        ],
-        "default_params": {
-          "rsi_buy": 45,
-          "sma": 20,
-          "stop": 10,
-          "target": 12,
-          "trailing": 4
-        },
-        "verdict": "PROFITABEL",
-        "results": [
-          {
-            "ticker": "FRO",
-            "variant": "Default",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": 2.12,
-            "max_dd": 15.17,
-            "avg_win": 17.29,
-            "avg_loss": -15.17,
-            "sharpe": 0.28,
-            "crv": 1.14,
-            "exit_reasons": {
-              "STOP": 1,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "FRO",
-            "variant": "Tight",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": 8.64,
-            "max_dd": 8.65,
-            "avg_win": 17.29,
-            "avg_loss": -8.65,
-            "sharpe": 1.47,
-            "crv": 2.0,
-            "exit_reasons": {
-              "STOP": 1,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "FRO",
-            "variant": "Wide",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": 9.4,
-            "max_dd": 15.17,
-            "avg_win": 24.57,
-            "avg_loss": -15.17,
-            "sharpe": 0.97,
-            "crv": 1.62,
-            "exit_reasons": {
-              "STOP": 1,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "FRO",
-            "variant": "TrailOnly",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": 3.89,
-            "max_dd": 15.17,
-            "avg_win": 19.06,
-            "avg_loss": -15.17,
-            "sharpe": 0.43,
-            "crv": 1.26,
-            "exit_reasons": {
-              "STOP": 1,
-              "TRAILING": 1
-            }
-          },
-          {
-            "ticker": "FRO",
-            "variant": "RSI50_SMA20",
-            "trades": 8,
-            "win_rate": 50.0,
-            "total_pnl": 19.29,
-            "max_dd": 20.29,
-            "avg_win": 14.28,
-            "avg_loss": -9.46,
-            "sharpe": 0.99,
-            "crv": 1.51,
-            "exit_reasons": {
-              "STOP": 4,
-              "TRAILING": 1,
-              "TARGET": 3
-            }
-          },
-          {
-            "ticker": "FRO",
-            "variant": "RSI55_SMA50",
-            "trades": 15,
-            "win_rate": 66.7,
-            "total_pnl": 16.55,
-            "max_dd": 39.48,
-            "avg_win": 7.56,
-            "avg_loss": -11.82,
-            "sharpe": 0.42,
-            "crv": 0.64,
-            "exit_reasons": {
-              "STOP": 5,
-              "TRAILING": 7,
-              "TARGET": 3
-            }
-          },
-          {
-            "ticker": "DHT",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "DHT",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "DHT",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "DHT",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "DHT",
-            "variant": "RSI50_SMA20",
-            "trades": 6,
-            "win_rate": 83.3,
-            "total_pnl": 41.37,
-            "max_dd": 9.46,
-            "avg_win": 10.17,
-            "avg_loss": -9.46,
-            "sharpe": 2.25,
-            "crv": 1.07,
-            "exit_reasons": {
-              "TRAILING": 2,
-              "STOP": 1,
-              "TARGET": 3
-            }
-          },
-          {
-            "ticker": "DHT",
-            "variant": "RSI55_SMA50",
-            "trades": 9,
-            "win_rate": 55.6,
-            "total_pnl": -6.93,
-            "max_dd": 24.85,
-            "avg_win": 7.67,
-            "avg_loss": -11.32,
-            "sharpe": -0.19,
-            "crv": 0.68,
-            "exit_reasons": {
-              "STOP": 4,
-              "TRAILING": 4,
-              "TARGET": 1
-            }
-          }
-        ],
-        "best_variants": {
-          "FRO": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 19.29,
-            "win_rate": 50.0
-          },
-          "DHT": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 41.37,
-            "win_rate": 83.3
-          }
-        }
-      },
-      "PS3": {
-        "name": "NATO/Defense",
-        "tickers": [
-          "KTOS",
-          "HII",
-          "HAG.DE",
-          "BA.L"
-        ],
-        "default_params": {
-          "rsi_buy": 40,
-          "sma": 50,
-          "stop": 8,
-          "target": 15,
-          "trailing": 5
-        },
-        "verdict": "PROFITABEL",
-        "results": [
-          {
-            "ticker": "KTOS",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "KTOS",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "KTOS",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "KTOS",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "KTOS",
-            "variant": "RSI50_SMA20",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": -5.74,
-            "max_dd": 8.8,
-            "avg_win": 3.06,
-            "avg_loss": -8.8,
-            "sharpe": -2.22,
-            "crv": 0.35,
-            "exit_reasons": {
-              "STOP": 1,
-              "TRAILING": 1
-            }
-          },
-          {
-            "ticker": "KTOS",
-            "variant": "RSI55_SMA50",
-            "trades": 15,
-            "win_rate": 73.3,
-            "total_pnl": 66.78,
-            "max_dd": 22.74,
-            "avg_win": 10.57,
-            "avg_loss": -12.38,
-            "sharpe": 1.56,
-            "crv": 0.85,
-            "exit_reasons": {
-              "TRAILING": 5,
-              "TARGET": 6,
-              "STOP": 4
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "Default",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 15.03,
-            "max_dd": 0,
-            "avg_win": 15.03,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "Tight",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 6.31,
-            "max_dd": 0,
-            "avg_win": 6.31,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TRAILING": 1
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "Wide",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 23.22,
-            "max_dd": 0,
-            "avg_win": 23.22,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "TrailOnly",
-            "trades": 1,
-            "win_rate": 100.0,
-            "total_pnl": 14.38,
-            "max_dd": 0,
-            "avg_win": 14.38,
-            "avg_loss": 0,
-            "sharpe": 0,
-            "crv": 0,
-            "exit_reasons": {
-              "TRAILING": 1
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "RSI50_SMA20",
-            "trades": 5,
-            "win_rate": 40.0,
-            "total_pnl": -40.12,
-            "max_dd": 58.09,
-            "avg_win": 10.65,
-            "avg_loss": -20.47,
-            "sharpe": -1.32,
-            "crv": 0.52,
-            "exit_reasons": {
-              "STOP": 3,
-              "TRAILING": 1,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "HII",
-            "variant": "RSI55_SMA50",
-            "trades": 9,
-            "win_rate": 77.8,
-            "total_pnl": 34.65,
-            "max_dd": 49.22,
-            "avg_win": 12.03,
-            "avg_loss": -24.77,
-            "sharpe": 0.7,
-            "crv": 0.49,
-            "exit_reasons": {
-              "TRAILING": 2,
-              "STOP": 2,
-              "TARGET": 5
-            }
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "RSI50_SMA20",
-            "trades": 6,
-            "win_rate": 66.7,
-            "total_pnl": 38.28,
-            "max_dd": 17.02,
-            "avg_win": 13.82,
-            "avg_loss": -8.51,
-            "sharpe": 1.86,
-            "crv": 1.62,
-            "exit_reasons": {
-              "STOP": 2,
-              "TRAILING": 1,
-              "TARGET": 3
-            }
-          },
-          {
-            "ticker": "HAG.DE",
-            "variant": "RSI55_SMA50",
-            "trades": 15,
-            "win_rate": 60.0,
-            "total_pnl": 26.85,
-            "max_dd": 35.07,
-            "avg_win": 10.77,
-            "avg_loss": -11.68,
-            "sharpe": 0.64,
-            "crv": 0.92,
-            "exit_reasons": {
-              "STOP": 6,
-              "TRAILING": 5,
-              "TARGET": 4
-            }
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "RSI50_SMA20",
-            "trades": 6,
-            "win_rate": 83.3,
-            "total_pnl": 30.99,
-            "max_dd": 8.65,
-            "avg_win": 7.93,
-            "avg_loss": -8.65,
-            "sharpe": 1.95,
-            "crv": 0.92,
-            "exit_reasons": {
-              "TRAILING": 3,
-              "STOP": 1,
-              "TARGET": 2
-            }
-          },
-          {
-            "ticker": "BA.L",
-            "variant": "RSI55_SMA50",
-            "trades": 9,
-            "win_rate": 66.7,
-            "total_pnl": 8.34,
-            "max_dd": 19.46,
-            "avg_win": 6.75,
-            "avg_loss": -10.72,
-            "sharpe": 0.26,
-            "crv": 0.63,
-            "exit_reasons": {
-              "STOP": 3,
-              "TRAILING": 5,
-              "TARGET": 1
-            }
-          }
-        ],
-        "best_variants": {
-          "KTOS": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 66.78,
-            "win_rate": 73.3
-          },
-          "HII": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 34.65,
-            "win_rate": 77.8
-          },
-          "HAG.DE": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 38.28,
-            "win_rate": 66.7
-          },
-          "BA.L": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 30.99,
-            "win_rate": 83.3
-          }
-        }
-      },
-      "PS4": {
-        "name": "Edelmetalle/Miner",
-        "tickers": [
-          "HL",
-          "PAAS",
-          "GOLD",
-          "WPM"
-        ],
-        "default_params": {
-          "rsi_buy": 35,
-          "sma": 50,
-          "stop": 12,
-          "target": 20,
-          "trailing": 6
-        },
-        "verdict": "UNPROFITABEL",
-        "results": [
-          {
-            "ticker": "HL",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HL",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HL",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HL",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "HL",
-            "variant": "RSI50_SMA20",
-            "trades": 3,
-            "win_rate": 66.7,
-            "total_pnl": 22.66,
-            "max_dd": 12.72,
-            "avg_win": 17.69,
-            "avg_loss": -12.72,
-            "sharpe": 1.96,
-            "crv": 1.39,
-            "exit_reasons": {
-              "STOP": 1,
-              "TARGET": 2
-            }
-          },
-          {
-            "ticker": "HL",
-            "variant": "RSI55_SMA50",
-            "trades": 16,
-            "win_rate": 62.5,
-            "total_pnl": 24.57,
-            "max_dd": 35.66,
-            "avg_win": 10.67,
-            "avg_loss": -13.69,
-            "sharpe": 0.51,
-            "crv": 0.78,
-            "exit_reasons": {
-              "STOP": 6,
-              "TARGET": 5,
-              "TRAILING": 5
-            }
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "RSI50_SMA20",
-            "trades": 6,
-            "win_rate": 66.7,
-            "total_pnl": 35.25,
-            "max_dd": 10.4,
-            "avg_win": 13.67,
-            "avg_loss": -9.72,
-            "sharpe": 2.43,
-            "crv": 1.41,
-            "exit_reasons": {
-              "STOP": 2,
-              "TRAILING": 1,
-              "TARGET": 3
-            }
-          },
-          {
-            "ticker": "PAAS",
-            "variant": "RSI55_SMA50",
-            "trades": 18,
-            "win_rate": 72.2,
-            "total_pnl": 57.65,
-            "max_dd": 24.85,
-            "avg_win": 9.13,
-            "avg_loss": -12.2,
-            "sharpe": 1.17,
-            "crv": 0.75,
-            "exit_reasons": {
-              "TRAILING": 7,
-              "TARGET": 6,
-              "STOP": 5
-            }
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "RSI50_SMA20",
-            "trades": 7,
-            "win_rate": 71.4,
-            "total_pnl": 29.55,
-            "max_dd": 14.95,
-            "avg_win": 8.9,
-            "avg_loss": -7.47,
-            "sharpe": 1.62,
-            "crv": 1.19,
-            "exit_reasons": {
-              "TARGET": 2,
-              "TRAILING": 4,
-              "STOP": 1
-            }
-          },
-          {
-            "ticker": "GOLD",
-            "variant": "RSI55_SMA50",
-            "trades": 9,
-            "win_rate": 55.6,
-            "total_pnl": 28.36,
-            "max_dd": 21.81,
-            "avg_win": 14.25,
-            "avg_loss": -10.72,
-            "sharpe": 0.76,
-            "crv": 1.33,
-            "exit_reasons": {
-              "STOP": 4,
-              "TARGET": 4,
-              "TRAILING": 1
-            }
-          },
-          {
-            "ticker": "WPM",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "WPM",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "WPM",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "WPM",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "WPM",
-            "variant": "RSI50_SMA20",
-            "trades": 2,
-            "win_rate": 50.0,
-            "total_pnl": 6.82,
-            "max_dd": 8.2,
-            "avg_win": 15.02,
-            "avg_loss": -8.2,
-            "sharpe": 0.88,
-            "crv": 1.83,
-            "exit_reasons": {
-              "STOP": 1,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "WPM",
-            "variant": "RSI55_SMA50",
-            "trades": 13,
-            "win_rate": 84.6,
-            "total_pnl": 79.68,
-            "max_dd": 10.61,
-            "avg_win": 9.15,
-            "avg_loss": -10.51,
-            "sharpe": 2.28,
-            "crv": 0.87,
-            "exit_reasons": {
-              "TRAILING": 7,
-              "STOP": 2,
-              "TARGET": 4
-            }
-          }
-        ],
-        "best_variants": {
-          "HL": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 24.57,
-            "win_rate": 62.5
-          },
-          "PAAS": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 57.65,
-            "win_rate": 72.2
-          },
-          "GOLD": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 29.55,
-            "win_rate": 71.4
-          },
-          "WPM": {
-            "variant": "RSI55_SMA50",
-            "total_pnl": 79.68,
-            "win_rate": 84.6
-          }
-        }
-      },
-      "PS5": {
-        "name": "Dünger/Agrar",
-        "tickers": [
-          "MOS",
-          "CF"
-        ],
-        "default_params": {
-          "rsi_buy": 40,
-          "sma": 50,
-          "stop": 10,
-          "target": 18,
-          "trailing": 5
-        },
-        "verdict": "UNPROFITABEL",
-        "results": [
-          {
-            "ticker": "MOS",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "MOS",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "MOS",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "MOS",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "MOS",
-            "variant": "RSI50_SMA20",
-            "trades": 5,
-            "win_rate": 60.0,
-            "total_pnl": 1.38,
-            "max_dd": 17.29,
-            "avg_win": 6.22,
-            "avg_loss": -8.64,
-            "sharpe": 0.09,
-            "crv": 0.72,
-            "exit_reasons": {
-              "STOP": 2,
-              "TRAILING": 2,
-              "TARGET": 1
-            }
-          },
-          {
-            "ticker": "MOS",
-            "variant": "RSI55_SMA50",
-            "trades": 12,
-            "win_rate": 33.3,
-            "total_pnl": -61.35,
-            "max_dd": 70.87,
-            "avg_win": 7.49,
-            "avg_loss": -11.42,
-            "sharpe": -1.98,
-            "crv": 0.66,
-            "exit_reasons": {
-              "STOP": 8,
-              "TARGET": 1,
-              "TRAILING": 3
-            }
-          },
-          {
-            "ticker": "CF",
-            "variant": "Default",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "CF",
-            "variant": "Tight",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "CF",
-            "variant": "Wide",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "CF",
-            "variant": "TrailOnly",
-            "trades": 0,
-            "win_rate": 0,
-            "total_pnl": 0,
-            "max_dd": 0,
-            "avg_win": 0,
-            "avg_loss": 0,
-            "sharpe": 0
-          },
-          {
-            "ticker": "CF",
-            "variant": "RSI50_SMA20",
-            "trades": 8,
-            "win_rate": 50.0,
-            "total_pnl": 3.94,
-            "max_dd": 20.57,
-            "avg_win": 10.31,
-            "avg_loss": -9.33,
-            "sharpe": 0.15,
-            "crv": 1.11,
-            "exit_reasons": {
-              "STOP": 4,
-              "TRAILING": 2,
-              "TARGET": 2
-            }
-          },
-          {
-            "ticker": "CF",
-            "variant": "RSI55_SMA50",
-            "trades": 8,
-            "win_rate": 50.0,
-            "total_pnl": -14.7,
-            "max_dd": 33.13,
-            "avg_win": 7.38,
-            "avg_loss": -11.05,
-            "sharpe": -0.55,
-            "crv": 0.67,
-            "exit_reasons": {
-              "STOP": 4,
-              "TRAILING": 3,
-              "TARGET": 1
-            }
-          }
-        ],
-        "best_variants": {
-          "MOS": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 1.38,
-            "win_rate": 60.0
-          },
-          "CF": {
-            "variant": "RSI50_SMA20",
-            "total_pnl": 3.94,
-            "win_rate": 50.0
-          }
-        }
-      }
-    }
-  },
-  "sector_rotation": {
-    "timestamp": "2026-03-17T20:18:02.028147",
-    "date": "17.03.2026",
-    "sectors": [
-      {
-        "sector": "Energy",
-        "tickers": [
-          "OXY",
-          "TTE.PA",
-          "EQNR.OL",
-          "SHEL.L",
-          "ENI.MI"
-        ],
-        "perf_1w": 7.94,
-        "perf_1m": 22.65,
-        "perf_3m": 38.63,
-        "avg_rsi": 79.3,
-        "momentum": 18.49,
-        "signal": "🟢 STRONG TREND"
-      },
-      {
-        "sector": "Fertilizer",
-        "tickers": [
-          "MOS",
-          "CF"
-        ],
-        "perf_1w": 7.83,
-        "perf_1m": 11.67,
-        "perf_3m": 30.88,
-        "avg_rsi": 56.5,
-        "momentum": 13.59,
-        "signal": "🟢 STRONG TREND"
-      },
-      {
-        "sector": "Solar",
-        "tickers": [
-          "ENPH",
-          "PLUG"
-        ],
-        "perf_1w": 5.47,
-        "perf_1m": 12.02,
-        "perf_3m": 19.58,
-        "avg_rsi": 55.5,
-        "momentum": 10.26,
-        "signal": "🟢 STRONG TREND"
-      },
-      {
-        "sector": "Tanker",
-        "tickers": [
-          "FRO",
-          "DHT"
-        ],
-        "perf_1w": -6.47,
-        "perf_1m": 9.45,
-        "perf_3m": 43.9,
-        "avg_rsi": 51.4,
-        "momentum": 8.38,
-        "signal": "🟢 STRONG TREND"
-      },
-      {
-        "sector": "Defense",
-        "tickers": [
-          "KTOS",
-          "HII",
-          "HAG.DE",
-          "BA.L",
-          "RHM.DE"
-        ],
-        "perf_1w": 1.61,
-        "perf_1m": 3.28,
-        "perf_3m": 19.92,
-        "avg_rsi": 53.4,
-        "momentum": 5.77,
-        "signal": "🟢 STRONG TREND"
-      },
-      {
-        "sector": "Mining",
-        "tickers": [
-          "RIO.L",
-          "BHP.L",
-          "GLEN.L",
-          "MP",
-          "UUUU"
-        ],
-        "perf_1w": -3.47,
-        "perf_1m": -1.67,
-        "perf_3m": 22.46,
-        "avg_rsi": 46.3,
-        "momentum": 2.25,
-        "signal": "🟢 MODERATE"
-      },
-      {
-        "sector": "Pharma",
-        "tickers": [
-          "BAYN.DE",
-          "BAS.DE"
-        ],
-        "perf_1w": 3.26,
-        "perf_1m": -8.79,
-        "perf_3m": 9.37,
-        "avg_rsi": 50.4,
-        "momentum": 0.87,
-        "signal": "🟡 STABLE"
-      },
-      {
-        "sector": "Tech",
-        "tickers": [
-          "NVDA",
-          "MSFT",
-          "PLTR"
-        ],
-        "perf_1w": -0.41,
-        "perf_1m": 5.44,
-        "perf_3m": -9.45,
-        "avg_rsi": 48.9,
-        "momentum": -0.46,
-        "signal": "🟡 LAGGING"
-      },
-      {
-        "sector": "Metals",
-        "tickers": [
-          "HL",
-          "PAAS",
-          "GOLD",
-          "WPM",
-          "CLF",
-          "AAL.L"
-        ],
-        "perf_1w": -8.28,
-        "perf_1m": -12.0,
-        "perf_3m": 10.44,
-        "avg_rsi": 37.3,
-        "momentum": -5.65,
-        "signal": "🔴 AVOID"
-      }
-    ],
-    "recommendations": {
-      "overweight": [
-        "Energy",
-        "Fertilizer",
-        "Solar",
-        "Tanker",
-        "Defense"
-      ],
-      "underweight": [
-        "Metals"
-      ],
-      "watch": []
-    }
-  },
-  "strategy_weights": {},
-  "portfolio_history": [
-    {
-      "date": "2026-02-15",
-      "value": 1000.0
-    },
-    {
-      "date": "2026-02-16",
-      "value": 1010.0
-    },
-    {
-      "date": "2026-02-17",
-      "value": 1007.95
-    },
-    {
-      "date": "2026-02-18",
-      "value": 1019.72
-    },
-    {
-      "date": "2026-02-19",
-      "value": 1026.67
-    },
-    {
-      "date": "2026-02-20",
-      "value": 1042.65
-    },
-    {
-      "date": "2026-02-21",
-      "value": 1049.47
-    },
-    {
-      "date": "2026-02-22",
-      "value": 1060.69
-    },
-    {
-      "date": "2026-02-23",
-      "value": 1055.58
-    },
-    {
-      "date": "2026-02-24",
-      "value": 1068.71
-    },
-    {
-      "date": "2026-02-25",
-      "value": 1070.21
-    },
-    {
-      "date": "2026-02-26",
-      "value": 1081.01
-    },
-    {
-      "date": "2026-02-27",
-      "value": 1093.37
-    },
-    {
-      "date": "2026-02-28",
-      "value": 1093.48
-    },
-    {
-      "date": "2026-03-01",
-      "value": 1104.01
-    },
-    {
-      "date": "2026-03-02",
-      "value": 1119.0
-    },
-    {
-      "date": "2026-03-03",
-      "value": 1125.1
-    },
-    {
-      "date": "2026-03-04",
-      "value": 1127.68
-    },
-    {
-      "date": "2026-03-05",
-      "value": 1141.35
-    },
-    {
-      "date": "2026-03-06",
-      "value": 1152.65
-    },
-    {
-      "date": "2026-03-07",
-      "value": 1147.58
-    },
-    {
-      "date": "2026-03-08",
-      "value": 1168.14
-    },
-    {
-      "date": "2026-03-09",
-      "value": 1174.19
-    },
-    {
-      "date": "2026-03-10",
-      "value": 1176.24
-    },
-    {
-      "date": "2026-03-11",
-      "value": 1181.06
-    },
-    {
-      "date": "2026-03-12",
-      "value": 1201.66
-    },
-    {
-      "date": "2026-03-13",
-      "value": 1199.5
-    },
-    {
-      "date": "2026-03-14",
-      "value": 1203.37
-    },
-    {
-      "date": "2026-03-15",
-      "value": 1211.21
-    },
-    {
-      "date": "2026-03-16",
-      "value": 1231.0
-    },
-    {
-      "date": "2026-03-17",
-      "value": 1233.21
-    }
-  ]
-};
-
-// ===== UTILITY FUNCTIONS =====
-const C = {
-  green: '#00ff88',
-  red: '#ff4444',
-  yellow: '#ffaa00',
-  blue: '#4488ff',
-  bg: '#1a1a2e',
-  cardBg: '#16213e',
-  grid: '#2a2a4e',
-  text: '#ccc',
-  textDim: '#888',
-  white: '#e0e0e0',
-};
-
-function setupCanvas(id) {
-  const canvas = document.getElementById(id);
-  const container = canvas.parentElement;
-  const dpr = window.devicePixelRatio || 1;
-  const w = container.clientWidth;
-  const h = container.clientHeight;
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-  return { ctx, w, h, canvas };
-}
-
-function showTooltip(tooltipId, canvas, e, text) {
-  const tip = document.getElementById(tooltipId);
-  const rect = canvas.getBoundingClientRect();
-  tip.textContent = text;
-  tip.style.display = 'block';
-  let x = e.clientX - rect.left + 12;
-  let y = e.clientY - rect.top - 30;
-  if (x + 150 > rect.width) x = x - 160;
-  if (y < 0) y = 10;
-  tip.style.left = x + 'px';
-  tip.style.top = y + 'px';
-}
-
-function hideTooltip(tooltipId) {
-  document.getElementById(tooltipId).style.display = 'none';
-}
-
-// ===== CHART 1: Portfolio Performance Line Chart =====
-function drawPerformanceChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-performance');
-  const history = DATA.portfolio_history || [];
-  if (!history.length) return;
-
-  const pad = { top: 20, right: 20, bottom: 40, left: 60 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-
-  const values = history.map(d => d.value);
-  const minV = Math.min(...values, 1000) - 20;
-  const maxV = Math.max(...values, 1000) + 20;
-
-  function xPos(i) { return pad.left + (i / (history.length - 1)) * cw; }
-  function yPos(v) { return pad.top + (1 - (v - minV) / (maxV - minV)) * ch; }
-
-  // Grid lines
-  ctx.strokeStyle = C.grid;
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i <= 4; i++) {
-    const v = minV + (maxV - minV) * i / 4;
-    const y = yPos(v);
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
-    ctx.fillStyle = C.textDim; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(v.toFixed(0) + '€', pad.left - 8, y + 4);
-  }
-
-  // Baseline 1000€ (dashed)
-  ctx.setLineDash([6, 4]);
-  ctx.strokeStyle = '#ffffff40';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(pad.left, yPos(1000)); ctx.lineTo(w - pad.right, yPos(1000)); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#ffffff60'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText('Start: 1000€', pad.left + 4, yPos(1000) - 6);
-
-  // Line
-  const lastVal = values[values.length - 1];
-  const lineColor = lastVal >= 1000 ? C.green : C.red;
-
-  // Gradient fill
-  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ch);
-  grad.addColorStop(0, lineColor + '30');
-  grad.addColorStop(1, lineColor + '05');
-  ctx.beginPath();
-  ctx.moveTo(xPos(0), yPos(values[0]));
-  for (let i = 1; i < values.length; i++) ctx.lineTo(xPos(i), yPos(values[i]));
-  ctx.lineTo(xPos(values.length - 1), pad.top + ch);
-  ctx.lineTo(xPos(0), pad.top + ch);
-  ctx.closePath();
-  ctx.fillStyle = grad; ctx.fill();
-
-  // Line stroke
-  ctx.beginPath();
-  ctx.moveTo(xPos(0), yPos(values[0]));
-  for (let i = 1; i < values.length; i++) ctx.lineTo(xPos(i), yPos(values[i]));
-  ctx.strokeStyle = lineColor; ctx.lineWidth = 2.5; ctx.stroke();
-
-  // Current value dot
-  const lastX = xPos(values.length - 1);
-  const lastY = yPos(lastVal);
-  ctx.beginPath(); ctx.arc(lastX, lastY, 6, 0, Math.PI * 2);
-  ctx.fillStyle = lineColor; ctx.fill();
-  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'right';
-  ctx.fillText(lastVal.toFixed(0) + '€', lastX - 10, lastY - 10);
-
-  // X-axis dates
-  ctx.fillStyle = C.textDim; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-  const step = Math.max(1, Math.floor(history.length / 6));
-  for (let i = 0; i < history.length; i += step) {
-    const d = history[i].date.substring(5); // MM-DD
-    ctx.fillText(d, xPos(i), h - 8);
-  }
-
-  // Tooltip
-  const hitAreas = history.map((d, i) => ({ x: xPos(i), y: yPos(d.value), date: d.date, value: d.value }));
-  canvas.onmousemove = (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const closest = hitAreas.reduce((a, b) => Math.abs(a.x - mx) < Math.abs(b.x - mx) ? a : b);
-    showTooltip('tooltip-performance', canvas, e, `${closest.date}: ${closest.value.toFixed(0)}€`);
-  };
-  canvas.onmouseleave = () => hideTooltip('tooltip-performance');
-}
-
-// ===== CHART 3: Positions P&L Bar Chart =====
-function drawPnLChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-pnl');
-  const status = DATA.auto_trader?.status || {};
-  const positions = status.positions || [];
-  const exits = DATA.auto_trader?.exits || [];
-
-  // Combine open + closed
-  let items = positions.map(p => ({ ticker: p.ticker, pnl_pct: p.pnl_pct || 0, pnl_eur: p.pnl_eur || 0, closed: false }));
-  exits.forEach(e => items.push({ ticker: e.ticker, pnl_pct: e.pnl_pct || 0, pnl_eur: e.pnl_eur || 0, closed: true }));
-  items.sort((a, b) => b.pnl_pct - a.pnl_pct);
-
-  if (!items.length) { ctx.fillStyle = C.textDim; ctx.font = '14px sans-serif'; ctx.fillText('Keine Daten', w/2-30, h/2); return; }
-
-  const pad = { top: 15, right: 15, bottom: 30, left: 65 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-  const barH = Math.min(28, ch / items.length - 4);
-  const gap = (ch - barH * items.length) / (items.length + 1);
-
-  const maxAbs = Math.max(...items.map(d => Math.abs(d.pnl_pct)), 1);
-  const zeroX = pad.left + cw / 2;
-
-  // Zero line
-  ctx.strokeStyle = '#ffffff30'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(zeroX, pad.top); ctx.lineTo(zeroX, h - pad.bottom); ctx.stroke();
-
-  items.forEach((item, i) => {
-    const y = pad.top + gap + i * (barH + gap);
-    const barW = (item.pnl_pct / maxAbs) * (cw / 2);
-    const x = item.pnl_pct >= 0 ? zeroX : zeroX + barW;
-    const color = item.pnl_pct >= 0 ? C.green : C.red;
-    const alpha = item.closed ? '80' : 'cc';
-
-    ctx.fillStyle = color + alpha;
-    ctx.beginPath();
-    ctx.roundRect(x, y, Math.abs(barW), barH, 3);
-    ctx.fill();
-
-    if (item.closed) {
-      // Striped pattern for closed trades
-      ctx.save();
-      ctx.beginPath(); ctx.roundRect(x, y, Math.abs(barW), barH, 3); ctx.clip();
-      ctx.strokeStyle = '#ffffff20'; ctx.lineWidth = 1;
-      for (let sx = x - barH; sx < x + Math.abs(barW) + barH; sx += 6) {
-        ctx.beginPath(); ctx.moveTo(sx, y); ctx.lineTo(sx + barH, y + barH); ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    // Label
-    ctx.fillStyle = C.text; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(item.ticker + (item.closed ? ' ✓' : ''), pad.left - 4, y + barH / 2 + 4);
-
-    // Value
-    ctx.fillStyle = color + 'dd'; ctx.font = '10px sans-serif';
-    const valText = `${item.pnl_pct >= 0 ? '+' : ''}${item.pnl_pct.toFixed(1)}%`;
-    ctx.textAlign = item.pnl_pct >= 0 ? 'left' : 'right';
-    const vx = item.pnl_pct >= 0 ? zeroX + barW + 4 : zeroX + barW - 4;
-    ctx.fillText(valText, vx, y + barH / 2 + 4);
-  });
-
-  // Legend
-  ctx.fillStyle = C.textDim; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText('■ Offen  ▧ Geschlossen', pad.left, h - 6);
-}
-
-// ===== CHART 8: Portfolio Allocation Donut =====
-function drawAllocationChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-allocation');
-  const status = DATA.auto_trader?.status || {};
-  const positions = status.positions || [];
-  const cash = status.cash || 0;
-  const total = status.portfolio_value || 1000;
-
-  // Group by strategy (as proxy for sector)
-  const stratMap = {};
-  const stratNames = { PS1: 'Iran/Öl', PS2: 'Tanker', PS3: 'NATO/Defense', PS4: 'Edelmetalle', PS5: 'Dünger/Agrar' };
-  positions.forEach(p => {
-    const key = p.strategy || 'Andere';
-    if (!stratMap[key]) stratMap[key] = { value: 0, tickers: [] };
-    stratMap[key].value += (p.value || 0);
-    stratMap[key].tickers.push(p.ticker);
-  });
-
-  const segments = [];
-  const colors = ['#00ff88', '#4488ff', '#ff8844', '#ff44aa', '#44ffff', '#ffff44', '#aa88ff'];
-  let ci = 0;
-  for (const [key, data] of Object.entries(stratMap)) {
-    segments.push({ label: `${stratNames[key] || key} (${data.tickers.join(', ')})`, value: data.value, color: colors[ci % colors.length] });
-    ci++;
-  }
-  if (cash > 0) segments.push({ label: 'Cash', value: cash, color: '#666' });
-
-  const cx = w / 2;
-  const cy = h / 2 - 5;
-  const outerR = Math.min(cx, cy) - 30;
-  const innerR = outerR * 0.55;
-
-  let angle = -Math.PI / 2;
-  const segData = [];
-  segments.forEach(s => {
-    const pct = s.value / total;
-    const sweep = pct * Math.PI * 2;
-
-    ctx.beginPath();
-    ctx.moveTo(cx + Math.cos(angle) * innerR, cy + Math.sin(angle) * innerR);
-    ctx.arc(cx, cy, outerR, angle, angle + sweep);
-    ctx.arc(cx, cy, innerR, angle + sweep, angle, true);
-    ctx.closePath();
-    ctx.fillStyle = s.color + 'cc';
-    ctx.fill();
-    ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 2; ctx.stroke();
-
-    // Label
-    const mid = angle + sweep / 2;
-    const lx = cx + Math.cos(mid) * (outerR + 16);
-    const ly = cy + Math.sin(mid) * (outerR + 16);
-    if (pct > 0.05) {
-      ctx.fillStyle = s.color; ctx.font = '10px sans-serif';
-      ctx.textAlign = Math.cos(mid) > 0 ? 'left' : 'right';
-      ctx.fillText(`${(pct * 100).toFixed(0)}%`, lx, ly + 4);
-    }
-
-    segData.push({ start: angle, end: angle + sweep, label: s.label, pct, value: s.value });
-    angle += sweep;
-  });
-
-  // Center text
-  ctx.fillStyle = C.white; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText(total.toFixed(0) + '€', cx, cy + 2);
-  ctx.fillStyle = C.textDim; ctx.font = '10px sans-serif';
-  ctx.fillText('Gesamt', cx, cy + 16);
-
-  // Legend below
-  let lx = 10, ly = h - 14;
-  segments.forEach(s => {
-    ctx.fillStyle = s.color + 'cc';
-    ctx.fillRect(lx, ly - 8, 10, 10);
-    ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
-    const txt = s.label.length > 18 ? s.label.substring(0, 18) + '…' : s.label;
-    ctx.fillText(txt, lx + 14, ly);
-    lx += ctx.measureText(txt).width + 26;
-    if (lx > w - 50) { lx = 10; ly += 14; }
-  });
-
-  // Tooltip
-  canvas.onmousemove = (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left - cx;
-    const my = e.clientY - rect.top - cy;
-    const dist = Math.sqrt(mx * mx + my * my);
-    if (dist < innerR || dist > outerR) { hideTooltip('tooltip-allocation'); return; }
-    let a = Math.atan2(my, mx);
-    if (a < -Math.PI / 2) a += Math.PI * 2;
-    const seg = segData.find(s => a >= s.start && a < s.end);
-    if (seg) showTooltip('tooltip-allocation', canvas, e, `${seg.label}: ${seg.value.toFixed(0)}€ (${(seg.pct*100).toFixed(1)}%)`);
-  };
-  canvas.onmouseleave = () => hideTooltip('tooltip-allocation');
-}
-
-// ===== CHART 2: Sector Rotation Horizontal Bars =====
-function drawSectorChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-sectors');
-  const sectors = (DATA.sector_rotation?.sectors || []).sort((a, b) => b.momentum - a.momentum);
-  if (!sectors.length) { ctx.fillStyle = C.textDim; ctx.font = '14px sans-serif'; ctx.fillText('Keine Daten', w/2-30, h/2); return; }
-
-  const pad = { top: 10, right: 50, bottom: 10, left: 80 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-  const barH = Math.min(20, ch / sectors.length - 3);
-  const gap = (ch - barH * sectors.length) / (sectors.length + 1);
-  const maxMom = Math.max(...sectors.map(s => Math.abs(s.momentum)), 1);
-
-  sectors.forEach((s, i) => {
-    const y = pad.top + gap + i * (barH + gap);
-    const barW = (Math.abs(s.momentum) / maxMom) * cw;
-    const color = s.momentum >= 0 ? C.green : C.red;
-
-    ctx.fillStyle = color + 'aa';
-    ctx.beginPath(); ctx.roundRect(pad.left, y, barW, barH, 3); ctx.fill();
-
-    // Label
-    ctx.fillStyle = C.text; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(s.sector, pad.left - 6, y + barH / 2 + 4);
-
-    // Value
-    ctx.fillStyle = color + 'dd'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(`${s.momentum >= 0 ? '+' : ''}${s.momentum.toFixed(1)}`, pad.left + barW + 4, y + barH / 2 + 4);
-  });
-}
-
-// ===== CHART 5: Strategy Performance Bars =====
-function drawStrategyChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-strategies');
-  const summaries = DATA.backtest?.strategy_summaries || [];
-  if (!summaries.length) { ctx.fillStyle = C.textDim; ctx.font = '14px sans-serif'; ctx.fillText('Keine Daten', w/2-30, h/2); return; }
-
-  const pad = { top: 15, right: 20, bottom: 50, left: 40 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-  const barW = Math.min(50, cw / summaries.length - 20);
-  const totalW = summaries.length * (barW + 20);
-  const startX = pad.left + (cw - totalW) / 2 + 10;
-
-  // Grid + Y-axis (0-100%)
-  ctx.strokeStyle = C.grid; ctx.lineWidth = 0.5;
-  for (let pct = 0; pct <= 100; pct += 25) {
-    const y = pad.top + ch - (pct / 100) * ch;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
-    ctx.fillStyle = C.textDim; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(pct + '%', pad.left - 4, y + 4);
-  }
-
-  // Threshold lines
-  [{ v: 60, c: C.green + '30' }, { v: 40, c: C.red + '30' }].forEach(t => {
-    const y = pad.top + ch - (t.v / 100) * ch;
-    ctx.setLineDash([4, 4]); ctx.strokeStyle = t.c; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
-    ctx.setLineDash([]);
-  });
-
-  summaries.forEach((s, i) => {
-    const x = startX + i * (barW + 20);
-    const wr = s.avg_winrate_default || 0;
-    const barHeight = (wr / 100) * ch;
-    const y = pad.top + ch - barHeight;
-
-    const color = wr > 60 ? C.green : (wr >= 40 ? C.yellow : C.red);
-    ctx.fillStyle = color + 'bb';
-    ctx.beginPath(); ctx.roundRect(x, y, barW, barHeight, [4, 4, 0, 0]); ctx.fill();
-
-    // Win rate on top
-    ctx.fillStyle = color; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(wr.toFixed(0) + '%', x + barW / 2, y - 6);
-
-    // P&L below bar
-    const pnl = s.avg_pnl_default || 0;
-    ctx.fillStyle = pnl > 0 ? C.green + 'aa' : C.red + 'aa'; ctx.font = '9px sans-serif';
-    ctx.fillText((pnl >= 0 ? '+' : '') + pnl.toFixed(1) + '%', x + barW / 2, pad.top + ch + 14);
-
-    // Label
-    ctx.fillStyle = C.text; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(s.strategy, x + barW / 2, pad.top + ch + 28);
-    ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif';
-    const name = (s.name || '').substring(0, 10);
-    ctx.fillText(name, x + barW / 2, pad.top + ch + 40);
-  });
-}
-
-// ===== CHART 4: Sentiment Barometer =====
-function drawSentimentChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-sentiment');
-  const results = (DATA.sentiment?.results || []).slice(0, 12);
-  if (!results.length) { ctx.fillStyle = C.textDim; ctx.font = '14px sans-serif'; ctx.fillText('Keine Daten', w/2-30, h/2); return; }
-
-  const pad = { top: 15, right: 10, bottom: 40, left: 35 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-  const barW = Math.min(30, cw / results.length - 6);
-  const totalW = results.length * (barW + 6);
-  const startX = pad.left + (cw - totalW) / 2 + 3;
-
-  const maxScore = Math.max(...results.map(r => Math.abs(r.score)), 1);
-  const zeroY = pad.top + ch / 2;
-
-  // Zero line
-  ctx.strokeStyle = '#ffffff30'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(pad.left, zeroY); ctx.lineTo(w - pad.right, zeroY); ctx.stroke();
-
-  // Scale
-  ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-  ctx.fillText('+' + maxScore, pad.left - 4, pad.top + 10);
-  ctx.fillText('0', pad.left - 4, zeroY + 4);
-  ctx.fillText('-' + maxScore, pad.left - 4, pad.top + ch);
-
-  results.forEach((r, i) => {
-    const x = startX + i * (barW + 6);
-    const h2 = (Math.abs(r.score) / maxScore) * (ch / 2);
-    const color = r.score >= 0 ? C.green : C.red;
-
-    if (r.score >= 0) {
-      ctx.fillStyle = color + 'bb';
-      ctx.beginPath(); ctx.roundRect(x, zeroY - h2, barW, h2, [3, 3, 0, 0]); ctx.fill();
-    } else {
-      ctx.fillStyle = color + 'bb';
-      ctx.beginPath(); ctx.roundRect(x, zeroY, barW, h2, [0, 0, 3, 3]); ctx.fill();
-    }
-
-    // Score
-    ctx.fillStyle = color + 'dd'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
-    const sy = r.score >= 0 ? zeroY - h2 - 8 : zeroY + h2 + 12;
-    ctx.fillText(r.score, x + barW / 2, sy);
-
-    // Ticker label
-    ctx.save();
-    ctx.translate(x + barW / 2, pad.top + ch + 12);
-    ctx.rotate(-0.5);
-    ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(r.ticker, 0, 0);
-    ctx.restore();
-  });
-}
-
-// ===== CHART 6: Correlation Heatmap =====
-function drawCorrelationChart() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-correlations');
-  const matrix = DATA.correlations?.correlation_matrix || {};
-  const tickers = DATA.correlations?.tickers || Object.keys(matrix);
-  if (!tickers.length) { ctx.fillStyle = C.textDim; ctx.font = '14px sans-serif'; ctx.fillText('Keine Daten', w/2-30, h/2); return; }
-
-  const n = tickers.length;
-  const pad = { top: 50, right: 10, bottom: 10, left: 55 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-  const cellW = cw / n;
-  const cellH = ch / n;
-
-  function corrColor(v) {
-    const abs = Math.abs(v);
-    if (abs > 0.7) return '#ff4444';
-    if (abs > 0.3) return '#ffaa00';
-    return '#00ff88';
-  }
-
-  function corrAlpha(v) {
-    return Math.min(Math.abs(v) * 0.8 + 0.2, 1);
-  }
-
-  // Cells
-  const hitMap = [];
-  tickers.forEach((t1, i) => {
-    tickers.forEach((t2, j) => {
-      const val = matrix[t1]?.[t2] ?? 0;
-      const x = pad.left + j * cellW;
-      const y = pad.top + i * cellH;
-      const color = corrColor(val);
-      const alpha = Math.floor(corrAlpha(val) * 255).toString(16).padStart(2, '0');
-
-      ctx.fillStyle = color + alpha;
-      ctx.fillRect(x + 1, y + 1, cellW - 2, cellH - 2);
-
-      // Value text (if cells big enough)
-      if (cellW > 28) {
-        ctx.fillStyle = '#ffffffcc'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(val.toFixed(1), x + cellW / 2, y + cellH / 2 + 3);
-      }
-
-      hitMap.push({ x, y, w: cellW, h: cellH, t1, t2, val });
     });
-  });
-
-  // Labels
-  ctx.fillStyle = C.text; ctx.font = '9px sans-serif';
-  tickers.forEach((t, i) => {
-    // Top labels (rotated)
-    ctx.save();
-    ctx.translate(pad.left + i * cellW + cellW / 2, pad.top - 6);
-    ctx.rotate(-0.7);
-    ctx.textAlign = 'left';
-    ctx.fillText(t, 0, 0);
-    ctx.restore();
-
-    // Left labels
-    ctx.textAlign = 'right';
-    ctx.fillText(t, pad.left - 4, pad.top + i * cellH + cellH / 2 + 4);
-  });
-
-  // Legend
-  const legendY = 6;
-  [{ c: '#00ff88', l: '<0.3 Low' }, { c: '#ffaa00', l: '0.3-0.7 Mid' }, { c: '#ff4444', l: '>0.7 High' }].forEach((item, i) => {
-    const lx = w - 200 + i * 70;
-    ctx.fillStyle = item.c + '99'; ctx.fillRect(lx, legendY, 12, 12);
-    ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(item.l, lx + 16, legendY + 10);
-  });
-
-  // Tooltip
-  canvas.onmousemove = (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    const hit = hitMap.find(h => mx >= h.x && mx < h.x + h.w && my >= h.y && my < h.y + h.h);
-    if (hit) showTooltip('tooltip-correlations', canvas, e, `${hit.t1} ↔ ${hit.t2}: ${hit.val.toFixed(2)}`);
-    else hideTooltip('tooltip-correlations');
-  };
-  canvas.onmouseleave = () => hideTooltip('tooltip-correlations');
 }
-
-// ===== CHART 7: Regime Timeline =====
-function drawRegimeTimeline() {
-  const { ctx, w, h, canvas } = setupCanvas('chart-regime');
-  const regime = DATA.regime || {};
-  const history = regime.regime_history_30d || [];
-  const currentRegime = regime.regime || 'UNKNOWN';
-
-  const pad = { top: 15, right: 15, bottom: 25, left: 15 };
-  const cw = w - pad.left - pad.right;
-  const ch = h - pad.top - pad.bottom;
-
-  const regimeColors = {
-    CALM: C.green,
-    NORMAL: C.blue,
-    ELEVATED: C.yellow,
-    PANIC: C.red,
-    UNKNOWN: '#666',
-  };
-
-  // Build segments from regime changes
-  const today = new Date();
-  const start = new Date(today); start.setDate(start.getDate() - 30);
-
-  // Convert history to segments
-  const segments = [];
-  let currentReg = 'NORMAL';
-  let segStart = start;
-
-  history.forEach(h => {
-    const changeDate = new Date(h.date);
-    if (changeDate >= start) {
-      segments.push({ from: segStart, to: changeDate, regime: currentReg });
-      segStart = changeDate;
-    }
-    currentReg = h.to;
-  });
-  segments.push({ from: segStart, to: today, regime: currentReg });
-
-  const totalMs = today - start;
-
-  segments.forEach(seg => {
-    const x1 = pad.left + ((seg.from - start) / totalMs) * cw;
-    const x2 = pad.left + ((seg.to - start) / totalMs) * cw;
-    const color = regimeColors[seg.regime] || '#666';
-
-    ctx.fillStyle = color + '88';
-    ctx.beginPath(); ctx.roundRect(x1, pad.top, Math.max(x2 - x1, 2), ch, 3); ctx.fill();
-    ctx.strokeStyle = color; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.roundRect(x1, pad.top, Math.max(x2 - x1, 2), ch, 3); ctx.stroke();
-
-    // Regime label (if wide enough)
-    if (x2 - x1 > 50) {
-      ctx.fillStyle = '#ffffffcc'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText(seg.regime, (x1 + x2) / 2, pad.top + ch / 2 + 4);
-    }
-  });
-
-  // Date markers
-  ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
-  for (let d = 0; d <= 30; d += 5) {
-    const date = new Date(start); date.setDate(date.getDate() + d);
-    const x = pad.left + (d / 30) * cw;
-    ctx.fillText(`${date.getDate()}.${date.getMonth()+1}`, x, h - 4);
-  }
-
-  // Legend
-  let lx = pad.left;
-  ['CALM', 'NORMAL', 'ELEVATED', 'PANIC'].forEach(r => {
-    ctx.fillStyle = regimeColors[r] + '88'; ctx.fillRect(lx, 2, 10, 10);
-    ctx.fillStyle = C.textDim; ctx.font = '9px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(r, lx + 14, 10);
-    lx += ctx.measureText(r).width + 24;
-  });
-}
-
-// ===== TABLE RENDERERS =====
-function renderPositions() {
-  const status = DATA.auto_trader?.status || {};
-  const positions = status.positions || [];
-  const tbody = document.getElementById('positions-body');
-  if (!positions.length) { tbody.innerHTML = '<tr><td colspan="6" class="neutral">Keine offenen Positionen</td></tr>'; return; }
-  tbody.innerHTML = positions.map(p => `
-    <tr>
-      <td><strong>${p.ticker}</strong></td>
-      <td>${p.strategy || '-'}</td>
-      <td>${p.entry?.toFixed(2) || '-'}€</td>
-      <td>${p.current?.toFixed(2) || '-'}€</td>
-      <td class="${p.pnl_eur > 0 ? 'green' : (p.pnl_eur < 0 ? 'red' : 'neutral')}">${p.pnl_pct >= 0 ? '+' : ''}${p.pnl_pct?.toFixed(1)}% (${p.pnl_eur >= 0 ? '+' : ''}${p.pnl_eur?.toFixed(2)}€)</td>
-      <td>${p.stop?.toFixed(2) || '-'}€</td>
-    </tr>
-  `).join('');
-}
-
-function renderLastTrades() {
-  const el = document.getElementById('last-trades');
-  const exits = DATA.auto_trader?.exits || [];
-  const status = DATA.auto_trader?.status || {};
-  let html = '';
-  if (exits.length) {
-    html = `<table><thead><tr><th>Ticker</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Grund</th></tr></thead><tbody>` +
-      exits.map(e => {
-        const cls = (e.pnl_eur || 0) > 0 ? 'green' : 'red';
-        return `<tr><td>${e.ticker}</td><td>${e.entry?.toFixed(2)}€</td><td>${e.exit?.toFixed(2)}€</td>
-          <td class="${cls}">${e.pnl_pct >= 0 ? '+' : ''}${e.pnl_pct?.toFixed(1)}%</td><td style="font-size:0.8em">${e.reason}</td></tr>`;
-      }).join('') + '</tbody></table>';
-  } else {
-    html = '<div class="neutral">Keine geschlossenen Trades im letzten Run</div>';
-  }
-  html += `<div style="margin-top:12px;font-size:0.9em;padding:8px;background:#1a1a2e;border-radius:6px">
-    📋 <strong>${status.open_count || 0}</strong> offen | <strong>${status.closed_count || 0}</strong> geschlossen |
-    WR: <span class="${(status.win_rate||0) > 50 ? 'green' : 'yellow'}">${status.win_rate || 0}%</span>
-    (${status.wins || 0}W / ${status.losses || 0}L)
-  </div>`;
-  el.innerHTML = html;
-}
-
-// ===== INIT =====
-function init() {
-  drawPerformanceChart();
-  drawPnLChart();
-  drawAllocationChart();
-  drawSectorChart();
-  drawStrategyChart();
-  drawSentimentChart();
-  drawCorrelationChart();
-  drawRegimeTimeline();
-  renderPositions();
-  renderLastTrades();
-}
-
-init();
-window.addEventListener('resize', () => { clearTimeout(window._rt); window._rt = setTimeout(init, 200); });
 </script>
+
 </body>
 </html>
