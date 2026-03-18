@@ -1,4 +1,47 @@
-# Albert Accuracy Report
-*Letzte Aktualisierung: 2026-03-17 22:00 UTC*
+# Albert Accuracy & Learning Report
+*Generiert: 2026-03-18 09:11 | Learning System v1.0*
 
-Noch zu wenig Daten (0 Empfehlungen, min 1 nötig)
+---
+
+## 📊 Portfolio-Performance
+
+| | Paper | Real |
+|---|---|---|
+| Startkapital | 1000€ | — |
+| Cash | 371.36€ | — |
+| Investiert | 599.91€ | — |
+| Portfolio-Wert | 971.27€ | — |
+| Realisierte P&L | -7.73€ | — |
+| Offene Positionen | 7 | — |
+| Geschlossene Positionen | 3 | — |
+
+**Paper Win-Rate:** 0% (0W / 3L)
+
+## 🏆 Strategie-Ranking (nach Expectancy)
+
+| Strategie | Trades | WR | Expectancy | P&L |
+|---|---|---|---|---|
+| PS3 (NATO/EU-Rüstung) | 3 | 0% | -0.77 | -16.73€ |
+
+## 🎯 Conviction-Änderungen
+
+- **PS3**: 4 → 3 ↓
+
+## 🧪 Hypothesen-Status
+
+- **H001**: 🟡 Offen
+- **H002**: 🟡 Offen
+- **H003**: 🟡 Offen
+- **H004**: 🟡 Offen
+- **H005**: ✅ BESTÄTIGT
+- **H006**: ✅ BESTÄTIGT
+- **H007**: ✅ BESTÄTIGT
+
+## 📚 Top Lektionen
+
+- **KTOS** (LOSS): Loss 2.1%. Thesis falsch oder Entry zu früh.
+- **HII** (LOSS): Loss 0.1%. Thesis falsch oder Entry zu früh.
+- **HAG.DE** (LOSS): Loss 0.1%. Thesis falsch oder Entry zu früh.
+
+---
+*Nächste Evaluierung: Manuell via `python3 scripts/learning_system.py full`*

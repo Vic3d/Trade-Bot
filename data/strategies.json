@@ -17,13 +17,22 @@
         "OPEC erhöht Output? → Saudi hat Kapazität, aber politisch zurückhaltend",
         "IEA Reserven? → Markt ignoriert IEA (Hormuz = 20M bbl/d vs. IEA Kapazität)"
       ],
-      "sources": ["eigene Analyse", "Eriksen Makro-Video", "liveuamap.com", "Bloomberg RSS"],
-      "conviction_at_start": 4
+      "sources": [
+        "eigene Analyse",
+        "Eriksen Makro-Video",
+        "liveuamap.com",
+        "Bloomberg RSS"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 4
     },
     "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
     "sector": "energy",
     "regime": {
-      "vix_range": [20, 30],
+      "vix_range": [
+        20,
+        30
+      ],
       "wti_min": 85,
       "description": "VIX 20-30, WTI >$85, keine aktiven Friedensverhandlungen"
     },
@@ -33,17 +42,51 @@
     "status": "active",
     "health": "green",
     "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
-    "tickers": ["OXY", "TTE.PA", "EQNR.OL", "FRO", "DHT"],
+    "tickers": [
+      "OXY",
+      "TTE.PA",
+      "EQNR.OL",
+      "FRO",
+      "DHT"
+    ],
     "keywords_bullish": [
-      "iran", "hormuz", "strait", "oil strike", "oil attack", "opec cut",
-      "tanker attack", "persian gulf", "israel iran", "middle east escalation",
-      "crude supply", "oil embargo", "sanctions iran", "drone attack refinery"
+      "iran",
+      "hormuz",
+      "strait",
+      "oil strike",
+      "oil attack",
+      "opec cut",
+      "tanker attack",
+      "persian gulf",
+      "israel iran",
+      "middle east escalation",
+      "crude supply",
+      "oil embargo",
+      "sanctions iran",
+      "drone attack refinery"
     ],
     "keywords_bearish": [
-      "ceasefire iran", "iran deal", "nuclear agreement", "hormuz open",
-      "iran talks", "deescalation", "oil surplus", "opec increase output",
-      "us iran negotiations", "peace iran"
-    ]
+      "ceasefire iran",
+      "iran deal",
+      "nuclear agreement",
+      "hormuz open",
+      "iran talks",
+      "deescalation",
+      "oil surplus",
+      "opec increase output",
+      "us iran negotiations",
+      "peace iran"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -61,8 +104,12 @@
         "Tanker-Überangebot? → Monitoring nötig",
         "DHT -3.5% trotz WTI +4%? → Disconnect beobachtet, These unter Druck"
       ],
-      "sources": ["eigene Analyse", "Shipping-Rate-Daten"],
-      "conviction_at_start": 3
+      "sources": [
+        "eigene Analyse",
+        "Shipping-Rate-Daten"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3
     },
     "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
     "sector": "energy",
@@ -76,15 +123,37 @@
     "status": "active",
     "health": "yellow",
     "learning_question": "Stimmt die Lag-These überhaupt? Wie lange ist der Lag wirklich?",
-    "tickers": ["FRO", "DHT"],
+    "tickers": [
+      "FRO",
+      "DHT"
+    ],
     "keywords_bullish": [
-      "tanker demand", "shipping rates", "baltic dirty tanker", "vlcc rates",
-      "oil tanker", "tanker shortage", "freight rates oil", "suezmax"
+      "tanker demand",
+      "shipping rates",
+      "baltic dirty tanker",
+      "vlcc rates",
+      "oil tanker",
+      "tanker shortage",
+      "freight rates oil",
+      "suezmax"
     ],
     "keywords_bearish": [
-      "tanker oversupply", "shipping rates fall", "tanker glut",
-      "oil demand collapse", "vlcc rates drop"
-    ]
+      "tanker oversupply",
+      "shipping rates fall",
+      "tanker glut",
+      "oil demand collapse",
+      "vlcc rates drop"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "PS3": {
     "name": "NATO/EU-Rüstung",
@@ -103,8 +172,13 @@
         "EU-Budgetkrise? → Schuldenbremse gelockert für Verteidigung",
         "US-Defense besser positioniert? → Vergleich ist die Lernfrage"
       ],
-      "sources": ["NYT: Germany military spending", "CNBC: Europe war economy", "Rheinmetall FY2025 Zahlen"],
-      "conviction_at_start": 4
+      "sources": [
+        "NYT: Germany military spending",
+        "CNBC: Europe war economy",
+        "Rheinmetall FY2025 Zahlen"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 3
     },
     "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
     "sector": "defense",
@@ -117,17 +191,45 @@
     "status": "active",
     "health": "red",
     "learning_question": "Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?",
-    "tickers": ["KTOS", "HII", "HAG.DE"],
+    "tickers": [
+      "KTOS",
+      "HII",
+      "HAG.DE"
+    ],
     "keywords_bullish": [
-      "defense budget", "nato spending", "eu rearmament", "military spending",
-      "defense contract", "pentagon contract", "bundeswehr", "ukraine aid",
-      "weapons delivery", "missile system", "defense order", "kratos",
-      "huntington", "hensoldt", "rheinmetall"
+      "defense budget",
+      "nato spending",
+      "eu rearmament",
+      "military spending",
+      "defense contract",
+      "pentagon contract",
+      "bundeswehr",
+      "ukraine aid",
+      "weapons delivery",
+      "missile system",
+      "defense order",
+      "kratos",
+      "huntington",
+      "hensoldt",
+      "rheinmetall"
     ],
     "keywords_bearish": [
-      "peace deal ukraine", "nato budget cut", "defense spending cut",
-      "trump nato withdrawal", "ukraine ceasefire"
-    ]
+      "peace deal ukraine",
+      "nato budget cut",
+      "defense spending cut",
+      "trump nato withdrawal",
+      "ukraine ceasefire"
+    ],
+    "performance": {
+      "total_trades": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0.77,
+      "expectancy": -0.77,
+      "last_evaluated": "2026-03-18 09:10"
+    }
   },
   "PS4": {
     "name": "Edelmetalle/Miner",
@@ -146,8 +248,12 @@
         "Fed hawkish → Dollar stärker → Edelmetalle unter Druck",
         "Aktuell: VIX bei 22.4 — Thesis schwächt sich ab"
       ],
-      "sources": ["Eriksen Gold/Silber-Videos", "eigene VIX-Analyse"],
-      "conviction_at_start": 3
+      "sources": [
+        "Eriksen Gold/Silber-Videos",
+        "eigene VIX-Analyse"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3
     },
     "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
     "sector": "metals",
@@ -163,17 +269,44 @@
     "status": "active",
     "health": "red",
     "learning_question": "Reagieren Silber-Miner schneller als Gold-Miner auf VIX-Bewegungen?",
-    "tickers": ["HL", "PAAS"],
+    "tickers": [
+      "HL",
+      "PAAS"
+    ],
     "keywords_bullish": [
-      "gold rally", "silver rally", "safe haven", "inflation hedge",
-      "gold all time high", "central bank gold", "precious metals",
-      "silver demand", "gold demand", "dollar weakness", "vix spike",
-      "recession fears", "gold miner"
+      "gold rally",
+      "silver rally",
+      "safe haven",
+      "inflation hedge",
+      "gold all time high",
+      "central bank gold",
+      "precious metals",
+      "silver demand",
+      "gold demand",
+      "dollar weakness",
+      "vix spike",
+      "recession fears",
+      "gold miner"
     ],
     "keywords_bearish": [
-      "gold selloff", "silver selloff", "dollar rally", "rate hike",
-      "gold bear", "precious metals decline", "risk on rally"
-    ]
+      "gold selloff",
+      "silver selloff",
+      "dollar rally",
+      "rate hike",
+      "gold bear",
+      "precious metals decline",
+      "risk on rally"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "PS5": {
     "name": "Dünger/Agrar-Superzyklus",
@@ -192,8 +325,12 @@
         "Agrarpreise kollabieren? → Bisher keine Anzeichen",
         "Ist das Superzyklus oder Sanktions-Anomalie? → Die Lernfrage"
       ],
-      "sources": ["eigene Analyse", "Agrar-Commodity-Daten"],
-      "conviction_at_start": 2
+      "sources": [
+        "eigene Analyse",
+        "Agrar-Commodity-Daten"
+      ],
+      "conviction_at_start": 2,
+      "conviction_current": 2
     },
     "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
     "sector": "fertilizer",
@@ -206,16 +343,37 @@
     "status": "active",
     "health": "red",
     "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
-    "tickers": ["MOS"],
+    "tickers": [
+      "MOS"
+    ],
     "keywords_bullish": [
-      "potash shortage", "fertilizer shortage", "mosaic", "urea prices",
-      "agricultural commodity", "food prices", "crop shortage",
-      "russia potash sanctions", "fertilizer demand"
+      "potash shortage",
+      "fertilizer shortage",
+      "mosaic",
+      "urea prices",
+      "agricultural commodity",
+      "food prices",
+      "crop shortage",
+      "russia potash sanctions",
+      "fertilizer demand"
     ],
     "keywords_bearish": [
-      "fertilizer oversupply", "potash glut", "mosaic guidance cut",
-      "agricultural surplus", "russia potash deal"
-    ]
+      "fertilizer oversupply",
+      "potash glut",
+      "mosaic guidance cut",
+      "agricultural surplus",
+      "russia potash deal"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S1": {
     "name": "Iran-Konflikt → Öl & Silber",
@@ -237,8 +395,14 @@
         "Waffenstillstand? → Mojtaba Khamenei ist Hardliner, Trump will keinen Deal",
         "OPEC erhöht Output? → Saudi politisch zurückhaltend"
       ],
-      "sources": ["liveuamap.com", "Al Jazeera", "Eriksen Makro", "eigene Analyse"],
-      "conviction_at_start": 5
+      "sources": [
+        "liveuamap.com",
+        "Al Jazeera",
+        "Eriksen Makro",
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 5,
+      "conviction_current": 5
     },
     "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.",
     "sector": "energy",
@@ -250,17 +414,49 @@
     "horizon_weeks": 12,
     "status": "active",
     "health": "green_hot",
-    "tickers": ["EQNR"],
-    "watchlist_tickers": ["ISPA.DE", "AG"],
+    "tickers": [
+      "EQNR"
+    ],
+    "watchlist_tickers": [
+      "ISPA.DE",
+      "AG"
+    ],
     "keywords_bullish": [
-      "iran", "hormuz", "strait", "oil strike", "oil attack", "opec cut",
-      "tanker attack", "persian gulf", "israel iran", "middle east escalation",
-      "crude supply", "oil embargo", "sanctions iran", "kharg island"
+      "iran",
+      "hormuz",
+      "strait",
+      "oil strike",
+      "oil attack",
+      "opec cut",
+      "tanker attack",
+      "persian gulf",
+      "israel iran",
+      "middle east escalation",
+      "crude supply",
+      "oil embargo",
+      "sanctions iran",
+      "kharg island"
     ],
     "keywords_bearish": [
-      "ceasefire iran", "iran deal", "nuclear agreement", "hormuz open",
-      "iran talks", "deescalation", "oil surplus", "peace iran"
-    ]
+      "ceasefire iran",
+      "iran deal",
+      "nuclear agreement",
+      "hormuz open",
+      "iran talks",
+      "deescalation",
+      "oil surplus",
+      "peace iran"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S2": {
     "name": "Europäische Aufrüstung → Rüstung",
@@ -280,8 +476,14 @@
         "Budgetkrise? → Schuldenbremse für Verteidigung gelockert",
         "Q4-Margenenttäuschung? → Kurzfristig, Auftragsbuch intakt"
       ],
-      "sources": ["NYT", "CNBC", "Dirk 7H Analyse", "Rheinmetall FY2025 Zahlen"],
-      "conviction_at_start": 4
+      "sources": [
+        "NYT",
+        "CNBC",
+        "Dirk 7H Analyse",
+        "Rheinmetall FY2025 Zahlen"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 4
     },
     "thesis": "Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.",
     "sector": "defense",
@@ -294,16 +496,37 @@
     "status": "watchlist",
     "health": "yellow",
     "tickers": [],
-    "closed_tickers": ["RHM.DE"],
-    "watchlist_tickers": ["RHM.DE"],
+    "closed_tickers": [
+      "RHM.DE"
+    ],
+    "watchlist_tickers": [
+      "RHM.DE"
+    ],
     "keywords_bullish": [
-      "defense budget", "nato spending", "eu rearmament", "rheinmetall",
-      "bundeswehr", "defense contract", "weapons delivery"
+      "defense budget",
+      "nato spending",
+      "eu rearmament",
+      "rheinmetall",
+      "bundeswehr",
+      "defense contract",
+      "weapons delivery"
     ],
     "keywords_bearish": [
-      "peace deal ukraine", "nato budget cut", "defense spending cut",
+      "peace deal ukraine",
+      "nato budget cut",
+      "defense spending cut",
       "global ceasefire"
-    ]
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S3": {
     "name": "KI-Infrastruktur-Boom → Halbleiter",
@@ -323,8 +546,13 @@
         "Meta AI Chips = Konkurrenz? → Langfristig, nicht akut",
         "China Chip-Exportverbote? → Monitoring, noch nicht verschärft"
       ],
-      "sources": ["NVDA Earnings", "Druckenmiller Interview", "eigene SMH/VIX-Analyse"],
-      "conviction_at_start": 4
+      "sources": [
+        "NVDA Earnings",
+        "Druckenmiller Interview",
+        "eigene SMH/VIX-Analyse"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 4
     },
     "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
     "sector": "technology",
@@ -337,15 +565,38 @@
     "horizon_weeks": 26,
     "status": "active",
     "health": "yellow",
-    "tickers": ["NVDA", "MSFT", "PLTR"],
+    "tickers": [
+      "NVDA",
+      "MSFT",
+      "PLTR"
+    ],
     "keywords_bullish": [
-      "ai datacenter", "nvidia earnings", "gpu demand", "hyperscaler capex",
-      "ai infrastructure", "palantir contract", "microsoft azure"
+      "ai datacenter",
+      "nvidia earnings",
+      "gpu demand",
+      "hyperscaler capex",
+      "ai infrastructure",
+      "palantir contract",
+      "microsoft azure"
     ],
     "keywords_bearish": [
-      "chip export ban", "semiconductor decline", "ai bubble", "smh crash",
-      "nvidia competition", "tech selloff"
-    ]
+      "chip export ban",
+      "semiconductor decline",
+      "ai bubble",
+      "smh crash",
+      "nvidia competition",
+      "tech selloff"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S4": {
     "name": "Geopolitische Unsicherheit → Silber/Gold",
@@ -365,8 +616,12 @@
         "Fed erhöht Zinsen? → Monitoring",
         "Aktuell: ISPA.DE unter Kaufsignal 36,90€"
       ],
-      "sources": ["Eriksen Bitcoin/WPR Video", "eigene Analyse"],
-      "conviction_at_start": 3
+      "sources": [
+        "Eriksen Bitcoin/WPR Video",
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3
     },
     "thesis": "Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.",
     "sector": "metals",
@@ -379,14 +634,35 @@
     "status": "watchlist",
     "health": "green",
     "tickers": [],
-    "watchlist_tickers": ["ISPA.DE", "AG"],
+    "watchlist_tickers": [
+      "ISPA.DE",
+      "AG"
+    ],
     "keywords_bullish": [
-      "gold rally", "silver rally", "safe haven", "inflation hedge",
-      "central bank gold", "precious metals", "dollar weakness"
+      "gold rally",
+      "silver rally",
+      "safe haven",
+      "inflation hedge",
+      "central bank gold",
+      "precious metals",
+      "dollar weakness"
     ],
     "keywords_bearish": [
-      "gold selloff", "dollar rally", "rate hike", "risk on rally"
-    ]
+      "gold selloff",
+      "dollar rally",
+      "rate hike",
+      "risk on rally"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S5": {
     "name": "Rohstoff-Superzyklus → Basismetalle",
@@ -406,8 +682,13 @@
         "Oyu Tolgoi Renegotiation? → Monitoring, kein Exit-Trigger bisher",
         "Kupferpreis-Kollaps? → China-Konjunktur beobachten"
       ],
-      "sources": ["Reuters", "FT", "Bloomberg"],
-      "conviction_at_start": 3
+      "sources": [
+        "Reuters",
+        "FT",
+        "Bloomberg"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3
     },
     "thesis": "Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.",
     "sector": "materials",
@@ -420,16 +701,39 @@
     "horizon_weeks": 26,
     "status": "active",
     "health": "yellow",
-    "tickers": ["RIO.L"],
-    "watchlist_tickers": ["BHP.L"],
+    "tickers": [
+      "RIO.L"
+    ],
+    "watchlist_tickers": [
+      "BHP.L"
+    ],
     "keywords_bullish": [
-      "copper shortage", "copper demand", "ev copper", "rio tinto",
-      "lithium demand", "copper mine", "infrastructure spending"
+      "copper shortage",
+      "copper demand",
+      "ev copper",
+      "rio tinto",
+      "lithium demand",
+      "copper mine",
+      "infrastructure spending"
     ],
     "keywords_bearish": [
-      "china iron ore", "copper selloff", "bhp china", "rio tinto dividend cut",
-      "global recession", "oyu tolgoi dispute"
-    ]
+      "china iron ore",
+      "copper selloff",
+      "bhp china",
+      "rio tinto dividend cut",
+      "global recession",
+      "oyu tolgoi dispute"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S6": {
     "name": "Energie-Wende → Solar/Erneuerbare",
@@ -448,8 +752,12 @@
         "China Solar-Überflutung? → Könnte Hersteller-Margen drücken",
         "Ölpreisverfall? → Dann auch S1 schwächer, korreliertes Risiko"
       ],
-      "sources": ["eigene Analyse", "Ölpreis-Korrelation"],
-      "conviction_at_start": 3
+      "sources": [
+        "eigene Analyse",
+        "Ölpreis-Korrelation"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3
     },
     "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
     "sector": "energy_renewable",
@@ -462,14 +770,33 @@
     "horizon_weeks": 16,
     "status": "active",
     "health": "green",
-    "tickers": ["A2QQ9R"],
+    "tickers": [
+      "A2QQ9R"
+    ],
     "keywords_bullish": [
-      "solar energy", "renewable energy", "green deal", "ira subsidy",
-      "solar demand", "energy transition"
+      "solar energy",
+      "renewable energy",
+      "green deal",
+      "ira subsidy",
+      "solar demand",
+      "energy transition"
     ],
     "keywords_bearish": [
-      "solar tariff", "ira repeal", "renewable cut", "solar oversupply"
-    ]
+      "solar tariff",
+      "ira repeal",
+      "renewable cut",
+      "solar oversupply"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "S7": {
     "name": "Biotech-Zyklus → US-Pharma/Biotech",
@@ -489,8 +816,11 @@
         "Zinsen steigen weiter? → Exit-Trigger",
         "Medikamentenpreis-Politik? → Monitoring"
       ],
-      "sources": ["eigene Analyse"],
-      "conviction_at_start": 2
+      "sources": [
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 2,
+      "conviction_current": 2
     },
     "thesis": "US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.",
     "sector": "healthcare",
@@ -502,55 +832,139 @@
     "horizon_weeks": 26,
     "status": "active",
     "health": "yellow",
-    "tickers": ["A2DWAW"],
+    "tickers": [
+      "A2DWAW"
+    ],
     "keywords_bullish": [
-      "biotech acquisition", "fda approval", "rate cut", "pharma merger",
-      "biotech rally", "clinical trial success"
+      "biotech acquisition",
+      "fda approval",
+      "rate cut",
+      "pharma merger",
+      "biotech rally",
+      "clinical trial success"
     ],
     "keywords_bearish": [
-      "fda rejection", "rate hike", "drug pricing reform", "biotech selloff"
-    ]
+      "fda rejection",
+      "rate hike",
+      "drug pricing reform",
+      "biotech selloff"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    }
   },
   "emerging_themes": {
     "copper_shortage": {
       "name": "Kupfer-Knappheit",
-      "keywords": ["copper shortage", "copper supply", "copper demand china",
-                   "copper mine strike", "ev copper", "grid copper"],
+      "keywords": [
+        "copper shortage",
+        "copper supply",
+        "copper demand china",
+        "copper mine strike",
+        "ev copper",
+        "grid copper"
+      ],
       "sector": "metals",
-      "candidates": ["FCX", "SCCO", "AA", "GLEN.L"],
+      "candidates": [
+        "FCX",
+        "SCCO",
+        "AA",
+        "GLEN.L"
+      ],
       "thesis_template": "Kupfer-Nachfrage (EV, Energienetz) > Angebot → Miner profitieren"
     },
     "us_steel_tariffs": {
       "name": "US-Stahl/Zölle",
-      "keywords": ["steel tariff", "steel import", "steel production us",
-                   "us steel", "tariff steel", "nucor", "cleveland-cliffs"],
+      "keywords": [
+        "steel tariff",
+        "steel import",
+        "steel production us",
+        "us steel",
+        "tariff steel",
+        "nucor",
+        "cleveland-cliffs"
+      ],
       "sector": "materials",
-      "candidates": ["CLF", "NUE", "STLD"],
+      "candidates": [
+        "CLF",
+        "NUE",
+        "STLD"
+      ],
       "thesis_template": "US-Zölle auf importierten Stahl → heimische Produzenten profitieren"
     },
     "ai_infrastructure": {
       "name": "KI-Infrastruktur",
-      "keywords": ["ai datacenter", "power grid ai", "electricity demand ai",
-                   "nvidia data center", "hyperscaler capex", "ai infrastructure"],
+      "keywords": [
+        "ai datacenter",
+        "power grid ai",
+        "electricity demand ai",
+        "nvidia data center",
+        "hyperscaler capex",
+        "ai infrastructure"
+      ],
       "sector": "technology",
-      "candidates": ["VST", "CEG", "ETN", "SMCI"],
+      "candidates": [
+        "VST",
+        "CEG",
+        "ETN",
+        "SMCI"
+      ],
       "thesis_template": "KI-Boom → Strom + Kühlsysteme + Infrastruktur stark nachgefragt"
     },
     "uranium_renaissance": {
       "name": "Uran-Renaissance",
-      "keywords": ["uranium demand", "nuclear power", "smr reactor",
-                   "nuclear energy", "uranium mine", "uranium spot"],
+      "keywords": [
+        "uranium demand",
+        "nuclear power",
+        "smr reactor",
+        "nuclear energy",
+        "uranium mine",
+        "uranium spot"
+      ],
       "sector": "energy",
-      "candidates": ["UUUU", "CCJ", "NXE"],
+      "candidates": [
+        "UUUU",
+        "CCJ",
+        "NXE"
+      ],
       "thesis_template": "Energiewende + KI-Strom → Atomkraft-Revival → Uran-Nachfrage steigt"
     },
     "water_infrastructure": {
       "name": "Wasser-Infrastruktur",
-      "keywords": ["water shortage", "water infrastructure", "drought",
-                   "water treatment", "desalination"],
+      "keywords": [
+        "water shortage",
+        "water infrastructure",
+        "drought",
+        "water treatment",
+        "desalination"
+      ],
       "sector": "utilities",
-      "candidates": ["AWK", "PNM", "XYLM"],
+      "candidates": [
+        "AWK",
+        "PNM",
+        "XYLM"
+      ],
       "thesis_template": "Klimawandel → Wasserknappheit → Infrastruktur-Investitionen"
+    },
+    "genesis": {
+      "conviction_current": 3
+    },
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
     }
   }
 }

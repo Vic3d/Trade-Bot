@@ -393,3 +393,33 @@
 [2026-03-18 07:00:20] ALERT QUEUED: 🔒 Gewinn sichern: iShares Biotech ETF (A2DWAW) @ 144.79€ | P&L: +1968.4% (>10.0%...
 [2026-03-18 07:00:20] ALERT QUEUED: 🔔 ENTRY B: First Majestic Silver (AG) @ $21.74 (<24.3) — Rücklauf-Zone!...
 [2026-03-18 07:00:21] State Snapshot geschrieben: 11 Positionen, 13 Alerts
+[2026-03-18 07:15:04] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-18 07:15:11] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-18 07:15:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-18 07:15:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-18 07:15:12] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-18 07:15:12] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-18 07:30:03] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-18 07:30:11] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-18 07:30:11] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-18 07:30:11] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-18 07:30:11] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-18 07:30:12] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-18 07:45:07] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-18 07:45:14] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-18 07:45:14] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-18 07:45:14] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-18 07:45:14] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-18 07:45:15] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-18 08:00:56] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-18 08:01:04] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-18 08:01:04] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-18 08:01:04] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-18 08:01:05] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-18 08:01:05] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-18 08:15:12] Fetching 17 Yahoo tickers + Onvista...
+[2026-03-18 08:15:19] EMA FEHLER A2QQ9R: HTTP Error 404: Not Found
+[2026-03-18 08:15:19] EMA FEHLER A3D42Y: HTTP Error 404: Not Found
+[2026-03-18 08:15:19] EMA FEHLER A14WU5: HTTP Error 404: Not Found
+[2026-03-18 08:15:19] EMA FEHLER A2DWAW: HTTP Error 404: Not Found
+[2026-03-18 08:15:19] State Snapshot geschrieben: 11 Positionen, 0 Alerts

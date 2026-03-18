@@ -2,6 +2,10 @@
 """
 trade_journal.py — Paper & Real Trade Journal (SQLite)
 Paper Trading System Phase 1.3 + Cross-Learning
+
+⚠️  DEPRECATED: Dieses Script wird noch von unified_scorer importiert.
+    Neue Trades bitte über learning_system.py sync verwalten.
+    Direkte Nutzung weiterhin möglich, aber learning_system.py ist der bevorzugte Weg.
 """
 
 import sqlite3

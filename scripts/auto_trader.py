@@ -32,14 +32,18 @@ def _load_strategy_genesis(strategy_id):
     try:
         data = json.loads(STRATEGIES_PATH.read_text())
         strat = data.get(strategy_id, {})
+        genesis = strat.get("genesis", {})
+        conviction_at_start = genesis.get("conviction_at_start", 3)
+        conviction_current = genesis.get("conviction_current", conviction_at_start)
         return {
             "name": strat.get("name", strategy_id),
             "thesis": strat.get("thesis", ""),
-            "genesis_trigger": strat.get("genesis", {}).get("trigger", ""),
-            "genesis_logical_chain": strat.get("genesis", {}).get("logical_chain", ""),
+            "genesis_trigger": genesis.get("trigger", ""),
+            "genesis_logical_chain": genesis.get("logical_chain", ""),
             "kill_trigger": strat.get("kill_trigger", ""),
             "learning_question": strat.get("learning_question", ""),
-            "conviction_at_start": strat.get("genesis", {}).get("conviction_at_start", 0),
+            "conviction_at_start": conviction_at_start,
+            "conviction_current": conviction_current,
         }
     except Exception:
         return {}
@@ -267,6 +271,21 @@ def _get_fx_rates():
     return _fx_cache
 
 
+def _get_current_regime():
+    """
+    Liest aktuelles VIX-Regime aus current_regime.json.
+    Returns: 'CALM' | 'NORMAL' | 'ELEVATED' | 'PANIC' | 'UNKNOWN'
+    """
+    regime_path = DATA_DIR / "current_regime.json"
+    try:
+        if regime_path.exists():
+            data = json.loads(regime_path.read_text())
+            return data.get("regime", "UNKNOWN")
+    except Exception:
+        pass
+    return "UNKNOWN"
+
+
 def get_current_price(ticker):
     """Get latest price from DB converted to EUR."""
     raw_price = get_current_price_raw(ticker)
@@ -339,9 +358,31 @@ def close_position(pos_id, close_price, reason=""):
 
 
 def open_position(ticker, strategy, price, shares, stop_price, target_price):
-    """Open a new position. Logs strategy genesis info from strategies.json."""
+    """Open a new position. Logs strategy genesis info from strategies.json.
+    
+    Position size wird mit Conviction skaliert:
+      Conviction 5 = 1.67x base_size
+      Conviction 3 = 1.0x base_size (neutral)
+      Conviction 1 = 0.33x base_size
+    """
     # Apply slippage on entry
     entry_price = price * (1 + SLIPPAGE_PCT)
+
+    # Load genesis info — enthält conviction_current
+    genesis_info = _load_strategy_genesis(strategy)
+    conviction_current = genesis_info.get("conviction_current", 3) if genesis_info else 3
+
+    # Conviction-basierte Position-Skalierung
+    conviction_multiplier = conviction_current / 3.0
+    adjusted_shares = round(shares * conviction_multiplier, 4)
+    if adjusted_shares != shares:
+        print(f"  📊 Conviction-Skalierung [{strategy}]: "
+              f"conviction={conviction_current} → multiplier={conviction_multiplier:.2f}x "
+              f"({shares:.4f} → {adjusted_shares:.4f} shares)")
+    shares = adjusted_shares
+
+    # Aktuelles VIX-Regime laden (für Logging)
+    regime_at_entry = _get_current_regime()
 
     cost = entry_price * shares + FEES_ROUND_TRIP
     cash = get_fund_value('current_cash')
@@ -349,16 +390,14 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
     if cash - cost < MIN_CASH_RESERVE:
         return None, f"Nicht genug Cash ({cash:.2f}€, brauche {cost:.2f}€ + {MIN_CASH_RESERVE:.0f}€ Reserve)"
 
-    # Load genesis info for logging
-    genesis_info = _load_strategy_genesis(strategy)
-
     conn = get_db()
     entry_date = datetime.now().strftime("%Y-%m-%d")
     conn.execute("""
-        INSERT INTO paper_portfolio (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price, status, fees)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?)
+        INSERT INTO paper_portfolio (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price, status, fees, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?)
     """, (ticker, strategy, round(entry_price, 2), entry_date, round(shares, 4), round(stop_price, 2),
-          round(target_price, 2), FEES_ROUND_TRIP))
+          round(target_price, 2), FEES_ROUND_TRIP,
+          f"conviction={conviction_current} regime={regime_at_entry}"))
     conn.commit()
     pos_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
     conn.close()
@@ -375,6 +414,8 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
         'stop': round(stop_price, 2),
         'target': round(target_price, 2),
         'cost': round(cost, 2),
+        'conviction_at_entry': conviction_current,
+        'regime_at_entry': regime_at_entry,
     }
 
     # Log genesis info (printed for visibility in logs)
@@ -386,6 +427,7 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
         print(f"     Kill: {genesis_info.get('kill_trigger', 'n/a')}")
         if genesis_info.get('learning_question'):
             print(f"     Lernfrage: {genesis_info.get('learning_question')}")
+        print(f"     Conviction: {conviction_current}/5 | Regime: {regime_at_entry}")
         result['genesis'] = genesis_info
 
     return result, None
