@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>🎩 Albert Trading System</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -72,13 +73,16 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
 <body>
 
 <!-- Header -->
-<div class="header">
-    <h1>🎩 Albert Trading System</h1>
-    <div class="subtitle">
-        Stand: 18.03.2026 08:27 &nbsp;|&nbsp; 
-        VIX: <strong>23.51</strong> &nbsp;
-        <span class="regime-badge" style="background:#ffaa00">ELEVATED</span>
+<div class="header" style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+        <h1 style="margin:0">🎩 Albert Trading System</h1>
+        <div class="subtitle">
+            Stand: 18.03.2026 21:02 &nbsp;|&nbsp; 
+            VIX: <strong>23.51</strong> &nbsp;
+            <span class="regime-badge" style="background:#ffaa00">ELEVATED</span>
+        </div>
     </div>
+    <button onclick="location.reload()" style="background:#0f3460;color:#fff;border:1px solid #1a4a8a;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:1em">🔄 Aktualisieren</button>
 </div>
 
 <!-- Tab Navigation -->
@@ -143,8 +147,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </div>
         <div class="card">
             <div class="label">Bares Geld</div>
-            <div class="value">371€</div>
-            <div class="sub">37% vom Fund</div>
+            <div class="value">71€</div>
+            <div class="sub">7% vom Fund</div>
         </div>
         <div class="card">
             <div class="label">Realisierter Gewinn</div>
@@ -158,8 +162,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </div>
         <div class="card">
             <div class="label">Offene Positionen</div>
-            <div class="value">7</div>
-            <div class="sub">600€ investiert</div>
+            <div class="value">11</div>
+            <div class="sub">900€ investiert</div>
         </div>
     </div>
     
@@ -242,6 +246,14 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
                 <th>Volumen</th>
             </tr>
             <tr>
+            <td><strong>ASML.AS</strong></td>
+            <td><span class="badge" style="background:#f1c40f">PS4</span> Edelmetalle</td>
+            <td>1187.60€</td>
+            <td>0.0674</td>
+            <td>1090.00€</td>
+            <td>1350.00€</td>
+            <td>80€</td>
+        </tr><tr>
             <td><strong>DHT</strong></td>
             <td><span class="badge" style="background:#e67e22">PS2</span> Tanker-Lag</td>
             <td>14.74€</td>
@@ -258,12 +270,28 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td>30.36€</td>
             <td>40€</td>
         </tr><tr>
+            <td><strong>GLEN.L</strong></td>
+            <td><span class="badge" style="background:#8b4513">PS5</span> Dünger/Agrar</td>
+            <td>6.07€</td>
+            <td>13.1865</td>
+            <td>5.45€</td>
+            <td>6.96€</td>
+            <td>80€</td>
+        </tr><tr>
             <td><strong>HL</strong></td>
             <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
             <td>17.15€</td>
             <td>4.6647</td>
             <td>15.44€</td>
             <td>19.72€</td>
+            <td>80€</td>
+        </tr><tr>
+            <td><strong>HO.PA</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
+            <td>254.40€</td>
+            <td>0.3145</td>
+            <td>235.00€</td>
+            <td>285.00€</td>
             <td>80€</td>
         </tr><tr>
             <td><strong>MOS</strong></td>
@@ -273,6 +301,14 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td>22.50€</td>
             <td>32.00€</td>
             <td>100€</td>
+        </tr><tr>
+            <td><strong>NOVO-B.CO</strong></td>
+            <td><span class="badge" style="background:#888">new</span> new</td>
+            <td>32.32€</td>
+            <td>1.8565</td>
+            <td>28.15€</td>
+            <td>40.21€</td>
+            <td>60€</td>
         </tr><tr>
             <td><strong>OXY</strong></td>
             <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
@@ -969,7 +1005,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </div>
         <div class="card">
             <div class="label">Gesamt-Trend</div>
-            <div class="value red">-0.8%</div>
+            <div class="value red">-1.7%</div>
             <div class="sub">seit Kauf (Durchschnitt)</div>
         </div>
         <div class="card">
@@ -1008,8 +1044,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>NVDA</strong></td>
             <td>Nvidia</td>
             <td>167.88€</td>
-            <td><strong>157.62€</strong></td>
-            <td><span style="color:#ff4444;font-weight:bold">📉 -6.1%</span></td>
+            <td><strong>157.25€</strong></td>
+            <td><span style="color:#ff4444;font-weight:bold">📉 -6.3%</span></td>
             <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888">HALTEN bis Earnings 27.05.2026</td>
@@ -1017,8 +1053,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>MSFT</strong></td>
             <td>Microsoft</td>
             <td>351.85€</td>
-            <td><strong>346.05€</strong></td>
-            <td><span style="color:#ff4444;font-weight:bold">📉 -1.6%</span></td>
+            <td><strong>341.52€</strong></td>
+            <td><span style="color:#ff4444;font-weight:bold">📉 -2.9%</span></td>
             <td>338.0€</td>
             <td>387€</td>
             <td style="font-size:0.85em;color:#888"></td>
@@ -1026,8 +1062,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>PLTR</strong></td>
             <td>Palantir</td>
             <td>132.11€</td>
-            <td><strong>134.36€</strong></td>
-            <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
+            <td><strong>133.17€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +0.8%</span></td>
             <td>127.0€</td>
             <td>159€</td>
             <td style="font-size:0.85em;color:#888">Stop nachgezogen 09.03.</td>
@@ -1035,8 +1071,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>EQNR</strong></td>
             <td>Equinor ASA</td>
             <td>27.04€</td>
-            <td><strong>32.12€</strong></td>
-            <td><span style="color:#00ff88;font-weight:bold">📈 +18.8%</span></td>
+            <td><strong>32.59€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +20.5%</span></td>
             <td>30.0€</td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888">Stop auf 30€ nachgezogen 16.03. | Buy-ba</td>
@@ -1044,8 +1080,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>BAYN.DE</strong></td>
             <td>Bayer AG</td>
             <td>39.95€</td>
-            <td><strong>40.21€</strong></td>
-            <td><span style="color:#00ff88;font-weight:bold">📈 +0.7%</span></td>
+            <td><strong>39.53€</strong></td>
+            <td><span style="color:#ff4444;font-weight:bold">📉 -1.1%</span></td>
             <td>38.0€</td>
             <td>44€</td>
             <td style="font-size:0.85em;color:#888">Stop real in TR</td>
@@ -1053,8 +1089,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>RIO.L</strong></td>
             <td>Rio Tinto</td>
             <td>76.92€</td>
-            <td><strong>78.26€</strong></td>
-            <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
+            <td><strong>77.14€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +0.3%</span></td>
             <td>73.0€</td>
             <td>85€</td>
             <td style="font-size:0.85em;color:#888">⚠️ Stop 73€ in TR setzen!</td>

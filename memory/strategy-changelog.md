@@ -116,3 +116,28 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
 
+
+---
+
+## 2026-03-18 20:00 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Momentum +3.1% (FRO -1.3%, DHT +7.5%) | News-Score neutral (+0) — Tanker folgen Öl-Rally nicht
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
+**Gründe:** Momentum -3.2% (KTOS -7.9%, HII -1.6%, HAG -0.1%) | News +20 (1 Artikel)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Momentum -6.1% (HL -9.7%, PAAS -2.5%) | News neutral (+0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Momentum -5.2% (MOS) | News neutral (+0)
+
+### PS1 (Iran/Öl-Geopolitik)
+**🟢 STARK — unverändert** (Score: 80)
+**Gründe:** Momentum Ø +13.7% | News +100 (Iran-Kriegs-Eskalation bullish)
+Victor informiert: ✅ Discord DM gesendet

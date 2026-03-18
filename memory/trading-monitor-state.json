@@ -13,11 +13,14 @@
     "A14WU5_TRAIL_10",
     "A2DWAW_TRAIL_5",
     "A2DWAW_TRAIL_10",
-    "WL_AG_ENTRY_B_USD"
+    "WL_AG_ENTRY_B_USD",
+    "MACRO_WTI_DAILY",
+    "BAYN.DE_STOP_WARN",
+    "MSFT_STOP_CRIT"
   ],
-  "run_count": 20,
-  "prev_wti": 94.93,
+  "run_count": 53,
+  "prev_wti": 97.7,
   "wti_open": 92.51,
   "vix_open": 22.37,
-  "last_run": "2026-03-18T11:45:13.988381+00:00"
+  "last_run": "2026-03-18T20:00:22.445538+00:00"
 }
