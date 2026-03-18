@@ -14,6 +14,15 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 
 ## Log
 
+### 2026-03-18 — Morgen-Check 08:00 — 4 Strategien schwächer
+**PS2 Tanker-Lag-These:** 🟢→🟡 | Momentum +3.1% (14T, FRO/DHT), News-Score neutral (0/100) — Lag-These verliert Kraft
+**PS3 NATO/EU-Rüstung:** 🟢→🔴 | Momentum -3.2% (HII -1.6%, KTOS -7.9%, HAG -0.1%), News-Score +20 — Rüstungsaktien drehen trotz Budgetdebatte ab
+**PS4 Edelmetalle/Miner:** 🟢→🔴 | Momentum -6.1% (HL -9.7%, PAAS -2.5%), News-Score neutral — kein Catalyst
+**PS5 Dünger/Agrar-Superzyklus:** 🟢→🔴 | Momentum -5.2% (MOS), News-Score neutral — Superzyklus verliert Schwung
+**PS1 Iran/Öl:** unverändert 🟢 STARK (Score 80, Momentum +13.7%)
+
+---
+
 ### 2026-03-14 — Kharg Island Bombing (Iran)
 **Strategie betroffen:** S2 (Öl/Geopolitik — Equinor EQNR)
 **Status:** 🟡 Erhöhte Aufmerksamkeit (kein formaler Wechsel, Wochenende)
@@ -27,3 +36,43 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 
 *Dieses Log wird bei jedem Strategie-Statuswechsel von Albert aktualisiert.*
 *Verknüpft mit: memory/strategien.md | memory/trade-decisions.md*
+
+
+## 2026-03-17 23:02 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+
+
+
+## 2026-03-18 08:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
+**Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+

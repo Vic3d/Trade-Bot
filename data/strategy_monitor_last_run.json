@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-03-18T08:01:41.403835",
+  "strategies": {
+    "PS1": {
+      "name": "Iran/Öl-Geopolitik",
+      "status": "STARK",
+      "score": 80,
+      "momentum_avg": 13.7,
+      "news_score": 100,
+      "reasons": [
+        "Preise stark +13.7% (14T)",
+        "News bullish (Score +100)"
+      ]
+    },
+    "PS2": {
+      "name": "Tanker-Lag-These",
+      "status": "NEUTRAL",
+      "score": 52,
+      "momentum_avg": 3.1,
+      "news_score": 0,
+      "reasons": [
+        "Preise positiv +3.1% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS3": {
+      "name": "NATO/EU-Rüstung",
+      "status": "GESCHWÄCHT",
+      "score": 31,
+      "momentum_avg": -3.2,
+      "news_score": 20,
+      "reasons": [
+        "Preise schwach -3.2% (14T)",
+        "News neutral (Score +20)"
+      ]
+    },
+    "PS4": {
+      "name": "Edelmetalle/Miner",
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -6.1,
+      "news_score": 0,
+      "reasons": [
+        "Preise schwach -6.1% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS5": {
+      "name": "Dünger/Agrar-Superzyklus",
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -5.2,
+      "news_score": 0,
+      "reasons": [
+        "Preise schwach -5.2% (14T)",
+        "News neutral (Score +0)"
+      ]
+    }
+  },
+  "changes": [
+    {
+      "ps_id": "PS2",
+      "name": "Tanker-Lag-These",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 52,
+      "reasons": [
+        "Preise positiv +3.1% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS3",
+      "name": "NATO/EU-Rüstung",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 31,
+      "reasons": [
+        "Preise schwach -3.2% (14T)",
+        "News neutral (Score +20)"
+      ]
+    },
+    {
+      "ps_id": "PS4",
+      "name": "Edelmetalle/Miner",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
+      "reasons": [
+        "Preise schwach -6.1% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS5",
+      "name": "Dünger/Agrar-Superzyklus",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
+      "reasons": [
+        "Preise schwach -5.2% (14T)",
+        "News neutral (Score +0)"
+      ]
+    }
+  ],
+  "emerging_themes": [],
+  "articles_analyzed": 36
+}

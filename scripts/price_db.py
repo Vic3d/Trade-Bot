@@ -4,6 +4,7 @@ price_db.py — SQLite Preis-Datenbank mit Yahoo Finance
 Paper Trading System Phase 1.1
 """
 
+import json
 import sqlite3
 import sys
 import time
@@ -14,6 +15,7 @@ import yfinance as yf
 import pandas as pd
 
 DB_PATH = Path("/data/.openclaw/workspace/data/trading.db")
+STRATEGIES_PATH = Path("/data/.openclaw/workspace/data/strategies.json")
 
 # All tickers organized by region
 TICKERS = {
@@ -27,21 +29,36 @@ TICKERS = {
 
 ALL_TICKERS = [t for group in TICKERS.values() for t in group]
 
-# Strategy mapping (PS1-PS5)
-STRATEGY_MAP = {
-    # PS1: Commodities & Resources
-    "PS1": ["OXY", "HAL", "SLB", "HL", "PAAS", "GOLD", "WPM", "CLF", "MOS", "CF",
-            "MP", "UUUU", "EXK", "RIO.L", "BHP.L", "GLEN.L", "AAL.L", "EQNR.OL", "YARA.OL",
-            "TTE.PA", "ENI.MI", "BAS.DE", "SHEL.L"],
-    # PS2: Shipping / Tankers
-    "PS2": ["FRO", "DHT"],
-    # PS3: Defense / Aero
-    "PS3": ["KTOS", "HII", "RHM.DE", "AIR.PA", "BA.L", "HAG.DE"],
-    # PS4: Tech / Growth
-    "PS4": ["NVDA", "MSFT", "PLTR"],
-    # PS5: Green Energy / Turnaround
-    "PS5": ["ENPH", "PLUG", "BAYN.DE"],
-}
+
+def _load_strategy_map():
+    """
+    Lädt STRATEGY_MAP aus data/strategies.json (Single Source of Truth).
+    Fallback auf leeres dict wenn Datei fehlt.
+    Returns: dict {strategy_id: [ticker, ...]}
+    """
+    if not STRATEGIES_PATH.exists():
+        return {}
+    try:
+        data = json.loads(STRATEGIES_PATH.read_text())
+        strategy_map = {}
+        for strat_id, strat in data.items():
+            if strat_id == "emerging_themes":
+                continue
+            tickers = list(strat.get("tickers") or [])
+            tickers += list(strat.get("watchlist_tickers") or [])
+            tickers += list(strat.get("closed_tickers") or [])
+            if tickers:
+                strategy_map[strat_id] = list(dict.fromkeys(tickers))  # dedupliziert, Reihenfolge erhalten
+        return strategy_map
+    except Exception as e:
+        print(f"⚠ price_db: Fehler beim Laden von strategies.json: {e}")
+        return {}
+
+
+# STRATEGY_MAP wird lazy aus strategies.json geladen
+# Für Rückwärtskompatibilität bleibt STRATEGY_MAP als Modul-Level-Variable,
+# wird aber aus JSON gebaut statt hardcoded.
+STRATEGY_MAP = _load_strategy_map()
 
 
 def get_db():

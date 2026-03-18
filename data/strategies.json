@@ -1,0 +1,556 @@
+{
+  "PS1": {
+    "name": "Iran/Öl-Geopolitik",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-08",
+      "trigger": "Iran-Konflikt eskaliert, Hormuz unter Druck, Ölpreis strukturell über $85",
+      "analysis_steps": [
+        "WTI über $85 seit Konfliktbeginn",
+        "Hormuz-Blockade bedroht 20% weltweiter Ölversorgung",
+        "Nordsee-Leichtöl (EQNR) = einziger EU-Ersatz für Golf-Öl",
+        "Venezuela Heavy Crude kann europäische Raffinerien NICHT beliefern"
+      ],
+      "logical_chain": "Iran-Eskalation → Hormuz-Risiko → Ölversorgung bedroht → Produzenten profitieren",
+      "counter_arguments_checked": [
+        "Venezuela-Öl als Ersatz? → NEIN — Heavy vs Light Crude, verschiedene Raffinerien",
+        "OPEC erhöht Output? → Saudi hat Kapazität, aber politisch zurückhaltend",
+        "IEA Reserven? → Markt ignoriert IEA (Hormuz = 20M bbl/d vs. IEA Kapazität)"
+      ],
+      "sources": ["eigene Analyse", "Eriksen Makro-Video", "liveuamap.com", "Bloomberg RSS"],
+      "conviction_at_start": 4
+    },
+    "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
+    "sector": "energy",
+    "regime": {
+      "vix_range": [20, 30],
+      "wti_min": 85,
+      "description": "VIX 20-30, WTI >$85, keine aktiven Friedensverhandlungen"
+    },
+    "entry_trigger": "WTI >$85 + keine Deeskalation + Chart-Support gehalten",
+    "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
+    "horizon_weeks": 12,
+    "status": "active",
+    "health": "green",
+    "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
+    "tickers": ["OXY", "TTE.PA", "EQNR.OL", "FRO", "DHT"],
+    "keywords_bullish": [
+      "iran", "hormuz", "strait", "oil strike", "oil attack", "opec cut",
+      "tanker attack", "persian gulf", "israel iran", "middle east escalation",
+      "crude supply", "oil embargo", "sanctions iran", "drone attack refinery"
+    ],
+    "keywords_bearish": [
+      "ceasefire iran", "iran deal", "nuclear agreement", "hormuz open",
+      "iran talks", "deescalation", "oil surplus", "opec increase output",
+      "us iran negotiations", "peace iran"
+    ]
+  },
+  "PS2": {
+    "name": "Tanker-Lag-These",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Beobachtung dass Tanker-Frachtraten dem Ölpreis um 2-4 Wochen nachhinken",
+      "analysis_steps": [
+        "WTI steigt durch Iran-Eskalation",
+        "Tanker-Aktien reagieren verzögert — typischer Lag bei Öl-Rallyes",
+        "These: FRO/DHT ziehen in 2-4 Wochen nach"
+      ],
+      "logical_chain": "Ölpreis steigt → Transportnachfrage steigt → Frachtraten erhöhen sich mit Lag → Tanker-Aktien ziehen nach",
+      "counter_arguments_checked": [
+        "Tanker-Überangebot? → Monitoring nötig",
+        "DHT -3.5% trotz WTI +4%? → Disconnect beobachtet, These unter Druck"
+      ],
+      "sources": ["eigene Analyse", "Shipping-Rate-Daten"],
+      "conviction_at_start": 3
+    },
+    "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
+    "sector": "energy",
+    "regime": {
+      "wti_trending_up": true,
+      "description": "WTI trending up, kein Überangebot an Tankerkapazität"
+    },
+    "entry_trigger": "WTI >$85 seit >2 Wochen UND Tanker-Kurse noch nicht mitgezogen",
+    "kill_trigger": "WTI fällt <$80, oder Tanker-Rally findet nicht statt nach 4 Wochen",
+    "horizon_weeks": 8,
+    "status": "active",
+    "health": "yellow",
+    "learning_question": "Stimmt die Lag-These überhaupt? Wie lange ist der Lag wirklich?",
+    "tickers": ["FRO", "DHT"],
+    "keywords_bullish": [
+      "tanker demand", "shipping rates", "baltic dirty tanker", "vlcc rates",
+      "oil tanker", "tanker shortage", "freight rates oil", "suezmax"
+    ],
+    "keywords_bearish": [
+      "tanker oversupply", "shipping rates fall", "tanker glut",
+      "oil demand collapse", "vlcc rates drop"
+    ]
+  },
+  "PS3": {
+    "name": "NATO/EU-Rüstung",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Europäische Regierungen erhöhen Verteidigungsbudgets — struktureller Trend",
+      "analysis_steps": [
+        "NATO-Beschluss 3% BIP für Verteidigung",
+        "Iran-Konflikt + Ukraine = gleichzeitige Kriege",
+        "EU-Defense-Titel (HAG.DE) haben Nachholbedarf vs. US (KTOS/HII)"
+      ],
+      "logical_chain": "Mehrere Konflikte gleichzeitig → NATO erhöht Budgets → EU-Rüstungsfirmen erhalten Großaufträge → Aktien steigen",
+      "counter_arguments_checked": [
+        "Frieden überall gleichzeitig? → Unwahrscheinlich (Iran + Ukraine + Israel)",
+        "EU-Budgetkrise? → Schuldenbremse gelockert für Verteidigung",
+        "US-Defense besser positioniert? → Vergleich ist die Lernfrage"
+      ],
+      "sources": ["NYT: Germany military spending", "CNBC: Europe war economy", "Rheinmetall FY2025 Zahlen"],
+      "conviction_at_start": 4
+    },
+    "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
+    "sector": "defense",
+    "regime": {
+      "description": "Geopolitische Eskalation, NATO-Ausgaben steigen, kein globaler Frieden"
+    },
+    "entry_trigger": "EU-Defense-Titel unter ATH + Bundeshaushalt/NATO-Beschluss als Katalysator",
+    "kill_trigger": "Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise",
+    "horizon_weeks": 16,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?",
+    "tickers": ["KTOS", "HII", "HAG.DE"],
+    "keywords_bullish": [
+      "defense budget", "nato spending", "eu rearmament", "military spending",
+      "defense contract", "pentagon contract", "bundeswehr", "ukraine aid",
+      "weapons delivery", "missile system", "defense order", "kratos",
+      "huntington", "hensoldt", "rheinmetall"
+    ],
+    "keywords_bearish": [
+      "peace deal ukraine", "nato budget cut", "defense spending cut",
+      "trump nato withdrawal", "ukraine ceasefire"
+    ]
+  },
+  "PS4": {
+    "name": "Edelmetalle/Miner",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "VIX über 22 + Iran-Unsicherheit → Safe-Haven-Nachfrage steigt",
+      "analysis_steps": [
+        "VIX erhöht → Unsicherheit treibt Gold/Silber",
+        "USD schwächelt → Edelmetalle werden attraktiver",
+        "Miner haben Hebel auf Metallpreis (operativer Leverage)"
+      ],
+      "logical_chain": "Hohe Volatilität + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
+      "counter_arguments_checked": [
+        "VIX fällt unter 18 → Safe-Haven braucht niemand → Exit-Trigger",
+        "Fed hawkish → Dollar stärker → Edelmetalle unter Druck",
+        "Aktuell: VIX bei 22.4 — Thesis schwächt sich ab"
+      ],
+      "sources": ["Eriksen Gold/Silber-Videos", "eigene VIX-Analyse"],
+      "conviction_at_start": 3
+    },
+    "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
+    "sector": "metals",
+    "regime": {
+      "vix_min": 22,
+      "inflation_min": 3,
+      "usd_weak": true,
+      "description": "VIX >22, Inflation >3%, USD schwach"
+    },
+    "entry_trigger": "Metall an Unterstützung + Miner überverkauft + VIX stabil/steigend",
+    "kill_trigger": "VIX <18 (Risk-on), Fed hawkish, Metall unter Produktionskosten",
+    "horizon_weeks": 10,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Reagieren Silber-Miner schneller als Gold-Miner auf VIX-Bewegungen?",
+    "tickers": ["HL", "PAAS"],
+    "keywords_bullish": [
+      "gold rally", "silver rally", "safe haven", "inflation hedge",
+      "gold all time high", "central bank gold", "precious metals",
+      "silver demand", "gold demand", "dollar weakness", "vix spike",
+      "recession fears", "gold miner"
+    ],
+    "keywords_bearish": [
+      "gold selloff", "silver selloff", "dollar rally", "rate hike",
+      "gold bear", "precious metals decline", "risk on rally"
+    ]
+  },
+  "PS5": {
+    "name": "Dünger/Agrar-Superzyklus",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Russische Kali-Sanktionen → Angebot verknappt, Nachfrage stabil",
+      "analysis_steps": [
+        "Russland-Sanktionen auf Kali/Phosphat aktiv",
+        "Globale Lebensmittelnachfrage wächst (Bevölkerung, Ernten)",
+        "Westliche Produzenten (MOS) profitieren als Ersatzlieferant"
+      ],
+      "logical_chain": "Russland-Sanktionen → Kali-Angebot sinkt → Preise steigen → westliche Produzenten profitieren",
+      "counter_arguments_checked": [
+        "Sanktionen werden gelockert? → Monitoring nötig",
+        "Agrarpreise kollabieren? → Bisher keine Anzeichen",
+        "Ist das Superzyklus oder Sanktions-Anomalie? → Die Lernfrage"
+      ],
+      "sources": ["eigene Analyse", "Agrar-Commodity-Daten"],
+      "conviction_at_start": 2
+    },
+    "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
+    "sector": "fertilizer",
+    "regime": {
+      "description": "Russland-Sanktionen aktiv, Agrar-Commodity-Preise stabil/steigend"
+    },
+    "entry_trigger": "Kali-Preis steigt + Produzent near Support + Newsflow positiv",
+    "kill_trigger": "Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden",
+    "horizon_weeks": 20,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
+    "tickers": ["MOS"],
+    "keywords_bullish": [
+      "potash shortage", "fertilizer shortage", "mosaic", "urea prices",
+      "agricultural commodity", "food prices", "crop shortage",
+      "russia potash sanctions", "fertilizer demand"
+    ],
+    "keywords_bearish": [
+      "fertilizer oversupply", "potash glut", "mosaic guidance cut",
+      "agricultural surplus", "russia potash deal"
+    ]
+  },
+  "S1": {
+    "name": "Iran-Konflikt → Öl & Silber",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-01",
+      "trigger": "US/Israel greifen Iran an, Khamenei tot — Ölkrise beginnt",
+      "analysis_steps": [
+        "Hormuz-Straße unter Druck → 20% weltweiter Ölversorgung bedroht",
+        "Nordsee-Leichtöl (Equinor) = einziger EU-Ersatz für Golf-Öl",
+        "Venezuela Heavy Crude kann europäische Raffinerien NICHT verarbeiten",
+        "Mojtaba Khamenei als Nachfolger = Hardliner → kein schneller Frieden",
+        "Kharg Island Bombardierung → 90% Iran-Ölexporte betroffen"
+      ],
+      "logical_chain": "Iran-Krieg → Hormuz blockiert → Ölversorgung Europa bedroht → Equinor als Nordsee-Ersatz profitiert",
+      "counter_arguments_checked": [
+        "Venezuela-Öl als Ersatz? → NEIN (Heavy vs Light Crude)",
+        "IEA Notreserven? → Markt ignoriert IEA (20M bbl/d Hormuz >> IEA Kapazität)",
+        "Waffenstillstand? → Mojtaba Khamenei ist Hardliner, Trump will keinen Deal",
+        "OPEC erhöht Output? → Saudi politisch zurückhaltend"
+      ],
+      "sources": ["liveuamap.com", "Al Jazeera", "Eriksen Makro", "eigene Analyse"],
+      "conviction_at_start": 5
+    },
+    "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.",
+    "sector": "energy",
+    "regime": {
+      "description": "Aktiver militärischer Konflikt, Hormuz unter Druck"
+    },
+    "entry_trigger": "Konflikt-Eskalation + Ölpreis steigt + Equinor als EU-Alternative",
+    "kill_trigger": "Waffenstillstand konkret + Hormuz offen + US Navy zieht sich zurück",
+    "horizon_weeks": 12,
+    "status": "active",
+    "health": "green_hot",
+    "tickers": ["EQNR"],
+    "watchlist_tickers": ["ISPA.DE", "AG"],
+    "keywords_bullish": [
+      "iran", "hormuz", "strait", "oil strike", "oil attack", "opec cut",
+      "tanker attack", "persian gulf", "israel iran", "middle east escalation",
+      "crude supply", "oil embargo", "sanctions iran", "kharg island"
+    ],
+    "keywords_bearish": [
+      "ceasefire iran", "iran deal", "nuclear agreement", "hormuz open",
+      "iran talks", "deescalation", "oil surplus", "peace iran"
+    ]
+  },
+  "S2": {
+    "name": "Europäische Aufrüstung → Rüstung",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-04",
+      "trigger": "NATO-Druck + Ukraine-Krieg + Iran-Konflikt → Europa rüstet auf",
+      "analysis_steps": [
+        "NATO 3% BIP-Beschluss — struktureller Treiber 5-10 Jahre",
+        "Rheinmetall: Auftragsbuch bis 2030, Rekordgewinn FY2025",
+        "Mehrere Kriegsschauplätze gleichzeitig (Iran, Ukraine, Israel)",
+        "Germany military spending headlines (NYT, CNBC)"
+      ],
+      "logical_chain": "Mehrere Konflikte → NATO-Budgets steigen → Rheinmetall als DE-Marktführer profitiert",
+      "counter_arguments_checked": [
+        "Globaler Frieden? → Unwahrscheinlich bei 3+ Konflikten",
+        "Budgetkrise? → Schuldenbremse für Verteidigung gelockert",
+        "Q4-Margenenttäuschung? → Kurzfristig, Auftragsbuch intakt"
+      ],
+      "sources": ["NYT", "CNBC", "Dirk 7H Analyse", "Rheinmetall FY2025 Zahlen"],
+      "conviction_at_start": 4
+    },
+    "thesis": "Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.",
+    "sector": "defense",
+    "regime": {
+      "description": "Geopolitische Eskalation, NATO-Ausgaben steigen"
+    },
+    "entry_trigger": "Kurs >1.626€ (EMA-10) + erhöhtes Volumen",
+    "kill_trigger": "Globaler Frieden in mehreren Regionen, EU-Budgetkrise",
+    "horizon_weeks": 52,
+    "status": "watchlist",
+    "health": "yellow",
+    "tickers": [],
+    "closed_tickers": ["RHM.DE"],
+    "watchlist_tickers": ["RHM.DE"],
+    "keywords_bullish": [
+      "defense budget", "nato spending", "eu rearmament", "rheinmetall",
+      "bundeswehr", "defense contract", "weapons delivery"
+    ],
+    "keywords_bearish": [
+      "peace deal ukraine", "nato budget cut", "defense spending cut",
+      "global ceasefire"
+    ]
+  },
+  "S3": {
+    "name": "KI-Infrastruktur-Boom → Halbleiter",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-05",
+      "trigger": "NVDA Q4 Earnings Beat — KI-Infrastruktur wächst strukturell",
+      "analysis_steps": [
+        "Rechenzentren, GPU-Bedarf, NVDA als Hauptprofiteur",
+        "Druckenmiller-Rotation: Big Spender verkauft, Profitable gekauft → NVDA/PLTR = Winners",
+        "SMH (Semiconductor ETF) als Kanarienvogel — darüber = Rückenwind",
+        "VIX-Abhängigkeit: Bei VIX >25 kein Nachkauf Tech"
+      ],
+      "logical_chain": "KI-Boom → Datacenter brauchen GPUs → NVDA profitiert | PLTR = Defense-AI profitiert von Konflikten",
+      "counter_arguments_checked": [
+        "VIX >30 = Tech wird verkauft → Temporär, Hold-Strategie bis Earnings",
+        "Meta AI Chips = Konkurrenz? → Langfristig, nicht akut",
+        "China Chip-Exportverbote? → Monitoring, noch nicht verschärft"
+      ],
+      "sources": ["NVDA Earnings", "Druckenmiller Interview", "eigene SMH/VIX-Analyse"],
+      "conviction_at_start": 4
+    },
+    "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
+    "sector": "technology",
+    "regime": {
+      "vix_max": 28,
+      "description": "VIX <28 für Nachkäufe, SMH über EMA-50"
+    },
+    "entry_trigger": "VIX <28 + SMH über EMA-50 + Earnings-Bestätigung",
+    "kill_trigger": "VIX >30 persistent, China Chip-Ban verschärft, SMH unter EMA-50 bleibt",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": ["NVDA", "MSFT", "PLTR"],
+    "keywords_bullish": [
+      "ai datacenter", "nvidia earnings", "gpu demand", "hyperscaler capex",
+      "ai infrastructure", "palantir contract", "microsoft azure"
+    ],
+    "keywords_bearish": [
+      "chip export ban", "semiconductor decline", "ai bubble", "smh crash",
+      "nvidia competition", "tech selloff"
+    ]
+  },
+  "S4": {
+    "name": "Geopolitische Unsicherheit → Silber/Gold",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-06",
+      "trigger": "Iran-Eskalation + Inflation → Safe-Haven-Nachfrage",
+      "analysis_steps": [
+        "Geopolitische Krisen treiben traditionell Edelmetalle",
+        "Silber hat zusätzlich industriellen Hebel (Solar, EVs)",
+        "USD schwächt sich ab → Edelmetalle attraktiver",
+        "Eriksen WPR-Signal auf Monatsbasis (Akkumulierungssignal)"
+      ],
+      "logical_chain": "Geopolitik-Krise + Inflation → Flucht in sichere Häfen → Gold/Silber steigen",
+      "counter_arguments_checked": [
+        "USD stärkt sich als Kriegswährung? → Beobachtet, gegenläufig",
+        "Fed erhöht Zinsen? → Monitoring",
+        "Aktuell: ISPA.DE unter Kaufsignal 36,90€"
+      ],
+      "sources": ["Eriksen Bitcoin/WPR Video", "eigene Analyse"],
+      "conviction_at_start": 3
+    },
+    "thesis": "Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.",
+    "sector": "metals",
+    "regime": {
+      "description": "Geopolitische Eskalation aktiv, Inflation >3%, USD nicht überstark"
+    },
+    "entry_trigger": "ISPA.DE >36,90€ (Silber) ODER AG <$29 mit Umkehrkerze",
+    "kill_trigger": "USD rallyt stark, Fed hawkish, De-Eskalation in allen Konflikten",
+    "horizon_weeks": 16,
+    "status": "watchlist",
+    "health": "green",
+    "tickers": [],
+    "watchlist_tickers": ["ISPA.DE", "AG"],
+    "keywords_bullish": [
+      "gold rally", "silver rally", "safe haven", "inflation hedge",
+      "central bank gold", "precious metals", "dollar weakness"
+    ],
+    "keywords_bearish": [
+      "gold selloff", "dollar rally", "rate hike", "risk on rally"
+    ]
+  },
+  "S5": {
+    "name": "Rohstoff-Superzyklus → Basismetalle",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-09",
+      "trigger": "Energiewende + Iran-Rohstoff-Schock → Kupfer/Lithium strukturell gefragt",
+      "analysis_steps": [
+        "Rio Tinto transformiert sich vom Eisenerz zum Kupfer/Lithium-Produzenten",
+        "EV-Nachfrage + Infrastrukturprogramme treiben Kupfer",
+        "BHP durch China-Eisenerz-Konflikt belastet → auf Hold",
+        "Oyu Tolgoi Renegotiation (Mongolei) = Risiko für RIO"
+      ],
+      "logical_chain": "Energiewende → Kupfer/Lithium-Nachfrage steigt → Produzenten profitieren",
+      "counter_arguments_checked": [
+        "China-Eisenerz-Restriktionen? → BHP direkt belastet, RIO indirekt",
+        "Oyu Tolgoi Renegotiation? → Monitoring, kein Exit-Trigger bisher",
+        "Kupferpreis-Kollaps? → China-Konjunktur beobachten"
+      ],
+      "sources": ["Reuters", "FT", "Bloomberg"],
+      "conviction_at_start": 3
+    },
+    "thesis": "Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.",
+    "sector": "materials",
+    "regime": {
+      "vix_max": 28,
+      "description": "VIX <28, Kupferpreis stabil/steigend, keine China-Rezession"
+    },
+    "entry_trigger": "RIO.L >6.700 GBp + VIX <28",
+    "kill_trigger": "China-Rezession, Kupferpreis-Kollaps, Oyu Tolgoi Deal scheitert",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": ["RIO.L"],
+    "watchlist_tickers": ["BHP.L"],
+    "keywords_bullish": [
+      "copper shortage", "copper demand", "ev copper", "rio tinto",
+      "lithium demand", "copper mine", "infrastructure spending"
+    ],
+    "keywords_bearish": [
+      "china iron ore", "copper selloff", "bhp china", "rio tinto dividend cut",
+      "global recession", "oyu tolgoi dispute"
+    ]
+  },
+  "S6": {
+    "name": "Energie-Wende → Solar/Erneuerbare",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-13",
+      "trigger": "Hohe Ölpreise machen erneuerbare Energien attraktiver",
+      "analysis_steps": [
+        "Brent >$90 → Solar-Prämie steigt",
+        "IRA (USA) + EU Green Deal = Subventionsrückenwind",
+        "Invesco Solar ETF +11,9% seit Entry → bestätigte Korrelation mit Ölpreis"
+      ],
+      "logical_chain": "Iran-Eskalation → Öl teuer → Erneuerbare werden attraktiver → Solar-ETF profitiert",
+      "counter_arguments_checked": [
+        "IRA-Rückbau durch Trump? → Politisches Risiko, aber bisher stabil",
+        "China Solar-Überflutung? → Könnte Hersteller-Margen drücken",
+        "Ölpreisverfall? → Dann auch S1 schwächer, korreliertes Risiko"
+      ],
+      "sources": ["eigene Analyse", "Ölpreis-Korrelation"],
+      "conviction_at_start": 3
+    },
+    "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
+    "sector": "energy_renewable",
+    "regime": {
+      "brent_min": 90,
+      "description": "Brent >$90, Solar-ETF über EMA50, RSI <70"
+    },
+    "entry_trigger": "Brent >$90 UND Solar-ETF über EMA50 UND RSI <70",
+    "kill_trigger": "Iran-Deal → Brent <$80 ODER RSI >80 ODER IRA-Rückbau",
+    "horizon_weeks": 16,
+    "status": "active",
+    "health": "green",
+    "tickers": ["A2QQ9R"],
+    "keywords_bullish": [
+      "solar energy", "renewable energy", "green deal", "ira subsidy",
+      "solar demand", "energy transition"
+    ],
+    "keywords_bearish": [
+      "solar tariff", "ira repeal", "renewable cut", "solar oversupply"
+    ]
+  },
+  "S7": {
+    "name": "Biotech-Zyklus → US-Pharma/Biotech",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-13",
+      "trigger": "Defensiver Sektor mit Zinssenkungserwartungen + M&A-Aktivität",
+      "analysis_steps": [
+        "Biotech profitiert von günstigerer Finanzierung (Zinssenkungen)",
+        "Big Pharma kauft Biotech für Pipeline → M&A-Rückenwind",
+        "Weniger korreliert mit Nasdaq → defensive Qualität bei VIX-Spikes",
+        "Alternde Bevölkerung = Langfrist-Demografie-These"
+      ],
+      "logical_chain": "Zinssenkungserwartungen + M&A → Biotech-Finanzierung günstiger → ETF profitiert",
+      "counter_arguments_checked": [
+        "FDA-Ablehnungen? → ETF diversifiziert das Risiko",
+        "Zinsen steigen weiter? → Exit-Trigger",
+        "Medikamentenpreis-Politik? → Monitoring"
+      ],
+      "sources": ["eigene Analyse"],
+      "conviction_at_start": 2
+    },
+    "thesis": "US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.",
+    "sector": "healthcare",
+    "regime": {
+      "description": "Zinssenkungserwartungen aktiv, M&A-Aktivität im Sektor"
+    },
+    "entry_trigger": "RSI <40 + Fed Pivot erwartet + M&A-Aktivität",
+    "kill_trigger": "Zinsen steigen wieder, regulatorische Verschärfung (FDA), Medikamentenpreis-Politik",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": ["A2DWAW"],
+    "keywords_bullish": [
+      "biotech acquisition", "fda approval", "rate cut", "pharma merger",
+      "biotech rally", "clinical trial success"
+    ],
+    "keywords_bearish": [
+      "fda rejection", "rate hike", "drug pricing reform", "biotech selloff"
+    ]
+  },
+  "emerging_themes": {
+    "copper_shortage": {
+      "name": "Kupfer-Knappheit",
+      "keywords": ["copper shortage", "copper supply", "copper demand china",
+                   "copper mine strike", "ev copper", "grid copper"],
+      "sector": "metals",
+      "candidates": ["FCX", "SCCO", "AA", "GLEN.L"],
+      "thesis_template": "Kupfer-Nachfrage (EV, Energienetz) > Angebot → Miner profitieren"
+    },
+    "us_steel_tariffs": {
+      "name": "US-Stahl/Zölle",
+      "keywords": ["steel tariff", "steel import", "steel production us",
+                   "us steel", "tariff steel", "nucor", "cleveland-cliffs"],
+      "sector": "materials",
+      "candidates": ["CLF", "NUE", "STLD"],
+      "thesis_template": "US-Zölle auf importierten Stahl → heimische Produzenten profitieren"
+    },
+    "ai_infrastructure": {
+      "name": "KI-Infrastruktur",
+      "keywords": ["ai datacenter", "power grid ai", "electricity demand ai",
+                   "nvidia data center", "hyperscaler capex", "ai infrastructure"],
+      "sector": "technology",
+      "candidates": ["VST", "CEG", "ETN", "SMCI"],
+      "thesis_template": "KI-Boom → Strom + Kühlsysteme + Infrastruktur stark nachgefragt"
+    },
+    "uranium_renaissance": {
+      "name": "Uran-Renaissance",
+      "keywords": ["uranium demand", "nuclear power", "smr reactor",
+                   "nuclear energy", "uranium mine", "uranium spot"],
+      "sector": "energy",
+      "candidates": ["UUUU", "CCJ", "NXE"],
+      "thesis_template": "Energiewende + KI-Strom → Atomkraft-Revival → Uran-Nachfrage steigt"
+    },
+    "water_infrastructure": {
+      "name": "Wasser-Infrastruktur",
+      "keywords": ["water shortage", "water infrastructure", "drought",
+                   "water treatment", "desalination"],
+      "sector": "utilities",
+      "candidates": ["AWK", "PNM", "XYLM"],
+      "thesis_template": "Klimawandel → Wasserknappheit → Infrastruktur-Investitionen"
+    }
+  }
+}

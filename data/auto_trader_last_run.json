@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-17T22:45:45.423043",
-  "date": "2026-03-17 22:45",
+  "timestamp": "2026-03-18T08:05:10.134866",
+  "date": "2026-03-18 08:05",
   "regime": "ELEVATED",
   "vix": 23.51,
   "position_factor": 0.75,
@@ -17,13 +17,13 @@
   "thesis_broken": [],
   "new_entries": [],
   "status": {
-    "timestamp": "2026-03-17T22:45:45.422986",
-    "date": "2026-03-17 22:45",
-    "cash": 142.61,
-    "invested": 827.39,
-    "unrealized_pnl": -29.64,
-    "realized_pnl": 0.0,
-    "portfolio_value": 970.35,
+    "timestamp": "2026-03-18T08:05:10.134819",
+    "date": "2026-03-18 08:05",
+    "cash": 371.36,
+    "invested": 599.91,
+    "unrealized_pnl": -22.15,
+    "realized_pnl": -7.73,
+    "portfolio_value": 970.12,
     "performance_pct": -3.0,
     "positions": [
       {
@@ -46,7 +46,7 @@
         "entry": 26.4,
         "current": 27.84,
         "shares": 1.5111,
-        "stop": 23.76,
+        "stop": 26.4,
         "target": 30.36,
         "pnl_eur": -0.83,
         "pnl_pct": 5.4,
@@ -64,32 +64,6 @@
         "pnl_eur": 0.77,
         "pnl_pct": 3.8,
         "value": 103.77
-      },
-      {
-        "id": 4,
-        "ticker": "KTOS",
-        "strategy": "PS3",
-        "entry": 76.57,
-        "current": 78.29,
-        "shares": 0.6856,
-        "stop": 68.91,
-        "target": 88.06,
-        "pnl_eur": -1.82,
-        "pnl_pct": 2.3,
-        "value": 53.68
-      },
-      {
-        "id": 5,
-        "ticker": "HII",
-        "strategy": "PS3",
-        "entry": 363.64,
-        "current": 364.31,
-        "shares": 0.2062,
-        "stop": 327.28,
-        "target": 418.19,
-        "pnl_eur": -2.86,
-        "pnl_pct": 0.2,
-        "value": 75.12
       },
       {
         "id": 6,
@@ -131,19 +105,6 @@
         "value": 95.34
       },
       {
-        "id": 9,
-        "ticker": "HAG.DE",
-        "strategy": "PS3",
-        "entry": 82.15,
-        "current": 82.3,
-        "shares": 1.2173,
-        "stop": 74.0,
-        "target": 98.0,
-        "pnl_eur": -2.82,
-        "pnl_pct": 0.2,
-        "value": 100.18
-      },
-      {
         "id": 10,
         "ticker": "TTE.PA",
         "strategy": "PS1",
@@ -157,11 +118,11 @@
         "value": 97.22
       }
     ],
-    "open_count": 10,
-    "closed_count": 0,
-    "win_rate": 0,
+    "open_count": 7,
+    "closed_count": 3,
+    "win_rate": 0.0,
     "wins": 0,
-    "losses": 0
+    "losses": 3
   },
-  "output": "\n=== AUTO-TRADER RUN — 2026-03-17 22:45 ===\n📊 REGIME: ELEVATED (VIX 23.51) | Position-Size: 75%\n\n✅ Keine Exits\n\n🟢 TRAILING:\n  - FRO: +5.4% → +5% → Stop auf Breakeven (Stop 23.76 → 26.40)\n\n🆕 NEW ENTRIES: [keine — 10/2 diese Woche]\n\n💰 FUND STATUS:\n  Cash: 142.61€ | Invested: 827.39€ | Unrealized: -29.64€ | Realized: +0.00€\n  Portfolio Value: ~970€ | Performance: -3.0%\n\n📋 JOURNAL:\n  10 offene Trades | 0 geschlossene | Win-Rate: 0% (0/0)"
+  "output": "\n=== AUTO-TRADER RUN — 2026-03-18 08:05 ===\n📊 REGIME: ELEVATED (VIX 23.51) | Position-Size: 75%\n\n✅ Keine Exits\n\n🟢 TRAILING:\n  - FRO: +5.4% → +5% → Stop auf Breakeven (Stop 23.76 → 26.40)\n\n🔴 STRATEGIE GESCHWÄCHT:\n  - KTOS (PS3): STRATEGIE GESCHWÄCHT: PS3 Score 31/100 | Aktuell 78.29€\n    🔴 GESCHLOSSEN: Entry 76.57€ → Exit 78.22€ | P&L +2.1% (-1.87€)\n  - HII (PS3): STRATEGIE GESCHWÄCHT: PS3 Score 31/100 | Aktuell 364.31€\n    🔴 GESCHLOSSEN: Entry 363.64€ → Exit 363.94€ | P&L +0.1% (-2.94€)\n  - HAG.DE (PS3): STRATEGIE GESCHWÄCHT: PS3 Score 31/100 | Aktuell 82.30€\n    🔴 GESCHLOSSEN: Entry 82.15€ → Exit 82.22€ | P&L +0.1% (-2.92€)\n\n🆕 NEW ENTRIES: [keine — 10/2 diese Woche]\n\n💰 FUND STATUS:\n  Cash: 371.36€ | Invested: 599.91€ | Unrealized: -22.15€ | Realized: -7.73€\n  Portfolio Value: ~970€ | Performance: -3.0%\n\n📋 JOURNAL:\n  7 offene Trades | 3 geschlossene | Win-Rate: 0% (0/3)"
 }

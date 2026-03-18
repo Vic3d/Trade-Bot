@@ -50,9 +50,22 @@ WS = Path("/data/.openclaw/workspace")
 CONFIG_PATH = WS / "trading_config.json"
 DB_PATH = WS / "data" / "trading.db"
 EVENTS_PATH = WS / "data" / "portfolio_events.json"
+STRATEGIES_PATH = WS / "data" / "strategies.json"
 
 # Strategy → Tickers mapping (dynamisch aus config/DB)
 # Wird NICHT hardcoded — wird aus den Daten gelesen
+
+def _load_strategies_json():
+    """Lädt strategies.json (Single Source of Truth). Returns {} on error."""
+    if not STRATEGIES_PATH.exists():
+        return {}
+    try:
+        data = json.loads(STRATEGIES_PATH.read_text())
+        # Entferne emerging_themes — das ist kein Strategie-Eintrag
+        data.pop("emerging_themes", None)
+        return data
+    except Exception:
+        return {}
 
 
 @dataclass
@@ -230,14 +243,52 @@ class Portfolio:
         return sorted(tickers)
 
     def strategy_for_ticker(self, ticker):
-        """Strategie eines Tickers (sucht in real, dann paper)."""
+        """
+        Strategie eines Tickers (sucht in real, dann paper, dann strategies.json).
+        """
         p = self.get(ticker, "real")
         if p and p.strategy:
             return p.strategy
         p = self.get(ticker, "paper")
         if p and p.strategy:
             return p.strategy
+        # Fallback: strategies.json durchsuchen
+        strategies = _load_strategies_json()
+        for strat_id, strat in strategies.items():
+            all_tickers = (strat.get("tickers") or []) + (strat.get("watchlist_tickers") or [])
+            if ticker in all_tickers:
+                return strat_id
         return ""
+
+    def strategy_details(self, strategy_id):
+        """
+        Gibt die vollständige Strategie-Definition aus strategies.json zurück.
+        Enthält: genesis, thesis, health, kill_trigger, learning_question, etc.
+        Returns None wenn nicht gefunden.
+        """
+        strategies = _load_strategies_json()
+        return strategies.get(strategy_id)
+
+    def strategies_summary(self):
+        """
+        Schnellübersicht aller Strategien mit Health-Status.
+        Returns list of dicts mit: id, name, type, health, status, sector, tickers
+        """
+        strategies = _load_strategies_json()
+        result = []
+        for strat_id, strat in strategies.items():
+            result.append({
+                "id": strat_id,
+                "name": strat.get("name", strat_id),
+                "type": strat.get("type", "unknown"),
+                "health": strat.get("health", "unknown"),
+                "status": strat.get("status", "unknown"),
+                "sector": strat.get("sector", ""),
+                "tickers": strat.get("tickers", []),
+                "thesis": strat.get("thesis", ""),
+                "learning_question": strat.get("learning_question", ""),
+            })
+        return result
 
     def watchlist_tickers(self):
         """Ticker auf Watchlist (status=WATCHLIST in config)."""

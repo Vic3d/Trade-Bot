@@ -64,7 +64,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
 <div class="header">
     <h1>🎩 Albert Trading System</h1>
     <div class="subtitle">
-        Stand: 17.03.2026 22:46 &nbsp;|&nbsp; 
+        Stand: 18.03.2026 08:05 &nbsp;|&nbsp; 
         VIX: <strong>23.51</strong> &nbsp;
         <span class="regime-badge" style="background:#ffaa00">ELEVATED</span>
     </div>
@@ -74,6 +74,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
 <div class="tabs">
     <div class="tab active" onclick="switchTab('paper')">🧪 Paper Trades</div>
     <div class="tab" onclick="switchTab('real')">📈 Echtes Portfolio</div>
+    <div class="tab" onclick="switchTab('strategies')">🧠 Strategien</div>
 </div>
 
 <!-- TAB: Paper Trades -->
@@ -126,28 +127,28 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </div>
         <div class="card">
             <div class="label">Aktueller Wert</div>
-            <div class="value red">970€</div>
-            <div class="sub red">-3.0%</div>
+            <div class="value red">971€</div>
+            <div class="sub red">-2.9%</div>
         </div>
         <div class="card">
             <div class="label">Bares Geld</div>
-            <div class="value">143€</div>
-            <div class="sub">14% vom Fund</div>
+            <div class="value">371€</div>
+            <div class="sub">37% vom Fund</div>
         </div>
         <div class="card">
             <div class="label">Realisierter Gewinn</div>
-            <div class="value green">+0€</div>
-            <div class="sub">aus 0 geschl. Trades</div>
+            <div class="value red">-8€</div>
+            <div class="sub">aus 3 geschl. Trades</div>
         </div>
         <div class="card">
             <div class="label">Win-Rate</div>
             <div class="value red">0%</div>
-            <div class="sub">0 ✅ / 0 ❌</div>
+            <div class="sub">0 ✅ / 3 ❌</div>
         </div>
         <div class="card">
             <div class="label">Offene Positionen</div>
-            <div class="value">10</div>
-            <div class="sub">827€ investiert</div>
+            <div class="value">7</div>
+            <div class="sub">600€ investiert</div>
         </div>
     </div>
     
@@ -173,9 +174,42 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
                 <th>Grund</th>
                 <th>Datum</th>
             </tr>
-            
+            <tr>
+            <td>1</td>
+            <td><strong>KTOS</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span></td>
+            <td>76.57€</td>
+            <td>78.22€</td>
+            <td>0.6856</td>
+            <td style="color:#ff4444;font-weight:bold">❌ -1.87€</td>
+            <td style="color:#ff4444;font-weight:bold">+2.1%</td>
+            <td>STRATEGIE GESCHWÄCHT: PS3 Score 31/100</td>
+            <td>2026-03-18</td>
+        </tr><tr>
+            <td>2</td>
+            <td><strong>HII</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span></td>
+            <td>363.64€</td>
+            <td>363.94€</td>
+            <td>0.2062</td>
+            <td style="color:#ff4444;font-weight:bold">❌ -2.94€</td>
+            <td style="color:#ff4444;font-weight:bold">+0.1%</td>
+            <td>STRATEGIE GESCHWÄCHT: PS3 Score 31/100</td>
+            <td>2026-03-18</td>
+        </tr><tr>
+            <td>3</td>
+            <td><strong>HAG.DE</strong></td>
+            <td><span class="badge" style="background:#2ecc71">PS3</span></td>
+            <td>82.15€</td>
+            <td>82.22€</td>
+            <td>1.2173</td>
+            <td style="color:#ff4444;font-weight:bold">❌ -2.92€</td>
+            <td style="color:#ff4444;font-weight:bold">+0.1%</td>
+            <td>STRATEGIE GESCHWÄCHT: PS3 Score 31/100</td>
+            <td>2026-03-18</td>
+        </tr>
         </table>
-        <p style="color:#888;text-align:center;padding:20px">Noch keine geschlossenen Trades.</p>
+        
     </div>
     
     <!-- Offene Positionen -->
@@ -209,25 +243,9 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><span class="badge" style="background:#e67e22">PS2</span> Tanker-Lag</td>
             <td>26.40€</td>
             <td>1.5111</td>
-            <td>23.76€</td>
+            <td>26.40€</td>
             <td>30.36€</td>
             <td>40€</td>
-        </tr><tr>
-            <td><strong>HAG.DE</strong></td>
-            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
-            <td>82.15€</td>
-            <td>1.2173</td>
-            <td>74.00€</td>
-            <td>98.00€</td>
-            <td>100€</td>
-        </tr><tr>
-            <td><strong>HII</strong></td>
-            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
-            <td>363.64€</td>
-            <td>0.2062</td>
-            <td>327.28€</td>
-            <td>418.19€</td>
-            <td>75€</td>
         </tr><tr>
             <td><strong>HL</strong></td>
             <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
@@ -236,14 +254,6 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td>15.44€</td>
             <td>19.72€</td>
             <td>80€</td>
-        </tr><tr>
-            <td><strong>KTOS</strong></td>
-            <td><span class="badge" style="background:#2ecc71">PS3</span> NATO/Defense</td>
-            <td>76.57€</td>
-            <td>0.6856</td>
-            <td>68.91€</td>
-            <td>88.06€</td>
-            <td>52€</td>
         </tr><tr>
             <td><strong>MOS</strong></td>
             <td><span class="badge" style="background:#3498db">PS1</span> Iran/Öl</td>
@@ -332,18 +342,18 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </tr><tr>
             <td><span class="badge" style="background:#2ecc71">PS3</span></td>
             <td>NATO/Defense</td>
-            <td>0</td>
-            <td style="color:#00ff88">0</td>
+            <td>3</td>
+            <td style="color:#00ff88">3</td>
             <td style="color:#ff4444">0</td>
-            <td style="color:#ff4444;font-weight:bold">
-                0%
+            <td style="color:#00ff88;font-weight:bold">
+                100%
                 <div style="background:#2a2a4a;border-radius:4px;height:8px;margin-top:4px">
-                    <div style="background:#ff4444;width:5%;height:8px;border-radius:4px"></div>
+                    <div style="background:#00ff88;width:100.0%;height:8px;border-radius:4px"></div>
                 </div>
             </td>
-            <td style="color:#00ff88">+0.0%</td>
+            <td style="color:#00ff88">+0.8%</td>
             <td style="color:#ff4444">0.0%</td>
-            <td style="color:#00ff88;font-weight:bold">+0.00€</td>
+            <td style="color:#ff4444;font-weight:bold">-7.73€</td>
         </tr><tr>
             <td><span class="badge" style="background:#f1c40f">PS4</span></td>
             <td>Edelmetalle</td>
@@ -378,6 +388,581 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
         </table>
     </div>
     
+</div>
+
+<!-- TAB: Strategien Deep Dive -->
+<div id="tab-strategies" class="tab-content">
+
+    <div class="explain">
+        <strong>🧠 Strategy Deep Dive — Warum existiert jede Strategie?</strong><br>
+        Hier siehst du die vollständige Begründung hinter jeder Strategie: Auslöser, Logik-Kette,
+        geprüfte Gegenargumente, Entry- und Kill-Trigger. <strong>Single Source of Truth: data/strategies.json</strong>
+    </div>
+
+    <!-- Paper Strategies -->
+    <div class="section">
+        <h2>📄 Paper-Strategien (PS1–PS5)</h2>
+        
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #00ff88">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟢 PS1: Iran/Öl-Geopolitik</span>
+                    &nbsp; <span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: energy &nbsp;|&nbsp; Horizont: 12 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">WTI >$85 + keine Deeskalation + Chart-Support gehalten</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung</span>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?</span></div>
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">OXY</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">TTE.PA</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">EQNR.OL</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">FRO</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">DHT</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-08 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐⭐☆ (4/5)
+                    &nbsp;|&nbsp; Quellen: eigene Analyse, Eriksen Makro-Video, liveuamap.com, Bloomberg RSS
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Iran-Konflikt eskaliert, Hormuz unter Druck, Ölpreis strukturell über $85
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Iran-Eskalation → Hormuz-Risiko → Ölversorgung bedroht → Produzenten profitieren</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>WTI über $85 seit Konfliktbeginn</li><li>Hormuz-Blockade bedroht 20% weltweiter Ölversorgung</li><li>Nordsee-Leichtöl (EQNR) = einziger EU-Ersatz für Golf-Öl</li><li>Venezuela Heavy Crude kann europäische Raffinerien NICHT beliefern</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Venezuela-Öl als Ersatz? → NEIN — Heavy vs Light Crude, verschiedene Raffinerien</li><li style='color:#ffaa00'>OPEC erhöht Output? → Saudi hat Kapazität, aber politisch zurückhaltend</li><li style='color:#ffaa00'>IEA Reserven? → Markt ignoriert IEA (Hormuz = 20M bbl/d vs. IEA Kapazität)</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ffaa00">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟡 PS2: Tanker-Lag-These</span>
+                    &nbsp; <span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: energy &nbsp;|&nbsp; Horizont: 8 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">WTI >$85 seit >2 Wochen UND Tanker-Kurse noch nicht mitgezogen</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">WTI fällt <$80, oder Tanker-Rally findet nicht statt nach 4 Wochen</span>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">Stimmt die Lag-These überhaupt? Wie lange ist der Lag wirklich?</span></div>
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">FRO</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">DHT</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-17 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐☆☆ (3/5)
+                    &nbsp;|&nbsp; Quellen: eigene Analyse, Shipping-Rate-Daten
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Beobachtung dass Tanker-Frachtraten dem Ölpreis um 2-4 Wochen nachhinken
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Ölpreis steigt → Transportnachfrage steigt → Frachtraten erhöhen sich mit Lag → Tanker-Aktien ziehen nach</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>WTI steigt durch Iran-Eskalation</li><li>Tanker-Aktien reagieren verzögert — typischer Lag bei Öl-Rallyes</li><li>These: FRO/DHT ziehen in 2-4 Wochen nach</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Tanker-Überangebot? → Monitoring nötig</li><li style='color:#ffaa00'>DHT -3.5% trotz WTI +4%? → Disconnect beobachtet, These unter Druck</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ff4444">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🔴 PS3: NATO/EU-Rüstung</span>
+                    &nbsp; <span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: defense &nbsp;|&nbsp; Horizont: 16 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">EU-Defense-Titel unter ATH + Bundeshaushalt/NATO-Beschluss als Katalysator</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise</span>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?</span></div>
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">KTOS</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">HII</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">HAG.DE</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-17 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐⭐☆ (4/5)
+                    &nbsp;|&nbsp; Quellen: NYT: Germany military spending, CNBC: Europe war economy, Rheinmetall FY2025 Zahlen
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Europäische Regierungen erhöhen Verteidigungsbudgets — struktureller Trend
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Mehrere Konflikte gleichzeitig → NATO erhöht Budgets → EU-Rüstungsfirmen erhalten Großaufträge → Aktien steigen</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>NATO-Beschluss 3% BIP für Verteidigung</li><li>Iran-Konflikt + Ukraine = gleichzeitige Kriege</li><li>EU-Defense-Titel (HAG.DE) haben Nachholbedarf vs. US (KTOS/HII)</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Frieden überall gleichzeitig? → Unwahrscheinlich (Iran + Ukraine + Israel)</li><li style='color:#ffaa00'>EU-Budgetkrise? → Schuldenbremse gelockert für Verteidigung</li><li style='color:#ffaa00'>US-Defense besser positioniert? → Vergleich ist die Lernfrage</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ff4444">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🔴 PS4: Edelmetalle/Miner</span>
+                    &nbsp; <span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: metals &nbsp;|&nbsp; Horizont: 10 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">Metall an Unterstützung + Miner überverkauft + VIX stabil/steigend</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">VIX <18 (Risk-on), Fed hawkish, Metall unter Produktionskosten</span>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">Reagieren Silber-Miner schneller als Gold-Miner auf VIX-Bewegungen?</span></div>
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">HL</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">PAAS</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-17 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐☆☆ (3/5)
+                    &nbsp;|&nbsp; Quellen: Eriksen Gold/Silber-Videos, eigene VIX-Analyse
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> VIX über 22 + Iran-Unsicherheit → Safe-Haven-Nachfrage steigt
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Hohe Volatilität + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>VIX erhöht → Unsicherheit treibt Gold/Silber</li><li>USD schwächelt → Edelmetalle werden attraktiver</li><li>Miner haben Hebel auf Metallpreis (operativer Leverage)</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>VIX fällt unter 18 → Safe-Haven braucht niemand → Exit-Trigger</li><li style='color:#ffaa00'>Fed hawkish → Dollar stärker → Edelmetalle unter Druck</li><li style='color:#ffaa00'>Aktuell: VIX bei 22.4 — Thesis schwächt sich ab</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ff4444">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🔴 PS5: Dünger/Agrar-Superzyklus</span>
+                    &nbsp; <span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: fertilizer &nbsp;|&nbsp; Horizont: 20 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">Kali-Preis steigt + Produzent near Support + Newsflow positiv</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden</span>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?</span></div>
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">MOS</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-17 &nbsp;|&nbsp; Überzeugung: ⭐⭐☆☆☆ (2/5)
+                    &nbsp;|&nbsp; Quellen: eigene Analyse, Agrar-Commodity-Daten
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Russische Kali-Sanktionen → Angebot verknappt, Nachfrage stabil
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Russland-Sanktionen → Kali-Angebot sinkt → Preise steigen → westliche Produzenten profitieren</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Russland-Sanktionen auf Kali/Phosphat aktiv</li><li>Globale Lebensmittelnachfrage wächst (Bevölkerung, Ernten)</li><li>Westliche Produzenten (MOS) profitieren als Ersatzlieferant</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Sanktionen werden gelockert? → Monitoring nötig</li><li style='color:#ffaa00'>Agrarpreise kollabieren? → Bisher keine Anzeichen</li><li style='color:#ffaa00'>Ist das Superzyklus oder Sanktions-Anomalie? → Die Lernfrage</li></ul></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real Strategies -->
+    <div class="section">
+        <h2>💰 Real-Strategien (S1–S7)</h2>
+        
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #00ffcc">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🔥 S1: Iran-Konflikt → Öl & Silber</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: energy &nbsp;|&nbsp; Horizont: 12 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">Konflikt-Eskalation + Ölpreis steigt + Equinor als EU-Alternative</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Waffenstillstand konkret + Hormuz offen + US Navy zieht sich zurück</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">EQNR</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-01 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐⭐⭐ (5/5)
+                    &nbsp;|&nbsp; Quellen: liveuamap.com, Al Jazeera, Eriksen Makro, eigene Analyse
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> US/Israel greifen Iran an, Khamenei tot — Ölkrise beginnt
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Iran-Krieg → Hormuz blockiert → Ölversorgung Europa bedroht → Equinor als Nordsee-Ersatz profitiert</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Hormuz-Straße unter Druck → 20% weltweiter Ölversorgung bedroht</li><li>Nordsee-Leichtöl (Equinor) = einziger EU-Ersatz für Golf-Öl</li><li>Venezuela Heavy Crude kann europäische Raffinerien NICHT verarbeiten</li><li>Mojtaba Khamenei als Nachfolger = Hardliner → kein schneller Frieden</li><li>Kharg Island Bombardierung → 90% Iran-Ölexporte betroffen</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Venezuela-Öl als Ersatz? → NEIN (Heavy vs Light Crude)</li><li style='color:#ffaa00'>IEA Notreserven? → Markt ignoriert IEA (20M bbl/d Hormuz >> IEA Kapazität)</li><li style='color:#ffaa00'>Waffenstillstand? → Mojtaba Khamenei ist Hardliner, Trump will keinen Deal</li><li style='color:#ffaa00'>OPEC erhöht Output? → Saudi politisch zurückhaltend</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ffaa00">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟡 S2: Europäische Aufrüstung → Rüstung</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    👁 Watchlist &nbsp;|&nbsp; Sektor: defense &nbsp;|&nbsp; Horizont: 52 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">Kurs >1.626€ (EMA-10) + erhöhtes Volumen</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Globaler Frieden in mehreren Regionen, EU-Budgetkrise</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="color:#888">–</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-04 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐⭐☆ (4/5)
+                    &nbsp;|&nbsp; Quellen: NYT, CNBC, Dirk 7H Analyse, Rheinmetall FY2025 Zahlen
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> NATO-Druck + Ukraine-Krieg + Iran-Konflikt → Europa rüstet auf
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Mehrere Konflikte → NATO-Budgets steigen → Rheinmetall als DE-Marktführer profitiert</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>NATO 3% BIP-Beschluss — struktureller Treiber 5-10 Jahre</li><li>Rheinmetall: Auftragsbuch bis 2030, Rekordgewinn FY2025</li><li>Mehrere Kriegsschauplätze gleichzeitig (Iran, Ukraine, Israel)</li><li>Germany military spending headlines (NYT, CNBC)</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>Globaler Frieden? → Unwahrscheinlich bei 3+ Konflikten</li><li style='color:#ffaa00'>Budgetkrise? → Schuldenbremse für Verteidigung gelockert</li><li style='color:#ffaa00'>Q4-Margenenttäuschung? → Kurzfristig, Auftragsbuch intakt</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ffaa00">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟡 S3: KI-Infrastruktur-Boom → Halbleiter</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: technology &nbsp;|&nbsp; Horizont: 26 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">VIX <28 + SMH über EMA-50 + Earnings-Bestätigung</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">VIX >30 persistent, China Chip-Ban verschärft, SMH unter EMA-50 bleibt</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">NVDA</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">MSFT</span> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">PLTR</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-05 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐⭐☆ (4/5)
+                    &nbsp;|&nbsp; Quellen: NVDA Earnings, Druckenmiller Interview, eigene SMH/VIX-Analyse
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> NVDA Q4 Earnings Beat — KI-Infrastruktur wächst strukturell
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>KI-Boom → Datacenter brauchen GPUs → NVDA profitiert | PLTR = Defense-AI profitiert von Konflikten</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Rechenzentren, GPU-Bedarf, NVDA als Hauptprofiteur</li><li>Druckenmiller-Rotation: Big Spender verkauft, Profitable gekauft → NVDA/PLTR = Winners</li><li>SMH (Semiconductor ETF) als Kanarienvogel — darüber = Rückenwind</li><li>VIX-Abhängigkeit: Bei VIX >25 kein Nachkauf Tech</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>VIX >30 = Tech wird verkauft → Temporär, Hold-Strategie bis Earnings</li><li style='color:#ffaa00'>Meta AI Chips = Konkurrenz? → Langfristig, nicht akut</li><li style='color:#ffaa00'>China Chip-Exportverbote? → Monitoring, noch nicht verschärft</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #00ff88">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟢 S4: Geopolitische Unsicherheit → Silber/Gold</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    👁 Watchlist &nbsp;|&nbsp; Sektor: metals &nbsp;|&nbsp; Horizont: 16 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">ISPA.DE >36,90€ (Silber) ODER AG <$29 mit Umkehrkerze</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">USD rallyt stark, Fed hawkish, De-Eskalation in allen Konflikten</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="color:#888">–</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-06 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐☆☆ (3/5)
+                    &nbsp;|&nbsp; Quellen: Eriksen Bitcoin/WPR Video, eigene Analyse
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Iran-Eskalation + Inflation → Safe-Haven-Nachfrage
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Geopolitik-Krise + Inflation → Flucht in sichere Häfen → Gold/Silber steigen</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Geopolitische Krisen treiben traditionell Edelmetalle</li><li>Silber hat zusätzlich industriellen Hebel (Solar, EVs)</li><li>USD schwächt sich ab → Edelmetalle attraktiver</li><li>Eriksen WPR-Signal auf Monatsbasis (Akkumulierungssignal)</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>USD stärkt sich als Kriegswährung? → Beobachtet, gegenläufig</li><li style='color:#ffaa00'>Fed erhöht Zinsen? → Monitoring</li><li style='color:#ffaa00'>Aktuell: ISPA.DE unter Kaufsignal 36,90€</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ffaa00">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟡 S5: Rohstoff-Superzyklus → Basismetalle</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: materials &nbsp;|&nbsp; Horizont: 26 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">RIO.L >6.700 GBp + VIX <28</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">China-Rezession, Kupferpreis-Kollaps, Oyu Tolgoi Deal scheitert</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">RIO.L</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-09 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐☆☆ (3/5)
+                    &nbsp;|&nbsp; Quellen: Reuters, FT, Bloomberg
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Energiewende + Iran-Rohstoff-Schock → Kupfer/Lithium strukturell gefragt
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Energiewende → Kupfer/Lithium-Nachfrage steigt → Produzenten profitieren</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Rio Tinto transformiert sich vom Eisenerz zum Kupfer/Lithium-Produzenten</li><li>EV-Nachfrage + Infrastrukturprogramme treiben Kupfer</li><li>BHP durch China-Eisenerz-Konflikt belastet → auf Hold</li><li>Oyu Tolgoi Renegotiation (Mongolei) = Risiko für RIO</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>China-Eisenerz-Restriktionen? → BHP direkt belastet, RIO indirekt</li><li style='color:#ffaa00'>Oyu Tolgoi Renegotiation? → Monitoring, kein Exit-Trigger bisher</li><li style='color:#ffaa00'>Kupferpreis-Kollaps? → China-Konjunktur beobachten</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #00ff88">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟢 S6: Energie-Wende → Solar/Erneuerbare</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: energy_renewable &nbsp;|&nbsp; Horizont: 16 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">Brent >$90 UND Solar-ETF über EMA50 UND RSI <70</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Iran-Deal → Brent <$80 ODER RSI >80 ODER IRA-Rückbau</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">A2QQ9R</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-13 &nbsp;|&nbsp; Überzeugung: ⭐⭐⭐☆☆ (3/5)
+                    &nbsp;|&nbsp; Quellen: eigene Analyse, Ölpreis-Korrelation
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Hohe Ölpreise machen erneuerbare Energien attraktiver
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Iran-Eskalation → Öl teuer → Erneuerbare werden attraktiver → Solar-ETF profitiert</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Brent >$90 → Solar-Prämie steigt</li><li>IRA (USA) + EU Green Deal = Subventionsrückenwind</li><li>Invesco Solar ETF +11,9% seit Entry → bestätigte Korrelation mit Ölpreis</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>IRA-Rückbau durch Trump? → Politisches Risiko, aber bisher stabil</li><li style='color:#ffaa00'>China Solar-Überflutung? → Könnte Hersteller-Margen drücken</li><li style='color:#ffaa00'>Ölpreisverfall? → Dann auch S1 schwächer, korreliertes Risiko</li></ul></div>
+            </div>
+        </div>
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid #ffaa00">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">🟡 S7: Biotech-Zyklus → US-Pharma/Biotech</span>
+                    &nbsp; <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    ✅ Aktiv &nbsp;|&nbsp; Sektor: healthcare &nbsp;|&nbsp; Horizont: 26 Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">RSI <40 + Fed Pivot erwartet + M&A-Aktivität</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">Zinsen steigen wieder, regulatorische Verschärfung (FDA), Medikamentenpreis-Politik</span>
+                </div>
+            </div>
+
+            
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> <span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">A2DWAW</span>
+            </div>
+
+            
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: 2026-03-13 &nbsp;|&nbsp; Überzeugung: ⭐⭐☆☆☆ (2/5)
+                    &nbsp;|&nbsp; Quellen: eigene Analyse
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> Defensiver Sektor mit Zinssenkungserwartungen + M&A-Aktivität
+                </div>
+                <div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>Zinssenkungserwartungen + M&A → Biotech-Finanzierung günstiger → ETF profitiert</div>
+                <div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc"><li>Biotech profitiert von günstigerer Finanzierung (Zinssenkungen)</li><li>Big Pharma kauft Biotech für Pipeline → M&A-Rückenwind</li><li>Weniger korreliert mit Nasdaq → defensive Qualität bei VIX-Spikes</li><li>Alternde Bevölkerung = Langfrist-Demografie-These</li></ul></div>
+                <div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px"><li style='color:#ffaa00'>FDA-Ablehnungen? → ETF diversifiziert das Risiko</li><li style='color:#ffaa00'>Zinsen steigen weiter? → Exit-Trigger</li><li style='color:#ffaa00'>Medikamentenpreis-Politik? → Monitoring</li></ul></div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- TAB: Echtes Portfolio -->
@@ -436,7 +1021,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>NVDA</strong></td>
             <td>Nvidia</td>
             <td>167.88€</td>
-            <td><strong>157.61€</strong></td>
+            <td><strong>157.56€</strong></td>
             <td><span style="color:#ff4444;font-weight:bold">📉 -6.1%</span></td>
             <td><span style="color:#ff4444;font-weight:bold">⚠️ KEIN STOP</span></td>
             <td>—</td>
@@ -445,7 +1030,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>MSFT</strong></td>
             <td>Microsoft</td>
             <td>351.85€</td>
-            <td><strong>346.02€</strong></td>
+            <td><strong>345.90€</strong></td>
             <td><span style="color:#ff4444;font-weight:bold">📉 -1.7%</span></td>
             <td>338.0€</td>
             <td>387€</td>
@@ -454,7 +1039,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>PLTR</strong></td>
             <td>Palantir</td>
             <td>132.11€</td>
-            <td><strong>134.35€</strong></td>
+            <td><strong>134.30€</strong></td>
             <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
             <td>127.0€</td>
             <td>159€</td>
@@ -463,8 +1048,8 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>EQNR</strong></td>
             <td>Equinor ASA</td>
             <td>27.04€</td>
-            <td><strong>32.11€</strong></td>
-            <td><span style="color:#00ff88;font-weight:bold">📈 +18.7%</span></td>
+            <td><strong>32.14€</strong></td>
+            <td><span style="color:#00ff88;font-weight:bold">📈 +18.9%</span></td>
             <td>30.0€</td>
             <td>—</td>
             <td style="font-size:0.85em;color:#888">Stop auf 30€ nachgezogen 16.03. | Buy-ba</td>
@@ -481,7 +1066,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
             <td><strong>RIO.L</strong></td>
             <td>Rio Tinto</td>
             <td>76.92€</td>
-            <td><strong>78.26€</strong></td>
+            <td><strong>78.24€</strong></td>
             <td><span style="color:#00ff88;font-weight:bold">📈 +1.7%</span></td>
             <td>73.0€</td>
             <td>85€</td>
@@ -537,7 +1122,8 @@ function switchTab(tab) {
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(t => {
         if ((tab === 'paper' && t.textContent.includes('Paper')) || 
-            (tab === 'real' && t.textContent.includes('Echt'))) {
+            (tab === 'real' && t.textContent.includes('Echt')) ||
+            (tab === 'strategies' && t.textContent.includes('Strateg'))) {
             t.classList.add('active');
         }
     });

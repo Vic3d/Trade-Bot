@@ -1,6 +1,6 @@
 # State Snapshot — Trading Bot
-**Zuletzt aktualisiert:** 2026-03-17 21:45 UTC
-**Positionen:** 11 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
+**Zuletzt aktualisiert:** 2026-03-18 07:00 UTC
+**Positionen:** 11 | **Alerts heute:** 13 | **Queue:** 13 ausstehend
 
 ---
 
@@ -8,17 +8,17 @@
 
 | Aktie | Kurs | Entry | P&L | Stop | Conviction | Letzter Alert |
 |---|---|---|---|---|---|---|
-| Nvidia (NVDA) | 157.64€ | 167.88€ | -6.1% | — | 50 | — |
-| Microsoft (MSFT) | 346.08€ | 351.85€ | -1.6% | 338.00€ | 30 | — |
-| Palantir (PLTR) | 134.37€ | 132.11€ | +1.7% | 127.00€ | 100 | — |
-| Equinor ASA (EQNR) | 32.12€ | 27.04€ | +18.8% | 30.00€ | 100 | — |
-| Bayer AG (BAYN.DE) | 40.10€ | 39.95€ | +0.4% | 38.00€ | 70 | — |
+| Nvidia (NVDA) | 157.57€ | 167.88€ | -6.1% | — | 50 | — |
+| Microsoft (MSFT) | 345.93€ | 351.85€ | -1.7% | 338.00€ | 30 | Stop-Warnung |
+| Palantir (PLTR) | 134.31€ | 132.11€ | +1.7% | 127.00€ | 100 | — |
+| Equinor ASA (EQNR) | 32.15€ | 27.04€ | +18.9% | 30.00€ | 100 | Stop-Warnung |
+| Bayer AG (BAYN.DE) | 40.50€ | 39.95€ | +1.4% | 38.00€ | 70 | — |
 | Rio Tinto (RIO.L) | 78.24€ | 76.92€ | +1.7% | 73.00€ | 50 | — |
-| Rheinmetall AG (RHM.DE) | 1628.50€ | 1570.00€ | +3.7% | 1520.00€ | — | — |
-| Invesco Solar Energy ETF (A2QQ9R) | 50.03€ | 22.40€ | +123.3% | — | 70 | — |
-| VanEck Oil Services ETF (A3D42Y) | 334.14€ | 27.90€ | +1097.6% | 24.00€ | 90 | — |
-| L&G Cyber Security ETF (A14WU5) | 56.29€ | 28.80€ | +95.5% | 25.95€ | 90 | — |
-| iShares Biotech ETF (A2DWAW) | 144.85€ | 7.00€ | +1969.3% | 6.30€ | 70 | — |
+| Rheinmetall AG (RHM.DE) | 1638.00€ | 1570.00€ | +4.3% | 1520.00€ | — | — |
+| Invesco Solar Energy ETF (A2QQ9R) | 50.01€ | 22.40€ | +123.2% | — | 70 | Stop-Warnung |
+| VanEck Oil Services ETF (A3D42Y) | 333.99€ | 27.90€ | +1097.1% | 24.00€ | 90 | Stop-Warnung |
+| L&G Cyber Security ETF (A14WU5) | 56.27€ | 28.80€ | +95.4% | 25.95€ | 90 | Stop-Warnung |
+| iShares Biotech ETF (A2DWAW) | 144.79€ | 7.00€ | +1968.4% | 6.30€ | 70 | Stop-Warnung |
 
 ## Watchlist
 
@@ -33,8 +33,8 @@
 | Indikator | Wert | Trend | Signal |
 |---|---|---|---|
 | VIX | 22.4 | → | 🟡 Erhöht |
-| WTI | $95.30 | ↑ | 🔴 Nahe $100 |
-| EUR/USD | 1.1541 | — | Neutral |
+| WTI | $92.51 | ↑ | 🟡 Erhöht |
+| EUR/USD | 1.1546 | — | Neutral |
 
 ## Strategien-Status
 
@@ -51,6 +51,11 @@
 ## Offene Alerts / Handlungsbedarf
 
 - ⚠️ Microsoft (MSFT): 2.3% über Stop 338.00€ — Montag 09:00 beobachten
+- 🔔 📈 Trailing Stop fällig: L&G Cyber Security ETF (A14WU5) @ 56.27€ | P&L: +95.4% (>5.0%) | Stop auf Br
+- 🔔 🔒 Gewinn sichern: L&G Cyber Security ETF (A14WU5) @ 56.27€ | P&L: +95.4% (>10.0%) | 50% Gewinn siche
+- 🔔 📈 Trailing Stop fällig: iShares Biotech ETF (A2DWAW) @ 144.79€ | P&L: +1968.4% (>5.0%) | Stop auf Br
+- 🔔 🔒 Gewinn sichern: iShares Biotech ETF (A2DWAW) @ 144.79€ | P&L: +1968.4% (>10.0%) | 50% Gewinn siche
+- 🔔 🔔 ENTRY B: First Majestic Silver (AG) @ $21.74 (<24.3) — Rücklauf-Zone!
 
 ## Letzte Conviction Scores
 

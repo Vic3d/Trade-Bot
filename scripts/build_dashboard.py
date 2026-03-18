@@ -81,9 +81,131 @@ def load_data():
     for name in ['current_regime', 'sector_rotation', 'sentiment', 'correlations', 'backtest_results', 'auto_trader_last_run']:
         p = DATA / f'{name}.json'
         d[name] = json.loads(p.read_text()) if p.exists() else {}
+
+    # Strategies from Single Source of Truth
+    strategies_path = DATA / 'strategies.json'
+    if strategies_path.exists():
+        all_strats = json.loads(strategies_path.read_text())
+        d['strategies'] = {k: v for k, v in all_strats.items() if k != 'emerging_themes'}
+        d['emerging_themes_def'] = all_strats.get('emerging_themes', {})
+    else:
+        d['strategies'] = {}
+        d['emerging_themes_def'] = {}
     
     db.close()
     return d
+
+def build_strategy_deep_dive(strategies):
+    """Build the Strategy Deep Dive HTML section from strategies.json data."""
+    if not strategies:
+        return '<p style="color:#888;text-align:center;padding:20px">Keine Strategie-Daten verfügbar (strategies.json fehlt?).</p>'
+
+    health_emoji = {
+        'green': '🟢', 'green_hot': '🔥', 'yellow': '🟡', 'red': '🔴',
+    }
+    health_color = {
+        'green': '#00ff88', 'green_hot': '#00ffcc', 'yellow': '#ffaa00', 'red': '#ff4444',
+    }
+    type_badge = {
+        'paper': '<span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">📄 PAPER</span>',
+        'real': '<span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:8px;font-size:0.8em">💰 REAL</span>',
+    }
+
+    cards = ""
+    for strat_id, strat in sorted(strategies.items()):
+        name = strat.get('name', strat_id)
+        stype = strat.get('type', 'paper')
+        health = strat.get('health', 'yellow')
+        status = strat.get('status', 'active')
+        thesis = strat.get('thesis', '')
+        sector = strat.get('sector', '')
+        kill_trigger = strat.get('kill_trigger', '')
+        entry_trigger = strat.get('entry_trigger', '')
+        learning_q = strat.get('learning_question', '')
+        tickers = strat.get('tickers', [])
+        horizon = strat.get('horizon_weeks', '?')
+        genesis = strat.get('genesis', {})
+
+        h_emoji = health_emoji.get(health, '⚪')
+        h_color = health_color.get(health, '#888')
+        type_b = type_badge.get(stype, '')
+
+        # Genesis section
+        genesis_html = ""
+        if genesis:
+            trigger = genesis.get('trigger', '')
+            chain = genesis.get('logical_chain', '')
+            conviction = genesis.get('conviction_at_start', 0)
+            created = genesis.get('created', '')
+            sources = genesis.get('sources', [])
+            steps = genesis.get('analysis_steps', [])
+            counters = genesis.get('counter_arguments_checked', [])
+
+            steps_html = "".join(f"<li>{s}</li>" for s in steps) if steps else ""
+            counters_html = "".join(f"<li style='color:#ffaa00'>{c}</li>" for c in counters) if counters else ""
+            sources_str = ", ".join(sources) if sources else "–"
+
+            conviction_stars = "⭐" * conviction + "☆" * (5 - conviction)
+
+            genesis_html = f"""
+            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                <div style="color:#aaa;margin-bottom:8px">
+                    📅 Erstellt: {created} &nbsp;|&nbsp; Überzeugung: {conviction_stars} ({conviction}/5)
+                    &nbsp;|&nbsp; Quellen: {sources_str}
+                </div>
+                <div style="margin-bottom:8px">
+                    <strong style="color:#3498db">⚡ Auslöser:</strong> {trigger}
+                </div>
+                {f'<div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>{chain}</div>' if chain else ''}
+                {f'<div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc">{steps_html}</ul></div>' if steps_html else ''}
+                {f'<div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px">{counters_html}</ul></div>' if counters_html else ''}
+            </div>"""
+
+        ticker_badges = " ".join(
+            f'<span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">{t}</span>'
+            for t in tickers
+        ) if tickers else '<span style="color:#888">–</span>'
+
+        status_str = {"active": "✅ Aktiv", "watchlist": "👁 Watchlist", "closed": "❌ Geschlossen"}.get(status, status)
+
+        cards += f"""
+        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid {h_color}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+                <div>
+                    <span style="font-size:1.3em;font-weight:bold">{h_emoji} {strat_id}: {name}</span>
+                    &nbsp; {type_b}
+                </div>
+                <div style="color:#888;font-size:0.88em">
+                    {status_str} &nbsp;|&nbsp; Sektor: {sector} &nbsp;|&nbsp; Horizont: {horizon} Wochen
+                </div>
+            </div>
+
+            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
+                📌 {thesis}
+            </div>
+
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                <div>
+                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                    <span style="color:#ccc">{entry_trigger or '–'}</span>
+                </div>
+                <div>
+                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                    <span style="color:#ccc">{kill_trigger or '–'}</span>
+                </div>
+            </div>
+
+            {f'<div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">{learning_q}</span></div>' if learning_q else ''}
+
+            <div style="margin-top:12px;font-size:0.88em">
+                <strong style="color:#888">Ticker:</strong> {ticker_badges}
+            </div>
+
+            {genesis_html}
+        </div>"""
+
+    return cards
+
 
 def build_html(d):
     real = d['real']
@@ -96,6 +218,7 @@ def build_html(d):
     sentiment = d.get('sentiment', {})
     backtest = d.get('backtest_results', {})
     prices = d.get('prices', {})
+    strategies = d.get('strategies', {})
     
     # Calculate paper fund value
     starting = fund.get('starting_capital', 1000)
@@ -350,6 +473,7 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
 <div class="tabs">
     <div class="tab active" onclick="switchTab('paper')">🧪 Paper Trades</div>
     <div class="tab" onclick="switchTab('real')">📈 Echtes Portfolio</div>
+    <div class="tab" onclick="switchTab('strategies')">🧠 Strategien</div>
 </div>
 
 <!-- TAB: Paper Trades -->
@@ -501,6 +625,29 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
     
 </div>
 
+<!-- TAB: Strategien Deep Dive -->
+<div id="tab-strategies" class="tab-content">
+
+    <div class="explain">
+        <strong>🧠 Strategy Deep Dive — Warum existiert jede Strategie?</strong><br>
+        Hier siehst du die vollständige Begründung hinter jeder Strategie: Auslöser, Logik-Kette,
+        geprüfte Gegenargumente, Entry- und Kill-Trigger. <strong>Single Source of Truth: data/strategies.json</strong>
+    </div>
+
+    <!-- Paper Strategies -->
+    <div class="section">
+        <h2>📄 Paper-Strategien (PS1–PS5)</h2>
+        {build_strategy_deep_dive({k: v for k, v in strategies.items() if k.startswith('PS')})}
+    </div>
+
+    <!-- Real Strategies -->
+    <div class="section">
+        <h2>💰 Real-Strategien (S1–S7)</h2>
+        {build_strategy_deep_dive({k: v for k, v in strategies.items() if k.startswith('S')})}
+    </div>
+
+</div>
+
 <!-- TAB: Echtes Portfolio -->
 <div id="tab-real" class="tab-content">
     
@@ -568,7 +715,8 @@ function switchTab(tab) {{
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(t => {{
         if ((tab === 'paper' && t.textContent.includes('Paper')) || 
-            (tab === 'real' && t.textContent.includes('Echt'))) {{
+            (tab === 'real' && t.textContent.includes('Echt')) ||
+            (tab === 'strategies' && t.textContent.includes('Strateg'))) {{
             t.classList.add('active');
         }}
     }});

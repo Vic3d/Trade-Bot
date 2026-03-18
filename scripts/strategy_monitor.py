@@ -10,6 +10,8 @@ Output:
   - Statusbericht (🟢/🟡/🔴 je Strategie)
   - strategy-changelog.md Update wenn Status ändert
   - Neue Strategie-Kandidaten mit Begründung
+
+Strategie-Definitionen kommen aus: data/strategies.json (Single Source of Truth)
 """
 
 import sys, json, re
@@ -20,141 +22,49 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 DATA_DIR = Path("/data/.openclaw/workspace/data")
 MEM_DIR  = Path("/data/.openclaw/workspace/memory")
+STRATEGIES_PATH = DATA_DIR / "strategies.json"
+
 
 # ──────────────────────────────────────────────────────────────
-# STRATEGIE-DEFINITIONEN
-# Pro Strategie: Tickers, Schlüsselwörter (bullish/bearish), Mechanismus
+# LADEN AUS SINGLE SOURCE OF TRUTH
 # ──────────────────────────────────────────────────────────────
 
-STRATEGIES = {
-    "PS1": {
-        "name": "Iran/Öl-Geopolitik",
-        "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
-        "tickers": ["OXY", "TTE.PA", "EQNR.OL", "FRO", "DHT"],
-        "sector": "energy",
-        "keywords_bullish": [
-            "iran", "hormuz", "strait", "oil strike", "oil attack", "opec cut",
-            "tanker attack", "persian gulf", "israel iran", "middle east escalation",
-            "crude supply", "oil embargo", "sanctions iran", "drone attack refinery",
-        ],
-        "keywords_bearish": [
-            "ceasefire iran", "iran deal", "nuclear agreement", "hormuz open",
-            "iran talks", "deescalation", "oil surplus", "opec increase output",
-            "us iran negotiations", "peace iran",
-        ],
-        "macro_indicator": "WTI_OIL",  # Preis-Proxy
-        "typical_horizon_weeks": 12,
-    },
-    "PS2": {
-        "name": "Tanker-Lag-These",
-        "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
-        "tickers": ["FRO", "DHT"],
-        "sector": "energy",
-        "keywords_bullish": [
-            "tanker demand", "shipping rates", "baltic dirty tanker", "vlcc rates",
-            "oil tanker", "tanker shortage", "freight rates oil", "suezmax",
-        ],
-        "keywords_bearish": [
-            "tanker oversupply", "shipping rates fall", "tanker glut",
-            "oil demand collapse", "vlcc rates drop",
-        ],
-        "macro_indicator": "OIL_LAG",
-        "typical_horizon_weeks": 8,
-    },
-    "PS3": {
-        "name": "NATO/EU-Rüstung",
-        "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
-        "tickers": ["HII", "KTOS", "HAG.DE"],
-        "sector": "defense",
-        "keywords_bullish": [
-            "defense budget", "nato spending", "eu rearmament", "military spending",
-            "defense contract", "pentagon contract", "bundeswehr", "ukraine aid",
-            "weapons delivery", "missile system", "defense order", "kratos",
-            "huntington", "hensoldt", "rheinmetall",
-        ],
-        "keywords_bearish": [
-            "peace deal ukraine", "nato budget cut", "defense spending cut",
-            "trump nato withdrawal", "ukraine ceasefire",
-        ],
-        "macro_indicator": "DEFENSE_MOMENTUM",
-        "typical_horizon_weeks": 16,
-    },
-    "PS4": {
-        "name": "Edelmetalle/Miner",
-        "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
-        "tickers": ["HL", "PAAS"],
-        "sector": "metals",
-        "keywords_bullish": [
-            "gold rally", "silver rally", "safe haven", "inflation hedge",
-            "gold all time high", "central bank gold", "precious metals",
-            "silver demand", "gold demand", "dollar weakness", "vix spike",
-            "recession fears", "gold miner",
-        ],
-        "keywords_bearish": [
-            "gold selloff", "silver selloff", "dollar rally", "rate hike",
-            "gold bear", "precious metals decline", "risk on rally",
-        ],
-        "macro_indicator": "GOLD_PRICE",
-        "typical_horizon_weeks": 10,
-    },
-    "PS5": {
-        "name": "Dünger/Agrar-Superzyklus",
-        "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → westliche Düngerproduzenten profitieren",
-        "tickers": ["MOS"],
-        "sector": "fertilizer",
-        "keywords_bullish": [
-            "potash shortage", "fertilizer shortage", "mosaic", "urea prices",
-            "agricultural commodity", "food prices", "crop shortage",
-            "russia potash sanctions", "fertilizer demand",
-        ],
-        "keywords_bearish": [
-            "fertilizer oversupply", "potash glut", "mosaic guidance cut",
-            "agricultural surplus", "russia potash deal",
-        ],
-        "macro_indicator": "FERTILIZER_MOMENTUM",
-        "typical_horizon_weeks": 20,
-    },
-}
+def load_strategies():
+    """
+    Lädt Strategie-Definitionen aus data/strategies.json.
+    Returns:
+        strategies: dict (nur PS1-PS5 = paper trading strategies für Monitor)
+        emerging_themes: dict
+        all_strategies: dict (S1-S7 + PS1-PS5)
+    """
+    if not STRATEGIES_PATH.exists():
+        raise FileNotFoundError(f"strategies.json nicht gefunden: {STRATEGIES_PATH}")
 
-# Neue Makro-Themen die eine NEUE Strategie rechtfertigen könnten
-# Format: Theme-Name → Keywords + Sektor + potentielle Tickers
-EMERGING_THEME_DETECTORS = {
-    "Kupfer-Knappheit": {
-        "keywords": ["copper shortage", "copper supply", "copper demand china",
-                     "copper mine strike", "ev copper", "grid copper"],
-        "sector": "metals",
-        "candidates": ["FCX", "SCCO", "AA", "GLEN.L"],
-        "thesis_template": "Kupfer-Nachfrage (EV, Energienetz) > Angebot → Miner profitieren",
-    },
-    "US-Stahl/Zölle": {
-        "keywords": ["steel tariff", "steel import", "steel production us",
-                     "us steel", "tariff steel", "nucor", "cleveland-cliffs"],
-        "sector": "materials",
-        "candidates": ["CLF", "NUE", "STLD"],
-        "thesis_template": "US-Zölle auf importierten Stahl → heimische Produzenten profitieren",
-    },
-    "KI-Infrastruktur": {
-        "keywords": ["ai datacenter", "power grid ai", "electricity demand ai",
-                     "nvidia data center", "hyperscaler capex", "ai infrastructure"],
-        "sector": "technology",
-        "candidates": ["VST", "CEG", "ETN", "SMCI"],
-        "thesis_template": "KI-Boom → Strom + Kühlsysteme + Infrastruktur stark nachgefragt",
-    },
-    "Uran-Renaissance": {
-        "keywords": ["uranium demand", "nuclear power", "smr reactor",
-                     "nuclear energy", "uranium mine", "uranium spot"],
-        "sector": "energy",
-        "candidates": ["UUUU", "CCJ", "NXE"],
-        "thesis_template": "Energiewende + KI-Strom → Atomkraft-Revival → Uran-Nachfrage steigt",
-    },
-    "Wasser-Infrastruktur": {
-        "keywords": ["water shortage", "water infrastructure", "drought",
-                     "water treatment", "desalination"],
-        "sector": "utilities",
-        "candidates": ["AWK", "PNM", "XYLM"],
-        "thesis_template": "Klimawandel → Wasserknappheit → Infrastruktur-Investitionen",
-    },
-}
+    data = json.loads(STRATEGIES_PATH.read_text())
+
+    # Emerging themes sind ein spezieller Top-Level-Key
+    emerging_themes = data.pop("emerging_themes", {})
+
+    # Paper strategies (PS*) für den Monitor
+    paper_strategies = {k: v for k, v in data.items() if k.startswith("PS")}
+
+    # All strategies (real + paper)
+    all_strategies = data
+
+    return paper_strategies, emerging_themes, all_strategies
+
+
+def save_health_update(strategy_id, new_health):
+    """
+    Schreibt den neuen health-Status zurück in strategies.json.
+    health: 'green' | 'yellow' | 'red' | 'green_hot'
+    """
+    if not STRATEGIES_PATH.exists():
+        return
+    data = json.loads(STRATEGIES_PATH.read_text())
+    if strategy_id in data:
+        data[strategy_id]["health"] = new_health
+        STRATEGIES_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False))
 
 
 # ──────────────────────────────────────────────────────────────
@@ -229,14 +139,14 @@ def score_news_sentiment(articles, keywords_bullish, keywords_bearish):
     return score, bull_hits, bear_hits
 
 
-def detect_emerging_themes(articles):
+def detect_emerging_themes(articles, emerging_theme_detectors):
     """
     Prüft ob neue Makro-Themen in den News auftauchen
     die noch KEINE Strategie haben.
     Returns: list of {theme, count, articles, candidates, thesis}
     """
     detections = []
-    for theme_name, detector in EMERGING_THEME_DETECTORS.items():
+    for theme_key, detector in emerging_theme_detectors.items():
         hits = []
         for art in articles:
             text = (art.get('title', '') + ' ' + art.get('summary', '')).lower()
@@ -246,7 +156,7 @@ def detect_emerging_themes(articles):
                     break
         if len(hits) >= 2:  # Mindestens 2 Artikel zum gleichen Thema
             detections.append({
-                'theme': theme_name,
+                'theme': detector.get('name', theme_key),
                 'count': len(hits),
                 'articles': hits[:3],
                 'candidates': detector['candidates'],
@@ -308,11 +218,20 @@ def compute_thesis_status(momentum_avg, news_score):
         return "GESCHWÄCHT", round(combined), reasons
 
 
+def thesis_status_to_health(status):
+    """Mappe Monitor-Status auf health-Wert in strategies.json."""
+    return {
+        "STARK": "green",
+        "NEUTRAL": "yellow",
+        "GESCHWÄCHT": "red",
+    }.get(status, "yellow")
+
+
 # ──────────────────────────────────────────────────────────────
 # STRATEGIE-CHANGELOG UPDATEN
 # ──────────────────────────────────────────────────────────────
 
-def load_current_statuses():
+def load_current_statuses(strategy_ids):
     """Liest aktuellen Status jeder Strategie aus strategy-changelog.md."""
     changelog = MEM_DIR / "strategy-changelog.md"
     if not changelog.exists():
@@ -320,8 +239,7 @@ def load_current_statuses():
 
     content = changelog.read_text()
     statuses = {}
-    # Suche nach letztem Status-Eintrag pro Strategie
-    for ps_id in STRATEGIES.keys():
+    for ps_id in strategy_ids:
         pattern = rf'{ps_id}.*?(STARK|NEUTRAL|GESCHWÄCHT)'
         matches = re.findall(pattern, content)
         if matches:
@@ -368,6 +286,16 @@ def run_monitor():
     log(f"=== STRATEGY MONITOR — {now} ===")
     log()
 
+    # Load strategies from JSON (Single Source of Truth)
+    try:
+        paper_strategies, emerging_theme_detectors, all_strategies = load_strategies()
+        log(f"📂 Strategien geladen aus {STRATEGIES_PATH}")
+        log(f"   Paper: {list(paper_strategies.keys())}")
+        log()
+    except Exception as e:
+        log(f"❌ Fehler beim Laden von strategies.json: {e}")
+        return {}
+
     # 1. News holen
     log("📰 Lade aktuelle News...")
     articles = fetch_recent_news(n=40)
@@ -375,9 +303,9 @@ def run_monitor():
     log()
 
     # 2. Aktuelle Statuses laden
-    old_statuses = load_current_statuses()
+    old_statuses = load_current_statuses(list(paper_strategies.keys()))
 
-    # 3. Jede Strategie prüfen
+    # 3. Jede Paper-Strategie prüfen
     emoji_map = {"STARK": "🟢", "NEUTRAL": "🟡", "GESCHWÄCHT": "🔴"}
     changes = []
     results = {}
@@ -386,12 +314,12 @@ def run_monitor():
     log("📊 STRATEGIE-CHECK")
     log("=" * 60)
 
-    for ps_id, strat in STRATEGIES.items():
+    for ps_id, strat in paper_strategies.items():
         log()
         log(f"── {ps_id}: {strat['name']} ──")
 
         # Preis-Momentum
-        momentum_map, momentum_avg = get_price_momentum(strat['tickers'], days=14)
+        momentum_map, momentum_avg = get_price_momentum(strat.get('tickers', []), days=14)
         momentum_str = " | ".join([f"{t}: {v:+.1f}%" for t, v in momentum_map.items()])
         if not momentum_str:
             momentum_str = "keine Daten"
@@ -400,7 +328,7 @@ def run_monitor():
 
         # News-Sentiment
         news_score, bull_hits, bear_hits = score_news_sentiment(
-            articles, strat['keywords_bullish'], strat['keywords_bearish']
+            articles, strat.get('keywords_bullish', []), strat.get('keywords_bearish', [])
         )
         log(f"   News: +{len(bull_hits)} bullish / -{len(bear_hits)} bearish → Score {news_score:+d}")
         for h in bull_hits[:2]:
@@ -425,6 +353,12 @@ def run_monitor():
             'reasons': reasons,
         }
 
+        # health in strategies.json aktualisieren
+        new_health = thesis_status_to_health(new_status)
+        if strat.get('health') != new_health:
+            save_health_update(ps_id, new_health)
+            log(f"   💾 health aktualisiert: {strat.get('health')} → {new_health}")
+
         # Statuswechsel tracken
         if old_status != new_status:
             changes.append({
@@ -442,7 +376,7 @@ def run_monitor():
     log("🔭 NEUE MAKRO-THEMEN (potentielle neue Strategien)")
     log("=" * 60)
 
-    emerging = detect_emerging_themes(articles)
+    emerging = detect_emerging_themes(articles, emerging_theme_detectors)
     if emerging:
         for em in emerging:
             log()

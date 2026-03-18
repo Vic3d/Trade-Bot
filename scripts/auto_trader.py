@@ -19,6 +19,30 @@ sys.path.insert(0, str(Path(__file__).parent))
 from price_db import get_closes, init_tables as init_price_tables, STRATEGY_MAP, DB_PATH
 
 DATA_DIR = Path("/data/.openclaw/workspace/data")
+STRATEGIES_PATH = DATA_DIR / "strategies.json"
+
+
+def _load_strategy_genesis(strategy_id):
+    """
+    Lädt Genesis-Info einer Strategie aus strategies.json.
+    Returns dict mit genesis, thesis, kill_trigger oder {} wenn nicht gefunden.
+    """
+    if not STRATEGIES_PATH.exists():
+        return {}
+    try:
+        data = json.loads(STRATEGIES_PATH.read_text())
+        strat = data.get(strategy_id, {})
+        return {
+            "name": strat.get("name", strategy_id),
+            "thesis": strat.get("thesis", ""),
+            "genesis_trigger": strat.get("genesis", {}).get("trigger", ""),
+            "genesis_logical_chain": strat.get("genesis", {}).get("logical_chain", ""),
+            "kill_trigger": strat.get("kill_trigger", ""),
+            "learning_question": strat.get("learning_question", ""),
+            "conviction_at_start": strat.get("genesis", {}).get("conviction_at_start", 0),
+        }
+    except Exception:
+        return {}
 LAST_RUN_PATH = DATA_DIR / "auto_trader_last_run.json"
 
 STARTING_CAPITAL = 1000.0
@@ -315,7 +339,7 @@ def close_position(pos_id, close_price, reason=""):
 
 
 def open_position(ticker, strategy, price, shares, stop_price, target_price):
-    """Open a new position."""
+    """Open a new position. Logs strategy genesis info from strategies.json."""
     # Apply slippage on entry
     entry_price = price * (1 + SLIPPAGE_PCT)
 
@@ -324,6 +348,9 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
 
     if cash - cost < MIN_CASH_RESERVE:
         return None, f"Nicht genug Cash ({cash:.2f}€, brauche {cost:.2f}€ + {MIN_CASH_RESERVE:.0f}€ Reserve)"
+
+    # Load genesis info for logging
+    genesis_info = _load_strategy_genesis(strategy)
 
     conn = get_db()
     entry_date = datetime.now().strftime("%Y-%m-%d")
@@ -339,7 +366,7 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
     # Deduct from cash
     set_fund_value('current_cash', round(cash - cost, 2))
 
-    return {
+    result = {
         'id': pos_id,
         'ticker': ticker,
         'strategy': strategy,
@@ -348,7 +375,20 @@ def open_position(ticker, strategy, price, shares, stop_price, target_price):
         'stop': round(stop_price, 2),
         'target': round(target_price, 2),
         'cost': round(cost, 2),
-    }, None
+    }
+
+    # Log genesis info (printed for visibility in logs)
+    if genesis_info:
+        print(f"  📋 Strategy Genesis [{strategy}] {genesis_info.get('name', '')}")
+        print(f"     Thesis: {genesis_info.get('thesis', 'n/a')}")
+        print(f"     Trigger: {genesis_info.get('genesis_trigger', 'n/a')}")
+        print(f"     Logik: {genesis_info.get('genesis_logical_chain', 'n/a')}")
+        print(f"     Kill: {genesis_info.get('kill_trigger', 'n/a')}")
+        if genesis_info.get('learning_question'):
+            print(f"     Lernfrage: {genesis_info.get('learning_question')}")
+        result['genesis'] = genesis_info
+
+    return result, None
 
 
 def update_stop(pos_id, new_stop):

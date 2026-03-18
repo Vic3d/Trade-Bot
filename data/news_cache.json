@@ -1,0 +1,197 @@
+{
+  "cached_at": 1773787187.6386838,
+  "cached_at_str": "2026-03-17 23:39:47",
+  "article_count": 35,
+  "articles": [
+    {
+      "source": "bloomberg_markets",
+      "title": "SEC Chairman Floats Scaling Company Reporting to Firm Size",
+      "date": "Tue, 17 Mar 2026 22:22"
+    },
+    {
+      "source": "bloomberg_markets",
+      "title": "BHP Names Craig as CEO as Mining Giant Focuses on Growth",
+      "date": "Tue, 17 Mar 2026 21:22"
+    },
+    {
+      "source": "bloomberg_markets",
+      "title": "Crude Oil Holds Advance as Iran Confirms Death of Security Chief",
+      "date": "Tue, 17 Mar 2026 22:03"
+    },
+    {
+      "source": "bloomberg_markets",
+      "title": "‘Property Brothers’ on Housing Affordability, New Show",
+      "date": "Tue, 17 Mar 2026 21:40"
+    },
+    {
+      "source": "bloomberg_markets",
+      "title": "Spindrift CEO on Standing out from Beverage Sector Rivals",
+      "date": "Tue, 17 Mar 2026 21:00"
+    },
+    {
+      "source": "bloomberg_technology",
+      "title": "Apple’s Head of Home Hardware Leaves for Smart Ring Maker Oura",
+      "date": "Tue, 17 Mar 2026 22:00"
+    },
+    {
+      "source": "bloomberg_technology",
+      "title": "AI Impact Is Underestimated, Oaktree's Marks Cautions",
+      "date": "Tue, 17 Mar 2026 21:38"
+    },
+    {
+      "source": "bloomberg_technology",
+      "title": "JPMorgan Halts Qualtrics $5.3 Billion Debt on Software Pain",
+      "date": "Tue, 17 Mar 2026 18:03"
+    },
+    {
+      "source": "bloomberg_technology",
+      "title": "AI Drone Software Stock Jumps 520% in Best IPO Since Newsmax",
+      "date": "Tue, 17 Mar 2026 19:20"
+    },
+    {
+      "source": "bloomberg_technology",
+      "title": "Nvidia CEO Says Company Firing Up H200 Production for China",
+      "date": "Tue, 17 Mar 2026 19:44"
+    },
+    {
+      "source": "bloomberg_politics",
+      "title": "Irish PM Comes to Starmer’s Defense During White House Visit",
+      "date": "Tue, 17 Mar 2026 17:06"
+    },
+    {
+      "source": "bloomberg_politics",
+      "title": "Surging Fuel Costs Will Hit Supply Chain as Mideast Disruptions Ripple: Seroka",
+      "date": "Tue, 17 Mar 2026 22:22"
+    },
+    {
+      "source": "bloomberg_politics",
+      "title": "Iran Change Must Come From ‘Bottom Up’: Nides",
+      "date": "Tue, 17 Mar 2026 22:06"
+    },
+    {
+      "source": "bloomberg_politics",
+      "title": "Peru’s New President Names His Third Prime Minister in a Month",
+      "date": "Tue, 17 Mar 2026 21:51"
+    },
+    {
+      "source": "bloomberg_politics",
+      "title": "Iran Confirms Security Chief Larijani Killed in Israeli Strike",
+      "date": "Tue, 17 Mar 2026 21:49"
+    },
+    {
+      "source": "finnhub_market",
+      "title": "Ali Larijani, Iran's ultimate backroom powerbroker, dies at 67 - Reuters",
+      "date": ""
+    },
+    {
+      "source": "finnhub_market",
+      "title": "Nvidia’s big GTC showcase barely budged the stock. Is that a problem?",
+      "date": ""
+    },
+    {
+      "source": "finnhub_market",
+      "title": "Iran confirms security chief Ali Larijani killed, Iranian media reports - Reuters",
+      "date": ""
+    },
+    {
+      "source": "finnhub_market",
+      "title": "Russia is sharing satellite imagery and drone technology with Iran, WSJ reports - Reuters",
+      "date": ""
+    },
+    {
+      "source": "finnhub_market",
+      "title": "Here are the ways 3 of our industrial stocks can weather Iran-fueled volatility",
+      "date": ""
+    },
+    {
+      "source": "google_news",
+      "title": "Trumps Ölstrategie: Wie die USA den Energiemarkt neu ordnen - tagesschau.de",
+      "date": "Tue, 17 Mar 2026",
+      "query": "Iran Öl Hormuz Geopolitik"
+    },
+    {
+      "source": "google_news",
+      "title": "Erdogans Iran-Kalkül: Zwischen Nato, Nachbarschaft und Öl - Berliner Zeitung",
+      "date": "Tue, 17 Mar 2026",
+      "query": "Iran Öl Hormuz Geopolitik"
+    },
+    {
+      "source": "google_news",
+      "title": "Eine Zwischenbilanz des Iran-Krieges | Cicero Online - Cicero Online",
+      "date": "Wed, 11 Mar 2026",
+      "query": "Iran Öl Hormuz Geopolitik"
+    },
+    {
+      "source": "google_news",
+      "title": "Iran-Krieg: Verluste bei Dax, Dow und Nasdaq, Rüstungswerte sind gefragt, Ölpreis steigt rasant - Manager Magazin",
+      "date": "Mon, 09 Mar 2026",
+      "query": "Nasdaq DAX Aktien Börse"
+    },
+    {
+      "source": "google_news",
+      "title": "Marktbericht: Gespanntes Warten auf die Fed - tagesschau.de",
+      "date": "Tue, 16 Sep 2025",
+      "query": "Nasdaq DAX Aktien Börse"
+    },
+    {
+      "source": "google_news",
+      "title": "Nasdaq Inc. Aktie: Was der Börsenbetreiber für DAX-Anleger jetzt bedeutet - AD HOC NEWS",
+      "date": "Sat, 07 Mar 2026",
+      "query": "Nasdaq DAX Aktien Börse"
+    },
+    {
+      "source": "google_news",
+      "title": "Rüstungs-ETFs im Vergleich: Diese ETFs setzen auf Verteidigung - das investment",
+      "date": "Tue, 30 Dec 2025",
+      "query": "Rüstung Verteidigung NATO"
+    },
+    {
+      "source": "google_news",
+      "title": "Milliarden für die Bundeswehr - wohin geht das Geld? - tagesschau.de",
+      "date": "Thu, 03 Jul 2025",
+      "query": "Rüstung Verteidigung NATO"
+    },
+    {
+      "source": "google_news",
+      "title": "Nato-Gipfel: Stimmt es, dass die Nato nicht genug für Rüstung ausgibt? - DIE ZEIT",
+      "date": "Mon, 23 Jun 2025",
+      "query": "Rüstung Verteidigung NATO"
+    },
+    {
+      "source": "google_news",
+      "title": "Rohstoffpreise Überblick: Goldpreis, Silberpreis, Öl (Brent/WTI) – Rohstoffe am 17.03.2026 - Wallstreet Online",
+      "date": "Tue, 17 Mar 2026",
+      "query": "Gold Silber Rohstoffe"
+    },
+    {
+      "source": "google_news",
+      "title": "Renk, Silver Viper, Harmony Gold – Silber und Kupfer im globalen Rohstoff-Kampf - Kapitalerhöhungen.de",
+      "date": "Mon, 16 Mar 2026",
+      "query": "Gold Silber Rohstoffe"
+    },
+    {
+      "source": "google_news",
+      "title": "Goldpreis, Ölpreis, Silber, Platin & Co. - Das waren die Tops und Flops der Rohstoffe in KW 11 - Finanzen.net",
+      "date": "Sun, 15 Mar 2026",
+      "query": "Gold Silber Rohstoffe"
+    },
+    {
+      "source": "google_news",
+      "title": "Die besten KI-Aktien für Trader 2025 - Capital.com",
+      "date": "Wed, 03 Dec 2025",
+      "query": "Nvidia NVDA KI Halbleiter"
+    },
+    {
+      "source": "google_news",
+      "title": "Nvidias China-Geschäft unter Druck: Zoll-Kontrollen an Häfen für KI-Chips verschärft - IT-TIMES",
+      "date": "Fri, 10 Oct 2025",
+      "query": "Nvidia NVDA KI Halbleiter"
+    },
+    {
+      "source": "google_news",
+      "title": "Nvidia Aktie: KI-Euphorie entfacht! - Börse Express",
+      "date": "Fri, 24 Oct 2025",
+      "query": "Nvidia NVDA KI Halbleiter"
+    }
+  ]
+}
