@@ -294,8 +294,8 @@ def build_html(d):
             <td><strong>{ticker}</strong></td>
             <td>{name}</td>
             <td>{entry}€</td>
-            <td><strong>{price_str}</strong></td>
-            <td>{pnl_str}</td>
+            <td data-ticker="{yahoo_t}" data-field="price"><strong>{price_str}</strong></td>
+            <td data-ticker="{yahoo_t}" data-field="pnl" data-entry="{entry}">{pnl_str}</td>
             <td>{stop_str}</td>
             <td>{target_str}</td>
             <td style="font-size:0.85em;color:#888">{notes[:40]}</td>
@@ -305,6 +305,8 @@ def build_html(d):
     
     # Build open paper positions rows
     open_rows = ""
+    paper_total_entry = 0
+    paper_total_current = 0
     for p in open_pos:
         s = p.get('strategy', '?')
         badge_color = strat_colors.get(s, '#888')
@@ -314,11 +316,30 @@ def build_html(d):
         stop = p.get('stop_price', 0)
         target = p.get('target_price', 0)
         vol = entry * shares
+        ticker = p['ticker']
+        
+        # Live price
+        current = prices.get(ticker, None)
+        if current and entry:
+            pnl_pct = ((current - entry) / entry) * 100
+            pnl_color = '#00ff88' if pnl_pct >= 0 else '#ff4444'
+            pnl_icon = '📈' if pnl_pct >= 0 else '📉'
+            price_str = f"{current:.2f}€"
+            pnl_str = f'<span style="color:{pnl_color};font-weight:bold">{pnl_icon} {pnl_pct:+.1f}%</span>'
+            paper_total_entry += entry * shares
+            paper_total_current += current * shares
+        else:
+            price_str = "—"
+            pnl_str = "—"
+            paper_total_entry += vol
+            paper_total_current += vol
+        
         open_rows += f"""<tr>
-            <td><strong>{p['ticker']}</strong></td>
+            <td><strong>{ticker}</strong></td>
             <td><span class="badge" style="background:{badge_color}">{s}</span> {sname}</td>
             <td>{entry:.2f}€</td>
-            <td>{shares:.4f}</td>
+            <td data-ticker="{ticker}" data-field="price">{price_str}</td>
+            <td data-ticker="{ticker}" data-field="pnl" data-entry="{entry}">{pnl_str}</td>
             <td>{stop:.2f}€</td>
             <td>{target:.2f}€</td>
             <td>{vol:.0f}€</td>
@@ -488,7 +509,7 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
             <span class="regime-badge" style="background:{regime_color}">{regime_name}</span>
         </div>
     </div>
-    <button onclick="location.reload()" style="background:#0f3460;color:#fff;border:1px solid #1a4a8a;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:1em">🔄 Aktualisieren</button>
+    <button id="refreshBtn" onclick="refreshPrices()" style="background:#0f3460;color:#fff;border:1px solid #1a4a8a;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:1em">🔄 Aktualisieren</button>
 </div>
 
 <!-- Tab Navigation -->
@@ -613,7 +634,8 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
                 <th>Aktie</th>
                 <th>Strategie</th>
                 <th>Einkauf</th>
-                <th>Stück</th>
+                <th>Kurs</th>
+                <th>P&L</th>
                 <th>Stop</th>
                 <th>Ziel</th>
                 <th>Volumen</th>
@@ -742,6 +764,57 @@ function switchTab(tab) {{
             t.classList.add('active');
         }}
     }});
+}}
+
+async function refreshPrices() {{
+    const btn = document.getElementById('refreshBtn');
+    btn.textContent = '⏳ Laden…';
+    btn.disabled = true;
+    try {{
+        const r = await fetch('/api/prices');
+        const data = await r.json();
+        if (!data.prices) throw new Error('No prices');
+        
+        // Update all price cells with data-ticker attribute
+        document.querySelectorAll('[data-ticker]').forEach(el => {{
+            const ticker = el.dataset.ticker;
+            const field = el.dataset.field;
+            const p = data.prices[ticker];
+            if (!p) return;
+            
+            if (field === 'price') {{
+                el.textContent = p.eur.toFixed(2) + '€';
+            }} else if (field === 'pnl') {{
+                const entry = parseFloat(el.dataset.entry);
+                if (entry) {{
+                    const pnl = ((p.eur - entry) / entry * 100);
+                    el.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(1) + '%';
+                    el.style.color = pnl >= 0 ? '#00ff88' : '#ff4444';
+                }}
+            }}
+        }});
+        
+        // Update VIX
+        if (data.vix) {{
+            const vixEl = document.querySelector('.subtitle strong');
+            if (vixEl) vixEl.textContent = data.vix.toFixed(2);
+        }}
+        
+        // Update timestamp
+        const sub = document.querySelector('.subtitle');
+        if (sub) {{
+            const now = new Date().toLocaleString('de-DE');
+            sub.innerHTML = sub.innerHTML.replace(/Stand:.*?&nbsp;/, 'Stand: ' + now + ' &nbsp;');
+        }}
+        
+        btn.textContent = '✅ Aktuell!';
+        setTimeout(() => {{ btn.textContent = '🔄 Aktualisieren'; }}, 2000);
+    }} catch(e) {{
+        btn.textContent = '❌ Fehler';
+        console.error(e);
+        setTimeout(() => {{ btn.textContent = '🔄 Aktualisieren'; }}, 3000);
+    }}
+    btn.disabled = false;
 }}
 </script>
 
