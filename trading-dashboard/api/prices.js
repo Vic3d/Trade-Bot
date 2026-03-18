@@ -47,10 +47,15 @@ export default async function handler(req, res) {
   const prices = {};
   for (const [t, d] of Object.entries(results)) {
     if (t.includes('=X') || t.startsWith('^')) continue;
+    const eur = Math.round(toEur(d.price, d.currency) * 100) / 100;
+    const prevEur = d.previousClose ? Math.round(toEur(d.previousClose, d.currency) * 100) / 100 : null;
+    const dayChange = prevEur ? Math.round((eur - prevEur) / prevEur * 10000) / 100 : null;
     prices[t] = {
       raw: d.price,
       currency: d.currency,
-      eur: Math.round(toEur(d.price, d.currency) * 100) / 100,
+      eur,
+      prevEur,
+      dayChange,
     };
   }
 

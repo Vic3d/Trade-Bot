@@ -17,16 +17,17 @@ def yahoo_price(ticker):
         with urllib.request.urlopen(req, timeout=8) as r:
             d = json.load(r)
         meta = d['chart']['result'][0]['meta']
-        return meta['regularMarketPrice'], meta.get('currency', 'USD')
+        return meta['regularMarketPrice'], meta.get('currency', 'USD'), meta.get('chartPreviousClose', meta.get('previousClose'))
     except:
-        return None, None
+        return None, None, None
 
 def get_live_prices():
     """Fetch all live prices and FX rates."""
     prices = {}
     # FX rates
+    day_changes = {}
     for fx in ['EURUSD=X', 'EURNOK=X', 'EURGBP=X', 'EURDKK=X']:
-        p, _ = yahoo_price(fx)
+        p, _, _ = yahoo_price(fx)
         prices[fx] = p or 1.0
         time.sleep(0.2)
     
@@ -34,24 +35,24 @@ def get_live_prices():
     tickers = ['NVDA', 'MSFT', 'PLTR', 'EQNR.OL', 'RIO.L', 'BAYN.DE',
                'OXY', 'FRO', 'DHT', 'HL', 'PAAS', 'MOS', 'TTE.PA',
                'HO.PA', 'GLEN.L', 'ASML.AS', 'NOVO-B.CO', 'HAG.DE']
+    
+    def to_eur(p, ccy):
+        if ccy == 'USD': return p / prices['EURUSD=X']
+        if ccy == 'NOK': return p / prices['EURNOK=X']
+        if ccy in ('GBp', 'GBX'): return (p / 100) / prices['EURGBP=X']
+        if ccy == 'GBP': return p / prices['EURGBP=X']
+        if ccy == 'DKK': return p / prices['EURDKK=X']
+        return p
+    
     for t in tickers:
-        p, ccy = yahoo_price(t)
+        p, ccy, prev = yahoo_price(t)
         if p:
-            # Convert to EUR
-            if ccy == 'USD':
-                prices[t] = p / prices['EURUSD=X']
-            elif ccy == 'NOK':
-                prices[t] = p / prices['EURNOK=X']
-            elif ccy in ('GBp', 'GBX'):
-                prices[t] = (p / 100) / prices['EURGBP=X']
-            elif ccy == 'GBP':
-                prices[t] = p / prices['EURGBP=X']
-            elif ccy == 'DKK':
-                prices[t] = p / prices['EURDKK=X']
-            else:
-                prices[t] = p
+            prices[t] = to_eur(p, ccy)
+            if prev:
+                prev_eur = to_eur(prev, ccy)
+                day_changes[t] = ((prices[t] - prev_eur) / prev_eur) * 100
         time.sleep(0.2)
-    return prices
+    return prices, day_changes
 
 def load_data():
     d = {}
@@ -60,7 +61,7 @@ def load_data():
     
     # Live prices
     print("📡 Hole Live-Kurse von Yahoo Finance...")
-    d['prices'] = get_live_prices()
+    d['prices'], d['day_changes'] = get_live_prices()
     print(f"   {len(d['prices'])} Kurse geladen")
     
     # Paper portfolio from SQLite
@@ -225,6 +226,7 @@ def build_html(d):
     sentiment = d.get('sentiment', {})
     backtest = d.get('backtest_results', {})
     prices = d.get('prices', {})
+    day_changes = d.get('day_changes', {})
     strategies = d.get('strategies', {})
     
     # Calculate paper fund value
@@ -276,6 +278,7 @@ def build_html(d):
         # Live price lookup
         yahoo_t = pos.get('yahoo', ticker)
         current = prices.get(yahoo_t, prices.get(ticker, None))
+        day_chg = day_changes.get(yahoo_t, day_changes.get(ticker, None))
         if current and entry:
             pnl_pct = ((current - entry) / entry) * 100
             pnl_color = '#00ff88' if pnl_pct >= 0 else '#ff4444'
@@ -290,15 +293,22 @@ def build_html(d):
             real_total_entry += entry or 0
             real_total_current += entry or 0
         
+        if day_chg is not None:
+            dc_color = '#00ff88' if day_chg >= 0 else '#ff4444'
+            dc_arrow = '▲' if day_chg >= 0 else '▼'
+            day_str = f'<span style="color:{dc_color};font-weight:bold">{dc_arrow} {day_chg:+.1f}%</span>'
+        else:
+            day_str = "—"
+        
         real_rows += f"""<tr {stop_class}>
             <td><strong>{ticker}</strong></td>
             <td>{name}</td>
             <td>{entry}€</td>
             <td data-ticker="{yahoo_t}" data-field="price"><strong>{price_str}</strong></td>
+            <td data-ticker="{yahoo_t}" data-field="day" data-entry="{entry}">{day_str}</td>
             <td data-ticker="{yahoo_t}" data-field="pnl" data-entry="{entry}">{pnl_str}</td>
             <td>{stop_str}</td>
             <td>{target_str}</td>
-            <td style="font-size:0.85em;color:#888">{notes[:40]}</td>
         </tr>"""
     
     real_total_pnl_pct = ((real_total_current - real_total_entry) / real_total_entry * 100) if real_total_entry else 0
@@ -318,8 +328,9 @@ def build_html(d):
         vol = entry * shares
         ticker = p['ticker']
         
-        # Live price
+        # Live price + day change
         current = prices.get(ticker, None)
+        day_chg = day_changes.get(ticker, None)
         if current and entry:
             pnl_pct = ((current - entry) / entry) * 100
             pnl_color = '#00ff88' if pnl_pct >= 0 else '#ff4444'
@@ -334,11 +345,19 @@ def build_html(d):
             paper_total_entry += vol
             paper_total_current += vol
         
+        if day_chg is not None:
+            dc_color = '#00ff88' if day_chg >= 0 else '#ff4444'
+            dc_arrow = '▲' if day_chg >= 0 else '▼'
+            day_str = f'<span style="color:{dc_color};font-weight:bold">{dc_arrow} {day_chg:+.1f}%</span>'
+        else:
+            day_str = "—"
+        
         open_rows += f"""<tr>
             <td><strong>{ticker}</strong></td>
             <td><span class="badge" style="background:{badge_color}">{s}</span> {sname}</td>
             <td>{entry:.2f}€</td>
             <td data-ticker="{ticker}" data-field="price">{price_str}</td>
+            <td data-ticker="{ticker}" data-field="day">{day_str}</td>
             <td data-ticker="{ticker}" data-field="pnl" data-entry="{entry}">{pnl_str}</td>
             <td>{stop:.2f}€</td>
             <td>{target:.2f}€</td>
@@ -635,6 +654,7 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
                 <th>Strategie</th>
                 <th>Einkauf</th>
                 <th>Kurs</th>
+                <th>Heute</th>
                 <th>P&L</th>
                 <th>Stop</th>
                 <th>Ziel</th>
@@ -739,10 +759,10 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
                 <th>Name</th>
                 <th>Entry</th>
                 <th>Aktuell</th>
-                <th>Gewinn/Verlust</th>
+                <th>Heute</th>
+                <th>Gesamt</th>
                 <th>Stop</th>
                 <th>Ziel</th>
-                <th>Notiz</th>
             </tr>
             {real_rows}
         </table>
@@ -783,13 +803,20 @@ async function refreshPrices() {{
             if (!p) return;
             
             if (field === 'price') {{
-                el.textContent = p.eur.toFixed(2) + '€';
+                el.innerHTML = '<strong>' + p.eur.toFixed(2) + '€</strong>';
+            }} else if (field === 'day') {{
+                if (p.dayChange != null) {{
+                    const arrow = p.dayChange >= 0 ? '▲' : '▼';
+                    const c = p.dayChange >= 0 ? '#00ff88' : '#ff4444';
+                    el.innerHTML = `<span style="color:${{c}};font-weight:bold">${{arrow}} ${{p.dayChange >= 0 ? '+' : ''}}${{p.dayChange.toFixed(1)}}%</span>`;
+                }}
             }} else if (field === 'pnl') {{
                 const entry = parseFloat(el.dataset.entry);
                 if (entry) {{
                     const pnl = ((p.eur - entry) / entry * 100);
-                    el.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(1) + '%';
-                    el.style.color = pnl >= 0 ? '#00ff88' : '#ff4444';
+                    const icon = pnl >= 0 ? '📈' : '📉';
+                    const c = pnl >= 0 ? '#00ff88' : '#ff4444';
+                    el.innerHTML = `<span style="color:${{c}};font-weight:bold">${{icon}} ${{pnl >= 0 ? '+' : ''}}${{pnl.toFixed(1)}}%</span>`;
                 }}
             }}
         }});
