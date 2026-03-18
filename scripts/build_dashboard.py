@@ -25,14 +25,15 @@ def get_live_prices():
     """Fetch all live prices and FX rates."""
     prices = {}
     # FX rates
-    for fx in ['EURUSD=X', 'EURNOK=X', 'EURGBP=X']:
+    for fx in ['EURUSD=X', 'EURNOK=X', 'EURGBP=X', 'EURDKK=X']:
         p, _ = yahoo_price(fx)
         prices[fx] = p or 1.0
         time.sleep(0.2)
     
     # All portfolio tickers
     tickers = ['NVDA', 'MSFT', 'PLTR', 'EQNR.OL', 'RIO.L', 'BAYN.DE',
-               'OXY', 'HII', 'PAAS', 'MOS', 'HAG.DE', 'TTE.PA']
+               'OXY', 'FRO', 'DHT', 'HL', 'PAAS', 'MOS', 'TTE.PA',
+               'HO.PA', 'GLEN.L', 'ASML.AS', 'NOVO-B.CO', 'HAG.DE']
     for t in tickers:
         p, ccy = yahoo_price(t)
         if p:
@@ -45,6 +46,8 @@ def get_live_prices():
                 prices[t] = (p / 100) / prices['EURGBP=X']
             elif ccy == 'GBP':
                 prices[t] = p / prices['EURGBP=X']
+            elif ccy == 'DKK':
+                prices[t] = p / prices['EURDKK=X']
             else:
                 prices[t] = p
         time.sleep(0.2)
@@ -406,6 +409,7 @@ def build_html(d):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="300">
 <title>🎩 Albert Trading System</title>
 <style>
 * {{ margin:0; padding:0; box-sizing:border-box; }}
@@ -475,13 +479,16 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
 <body>
 
 <!-- Header -->
-<div class="header">
-    <h1>🎩 Albert Trading System</h1>
-    <div class="subtitle">
-        Stand: {now} &nbsp;|&nbsp; 
-        VIX: <strong>{vix}</strong> &nbsp;
-        <span class="regime-badge" style="background:{regime_color}">{regime_name}</span>
+<div class="header" style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+        <h1 style="margin:0">🎩 Albert Trading System</h1>
+        <div class="subtitle">
+            Stand: {now} &nbsp;|&nbsp; 
+            VIX: <strong>{vix}</strong> &nbsp;
+            <span class="regime-badge" style="background:{regime_color}">{regime_name}</span>
+        </div>
     </div>
+    <button onclick="location.reload()" style="background:#0f3460;color:#fff;border:1px solid #1a4a8a;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:1em">🔄 Aktualisieren</button>
 </div>
 
 <!-- Tab Navigation -->
