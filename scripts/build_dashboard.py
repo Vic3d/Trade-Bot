@@ -96,7 +96,7 @@ def load_data():
     return d
 
 def build_strategy_deep_dive(strategies):
-    """Build the Strategy Deep Dive HTML section from strategies.json data."""
+    """Build the Strategy Deep Dive HTML section with collapsible dropdown cards."""
     if not strategies:
         return '<p style="color:#888;text-align:center;padding:20px">Keine Strategie-Daten verfügbar (strategies.json fehlt?).</p>'
 
@@ -123,6 +123,7 @@ def build_strategy_deep_dive(strategies):
         entry_trigger = strat.get('entry_trigger', '')
         learning_q = strat.get('learning_question', '')
         tickers = strat.get('tickers', [])
+        watchlist_tickers = strat.get('watchlist_tickers', [])
         horizon = strat.get('horizon_weeks', '?')
         genesis = strat.get('genesis', {})
 
@@ -130,8 +131,20 @@ def build_strategy_deep_dive(strategies):
         h_color = health_color.get(health, '#888')
         type_b = type_badge.get(stype, '')
 
-        # Genesis section
-        genesis_html = ""
+        ticker_badges = " ".join(
+            f'<span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">{t}</span>'
+            for t in tickers
+        ) if tickers else ''
+        watchlist_badges = " ".join(
+            f'<span style="background:#2a1a3c;color:#c8a0e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">👁 {t}</span>'
+            for t in watchlist_tickers
+        ) if watchlist_tickers else ''
+        all_badges = (ticker_badges + " " + watchlist_badges).strip() or '<span style="color:#888">–</span>'
+
+        status_str = {"active": "✅ Aktiv", "watchlist": "👁 Watchlist", "closed": "❌ Geschlossen"}.get(status, status)
+
+        # Genesis detail section (inside dropdown)
+        genesis_detail = ""
         if genesis:
             trigger = genesis.get('trigger', '')
             chain = genesis.get('logical_chain', '')
@@ -144,64 +157,55 @@ def build_strategy_deep_dive(strategies):
             steps_html = "".join(f"<li>{s}</li>" for s in steps) if steps else ""
             counters_html = "".join(f"<li style='color:#ffaa00'>{c}</li>" for c in counters) if counters else ""
             sources_str = ", ".join(sources) if sources else "–"
-
             conviction_stars = "⭐" * conviction + "☆" * (5 - conviction)
 
-            genesis_html = f"""
-            <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
-                <div style="color:#aaa;margin-bottom:8px">
-                    📅 Erstellt: {created} &nbsp;|&nbsp; Überzeugung: {conviction_stars} ({conviction}/5)
-                    &nbsp;|&nbsp; Quellen: {sources_str}
-                </div>
-                <div style="margin-bottom:8px">
-                    <strong style="color:#3498db">⚡ Auslöser:</strong> {trigger}
-                </div>
-                {f'<div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>{chain}</div>' if chain else ''}
-                {f'<div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc">{steps_html}</ul></div>' if steps_html else ''}
-                {f'<div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px">{counters_html}</ul></div>' if counters_html else ''}
-            </div>"""
+            genesis_detail = f"""
+                <div style="background:#0d1b2a;border-radius:8px;padding:14px;margin-top:12px;font-size:0.88em">
+                    <div style="color:#aaa;margin-bottom:8px">
+                        📅 Erstellt: {created} &nbsp;|&nbsp; Überzeugung: {conviction_stars} ({conviction}/5)
+                        &nbsp;|&nbsp; Quellen: {sources_str}
+                    </div>
+                    <div style="margin-bottom:8px">
+                        <strong style="color:#3498db">⚡ Auslöser:</strong> {trigger}
+                    </div>
+                    {f'<div style="margin-bottom:8px"><strong style="color:#2ecc71">🔗 Logik-Kette:</strong><br>{chain}</div>' if chain else ''}
+                    {f'<div style="margin-bottom:8px"><strong style="color:#e0e0e0">🔍 Analyse-Schritte:</strong><ul style="margin:6px 0 0 20px;color:#ccc">{steps_html}</ul></div>' if steps_html else ''}
+                    {f'<div><strong style="color:#ffaa00">⚠️ Gegenargumente geprüft:</strong><ul style="margin:6px 0 0 20px">{counters_html}</ul></div>' if counters_html else ''}
+                </div>"""
 
-        ticker_badges = " ".join(
-            f'<span style="background:#1a3a5c;color:#7ec8e3;padding:2px 8px;border-radius:6px;font-size:0.8em;margin:2px;display:inline-block">{t}</span>'
-            for t in tickers
-        ) if tickers else '<span style="color:#888">–</span>'
-
-        status_str = {"active": "✅ Aktiv", "watchlist": "👁 Watchlist", "closed": "❌ Geschlossen"}.get(status, status)
-
+        # Build collapsible card using div + JS toggle (all closed by default)
         cards += f"""
-        <div style="background:#16213e;border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid {h_color}">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
-                <div>
-                    <span style="font-size:1.3em;font-weight:bold">{h_emoji} {strat_id}: {name}</span>
-                    &nbsp; {type_b}
+        <div class="strat-card" style="border-left:4px solid {h_color}">
+            <div class="strat-header" onclick="this.parentElement.classList.toggle('open')">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:1.2em;font-weight:bold">{h_emoji} {strat_id}: {name}</span>
+                        {type_b}
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="color:#888;font-size:0.85em">{status_str} &nbsp;|&nbsp; {sector} &nbsp;|&nbsp; {horizon}W</span>
+                        <span class="dropdown-arrow" style="color:#888;font-size:1.2em">▼</span>
+                    </div>
                 </div>
-                <div style="color:#888;font-size:0.88em">
-                    {status_str} &nbsp;|&nbsp; Sektor: {sector} &nbsp;|&nbsp; Horizont: {horizon} Wochen
+                <div style="margin-top:8px;font-style:italic;color:#8ab4d0;font-size:0.9em">
+                    📌 {thesis}
                 </div>
+                <div style="margin-top:6px">{all_badges}</div>
             </div>
-
-            <div style="margin-top:12px;padding:12px;background:#1e2a3a;border-radius:8px;font-style:italic;color:#c0d8f0">
-                📌 {thesis}
-            </div>
-
-            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
-                <div>
-                    <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
-                    <span style="color:#ccc">{entry_trigger or '–'}</span>
+            <div class="strat-body">
+                <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.88em">
+                    <div>
+                        <strong style="color:#2ecc71">🟢 Entry-Trigger:</strong><br>
+                        <span style="color:#ccc">{entry_trigger or '–'}</span>
+                    </div>
+                    <div>
+                        <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
+                        <span style="color:#ccc">{kill_trigger or '–'}</span>
+                    </div>
                 </div>
-                <div>
-                    <strong style="color:#ff4444">🔴 Kill-Switch:</strong><br>
-                    <span style="color:#ccc">{kill_trigger or '–'}</span>
-                </div>
+                {f'<div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">{learning_q}</span></div>' if learning_q else ''}
+                {genesis_detail}
             </div>
-
-            {f'<div style="margin-top:12px;font-size:0.88em"><strong style="color:#f1c40f">🎓 Lernfrage:</strong><br><span style="color:#ccc;font-style:italic">{learning_q}</span></div>' if learning_q else ''}
-
-            <div style="margin-top:12px;font-size:0.88em">
-                <strong style="color:#888">Ticker:</strong> {ticker_badges}
-            </div>
-
-            {genesis_html}
         </div>"""
 
     return cards
@@ -446,6 +450,17 @@ tr:nth-child(even) {{ background:rgba(255,255,255,0.02); }}
 /* Explanation boxes */
 .explain {{ background:#16213e; border-left:4px solid #3498db; padding:16px; border-radius:0 8px 8px 0; margin-bottom:24px; font-size:0.9em; line-height:1.6; }}
 .explain strong {{ color:#3498db; }}
+
+/* Strategy Dropdowns */
+.strat-card {{ background:#16213e; border-radius:12px; margin-bottom:12px; overflow:hidden; transition:box-shadow 0.2s; }}
+.strat-card:hover {{ background:#1a2744; }}
+.strat-header {{ padding:16px 20px; cursor:pointer; user-select:none; }}
+.strat-header:hover {{ background:rgba(255,255,255,0.03); }}
+.strat-body {{ display:none; padding:0 20px 20px 20px; border-top:1px solid #2a2a4a; }}
+.strat-card.open .strat-body {{ display:block; }}
+.strat-card.open {{ box-shadow:0 4px 16px rgba(0,0,0,0.3); }}
+.strat-card .dropdown-arrow {{ transition:transform 0.2s; display:inline-block; }}
+.strat-card.open .dropdown-arrow {{ transform:rotate(180deg); }}
 
 /* Responsive */
 @media (max-width: 768px) {{
