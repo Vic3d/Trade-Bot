@@ -1,5 +1,5 @@
 # Overnight Context — 18.03.2026
-*Erstellt: 2026-03-18 20:00 UTC | Für Morgen-Briefing 08:00*
+*Erstellt: 2026-03-18 21:45 UTC | Für Morgen-Briefing 08:00*
 
 ---
 
@@ -9,19 +9,19 @@
 — keine Alerts heute
 
 ### Top-Performer heute
-- iShares Biotech ETF (A2DWAW): 142.77€ (+1939.6%)
-- VanEck Oil Services ETF (A3D42Y): 334.08€ (+1097.4%)
-- Invesco Solar Energy ETF (A2QQ9R): 49.34€ (+120.3%)
+- iShares Biotech ETF (A2DWAW): 142.72€ (+1938.8%)
+- VanEck Oil Services ETF (A3D42Y): 334.07€ (+1097.4%)
+- Invesco Solar Energy ETF (A2QQ9R): 49.30€ (+120.1%)
 
 ### Underperformer / Verlierer
-- Nvidia (NVDA): 157.24€ (-6.3%)
-- Microsoft (MSFT): 341.38€ (-3.0%)
-- Bayer AG (BAYN.DE): 38.91€ (-2.6%)
+- Nvidia (NVDA): 157.20€ (-6.4%)
+- Bayer AG (BAYN.DE): 38.71€ (-3.1%)
+- Microsoft (MSFT): 341.40€ (-3.0%)
 
 ## Kritische Positionen (Stop <3% entfernt)
 
 - ⚠️ Microsoft (MSFT): 1.0% über Stop 338.00€
-- ⚠️ Bayer AG (BAYN.DE): 2.3% über Stop 38.00€
+- ⚠️ Bayer AG (BAYN.DE): 1.8% über Stop 38.00€
 
 ## Geopolitik-Lage (aus Strategie-Status)
 
@@ -35,9 +35,9 @@
 
 ## Makro-Schlusskurse
 
-- VIX: 24.45
-- WTI: $97.7
-- EUR/USD: 1.1473
+- VIX: 25.09
+- WTI: $99.05
+- EUR/USD: 1.1476
 
 ## Entscheidungen die morgen anstehen
 

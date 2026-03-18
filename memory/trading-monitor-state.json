@@ -16,11 +16,12 @@
     "WL_AG_ENTRY_B_USD",
     "MACRO_WTI_DAILY",
     "BAYN.DE_STOP_WARN",
-    "MSFT_STOP_CRIT"
+    "MSFT_STOP_CRIT",
+    "WL_AG_CANDLE_HAMMER"
   ],
-  "run_count": 53,
-  "prev_wti": 97.7,
+  "run_count": 60,
+  "prev_wti": 99.05,
   "wti_open": 92.51,
   "vix_open": 22.37,
-  "last_run": "2026-03-18T20:00:22.445538+00:00"
+  "last_run": "2026-03-18T21:45:10.160286+00:00"
 }

@@ -1,129 +1,129 @@
 {
-  "timestamp": "2026-03-18T20:00:22.445800+00:00",
+  "timestamp": "2026-03-18T21:45:10.160578+00:00",
   "fx": {
-    "EURUSD": 1.1473,
-    "EURNOK": 11.0185,
-    "GBPEUR": 1.1576
+    "EURUSD": 1.1476,
+    "EURNOK": 11.0009,
+    "GBPEUR": 1.1571
   },
   "macro": {
-    "wti": 97.7,
-    "vix": 24.45
+    "wti": 99.05,
+    "vix": 25.09
   },
   "positions": {
     "NVDA": {
       "name": "Nvidia",
-      "price_eur": 157.24,
+      "price_eur": 157.2,
       "price_raw": 180.4,
       "entry_eur": 167.88,
-      "pnl_pct": -6.34,
+      "pnl_pct": -6.36,
       "stop_eur": null,
-      "conviction": 50
+      "conviction": 40
     },
     "MSFT": {
       "name": "Microsoft",
-      "price_eur": 341.38,
-      "price_raw": 391.67,
+      "price_eur": 341.4,
+      "price_raw": 391.79,
       "entry_eur": 351.85,
       "pnl_pct": -2.97,
       "stop_eur": 338.0,
-      "conviction": 30
+      "conviction": 20
     },
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 133.16,
+      "price_eur": 133.12,
       "price_raw": 152.77,
       "entry_eur": 132.11,
-      "pnl_pct": 0.79,
+      "pnl_pct": 0.77,
       "stop_eur": 127.0,
-      "conviction": 70
+      "conviction": 60
     },
     "EQNR": {
       "name": "Equinor ASA",
-      "price_eur": 32.58,
+      "price_eur": 32.63,
       "price_raw": 359.0,
       "entry_eur": 27.04,
-      "pnl_pct": 20.49,
+      "pnl_pct": 20.69,
       "stop_eur": 30.0,
       "conviction": 100
     },
     "BAYN.DE": {
       "name": "Bayer AG",
-      "price_eur": 38.91,
-      "price_raw": 38.91,
+      "price_eur": 38.71,
+      "price_raw": 38.71,
       "entry_eur": 39.95,
-      "pnl_pct": -2.59,
+      "pnl_pct": -3.1,
       "stop_eur": 38.0,
-      "conviction": 30
+      "conviction": 20
     },
     "RIO.L": {
       "name": "Rio Tinto",
-      "price_eur": 77.13,
+      "price_eur": 77.1,
       "price_raw": 6663.0,
       "entry_eur": 76.92,
-      "pnl_pct": 0.27,
+      "pnl_pct": 0.23,
       "stop_eur": 73.0,
-      "conviction": 50
+      "conviction": 40
     },
     "RHM.DE": {
       "name": "Rheinmetall AG",
-      "price_eur": 1612.0,
-      "price_raw": 1612.0,
+      "price_eur": 1606.0,
+      "price_raw": 1606.0,
       "entry_eur": 1570.0,
-      "pnl_pct": 2.68,
+      "pnl_pct": 2.29,
       "stop_eur": 1520.0
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
-      "price_eur": 49.34,
-      "price_raw": 56.6,
+      "price_eur": 49.3,
+      "price_raw": 56.58,
       "entry_eur": 22.4,
-      "pnl_pct": 120.26,
+      "pnl_pct": 120.1,
       "stop_eur": null,
-      "conviction": 70
+      "conviction": 60
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 334.08,
-      "price_raw": 383.29,
+      "price_eur": 334.07,
+      "price_raw": 383.38,
       "entry_eur": 27.9,
-      "pnl_pct": 1097.42,
+      "pnl_pct": 1097.39,
       "stop_eur": 24.0,
-      "conviction": 90
+      "conviction": 80
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
-      "price_eur": 56.59,
-      "price_raw": 64.93,
+      "price_eur": 56.61,
+      "price_raw": 64.96,
       "entry_eur": 28.8,
-      "pnl_pct": 96.51,
+      "pnl_pct": 96.55,
       "stop_eur": 25.95,
-      "conviction": 90
+      "conviction": 80
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 142.77,
-      "price_raw": 163.8,
+      "price_eur": 142.72,
+      "price_raw": 163.78,
       "entry_eur": 7.0,
-      "pnl_pct": 1939.57,
+      "pnl_pct": 1938.79,
       "stop_eur": 6.3,
-      "conviction": 70
+      "conviction": 60
     }
   },
   "watchlist": {
     "AG": {
       "name": "First Majestic Silver",
-      "price_eur": 17.72,
-      "price_raw": 20.32
+      "price_eur": 17.73,
+      "price_raw": 20.35
     },
     "BHP.L": {
       "name": "BHP Group",
-      "price_eur": 30.16,
+      "price_eur": 30.14,
       "price_raw": 2605.0
     },
     "ASML": {
       "name": "ASML Holding",
-      "price_eur": 1181.03,
-      "price_raw": 1355.0
+      "price_eur": 1180.87,
+      "price_raw": 1355.17
     }
   }
 }

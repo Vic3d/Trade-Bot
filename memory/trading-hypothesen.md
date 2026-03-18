@@ -51,6 +51,8 @@
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
+- **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
+- **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 3 Tech-Losses bei erhöhtem VIX
 
 ### H006 — SMH unter EMA50 = Gegenwind für alle Halbleiter
