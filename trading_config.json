@@ -72,7 +72,10 @@
         85
       ],
       "alerts": {},
-      "notes": "⚠️ Stop 73€ in TR setzen!"
+      "notes": "⚠️ Stop 73€ in TR setzen!",
+      "status": "CLOSED",
+      "exit_eur": 72.25,
+      "exit_date": "2026-03-19"
     },
     "RHM.DE": {
       "name": "Rheinmetall AG",
