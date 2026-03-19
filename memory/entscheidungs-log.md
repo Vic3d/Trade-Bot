@@ -41,3 +41,17 @@ Victor: "Vielleicht sollten wir auch wichtige Nachrichten festhalten die wichtig
 - Nachvollziehbarkeit wichtig für Lerneffekt + Strategie-Verbesserung
 
 ---
+
+## 2026-03-19 — RIO.L Exit (Stop ausgelöst, TR nicht handelbar)
+**Entscheidung:** Rio Tinto (RIO.L) verkauft — Exit bei ~72.25€
+**Kontext:** 
+- Stop lag bei 73€ (real in TR gesetzt)
+- TR zeigte RIO.L heute als "nicht handelbar" (Volatilitätsstopp bei −6%)
+- Victor hat manuell abverkauft sobald handelbar
+- Auslöser: Nikkei −3.4% → Asien-Nachfrage-Angst → Rohstoffe schwach (exakt wie heute Morgen 09:15 gewarnt)
+**Kern-Reasoning:** Stop war gesetzt, Stop wurde gerissen — Regel befolgt. Kein Sinn auf Erholung zu warten wenn Thesis (Rohstoff-Nachfrage) gerade weiter unter Druck ist.
+**Ergebnis:** Entry 76.92€ → Exit ~72.25€ = **−4.8€, −6.2%**
+**Lesson:** 
+1. Stop muss REAL in TR gesetzt sein — aber auch dann kann TR "nicht handelbar" zeigen → mentale Backup-Entscheidung trotzdem klar haben
+2. RIO.L hatte Conviction 0 im Monitor — das war das richtige Signal, die Position zu klein zu halten
+3. Nikkei als Frühindikator für Rohstoffe hat funktioniert (09:15 Warnung → 13:50 Exit)

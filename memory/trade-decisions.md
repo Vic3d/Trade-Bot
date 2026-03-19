@@ -322,3 +322,22 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 **Gesicherter Mindestgewinn:** +20.2% (wenn Stop triggert)
 **Begründung:** Brent +7% heute, EQNR läuft stark — Gewinne sichern, Rest laufen lassen
 **Lesson:** Trailing Stop nach starkem Tageslauf (>5%) auf EMA20-Niveau nachziehen
+
+## 2026-03-19 — RIO.L GESCHLOSSEN
+- Entry: 76.92€ (09.03.2026)
+- Exit: ~72.25€ (19.03.2026)
+- P&L: −4.67€ / **−6.1%**
+- Stop war gesetzt: 73€ (gerissen bei −6% Tagesbewegung)
+- TR war kurzzeitig "nicht handelbar" → manueller Exit danach
+- Lesson: Conviction 0 war richtig — Position war zu schwach, Rohstoff-Thesis hat nicht gehalten
+
+## 2026-03-19 — Microsoft (MSFT) geschlossen
+**Entry:** 351.85€ | **Exit:** 337.71€ | **P&L:** −4.0% (−14.14€)
+**Grund:** Stop 338€ ausgelöst (Kurs 388.80 USD / EUR-USD 1.1513)
+**Lektion:** Stop hat funktioniert — Verlust begrenzt. MSFT litt unter breitem Tech-Sell-off + VIX >25.
+
+## 2026-03-19 — Nvidia (NVDA) geschlossen
+**Entry:** 167.88€ | **Exit:** ~154.56€ (≈$177.96 / EURUSD 1.151) | **P&L:** −7.9% (−13.32€)
+**Grund:** Victor hat abverkauft (16:31 CET) — Begründung "abverkauft" (Marktbewegung)
+**Hinweis:** Exit-Kurs ist Schätzung (aktueller Marktpreis), exakter TR-Ausführungspreis ausstehend
+**Lektion:** Kein Stop war gesetzt — Position lief seit Entry im Minus, kein Handlungspunkt vorhanden. Eriksen-Lektion "Aktiv vs. Passiv"-Bucket missachtet. NVDA ohne Stop bis Earnings zu halten war inkonsistent mit aktivem Trading-Ansatz.

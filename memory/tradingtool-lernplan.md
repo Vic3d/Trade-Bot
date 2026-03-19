@@ -216,3 +216,40 @@ Automatische Korrelations-Matrix aus historischen Kursdaten.
 | 3 | P1.3 Erste Trades loggen | Kritisch | 0 (Disziplin) |
 | 4 | P1.4 Sentiment-Magnitude | Mittel | 2h |
 | 5 | P2.4 Negative Space Cron | Mittel | 1h |
+
+---
+
+## Learning 19.03.2026 — Macro-Signal → Strategie-Menu
+
+**Auslöser:** Nikkei −3.4% Warnung (09:15) → RIO.L −6.2% (13:50) ✅ Korrekt
+
+**Was gut war:** Warnung wurde ausgegeben.
+
+**Was Victor will:** Bei Macro-Signalen nicht nur warnen, sondern sofort eine vollständige Analyse + Strategie-Menu liefern.
+
+### Standard-Template für Macro-Signal-Analyse
+
+Wenn ein Macro-Frühindikator (Nikkei, VIX-Spike, Brent-WTI Spread, etc.) ausgelöst wird:
+
+**1. Warum ist das relevant? (1–2 Sätze)**
+Nicht nur "Nikkei fällt" sondern: "Nikkei fällt → Asien-Industrienachfrage sinkt → Eisenerz/Kupfer unter Druck → Rohstoffproduzenten (RIO, GLEN, BHP) direkt betroffen"
+
+**2. Welche Positionen sind betroffen?**
+Konkret mit Ticker + aktueller Stop-Distanz
+
+**3. Strategie-Menu (immer 3 Optionen):**
+- 🟢 **Halten + Stop enger**: wenn Thesis noch intakt, aber Risiko begrenzen
+- 🟡 **Teilverkauf**: wenn Signal stark, aber Grundthesis überlebt
+- 🔴 **Exit**: wenn Signal die Kern-Thesis direkt trifft
+
+**4. Wahrscheinlichkeit + Zeitrahmen:**
+"Hohes Risiko intraday, wenn Nikkei −3%+ ohne Erholung bis 12:00"
+
+**5. Lernziel:**
+Dieses Format soll Macro-Warnungen zu echten Entscheidungshilfen machen — nicht nur Alarme.
+
+### Bereits bewährte Macro-Indikatoren
+- **Nikkei 225 (^N225) < −2%** → Rohstoffe (RIO, GLEN, BHP, EQNR) unter Druck
+- **Brent-WTI Spread > $10** → struktureller Öl-Lieferengpass → EQNR/OXY bullisch
+- **VIX > 28** → Breite Panik, Tech-Positionen gefährdet, Stops zu eng
+- **USD/JPY stabil trotz Nikkei-Fall** → kein globaler Crash, nur Sektor-Rotation

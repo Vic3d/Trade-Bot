@@ -173,3 +173,9 @@
 | 18.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 18.03.2026 16:27 |
 | 18.03.2026 18:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 18.03.2026 17:02 |
 | 18.03.2026 18:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 18.03.2026 17:02 |
+| 19.03.2026 14:00 | **INFO2** | zahlungsavise@bo... TSP - TechnikServicePlus GmbH - ... | 19.03.2026 12:48 |
+| 19.03.2026 14:00 | **INFO2** | Auftrag/gebr-sch... AW: GEWOGE-MFH_Stellungnahme Abw... | 19.03.2026 03:47 |
+| 19.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 19.03.2026 13:57 |
+| 19.03.2026 14:00 | **AUFTRAG** | Pinkepank, Denni... Auftrag 259206007 - 3700.0449.00... | 19.03.2026 12:59 |
+| 19.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 18.03.2026 22:07 |
+| 19.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 19.03.2026 16:22 |

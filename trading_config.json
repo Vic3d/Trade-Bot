@@ -11,7 +11,10 @@
         "stufe1_below_usd": 180.0,
         "stufe2_above_usd": 190.0
       },
-      "notes": "HALTEN bis Earnings 27.05.2026"
+      "notes": "HALTEN bis Earnings 27.05.2026",
+      "status": "CLOSED",
+      "exit_eur": 154.56,
+      "exit_date": "2026-03-19"
     },
     "MSFT": {
       "name": "Microsoft",

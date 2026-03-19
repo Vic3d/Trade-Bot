@@ -321,7 +321,9 @@ def check_positions(config: dict, prices: dict, fx: dict, state: dict,
                     strategy_statuses: dict = None,
                     conviction_cache: dict = None) -> list:
     """Prüft alle Positionen auf Stop-Nähe, Ziel-Erreichung, Trailing Stops."""
+    from datetime import datetime
     alerts = []
+    today = datetime.now().date().isoformat()
     settings   = config.get('settings', {})
     stop_warn  = settings.get('stop_warn_pct', 3.0)
     stop_crit  = settings.get('stop_critical_pct', 1.5)
@@ -406,24 +408,42 @@ def check_positions(config: dict, prices: dict, fx: dict, state: dict,
                     'price_eur': price_eur, 'entry_eur': entry, 'pnl_pct': pnl_pct,
                     'stop_eur': stop, 'vix': macro_vix, 'wti': macro_wti, 'conviction': conv})
 
-        # Trailing Stop Trigger
-        trail_key = f"{key}_TRAIL_{int(trail_start)}"
-        if entry and pnl_pct >= trail_start and trail_key not in sent_today:
-            msg = (f"📈 Trailing Stop fällig: {ticker} @ {price_eur:.2f}€ | P&L: {pnl_pct:+.1f}% "
-                   f"(>{trail_start}%) | Stop auf Breakeven ({entry:.2f}€) nachziehen!{conv_str}")
-            alerts.append(msg)
-            sent_today.add(trail_key)
-            _journal_log_alert({'ticker': key, 'name': name, 'alert_type': 'Trailing-Signal',
-                'price_eur': price_eur, 'entry_eur': entry, 'pnl_pct': pnl_pct,
-                'stop_eur': stop, 'vix': macro_vix, 'wti': macro_wti, 'conviction': conv})
+        # Trailing Stop Trigger — permanenter State (trail_sent), nicht tagesabhängig
+        # Regel: Immer nur EINE Nachricht pro Position — höchste zutreffende Schwelle gewinnt
+        trail_sent = state.get('trail_sent', {})
 
+        trail_key  = f"{key}_TRAIL_{int(trail_start)}"
         trail_key2 = f"{key}_TRAIL_{int(trail_secure)}"
-        if entry and pnl_pct >= trail_secure and trail_key2 not in sent_today:
+
+        # Reset-Logik: Key löschen wenn P&L >2% unter jeweilige Schwelle gefallen
+        if entry and pnl_pct < trail_start - 2:
+            trail_sent.pop(trail_key, None)
+            trail_sent.pop(trail_key2, None)
+            state['trail_sent'] = trail_sent
+        elif entry and pnl_pct < trail_secure - 2:
+            trail_sent.pop(trail_key2, None)
+            state['trail_sent'] = trail_sent
+
+        # Schwelle 2 (trail_secure) hat Vorrang — wenn zutreffend, Schwelle 1 unterdrücken
+        if entry and pnl_pct >= trail_secure and trail_key2 not in trail_sent:
             secure_price = entry + (price_eur - entry) * 0.5
             msg = (f"🔒 Gewinn sichern: {ticker} @ {price_eur:.2f}€ | P&L: {pnl_pct:+.1f}% "
                    f"(>{trail_secure}%) | 50% Gewinn sichern → Stop auf {secure_price:.2f}€{conv_str}")
             alerts.append(msg)
-            sent_today.add(trail_key2)
+            trail_sent[trail_key]  = today  # Beide Keys setzen → Schwelle 1 wird nicht mehr feuern
+            trail_sent[trail_key2] = today
+            state['trail_sent'] = trail_sent
+            _journal_log_alert({'ticker': key, 'name': name, 'alert_type': 'Trailing-Signal',
+                'price_eur': price_eur, 'entry_eur': entry, 'pnl_pct': pnl_pct,
+                'stop_eur': stop, 'vix': macro_vix, 'wti': macro_wti, 'conviction': conv})
+
+        elif entry and pnl_pct >= trail_start and trail_key not in trail_sent:
+            # Nur Schwelle 1 — Schwelle 2 noch nicht erreicht
+            msg = (f"📈 Trailing Stop fällig: {ticker} @ {price_eur:.2f}€ | P&L: {pnl_pct:+.1f}% "
+                   f"(>{trail_start}%) | Stop auf Breakeven ({entry:.2f}€) nachziehen!{conv_str}")
+            alerts.append(msg)
+            trail_sent[trail_key] = today
+            state['trail_sent'] = trail_sent
             _journal_log_alert({'ticker': key, 'name': name, 'alert_type': 'Trailing-Signal',
                 'price_eur': price_eur, 'entry_eur': entry, 'pnl_pct': pnl_pct,
                 'stop_eur': stop, 'vix': macro_vix, 'wti': macro_wti, 'conviction': conv})
@@ -1193,11 +1213,17 @@ def main():
     state = load_json(STATE_PATH, {})
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
     if state.get('date') != today:
-        state = {'date': today, 'alerts_sent_today': [], 'run_count': 0}
+        # Tägliches Reset: sent_today + run_count — ABER trail_sent bleibt erhalten!
+        trail_sent_carry = state.get('trail_sent', {})
+        state = {'date': today, 'alerts_sent_today': [], 'run_count': 0,
+                 'trail_sent': trail_sent_carry}
 
     # sent_today als Set (O(1) Lookup) — beim Speichern zurück zu List
     state['alerts_sent_today'] = set(state.get('alerts_sent_today', []))
     state['run_count'] = state.get('run_count', 0) + 1
+    # trail_sent: permanenter Dict {key: date_str} — überlebt tägliches Reset
+    if 'trail_sent' not in state:
+        state['trail_sent'] = {}
 
     # ── Alle Yahoo-Ticker sammeln ──
     yahoo_tickers = set(['EURUSD=X', 'EURNOK=X', 'GBPEUR=X'])
@@ -1246,9 +1272,10 @@ def main():
     for alert in all_alerts:
         send_alert(alert)
 
-    # ── State speichern (Set → List für JSON) ──
+    # ── State speichern (Set → List für JSON, trail_sent bleibt Dict) ──
     state['last_run'] = datetime.now(timezone.utc).isoformat()
     state_to_save = {**state, 'alerts_sent_today': list(state['alerts_sent_today'])}
+    # trail_sent ist bereits ein Dict — direkt speichern
     save_json(STATE_PATH, state_to_save)
 
     # ── Export für AI-Jobs (latest-prices.json) ──

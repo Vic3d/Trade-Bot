@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-19T08:01:02.577896",
+  "timestamp": "2026-03-19T20:00:36.755199",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
@@ -37,12 +37,12 @@
     "PS4": {
       "name": "Edelmetalle/Miner",
       "status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 25,
       "momentum_avg": -6.1,
-      "news_score": 0,
+      "news_score": -20,
       "reasons": [
         "Preise schwach -6.1% (14T)",
-        "News neutral (Score +0)"
+        "News neutral (Score -20)"
       ]
     },
     "PS5": {
@@ -85,10 +85,10 @@
       "name": "Edelmetalle/Miner",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 25,
       "reasons": [
         "Preise schwach -6.1% (14T)",
-        "News neutral (Score +0)"
+        "News neutral (Score -20)"
       ]
     },
     {

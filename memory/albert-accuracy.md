@@ -45,3 +45,8 @@
 
 ---
 *Nächste Evaluierung: Manuell via `python3 scripts/learning_system.py full`*
+## 2026-03-19 — RIO.L Exit
+**Prognose (09:15):** "RIO.L Vorsicht (Japan-Metallnachfrage)" — Nikkei-Signal
+**Ergebnis:** ✅ Korrekt — RIO.L −6.2% am Tag, Stop gerissen, Exit ausgelöst
+**Horizont:** Intraday
+**Trefferquote:** +1 korrekt

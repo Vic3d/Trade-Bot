@@ -945,6 +945,88 @@ Alberts unabhängige Analyse:
 
 ---
 
+## Transcript-Analyse: Lars Eriksen (2026-03-18 — UPDATED)
+*Quelle: eriksen-athtargets-2026-03-18.txt*
+**Analysedatum:** 2026-03-19 16:00 | **Status:** Vollständig analysiert nach Methodik-Standard
+
+### KATEGORIE A — Methodik-Erkenntnisse
+
+**Position Scaling (nicht binär Ein/Aus):**
+- NICHT: "Jetzt kaufe ich / Jetzt verkaufe ich" (binäres Denken)
+- JA: "Ich scale rein, ich scale raus" — inkrementelle Positionen in Trends
+- Vorbild: Stanley Druckenmiller, Paul Tudor Jones
+- **Zweck:** Zusätzliche Rendite in trendstarken Phasen (+55-56% in 14 Monaten statt nur Buy&Hold)
+- **Trade-off:** Man kauft nicht immer at-Tief/Hoch, aber Ziel ist Überrendite
+- **Tool-Feature:** Scaling-Modul bauen — vordefinierte 3-5 Tranchen pro Position
+
+**Bankensektor als Frühindikatör:**
+- **Regel:** "Kein Bullenmarkt korrigiert groß ohne dass Banken korrigieren"
+- **Umkehrlogik:** Bankensektor stabilisiert → S&P500-Erholung folgt quasi-automatisch
+- **Anwendung:** Bankensektor im Dashboard tracken (z.B. XLF) — bei Stabilisierung scalieren rein
+- **Historische Gültigkeit:** März 2026 = noch zu prüfen (28.2. = gleichzeitig gefallen, jetzt Erholung watch)
+
+**Risikofilter: „Zu wissen was man kauft" = Grundvoraussetzung**
+- Nicht in der "größten Hitze" investieren (z.B. BDCs + 10% Divi wenn Private Credit unter Druck)
+- Wenn Brennpunkt entsteht, fallen solche Aktien "massiv unter Druck"
+- Beispiel: RS Management Corp (10% Divi) = zu riskant in Crisis
+- Banken 2./3. Reihe mit hohem Private Credit Exposure vermeiden
+- **Psychologie:** Hohe Dividende = Risikoprämienbombe, nicht normaler Income
+
+---
+
+### KATEGORIE B — Begründete These (Eriksens ATH-Prognose)
+
+#### These: S&P 500 — kann in 2-3 Wochen neue ATH erreichen (Eriksens Aussage)
+
+**Eriksens 4 Argumente:**
+
+1. **Private Credit ist verkraftbar (nicht Finanzkrise-Level)**
+   - 1.2T in Private Credit vs. 145T Global Equity Market Cap
+   - Vs. 224T+ Fix Income Markt → im Kontext klein
+   - Halter bekannt → Dominoeffekt unwahrscheinlich (vs. 2008)
+
+2. **Iran-Konflikt = strukturell gering für Markt**
+   - Ölpreis historisch 70-80$ normal → S&P stieg trotzdem
+   - USA wird kein "zweites Afghanistan"
+   - Straße Hormus-Blockade unwahrscheinlich (Versicherung unbezahlbar)
+
+3. **Forward EPS steigend (nicht fallend)**
+   - Keine Gewinndelle priced in
+   - Hyperscaler: KI-Investitionen über Cashflow finanzierbar
+   - Ausnahme: Oracle (hohe Verschuldung) = "KI-Story auf Hebel"
+
+4. **Hedging-Ratio extrema = Kontraindikator**
+   - Institutionelle kaufen Puts auf 4-Jahres-Hoch
+   - = Professionelle Long, sichern sich ab (nicht Short)
+   - Max 7 billig seit 2017-2018 nicht
+
+**Alberts unabhängige Bewertung:**
+
+| Argument | Status | Caveat |
+|----------|--------|--------|
+| Private Credit | ✅ Numerik stimmt | Aber: wenn Capex-Cliff kommt, bricht Demand-Säule |
+| Iran | ✅ gering strukturell | Ölpreis zu 90-100$ ist real möglich (Volatilität) |
+| Forward EPS | ✅ keine Delle sichtbar | KI-Narrative können intraday drehen |
+| Hedging | ✅ extrema historisch Signal | Timing-Risiko: auch nach Extrema 10-20% möglich |
+
+**Alberts Schluss:** 
+- Eriksen hat Recht dass Stimmung zu negativ ist
+- Aber "ATH in 2-3 Wochen" ist timing-Spekulation
+- Wahrscheinlicher: Bounce ja, aber nicht zur ATH sofort
+- **Empfehlung:** SCALIEREN statt All-in, Bankensektor-Stabilisierung als Trigger nutzen
+
+---
+
+### Implementierungen fürs Tradingtool
+
+1. **Bankensektor-Dashboard:** XLF Tracking, EMA-Signale, Korrelation zu S&P
+2. **Private Credit Exposure Screening:** Banken + BDCs = Warnung wenn Credit-Spreads eng
+3. **Hedging-Quote Kontraindikator:** Put-Volumen relativ zu Call-Volumen tracken
+4. **Scaling-Modul:** 3-5 Tranchen vordefinieren pro Strategie (z.B. 20%→50%→80% bei -10%, -5%, Bounce)
+5. **KI-Gewichtung:** Narrative (KI-Hype, War) vs. EPS-Faktoren getrennt gewichten
+
+---
+
 ## 📊 Wochenauswertung — Woche 2 (2026-03-14 bis 20.03)
 
 **Stand:** Analysen laufen, neuer Fokus auf Scaling-Methodik.
