@@ -881,7 +881,7 @@ function checkStopAlerts(){
   pos.forEach(p=>{
     const eur=getP(px,p.ticker)?.eur;
     if(p.stop_eur&&eur&&(eur-p.stop_eur)/eur*100<2){
-      new Notification(\`⚠️ Stop-Alarm: \${p.ticker}\`,{body:\`Kurs \${eur.toFixed(2)}€ — Stop \${p.stop_eur}€ nur \${((eur-p.stop_eur)/eur*100).toFixed(1)}% entfernt!`});
+      new Notification(\`⚠️ Stop-Alarm: \${p.ticker}\`,{body:\`Kurs \${eur.toFixed(2)}€ — Stop \${p.stop_eur}€ nur \${((eur-p.stop_eur)/eur*100).toFixed(1)}% entfernt!\`});
     }
   });
 }
