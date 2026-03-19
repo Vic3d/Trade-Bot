@@ -1,0 +1,77 @@
+{
+  "_comment": "Lead-Lag Wissensdatenbank. accuracy_pct und sample_count wachsen automatisch.",
+  "pairs": {
+    "INPEX_WTI": {
+      "lead_ticker": "INPEX.T",
+      "lead_name": "INPEX Corp (Tokyo)",
+      "lag_ticker": "CL=F",
+      "lag_name": "WTI Crude Oil",
+      "lag_hours": 5,
+      "direction": "same",
+      "threshold_pct": 1.5,
+      "accuracy_pct": null,
+      "sample_count": 0,
+      "wins": 0,
+      "losses": 0,
+      "description": "JP \u00d6lproduzent bewegt sich in Asien-Session bevor WTI in NY er\u00f6ffnet"
+    },
+    "NIKKEI_COPPER": {
+      "lead_ticker": "^N225",
+      "lead_name": "Nikkei 225",
+      "lag_ticker": "HG=F",
+      "lag_name": "Copper Futures",
+      "lag_hours": 24,
+      "direction": "same",
+      "threshold_pct": 2.0,
+      "accuracy_pct": null,
+      "sample_count": 0,
+      "wins": 0,
+      "losses": 0,
+      "description": "Nikkei als Fr\u00fchindikator f\u00fcr Japan-Industrienachfrage \u2192 Kupfer"
+    },
+    "VIX_TECH": {
+      "lead_ticker": "^VIX",
+      "lead_name": "VIX Volatility Index",
+      "lag_ticker": "PLTR",
+      "lag_name": "Palantir (als Tech-Proxy)",
+      "lag_hours": 24,
+      "direction": "inverse",
+      "threshold_pct": 5.0,
+      "accuracy_pct": null,
+      "sample_count": 0,
+      "wins": 0,
+      "losses": 0,
+      "description": "VIX-Spike f\u00fchrt Tech-Selloff um 1-2 Sessions"
+    },
+    "BRENT_WTI_SPREAD_EQNR": {
+      "lead_ticker": "COMPUTED_BRENT_WTI_SPREAD",
+      "lead_name": "Brent-WTI Spread",
+      "lag_ticker": "EQNR.OL",
+      "lag_name": "Equinor ASA",
+      "lag_hours": 12,
+      "direction": "bullish_when_spread_high",
+      "threshold_pct": 10.0,
+      "accuracy_pct": null,
+      "sample_count": 0,
+      "wins": 0,
+      "losses": 0,
+      "description": "Spread >$10 bedeutet strukturelle Knappheit \u2192 europ\u00e4ische \u00d6l-Produzenten profitieren"
+    },
+    "IRAN_BRENT": {
+      "lead_ticker": "LIVEUAMAP_IRAN",
+      "lead_name": "Iran Eskalation (liveuamap)",
+      "lag_ticker": "BZ=F",
+      "lag_name": "Brent Crude",
+      "lag_hours": 6,
+      "direction": "bullish",
+      "threshold_pct": null,
+      "accuracy_pct": null,
+      "sample_count": 0,
+      "wins": 0,
+      "losses": 0,
+      "description": "Hormus-Eskalation \u2192 Brent-Premium steigt innerhalb von Stunden"
+    }
+  },
+  "min_samples_to_trust": 20,
+  "min_accuracy_to_trade": 60.0
+}
