@@ -19,9 +19,7 @@
 
 ## AKTUELLE ALERTS (heute 19.03.2026)
 
-- 🚨 **RIO.L STOP KRITISCH** (09:48) — Kurs 74,01€ | Stop 73€ | Nur 1,01€ Abstand
-  - Status: WARTET auf Victor-Entscheidung
-  - Discord-Meldung nicht möglich (tech issue), aber memory/2026-03-19.md dokumentiert
+_(keine aktiven Alerts)_
 
 ## Regeln
 

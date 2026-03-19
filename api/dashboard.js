@@ -988,44 +988,86 @@ async function loadSignals(){
 
 async function loadAnalytics(){
   const el=document.getElementById('analytics-content');
-  // Paper Trade Stats (aus PAPER Array berechnet)
-  const closed=PAPER.filter(p=>p.status==='CLOSED');
-  const open=PAPER.filter(p=>!p.status||p.status!=='CLOSED');
+  let html='';
+  let dna=null;
   
-  let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
-  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+PAPER.length+'</div><div style="color:#888">Paper Trades</div></div>';
-  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+open.length+'</div><div style="color:#888">Offen</div></div>';
-  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+STRATEGIES.length+'</div><div style="color:#888">Strategien</div></div>';
-  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:#f39c12">⏳</div><div style="color:#888">Calibrating</div></div>';
-  html+='</div>';
+  // Live DNA-Daten laden
+  try{
+    const r=await fetch('/api/dna');
+    if(r.ok) dna=await r.json();
+  }catch(e){}
   
-  // Strategy overview
-  html+='<h3 style="margin:12px 0 8px">Paper-Strategien</h3><table><tr><th>Strategy</th><th>Status</th><th>Conviction</th><th>Ticker</th><th>Beschreibung</th></tr>';
-  STRATEGIES.forEach(st=>{
-    html+='<tr><td style="color:'+st.color+'"><strong>'+st.id+'</strong></td><td>'+st.status+'</td><td>'+st.conviction+'</td>';
-    html+='<td>'+st.tickers.join(', ')+'</td><td style="font-size:12px">'+st.name+'</td></tr>';
-  });
-  html+='</table>';
+  if(dna&&dna.stats){
+    const s=dna.stats;
+    
+    // Stats-Bar
+    html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px">';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+s.total+'</div><div style="color:#888;font-size:11px">Total</div></div>';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#3498db">'+s.open+'</div><div style="color:#888;font-size:11px">Offen</div></div>';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+s.closed+'</div><div style="color:#888;font-size:11px">Geschlossen</div></div>';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:'+(s.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+s.win_rate+'%</div><div style="color:#888;font-size:11px">Win Rate</div></div>';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:'+(s.total_pnl>=0?'#2ecc71':'#e74c3c')+'">'+s.total_pnl.toFixed(0)+'€</div><div style="color:#888;font-size:11px">P&L</div></div>';
+    html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+s.expectancy.toFixed(1)+'%</div><div style="color:#888;font-size:11px">Expectancy</div></div>';
+    html+='</div>';
+    
+    // Paper vs Real
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">';
+    html+='<div class="card" style="padding:10px"><span style="color:#888">📄 Paper:</span> '+s.paper_trades+' Trades ('+s.paper_closed+' closed)</div>';
+    html+='<div class="card" style="padding:10px"><span style="color:#888">💰 Real:</span> '+s.real_trades+' Trades ('+s.real_closed+' closed)</div>';
+    html+='</div>';
+    
+    // Strategy DNA
+    if(dna.strategies&&dna.strategies.length){
+      html+='<div class="card-title" style="margin:12px 0 8px">📊 Strategy DNA</div>';
+      html+='<table><tr><th>Strategy</th><th>Trades</th><th>Win Rate</th><th>Avg P&L</th><th>CRV</th><th>Hold</th><th>Status</th></tr>';
+      dna.strategies.forEach(st=>{
+        const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
+        const wrColor=st.win_rate>=50?'#2ecc71':(st.closed>0?'#e74c3c':'#888');
+        html+='<tr>';
+        html+='<td>'+emoji+' <strong>'+st.strategy+'</strong></td>';
+        html+='<td>'+st.total+' ('+st.open+'o/'+st.closed+'c)</td>';
+        html+='<td style="color:'+wrColor+'">'+(st.closed>0?st.win_rate+'%':'—')+'</td>';
+        html+='<td style="color:'+(st.avg_pnl>=0?'#2ecc71':'#e74c3c')+'">'+(st.closed>0?st.avg_pnl.toFixed(1)+'%':'—')+'</td>';
+        html+='<td>'+st.avg_crv.toFixed(1)+'</td>';
+        html+='<td>'+(st.closed>0?st.avg_hold_days.toFixed(0)+'d':'—')+'</td>';
+        html+='<td>'+(st.kill_warning?'⚠️ KILL':'✅ OK')+'</td>';
+        html+='</tr>';
+      });
+      html+='</table>';
+    }
+    
+    // Regime Performance
+    if(dna.regime_performance&&dna.regime_performance.length){
+      html+='<div class="card-title" style="margin:16px 0 8px">🌡️ Performance nach Regime</div>';
+      html+='<table><tr><th>Regime</th><th>Trades</th><th>Win Rate</th><th>Avg P&L</th></tr>';
+      dna.regime_performance.forEach(r=>{
+        html+='<tr><td>'+r.regime+'</td><td>'+r.total+'</td><td>'+r.win_rate+'%</td><td>'+r.avg_pnl.toFixed(1)+'%</td></tr>';
+      });
+      html+='</table>';
+    }
+    
+    // Trader Profile
+    if(dna.trader_profile){
+      const p=dna.trader_profile;
+      html+='<div class="card-title" style="margin:16px 0 8px">🧠 Trader-Profil</div>';
+      html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+(p.max_consecutive_losses>=3?'#e74c3c':'#2ecc71')+'">'+p.max_consecutive_losses+'</div><div style="color:#888;font-size:11px">Max Losing Streak</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+(p.revenge_trades>0?'#e74c3c':'#2ecc71')+'">'+p.revenge_trades+'</div><div style="color:#888;font-size:11px">Revenge Trades</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+(p.stop_discipline_pct>=80?'#2ecc71':'#e74c3c')+'">'+p.stop_discipline_pct+'%</div><div style="color:#888;font-size:11px">Stop-Disziplin</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">'+p.avg_hold_days+'d</div><div style="color:#888;font-size:11px">Ø Haltedauer</div></div>';
+      html+='</div>';
+    }
+    
+    if(dna.updated)html+='<p style="color:#555;font-size:11px;margin-top:12px">Letzte Aktualisierung: '+dna.updated.replace('T',' ').slice(0,16)+' UTC</p>';
+  } else {
+    // Fallback: statische Daten
+    html+='<p style="color:#888">DNA-Feed nicht erreichbar — zeige Basis-Info.</p>';
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+PAPER.length+'</div><div style="color:#888">Paper Trades</div></div>';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+STRATEGIES.length+'</div><div style="color:#888">Strategien</div></div>';
+    html+='</div>';
+  }
   
-  // Conviction Score System
-  html+='<h3 style="margin:12px 0 8px">Conviction Score v2 — 8 Faktoren</h3>';
-  html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">';
-  const factors=[
-    {name:'Regime Alignment',weight:'20%',desc:'Passt Strategie zum aktuellen Regime?'},
-    {name:'Technical Setup',weight:'20%',desc:'CRV, Trend, Pattern-Qualität'},
-    {name:'Volume Confirm',weight:'10%',desc:'Volumen > 2× 20-SMA?'},
-    {name:'News Momentum',weight:'10%',desc:'Sentiment-Trend letzte 48h'},
-    {name:'Signal Confluence',weight:'15%',desc:'Mehrere Lead-Lag Signale?'},
-    {name:'Backtest Perf',weight:'10%',desc:'Historische Win-Rate für Setup'},
-    {name:'Correlation',weight:'5%',desc:'Portfolio-Diversifikation'},
-    {name:'Sector Rotation',weight:'10%',desc:'Sektor-Momentum 20 Tage'},
-  ];
-  factors.forEach(f=>{
-    html+='<div class="card" style="padding:8px;font-size:13px"><strong>'+f.name+'</strong> ('+f.weight+')<br><span style="color:#888">'+f.desc+'</span></div>';
-  });
-  html+='</div>';
-  
-  html+='<p style="color:#888;margin-top:12px">Self-Calibration aktiviert sich nach 50+ geschlossenen Trades. Aktuell: 3 geschlossen.</p>';
   el.innerHTML=html;
 }
 

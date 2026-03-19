@@ -1,0 +1,310 @@
+{
+  "updated": "2026-03-19T20:52:18Z",
+  "stats": {
+    "total": 22,
+    "open": 15,
+    "closed": 5,
+    "wins": 0,
+    "losses": 5,
+    "win_rate": 0.0,
+    "total_pnl": -28.83,
+    "expectancy": -2.12,
+    "paper_trades": 14,
+    "real_trades": 8,
+    "paper_closed": 5,
+    "real_closed": 0
+  },
+  "strategies": [
+    {
+      "strategy": "PS3",
+      "total": 4,
+      "open": 1,
+      "closed": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0,
+      "avg_pnl": 0.77,
+      "avg_crv": 1.2,
+      "avg_hold_days": 1.0,
+      "kill_warning": true,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "PS1",
+      "total": 4,
+      "open": 4,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "S3",
+      "total": 3,
+      "open": 3,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "PS4",
+      "total": 3,
+      "open": 1,
+      "closed": 2,
+      "wins": 0,
+      "losses": 2,
+      "win_rate": 0.0,
+      "avg_pnl": -6.45,
+      "avg_crv": 1.0,
+      "avg_hold_days": 1.0,
+      "kill_warning": false,
+      "max_consecutive_losses": 2
+    },
+    {
+      "strategy": "S2",
+      "total": 2,
+      "open": 0,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "PS5",
+      "total": 2,
+      "open": 2,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "S1",
+      "total": 1,
+      "open": 1,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "S7",
+      "total": 1,
+      "open": 1,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "S5",
+      "total": 1,
+      "open": 1,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    },
+    {
+      "strategy": "new",
+      "total": 1,
+      "open": 1,
+      "closed": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_pnl": 0,
+      "avg_crv": 0.0,
+      "avg_hold_days": 0,
+      "kill_warning": false,
+      "max_consecutive_losses": 0
+    }
+  ],
+  "regime_performance": [
+    {
+      "regime": "NEUTRAL",
+      "total": 5,
+      "win_rate": 0.0,
+      "avg_pnl": -2.12
+    }
+  ],
+  "trader_profile": {
+    "max_consecutive_losses": 5,
+    "revenge_trades": 0,
+    "stop_discipline_pct": 95.5,
+    "avg_hold_days": 1.0
+  },
+  "open_positions": [
+    {
+      "ticker": "NVDA",
+      "strategy": "S3",
+      "entry": 167.88,
+      "stop": null,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25"
+    },
+    {
+      "ticker": "MSFT",
+      "strategy": "S3",
+      "entry": 351.85,
+      "stop": 338.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25"
+    },
+    {
+      "ticker": "PLTR",
+      "strategy": "S3",
+      "entry": 132.11,
+      "stop": 127.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25"
+    },
+    {
+      "ticker": "EQNR",
+      "strategy": "S1",
+      "entry": 27.04,
+      "stop": 30.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25"
+    },
+    {
+      "ticker": "BAYN.DE",
+      "strategy": "S7",
+      "entry": 39.95,
+      "stop": 38.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-03-04"
+    },
+    {
+      "ticker": "RIO.L",
+      "strategy": "S5",
+      "entry": 76.92,
+      "stop": 73.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-03-04"
+    },
+    {
+      "ticker": "OXY",
+      "strategy": "PS1",
+      "entry": 50.63,
+      "stop": 45.57,
+      "target": 58.22,
+      "trade_type": "paper",
+      "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "FRO",
+      "strategy": "PS1",
+      "entry": 26.4,
+      "stop": 26.4,
+      "target": 30.36,
+      "trade_type": "paper",
+      "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "DHT",
+      "strategy": "PS1",
+      "entry": 14.74,
+      "stop": 13.27,
+      "target": 16.95,
+      "trade_type": "paper",
+      "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "MOS",
+      "strategy": "PS5",
+      "entry": 25.38,
+      "stop": 22.5,
+      "target": 32.0,
+      "trade_type": "paper",
+      "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "TTE.PA",
+      "strategy": "PS1",
+      "entry": 74.48,
+      "stop": 67.5,
+      "target": 88.0,
+      "trade_type": "paper",
+      "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "HO.PA",
+      "strategy": "PS3",
+      "entry": 254.4,
+      "stop": 235.0,
+      "target": 285.0,
+      "trade_type": "paper",
+      "entry_date": "2026-03-18 15:10"
+    },
+    {
+      "ticker": "GLEN.L",
+      "strategy": "PS5",
+      "entry": 6.07,
+      "stop": 5.45,
+      "target": 6.96,
+      "trade_type": "paper",
+      "entry_date": "2026-03-18 15:10"
+    },
+    {
+      "ticker": "ASML.AS",
+      "strategy": "PS4",
+      "entry": 1187.6,
+      "stop": 1090.0,
+      "target": 1350.0,
+      "trade_type": "paper",
+      "entry_date": "2026-03-18 15:10"
+    },
+    {
+      "ticker": "NOVO-B.CO",
+      "strategy": "new",
+      "entry": 32.32,
+      "stop": 28.15,
+      "target": 40.21,
+      "trade_type": "paper",
+      "entry_date": "2026-03-18 15:10"
+    }
+  ]
+}
