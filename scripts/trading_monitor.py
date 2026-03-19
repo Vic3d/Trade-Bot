@@ -119,7 +119,7 @@ def save_json(path: Path, data):
     path.write_text(json.dumps(data, indent=2, default=str))
 
 
-def send_alert(msg: str, target: str = None):
+def send_alert(msg: str, target: str = None, alert_type: str = 'GENERAL', ticker: str = None, value: str = None):
     """Schreibt Alert in Queue-Datei. Der Cron-Agent liest + sendet via message-Tool."""
     queue_path = WORKSPACE / 'memory' / 'alert-queue.json'
     queue = load_json(queue_path, [])
@@ -130,6 +130,21 @@ def send_alert(msg: str, target: str = None):
     })
     save_json(queue_path, queue)
     log(f"ALERT QUEUED: {msg[:80]}...")
+    
+    # TRA-137: Auch in data/alerts.json schreiben für Dashboard Alert-Timeline
+    alerts_path = WORKSPACE / 'data' / 'alerts.json'
+    alerts = load_json(alerts_path, [])
+    alerts.append({
+        'timestamp': datetime.now(timezone.utc).isoformat(),
+        'type': alert_type,
+        'ticker': ticker or '',
+        'message': msg[:200],
+        'value': value or '',
+    })
+    # Max 200 Alerts behalten
+    if len(alerts) > 200:
+        alerts = alerts[-200:]
+    save_json(alerts_path, alerts)
 
 
 # ─── Yahoo Finance (mit Retry) ───────────────────────────────────────
@@ -816,14 +831,23 @@ def get_ema_data(ticker: str) -> dict | None:
         if now_ts - entry.get('fetched_at', 0) < 3600:
             return entry
 
+    # TRA-142: EMA aus Daily Close statt Intraday-Snapshots
+    # Nutze period1/period2 mit interval=1d für konsistente Tagesdaten
     # 1 Jahr Tagesdaten für EMA200 (braucht ~200 Handelstage)
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=1y'
+    import calendar
+    end_ts = int(time.time())
+    start_ts = end_ts - 365 * 86400  # 1 Jahr zurück
+    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?period1={start_ts}&period2={end_ts}&interval=1d'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     try:
         with urllib.request.urlopen(req, timeout=10) as r:
             data = json.load(r)
         result = data['chart']['result'][0]
-        closes = [v for v in (result['indicators']['quote'][0].get('close') or []) if v is not None]
+        # Prefer adjusted close for accurate EMA (accounts for splits/dividends)
+        adjclose_data = result.get('indicators', {}).get('adjclose', [{}])
+        adjcloses = [v for v in (adjclose_data[0].get('adjclose') or []) if v is not None] if adjclose_data else []
+        raw_closes = [v for v in (result['indicators']['quote'][0].get('close') or []) if v is not None]
+        closes = adjcloses if len(adjcloses) >= len(raw_closes) * 0.9 else raw_closes
 
         if len(closes) < 20:
             log(f"EMA: zu wenig Daten für {ticker} ({len(closes)} Datenpunkte)")

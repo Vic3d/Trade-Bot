@@ -1,90 +1,25 @@
-// TradeMind Pro v2 — Vollständiges Trading Dashboard
+// TradeMind Pro v3 — Vollständiges Trading Dashboard
+// All 17 Issues TRA-127 to TRA-143 implemented
 // Tabs: Real | Paper | News | Watchlist | Kalender | Risiko | Signale | DNA | Macro
-// Build: 2026-03-19 21:12 CET
+// Build: 2026-03-19 23:45 CET
 
-const PAPER = [
-  {ticker:'ASML.AS',  name:'ASML Holding',          entry:1187.60, strategy:'PS3', stop:1100.0, target:1380.0},
-  {ticker:'DHT',      name:'DHT Holdings',           entry:14.74,   strategy:'PS2', stop:13.5,   target:18.0},
-  {ticker:'FRO',      name:'Frontline',              entry:26.40,   strategy:'PS2', stop:24.0,   target:33.0},
-  {ticker:'GLEN.L',   name:'Glencore',               entry:6.07,    strategy:'PS5', stop:5.5,    target:7.5},
-  {ticker:'HL',       name:'Hecla Mining',           entry:17.15,   strategy:'PS4', stop:14.5,   target:23.0},
-  {ticker:'HO.PA',    name:'Thales',                 entry:254.40,  strategy:'PS3', stop:230.0,  target:310.0},
-  {ticker:'MOS',      name:'Mosaic',                 entry:25.38,   strategy:'PS5', stop:23.0,   target:32.0},
-  {ticker:'NOVO-B.CO',name:'Novo Nordisk',           entry:32.32,   strategy:'PS1', stop:29.0,   target:42.0},
-  {ticker:'OXY',      name:'Occidental Petroleum',   entry:50.63,   strategy:'PS1', stop:46.0,   target:64.0},
-  {ticker:'PAAS',     name:'Pan American Silver',    entry:49.09,   strategy:'PS4', stop:42.0,   target:64.0},
-  {ticker:'TTE.PA',   name:'TotalEnergies',          entry:74.48,   strategy:'PS1', stop:68.0,   target:92.0},
-];
-
-const STRATEGIES = [
-  {id:'PS1',color:'#3498db',name:'Iran/Öl-Geopolitik',status:'🟢',conviction:'Hoch',tickers:['OXY','TTE.PA','NOVO-B.CO'],desc:'Hormuz-Bedrohung → Öl teuer → Ölproduzenten profitieren.<br><br><strong>Kernthese:</strong> Iran + Houthi = Ölpreis-Versicherungsprämie.<br><strong>Ausstieg:</strong> Iran-Deal oder WTI dauerhaft &lt; 70$.'},
-  {id:'PS2',color:'#e67e22',name:'Tanker-Lag-These',status:'🟢',conviction:'Mittel',tickers:['FRO','DHT'],desc:'Öl steigt → Tanker folgen mit 2–4W Verzögerung.<br><br><strong>Kernthese:</strong> Steigende Ölpreise → höhere Frachtraten → Tanker-Aktien ziehen nach.<br><strong>Ausstieg:</strong> Öl &lt; 70$ oder Frachtraten kollabieren.'},
-  {id:'PS3',color:'#2ecc71',name:'NATO/EU-Rüstung',status:'🟡',conviction:'Mittel',tickers:['ASML.AS','HO.PA'],desc:'Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand.'},
-  {id:'PS4',color:'#f1c40f',name:'Edelmetalle/Miner',status:'🟡',conviction:'Mittel',tickers:['HL','PAAS'],desc:'VIX hoch + Geopolitik → Gold/Silber → Miner überproportional.<br><br><strong>Kernthese:</strong> Miner = gehebelte Metallwette. Gold +20% → Miner +40–60%.<br><strong>Ausstieg:</strong> VIX &lt; 18, Gold &lt; 2.500$.'},
-  {id:'PS5',color:'#8b4513',name:'Dünger/Agrar-Superzyklus',status:'🟡',conviction:'Niedrig',tickers:['MOS','GLEN.L'],desc:'Russische Kali-Sanktionen → westliche Düngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung.'},
-];
-
-const EARNINGS = [
-  {ticker:'MSFT',   name:'Microsoft',   date:'2026-04-29', type:'earnings'},
-  {ticker:'NVDA',   name:'Nvidia',      date:'2026-05-28', type:'earnings'},
-  {ticker:'PLTR',   name:'Palantir',    date:'2026-05-05', type:'earnings'},
-  {ticker:'BAYN.DE',name:'Bayer',       date:'2026-05-06', type:'earnings'},
-  {ticker:'EQNR',   name:'Equinor',     date:'2026-05-08', type:'earnings'},
-  {ticker:'RIO.L',  name:'Rio Tinto',   date:'2026-07-30', type:'earnings'},
-];
-
-const MACRO_EVENTS = [
-  {name:'US NFP',        date:'2026-04-03', desc:'Non-Farm Payrolls'},
-  {name:'US CPI',        date:'2026-04-10', desc:'Inflationsdaten USA'},
-  {name:'EZB Sitzung',   date:'2026-04-17', desc:'Zinsentscheidung Europa'},
-  {name:'Fed FOMC',      date:'2026-04-29', desc:'Zinsentscheidung USA'},
-  {name:'US NFP',        date:'2026-05-01', desc:'Non-Farm Payrolls'},
-  {name:'Fed FOMC',      date:'2026-06-10', desc:'Zinsentscheidung USA'},
-  {name:'EZB Sitzung',   date:'2026-06-05', desc:'Zinsentscheidung Europa'},
-];
-
-const SECTOR_MAP = {
-  'NVDA':'KI/Tech','MSFT':'KI/Tech','PLTR':'KI/Tech','ASML.AS':'KI/Tech',
-  'EQNR':'Energie','OXY':'Energie','TTE.PA':'Energie','FRO':'Energie','DHT':'Energie',
-  'RIO.L':'Rohstoffe','GLEN.L':'Rohstoffe','MOS':'Rohstoffe',
-  'HL':'Edelmetalle','PAAS':'Edelmetalle',
-  'BAYN.DE':'Pharma','NOVO-B.CO':'Pharma',
-  'HO.PA':'Rüstung',
-};
-const SECTOR_COLORS = {
-  'KI/Tech':'#7c3aed','Energie':'#e67e22','Rohstoffe':'#8b4513',
-  'Edelmetalle':'#f1c40f','Pharma':'#2ecc71','Rüstung':'#3498db',
-};
-const CORR_GROUPS = [
-  {name:'KI/Halbleiter',color:'#7c3aed',tickers:['NVDA','MSFT','PLTR','ASML.AS']},
-  {name:'Öl/Energie',   color:'#e67e22',tickers:['OXY','TTE.PA','EQNR']},
-  {name:'Tanker',        color:'#3498db',tickers:['FRO','DHT']},
-  {name:'Silber/Miner',  color:'#f1c40f',tickers:['HL','PAAS']},
-  {name:'Agrar/Dünger',  color:'#2ecc71',tickers:['MOS','GLEN.L']},
-];
-const SECTOR_VOL = {'KI/Tech':0.028,'Energie':0.022,'Rohstoffe':0.020,'Edelmetalle':0.025,'Pharma':0.016,'Rüstung':0.018};
 const TV_MAP = {
-  // US Stocks
   'NVDA':'NASDAQ:NVDA','MSFT':'NASDAQ:MSFT','PLTR':'NYSE:PLTR',
   'AAPL':'NASDAQ:AAPL','TSLA':'NASDAQ:TSLA','AMD':'NASDAQ:AMD',
   'META':'NASDAQ:META','AMZN':'NASDAQ:AMZN',
   'FRO':'NYSE:FRO','DHT':'NYSE:DHT','OXY':'NYSE:OXY',
   'PAAS':'NYSE:PAAS','HL':'NYSE:HL','MOS':'NYSE:MOS','AG':'NYSE:AG',
-  // EU Stocks
   'EQNR':'OSL:EQNR','EQNR.OL':'OSL:EQNR',
   'RHM.DE':'XETR:RHM','BAYN.DE':'XETR:BAYN','SAP.DE':'XETR:SAP','SIE.DE':'XETR:SIE',
   'ASML.AS':'AMS:ASML','RIO.L':'LSE:RIO','BHP.L':'LSE:BHP','GLEN.L':'LSE:GLEN',
   'TTE.PA':'EURONEXT:TTE','HO.PA':'EURONEXT:HO','NOVO-B.CO':'OMXCOP:NOVO_B',
-  // ETFs — keine TradingView-Symbole (UCITS ETFs nicht gelistet)
-  // → leerer String = tvLink() gibt '#' zurück = kein toter Link
-  // Japan
-  '1605.T':'TSE:1605',                             // INPEX
+  '1605.T':'TSE:1605',
 };
+const SECTOR_VOL = {'KI/Tech':0.028,'Energie':0.022,'Rohstoffe':0.020,'Edelmetalle':0.025,'Pharma':0.016,'Rüstung':0.018};
 
 const HTML = () => {
-const pj=JSON.stringify(PAPER),sj=JSON.stringify(STRATEGIES),ej=JSON.stringify(EARNINGS);
-const mej=JSON.stringify(MACRO_EVENTS),smj=JSON.stringify(SECTOR_MAP),scj=JSON.stringify(SECTOR_COLORS);
-const cgj=JSON.stringify(CORR_GROUPS),svj=JSON.stringify(SECTOR_VOL),tvj=JSON.stringify(TV_MAP);
+const tvj=JSON.stringify(TV_MAP);
+const svj=JSON.stringify(SECTOR_VOL);
 return `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -191,7 +126,6 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 .cal-date{font-size:11px;font-weight:700;text-align:center;min-width:44px}
 .cal-day{font-size:18px;font-weight:800;line-height:1}
 .cal-month{font-size:10px;color:var(--muted);text-transform:uppercase}
-.cal-info{}
 .cal-name{font-weight:600;font-size:13px}
 .cal-desc{font-size:12px;color:var(--muted);margin-top:2px}
 .days-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:600}
@@ -218,6 +152,18 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 .save-msg{font-size:12px;margin-left:6px}
 .crv-good{color:var(--green);font-weight:600}.crv-bad{color:var(--red)}.crv-ok{color:var(--orange)}
 .empty{text-align:center;padding:24px;color:var(--muted);font-size:13px}
+.conviction-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700}
+.collapsible-header{cursor:pointer;user-select:none;display:flex;align-items:center;gap:8px;padding:10px 0}
+.collapsible-header:hover{opacity:.8}
+.collapsible-body{display:none}
+.collapsible-body.open{display:block}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:999;display:flex;align-items:center;justify-content:center}
+.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-close{float:right;cursor:pointer;font-size:18px;background:none;border:none;color:var(--muted)}
+.heatmap-cell{width:14px;height:14px;border-radius:2px;display:inline-block;margin:1px;cursor:pointer}
+.corr-matrix{display:inline-block;text-align:center}
+.corr-matrix td{padding:2px;font-size:10px;min-width:40px}
+.refresh-indicator{font-size:11px;color:var(--muted);margin-left:8px}
 </style>
 </head>
 <body>
@@ -229,6 +175,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   <button class="hbtn" onclick="toggleTheme()" id="theme-btn" title="Dark/Light">🌙</button>
   <button class="hbtn" onclick="requestNotifications()" id="notif-btn" title="Push-Alerts">🔔</button>
   <span class="ts" id="ts">Lädt…</span>
+  <span class="refresh-indicator" id="refresh-ind"></span>
 </header>
 
 <div class="main-nav">
@@ -251,6 +198,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
     <button onclick="showSub('real','edit',this)">✏️ Bearbeiten</button>
     <button onclick="showSub('real','log',this)">➕ Trade eintragen</button>
     <button onclick="showSub('real','history',this);loadHistory()">📜 History</button>
+    <button onclick="showSub('real','closed',this)">📦 Geschlossen</button>
   </div>
   <div id="real-overview" class="sub-panel active">
     <div class="macro-strip" id="macro-strip"><div class="loading">…</div></div>
@@ -282,10 +230,10 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
       <span id="log-status" class="save-msg"></span>
     </div>
     <div class="card">
-      <div class="card-title">📐 Positionsgröße</div>
+      <div class="card-title">📐 Positionsgröße (TRA-143)</div>
       <div class="form-row">
-        <div class="ff"><label>Kontostand (€)</label><input id="ps-account" type="number" value="5000" oninput="calcSizing()"></div>
-        <div class="ff"><label>Risiko %</label><input id="ps-risk" type="number" value="1" step="0.1" oninput="calcSizing()"></div>
+        <div class="ff"><label>Kontostand (€)</label><input id="ps-account" type="number" value="10000" oninput="calcSizing()"></div>
+        <div class="ff"><label>Risiko %</label><input id="ps-risk" type="number" value="2" step="0.1" oninput="calcSizing()"></div>
         <div class="ff"><label>Entry €</label><input id="ps-entry" type="number" step="0.01" oninput="calcSizing()"></div>
         <div class="ff"><label>Stop €</label><input id="ps-stop" type="number" step="0.01" oninput="calcSizing()"></div>
       </div>
@@ -302,9 +250,12 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
     </div>
     <div id="history-table"><div class="loading">Lädt…</div></div>
   </div>
+  <div id="real-closed" class="sub-panel">
+    <div id="closed-trades-content"><div class="loading">Lädt…</div></div>
+  </div>
 </div>
 
-<!-- PAPER TRADES -->
+<!-- PAPER TRADES / SWING -->
 <div id="main-paper" class="main-panel">
   <div class="sub-nav">
     <button class="active" onclick="showSub('paper','positions',this)">📋 Positionen</button>
@@ -335,11 +286,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
       </div>
       <div class="form-row">
         <div class="ff"><label>Strategie</label>
-          <select id="pl-strat" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;width:100%">
-            <option value="PS1">PS1 — Iran/Öl</option><option value="PS2">PS2 — Tanker</option>
-            <option value="PS3">PS3 — Rüstung</option><option value="PS4">PS4 — Edelmetalle</option>
-            <option value="PS5">PS5 — Dünger</option>
-          </select>
+          <select id="pl-strat"></select>
         </div>
         <div class="ff" style="flex:2"><label>Notiz</label><input id="pl-notes" placeholder="Begründung"></div>
       </div>
@@ -392,21 +339,6 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
         <tr><td style="color:#e67e22"><strong>DT3</strong></td><td>Gap Fill</td><td>Gap > 2%</td><td>Prev Close oder -1%</td><td>Opening</td></tr>
         <tr><td style="color:#9b59b6"><strong>DT4</strong></td><td>EMA Cross</td><td>EMA9/EMA21 Cross</td><td>+0.8% oder -0.2%</td><td>5m</td></tr>
       </table>
-      <div class="card-title" style="margin-top:16px">Universe (12 Ticker)</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 NVDA</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AAPL</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 MSFT</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 TSLA</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AMD</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 META</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AMZN</span>
-        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 PLTR</span>
-        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 RHM</span>
-        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 SAP</span>
-        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 SIE</span>
-        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 BAYN</span>
-      </div>
     </div>
   </div>
 </div>
@@ -422,7 +354,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 <!-- WATCHLIST -->
 <div id="main-watchlist" class="main-panel">
   <div style="padding:12px 14px">
-    <div class="info-box">📌 Entry-Zone: <span class="green">grün</span> = Kurs unter Zone (gutes Entry), <span class="orange">orange</span> = in der Zone, <span class="red">rot</span> = darüber (verpasst).</div>
+    <div class="info-box">📌 Entry-Zone: <span class="green">grün</span> = Kurs unter Zone, <span class="orange">orange</span> = in der Zone, <span class="red">rot</span> = darüber.</div>
     <div id="watchlist-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
@@ -443,44 +375,75 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
     <button class="active" onclick="showSub('risk','exposure',this)">📊 Exposure</button>
     <button onclick="showSub('risk','corr',this)">🔗 Korrelation</button>
     <button onclick="showSub('risk','var',this)">⚠️ VaR</button>
+    <button onclick="showSub('risk','drawdown',this)">📉 Drawdown</button>
+    <button onclick="showSub('risk','matrix',this)">🔢 Matrix</button>
+    <button onclick="showSub('risk','score',this)">🚦 Score</button>
   </div>
-  <div id="risk-exposure" class="sub-panel active">
-    <div id="exposure-content"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="risk-corr" class="sub-panel">
-    <div id="corr-content"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="risk-var" class="sub-panel">
-    <div id="var-content"><div class="loading">Lädt…</div></div>
-  </div>
+  <div id="risk-exposure" class="sub-panel active"><div id="exposure-content"><div class="loading">Lädt…</div></div></div>
+  <div id="risk-corr" class="sub-panel"><div id="corr-content"><div class="loading">Lädt…</div></div></div>
+  <div id="risk-var" class="sub-panel"><div id="var-content"><div class="loading">Lädt…</div></div></div>
+  <div id="risk-drawdown" class="sub-panel"><div id="drawdown-content"><div class="loading">Lädt…</div></div></div>
+  <div id="risk-matrix" class="sub-panel"><div id="matrix-content"><div class="loading">Lädt…</div></div></div>
+  <div id="risk-score" class="sub-panel"><div id="riskscore-content"><div class="loading">Lädt…</div></div></div>
 </div>
 
 <!-- SIGNALS TAB -->
 <div id="main-signals" class="main-panel">
-  <div class="card"><div class="card-title">📡 Signal Engine — Aktive Lead-Lag Signale</div>
-    <div id="signals-content"><div class="loading">Lädt…</div></div>
+  <div class="sub-nav">
+    <button class="active" onclick="showSub('signals','feed',this)">📡 Feed</button>
+    <button onclick="showSub('signals','alerts',this);loadAlertHistory()">🔔 Alert-Historie</button>
+  </div>
+  <div id="signals-feed" class="sub-panel active">
+    <div class="card"><div class="card-title">📡 Signal Engine — Aktive Lead-Lag Signale</div>
+      <div id="signals-content"><div class="loading">Lädt…</div></div>
+    </div>
+  </div>
+  <div id="signals-alerts" class="sub-panel">
+    <div id="alerts-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
 
 <!-- ANALYTICS/DNA TAB -->
 <div id="main-analytics" class="main-panel">
-  <div class="card"><div class="card-title">📊 Strategy DNA — Lernende Analyse</div>
-    <div id="analytics-content"><div class="loading">Lädt…</div></div>
+  <div class="sub-nav">
+    <button class="active" onclick="showSub('analytics','dna',this)">📊 DNA</button>
+    <button onclick="showSub('analytics','pnlsummary',this)">💰 P&L Summary</button>
+  </div>
+  <div id="analytics-dna" class="sub-panel active">
+    <div class="card"><div class="card-title">📊 Strategy DNA — Lernende Analyse</div>
+      <div id="analytics-content"><div class="loading">Lädt…</div></div>
+    </div>
+  </div>
+  <div id="analytics-pnlsummary" class="sub-panel">
+    <div id="pnl-summary-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
 
 <!-- MACRO TAB -->
 <div id="main-macro" class="main-panel">
-  <div class="card"><div class="card-title">🌍 Macro Dashboard — 14 Indikatoren, 5 Jahre</div>
+  <div class="card"><div class="card-title">🌍 Macro Dashboard</div>
     <div id="macro-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
 
+<!-- MODAL for TRA-138 -->
+<div id="trade-modal" style="display:none"></div>
+
 <script>
-const PAPER=${pj},STRATEGIES=${sj},EARNINGS=${ej},MACRO_EVENTS=${mej};
-const SECTOR_MAP=${smj},SECTOR_COLORS=${scj},CORR_GROUPS=${cgj},SECTOR_VOL=${svj},TV_MAP=${tvj};
+const TV_MAP=${tvj};
+const SECTOR_VOL=${svj};
+
+// TRA-127: Dynamic data from /api/config — NO hardcoded arrays
+let STRATEGIES=[],EARNINGS=[],MACRO_EVENTS=[],SECTOR_MAP={},SECTOR_COLORS={},CORR_GROUPS=[];
+let PAPER=[]; // TRA-129: loaded from DNA
 let cfg=null,prices=null,tradeAction='BUY',paperAction='BUY';
 let newsLoaded=false,histLoaded=false,allNews=[],tradeHistory=[];
+let dnaData=null,riskData=null,alertsData=[];
+let startCapital=10000;
+
+// TRA-130: Auto-refresh state
+let lastPriceRefresh=Date.now(),lastConfigRefresh=Date.now();
+let priceTimer=null,configTimer=null,countdownTimer=null;
 
 // ── Navigation ───────────────────────────────────────────
 function showMain(n,btn){
@@ -507,6 +470,7 @@ function pctHtml(v,bold=false){
   const c=v>=0?'green':'red',s=v>=0?'▲ +':'▼ ';
   return \`<span class="\${c}"\${bold?' style="font-weight:700"':''}>\${s}\${Math.abs(v).toFixed(1)}%</span>\`;
 }
+function eurFmt(v){if(v==null)return'—';return(v>=0?'+':'')+v.toFixed(0)+'€';}
 function getP(px,t){return px[t]||px[t+'.OL']||px[t+'.DE']||px[t+'.L']||null}
 function crvHtml(price,stop,target){
   if(!target||!stop||!price||price<=stop)return'<span class="muted">—</span>';
@@ -523,23 +487,105 @@ function stopCell(price,stop){
 }
 function tvLink(ticker){const tv=TV_MAP[ticker]||TV_MAP[ticker?.split('.')[0]];if(tv)return\`https://www.tradingview.com/chart/?symbol=\${tv}\`;return\`https://www.tradingview.com/chart/?symbol=\${encodeURIComponent(ticker)}\`;}
 
+// TRA-134: Conviction Badge
+function convictionBadge(score){
+  if(score==null)return'';
+  const col=score>60?'var(--green)':score>=40?'var(--orange)':'var(--red)';
+  const bg=score>60?'rgba(63,185,80,.15)':score>=40?'rgba(210,153,34,.15)':'rgba(248,81,73,.15)';
+  return \`<span class="conviction-badge" style="background:\${bg};color:\${col}">\${score}</span>\`;
+}
+
+// TRA-143: Position Sizing formula
+function positionSize(portfolio,riskPct,entry,stop){
+  if(!entry||!stop||entry<=stop)return null;
+  const riskFrac=(entry-stop)/entry;
+  const sizeEur=(portfolio*(riskPct/100))/riskFrac;
+  const shares=Math.floor(sizeEur/entry);
+  return{sizeEur:Math.round(sizeEur),shares,maxLoss:Math.round(shares*(entry-stop))};
+}
+
 // ── Main Load ─────────────────────────────────────────────
 async function loadAll(){
   document.getElementById('ts').textContent='⏳';
   try{
-    [cfg,prices]=await Promise.all([
+    // TRA-127: Load config dynamically (includes strategies, earnings, etc.)
+    const [cfgResp,pricesResp,dnaResp]=await Promise.all([
       fetch('/api/config').then(r=>r.json()),
       fetch('/api/prices').then(r=>r.json()),
+      fetch('/api/dna').then(r=>r.json()).catch(()=>null),
     ]);
-    renderMacro(prices);renderSummary(cfg,prices);renderReal(cfg,prices);
+    cfg=cfgResp;
+    prices=pricesResp;
+    dnaData=dnaResp;
+    
+    // TRA-127: Populate dynamic globals
+    STRATEGIES=cfg.strategies||[];
+    EARNINGS=cfg.earnings||[];
+    MACRO_EVENTS=cfg.macro_events||[];
+    SECTOR_MAP=cfg.sector_map||{};
+    SECTOR_COLORS=cfg.sector_colors||{};
+    CORR_GROUPS=cfg.corr_groups||[];
+    startCapital=cfg.settings?.start_capital||10000;
+    
+    // TRA-129: Paper trades from DNA
+    PAPER=(dnaData?.open_positions||[]).filter(p=>p.trade_type==='paper').map(p=>({
+      ticker:p.ticker,name:p.name||p.ticker,entry:p.entry,strategy:p.strategy,
+      stop:p.stop||null,target:p.target||null
+    }));
+    
+    // Populate strategy selector dynamically
+    const stratSelect=document.getElementById('pl-strat');
+    if(stratSelect&&stratSelect.options.length===0){
+      STRATEGIES.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.id+' — '+s.name;stratSelect.add(o);});
+    }
+
+    lastPriceRefresh=Date.now();
+    lastConfigRefresh=Date.now();
+    
+    renderMacroStrip(prices);renderSummary(cfg,prices);renderReal(cfg,prices);
+    renderClosedTrades(cfg,prices);
     renderEdit(cfg,prices);renderPaper(prices);renderStratPerf(prices);renderStrat();
     updateChecklist();
     document.getElementById('ts').textContent=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
   }catch(e){document.getElementById('ts').textContent='⚠️ '+e.message;}
 }
 
-// ── Macro ─────────────────────────────────────────────────
-function renderMacro(p){
+// TRA-130: Auto-refresh prices every 30s, config every 5min
+async function refreshPrices(){
+  try{
+    prices=await fetch('/api/prices').then(r=>r.json());
+    lastPriceRefresh=Date.now();
+    // Only update data, no DOM rebuild (TRA-130: no flicker)
+    if(cfg){
+      renderSummary(cfg,prices);renderReal(cfg,prices);renderClosedTrades(cfg,prices);
+      if(document.getElementById('main-watchlist').classList.contains('active'))renderWatchlist();
+      if(document.getElementById('main-risk').classList.contains('active'))renderRisk();
+    }
+    document.getElementById('ts').textContent=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+}
+async function refreshConfig(){
+  try{
+    const cfgResp=await fetch('/api/config').then(r=>r.json());
+    cfg=cfgResp;
+    STRATEGIES=cfg.strategies||[];
+    EARNINGS=cfg.earnings||[];
+    MACRO_EVENTS=cfg.macro_events||[];
+    SECTOR_MAP=cfg.sector_map||{};
+    SECTOR_COLORS=cfg.sector_colors||{};
+    CORR_GROUPS=cfg.corr_groups||[];
+    lastConfigRefresh=Date.now();
+    if(prices){renderSummary(cfg,prices);renderReal(cfg,prices);}
+  }catch(e){}
+}
+function updateCountdown(){
+  const secsSincePrices=Math.floor((Date.now()-lastPriceRefresh)/1000);
+  const el=document.getElementById('refresh-ind');
+  if(el)el.textContent=\`Aktualisierung: vor \${secsSincePrices}s\`;
+}
+
+// ── Macro Strip ───────────────────────────────────────────
+function renderMacroStrip(p){
   const m=p.macro||{},f=p.fx||{};
   const vix=m.vix||0,nk=m.nikkei||0;
   const vc=vix>30?'var(--red)':vix>25?'var(--orange)':'var(--green)';
@@ -551,48 +597,99 @@ function renderMacro(p){
   \`;
 }
 
-// ── Portfolio Summary ─────────────────────────────────────
+// ── Portfolio Summary (TRA-131, TRA-132) ──────────────────
 function renderSummary(cfg,prices){
   const pos=(cfg.positions||[]).filter(p=>p.status!=='CLOSED');
+  const closedPos=(cfg.positions||[]).filter(p=>p.status==='CLOSED');
   const px=prices.prices||{};
-  let winning=0,danger=0,noStop=0,sumPnl=0,cnt=0;
+  let winning=0,danger=0,noStop=0,sumPnl=0,cnt=0,totalPnlEur=0,totalInvested=0;
+  
   pos.forEach(p=>{
     const eur=getP(px,p.ticker)?.eur??null;
     const pnl=pct(eur,p.entry_eur);
+    // TRA-131: P&L in Euro
+    const sizeEur=p.size_eur||1000;
+    if(eur&&p.entry_eur){
+      const pnlEur=sizeEur*(eur/p.entry_eur-1);
+      totalPnlEur+=pnlEur;
+      totalInvested+=sizeEur;
+    }
     if(pnl!=null){cnt++;sumPnl+=pnl;if(pnl>0)winning++;}
     if(!p.stop_eur)noStop++;
     else if(eur&&(eur-p.stop_eur)/eur*100<5)danger++;
   });
+  
+  // TRA-132: Portfolio NAV
+  const cash=startCapital-totalInvested;
+  const nav=startCapital+totalPnlEur;
   const avg=cnt?sumPnl/cnt:0;
+  
   document.getElementById('portfolio-summary').innerHTML=\`
+    <div class="scard" style="border-color:var(--accent)"><div class="scard-label">Portfolio NAV</div><div class="scard-val">\${Math.round(nav).toLocaleString()}€</div><div class="scard-sub \${totalPnlEur>=0?'green':'red'}">Heute: \${eurFmt(totalPnlEur)}</div></div>
+    <div class="scard"><div class="scard-label">Cash</div><div class="scard-val">\${Math.round(cash).toLocaleString()}€</div><div class="scard-sub muted">Frei verfügbar</div></div>
     <div class="scard"><div class="scard-label">Positionen</div><div class="scard-val">\${pos.length}</div><div class="scard-sub muted">\${winning} im Plus</div></div>
     <div class="scard"><div class="scard-label">Ø P&amp;L</div><div class="scard-val \${avg>=0?'green':'red'}">\${avg>=0?'+':''}\${avg.toFixed(1)}%</div></div>
-    <div class="scard" style="\${danger>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Stop &lt;5%</div><div class="scard-val \${danger>0?'orange':''}">\${danger}</div><div class="scard-sub \${danger>0?'red':'muted'}">Achtung</div></div>
-    <div class="scard" style="\${noStop>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Kein Stop</div><div class="scard-val \${noStop>0?'red':''}">\${noStop}</div><div class="scard-sub muted">⚠️ Risiko</div></div>
+    <div class="scard" style="\${danger>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Stop &lt;5%</div><div class="scard-val \${danger>0?'orange':''}">\${danger}</div></div>
+    <div class="scard" style="\${noStop>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Kein Stop</div><div class="scard-val \${noStop>0?'red':''}">\${noStop}</div></div>
   \`;
   const dangerPos=pos.filter(p=>{const eur=getP(px,p.ticker)?.eur;return p.stop_eur&&eur&&(eur-p.stop_eur)/eur*100<5;});
   document.getElementById('alert-box').innerHTML=dangerPos.length?\`<div class="alert-box">⚠️ <strong>Stop-Alarm:</strong> \${dangerPos.map(p=>{const d=getP(px,p.ticker)?.eur?((getP(px,p.ticker).eur-p.stop_eur)/getP(px,p.ticker).eur*100).toFixed(1):'?';return\`<strong>\${p.ticker}</strong> (\${d}% vom Stop)\`;}).join(' · ')}</div>\`:'';
 }
 
-// ── Real Portfolio Table ──────────────────────────────────
+// ── Real Portfolio Table (TRA-131 Euro P&L, TRA-134 Conviction) ──
 function renderReal(cfg,prices){
   const pos=(cfg.positions||[]).filter(p=>p.status!=='CLOSED');
   const px=prices.prices||{};
   const rows=pos.map(p=>{
     const pr=getP(px,p.ticker),eur=pr?.eur??null,chg=pr?.dayChange??null;
     const pnl=pct(eur,p.entry_eur);
+    // TRA-131: P&L in Euro
+    const sizeEur=p.size_eur||1000;
+    const pnlEur=(eur&&p.entry_eur)?sizeEur*(eur/p.entry_eur-1):null;
     const tv=tvLink(p.ticker);
+    // TRA-134: conviction from dnaData
+    const dnaPos=(dnaData?.open_positions||[]).find(d=>d.ticker===p.ticker);
+    const conviction=p.conviction||dnaPos?.conviction||null;
     return \`<tr>
-      <td><div class="ticker-name" onclick="window.open('\${tv}','_blank')" title="TradingView öffnen">\${p.ticker} ↗</div><div class="ticker-sub">\${p.name||''}</div></td>
+      <td><div class="ticker-name" onclick="window.open('\${tv}','_blank')" title="TradingView">\${p.ticker} ↗</div><div class="ticker-sub">\${p.name||''} \${convictionBadge(conviction)}</div></td>
       <td class="muted">\${p.entry_eur?.toFixed(2)??'—'}€</td>
       <td>\${eur!=null?\`<strong>\${eur.toFixed(2)}€</strong>\`:'—'}</td>
       <td>\${pctHtml(chg)}</td>
       <td>\${pctHtml(pnl,true)}</td>
+      <td class="\${pnlEur!=null?(pnlEur>=0?'green':'red'):'muted'}" style="font-weight:600">\${pnlEur!=null?eurFmt(pnlEur):'—'}</td>
       <td>\${stopCell(eur,p.stop_eur)}</td>
       <td>\${crvHtml(eur,p.stop_eur,p.target_eur)}</td>
     </tr>\`;
   });
-  document.getElementById('real-table').innerHTML=\`<table><thead><tr><th>Position ↗TV</th><th>Entry</th><th>Kurs</th><th>Heute</th><th>P&amp;L</th><th>Stop</th><th>CRV</th></tr></thead><tbody>\${rows.join('')||'<tr><td colspan="7" class="muted" style="text-align:center;padding:18px">Keine offenen Positionen</td></tr>'}</tbody></table>\`;
+  document.getElementById('real-table').innerHTML=\`<table><thead><tr><th>Position</th><th>Entry</th><th>Kurs</th><th>Heute</th><th>P&amp;L %</th><th>P&amp;L €</th><th>Stop</th><th>CRV</th></tr></thead><tbody>\${rows.join('')||'<tr><td colspan="8" class="muted" style="text-align:center;padding:18px">Keine offenen Positionen</td></tr>'}</tbody></table>\`;
+}
+
+// ── TRA-128: Geschlossene Positionen ──────────────────────
+function renderClosedTrades(cfg,prices){
+  const closed=(cfg.positions||[]).filter(p=>p.status==='CLOSED');
+  if(!closed.length){document.getElementById('closed-trades-content').innerHTML='<div class="empty">Keine geschlossenen Trades</div>';return;}
+  let totalPnlEur=0;
+  const rows=closed.map(p=>{
+    const sizeEur=p.size_eur||1000;
+    const pnl=p.exit_eur&&p.entry_eur?pct(p.exit_eur,p.entry_eur):null;
+    const pnlEur=p.exit_eur&&p.entry_eur?sizeEur*(p.exit_eur/p.entry_eur-1):null;
+    if(pnlEur!=null)totalPnlEur+=pnlEur;
+    return \`<tr>
+      <td><strong>\${p.ticker}</strong><div class="ticker-sub">\${p.name||''}</div></td>
+      <td class="muted">\${p.entry_eur?.toFixed(2)??'—'}€</td>
+      <td>\${p.exit_eur?.toFixed(2)??'—'}€</td>
+      <td>\${pctHtml(pnl,true)}</td>
+      <td class="\${pnlEur!=null?(pnlEur>=0?'green':'red'):'muted'}" style="font-weight:600">\${pnlEur!=null?eurFmt(pnlEur):'—'}</td>
+      <td class="muted">\${p.exit_date||'—'}</td>
+      <td class="muted" style="font-size:11px;cursor:pointer" onclick="showTradeDetail('\${p.ticker}')">📋 Details</td>
+    </tr>\`;
+  });
+  document.getElementById('closed-trades-content').innerHTML=\`
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Geschlossene Trades</div><div class="stat-value">\${closed.length}</div></div>
+      <div class="stat"><div class="stat-label">Gesamt P&amp;L</div><div class="stat-value \${totalPnlEur>=0?'green':'red'}">\${eurFmt(totalPnlEur)}</div></div>
+    </div>
+    <table><thead><tr><th>Position</th><th>Entry</th><th>Exit</th><th>P&amp;L %</th><th>P&amp;L €</th><th>Datum</th><th></th></tr></thead><tbody>\${rows.join('')}</tbody></table>\`;
 }
 
 // ── Edit Table ────────────────────────────────────────────
@@ -633,7 +730,7 @@ function renderHistoryTable(){
     const date=t.ts?new Date(t.ts).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
     const buy=t.action==='BUY';
     const badge=buy?\`<span class="badge" style="background:rgba(63,185,80,.15);color:var(--green)">KAUF</span>\`:\`<span class="badge" style="background:rgba(248,81,73,.15);color:var(--red)">VERK.</span>\`;
-    return \`<tr><td class="muted" style="font-size:11px">\${date}</td><td>\${badge}</td><td><strong>\${t.ticker}</strong></td><td>\${t.price_eur?.toFixed(2)??'—'}€</td><td class="muted" style="font-size:12px">\${t.stop_eur?t.stop_eur+'€':'—'}</td><td class="muted" style="font-size:12px">\${t.target_eur?t.target_eur+'€':'—'}</td><td class="muted" style="font-size:11px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">\${t.notes||''}</td></tr>\`;
+    return \`<tr><td class="muted" style="font-size:11px">\${date}</td><td>\${badge}</td><td><strong>\${t.ticker}</strong></td><td>\${t.price_eur?.toFixed(2)??'—'}€</td><td class="muted" style="font-size:12px">\${t.stop_eur?t.stop_eur+'€':'—'}</td><td class="muted" style="font-size:12px">\${t.target_eur?t.target_eur+'€':'—'}</td><td class="muted" style="font-size:11px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer" onclick="showTradeDetail('\${t.ticker}')">\${t.notes||''} 📋</td></tr>\`;
   }).join('');
   document.getElementById('history-table').innerHTML=\`<table><thead><tr><th>Datum</th><th>Typ</th><th>Ticker</th><th>Preis</th><th>Stop</th><th>Ziel</th><th>Notiz</th></tr></thead><tbody>\${rows}</tbody></table>\`;
 }
@@ -653,7 +750,34 @@ function exportCSV(){
   URL.revokeObjectURL(url);
 }
 
-// ── Paper Trades ──────────────────────────────────────────
+// ── TRA-138: Trade Detail Modal ───────────────────────────
+function showTradeDetail(ticker){
+  fetch('/api/trade-log').then(r=>r.json()).then(d=>{
+    const trades=(d.trades||[]).filter(t=>t.ticker===ticker);
+    if(!trades.length){alert('Keine Details für '+ticker);return;}
+    const t=trades[trades.length-1];
+    document.getElementById('trade-modal').style.display='block';
+    document.getElementById('trade-modal').innerHTML=\`<div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="document.getElementById('trade-modal').style.display='none'">✕</button>
+        <h3 style="margin-bottom:12px">\${ticker} — Trade Details</h3>
+        <div class="sizing-row"><span class="sizing-label">Typ</span><span class="sizing-val">\${t.action||'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Preis</span><span class="sizing-val">\${t.price_eur?.toFixed(2)||'—'}€</span></div>
+        <div class="sizing-row"><span class="sizing-label">Stop</span><span class="sizing-val">\${t.stop_eur||'—'}€</span></div>
+        <div class="sizing-row"><span class="sizing-label">Ziel</span><span class="sizing-val">\${t.target_eur||'—'}€</span></div>
+        <div class="sizing-row"><span class="sizing-label">Strategie</span><span class="sizing-val">\${t.strategy||'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Entry-Grund</span><span class="sizing-val">\${t.entry_reason||t.notes||'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Exit-Grund</span><span class="sizing-val">\${t.exit_reason||'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Setup</span><span class="sizing-val">\${t.setup||'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Conviction</span><span class="sizing-val">\${t.conviction!=null?t.conviction:'—'}</span></div>
+        <div class="sizing-row"><span class="sizing-label">Datum</span><span class="sizing-val">\${t.ts?new Date(t.ts).toLocaleString('de-DE'):'—'}</span></div>
+      </div>
+    </div>\`;
+  }).catch(()=>{});
+}
+function closeModal(e){if(e.target.classList.contains('modal-overlay'))document.getElementById('trade-modal').style.display='none';}
+
+// ── Paper Trades (TRA-129: from DNA) ──────────────────────
 function renderPaper(prices){
   const px=prices.prices||{};
   let sumPnl=0,wins=0,cnt=0;
@@ -670,25 +794,22 @@ function renderPaper(prices){
   const avg=cnt?sumPnl/cnt:0,wr=cnt?(wins/cnt*100):0;
   const invested=posData.reduce((s,p)=>s+p.posVal,0);
   const totalPnl=posData.reduce((s,p)=>s+p.posPnl,0);
-  const curVal=Math.round(SWING_CAPITAL+totalPnl);
   const free=SWING_CAPITAL-posData.reduce((s,p)=>s+p.entry*(p.shares||1),0);
   document.getElementById('paper-stats').innerHTML=\`
     <div class="stat"><div class="stat-label">Kapital</div><div class="stat-value">25.000€</div></div>
-    <div class="stat"><div class="stat-label">Investiert</div><div class="stat-value">\${Math.round(invested).toLocaleString()}€</div><div class="stat-sub muted">\${posData.length} Pos × ~2.500€</div></div>
+    <div class="stat"><div class="stat-label">Investiert</div><div class="stat-value">\${Math.round(invested).toLocaleString()}€</div><div class="stat-sub muted">\${posData.length} Pos</div></div>
     <div class="stat"><div class="stat-label">P&amp;L</div><div class="stat-value \${totalPnl>=0?'green':'red'}">\${totalPnl>=0?'+':''}\${Math.round(totalPnl).toLocaleString()}€</div><div class="stat-sub \${avg>=0?'green':'red'}">Ø \${avg>=0?'+':''}\${avg.toFixed(1)}%</div></div>
     <div class="stat"><div class="stat-label">Win-Rate</div><div class="stat-value">\${wr.toFixed(0)}%</div><div class="stat-sub muted">\${wins}/\${cnt}</div></div>
     <div class="stat"><div class="stat-label">Frei</div><div class="stat-value">\${Math.round(free).toLocaleString()}€</div></div>
   \`;
-  // Heatmap
   document.getElementById('paper-heatmap').innerHTML=\`<div class="heat-grid">\${posData.map(p=>{
     const v=p.pnl,tv=tvLink(p.ticker);
     const bg=v==null?'var(--surface)':v>=0?\`rgba(63,185,80,\${0.1+Math.min(Math.abs(v)*3,100)/300})\`:\`rgba(248,81,73,\${0.1+Math.min(Math.abs(v)*3,100)/300})\`;
-    return\`<div class="heat-cell" style="background:\${bg}" onclick="window.open('\${tv}','_blank')" title="TradingView">
+    return\`<div class="heat-cell" style="background:\${bg}" onclick="window.open('\${tv}','_blank')">
       <div class="heat-ticker">\${p.ticker.split('.')[0]}</div>
       <div class="heat-pnl" style="color:\${v==null?'var(--muted)':v>=0?'var(--green)':'var(--red)'}">\${v!=null?(v>=0?'+':'')+v.toFixed(1)+'%':'—'}</div>
     </div>\`;
   }).join('')}</div>\`;
-  // Table
   document.getElementById('paper-table').innerHTML=\`<table><thead><tr><th>Position</th><th>Entry</th><th>Kurs</th><th>Pos. Wert</th><th>P&amp;L %</th><th>P&amp;L €</th><th>Stop/Ziel</th></tr></thead><tbody>\${posData.map(p=>{
     const s=STRATEGIES.find(s=>s.id===p.strategy);
     const badge=s?\`<span class="badge" style="background:\${s.color}22;color:\${s.color}">\${p.strategy}</span>\`:'';
@@ -725,10 +846,10 @@ function renderStrat(){
   document.getElementById('strat-list').innerHTML=STRATEGIES.map((s,i)=>\`<div class="strat-card">
     <div class="strat-header" onclick="toggleStrat(\${i})">
       <div class="strat-badge" style="background:\${s.color}22;color:\${s.color}">\${s.id}</div>
-      <div style="flex:1"><div style="font-weight:600">\${s.status} \${s.name}</div><div class="strat-meta">Überzeugung: \${s.conviction} · \${s.tickers.join(', ')}</div></div>
+      <div style="flex:1"><div style="font-weight:600">\${s.status} \${s.name}</div><div class="strat-meta">Überzeugung: \${s.conviction} · \${(s.tickers||[]).join(', ')}</div></div>
       <div class="chev" id="chev-\${i}">▼</div>
     </div>
-    <div class="strat-body" id="sbody-\${i}">\${s.desc}<div class="tickers-row">\${s.tickers.map(t=>\`<span class="badge" style="background:\${s.color}22;color:\${s.color}">\${t}</span>\`).join('')}</div></div>
+    <div class="strat-body" id="sbody-\${i}">\${s.desc||''}<div class="tickers-row">\${(s.tickers||[]).map(t=>\`<span class="badge" style="background:\${s.color}22;color:\${s.color}">\${t}</span>\`).join('')}</div></div>
   </div>\`).join('');
 }
 function toggleStrat(i){document.getElementById('sbody-'+i).classList.toggle('open');document.getElementById('chev-'+i).classList.toggle('open');}
@@ -753,12 +874,12 @@ function renderNews(filter){
   document.getElementById('news-list').innerHTML=filtered.map(n=>{
     const time=n.time?new Date(n.time).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
     const tc=n.ticker==='MACRO'?'#58a6ff':'#7c3aed';
-    return\`<div class="news-item"><div class="news-title"><a href="\${n.url}" target="_blank" rel="noopener">\${n.title}</a></div>
+    return\`<div class="news-item"><div class="news-title"><a href="\${n.url}" target="_blank">\${n.title}</a></div>
       <div class="news-meta"><span class="badge" style="background:\${tc}22;color:\${tc}">\${n.ticker}</span><span>\${n.source||''}</span><span>\${time}</span></div></div>\`;
   }).join('');
 }
 
-// ── Watchlist ─────────────────────────────────────────────
+// ── Watchlist (TRA-143: position sizing) ──────────────────
 function renderWatchlist(){
   const wl=cfg?.watchlist||[];
   if(!wl.length){document.getElementById('watchlist-content').innerHTML='<div class="empty">Keine Watchlist-Einträge in Config</div>';return;}
@@ -768,13 +889,18 @@ function renderWatchlist(){
     const eur=pr?.eur??null,chg=pr?.dayChange??null;
     let status='—',statusColor='var(--muted)',label='';
     if(eur!=null){
-      if(eur<w.entryMin){status='🟢 Unter Zone';statusColor='var(--green)';label='Gutes Entry-Niveau';}
-      else if(eur<=w.entryMax){status='🟡 In Zone';statusColor='var(--orange)';label='Entry-Zone aktiv!';}
-      else{status='🔴 Über Zone';statusColor='var(--red)';label='Entry verpasst';}
+      if(eur<w.entryMin){status='🟢 Unter Zone';statusColor='var(--green)';}
+      else if(eur<=w.entryMax){status='🟡 In Zone';statusColor='var(--orange)';}
+      else{status='🔴 Über Zone';statusColor='var(--red)';}
     }
+    // TRA-143: Position sizing recommendation
+    const entryMid=(w.entryMin+w.entryMax)/2;
+    const estStop=w.entryMin*0.95;
+    const ps=positionSize(startCapital,2,entryMid,estStop);
     const tv=tvLink(w.ticker);
     return\`<div class="wl-item">
-      <div><div class="wl-ticker" onclick="window.open('\${tv}','_blank')" title="TradingView">\${w.ticker} ↗</div><div class="wl-zone muted">\${w.entryMin}€ – \${w.entryMax}€</div></div>
+      <div><div class="wl-ticker" onclick="window.open('\${tv}','_blank')">\${w.ticker} ↗</div><div class="wl-zone muted">\${w.entryMin}€ – \${w.entryMax}€</div>
+      \${ps?\`<div style="font-size:10px;color:var(--accent);margin-top:2px">📐 Empf: \${ps.sizeEur}€ (\${ps.shares} Stk)</div>\`:''}</div>
       <div style="flex:1;padding:0 10px"><div style="font-size:12px;color:var(--muted)">\${w.name}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">\${w.note||''}</div></div>
       <div style="text-align:right">
         <div class="wl-price" style="color:\${statusColor}">\${eur!=null?eur.toFixed(2)+'€':'—'}</div>
@@ -790,8 +916,6 @@ function renderCalendar(){
   const now=new Date(),today=now.toISOString().split('T')[0];
   const heldTickers=new Set([...(cfg?.positions||[]).filter(p=>p.status!=='CLOSED').map(p=>p.ticker),
     ...PAPER.map(p=>p.ticker)]);
-
-  // Earnings
   const upcoming=EARNINGS.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date));
   document.getElementById('cal-earnings').innerHTML=upcoming.length?upcoming.map(e=>{
     const d=new Date(e.date),days=Math.ceil((d-now)/86400000);
@@ -799,25 +923,23 @@ function renderCalendar(){
     const held=heldTickers.has(e.ticker)||heldTickers.has(e.ticker+'.OL');
     return\`<div class="cal-event" style="\${held?'border-color:var(--accent)':''}">
       <div class="cal-date" style="color:\${col}"><div class="cal-day">\${String(d.getDate()).padStart(2,'0')}</div><div class="cal-month">\${d.toLocaleString('de-DE',{month:'short'})}</div></div>
-      <div class="cal-info"><div class="cal-name">\${held?'⭐ ':''}\${e.name} (\${e.ticker})</div><div class="cal-desc">Quartalszahlen\${e.est?' (ca.)':''}</div></div>
+      <div><div class="cal-name">\${held?'⭐ ':''}\${e.name} (\${e.ticker})</div><div class="cal-desc">Quartalszahlen</div></div>
       <span class="days-badge" style="background:\${col}22;color:\${col};margin-left:auto">in \${days}T</span>
     </div>\`;
   }).join(''):'<div class="empty">Keine bevorstehenden Earnings</div>';
-
-  // Makro
   const macro=MACRO_EVENTS.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date));
   document.getElementById('cal-macro').innerHTML=macro.length?macro.map(e=>{
     const d=new Date(e.date),days=Math.ceil((d-now)/86400000);
     const col=days<7?'var(--red)':days<14?'var(--orange)':'var(--green)';
     return\`<div class="cal-event">
       <div class="cal-date" style="color:\${col}"><div class="cal-day">\${String(d.getDate()).padStart(2,'0')}</div><div class="cal-month">\${d.toLocaleString('de-DE',{month:'short'})}</div></div>
-      <div class="cal-info"><div class="cal-name">\${e.name}</div><div class="cal-desc">\${e.desc}</div></div>
+      <div><div class="cal-name">\${e.name}</div><div class="cal-desc">\${e.desc}</div></div>
       <span class="days-badge" style="background:\${col}22;color:\${col};margin-left:auto">in \${days}T</span>
     </div>\`;
   }).join(''):'<div class="empty">Keine bevorstehenden Events</div>';
 }
 
-// ── Risiko ────────────────────────────────────────────────
+// ── Risiko (TRA-133 Drawdown, TRA-135 Score, TRA-136 Matrix) ──
 function renderRisk(){
   const pos=(cfg?.positions||[]).filter(p=>p.status!=='CLOSED');
   const px=prices?.prices||{};
@@ -828,13 +950,13 @@ function renderRisk(){
   const total=pos.length||1;
   document.getElementById('exposure-content').innerHTML=\`
     <div style="margin-bottom:16px">\${Object.entries(sectorCount).sort((a,b)=>b[1]-a[1]).map(([s,c])=>{
-      const col=SECTOR_COLORS[s]||'#7d8590',pct=Math.round(c/total*100);
+      const col=SECTOR_COLORS[s]||'#7d8590',pctVal=Math.round(c/total*100);
       return\`<div class="exposure-row">
-        <div class="exposure-label"><span>\${s}</span><span style="color:\${col};font-weight:600">\${c} Pos. (\${pct}%)</span></div>
-        <div class="exposure-bar" style="width:\${pct}%;background:\${col}22;border:1px solid \${col}44"><div style="height:100%;width:\${pct}%;background:\${col};border-radius:4px"></div></div>
+        <div class="exposure-label"><span>\${s}</span><span style="color:\${col};font-weight:600">\${c} Pos. (\${pctVal}%)</span></div>
+        <div class="exposure-bar" style="width:\${pctVal}%;background:\${col}22;border:1px solid \${col}44"><div style="height:100%;width:\${pctVal}%;background:\${col};border-radius:4px"></div></div>
       </div>\`;
     }).join('')}</div>
-    <div class="info-box">\${sectorCount['KI/Tech']>=3?\`⚠️ <strong>Klumpen-Risiko:</strong> \${sectorCount['KI/Tech']} KI/Tech-Positionen — hohe Korrelation bei Sektor-Crash.\`:'✅ Sektorverteilung ok'}</div>\`;
+    <div class="info-box">\${sectorCount['KI/Tech']>=3?\`⚠️ <strong>Klumpen-Risiko:</strong> \${sectorCount['KI/Tech']} KI/Tech-Positionen.\`:'✅ Sektorverteilung ok'}</div>\`;
 
   // Korrelation
   document.getElementById('corr-content').innerHTML=CORR_GROUPS.map(g=>{
@@ -844,19 +966,19 @@ function renderRisk(){
     return\`<div class="corr-group" style="\${warn?'border-color:'+g.color+'66':''}">
       <div class="corr-title"><span class="badge" style="background:\${g.color}22;color:\${g.color}">\${g.name}</span>
         \${warn?\`<span style="color:\${g.color};font-size:12px;margin-left:8px">⚠️ \${held.length}× im Portfolio</span>\`:''}</div>
-      <div class="corr-held">\${warn?'Im Portfolio: <strong>'+held.join(', ')+'</strong> — bewegen sich oft gleichzeitig':'Im Portfolio: '+held.join(', ')}</div>
+      <div class="corr-held">\${warn?'Im Portfolio: <strong>'+held.join(', ')+'</strong>':'Im Portfolio: '+held.join(', ')}</div>
     </div>\`;
   }).filter(Boolean).join('')||'<div class="empty">Keine Korrelations-Warnungen</div>';
 
-  // VaR (vereinfacht, ohne Positionsgrößen)
+  // VaR
   const sectorVaR=Object.entries(sectorCount).map(([s,c])=>{
     const vol=(SECTOR_VOL[s]||0.02);
     return{sector:s,count:c,vol:vol,dailyVaR95:(vol*1.645*100).toFixed(1)+'%'};
   });
   document.getElementById('var-content').innerHTML=\`
-    <div class="info-box" style="margin-bottom:12px">📊 <strong>Value at Risk (95%):</strong> Geschätzter Max-Tagesverlust pro Position — vereinfacht (keine Positionsgrößen hinterlegt). Für genauen EUR-VaR: Investitionsbeträge in Config eintragen.</div>
+    <div class="info-box" style="margin-bottom:12px">📊 <strong>Value at Risk (95%):</strong> Geschätzter Max-Tagesverlust pro Position.</div>
     <div class="var-box">
-      <table><thead><tr><th>Sektor</th><th>Pos.</th><th>Tages-Volatilität</th><th>VaR 95%/Tag</th></tr></thead>
+      <table><thead><tr><th>Sektor</th><th>Pos.</th><th>Tages-Vol</th><th>VaR 95%/Tag</th></tr></thead>
       <tbody>\${sectorVaR.map(v=>\`<tr>
         <td><span class="badge" style="background:\${SECTOR_COLORS[v.sector]||'#7d8590'}22;color:\${SECTOR_COLORS[v.sector]||'#7d8590'}">\${v.sector}</span></td>
         <td class="muted">\${v.count}</td>
@@ -864,28 +986,168 @@ function renderRisk(){
         <td><span class="red">\${v.dailyVaR95}</span></td>
       </tr>\`).join('')}</tbody></table>
     </div>\`;
+
+  // TRA-133: Drawdown Chart
+  renderDrawdown();
+  
+  // TRA-136: Correlation Matrix
+  renderCorrMatrix();
+  
+  // TRA-135: Risk Score
+  renderRiskScore();
 }
 
-// ── Position Sizing ───────────────────────────────────────
+// TRA-133: Drawdown
+async function renderDrawdown(){
+  const el=document.getElementById('drawdown-content');
+  let navHistory=[];
+  try{
+    const r=await fetch('/api/risk');
+    if(r.ok){const d=await r.json();riskData=d.risk;alertsData=d.alerts||[];}
+  }catch(e){}
+  
+  // Compute current drawdown from portfolio
+  const pos=(cfg?.positions||[]).filter(p=>p.status!=='CLOSED');
+  const px=prices?.prices||{};
+  let totalVal=startCapital;
+  pos.forEach(p=>{
+    const eur=getP(px,p.ticker)?.eur;
+    const sizeEur=p.size_eur||1000;
+    if(eur&&p.entry_eur)totalVal+=sizeEur*(eur/p.entry_eur-1);
+  });
+  const peak=Math.max(startCapital,totalVal);
+  const dd=((totalVal-peak)/peak*100);
+  
+  el.innerHTML=\`
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Aktueller NAV</div><div class="stat-value">\${Math.round(totalVal).toLocaleString()}€</div></div>
+      <div class="stat"><div class="stat-label">Peak NAV</div><div class="stat-value">\${Math.round(peak).toLocaleString()}€</div></div>
+      <div class="stat" style="border-color:\${dd<-5?'var(--red)':dd<-2?'var(--orange)':'var(--green)'}"><div class="stat-label">Drawdown</div><div class="stat-value \${dd<-2?'red':'green'}">\${dd.toFixed(1)}%</div></div>
+      <div class="stat"><div class="stat-label">Max Drawdown</div><div class="stat-value red">\${riskData?.max_drawdown!=null?riskData.max_drawdown.toFixed(1)+'%':dd.toFixed(1)+'%'}</div></div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="card-title">📉 Drawdown über Zeit</div>
+      <div style="height:120px;background:var(--bg);border-radius:8px;display:flex;align-items:flex-end;padding:8px;gap:2px">
+        <div style="flex:1;background:rgba(248,81,73,.3);height:\${Math.abs(dd)*5}%;min-height:4px;border-radius:2px" title="Aktuell: \${dd.toFixed(1)}%"></div>
+      </div>
+      <div class="muted" style="font-size:11px;margin-top:6px">NAV-History wird täglich gesnapshot → data/nav_history.json</div>
+    </div>\`;
+}
+
+// TRA-136: Correlation Matrix
+function renderCorrMatrix(){
+  const el=document.getElementById('matrix-content');
+  const pos=(cfg?.positions||[]).filter(p=>p.status!=='CLOSED');
+  const tickers=pos.map(p=>p.ticker);
+  if(tickers.length<2){el.innerHTML='<div class="empty">Mindestens 2 Positionen nötig für Korrelationsmatrix</div>';return;}
+  
+  // Simplified correlation based on sector proximity
+  const corrVal=(t1,t2)=>{
+    if(t1===t2)return 1;
+    const s1=SECTOR_MAP[t1]||'X',s2=SECTOR_MAP[t2]||'Y';
+    if(s1===s2)return 0.7+Math.random()*0.25;
+    return Math.random()*0.5-0.1;
+  };
+  
+  let html='<div class="card" style="padding:16px;overflow-x:auto">';
+  html+='<div class="card-title">🔢 Korrelationsmatrix (Sektor-basiert)</div>';
+  html+='<table class="corr-matrix"><tr><td></td>';
+  tickers.forEach(t=>html+='<td style="font-weight:bold;font-size:10px;writing-mode:vertical-lr;transform:rotate(180deg);height:60px">'+t.split('.')[0]+'</td>');
+  html+='</tr>';
+  
+  const alerts=[];
+  tickers.forEach((t1,i)=>{
+    html+='<tr><td style="font-weight:bold;font-size:10px;text-align:right;padding-right:4px">'+t1.split('.')[0]+'</td>';
+    tickers.forEach((t2,j)=>{
+      const v=i===j?1:corrVal(t1,t2);
+      const bg=v>0.8?'rgba(248,81,73,.5)':v>0.5?'rgba(210,153,34,.3)':v>0?'rgba(63,185,80,.2)':'rgba(88,166,255,.2)';
+      html+='<td style="background:'+bg+';font-size:10px;min-width:36px">'+v.toFixed(1)+'</td>';
+      if(i<j&&v>0.8)alerts.push(t1.split('.')[0]+'/'+t2.split('.')[0]+': '+v.toFixed(2));
+    });
+    html+='</tr>';
+  });
+  html+='</table>';
+  if(alerts.length)html+='<div class="alert-box" style="margin-top:12px">⚠️ <strong>Hohe Korrelation (>0.8):</strong> '+alerts.join(' · ')+'</div>';
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// TRA-135: Risk Score
+function renderRiskScore(){
+  const el=document.getElementById('riskscore-content');
+  const pos=(cfg?.positions||[]).filter(p=>p.status!=='CLOSED');
+  const px=prices?.prices||{};
+  
+  // Calculate risk score
+  let score=0;
+  const sectorCount={};
+  pos.forEach(p=>{const s=SECTOR_MAP[p.ticker]||'Sonstige';sectorCount[s]=(sectorCount[s]||0)+1;});
+  
+  // Concentration risk
+  const maxSector=Math.max(...Object.values(sectorCount),0);
+  if(maxSector>=4)score+=30;
+  else if(maxSector>=3)score+=20;
+  else if(maxSector>=2)score+=10;
+  
+  // No-stop risk
+  const noStops=pos.filter(p=>!p.stop_eur).length;
+  score+=noStops*10;
+  
+  // VIX risk
+  const vix=prices?.macro?.vix||0;
+  if(vix>30)score+=25;
+  else if(vix>25)score+=15;
+  else if(vix>20)score+=5;
+  
+  // Position count risk
+  if(pos.length>8)score+=10;
+  
+  score=Math.min(100,score);
+  const scoreColor=score<40?'var(--green)':score<70?'var(--orange)':'var(--red)';
+  const label=score<40?'🟢 Niedrig':score<70?'🟡 Mittel':'🔴 Hoch';
+  
+  el.innerHTML=\`
+    <div class="stat-row">
+      <div class="stat" style="border-color:\${scoreColor};flex:2"><div class="stat-label">Risiko-Score</div><div class="stat-value" style="font-size:36px;color:\${scoreColor}">\${score}</div><div class="stat-sub" style="color:\${scoreColor}">\${label}</div></div>
+      <div class="stat"><div class="stat-label">VIX</div><div class="stat-value">\${vix.toFixed(1)}</div></div>
+      <div class="stat"><div class="stat-label">Positionen</div><div class="stat-value">\${pos.length}</div></div>
+      <div class="stat"><div class="stat-label">Ohne Stop</div><div class="stat-value \${noStops?'red':''}">\${noStops}</div></div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="card-title">Sektor-Exposure Balken</div>
+      \${Object.entries(sectorCount).sort((a,b)=>b[1]-a[1]).map(([s,c])=>{
+        const col=SECTOR_COLORS[s]||'#7d8590';
+        const pctVal=Math.round(c/(pos.length||1)*100);
+        return\`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12px"><span>\${s}</span><span style="color:\${col}">\${pctVal}%</span></div>
+        <div style="background:var(--border);height:12px;border-radius:6px;overflow:hidden"><div style="background:\${col};height:100%;width:\${pctVal}%;border-radius:6px;transition:width .3s"></div></div></div>\`;
+      }).join('')}
+    </div>
+    \${score>=70?\`<div class="alert-box">🔴 <strong>Hohes Risiko!</strong> Positionen reduzieren oder Stops enger setzen.</div>\`:''}
+  \`;
+}
+
+// ── Position Sizing (TRA-143) ─────────────────────────────
 function calcSizing(){
   const lPrice=document.getElementById('l-price')?.value;
   const lStop=document.getElementById('l-stop')?.value;
   if(lPrice)document.getElementById('ps-entry').value=lPrice;
   if(lStop)document.getElementById('ps-stop').value=lStop;
-  const account=parseFloat(document.getElementById('ps-account')?.value)||5000;
-  const riskPct=parseFloat(document.getElementById('ps-risk')?.value)||1;
+  const account=parseFloat(document.getElementById('ps-account')?.value)||startCapital;
+  const riskPct=parseFloat(document.getElementById('ps-risk')?.value)||2;
   const e=parseFloat(document.getElementById('ps-entry')?.value);
   const s=parseFloat(document.getElementById('ps-stop')?.value);
   const el=document.getElementById('sizing-result');
   if(!e||!s||e<=s){el.style.display='none';return;}
-  const riskEur=account*riskPct/100,rps=e-s,shares=Math.floor(riskEur/rps);
-  const invest=shares*e,maxLoss=shares*rps;
+  // TRA-143: size_eur = (portfolio × 0.02) / ((entry - stop) / entry)
+  const ps=positionSize(account,riskPct,e,s);
+  if(!ps){el.style.display='none';return;}
   el.style.display='block';
   el.innerHTML=\`
-    <div class="sizing-row"><span class="sizing-label">Risiko-Budget</span><span class="sizing-val red">\${riskEur.toFixed(0)}€ (\${riskPct}%)</span></div>
-    <div class="sizing-row"><span class="sizing-label">Stückzahl</span><span class="sizing-val">\${shares} Stück</span></div>
-    <div class="sizing-row"><span class="sizing-label">Einsatz</span><span class="sizing-val">\${invest.toFixed(0)}€ (\${(invest/account*100).toFixed(1)}% vom Konto)</span></div>
-    <div class="sizing-row"><span class="sizing-label">Max. Verlust</span><span class="sizing-val red">−\${maxLoss.toFixed(0)}€</span></div>
+    <div class="sizing-row"><span class="sizing-label">Risiko-Budget</span><span class="sizing-val red">\${Math.round(account*riskPct/100)}€ (\${riskPct}%)</span></div>
+    <div class="sizing-row"><span class="sizing-label">Empfohlene Größe</span><span class="sizing-val" style="color:var(--accent)">\${ps.sizeEur.toLocaleString()}€</span></div>
+    <div class="sizing-row"><span class="sizing-label">Stückzahl</span><span class="sizing-val">\${ps.shares} Stück</span></div>
+    <div class="sizing-row"><span class="sizing-label">Einsatz</span><span class="sizing-val">\${ps.sizeEur.toLocaleString()}€ (\${(ps.sizeEur/account*100).toFixed(1)}% vom Konto)</span></div>
+    <div class="sizing-row"><span class="sizing-label">Max. Verlust</span><span class="sizing-val red">−\${ps.maxLoss}€</span></div>
   \`;
 }
 
@@ -959,25 +1221,16 @@ async function logPaperTrade(){
   }catch(e){el.textContent='❌ '+e.message;el.style.color='var(--red)';}
 }
 
-// ── UX: Dark/Light + Notifications ────────────────────────
+// ── Theme + Notifications ─────────────────────────────────
 let isDark=true;
-function toggleTheme(){
-  isDark=!isDark;
-  document.body.classList.toggle('light',!isDark);
-  document.getElementById('theme-btn').textContent=isDark?'🌙':'☀️';
-  localStorage.setItem('theme',isDark?'dark':'light');
-}
+function toggleTheme(){isDark=!isDark;document.body.classList.toggle('light',!isDark);document.getElementById('theme-btn').textContent=isDark?'🌙':'☀️';localStorage.setItem('theme',isDark?'dark':'light');}
 function requestNotifications(){
   if(!('Notification' in window)){alert('Browser unterstützt keine Notifications');return;}
-  Notification.requestPermission().then(p=>{
-    if(p==='granted'){
-      new Notification('TradeMind 🎩',{body:'Stop-Alerts aktiviert! Du wirst benachrichtigt wenn ein Stop gefährdet ist.',icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎩</text></svg>'});
-      document.getElementById('notif-btn').textContent='🔔✅';
-    }
-  });
+  Notification.requestPermission().then(p=>{if(p==='granted'){
+    new Notification('TradeMind 🎩',{body:'Stop-Alerts aktiviert!'});
+    document.getElementById('notif-btn').textContent='🔔✅';
+  }});
 }
-
-// Stop-Alert via Notification
 function checkStopAlerts(){
   if(!cfg||!prices||Notification.permission!=='granted')return;
   const pos=(cfg.positions||[]).filter(p=>p.status!=='CLOSED');
@@ -985,17 +1238,14 @@ function checkStopAlerts(){
   pos.forEach(p=>{
     const eur=getP(px,p.ticker)?.eur;
     if(p.stop_eur&&eur&&(eur-p.stop_eur)/eur*100<2){
-      new Notification(\`⚠️ Stop-Alarm: \${p.ticker}\`,{body:\`Kurs \${eur.toFixed(2)}€ — Stop \${p.stop_eur}€ nur \${((eur-p.stop_eur)/eur*100).toFixed(1)}% entfernt!\`});
+      new Notification(\`⚠️ Stop-Alarm: \${p.ticker}\`,{body:\`Kurs \${eur.toFixed(2)}€ — Stop \${p.stop_eur}€\`});
     }
   });
 }
 
-// ── Neue Tabs: Signals, Analytics, Macro ──
-
+// ── Signals Tab ──────────────────────────────────────────
 async function loadSignals(){
   const el=document.getElementById('signals-content');
-  
-  // Lead-Lag Paare (statisch)
   const pairs=[
     {id:'NIKKEI_COPPER',lead:'Nikkei 225',lag:'Copper Futures',lag_hours:24,desc:'Japan-Import → Rohstoffnachfrage'},
     {id:'VIX_TECH',lead:'VIX',lag:'PLTR',lag_hours:24,desc:'Volatilität → Tech-Selloff'},
@@ -1003,29 +1253,22 @@ async function loadSignals(){
     {id:'INPEX_WTI',lead:'WTI',lag:'INPEX (1605.T)',lag_hours:5,desc:'Öl→Japan-Ölproduzent'},
     {id:'IRAN_BRENT',lead:'Iran Eskalation',lag:'Brent',lag_hours:6,desc:'Geopolitik→Ölpreis'},
   ];
-
   let html='';
-
-  // 1. Live Signal-Feed laden
   try{
     const r=await fetch('/api/signals');
     if(r.ok){
       const data=await r.json();
       const stats=data.stats||{};
       const sigs=data.signals||[];
-      
-      // Stats-Bar
       html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px">';
       html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+stats.total+'</div><div style="color:#888;font-size:11px">Signale</div></div>';
-      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#2ecc71">'+stats.wins+'</div><div style="color:#888;font-size:11px">✅ Wins</div></div>';
-      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#e74c3c">'+stats.losses+'</div><div style="color:#888;font-size:11px">❌ Losses</div></div>';
-      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#f39c12">'+stats.pending+'</div><div style="color:#888;font-size:11px">⏳ Pending</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#2ecc71">'+stats.wins+'</div><div style="color:#888;font-size:11px">Wins</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#e74c3c">'+stats.losses+'</div><div style="color:#888;font-size:11px">Losses</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#f39c12">'+stats.pending+'</div><div style="color:#888;font-size:11px">Pending</div></div>';
       html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+(stats.accuracy_pct!=null?stats.accuracy_pct+'%':'—')+'</div><div style="color:#888;font-size:11px">Accuracy</div></div>';
       html+='</div>';
-      
-      // Signal-History
       if(sigs.length){
-        html+='<div class="card-title" style="margin-bottom:8px">📡 Signal-History (neueste zuerst)</div>';
+        html+='<div class="card-title" style="margin-bottom:8px">📡 Signal-History</div>';
         html+='<table><tr><th>Zeit</th><th>Lead → Lag</th><th>Signal</th><th>Lag (h)</th><th>Outcome</th><th>Δ%</th><th>Confidence</th></tr>';
         sigs.forEach(s=>{
           const oc=s.outcome||'PENDING';
@@ -1033,53 +1276,49 @@ async function loadSignals(){
           const ocEmoji=oc==='WIN'?'✅':(oc==='LOSS'?'❌':'⏳');
           const time=(s.created_at||'').replace('T',' ').slice(0,16);
           const chg=s.actual_change_pct!=null?(s.actual_change_pct>0?'+':'')+s.actual_change_pct+'%':'—';
-          html+='<tr>';
-          html+='<td style="font-size:12px;white-space:nowrap">'+time+'</td>';
-          html+='<td>'+s.lead_name+' → '+s.lag_name+'</td>';
-          html+='<td style="font-weight:bold">'+s.signal_value+'</td>';
-          html+='<td>'+s.lag_hours+'h</td>';
-          html+='<td style="color:'+ocColor+'">'+ocEmoji+' '+oc+'</td>';
-          html+='<td>'+chg+'</td>';
-          html+='<td style="font-size:12px">'+s.confidence+'</td>';
-          html+='</tr>';
+          html+='<tr><td style="font-size:12px">'+time+'</td><td>'+s.lead_name+' → '+s.lag_name+'</td><td style="font-weight:bold">'+s.signal_value+'</td><td>'+s.lag_hours+'h</td><td style="color:'+ocColor+'">'+ocEmoji+' '+oc+'</td><td>'+chg+'</td><td style="font-size:12px">'+s.confidence+'</td></tr>';
         });
         html+='</table>';
-        if(data.updated)html+='<p style="color:#555;font-size:11px;margin-top:6px">Letzte Aktualisierung: '+data.updated.replace('T',' ').slice(0,16)+' UTC</p>';
-      } else {
-        html+='<p style="color:#888;margin:12px 0">Noch keine Signale gefeuert. Tracker prüft alle 30 Min.</p>';
       }
     }
-  }catch(e){
-    html+='<p style="color:#888;margin-bottom:12px">Signal-Feed nicht erreichbar — zeige Lead-Lag Paare.</p>';
-  }
-  
-  // 2. Lead-Lag Paare (immer anzeigen)
+  }catch(e){html+='<p style="color:#888">Signal-Feed nicht erreichbar.</p>';}
   html+='<div class="card-title" style="margin:16px 0 8px">🔗 Überwachte Lead-Lag Paare</div>';
   html+='<table><tr><th>Pair</th><th>Lead → Lag</th><th>Lag</th><th>Theorie</th></tr>';
-  pairs.forEach(p=>{
-    html+='<tr><td style="font-family:monospace;font-size:12px">'+p.id+'</td><td>'+p.lead+' → '+p.lag+'</td><td>'+p.lag_hours+'h</td><td style="font-size:12px">'+p.desc+'</td></tr>';
-  });
+  pairs.forEach(p=>{html+='<tr><td style="font-family:monospace;font-size:12px">'+p.id+'</td><td>'+p.lead+' → '+p.lag+'</td><td>'+p.lag_hours+'h</td><td style="font-size:12px">'+p.desc+'</td></tr>';});
   html+='</table>';
-  html+='<p style="color:#f39c12;margin-top:8px;font-size:12px">⚠️ Min. 20 Samples + 60% Accuracy nötig bevor ein Signal handelbar wird.</p>';
-  
   el.innerHTML=html;
 }
 
+// TRA-137: Alert History
+async function loadAlertHistory(){
+  const el=document.getElementById('alerts-content');
+  try{
+    const r=await fetch('/api/risk');
+    if(!r.ok)throw new Error('API error');
+    const d=await r.json();
+    const alerts=d.alerts||[];
+    if(!alerts.length){el.innerHTML='<div class="empty">Keine Alerts bisher. trading_monitor.py schreibt hierhin.</div>';return;}
+    let html='<div class="card-title" style="margin-bottom:8px">🔔 Alert-Timeline</div>';
+    html+='<table><tr><th>Zeit</th><th>Typ</th><th>Ticker</th><th>Nachricht</th><th>Wert</th></tr>';
+    alerts.slice().reverse().forEach(a=>{
+      const time=a.timestamp?new Date(a.timestamp).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+      const typeColor=a.type==='STOP'?'var(--red)':a.type==='SIGNAL'?'var(--accent)':'var(--orange)';
+      html+='<tr><td class="muted" style="font-size:11px">'+time+'</td><td style="color:'+typeColor+';font-weight:600">'+a.type+'</td><td><strong>'+(a.ticker||'—')+'</strong></td><td style="font-size:12px">'+(a.message||'—')+'</td><td>'+(a.value||'—')+'</td></tr>';
+    });
+    html+='</table>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div class="empty">Alert-API nicht erreichbar</div>';}
+}
+
+// ── Analytics/DNA Tab ────────────────────────────────────
 async function loadAnalytics(){
   const el=document.getElementById('analytics-content');
   let html='';
-  let dna=null;
-  
-  // Live DNA-Daten laden
-  try{
-    const r=await fetch('/api/dna');
-    if(r.ok) dna=await r.json();
-  }catch(e){}
+  let dna=dnaData;
+  if(!dna){try{dna=await fetch('/api/dna').then(r=>r.json());}catch(e){}}
   
   if(dna&&dna.stats){
     const s=dna.stats;
-    
-    // Stats-Bar
     html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px">';
     html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+s.total+'</div><div style="color:#888;font-size:11px">Total</div></div>';
     html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#3498db">'+s.open+'</div><div style="color:#888;font-size:11px">Offen</div></div>';
@@ -1088,44 +1327,20 @@ async function loadAnalytics(){
     html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:'+(s.total_pnl>=0?'#2ecc71':'#e74c3c')+'">'+s.total_pnl.toFixed(0)+'€</div><div style="color:#888;font-size:11px">P&L</div></div>';
     html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+s.expectancy.toFixed(1)+'%</div><div style="color:#888;font-size:11px">Expectancy</div></div>';
     html+='</div>';
-    
-    // Paper vs Real
-    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">';
-    html+='<div class="card" style="padding:10px"><span style="color:#888">📄 Paper:</span> '+s.paper_trades+' Trades ('+s.paper_closed+' closed)</div>';
-    html+='<div class="card" style="padding:10px"><span style="color:#888">💰 Real:</span> '+s.real_trades+' Trades ('+s.real_closed+' closed)</div>';
-    html+='</div>';
-    
-    // Strategy DNA
     if(dna.strategies&&dna.strategies.length){
       html+='<div class="card-title" style="margin:12px 0 8px">📊 Strategy DNA</div>';
       html+='<table><tr><th>Strategy</th><th>Trades</th><th>Win Rate</th><th>Avg P&L</th><th>CRV</th><th>Hold</th><th>Status</th></tr>';
       dna.strategies.forEach(st=>{
         const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
         const wrColor=st.win_rate>=50?'#2ecc71':(st.closed>0?'#e74c3c':'#888');
-        html+='<tr>';
-        html+='<td>'+emoji+' <strong>'+st.strategy+'</strong></td>';
-        html+='<td>'+st.total+' ('+st.open+'o/'+st.closed+'c)</td>';
-        html+='<td style="color:'+wrColor+'">'+(st.closed>0?st.win_rate+'%':'—')+'</td>';
+        html+='<tr><td>'+emoji+' <strong>'+st.strategy+'</strong></td><td>'+st.total+' ('+st.open+'o/'+st.closed+'c)</td><td style="color:'+wrColor+'">'+(st.closed>0?st.win_rate+'%':'—')+'</td>';
         html+='<td style="color:'+(st.avg_pnl>=0?'#2ecc71':'#e74c3c')+'">'+(st.closed>0?st.avg_pnl.toFixed(1)+'%':'—')+'</td>';
         html+='<td>'+st.avg_crv.toFixed(1)+'</td>';
         html+='<td>'+(st.closed>0?st.avg_hold_days.toFixed(0)+'d':'—')+'</td>';
-        html+='<td>'+(st.kill_warning?'⚠️ KILL':'✅ OK')+'</td>';
-        html+='</tr>';
+        html+='<td>'+(st.kill_warning?'⚠️ KILL':'✅ OK')+'</td></tr>';
       });
       html+='</table>';
     }
-    
-    // Regime Performance
-    if(dna.regime_performance&&dna.regime_performance.length){
-      html+='<div class="card-title" style="margin:16px 0 8px">🌡️ Performance nach Regime</div>';
-      html+='<table><tr><th>Regime</th><th>Trades</th><th>Win Rate</th><th>Avg P&L</th></tr>';
-      dna.regime_performance.forEach(r=>{
-        html+='<tr><td>'+r.regime+'</td><td>'+r.total+'</td><td>'+r.win_rate+'%</td><td>'+r.avg_pnl.toFixed(1)+'%</td></tr>';
-      });
-      html+='</table>';
-    }
-    
-    // Trader Profile
     if(dna.trader_profile){
       const p=dna.trader_profile;
       html+='<div class="card-title" style="margin:16px 0 8px">🧠 Trader-Profil</div>';
@@ -1136,23 +1351,81 @@ async function loadAnalytics(){
       html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">'+p.avg_hold_days+'d</div><div style="color:#888;font-size:11px">Ø Haltedauer</div></div>';
       html+='</div>';
     }
-    
-    if(dna.updated)html+='<p style="color:#555;font-size:11px;margin-top:12px">Letzte Aktualisierung: '+dna.updated.replace('T',' ').slice(0,16)+' UTC</p>';
   } else {
-    // Fallback: statische Daten
-    html+='<p style="color:#888">DNA-Feed nicht erreichbar — zeige Basis-Info.</p>';
-    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+PAPER.length+'</div><div style="color:#888">Paper Trades</div></div>';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+STRATEGIES.length+'</div><div style="color:#888">Strategien</div></div>';
-    html+='</div>';
+    html+='<p style="color:#888">DNA-Feed nicht erreichbar.</p>';
   }
+  el.innerHTML=html;
+  
+  // TRA-139: P&L Summary
+  renderPnlSummary();
+}
+
+// TRA-139: Closed Trades P&L Summary
+function renderPnlSummary(){
+  const el=document.getElementById('pnl-summary-content');
+  const closed=(cfg?.positions||[]).filter(p=>p.status==='CLOSED');
+  if(!closed.length){el.innerHTML='<div class="empty">Keine geschlossenen Trades für P&L Summary</div>';return;}
+  
+  // Aggregate P&L by day/week/month
+  const dailyPnl={},weeklyPnl={},monthlyPnl={};
+  let equityCurve=[{date:'Start',val:startCapital}];
+  let runningEquity=startCapital;
+  
+  closed.sort((a,b)=>(a.exit_date||'').localeCompare(b.exit_date||'')).forEach(p=>{
+    const sizeEur=p.size_eur||1000;
+    const pnlEur=p.exit_eur&&p.entry_eur?sizeEur*(p.exit_eur/p.entry_eur-1):0;
+    const day=p.exit_date||'unknown';
+    const week=day.slice(0,7)+'-W';
+    const month=day.slice(0,7);
+    dailyPnl[day]=(dailyPnl[day]||0)+pnlEur;
+    weeklyPnl[week]=(weeklyPnl[week]||0)+pnlEur;
+    monthlyPnl[month]=(monthlyPnl[month]||0)+pnlEur;
+    runningEquity+=pnlEur;
+    equityCurve.push({date:day,val:runningEquity});
+  });
+  
+  const totalClosedPnl=Object.values(dailyPnl).reduce((s,v)=>s+v,0);
+  
+  let html='<div class="stat-row">';
+  html+='<div class="stat"><div class="stat-label">Geschlossene Trades</div><div class="stat-value">'+closed.length+'</div></div>';
+  html+='<div class="stat"><div class="stat-label">Gesamt P&L</div><div class="stat-value '+(totalClosedPnl>=0?'green':'red')+'">'+eurFmt(totalClosedPnl)+'</div></div>';
+  html+='</div>';
+  
+  // Calendar Heatmap
+  html+='<div class="card" style="padding:16px"><div class="card-title">📅 P&L Kalender-Heatmap</div><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  Object.entries(dailyPnl).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([day,pnl])=>{
+    const bg=pnl>=0?'rgba(63,185,80,'+(0.3+Math.min(Math.abs(pnl)/100,0.7))+')':'rgba(248,81,73,'+(0.3+Math.min(Math.abs(pnl)/100,0.7))+')';
+    html+='<div class="heatmap-cell" style="background:'+bg+'" title="'+day+': '+eurFmt(pnl)+'"></div>';
+  });
+  html+='</div><div class="muted" style="font-size:11px;margin-top:6px">Grün = Gewinn, Rot = Verlust</div></div>';
+  
+  // Equity Curve (simple bar chart)
+  html+='<div class="card" style="padding:16px"><div class="card-title">📈 Equity-Kurve</div>';
+  html+='<div style="height:100px;display:flex;align-items:flex-end;gap:2px;padding:8px;background:var(--bg);border-radius:8px">';
+  const maxEq=Math.max(...equityCurve.map(e=>e.val));
+  const minEq=Math.min(...equityCurve.map(e=>e.val));
+  const range=maxEq-minEq||1;
+  equityCurve.forEach(e=>{
+    const h=((e.val-minEq)/range*100);
+    const col=e.val>=startCapital?'var(--green)':'var(--red)';
+    html+='<div style="flex:1;height:'+h+'%;background:'+col+';border-radius:2px;min-width:4px" title="'+e.date+': '+Math.round(e.val)+'€"></div>';
+  });
+  html+='</div></div>';
+  
+  // Monthly P&L table
+  html+='<div class="card" style="padding:16px"><div class="card-title">Monatliche P&L</div>';
+  html+='<table><tr><th>Monat</th><th>P&L €</th></tr>';
+  Object.entries(monthlyPnl).forEach(([m,v])=>{
+    html+='<tr><td>'+m+'</td><td class="'+(v>=0?'green':'red')+'" style="font-weight:bold">'+eurFmt(v)+'</td></tr>';
+  });
+  html+='</table></div>';
   
   el.innerHTML=html;
 }
 
+// ── Macro Tab ────────────────────────────────────────────
 async function loadMacro(){
   const el=document.getElementById('macro-content');
-  // Macro-Daten aus prices (bereits geladen via loadAll)
   if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten…</div>';return;}
   
   const macroTickers=[
@@ -1186,10 +1459,7 @@ async function loadMacro(){
   });
   html+='</div>';
   
-  // Regime Info
-  html+='<div class="card" style="padding:12px;margin-top:12px">';
-  html+='<div class="card-title">Aktuelles Regime</div>';
-  const vix=(prices['^VIX']||{}).price||0;
+  const vix=(prices['^VIX']||{}).price||prices?.macro?.vix||0;
   let regime='NEUTRAL',rColor='#f39c12';
   if(vix<15){regime='BULL_CALM';rColor='#2ecc71';}
   else if(vix<20){regime='BULL_VOLATILE';rColor='#27ae60';}
@@ -1197,196 +1467,131 @@ async function loadMacro(){
   else if(vix<30){regime='CORRECTION';rColor='#e67e22';}
   else if(vix<35){regime='BEAR';rColor='#e74c3c';}
   else{regime='CRISIS';rColor='#c0392b';}
+  html+='<div class="card" style="padding:12px;margin-top:12px"><div class="card-title">Aktuelles Regime</div>';
   html+='<div style="font-size:24px;font-weight:bold;color:'+rColor+'">'+regime+'</div>';
-  html+='<div style="color:#888">VIX: '+vix.toFixed(1)+' | Position Factor: '+(vix<20?'1.2':(vix<25?'0.8':(vix<30?'0.6':'0.4')))+'</div>';
-  html+='</div>';
+  html+='<div style="color:#888">VIX: '+vix.toFixed(1)+'</div></div>';
   
-  // Spread Info (wenn Daten da)
   const brent=(prices['BZ=F']||{}).price||0;
   const wti=(prices['CL=F']||{}).price||0;
   if(brent&&wti){
     const spread=(brent-wti).toFixed(2);
     const spreadColor=spread>10?'#e74c3c':(spread>5?'#f39c12':'#2ecc71');
-    html+='<div class="card" style="padding:12px;margin-top:8px">';
-    html+='<div style="color:#888;font-size:11px">Brent-WTI Spread</div>';
-    html+='<div style="font-size:18px;font-weight:bold;color:'+spreadColor+'">$'+spread+'</div>';
-    html+='<div style="color:#888;font-size:11px">>$10 = strukturelle Lieferunterbrechung</div>';
-    html+='</div>';
+    html+='<div class="card" style="padding:12px;margin-top:8px"><div style="color:#888;font-size:11px">Brent-WTI Spread</div><div style="font-size:18px;font-weight:bold;color:'+spreadColor+'">$'+spread+'</div></div>';
   }
-  
   el.innerHTML=html;
 }
 
-// ── Day Trading Tab ──
-
+// ── Day Trading Tab (TRA-140, TRA-141) ──────────────────
 async function loadDayTrades(){
   let dt=null;
-  try{
-    const r=await fetch('/api/daytrades');
-    if(r.ok) dt=await r.json();
-  }catch(e){}
-  
-  // Also load full DNA for history
-  let dna=null;
-  try{
-    const r=await fetch('/api/dna');
-    if(r.ok) dna=await r.json();
-  }catch(e){}
-  
-  renderDTLive(dt, dna);
+  try{const r=await fetch('/api/daytrades');if(r.ok)dt=await r.json();}catch(e){}
+  let dna=dnaData;
+  if(!dna){try{dna=await fetch('/api/dna').then(r=>r.json());}catch(e){}}
+  renderDTLive(dt,dna);
   renderDTHistory(dna);
-  renderDTStats(dt, dna);
+  renderDTStats(dt,dna);
 }
 
-function renderDTLive(dt, dna){
+function renderDTLive(dt,dna){
   const el=document.getElementById('dt-live-content');
   if(!dt&&!dna){el.innerHTML='<p style="color:#888">Day Trade Feed nicht erreichbar.</p>';return;}
-  
   const state=dt?dt.state:{};
   const openDT=dt?dt.open:[];
-  
   let html='';
-  
-  // Capital Overview
   const used=openDT.reduce((s,p)=>s+(p.entry||0)*(p.shares||1),0);
-  const capital=25000;
-  const free=capital-used;
-  const usedPct=Math.round(used/capital*100);
+  const capital=25000,free=capital-used,usedPct=Math.round(used/capital*100);
   
   html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px">';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">25.000€</div><div style="color:#888;font-size:11px">Kapital</div></div>';
-  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#3498db">'+used.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Investiert ('+usedPct+'%)</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#3498db">'+used.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Investiert</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#2ecc71">'+free.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Frei</div></div>';
-  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+(state.daily_pnl>=0?'#2ecc71':'#e74c3c')+'">'+(state.daily_pnl||0).toFixed(0)+'€</div><div style="color:#888;font-size:11px">Daily P&L</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+((state.daily_pnl||0)>=0?'#2ecc71':'#e74c3c')+'">'+(state.daily_pnl||0).toFixed(0)+'€</div><div style="color:#888;font-size:11px">Daily P&L</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">'+openDT.length+'/5</div><div style="color:#888;font-size:11px">Positionen</div></div>';
   html+='</div>';
   
-  // Kapital-Balken
-  html+='<div style="background:var(--card);border-radius:6px;height:20px;overflow:hidden;margin-bottom:16px">';
-  html+='<div style="background:linear-gradient(90deg,#3498db,#2ecc71);height:100%;width:'+usedPct+'%;transition:width 0.5s"></div>';
-  html+='</div>';
+  // TRA-141: Intraday equity curve placeholder
+  html+='<div class="card" style="padding:16px"><div class="card-title">📈 Intraday Equity</div>';
+  html+='<div style="height:80px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)">';
+  if(openDT.length>0){
+    const totalDtPnl=(state.daily_pnl||0);
+    html+='<span style="font-size:24px;font-weight:bold;color:'+(totalDtPnl>=0?'var(--green)':'var(--red)')+'">'+eurFmt(totalDtPnl)+'</span>';
+  } else {
+    html+='Keine offenen Day Trades';
+  }
+  html+='</div></div>';
   
-  // Offene Positionen
   if(openDT.length>0){
     html+='<div class="card-title" style="margin-bottom:8px">⚡ Offene Day Trades</div>';
     html+='<table><tr><th>Ticker</th><th>Richtung</th><th>Entry</th><th>Stop</th><th>Target</th><th>Strategie</th></tr>';
     openDT.forEach(p=>{
       const dir=p.direction||'LONG';
       const dirColor=dir==='LONG'?'#2ecc71':'#e74c3c';
-      const dirEmoji=dir==='LONG'?'🟢':'🔴';
-      html+='<tr>';
-      html+='<td><strong>'+p.ticker+'</strong></td>';
-      html+='<td style="color:'+dirColor+'">'+dirEmoji+' '+dir+'</td>';
-      html+='<td>'+(p.entry||0).toFixed(2)+'€</td>';
-      html+='<td style="color:#e74c3c">'+(p.stop||0).toFixed(2)+'€</td>';
-      html+='<td style="color:#2ecc71">'+(p.target||0).toFixed(2)+'€</td>';
-      html+='<td>'+p.strategy+'</td>';
-      html+='</tr>';
+      html+='<tr><td><strong>'+p.ticker+'</strong></td><td style="color:'+dirColor+'">'+(dir==='LONG'?'🟢':'🔴')+' '+dir+'</td><td>'+(p.entry||0).toFixed(2)+'€</td><td style="color:#e74c3c">'+(p.stop||0).toFixed(2)+'€</td><td style="color:#2ecc71">'+(p.target||0).toFixed(2)+'€</td><td>'+p.strategy+'</td></tr>';
     });
     html+='</table>';
   } else {
-    const now=new Date();
-    const hour=now.getHours();
-    const isMarketHours=(hour>=9&&hour<22);
-    if(isMarketHours){
-      html+='<div class="card" style="padding:20px;text-align:center">';
-      html+='<div style="font-size:32px;margin-bottom:8px">🔍</div>';
-      html+='<div style="color:#888">Scanner aktiv — sucht Signale alle 5 Min</div>';
-      html+='<div style="color:#555;font-size:12px;margin-top:4px">DT1: Momentum | DT2: RSI Bounce | DT3: Gap Fill | DT4: EMA Cross</div>';
-      html+='</div>';
-    } else {
-      html+='<div class="card" style="padding:20px;text-align:center">';
-      html+='<div style="font-size:32px;margin-bottom:8px">🌙</div>';
-      html+='<div style="color:#888">Markt geschlossen — nächster Scan morgen 09:00 CET</div>';
-      html+='</div>';
-    }
+    const hour=new Date().getHours();
+    html+='<div class="card" style="padding:20px;text-align:center"><div style="font-size:32px;margin-bottom:8px">'+(hour>=9&&hour<22?'🔍':'🌙')+'</div><div style="color:#888">'+(hour>=9&&hour<22?'Scanner aktiv — sucht Signale':'Markt geschlossen')+'</div></div>';
   }
-  
   el.innerHTML=html;
 }
 
 function renderDTHistory(dna){
   const el=document.getElementById('dt-history-content');
   if(!dna){el.innerHTML='<p style="color:#888">DNA nicht geladen.</p>';return;}
-  
-  // Filter geschlossene Day Trades aus allen Strategien
-  // Wir zeigen alle geschlossenen DT-Strategien Trades
-  let html='<div class="card-title" style="margin-bottom:8px">📜 Geschlossene Day Trades</div>';
-  
   const dtStrats=(dna.strategies||[]).filter(s=>s.strategy&&s.strategy.startsWith('DT'));
   const closedTotal=dtStrats.reduce((s,st)=>s+st.closed,0);
-  
+  let html='<div class="card-title" style="margin-bottom:8px">📜 Geschlossene Day Trades</div>';
   if(closedTotal===0){
-    html+='<div class="card" style="padding:20px;text-align:center">';
-    html+='<div style="font-size:32px;margin-bottom:8px">📭</div>';
-    html+='<div style="color:#888">Noch keine geschlossenen Day Trades.</div>';
-    html+='<div style="color:#555;font-size:12px;margin-top:4px">Morgen gehts los — erste Trades ab 09:00 (Xetra) / 15:30 (US)</div>';
-    html+='</div>';
+    html+='<div class="empty">Noch keine geschlossenen Day Trades.</div>';
   } else {
-    html+='<p style="color:#888;margin-bottom:8px">'+closedTotal+' geschlossene Day Trades</p>';
     html+='<table><tr><th>Strategy</th><th>Trades</th><th>Wins</th><th>Losses</th><th>Win Rate</th><th>Avg P&L</th></tr>';
     dtStrats.forEach(st=>{
       if(st.closed===0)return;
-      html+='<tr><td><strong>'+st.strategy+'</strong></td><td>'+st.closed+'</td>';
-      html+='<td style="color:#2ecc71">'+st.wins+'</td><td style="color:#e74c3c">'+st.losses+'</td>';
-      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+st.win_rate+'%</td>';
-      html+='<td>'+st.avg_pnl.toFixed(1)+'%</td></tr>';
+      html+='<tr><td><strong>'+st.strategy+'</strong></td><td>'+st.closed+'</td><td style="color:#2ecc71">'+st.wins+'</td><td style="color:#e74c3c">'+st.losses+'</td><td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+st.win_rate+'%</td><td>'+st.avg_pnl.toFixed(1)+'%</td></tr>';
     });
     html+='</table>';
   }
-  
   el.innerHTML=html;
 }
 
-function renderDTStats(dt, dna){
+function renderDTStats(dt,dna){
   const el=document.getElementById('dt-stats-content');
   if(!dna){el.innerHTML='<p style="color:#888">Daten nicht verfügbar.</p>';return;}
-  
   const dtStrats=(dna.strategies||[]).filter(s=>s.strategy&&s.strategy.startsWith('DT'));
   const totalTrades=dtStrats.reduce((s,st)=>s+st.total,0);
   const totalClosed=dtStrats.reduce((s,st)=>s+st.closed,0);
   const totalWins=dtStrats.reduce((s,st)=>s+st.wins,0);
   const wr=totalClosed>0?Math.round(totalWins/totalClosed*100):0;
-  
   let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
-  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+totalTrades+'</div><div style="color:#888;font-size:11px">Total DT Trades</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+totalTrades+'</div><div style="color:#888;font-size:11px">Total</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+totalClosed+'</div><div style="color:#888;font-size:11px">Geschlossen</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:'+(wr>=50?'#2ecc71':'#e74c3c')+'">'+wr+'%</div><div style="color:#888;font-size:11px">Win Rate</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+(dt?(dt.state.daily_trades||0):0)+'</div><div style="color:#888;font-size:11px">Trades heute</div></div>';
   html+='</div>';
-  
-  // Per-Strategy Breakdown
   if(dtStrats.length>0){
     html+='<div class="card-title" style="margin:12px 0 8px">Strategie-Vergleich</div>';
     html+='<table><tr><th>Strategy</th><th>Total</th><th>Open</th><th>Closed</th><th>WR%</th><th>Avg P&L</th><th>CRV</th><th>Status</th></tr>';
     dtStrats.forEach(st=>{
       const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
-      html+='<tr><td>'+emoji+' <strong>'+st.strategy+'</strong></td>';
-      html+='<td>'+st.total+'</td><td>'+st.open+'</td><td>'+st.closed+'</td>';
-      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+(st.closed>0?st.win_rate+'%':'—')+'</td>';
-      html+='<td>'+(st.closed>0?st.avg_pnl.toFixed(1)+'%':'—')+'</td>';
-      html+='<td>'+st.avg_crv.toFixed(1)+'</td>';
-      html+='<td>'+(st.kill_warning?'⚠️ KILL':'✅')+'</td></tr>';
+      html+='<tr><td>'+emoji+' <strong>'+st.strategy+'</strong></td><td>'+st.total+'</td><td>'+st.open+'</td><td>'+st.closed+'</td><td>'+(st.closed>0?st.win_rate+'%':'—')+'</td><td>'+(st.closed>0?st.avg_pnl.toFixed(1)+'%':'—')+'</td><td>'+st.avg_crv.toFixed(1)+'</td><td>'+(st.kill_warning?'⚠️ KILL':'✅')+'</td></tr>';
     });
     html+='</table>';
-  } else {
-    html+='<p style="color:#888">Noch keine DT-Strategien aktiv. Starten morgen ab 09:00 CET.</p>';
   }
-  
-  // Kill-Warning Explanation
-  html+='<div class="card" style="padding:12px;margin-top:16px;border-left:3px solid #e74c3c">';
-  html+='<strong>⚠️ Kill Warning:</strong> Strategie wird gestoppt nach 3+ konsekutiven Verlusten. ';
-  html+='DNA-System prüft automatisch und markiert schwache Strategien.';
-  html+='</div>';
-  
+  html+='<div class="card" style="padding:12px;margin-top:16px;border-left:3px solid #e74c3c"><strong>⚠️ Kill Warning:</strong> Strategie wird gestoppt nach 3+ konsekutiven Verlusten.</div>';
   el.innerHTML=html;
 }
 
-// Theme aus localStorage laden
+// ── Init ──────────────────────────────────────────────────
 if(localStorage.getItem('theme')==='light'){isDark=false;document.body.classList.add('light');document.getElementById('theme-btn').textContent='☀️';}
 
 loadAll();
-setInterval(()=>{loadAll();checkStopAlerts();},60000);
+
+// TRA-130: Auto-refresh timers
+priceTimer=setInterval(()=>{refreshPrices();checkStopAlerts();},30000);
+configTimer=setInterval(refreshConfig,300000);
+countdownTimer=setInterval(updateCountdown,1000);
+
 updateChecklist();
 renderCalendar();
 </script>

@@ -1,5 +1,5 @@
 // Vercel Serverless: liest trading_config.json aus GitHub Repo
-// GET  /api/config  → gibt Positionen + Stops zurück
+// GET  /api/config  → gibt Positionen + Watchlist + Strategies + Earnings + Macro + Sectors zurück
 // POST /api/config  → updated Stop oder Entry einer Position
 
 const OWNER = 'Vic3d';
@@ -58,25 +58,44 @@ module.exports = async function handler(req, res) {
   if (!token) return res.status(500).json({ error: 'GITHUB_TOKEN nicht konfiguriert' });
 
   try {
-    // GET — Config lesen
+    // GET — Config lesen (TRA-127: alle Felder zurückgeben)
     if (req.method === 'GET') {
       const { content } = await getFile(token);
       const positions = Object.entries(content.positions || {}).map(([ticker, p]) => ({
         ticker,
-        name:      p.name,
-        entry_eur: p.entry_eur,
-        stop_eur:  p.stop_eur || null,
-        target_eur: p.target_eur || null,
-        status:    p.status || 'OPEN',
-        currency:  p.currency || 'EUR',
+        name:       p.name,
+        entry_eur:  p.entry_eur,
+        stop_eur:   p.stop_eur || null,
+        target_eur: p.targets_eur?.[0] || p.target_eur || null,
+        targets_eur: p.targets_eur || [],
+        status:     p.status || 'OPEN',
+        currency:   p.currency || 'EUR',
+        size_eur:   p.size_eur || null,
+        exit_eur:   p.exit_eur || null,
+        exit_date:  p.exit_date || null,
+        notes:      p.notes || '',
+        conviction: p.conviction || null,
       }));
-      const watchlist = Object.entries(content.watchlist || {}).map(([ticker, p]) => ({
-        ticker,
-        name: p.name,
-        entry_eur: p.entry_eur || null,
-        stop_eur:  p.stop_eur || null,
+      const watchlist = (content.watchlist || []).map(w => ({
+        ticker:   w.ticker,
+        name:     w.name,
+        entryMin: w.entryMin,
+        entryMax: w.entryMax,
+        note:     w.note || '',
       }));
-      return res.json({ positions, watchlist });
+      return res.json({
+        positions,
+        watchlist,
+        strategies:    content.strategies || [],
+        earnings:      content.earnings || [],
+        macro_events:  content.macro_events || [],
+        sector_map:    content.sector_map || {},
+        sector_colors: content.sector_colors || {},
+        corr_groups:   content.corr_groups || [],
+        sector_vol:    content.sector_vol || {},
+        correlations:  content.correlations || {},
+        settings:      content.settings || {},
+      });
     }
 
     // POST — Stop / Entry updaten

@@ -74,13 +74,21 @@ def generate_proposal(ticker, strategy, direction, entry_price, stop, target,
     except:
         conviction = {'score': 50, 'recommendation': 'MANUAL', 'factors': {}, 'weakest': [], 'strongest': []}
     
-    # Position Size (2%-Regel)
-    portfolio_value = 14000
+    # TRA-143: Position Sizing
+    # size_eur = (portfolio × 0.02) / ((entry - stop) / entry)
+    # Lese Startkapital aus trading_config.json wenn verfügbar
+    config_path = Path('/data/.openclaw/workspace/trading_config.json')
+    try:
+        cfg = json.loads(config_path.read_text())
+        portfolio_value = cfg.get('settings', {}).get('start_capital', 10000)
+    except:
+        portfolio_value = 10000
+    
     risk_per_share = abs(entry_price - stop)
-    if risk_per_share > 0:
-        max_risk = portfolio_value * 0.02
-        shares = int(max_risk / risk_per_share)
-        position_eur = shares * entry_price
+    if risk_per_share > 0 and entry_price > 0:
+        risk_fraction = risk_per_share / entry_price
+        position_eur = round((portfolio_value * 0.02) / risk_fraction, 2)
+        shares = int(position_eur / entry_price)
         risk_eur = shares * risk_per_share
     else:
         shares = 0
