@@ -648,21 +648,27 @@ function exportCSV(){
 function renderPaper(prices){
   const px=prices.prices||{};
   let sumPnl=0,wins=0,cnt=0;
-  const CASH=71,PCAP=900;
+  const SWING_CAPITAL=25000,POS_SIZE=2500;
   const posData=PAPER.map(p=>{
     const pr=getP(px,p.ticker),eur=pr?.eur??null,chg=pr?.dayChange??null;
     const pnl=pct(eur,p.entry);
     if(pnl!=null){cnt++;sumPnl+=pnl;if(pnl>0)wins++;}
-    return{...p,eur,chg,pnl};
+    const shares=Math.max(1,Math.floor(POS_SIZE/p.entry));
+    const posVal=eur?eur*shares:p.entry*shares;
+    const posPnl=eur?(eur-p.entry)*shares:0;
+    return{...p,eur,chg,pnl,shares,posVal,posPnl};
   });
   const avg=cnt?sumPnl/cnt:0,wr=cnt?(wins/cnt*100):0;
-  const curVal=Math.round(PCAP*(1+avg/100)+CASH),diff=curVal-1000;
+  const invested=posData.reduce((s,p)=>s+p.posVal,0);
+  const totalPnl=posData.reduce((s,p)=>s+p.posPnl,0);
+  const curVal=Math.round(SWING_CAPITAL+totalPnl);
+  const free=SWING_CAPITAL-posData.reduce((s,p)=>s+p.entry*(p.shares||1),0);
   document.getElementById('paper-stats').innerHTML=\`
-    <div class="stat"><div class="stat-label">Startkapital</div><div class="stat-value">1.000€</div></div>
-    <div class="stat"><div class="stat-label">Akt. Wert</div><div class="stat-value \${curVal>=1000?'green':'red'}">\${curVal}€</div><div class="stat-sub \${diff>=0?'green':'red'}">\${diff>=0?'+':''}\${diff}€</div></div>
-    <div class="stat"><div class="stat-label">Ø P&amp;L</div><div class="stat-value \${avg>=0?'green':'red'}">\${avg>=0?'+':''}\${avg.toFixed(1)}%</div></div>
+    <div class="stat"><div class="stat-label">Kapital</div><div class="stat-value">25.000€</div></div>
+    <div class="stat"><div class="stat-label">Investiert</div><div class="stat-value">\${Math.round(invested).toLocaleString()}€</div><div class="stat-sub muted">\${posData.length} Pos × ~2.500€</div></div>
+    <div class="stat"><div class="stat-label">P&amp;L</div><div class="stat-value \${totalPnl>=0?'green':'red'}">\${totalPnl>=0?'+':''}\${Math.round(totalPnl).toLocaleString()}€</div><div class="stat-sub \${avg>=0?'green':'red'}">Ø \${avg>=0?'+':''}\${avg.toFixed(1)}%</div></div>
     <div class="stat"><div class="stat-label">Win-Rate</div><div class="stat-value">\${wr.toFixed(0)}%</div><div class="stat-sub muted">\${wins}/\${cnt}</div></div>
-    <div class="stat"><div class="stat-label">Cash</div><div class="stat-value">\${CASH}€</div></div>
+    <div class="stat"><div class="stat-label">Frei</div><div class="stat-value">\${Math.round(free).toLocaleString()}€</div></div>
   \`;
   // Heatmap
   document.getElementById('paper-heatmap').innerHTML=\`<div class="heat-grid">\${posData.map(p=>{
@@ -674,14 +680,16 @@ function renderPaper(prices){
     </div>\`;
   }).join('')}</div>\`;
   // Table
-  document.getElementById('paper-table').innerHTML=\`<table><thead><tr><th>Position</th><th>Entry</th><th>Kurs</th><th>Heute</th><th>P&amp;L</th><th>Stop/Ziel</th><th>CRV</th></tr></thead><tbody>\${posData.map(p=>{
+  document.getElementById('paper-table').innerHTML=\`<table><thead><tr><th>Position</th><th>Entry</th><th>Kurs</th><th>Pos. Wert</th><th>P&amp;L %</th><th>P&amp;L €</th><th>Stop/Ziel</th></tr></thead><tbody>\${posData.map(p=>{
     const s=STRATEGIES.find(s=>s.id===p.strategy);
     const badge=s?\`<span class="badge" style="background:\${s.color}22;color:\${s.color}">\${p.strategy}</span>\`:'';
+    const pnlEur=p.posPnl?((p.posPnl>=0?'+':'')+Math.round(p.posPnl)+'€'):'—';
+    const pnlColor=p.posPnl>=0?'green':'red';
     return\`<tr><td><div class="ticker-name" onclick="window.open('\${tvLink(p.ticker)}','_blank')">\${p.ticker} ↗</div><div class="ticker-sub">\${p.name} \${badge}</div></td>
       <td class="muted">\${p.entry.toFixed(2)}€</td><td>\${p.eur!=null?\`<strong>\${p.eur.toFixed(2)}€</strong>\`:'—'}</td>
-      <td>\${pctHtml(p.chg)}</td><td>\${pctHtml(p.pnl,true)}</td>
-      <td class="muted" style="font-size:11px">\${p.stop||'—'}€/\${p.target||'—'}€</td>
-      <td>\${crvHtml(p.eur,p.stop,p.target)}</td></tr>\`;
+      <td class="muted" style="font-size:11px">\${p.shares}×\${Math.round(p.posVal).toLocaleString()}€</td>
+      <td>\${pctHtml(p.pnl,true)}</td><td class="\${pnlColor}" style="font-weight:bold">\${pnlEur}</td>
+      <td class="muted" style="font-size:11px">\${p.stop||'—'}/\${p.target||'—'}€</td></tr>\`;
   }).join('')}</tbody></table>\`;
 }
 
