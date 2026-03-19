@@ -1,5 +1,5 @@
 # State Snapshot — Trading Bot
-**Zuletzt aktualisiert:** 2026-03-19 20:15 UTC
+**Zuletzt aktualisiert:** 2026-03-19 20:30 UTC
 **Positionen:** 11 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
 
 ---
@@ -8,17 +8,17 @@
 
 | Aktie | Kurs | Entry | P&L | Stop | Conviction | Letzter Alert |
 |---|---|---|---|---|---|---|
-| Nvidia (NVDA) | 154.12€ | 167.88€ | -8.2% | ❌ kein Stop | — | — |
-| Microsoft (MSFT) | 335.77€ | 351.85€ | -4.6% | 338.00€ | — | — |
-| Palantir (PLTR) | 134.37€ | 132.11€ | +1.7% | 127.00€ | 57 | — |
+| Nvidia (NVDA) | 154.02€ | 167.88€ | -8.2% | ❌ kein Stop | — | — |
+| Microsoft (MSFT) | 335.56€ | 351.85€ | -4.6% | 338.00€ | — | — |
+| Palantir (PLTR) | 134.29€ | 132.11€ | +1.6% | 127.00€ | 57 | — |
 | Equinor ASA (EQNR) | 36.29€ | 27.45€ | +32.2% | 33.00€ | 45 | — |
 | Bayer AG (BAYN.DE) | 38.72€ | 39.95€ | -3.1% | 38.00€ | 40 | — |
-| Rio Tinto (RIO.L) | 73.49€ | 76.92€ | -4.5% | 73.00€ | — | — |
-| Rheinmetall AG (RHM.DE) | 1559.00€ | 1570.00€ | -0.7% | 1520.00€ | — | — |
-| Invesco Solar Energy ETF (A2QQ9R) | 49.15€ | 22.40€ | +119.4% | ❌ kein Stop | 47 | — |
-| VanEck Oil Services ETF (A3D42Y) | 338.72€ | 27.90€ | +1114.0% | 24.00€ | 47 | — |
-| L&G Cyber Security ETF (A14WU5) | 56.30€ | 28.80€ | +95.5% | 25.95€ | 39 | — |
-| iShares Biotech ETF (A2DWAW) | 141.95€ | 7.00€ | +1927.8% | 6.30€ | 39 | — |
+| Rio Tinto (RIO.L) | 73.47€ | 76.92€ | -4.5% | 73.00€ | — | — |
+| Rheinmetall AG (RHM.DE) | 1558.00€ | 1570.00€ | -0.8% | 1520.00€ | — | — |
+| Invesco Solar Energy ETF (A2QQ9R) | 49.12€ | 22.40€ | +119.3% | ❌ kein Stop | 47 | — |
+| VanEck Oil Services ETF (A3D42Y) | 338.67€ | 27.90€ | +1113.9% | 24.00€ | 47 | — |
+| L&G Cyber Security ETF (A14WU5) | 56.27€ | 28.80€ | +95.4% | 25.95€ | 39 | — |
+| iShares Biotech ETF (A2DWAW) | 141.86€ | 7.00€ | +1926.6% | 6.30€ | 39 | — |
 
 ## Watchlist
 
@@ -28,10 +28,10 @@ _(keine Watchlist-Daten)_
 
 | Indikator | Wert | Signal |
 |---|---|---|
-| VIX | 24.3 | 🟡 Erhöht |
-| WTI | $94.33 | 🟡 Erhöht |
+| VIX | 24.1 | 🟡 Erhöht |
+| WTI | $94.30 | 🟡 Erhöht |
 | Nikkei 225 | -3.4% | Öl-Frühindikator |
-| EUR/USD | 1.1586 | — |
+| EUR/USD | 1.1593 | — |
 
 ## Strategien-Status
 
@@ -49,8 +49,8 @@ _(keine Watchlist-Daten)_
 
 - ⚠️ Microsoft (MSFT): -0.7% über Stop 338.00€
 - ⚠️ Bayer AG (BAYN.DE): 1.9% über Stop 38.00€
-- ⚠️ Rio Tinto (RIO.L): 0.7% über Stop 73.00€
-- ⚠️ Rheinmetall AG (RHM.DE): 2.5% über Stop 1520.00€
+- ⚠️ Rio Tinto (RIO.L): 0.6% über Stop 73.00€
+- ⚠️ Rheinmetall AG (RHM.DE): 2.4% über Stop 1520.00€
 
 ## Letzte Conviction Scores
 

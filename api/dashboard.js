@@ -915,7 +915,8 @@ function checkStopAlerts(){
 
 async function loadSignals(){
   const el=document.getElementById('signals-content');
-  // Lead-Lag Paare (aus lag_knowledge.json eingebettet)
+  
+  // Lead-Lag Paare (statisch)
   const pairs=[
     {id:'NIKKEI_COPPER',lead:'Nikkei 225',lag:'Copper Futures',lag_hours:24,desc:'Japan-Import → Rohstoffnachfrage'},
     {id:'VIX_TECH',lead:'VIX',lag:'PLTR',lag_hours:24,desc:'Volatilität → Tech-Selloff'},
@@ -923,13 +924,65 @@ async function loadSignals(){
     {id:'INPEX_WTI',lead:'WTI',lag:'INPEX (1605.T)',lag_hours:5,desc:'Öl→Japan-Ölproduzent'},
     {id:'IRAN_BRENT',lead:'Iran Eskalation',lag:'Brent',lag_hours:6,desc:'Geopolitik→Ölpreis'},
   ];
-  let html='<p style="color:#888;margin-bottom:12px">Signal Tracker läuft alle 30 Min (07-22 CET, Mo-Fr). Signale werden in Paperclip Issues verfolgt.</p>';
-  html+='<table><tr><th>Pair ID</th><th>Lead → Lag</th><th>Lag (h)</th><th>Beschreibung</th></tr>';
+
+  let html='';
+
+  // 1. Live Signal-Feed laden
+  try{
+    const r=await fetch('/api/signals');
+    if(r.ok){
+      const data=await r.json();
+      const stats=data.stats||{};
+      const sigs=data.signals||[];
+      
+      // Stats-Bar
+      html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px">';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+stats.total+'</div><div style="color:#888;font-size:11px">Signale</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#2ecc71">'+stats.wins+'</div><div style="color:#888;font-size:11px">✅ Wins</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#e74c3c">'+stats.losses+'</div><div style="color:#888;font-size:11px">❌ Losses</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:#f39c12">'+stats.pending+'</div><div style="color:#888;font-size:11px">⏳ Pending</div></div>';
+      html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+(stats.accuracy_pct!=null?stats.accuracy_pct+'%':'—')+'</div><div style="color:#888;font-size:11px">Accuracy</div></div>';
+      html+='</div>';
+      
+      // Signal-History
+      if(sigs.length){
+        html+='<div class="card-title" style="margin-bottom:8px">📡 Signal-History (neueste zuerst)</div>';
+        html+='<table><tr><th>Zeit</th><th>Lead → Lag</th><th>Signal</th><th>Lag (h)</th><th>Outcome</th><th>Δ%</th><th>Confidence</th></tr>';
+        sigs.forEach(s=>{
+          const oc=s.outcome||'PENDING';
+          const ocColor=oc==='WIN'?'#2ecc71':(oc==='LOSS'?'#e74c3c':'#f39c12');
+          const ocEmoji=oc==='WIN'?'✅':(oc==='LOSS'?'❌':'⏳');
+          const time=(s.created_at||'').replace('T',' ').slice(0,16);
+          const chg=s.actual_change_pct!=null?(s.actual_change_pct>0?'+':'')+s.actual_change_pct+'%':'—';
+          html+='<tr>';
+          html+='<td style="font-size:12px;white-space:nowrap">'+time+'</td>';
+          html+='<td>'+s.lead_name+' → '+s.lag_name+'</td>';
+          html+='<td style="font-weight:bold">'+s.signal_value+'</td>';
+          html+='<td>'+s.lag_hours+'h</td>';
+          html+='<td style="color:'+ocColor+'">'+ocEmoji+' '+oc+'</td>';
+          html+='<td>'+chg+'</td>';
+          html+='<td style="font-size:12px">'+s.confidence+'</td>';
+          html+='</tr>';
+        });
+        html+='</table>';
+        if(data.updated)html+='<p style="color:#555;font-size:11px;margin-top:6px">Letzte Aktualisierung: '+data.updated.replace('T',' ').slice(0,16)+' UTC</p>';
+      } else {
+        html+='<p style="color:#888;margin:12px 0">Noch keine Signale gefeuert. Tracker prüft alle 30 Min.</p>';
+      }
+    }
+  }catch(e){
+    html+='<p style="color:#888;margin-bottom:12px">Signal-Feed nicht erreichbar — zeige Lead-Lag Paare.</p>';
+  }
+  
+  // 2. Lead-Lag Paare (immer anzeigen)
+  html+='<div class="card-title" style="margin:16px 0 8px">🔗 Überwachte Lead-Lag Paare</div>';
+  html+='<table><tr><th>Pair</th><th>Lead → Lag</th><th>Lag</th><th>Theorie</th></tr>';
   pairs.forEach(p=>{
-    html+='<tr><td style="font-family:monospace">'+p.id+'</td><td>'+p.lead+' → '+p.lag+'</td><td>'+p.lag_hours+'h</td><td>'+p.desc+'</td></tr>';
+    html+='<tr><td style="font-family:monospace;font-size:12px">'+p.id+'</td><td>'+p.lead+' → '+p.lag+'</td><td>'+p.lag_hours+'h</td><td style="font-size:12px">'+p.desc+'</td></tr>';
   });
   html+='</table>';
-  html+='<p style="color:#f39c12;margin-top:12px">⏳ Noch <20 Samples pro Paar — Accuracy-Tracking läuft, Signale noch nicht handelbar (min. 20 Samples + 60% Accuracy nötig).</p>';
+  html+='<p style="color:#f39c12;margin-top:8px;font-size:12px">⚠️ Min. 20 Samples + 60% Accuracy nötig bevor ein Signal handelbar wird.</p>';
+  
   el.innerHTML=html;
 }
 

@@ -17,6 +17,7 @@ from pathlib import Path
 WORKSPACE = Path('/data/.openclaw/workspace')
 LAG_DB    = WORKSPACE / 'data/lag_knowledge.json'
 STATE     = WORKSPACE / 'memory/signal-tracker-state.json'
+SIGNALS_JSON = WORKSPACE / 'data/signals.json'
 
 PAPERCLIP_URL = "http://127.0.0.1:53476/api"
 COMPANY_ID    = "9147c9ab-f487-40ed-a67b-c41f0a8d4fba"
@@ -272,8 +273,10 @@ def check_pending_outcomes(state, lag_db):
             print(f"  {result_emoji} Outcome für {issue_id[:8]}: {pair_id} → {actual_chg:+.1f}%")
         except Exception as e:
             print(f"  Paperclip-Fehler beim Outcome: {e}")
-            still_pending.append(entry)
-            continue
+            # Trotzdem signals.json updaten
+        
+        # → signals.json updaten
+        update_signal_outcome(issue_id, 'WIN' if correct else 'LOSS', round(actual_chg, 2), current)
 
         # Accuracy updaten
         pair['sample_count'] = pair.get('sample_count', 0) + 1
@@ -283,6 +286,62 @@ def check_pending_outcomes(state, lag_db):
 
     state['pending_outcomes'] = still_pending
     return state, lag_db
+
+
+# ─── Signals JSON (Dashboard-Feed) ───────────────────────────────────
+
+def load_signals_json():
+    if SIGNALS_JSON.exists():
+        return json.loads(SIGNALS_JSON.read_text())
+    return {"signals": [], "stats": {"total": 0, "wins": 0, "losses": 0, "pending": 0}, "updated": None}
+
+def save_signals_json(data):
+    data['updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    # Stats berechnen
+    sigs = data['signals']
+    data['stats'] = {
+        "total": len(sigs),
+        "wins": sum(1 for s in sigs if s.get('outcome') == 'WIN'),
+        "losses": sum(1 for s in sigs if s.get('outcome') == 'LOSS'),
+        "pending": sum(1 for s in sigs if s.get('outcome') == 'PENDING'),
+        "accuracy_pct": round(
+            sum(1 for s in sigs if s.get('outcome') == 'WIN') / max(1, sum(1 for s in sigs if s.get('outcome') in ('WIN','LOSS'))) * 100, 1
+        ) if any(s.get('outcome') in ('WIN','LOSS') for s in sigs) else None
+    }
+    SIGNALS_JSON.write_text(json.dumps(data, indent=2))
+
+def append_signal(signal_entry):
+    data = load_signals_json()
+    data['signals'].insert(0, signal_entry)  # Neueste zuerst
+    # Max 100 Signale behalten
+    data['signals'] = data['signals'][:100]
+    save_signals_json(data)
+
+def update_signal_outcome(issue_id, outcome, actual_chg, lag_price_now):
+    data = load_signals_json()
+    for s in data['signals']:
+        if s.get('issue_id') == issue_id:
+            s['outcome'] = outcome
+            s['actual_change_pct'] = actual_chg
+            s['lag_price_after'] = lag_price_now
+            s['resolved_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            break
+    save_signals_json(data)
+
+def push_signals_to_git():
+    """Auto-commit + push signals.json damit Vercel es sieht."""
+    import subprocess
+    try:
+        subprocess.run(['git', 'add', str(SIGNALS_JSON)], cwd=str(WORKSPACE), capture_output=True, timeout=10)
+        result = subprocess.run(
+            ['git', 'commit', '-m', f'📡 Signal update {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")}'],
+            cwd=str(WORKSPACE), capture_output=True, timeout=10
+        )
+        if result.returncode == 0:
+            subprocess.run(['git', 'push'], cwd=str(WORKSPACE), capture_output=True, timeout=30)
+            print("  📤 signals.json gepusht → Vercel")
+    except Exception as e:
+        print(f"  Git push fehlgeschlagen: {e}")
 
 
 # ─── Main ────────────────────────────────────────────────────────────
@@ -303,11 +362,12 @@ def main():
 
     for sig in signals:
         pair_id = sig['pair_id']
+        pair = sig['pair']
         issue = create_signal_issue(sig, lag_db)
 
         # In pending_outcomes eintragen
         import time
-        lag_h = sig['pair']['lag_hours']
+        lag_h = pair['lag_hours']
         if 'pending_outcomes' not in state:
             state['pending_outcomes'] = []
         state['pending_outcomes'].append({
@@ -323,6 +383,26 @@ def main():
             state['fired_today'] = {}
         state['fired_today'].setdefault(today, []).append(pair_id)
 
+        # → signals.json für Dashboard
+        append_signal({
+            'pair_id': pair_id,
+            'lead_ticker': pair['lead_ticker'],
+            'lead_name': pair['lead_name'],
+            'lag_ticker': pair['lag_ticker'],
+            'lag_name': pair['lag_name'],
+            'signal_value': sig['signal_value'],
+            'signal_pct': sig.get('signal_pct'),
+            'lead_price': sig.get('lead_price'),
+            'lag_price_at_signal': sig.get('lag_price_now'),
+            'lag_hours': lag_h,
+            'direction': pair['direction'],
+            'outcome': 'PENDING',
+            'issue_id': issue['id'],
+            'issue_key': issue.get('identifier', '?'),
+            'confidence': f"{pair.get('sample_count',0)}/{lag_db.get('min_samples_to_trust',20)} samples",
+            'created_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        })
+
     # 3. State + Lag-DB speichern
     STATE.write_text(json.dumps(state, indent=2))
     LAG_DB.write_text(json.dumps(lag_db, indent=2))
@@ -331,6 +411,7 @@ def main():
         print("  KEIN_SIGNAL")
     else:
         print(f"  {len(signals)} Issue(s) in Paperclip erstellt.")
+        push_signals_to_git()
 
 
 if __name__ == '__main__':
