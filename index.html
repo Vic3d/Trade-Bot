@@ -90,6 +90,7 @@ tr:nth-child(even) { background:rgba(255,255,255,0.02); }
     <div class="tab active" onclick="switchTab('paper')">🧪 Paper Trades</div>
     <div class="tab" onclick="switchTab('real')">📈 Echtes Portfolio</div>
     <div class="tab" onclick="switchTab('strategies')">🧠 Strategien</div>
+    <div class="tab" onclick="switchTab('manage')">⚙️ Stops / Entries</div>
 </div>
 
 <!-- TAB: Paper Trades -->
@@ -1165,15 +1166,94 @@ function switchTab(tab) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
-    // Highlight correct tab
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(t => {
-        if ((tab === 'paper' && t.textContent.includes('Paper')) || 
-            (tab === 'real' && t.textContent.includes('Echt')) ||
-            (tab === 'strategies' && t.textContent.includes('Strateg'))) {
+        if ((tab === 'paper'    && t.textContent.includes('Paper')) ||
+            (tab === 'real'     && t.textContent.includes('Echt')) ||
+            (tab === 'strategies' && t.textContent.includes('Strateg')) ||
+            (tab === 'manage'   && t.textContent.includes('Stops'))) {
             t.classList.add('active');
         }
     });
+    if (tab === 'manage') loadManageTab();
+}
+
+// ── Stops / Entries Tab ─────────────────────────────────────────────
+
+async function loadManageTab() {
+    const el = document.getElementById('manage-list');
+    el.innerHTML = '<p style="color:#888">Lädt...</p>';
+    try {
+        const r = await fetch('/api/config');
+        const data = await r.json();
+        const rows = data.positions.filter(p => p.status !== 'CLOSED').map(p => `
+            <tr>
+              <td style="font-weight:700;padding:10px 8px">${p.ticker}</td>
+              <td style="padding:10px 8px;color:#aaa">${p.name}</td>
+              <td style="padding:10px 8px">
+                <input type="number" id="entry-${p.ticker}" value="${p.entry_eur || ''}" step="0.01"
+                  style="width:90px;background:#1a1d2e;border:1px solid #2a2d4a;color:#fff;padding:4px 8px;border-radius:6px;font-size:13px">
+              </td>
+              <td style="padding:10px 8px">
+                <input type="number" id="stop-${p.ticker}" value="${p.stop_eur || ''}" step="0.01"
+                  style="width:90px;background:#1a1d2e;border:1px solid #2a2d4a;color:#fff;padding:4px 8px;border-radius:6px;font-size:13px">
+              </td>
+              <td style="padding:10px 8px">
+                <input type="number" id="target-${p.ticker}" value="${p.target_eur || ''}" step="0.01"
+                  style="width:90px;background:#1a1d2e;border:1px solid #2a2d4a;color:#fff;padding:4px 8px;border-radius:6px;font-size:13px">
+              </td>
+              <td style="padding:10px 8px">
+                <button onclick="savePosition('${p.ticker}')"
+                  style="background:#0f3460;color:#fff;border:1px solid #1a5276;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px">
+                  💾 Speichern
+                </button>
+                <span id="save-status-${p.ticker}" style="font-size:12px;margin-left:8px"></span>
+              </td>
+            </tr>`).join('');
+        el.innerHTML = `
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="color:#666;font-size:12px;text-transform:uppercase;letter-spacing:.5px">
+                <th style="padding:8px;text-align:left">Ticker</th>
+                <th style="padding:8px;text-align:left">Name</th>
+                <th style="padding:8px;text-align:left">Entry €</th>
+                <th style="padding:8px;text-align:left">Stop €</th>
+                <th style="padding:8px;text-align:left">Ziel €</th>
+                <th style="padding:8px;text-align:left">Aktion</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>`;
+    } catch(e) {
+        el.innerHTML = '<p style="color:#ff4444">Fehler beim Laden: ' + e.message + '</p>';
+    }
+}
+
+async function savePosition(ticker) {
+    const stop   = document.getElementById('stop-'  + ticker)?.value;
+    const entry  = document.getElementById('entry-' + ticker)?.value;
+    const target = document.getElementById('target-'+ ticker)?.value;
+    const statusEl = document.getElementById('save-status-' + ticker);
+    statusEl.textContent = '⏳';
+    statusEl.style.color = '#aaa';
+    try {
+        const r = await fetch('/api/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ticker, stop_eur: stop || null, entry_eur: entry, target_eur: target || null }),
+        });
+        const data = await r.json();
+        if (data.status === 'ok') {
+            statusEl.textContent = '✅ Gespeichert';
+            statusEl.style.color = '#00ff88';
+            setTimeout(() => { statusEl.textContent = ''; }, 3000);
+        } else {
+            throw new Error(data.error || 'Unbekannter Fehler');
+        }
+    } catch(e) {
+        statusEl.textContent = '❌ ' + e.message;
+        statusEl.style.color = '#ff4444';
+    }
 }
 
 async function refreshPrices() {
@@ -1234,6 +1314,17 @@ async function refreshPrices() {
     btn.disabled = false;
 }
 </script>
+
+<!-- TAB: Stops / Entries -->
+<div id="tab-manage" class="tab-content">
+  <div style="max-width:900px;margin:0 auto">
+    <h2 style="color:#00ff88;margin-bottom:8px">⚙️ Stops & Entries anpassen</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:20px">
+      Änderungen werden direkt in die Config gespeichert — der Trading Monitor übernimmt sie beim nächsten Run (alle 15 Min).
+    </p>
+    <div id="manage-list"><p style="color:#888">Tab anklicken zum Laden...</p></div>
+  </div>
+</div>
 
 </body>
 </html>
