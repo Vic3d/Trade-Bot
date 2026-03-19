@@ -224,7 +224,8 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 
 <div class="main-nav">
   <button class="active" onclick="showMain('real',this)">📈 Real</button>
-  <button onclick="showMain('paper',this)">🧪 Paper</button>
+  <button onclick="showMain('paper',this)">🧪 Swing</button>
+  <button onclick="showMain('daytrade',this);loadDayTrades()">🏎️ Day Trade</button>
   <button onclick="showMain('news',this);loadNews()">📰 News</button>
   <button onclick="showMain('watchlist',this)">👁 Watchlist</button>
   <button onclick="showMain('calendar',this)">📅 Kalender</button>
@@ -338,6 +339,67 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
     </div>
   </div>
   <div id="paper-strat" class="sub-panel"><div id="strat-list"></div></div>
+</div>
+
+<!-- DAY TRADING -->
+<div id="main-daytrade" class="main-panel">
+  <div class="sub-nav">
+    <button class="active" onclick="showSub('daytrade','live',this)">⚡ Live</button>
+    <button onclick="showSub('daytrade','history',this)">📜 History</button>
+    <button onclick="showSub('daytrade','stats',this)">📊 Statistik</button>
+    <button onclick="showSub('daytrade','config',this)">⚙️ Setup</button>
+  </div>
+  <div id="daytrade-live" class="sub-panel active">
+    <div id="dt-live-content"><div class="loading">Lädt…</div></div>
+  </div>
+  <div id="daytrade-history" class="sub-panel">
+    <div id="dt-history-content"><div class="loading">Lädt…</div></div>
+  </div>
+  <div id="daytrade-stats" class="sub-panel">
+    <div id="dt-stats-content"><div class="loading">Lädt…</div></div>
+  </div>
+  <div id="daytrade-config" class="sub-panel">
+    <div class="card" style="padding:16px">
+      <div class="card-title">🏎️ Day Trading Setup</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+        <div class="card" style="padding:12px">
+          <strong>Kapital:</strong> 25.000€<br>
+          <strong>Position:</strong> 5.000€ (20%)<br>
+          <strong>Max Positionen:</strong> 5<br>
+          <strong>Risk/Trade:</strong> 1% (250€)
+        </div>
+        <div class="card" style="padding:12px">
+          <strong>Daily Loss Limit:</strong> -500€<br>
+          <strong>EOD Close:</strong> 21:45 CET<br>
+          <strong>Intervall:</strong> alle 5 Min<br>
+          <strong>Overnight:</strong> ❌ Nie
+        </div>
+      </div>
+      <div class="card-title" style="margin-top:16px">Strategien</div>
+      <table style="margin-top:8px">
+        <tr><th>ID</th><th>Name</th><th>Entry</th><th>Exit</th><th>Timeframe</th></tr>
+        <tr><td style="color:#2ecc71"><strong>DT1</strong></td><td>Momentum Breakout</td><td>Price > VWAP + Volume 1.5x</td><td>+1% oder -0.5%</td><td>5m</td></tr>
+        <tr><td style="color:#3498db"><strong>DT2</strong></td><td>Mean Reversion</td><td>RSI < 30 + unter VWAP</td><td>VWAP oder -1%</td><td>5m</td></tr>
+        <tr><td style="color:#e67e22"><strong>DT3</strong></td><td>Gap Fill</td><td>Gap > 2%</td><td>Prev Close oder -1%</td><td>Opening</td></tr>
+        <tr><td style="color:#9b59b6"><strong>DT4</strong></td><td>EMA Cross</td><td>EMA9/EMA21 Cross</td><td>+0.8% oder -0.2%</td><td>5m</td></tr>
+      </table>
+      <div class="card-title" style="margin-top:16px">Universe (12 Ticker)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 NVDA</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AAPL</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 MSFT</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 TSLA</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AMD</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 META</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 AMZN</span>
+        <span class="badge" style="background:#2c3e50;padding:4px 8px;border-radius:4px;font-size:12px">🇺🇸 PLTR</span>
+        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 RHM</span>
+        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 SAP</span>
+        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 SIE</span>
+        <span class="badge" style="background:#1a5276;padding:4px 8px;border-radius:4px;font-size:12px">🇩🇪 BAYN</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- NEWS -->
@@ -1134,6 +1196,171 @@ async function loadMacro(){
     html+='<div style="color:#888;font-size:11px">>$10 = strukturelle Lieferunterbrechung</div>';
     html+='</div>';
   }
+  
+  el.innerHTML=html;
+}
+
+// ── Day Trading Tab ──
+
+async function loadDayTrades(){
+  let dt=null;
+  try{
+    const r=await fetch('/api/daytrades');
+    if(r.ok) dt=await r.json();
+  }catch(e){}
+  
+  // Also load full DNA for history
+  let dna=null;
+  try{
+    const r=await fetch('/api/dna');
+    if(r.ok) dna=await r.json();
+  }catch(e){}
+  
+  renderDTLive(dt, dna);
+  renderDTHistory(dna);
+  renderDTStats(dt, dna);
+}
+
+function renderDTLive(dt, dna){
+  const el=document.getElementById('dt-live-content');
+  if(!dt&&!dna){el.innerHTML='<p style="color:#888">Day Trade Feed nicht erreichbar.</p>';return;}
+  
+  const state=dt?dt.state:{};
+  const openDT=dt?dt.open:[];
+  
+  let html='';
+  
+  // Capital Overview
+  const used=openDT.reduce((s,p)=>s+(p.entry||0)*(p.shares||1),0);
+  const capital=25000;
+  const free=capital-used;
+  const usedPct=Math.round(used/capital*100);
+  
+  html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px">';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">25.000€</div><div style="color:#888;font-size:11px">Kapital</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#3498db">'+used.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Investiert ('+usedPct+'%)</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#2ecc71">'+free.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Frei</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:'+(state.daily_pnl>=0?'#2ecc71':'#e74c3c')+'">'+(state.daily_pnl||0).toFixed(0)+'€</div><div style="color:#888;font-size:11px">Daily P&L</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">'+openDT.length+'/5</div><div style="color:#888;font-size:11px">Positionen</div></div>';
+  html+='</div>';
+  
+  // Kapital-Balken
+  html+='<div style="background:var(--card);border-radius:6px;height:20px;overflow:hidden;margin-bottom:16px">';
+  html+='<div style="background:linear-gradient(90deg,#3498db,#2ecc71);height:100%;width:'+usedPct+'%;transition:width 0.5s"></div>';
+  html+='</div>';
+  
+  // Offene Positionen
+  if(openDT.length>0){
+    html+='<div class="card-title" style="margin-bottom:8px">⚡ Offene Day Trades</div>';
+    html+='<table><tr><th>Ticker</th><th>Richtung</th><th>Entry</th><th>Stop</th><th>Target</th><th>Strategie</th></tr>';
+    openDT.forEach(p=>{
+      const dir=p.direction||'LONG';
+      const dirColor=dir==='LONG'?'#2ecc71':'#e74c3c';
+      const dirEmoji=dir==='LONG'?'🟢':'🔴';
+      html+='<tr>';
+      html+='<td><strong>'+p.ticker+'</strong></td>';
+      html+='<td style="color:'+dirColor+'">'+dirEmoji+' '+dir+'</td>';
+      html+='<td>'+(p.entry||0).toFixed(2)+'€</td>';
+      html+='<td style="color:#e74c3c">'+(p.stop||0).toFixed(2)+'€</td>';
+      html+='<td style="color:#2ecc71">'+(p.target||0).toFixed(2)+'€</td>';
+      html+='<td>'+p.strategy+'</td>';
+      html+='</tr>';
+    });
+    html+='</table>';
+  } else {
+    const now=new Date();
+    const hour=now.getHours();
+    const isMarketHours=(hour>=9&&hour<22);
+    if(isMarketHours){
+      html+='<div class="card" style="padding:20px;text-align:center">';
+      html+='<div style="font-size:32px;margin-bottom:8px">🔍</div>';
+      html+='<div style="color:#888">Scanner aktiv — sucht Signale alle 5 Min</div>';
+      html+='<div style="color:#555;font-size:12px;margin-top:4px">DT1: Momentum | DT2: RSI Bounce | DT3: Gap Fill | DT4: EMA Cross</div>';
+      html+='</div>';
+    } else {
+      html+='<div class="card" style="padding:20px;text-align:center">';
+      html+='<div style="font-size:32px;margin-bottom:8px">🌙</div>';
+      html+='<div style="color:#888">Markt geschlossen — nächster Scan morgen 09:00 CET</div>';
+      html+='</div>';
+    }
+  }
+  
+  el.innerHTML=html;
+}
+
+function renderDTHistory(dna){
+  const el=document.getElementById('dt-history-content');
+  if(!dna){el.innerHTML='<p style="color:#888">DNA nicht geladen.</p>';return;}
+  
+  // Filter geschlossene Day Trades aus allen Strategien
+  // Wir zeigen alle geschlossenen DT-Strategien Trades
+  let html='<div class="card-title" style="margin-bottom:8px">📜 Geschlossene Day Trades</div>';
+  
+  const dtStrats=(dna.strategies||[]).filter(s=>s.strategy&&s.strategy.startsWith('DT'));
+  const closedTotal=dtStrats.reduce((s,st)=>s+st.closed,0);
+  
+  if(closedTotal===0){
+    html+='<div class="card" style="padding:20px;text-align:center">';
+    html+='<div style="font-size:32px;margin-bottom:8px">📭</div>';
+    html+='<div style="color:#888">Noch keine geschlossenen Day Trades.</div>';
+    html+='<div style="color:#555;font-size:12px;margin-top:4px">Morgen gehts los — erste Trades ab 09:00 (Xetra) / 15:30 (US)</div>';
+    html+='</div>';
+  } else {
+    html+='<p style="color:#888;margin-bottom:8px">'+closedTotal+' geschlossene Day Trades</p>';
+    html+='<table><tr><th>Strategy</th><th>Trades</th><th>Wins</th><th>Losses</th><th>Win Rate</th><th>Avg P&L</th></tr>';
+    dtStrats.forEach(st=>{
+      if(st.closed===0)return;
+      html+='<tr><td><strong>'+st.strategy+'</strong></td><td>'+st.closed+'</td>';
+      html+='<td style="color:#2ecc71">'+st.wins+'</td><td style="color:#e74c3c">'+st.losses+'</td>';
+      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+st.win_rate+'%</td>';
+      html+='<td>'+st.avg_pnl.toFixed(1)+'%</td></tr>';
+    });
+    html+='</table>';
+  }
+  
+  el.innerHTML=html;
+}
+
+function renderDTStats(dt, dna){
+  const el=document.getElementById('dt-stats-content');
+  if(!dna){el.innerHTML='<p style="color:#888">Daten nicht verfügbar.</p>';return;}
+  
+  const dtStrats=(dna.strategies||[]).filter(s=>s.strategy&&s.strategy.startsWith('DT'));
+  const totalTrades=dtStrats.reduce((s,st)=>s+st.total,0);
+  const totalClosed=dtStrats.reduce((s,st)=>s+st.closed,0);
+  const totalWins=dtStrats.reduce((s,st)=>s+st.wins,0);
+  const wr=totalClosed>0?Math.round(totalWins/totalClosed*100):0;
+  
+  let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+totalTrades+'</div><div style="color:#888;font-size:11px">Total DT Trades</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+totalClosed+'</div><div style="color:#888;font-size:11px">Geschlossen</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold;color:'+(wr>=50?'#2ecc71':'#e74c3c')+'">'+wr+'%</div><div style="color:#888;font-size:11px">Win Rate</div></div>';
+  html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:22px;font-weight:bold">'+(dt?(dt.state.daily_trades||0):0)+'</div><div style="color:#888;font-size:11px">Trades heute</div></div>';
+  html+='</div>';
+  
+  // Per-Strategy Breakdown
+  if(dtStrats.length>0){
+    html+='<div class="card-title" style="margin:12px 0 8px">Strategie-Vergleich</div>';
+    html+='<table><tr><th>Strategy</th><th>Total</th><th>Open</th><th>Closed</th><th>WR%</th><th>Avg P&L</th><th>CRV</th><th>Status</th></tr>';
+    dtStrats.forEach(st=>{
+      const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
+      html+='<tr><td>'+emoji+' <strong>'+st.strategy+'</strong></td>';
+      html+='<td>'+st.total+'</td><td>'+st.open+'</td><td>'+st.closed+'</td>';
+      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+(st.closed>0?st.win_rate+'%':'—')+'</td>';
+      html+='<td>'+(st.closed>0?st.avg_pnl.toFixed(1)+'%':'—')+'</td>';
+      html+='<td>'+st.avg_crv.toFixed(1)+'</td>';
+      html+='<td>'+(st.kill_warning?'⚠️ KILL':'✅')+'</td></tr>';
+    });
+    html+='</table>';
+  } else {
+    html+='<p style="color:#888">Noch keine DT-Strategien aktiv. Starten morgen ab 09:00 CET.</p>';
+  }
+  
+  // Kill-Warning Explanation
+  html+='<div class="card" style="padding:12px;margin-top:16px;border-left:3px solid #e74c3c">';
+  html+='<strong>⚠️ Kill Warning:</strong> Strategie wird gestoppt nach 3+ konsekutiven Verlusten. ';
+  html+='DNA-System prüft automatisch und markiert schwache Strategien.';
+  html+='</div>';
   
   el.innerHTML=html;
 }

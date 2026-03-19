@@ -663,3 +663,10 @@
 [2026-03-19 21:30:09] Risk Score: 30/100 (MEDIUM)
 [2026-03-19 21:30:09] State Snapshot geschrieben: 11 Positionen, 0 Alerts
 [2026-03-19 21:30:09] Overnight Context geschrieben: 19.03.2026
+[2026-03-19 21:45:13] Fetching 15 Yahoo tickers...
+[2026-03-19 21:45:18] Fetching Onvista prices (cache)...
+[2026-03-19 21:45:20] Onvista: 2/2 URLs gecacht
+[2026-03-19 21:45:20] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-03-19 21:45:20] Risk Score: 30/100 (MEDIUM)
+[2026-03-19 21:45:20] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-19 21:45:20] Overnight Context geschrieben: 19.03.2026
