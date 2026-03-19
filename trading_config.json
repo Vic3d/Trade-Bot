@@ -24,7 +24,10 @@
         404
       ],
       "alerts": {},
-      "notes": ""
+      "notes": "",
+      "status": "CLOSED",
+      "exit_eur": 337.71,
+      "exit_date": "2026-03-19"
     },
     "PLTR": {
       "name": "Palantir",
