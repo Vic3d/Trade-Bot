@@ -64,12 +64,21 @@ const CORR_GROUPS = [
 ];
 const SECTOR_VOL = {'KI/Tech':0.028,'Energie':0.022,'Rohstoffe':0.020,'Edelmetalle':0.025,'Pharma':0.016,'Rüstung':0.018};
 const TV_MAP = {
+  // US Stocks
   'NVDA':'NASDAQ:NVDA','MSFT':'NASDAQ:MSFT','PLTR':'NYSE:PLTR',
-  'EQNR':'OSL:EQNR','EQNR.OL':'OSL:EQNR','RIO.L':'LSE:RIO',
-  'BAYN.DE':'XETR:BAYN','ASML.AS':'AMS:ASML','FRO':'NYSE:FRO',
-  'DHT':'NYSE:DHT','OXY':'NYSE:OXY','PAAS':'NYSE:PAAS','HL':'NYSE:HL',
-  'MOS':'NYSE:MOS','TTE.PA':'EURONEXT:TTE','HO.PA':'EURONEXT:HO',
-  'GLEN.L':'LSE:GLEN','NOVO-B.CO':'CPH:NOVO B','AG':'NYSE:AG','RHM.DE':'XETR:RHM','BHP.L':'LSE:BHP',
+  'AAPL':'NASDAQ:AAPL','TSLA':'NASDAQ:TSLA','AMD':'NASDAQ:AMD',
+  'META':'NASDAQ:META','AMZN':'NASDAQ:AMZN',
+  'FRO':'NYSE:FRO','DHT':'NYSE:DHT','OXY':'NYSE:OXY',
+  'PAAS':'NYSE:PAAS','HL':'NYSE:HL','MOS':'NYSE:MOS','AG':'NYSE:AG',
+  // EU Stocks
+  'EQNR':'OSL:EQNR','EQNR.OL':'OSL:EQNR',
+  'RHM.DE':'XETR:RHM','BAYN.DE':'XETR:BAYN','SAP.DE':'XETR:SAP','SIE.DE':'XETR:SIE',
+  'ASML.AS':'AMS:ASML','RIO.L':'LSE:RIO','BHP.L':'LSE:BHP','GLEN.L':'LSE:GLEN',
+  'TTE.PA':'EURONEXT:TTE','HO.PA':'EURONEXT:HO','NOVO-B.CO':'OMXCOP:NOVO_B',
+  // ETFs — keine TradingView-Symbole (UCITS ETFs nicht gelistet)
+  // → leerer String = tvLink() gibt '#' zurück = kein toter Link
+  // Japan
+  '1605.T':'TSE:1605',                             // INPEX
 };
 
 const HTML = () => {
@@ -512,7 +521,7 @@ function stopCell(price,stop){
   return \`<div><span style="color:\${col};font-weight:600">\${stop.toFixed(2)}€</span><span class="muted" style="font-size:11px"> (\${d!=null?d.toFixed(1):'?'}%)</span></div>
           <div class="stop-bar"><div class="stop-fill" style="width:\${bar}%;background:\${col}"></div></div>\`;
 }
-function tvLink(ticker){const tv=TV_MAP[ticker]||TV_MAP[ticker?.split('.')[0]];return tv?\`https://www.tradingview.com/chart/?symbol=\${tv}\`:'#';}
+function tvLink(ticker){const tv=TV_MAP[ticker]||TV_MAP[ticker?.split('.')[0]];if(tv)return\`https://www.tradingview.com/chart/?symbol=\${tv}\`;return\`https://www.tradingview.com/chart/?symbol=\${encodeURIComponent(ticker)}\`;}
 
 // ── Main Load ─────────────────────────────────────────────
 async function loadAll(){
