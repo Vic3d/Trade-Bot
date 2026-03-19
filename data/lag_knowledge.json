@@ -4,7 +4,7 @@
     "INPEX_WTI": {
       "lead_ticker": "INPEX.T",
       "lead_name": "INPEX Corp (Tokyo)",
-      "lag_ticker": "CL=F",
+      "lag_ticker": "1605.T",
       "lag_name": "WTI Crude Oil",
       "lag_hours": 5,
       "direction": "same",

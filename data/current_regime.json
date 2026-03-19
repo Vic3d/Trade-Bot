@@ -1,60 +1,29 @@
 {
-  "regime": "ELEVATED",
-  "vix": 23.51,
-  "date": "2026-03-16",
-  "position_size_factor": 0.75,
-  "stop_factor": 1.5,
-  "description": "Breitere Stops (+50%), kleinere Positionen (75%), nur starke Setups",
-  "strategy_compatibility": {
-    "PS1": {
-      "compatible": true,
-      "reason": "\u00d6l profitiert von Krisen (ideal f\u00fcr dieses Regime)"
-    },
-    "PS2": {
-      "compatible": true,
-      "reason": "Tanker brauchen stabilen \u00d6lmarkt"
-    },
-    "PS3": {
-      "compatible": true,
-      "reason": "Defense profitiert von Krisen (ideal f\u00fcr dieses Regime)"
-    },
-    "PS4": {
-      "compatible": true,
-      "reason": "Metalle NUR bei hohem VIX (ideal f\u00fcr dieses Regime)"
-    },
-    "PS5": {
-      "compatible": true,
-      "reason": "D\u00fcnger braucht stabile Nachfrage"
-    }
+  "date": "2026-03-19",
+  "regime": "NEUTRAL",
+  "velocity": "VOLATILE",
+  "factors": {
+    "vix": 23.94,
+    "dxy": 99.103,
+    "us10y": 4.281,
+    "us2y": 3.612,
+    "wti": 93.01,
+    "gold": 4657.0,
+    "sp500_vs_ma200": -0.17
   },
-  "position_sizing": {
-    "base_size": 150,
-    "adjusted_size": 112.5,
-    "factor": 0.75,
-    "regime": "ELEVATED"
+  "config": {
+    "desc": "Seitw\u00e4rtsmarkt, moderate Volatilit\u00e4t",
+    "position_factor": 0.8,
+    "stop_factor": 1.2,
+    "allowed_strategies": [
+      "S1",
+      "S2",
+      "S4",
+      "S6",
+      "PS1",
+      "PS3",
+      "PS4"
+    ]
   },
-  "regime_history_30d": [
-    {
-      "date": "2026-03-03",
-      "from": "NORMAL",
-      "to": "ELEVATED",
-      "vix_from": 21.4,
-      "vix_to": 23.6
-    },
-    {
-      "date": "2026-03-04",
-      "from": "ELEVATED",
-      "to": "NORMAL",
-      "vix_from": 23.6,
-      "vix_to": 21.1
-    },
-    {
-      "date": "2026-03-05",
-      "from": "NORMAL",
-      "to": "ELEVATED",
-      "vix_from": 21.1,
-      "vix_to": 23.8
-    }
-  ],
-  "timestamp": "2026-03-17T20:00:36.245800"
+  "updated_at": "2026-03-19T19:40:28.993428+00:00"
 }
