@@ -1,58 +1,58 @@
 {
-  "timestamp": "2026-03-19T19:45:10.953024+00:00",
+  "timestamp": "2026-03-19T19:53:13.386000+00:00",
   "fx": {
-    "EURUSD": 1.159,
-    "EURNOK": 10.993,
+    "EURUSD": 1.1583,
+    "EURNOK": 10.9902,
     "GBPEUR": 1.1596
   },
   "macro": {
-    "wti": 94.17,
-    "vix": 24.38,
+    "wti": 93.97,
+    "vix": 24.29,
     "nikkei": -3.3795986198257086
   },
   "positions": {
     "NVDA": {
       "name": "Nvidia",
-      "price_eur": 153.82,
-      "price_raw": 178.28,
+      "price_eur": 153.93,
+      "price_raw": 178.3,
       "entry_eur": 167.88,
-      "pnl_pct": -8.38,
+      "pnl_pct": -8.31,
       "stop_eur": null
     },
     "MSFT": {
       "name": "Microsoft",
-      "price_eur": 335.2,
-      "price_raw": 388.5,
+      "price_eur": 335.42,
+      "price_raw": 388.52,
       "entry_eur": 351.85,
-      "pnl_pct": -4.73,
+      "pnl_pct": -4.67,
       "stop_eur": 338.0
     },
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 133.75,
-      "price_raw": 155.02,
+      "price_eur": 133.86,
+      "price_raw": 155.04,
       "entry_eur": 132.11,
-      "pnl_pct": 1.24,
+      "pnl_pct": 1.32,
       "stop_eur": 127.0,
-      "conviction": 100
+      "conviction": 57
     },
     "EQNR": {
       "name": "Equinor ASA",
-      "price_eur": 36.26,
+      "price_eur": 36.27,
       "price_raw": 398.6,
       "entry_eur": 27.45,
-      "pnl_pct": 32.09,
+      "pnl_pct": 32.13,
       "stop_eur": 33.0,
       "conviction": 100
     },
     "BAYN.DE": {
       "name": "Bayer AG",
-      "price_eur": 38.66,
-      "price_raw": 38.66,
+      "price_eur": 38.72,
+      "price_raw": 38.72,
       "entry_eur": 39.95,
-      "pnl_pct": -3.22,
+      "pnl_pct": -3.09,
       "stop_eur": 38.0,
-      "conviction": 50
+      "conviction": 40
     },
     "RIO.L": {
       "name": "Rio Tinto",
@@ -64,45 +64,45 @@
     },
     "RHM.DE": {
       "name": "Rheinmetall AG",
-      "price_eur": 1558.0,
-      "price_raw": 1558.0,
+      "price_eur": 1559.5,
+      "price_raw": 1559.5,
       "entry_eur": 1570.0,
-      "pnl_pct": -0.76,
+      "pnl_pct": -0.67,
       "stop_eur": 1520.0
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
-      "price_eur": 49.08,
-      "price_raw": 56.88,
+      "price_eur": 49.14,
+      "price_raw": 56.92,
       "entry_eur": 22.4,
-      "pnl_pct": 119.11,
+      "pnl_pct": 119.38,
       "stop_eur": null,
-      "conviction": 70
+      "conviction": 47
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 338.49,
-      "price_raw": 392.31,
+      "price_eur": 338.79,
+      "price_raw": 392.42,
       "entry_eur": 27.9,
-      "pnl_pct": 1113.23,
+      "pnl_pct": 1114.28,
       "stop_eur": 24.0,
       "conviction": 100
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
-      "price_eur": 56.23,
-      "price_raw": 65.17,
+      "price_eur": 56.3,
+      "price_raw": 65.21,
       "entry_eur": 28.8,
-      "pnl_pct": 95.24,
+      "pnl_pct": 95.48,
       "stop_eur": 25.95,
       "conviction": 90
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 142.06,
-      "price_raw": 164.65,
+      "price_eur": 142.08,
+      "price_raw": 164.57,
       "entry_eur": 7.0,
-      "pnl_pct": 1929.46,
+      "pnl_pct": 1929.7,
       "stop_eur": 6.3,
       "conviction": 50
     }

@@ -228,6 +228,9 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   <button onclick="showMain('watchlist',this)">👁 Watchlist</button>
   <button onclick="showMain('calendar',this)">📅 Kalender</button>
   <button onclick="showMain('risk',this)">🛡️ Risiko</button>
+  <button onclick="showMain('signals',this);loadSignals()">📡 Signale</button>
+  <button onclick="showMain('analytics',this);loadAnalytics()">📊 DNA</button>
+  <button onclick="showMain('macro',this);loadMacro()">🌍 Macro</button>
 </div>
 
 <!-- REAL PORTFOLIO -->
@@ -377,6 +380,27 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   </div>
   <div id="risk-var" class="sub-panel">
     <div id="var-content"><div class="loading">Lädt…</div></div>
+  </div>
+</div>
+
+<!-- SIGNALS TAB -->
+<div id="main-signals" class="main-panel">
+  <div class="card"><div class="card-title">📡 Signal Engine — Aktive Lead-Lag Signale</div>
+    <div id="signals-content"><div class="loading">Lädt…</div></div>
+  </div>
+</div>
+
+<!-- ANALYTICS/DNA TAB -->
+<div id="main-analytics" class="main-panel">
+  <div class="card"><div class="card-title">📊 Strategy DNA — Lernende Analyse</div>
+    <div id="analytics-content"><div class="loading">Lädt…</div></div>
+  </div>
+</div>
+
+<!-- MACRO TAB -->
+<div id="main-macro" class="main-panel">
+  <div class="card"><div class="card-title">🌍 Macro Dashboard — 14 Indikatoren, 5 Jahre</div>
+    <div id="macro-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
 
@@ -884,6 +908,125 @@ function checkStopAlerts(){
       new Notification(\`⚠️ Stop-Alarm: \${p.ticker}\`,{body:\`Kurs \${eur.toFixed(2)}€ — Stop \${p.stop_eur}€ nur \${((eur-p.stop_eur)/eur*100).toFixed(1)}% entfernt!\`});
     }
   });
+}
+
+// ── Neue Tabs: Signals, Analytics, Macro ──
+
+async function loadSignals(){
+  const el=document.getElementById('signals-content');
+  try{
+    const r=await fetch('/api/signals');
+    const signals=await r.json();
+    if(!signals.length){el.innerHTML='<p style="color:#888">Noch keine Signale erfasst.</p>';return;}
+    let html='<table><tr><th>Pair</th><th>Lead→Lag</th><th>Signal</th><th>Outcome</th><th>Regime</th><th>VIX</th><th>Datum</th></tr>';
+    signals.forEach(s=>{
+      const outcomeColor=s.outcome==='WIN'?'#2ecc71':(s.outcome==='LOSS'?'#e74c3c':'#f39c12');
+      html+='<tr>';
+      html+='<td>'+s.pair_id+'</td>';
+      html+='<td>'+s.lead_ticker+' → '+s.lag_ticker+'</td>';
+      html+='<td>'+s.signal_value+'</td>';
+      html+='<td style="color:'+outcomeColor+'">'+s.outcome+'</td>';
+      html+='<td>'+(s.regime_at_signal||'—')+'</td>';
+      html+='<td>'+(s.vix_at_signal?s.vix_at_signal.toFixed(1):'—')+'</td>';
+      html+='<td>'+(s.created_at||'').slice(0,16)+'</td>';
+      html+='</tr>';
+    });
+    html+='</table>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
+}
+
+async function loadAnalytics(){
+  const el=document.getElementById('analytics-content');
+  try{
+    const r=await fetch('/api/analytics');
+    const data=await r.json();
+    let html='';
+    
+    // Trade Stats
+    const s=data.stats;
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+s.total+'</div><div style="color:#888">Trades</div></div>';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:'+(s.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+s.win_rate+'%</div><div style="color:#888">Win Rate</div></div>';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:'+(s.total_pnl>=0?'#2ecc71':'#e74c3c')+'">'+s.total_pnl.toFixed(0)+'€</div><div style="color:#888">P&L</div></div>';
+    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+s.expectancy.toFixed(1)+'%</div><div style="color:#888">Expectancy</div></div>';
+    html+='</div>';
+    
+    // Strategy DNA
+    html+='<h3 style="margin:12px 0 8px">Strategien</h3><table><tr><th>Strategy</th><th>Trades</th><th>WR%</th><th>Avg P&L</th><th>CRV</th><th>Hold</th><th>Status</th></tr>';
+    (data.dna.strategies||[]).forEach(st=>{
+      const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
+      html+='<tr><td>'+emoji+' '+st.strategy+'</td><td>'+st.total+' ('+st.open+'o/'+st.closed+'c)</td>';
+      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+st.win_rate+'%</td>';
+      html+='<td>'+st.avg_pnl.toFixed(1)+'%</td><td>'+st.avg_crv.toFixed(1)+'</td>';
+      html+='<td>'+st.avg_hold_days.toFixed(0)+'d</td>';
+      html+='<td>'+(st.kill_warning?'⚠️ KILL':'OK')+'</td></tr>';
+    });
+    html+='</table>';
+    
+    // Trader Profile
+    const p=data.dna.trader_profile;
+    html+='<h3 style="margin:12px 0 8px">Trader-Profil</h3>';
+    html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
+    html+='<div class="card" style="padding:12px"><strong>Max Consecutive Losses:</strong> '+p.max_consecutive_losses+'</div>';
+    html+='<div class="card" style="padding:12px"><strong>Revenge Trades:</strong> '+p.revenge_trades+'</div>';
+    html+='<div class="card" style="padding:12px"><strong>Stop-Disziplin:</strong> '+p.stop_discipline_pct+'%</div>';
+    html+='</div>';
+    
+    // Calibration
+    html+='<h3 style="margin:12px 0 8px">Conviction Buckets</h3><table><tr><th>Bucket</th><th>Trades</th><th>Win Rate</th></tr>';
+    Object.entries(data.calibration.conviction_buckets||{}).forEach(([k,v])=>{
+      html+='<tr><td>'+k+'</td><td>'+v.total+'</td><td>'+(v.total>0?v.win_rate+'%':'—')+'</td></tr>';
+    });
+    html+='</table>';
+    
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
+}
+
+async function loadMacro(){
+  const el=document.getElementById('macro-content');
+  try{
+    const r=await fetch('/api/macro');
+    const data=await r.json();
+    
+    const order=['VIX','WTI','BRENT','GOLD','DXY','US10Y','US2Y','COPPER','EURUSD','SP500','NASDAQ','BRENT_WTI_SPREAD','YIELD_SPREAD_2Y10Y'];
+    const names={VIX:'VIX',WTI:'WTI Öl',BRENT:'Brent',GOLD:'Gold',DXY:'Dollar Index',US10Y:'US 10Y Yield',US2Y:'US 2Y Yield',COPPER:'Kupfer',EURUSD:'EUR/USD',SP500:'S&P 500',NASDAQ:'Nasdaq','BRENT_WTI_SPREAD':'Brent-WTI Spread','YIELD_SPREAD_2Y10Y':'Yield Spread 2Y-10Y'};
+    const units={VIX:'',WTI:'$',BRENT:'$',GOLD:'$',DXY:'',US10Y:'%',US2Y:'%',COPPER:'$',EURUSD:'',SP500:'',NASDAQ:''};
+    
+    let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    order.forEach(ind=>{
+      const d=data[ind];
+      if(!d)return;
+      const chg=d.change_pct||0;
+      const color=chg>0?'#2ecc71':(chg<0?'#e74c3c':'#888');
+      const unit=units[ind]||'';
+      html+='<div class="card" style="padding:12px">';
+      html+='<div style="color:#888;font-size:11px">'+(names[ind]||ind)+'</div>';
+      html+='<div style="font-size:20px;font-weight:bold">'+unit+(d.current?d.current.toFixed(2):'—')+'</div>';
+      html+='<div style="color:'+color+';font-size:13px">'+(chg>0?'+':'')+chg.toFixed(2)+'%</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+    
+    // Sparkline für VIX (30 Tage)
+    if(data.VIX&&data.VIX.history){
+      const hist=data.VIX.history.reverse();
+      const vals=hist.map(h=>h.value);
+      const min=Math.min(...vals),max=Math.max(...vals);
+      const w=400,h=80;
+      let path='M';
+      vals.forEach((v,i)=>{
+        const x=i/(vals.length-1)*w;
+        const y=h-(v-min)/(max-min||1)*h;
+        path+=(i===0?'':' L')+x.toFixed(1)+','+y.toFixed(1);
+      });
+      html+='<div class="card" style="padding:12px;margin-top:12px"><div style="color:#888;margin-bottom:4px">VIX 30 Tage</div>';
+      html+='<svg width="'+w+'" height="'+h+'" style="width:100%;height:auto"><path d="'+path+'" fill="none" stroke="#e74c3c" stroke-width="2"/></svg></div>';
+    }
+    
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
 }
 
 // Theme aus localStorage laden

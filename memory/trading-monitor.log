@@ -604,3 +604,13 @@
 [2026-03-19 19:45:09] Fetching Onvista prices (cache)...
 [2026-03-19 19:45:10] Onvista: 2/2 URLs gecacht
 [2026-03-19 19:45:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-19 19:53:05] Fetching 15 Yahoo tickers...
+[2026-03-19 19:53:11] Fetching Onvista prices (cache)...
+[2026-03-19 19:53:13] Onvista: 2/2 URLs gecacht
+[2026-03-19 19:53:13] Conviction v2 fallback für EQNR: list index out of range
+[2026-03-19 19:53:13] Conviction v2 fallback für A3D42Y: list index out of range
+[2026-03-19 19:53:13] Conviction v2 fallback für A14WU5: list index out of range
+[2026-03-19 19:53:13] Conviction v2 fallback für A2DWAW: list index out of range
+[2026-03-19 19:53:13] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-03-19 19:53:13] Risk Score: 50/100 (MEDIUM)
+[2026-03-19 19:53:13] State Snapshot geschrieben: 11 Positionen, 0 Alerts

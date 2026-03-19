@@ -67,12 +67,25 @@ STRATEGIEN_PATH = WORKSPACE / 'memory' / 'strategien.md'
 
 # trade_journal Modul einbinden
 sys.path.insert(0, str(WORKSPACE / 'scripts'))
+sys.path.insert(0, str(WORKSPACE / 'scripts' / 'intelligence'))
+sys.path.insert(0, str(WORKSPACE / 'scripts' / 'core'))
+sys.path.insert(0, str(WORKSPACE / 'scripts' / 'execution'))
 try:
     from trade_journal import log_alert as _journal_log_alert
     JOURNAL_AVAILABLE = True
 except ImportError:
     JOURNAL_AVAILABLE = False
     def _journal_log_alert(data): pass
+
+# TradeMind v2 Module (Sprint 1-4)
+try:
+    from regime_detector import detect_current_regime as _detect_regime
+    from conviction_scorer import calculate_conviction as _calc_conviction_v2
+    from signal_engine import calculate_confluence as _calc_confluence
+    from risk_manager import full_risk_report as _risk_report
+    TRADEMIND_V2 = True
+except ImportError:
+    TRADEMIND_V2 = False
 
 # ─── Log (mit effizienter Rotation) ──────────────────────────────────
 _log_counter = 0
@@ -881,21 +894,30 @@ def conviction_score(ticker: str, pos: dict, price_eur: float,
                      stop_eur: float | None, entry_eur: float,
                      vix: float | None, strategy_statuses: dict) -> dict:
     """
-    Berechnet einen 0–100 Conviction Score — 4 aktive Faktoren:
-
-    F1: Trend (Preis vs EMA20/EMA50)    +20 über beide | 0 gemischt | -20 unter beide
-    F2: VIX Regime                      +20 <20 | 0 20-25 | -10 25-30 | -20 >30
-    F3: Stop-Abstand                    +20 >5% | 0 3-5% | -20 <3% | -20 kein Stop!
-    F4: Strategie-Status                +20 🟢 | 0 🟡 | -20 🔴
-
-    Basis: 50 | Max: 130 → capped 100 | Min: -30 → floored 0
-    Volume-Faktor entfernt (Yahoo 5m liefert kein zuverlässiges Volumen ohne extra API-Call)
-
+    Conviction Score — nutzt TradeMind v2 (8 Faktoren) wenn verfügbar,
+    sonst Fallback auf 4-Faktor-Version.
     Returns: {'score': int, 'factors': dict, 'recommendation': str}
     """
+    # ── TradeMind v2: 8-Faktor Conviction Scorer ──
+    if TRADEMIND_V2:
+        try:
+            s_num = _TICKER_TO_STRATEGY.get(ticker, 0)
+            strategy = f'S{s_num}' if s_num > 0 else 'S1'
+            targets = pos.get('targets_eur', []) if isinstance(pos, dict) else []
+            target = targets[0] if targets else None
+            
+            result = _calc_conviction_v2(ticker, strategy, entry_eur, stop_eur, target)
+            return {
+                'score': int(result['score']),
+                'factors': result['factors'],
+                'recommendation': result['recommendation'],
+            }
+        except Exception as e:
+            log(f"Conviction v2 fallback für {ticker}: {e}")
+    
+    # ── Fallback: 4-Faktor-Version ──
     factors = {'trend': 0, 'vix': 0, 'stop_abstand': 0, 'strategie': 0}
 
-    # F1: Trend — EMA aus Yahoo (native Währung, daher Direktvergleich korrekt)
     yahoo_ticker = pos.get('yahoo') if isinstance(pos, dict) else ticker
     ema_data = get_ema_data(yahoo_ticker) if yahoo_ticker else None
     if ema_data:
@@ -907,51 +929,33 @@ def conviction_score(ticker: str, pos: dict, price_eur: float,
                 factors['trend'] = 20
             elif native_price < ema20 and native_price < ema50:
                 factors['trend'] = -20
-            # else: zwischen EMA20/50 → neutral (0)
 
-    # F2: VIX
     if vix is not None:
-        if vix < 20:
-            factors['vix'] = 20
-        elif vix <= 25:
-            factors['vix'] = 0
-        elif vix <= 30:
-            factors['vix'] = -10
-        else:
-            factors['vix'] = -20
+        if vix < 20: factors['vix'] = 20
+        elif vix <= 25: factors['vix'] = 0
+        elif vix <= 30: factors['vix'] = -10
+        else: factors['vix'] = -20
 
-    # F3: Stop-Abstand — kein Stop gesetzt = -20 (Risiko!)
     if stop_eur and price_eur and price_eur > 0:
         abstand_pct = (price_eur - stop_eur) / price_eur * 100
-        if abstand_pct > 5:
-            factors['stop_abstand'] = 20
-        elif abstand_pct >= 3:
-            factors['stop_abstand'] = 0
-        else:
-            factors['stop_abstand'] = -20
+        if abstand_pct > 5: factors['stop_abstand'] = 20
+        elif abstand_pct >= 3: factors['stop_abstand'] = 0
+        else: factors['stop_abstand'] = -20
     else:
-        factors['stop_abstand'] = -20  # Kein Stop = Risiko
+        factors['stop_abstand'] = -20
 
-    # F4: Strategie-Status
     s_num    = _TICKER_TO_STRATEGY.get(ticker, 0)
     s_status = strategy_statuses.get(s_num, '🟡')
-    if '🟢' in s_status:
-        factors['strategie'] = 20
-    elif '🔴' in s_status:
-        factors['strategie'] = -20
-    else:
-        factors['strategie'] = 0
+    if '🟢' in s_status: factors['strategie'] = 20
+    elif '🔴' in s_status: factors['strategie'] = -20
+    else: factors['strategie'] = 0
 
     score = max(0, min(100, 50 + sum(factors.values())))
 
-    if score >= 80:
-        recommendation = 'Starkes Signal'
-    elif score >= 50:
-        recommendation = 'Moderates Signal'
-    elif score >= 20:
-        recommendation = 'Schwaches Signal — Vorsicht'
-    else:
-        recommendation = 'Kein Entry / Exit prüfen'
+    if score >= 80: recommendation = 'Starkes Signal'
+    elif score >= 50: recommendation = 'Moderates Signal'
+    elif score >= 20: recommendation = 'Schwaches Signal — Vorsicht'
+    else: recommendation = 'Kein Entry / Exit prüfen'
 
     return {'score': score, 'factors': factors, 'recommendation': recommendation}
 
@@ -1326,6 +1330,30 @@ def main():
         if key in export['positions']:
             export['positions'][key]['conviction'] = conv.get('score')
     save_json(PRICES_PATH, export)
+
+    # ── TradeMind v2: Regime + Risk in Export einbauen ──
+    if TRADEMIND_V2:
+        try:
+            regime = _detect_regime()
+            export['regime'] = {
+                'current': regime['regime'],
+                'velocity': regime.get('velocity', 'UNKNOWN'),
+                'vix': regime['factors'].get('vix'),
+                'sp500_vs_ma200': regime['factors'].get('sp500_vs_ma200'),
+            }
+            log(f"Regime: {regime['regime']} (Velocity: {regime.get('velocity')})")
+        except Exception as e:
+            log(f"Regime detection error: {e}")
+        
+        try:
+            risk = _risk_report()
+            export['risk'] = {
+                'score': risk['risk_score'],
+                'label': risk['risk_label'],
+            }
+            log(f"Risk Score: {risk['risk_score']}/100 ({risk['risk_label']})")
+        except Exception as e:
+            log(f"Risk report error: {e}")
 
     # ── State Snapshot ──
     update_state_snapshot(config, export, strategy_statuses, conviction_cache, all_alerts)
