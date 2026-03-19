@@ -1,5 +1,5 @@
 // Vercel Serverless: fetch live prices from Yahoo Finance
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   
   const tickers = [
