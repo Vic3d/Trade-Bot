@@ -44,11 +44,11 @@
       "name": "Equinor ASA",
       "yahoo": "EQNR.OL",
       "currency": "NOK",
-      "entry_eur": 27.04,
-      "stop_eur": 30.0,
+      "entry_eur": 27.45,
+      "stop_eur": 33.0,
       "targets_eur": [],
       "alerts": {},
-      "notes": "Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuft"
+      "notes": "Stop auf 30\u20ac nachgezogen 16.03. | Buy-back Q1 l\u00e4uft"
     },
     "BAYN.DE": {
       "name": "Bayer AG",
@@ -72,7 +72,7 @@
         85
       ],
       "alerts": {},
-      "notes": "⚠️ Stop 73€ in TR setzen!"
+      "notes": "\u26a0\ufe0f Stop 73\u20ac in TR setzen!"
     },
     "RHM.DE": {
       "name": "Rheinmetall AG",
@@ -85,7 +85,7 @@
         1900
       ],
       "alerts": {},
-      "notes": "VERKAUFT 16.03. @ ~1605€ (+2,2%) | Watchlist Re-Entry >1626€",
+      "notes": "VERKAUFT 16.03. @ ~1605\u20ac (+2,2%) | Watchlist Re-Entry >1626\u20ac",
       "status": "CLOSED",
       "exit_eur": 1605.0,
       "exit_date": "2026-03-16"
@@ -100,7 +100,7 @@
         28
       ],
       "alerts": {},
-      "notes": "⚠️ KEIN STOP — Breakeven 22,40€ setzen!"
+      "notes": "\u26a0\ufe0f KEIN STOP \u2014 Breakeven 22,40\u20ac setzen!"
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
@@ -120,7 +120,7 @@
       "stop_eur": 25.95,
       "targets_eur": [],
       "alerts": {},
-      "notes": "Stop 2% weg — eng"
+      "notes": "Stop 2% weg \u2014 eng"
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
@@ -141,14 +141,14 @@
       "entry_a_above_usd": 27.8,
       "entry_b_below_usd": 24.3,
       "candlestick_detect": true,
-      "notes": "Umkehrkerze-Bestätigung nötig"
+      "notes": "Umkehrkerze-Best\u00e4tigung n\u00f6tig"
     },
     "BHP.L": {
       "name": "BHP Group",
       "yahoo": "BHP.L",
       "currency": "GBP",
       "entry_b_below_eur": 28.0,
-      "notes": "Kupfer/Lithium-Setup, 20W-MA ~27.57€"
+      "notes": "Kupfer/Lithium-Setup, 20W-MA ~27.57\u20ac"
     },
     "ASML": {
       "name": "ASML Holding",
