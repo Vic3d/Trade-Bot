@@ -123,6 +123,15 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 .crv-good{color:var(--green);font-weight:600}
 .crv-bad{color:var(--red)}
 .crv-ok{color:var(--orange)}
+.news-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.news-item:hover{border-color:var(--accent)}
+.news-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:6px}
+.news-title a{color:var(--text);text-decoration:none}
+.news-title a:hover{color:var(--blue)}
+.news-meta{font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.news-badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:12px;font-size:12px;cursor:pointer}
+.filter-btn.active{border-color:var(--accent);color:var(--text)}
 </style>
 </head>
 <body>
@@ -137,6 +146,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 <div class="main-nav">
   <button class="active" onclick="showMain('real',this)">📈 Real Portfolio</button>
   <button onclick="showMain('paper',this)">🧪 Paper Trades</button>
+  <button onclick="showMain('news',this);loadNews()">📰 News</button>
 </div>
 
 <!-- ═══ REAL PORTFOLIO ═══ -->
@@ -198,6 +208,14 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 
   <div id="real-history" class="sub-panel">
     <div id="history-table"><div class="loading">Lädt…</div></div>
+  </div>
+</div>
+
+<!-- ═══ NEWS ═══ -->
+<div id="main-news" class="main-panel">
+  <div style="padding:14px 16px">
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap" id="news-filter"></div>
+    <div id="news-list"><div class="loading">Lädt…</div></div>
   </div>
 </div>
 
@@ -639,6 +657,49 @@ async function logPaperTrade() {
     if(d.status==='ok'){el.textContent=\`✅ \${ticker} gespeichert\`;el.style.color='var(--green)';['pl-ticker','pl-price','pl-stop','pl-target','pl-notes'].forEach(id=>document.getElementById(id).value='');}
     else{el.textContent='❌ '+d.error;el.style.color='var(--red)';}
   }catch(e){el.textContent='❌ '+e.message;el.style.color='var(--red)';}
+}
+
+let newsLoaded = false;
+let allNews = [];
+let newsFilter = 'ALL';
+
+async function loadNews() {
+  if(newsLoaded) return;
+  document.getElementById('news-list').innerHTML='<div class="loading">Lädt News…</div>';
+  try {
+    // Tickers aus Config holen
+    const tickers = cfg ? (cfg.positions||[]).filter(p=>p.status!=='CLOSED').map(p=>p.ticker).slice(0,5).join(',') : 'NVDA,EQNR,RIO';
+    const d = await fetch(\`/api/news?tickers=\${tickers}\`).then(r=>r.json());
+    allNews = d.news || [];
+    renderNews('ALL');
+    newsLoaded = true;
+  } catch(e) {
+    document.getElementById('news-list').innerHTML=\`<div class="history-empty">⚠️ \${e.message}</div>\`;
+  }
+}
+
+function renderNews(filter) {
+  newsFilter = filter;
+  // Filter-Buttons
+  const tickers = ['ALL', 'MACRO', ...new Set(allNews.filter(n=>n.ticker!=='MACRO').map(n=>n.ticker))];
+  document.getElementById('news-filter').innerHTML = tickers.map(t=>
+    \`<button class="filter-btn \${t===filter?'active':''}" onclick="renderNews('\${t}')">\${t==='ALL'?'Alle':t==='MACRO'?'🌍 Makro':t}</button>\`
+  ).join('');
+
+  const filtered = filter==='ALL' ? allNews : allNews.filter(n=>n.ticker===filter);
+  if(!filtered.length){
+    document.getElementById('news-list').innerHTML='<div class="history-empty">Keine News gefunden</div>';
+    return;
+  }
+  document.getElementById('news-list').innerHTML = filtered.map(n => {
+    const time = n.time ? new Date(n.time).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+    const tickerColor = n.ticker==='MACRO' ? '#58a6ff' : '#7c3aed';
+    const badge = \`<span class="news-badge" style="background:\${tickerColor}22;color:\${tickerColor}">\${n.ticker}</span>\`;
+    return \`<div class="news-item">
+      <div class="news-title"><a href="\${n.url}" target="_blank" rel="noopener">\${n.title}</a></div>
+      <div class="news-meta">\${badge}<span>\${n.source||''}</span><span>\${time}</span></div>
+    </div>\`;
+  }).join('');
 }
 
 loadAll();
