@@ -32,6 +32,7 @@ import re
 import sys
 import time
 import urllib.request
+import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -200,7 +201,7 @@ def prefetch_onvista(config: dict) -> dict:
     for pos in config.get('positions', {}).values():
         if url := pos.get('onvista'):
             urls.add(url)
-    for watch in config.get('watchlist', {}).values():
+    for watch in config.get('watchlist', []):
         if url := watch.get('onvista'):
             urls.add(url)
 
@@ -451,7 +452,8 @@ def check_watchlist(config: dict, prices: dict, fx: dict, state: dict,
     alerts = []
     sent_today = state.get('alerts_sent_today', set())
 
-    for key, watch in config.get('watchlist', {}).items():
+    for watch in config.get('watchlist', []):
+        key = watch['ticker']
         name   = watch['name']
         ticker = f"{name} ({key})"
 
@@ -505,10 +507,165 @@ def check_watchlist(config: dict, prices: dict, fx: dict, state: dict,
     return alerts
 
 
+# ─── Kausalketten-System ─────────────────────────────────────────────
+
+# Wie sich bekannte Makro-Ursachen auf Positionen auswirken
+# direction: '+' = bullish, '-' = bearish, '0' = neutral
+# strength: 'stark' | 'mittel' | 'leicht'
+CAUSAL_CHAINS = {
+    'oil_shock': {
+        'label': 'Öl-Schock',
+        'explanation': 'Brent/WTI steigt → Energie-Importeure (Japan) unter Kosten-Druck → Nikkei fällt',
+        'headlines_kw': ['oil', 'crude', 'brent', 'wti', 'opec', 'iran', 'energy', 'barrel', 'petroleum', 'öl'],
+        'impact': {
+            'EQNR':    ('+', 'stark',  'Ölproduzent — profitiert direkt'),
+            'NVDA':    ('-', 'leicht', 'Energiekosten der Rechenzentren steigen'),
+            'MSFT':    ('-', 'leicht', 'Energiekosten steigen'),
+            'PLTR':    ('0', 'neutral','Kein direkter Öl-Bezug'),
+            'BAYN.DE': ('0', 'neutral','Kein direkter Öl-Bezug'),
+        },
+        'strategy_menu': [
+            '🟢 Halten: EQNR Stop nachziehen — Thesis bestätigt',
+            '🟡 Teilverkauf Tech: NVDA/MSFT reduzieren wenn VIX > 27',
+            '🔴 Voll Exit Rohstoffe: Wenn Nikkei bis 12 Uhr nicht erholt',
+        ],
+    },
+    'china_slowdown': {
+        'label': 'China-Abschwächung',
+        'explanation': 'Schwache China-Nachfrage → Rohstoff-Preise fallen → Bergbau und Energie verlieren',
+        'headlines_kw': ['china', 'pmi', 'manufacturing', 'iron ore', 'copper', 'steel', 'demand', 'slowdown', 'industrial'],
+        'impact': {
+            'EQNR':    ('-', 'mittel', 'Energienachfrage sinkt'),
+            'NVDA':    ('-', 'leicht', 'Lieferkette/Absatzmarkt unter Druck'),
+            'MSFT':    ('0', 'neutral','Kaum China-Exposure im Cloud-Bereich'),
+        },
+        'strategy_menu': [
+            '🟢 Halten: Kurzfristig schmerzt es, mittelfristig erholt sich China',
+            '🟡 Stop enger setzen bei Energie-Positionen (EQNR)',
+            '🔴 Exit Rohstoffe: Wenn PMI < 49 für 2+ Monate bestätigt',
+        ],
+    },
+    'boj_rate_hike': {
+        'label': 'BoJ-Zinsschock',
+        'explanation': 'Bank of Japan hebt Zinsen → Yen stärkt sich stark → japanische Exporteure verlieren → Nikkei fällt',
+        'headlines_kw': ['boj', 'bank of japan', 'yen', 'rate hike', 'interest rate', 'usd/jpy', 'kuroda', 'ueda'],
+        'impact': {
+            'NVDA':    ('-', 'mittel', 'Risk-Off, Kapitalabfluss aus Growth-Aktien'),
+            'PLTR':    ('-', 'mittel', 'Risk-Off drückt auf hochbewertete Tech-Aktien'),
+            'MSFT':    ('-', 'leicht', 'Leichter Risk-Off Effekt'),
+            'EQNR':    ('0', 'neutral','Kein direkter BoJ-Bezug'),
+        },
+        'strategy_menu': [
+            '🟢 Halten: BoJ-Hikes sind strukturell bullisch für Finanzstabilität, kurzfristiger Schmerz',
+            '🟡 PLTR Stop prüfen — hoch bewertet = am stärksten betroffen bei Risk-Off',
+            '🔴 Growth-Tech reduzieren wenn USD/JPY < 145',
+        ],
+    },
+    'us_contagion': {
+        'label': 'US-Marktdruck',
+        'explanation': 'US-Märkte (Nasdaq/S&P) fallen → überträgt sich auf Asien über globale Risikoaversion',
+        'headlines_kw': ['nasdaq', 's&p', 'sp500', 'fed', 'recession', 'inflation', 'powell', 'fomc', 'tech selloff'],
+        'impact': {
+            'NVDA':    ('-', 'stark',  'Tech-Selloff trifft NVDA direkt'),
+            'MSFT':    ('-', 'stark',  'Tech-Selloff trifft MSFT direkt'),
+            'PLTR':    ('-', 'stark',  'High-Beta, verliert überproportional'),
+            'EQNR':    ('-', 'leicht', 'Leichter Risk-Off Effekt'),
+            'BAYN.DE': ('-', 'leicht', 'Defensive, aber nicht immun'),
+        },
+        'strategy_menu': [
+            '🟢 Halten: Wenn US-Markt nur korrigiert (< −5%), nicht crasht',
+            '🟡 PLTR Stop sofort prüfen — enger als normale Korrektur erlaubt',
+            '🔴 Tech-Positionen halbieren wenn Nasdaq −3% intraday',
+        ],
+    },
+    'geopolitical': {
+        'label': 'Geopolitische Eskalation',
+        'explanation': 'Geopolitische Krise → Öl-Risikoprämie steigt, Safe-Haven-Nachfrage, Rüstung profitiert',
+        'headlines_kw': ['war', 'attack', 'conflict', 'military', 'iran', 'missile', 'ukraine', 'taiwan', 'escalat', 'sanction'],
+        'impact': {
+            'EQNR':    ('+', 'stark',  'Öl-Risikoprämie steigt — direkt profitiert'),
+            'NVDA':    ('-', 'mittel', 'Risk-Off, Lieferketten-Unsicherheit'),
+            'MSFT':    ('-', 'leicht', 'Leichter Risk-Off'),
+            'BAYN.DE': ('0', 'neutral','Defensiver Sektor, kaum betroffen'),
+        },
+        'strategy_menu': [
+            '🟢 Halten EQNR + Öl-Positionen — Thesis verstärkt sich',
+            '🟡 VIX monitoren: über 30 → Stops bei Tech enger setzen',
+            '🔴 Wenn Konflikt eskaliert (US involviert) → breiter Risikoabbau',
+        ],
+    },
+}
+
+
+def fetch_macro_headlines(query: str, max_results: int = 5) -> list[str]:
+    """Holt aktuelle Headlines via Google News RSS (kein API-Key nötig)."""
+    try:
+        import xml.etree.ElementTree as ET
+        url = f'https://news.google.com/rss/search?q={urllib.parse.quote(query)}&hl=en&gl=US&ceid=US:en'
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            xml_data = r.read()
+        root = ET.fromstring(xml_data)
+        headlines = []
+        for item in root.findall('.//item')[:max_results]:
+            title = item.findtext('title', '')
+            if title:
+                headlines.append(title.lower())
+        return headlines
+    except Exception:
+        return []
+
+
+def classify_macro_cause(headlines: list[str], fallback: str = 'unknown') -> str:
+    """Bestimmt die Ursache eines Macro-Signals anhand von Headline-Keywords."""
+    text = ' '.join(headlines)
+    scores = {}
+    for cause, chain in CAUSAL_CHAINS.items():
+        score = sum(1 for kw in chain['headlines_kw'] if kw in text)
+        if score > 0:
+            scores[cause] = score
+    if not scores:
+        return fallback
+    return max(scores, key=scores.get)
+
+
+def build_macro_alert(signal_name: str, signal_value: str,
+                      cause: str, positions: dict) -> str:
+    """Baut eine vollständige Makro-Alert-Nachricht mit Kausalkette + Strategie-Menu."""
+    chain = CAUSAL_CHAINS.get(cause)
+    if not chain:
+        return f"⚠️ {signal_name}: {signal_value} — Ursache unbekannt, Stops prüfen!"
+
+    # Betroffene Positionen aus aktuellem Portfolio filden
+    active = [t for t, p in positions.items()
+              if isinstance(p, dict) and p.get('status') != 'CLOSED']
+    affected_lines = []
+    for ticker in active:
+        # Ticker-Varianten prüfen (EQNR.OL → EQNR etc.)
+        base = ticker.replace('.DE', '').replace('.L', '').replace('.OL', '').replace('.AS', '')
+        match = chain['impact'].get(ticker) or chain['impact'].get(base)
+        if match:
+            direction, strength, note = match
+            icon = '📈' if direction == '+' else ('📉' if direction == '-' else '➡️')
+            affected_lines.append(f"  {icon} {ticker}: {strength} — {note}")
+
+    affected_str = '\n'.join(affected_lines) if affected_lines else '  Keine direkt betroffenen Positionen'
+    strategy_str = '\n'.join(f'  {s}' for s in chain['strategy_menu'])
+
+    return (
+        f"⚠️ MACRO: {signal_name} {signal_value}\n"
+        f"📌 Ursache: {chain['label']}\n"
+        f"🔗 Kausalkette: {chain['explanation']}\n\n"
+        f"📊 Portfolio-Impact:\n{affected_str}\n\n"
+        f"🎯 Strategie-Menu:\n{strategy_str}"
+    )
+
+
 def check_macro(config: dict, prices: dict, state: dict) -> list:
-    """Prüft WTI-Öl, VIX und Nikkei 225 auf signifikante Bewegungen."""
+    """Prüft WTI-Öl, VIX und Nikkei 225 — mit Kausalketten-Analyse bei Alarm."""
     alerts     = []
     macro      = config.get('macro', {})
+    positions  = config.get('positions', {})
     sent_today = state.get('alerts_sent_today', set())
 
     # ── WTI Öl ──
@@ -530,11 +687,14 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
             if abs(wti_30m) >= threshold:
                 mkey = 'MACRO_WTI_30M'
                 if mkey not in sent_today:
-                    direction = '📈' if wti_30m > 0 else '📉'
-                    alerts.append(
-                        f"{direction} ÖL-MOMENTUM: WTI {wti_30m:+.1f}% in 30 Min "
-                        f"(${wti_prev:.2f} → ${wti:.2f}) — EQNR + Öl-Thesis beachten!"
+                    headlines = fetch_macro_headlines('WTI crude oil price today')
+                    cause     = classify_macro_cause(headlines, fallback='oil_shock')
+                    msg       = build_macro_alert(
+                        'WTI ÖL 30-Min-Bewegung',
+                        f'{"+" if wti_30m>0 else ""}{wti_30m:.1f}% (${wti_prev:.2f}→${wti:.2f})',
+                        cause, positions
                     )
+                    alerts.append(msg)
                     sent_today.add(mkey)
 
         # Tagesbewegung
@@ -544,7 +704,14 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
             if abs(wti_daily) >= threshold_d:
                 dkey = 'MACRO_WTI_DAILY'
                 if dkey not in sent_today:
-                    alerts.append(f"🛢️ ÖL TAGES-ALERT: WTI {wti_daily:+.1f}% (${wti_open:.2f} → ${wti:.2f})")
+                    headlines = fetch_macro_headlines('WTI crude oil market today')
+                    cause     = classify_macro_cause(headlines, fallback='oil_shock')
+                    msg       = build_macro_alert(
+                        'WTI ÖL Tagesbewegung',
+                        f'{wti_daily:+.1f}% (${wti_open:.2f}→${wti:.2f})',
+                        cause, positions
+                    )
+                    alerts.append(msg)
                     sent_today.add(dkey)
 
         state['prev_wti'] = wti
@@ -564,15 +731,18 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
         if vix_delta >= threshold_v:
             vkey = 'MACRO_VIX_SPIKE'
             if vkey not in sent_today:
-                alerts.append(
-                    f"🔴 VIX SPIKE: +{vix_delta:.1f} Punkte ({vix_open:.1f} → {vix:.1f}) "
-                    f"— Risk-Off! Alle Stops prüfen!"
+                headlines = fetch_macro_headlines('VIX volatility market fear spike')
+                cause     = classify_macro_cause(headlines, fallback='us_contagion')
+                msg       = build_macro_alert(
+                    'VIX SPIKE',
+                    f'+{vix_delta:.1f} Punkte ({vix_open:.1f}→{vix:.1f})',
+                    cause, positions
                 )
+                alerts.append(msg)
                 sent_today.add(vkey)
 
-    # ── Nikkei 225 (Öl-Frühindikator) ──
-    # Japan = weltgrößter Öl-Nettoimporteur → Nikkei fällt wenn Öl steigt
-    # Alarm wenn Nikkei >3% fällt — deutet auf Öl-Schock hin (vor EU-Eröffnung sichtbar)
+    # ── Nikkei 225 ──
+    # Japan = weltgrößter Öl-Nettoimporteur → Frühindikator für Öl/Macro-Schocks
     nikkei_t = macro.get('nikkei_ticker', '^N225')
     if nikkei_t in prices:
         nikkei      = prices[nikkei_t]
@@ -581,10 +751,15 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
         if nikkei_chg <= threshold_n:
             nkey = 'MACRO_NIKKEI_DROP'
             if nkey not in sent_today:
-                alerts.append(
-                    f"🇯🇵 NIKKEI WARNUNG: {nikkei_chg:+.1f}% — Öl-Schock-Signal! "
-                    f"Japan als größter Öl-Importeur unter Druck → EQNR/DR0 beobachten."
+                # News holen → Ursache klassifizieren → vollständige Analyse
+                headlines = fetch_macro_headlines('Nikkei 225 fall today reason')
+                cause     = classify_macro_cause(headlines, fallback='oil_shock')
+                msg       = build_macro_alert(
+                    'NIKKEI 225',
+                    f'{nikkei_chg:+.1f}%',
+                    cause, positions
                 )
+                alerts.append(msg)
                 sent_today.add(nkey)
 
     state['alerts_sent_today'] = sent_today
@@ -1033,7 +1208,7 @@ def main():
     for pos in config.get('positions', {}).values():
         if pos.get('yahoo'):
             yahoo_tickers.add(pos['yahoo'])
-    for watch in config.get('watchlist', {}).values():
+    for watch in config.get('watchlist', []):
         if watch.get('yahoo'):
             yahoo_tickers.add(watch['yahoo'])
 
@@ -1108,14 +1283,16 @@ def main():
             }
 
     # Watchlist (nutzt onvista_cache)
-    for key, watch in config.get('watchlist', {}).items():
+    for watch in config.get('watchlist', []):
+        key = watch['ticker']
         price_eur, price_raw = get_price_eur(watch, prices, fx, onvista_cache, key)
         if price_raw is not None:
-            export['watchlist'][key] = {
+            export['watchlist'].append({
+                'ticker':    key,
                 'name':      watch['name'],
                 'price_eur': round(price_eur, 2) if price_eur else None,
                 'price_raw': round(price_raw, 2),
-            }
+            })
 
     # Conviction Scores einbauen
     for key, conv in conviction_cache.items():
