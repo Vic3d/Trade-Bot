@@ -915,119 +915,132 @@ function checkStopAlerts(){
 
 async function loadSignals(){
   const el=document.getElementById('signals-content');
-  try{
-    const r=await fetch('/api/signals');
-    const signals=await r.json();
-    if(!signals.length){el.innerHTML='<p style="color:#888">Noch keine Signale erfasst.</p>';return;}
-    let html='<table><tr><th>Pair</th><th>Lead→Lag</th><th>Signal</th><th>Outcome</th><th>Regime</th><th>VIX</th><th>Datum</th></tr>';
-    signals.forEach(s=>{
-      const outcomeColor=s.outcome==='WIN'?'#2ecc71':(s.outcome==='LOSS'?'#e74c3c':'#f39c12');
-      html+='<tr>';
-      html+='<td>'+s.pair_id+'</td>';
-      html+='<td>'+s.lead_ticker+' → '+s.lag_ticker+'</td>';
-      html+='<td>'+s.signal_value+'</td>';
-      html+='<td style="color:'+outcomeColor+'">'+s.outcome+'</td>';
-      html+='<td>'+(s.regime_at_signal||'—')+'</td>';
-      html+='<td>'+(s.vix_at_signal?s.vix_at_signal.toFixed(1):'—')+'</td>';
-      html+='<td>'+(s.created_at||'').slice(0,16)+'</td>';
-      html+='</tr>';
-    });
-    html+='</table>';
-    el.innerHTML=html;
-  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
+  // Lead-Lag Paare (aus lag_knowledge.json eingebettet)
+  const pairs=[
+    {id:'NIKKEI_COPPER',lead:'Nikkei 225',lag:'Copper Futures',lag_hours:24,desc:'Japan-Import → Rohstoffnachfrage'},
+    {id:'VIX_TECH',lead:'VIX',lag:'PLTR',lag_hours:24,desc:'Volatilität → Tech-Selloff'},
+    {id:'BRENT_WTI_SPREAD_EQNR',lead:'Brent-WTI Spread',lag:'EQNR.OL',lag_hours:12,desc:'Lieferunterbrechung → Nordsee-Produzent'},
+    {id:'INPEX_WTI',lead:'WTI',lag:'INPEX (1605.T)',lag_hours:5,desc:'Öl→Japan-Ölproduzent'},
+    {id:'IRAN_BRENT',lead:'Iran Eskalation',lag:'Brent',lag_hours:6,desc:'Geopolitik→Ölpreis'},
+  ];
+  let html='<p style="color:#888;margin-bottom:12px">Signal Tracker läuft alle 30 Min (07-22 CET, Mo-Fr). Signale werden in Paperclip Issues verfolgt.</p>';
+  html+='<table><tr><th>Pair ID</th><th>Lead → Lag</th><th>Lag (h)</th><th>Beschreibung</th></tr>';
+  pairs.forEach(p=>{
+    html+='<tr><td style="font-family:monospace">'+p.id+'</td><td>'+p.lead+' → '+p.lag+'</td><td>'+p.lag_hours+'h</td><td>'+p.desc+'</td></tr>';
+  });
+  html+='</table>';
+  html+='<p style="color:#f39c12;margin-top:12px">⏳ Noch <20 Samples pro Paar — Accuracy-Tracking läuft, Signale noch nicht handelbar (min. 20 Samples + 60% Accuracy nötig).</p>';
+  el.innerHTML=html;
 }
 
 async function loadAnalytics(){
   const el=document.getElementById('analytics-content');
-  try{
-    const r=await fetch('/api/analytics');
-    const data=await r.json();
-    let html='';
-    
-    // Trade Stats
-    const s=data.stats;
-    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+s.total+'</div><div style="color:#888">Trades</div></div>';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:'+(s.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+s.win_rate+'%</div><div style="color:#888">Win Rate</div></div>';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:'+(s.total_pnl>=0?'#2ecc71':'#e74c3c')+'">'+s.total_pnl.toFixed(0)+'€</div><div style="color:#888">P&L</div></div>';
-    html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+s.expectancy.toFixed(1)+'%</div><div style="color:#888">Expectancy</div></div>';
-    html+='</div>';
-    
-    // Strategy DNA
-    html+='<h3 style="margin:12px 0 8px">Strategien</h3><table><tr><th>Strategy</th><th>Trades</th><th>WR%</th><th>Avg P&L</th><th>CRV</th><th>Hold</th><th>Status</th></tr>';
-    (data.dna.strategies||[]).forEach(st=>{
-      const emoji=st.kill_warning?'🔴':(st.win_rate>=50?'🟢':'🟡');
-      html+='<tr><td>'+emoji+' '+st.strategy+'</td><td>'+st.total+' ('+st.open+'o/'+st.closed+'c)</td>';
-      html+='<td style="color:'+(st.win_rate>=50?'#2ecc71':'#e74c3c')+'">'+st.win_rate+'%</td>';
-      html+='<td>'+st.avg_pnl.toFixed(1)+'%</td><td>'+st.avg_crv.toFixed(1)+'</td>';
-      html+='<td>'+st.avg_hold_days.toFixed(0)+'d</td>';
-      html+='<td>'+(st.kill_warning?'⚠️ KILL':'OK')+'</td></tr>';
-    });
-    html+='</table>';
-    
-    // Trader Profile
-    const p=data.dna.trader_profile;
-    html+='<h3 style="margin:12px 0 8px">Trader-Profil</h3>';
-    html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-    html+='<div class="card" style="padding:12px"><strong>Max Consecutive Losses:</strong> '+p.max_consecutive_losses+'</div>';
-    html+='<div class="card" style="padding:12px"><strong>Revenge Trades:</strong> '+p.revenge_trades+'</div>';
-    html+='<div class="card" style="padding:12px"><strong>Stop-Disziplin:</strong> '+p.stop_discipline_pct+'%</div>';
-    html+='</div>';
-    
-    // Calibration
-    html+='<h3 style="margin:12px 0 8px">Conviction Buckets</h3><table><tr><th>Bucket</th><th>Trades</th><th>Win Rate</th></tr>';
-    Object.entries(data.calibration.conviction_buckets||{}).forEach(([k,v])=>{
-      html+='<tr><td>'+k+'</td><td>'+v.total+'</td><td>'+(v.total>0?v.win_rate+'%':'—')+'</td></tr>';
-    });
-    html+='</table>';
-    
-    el.innerHTML=html;
-  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
+  // Paper Trade Stats (aus PAPER Array berechnet)
+  const closed=PAPER.filter(p=>p.status==='CLOSED');
+  const open=PAPER.filter(p=>!p.status||p.status!=='CLOSED');
+  
+  let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
+  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+PAPER.length+'</div><div style="color:#888">Paper Trades</div></div>';
+  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+open.length+'</div><div style="color:#888">Offen</div></div>';
+  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold">'+STRATEGIES.length+'</div><div style="color:#888">Strategien</div></div>';
+  html+='<div class="card" style="padding:12px;text-align:center"><div style="font-size:24px;font-weight:bold;color:#f39c12">⏳</div><div style="color:#888">Calibrating</div></div>';
+  html+='</div>';
+  
+  // Strategy overview
+  html+='<h3 style="margin:12px 0 8px">Paper-Strategien</h3><table><tr><th>Strategy</th><th>Status</th><th>Conviction</th><th>Ticker</th><th>Beschreibung</th></tr>';
+  STRATEGIES.forEach(st=>{
+    html+='<tr><td style="color:'+st.color+'"><strong>'+st.id+'</strong></td><td>'+st.status+'</td><td>'+st.conviction+'</td>';
+    html+='<td>'+st.tickers.join(', ')+'</td><td style="font-size:12px">'+st.name+'</td></tr>';
+  });
+  html+='</table>';
+  
+  // Conviction Score System
+  html+='<h3 style="margin:12px 0 8px">Conviction Score v2 — 8 Faktoren</h3>';
+  html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">';
+  const factors=[
+    {name:'Regime Alignment',weight:'20%',desc:'Passt Strategie zum aktuellen Regime?'},
+    {name:'Technical Setup',weight:'20%',desc:'CRV, Trend, Pattern-Qualität'},
+    {name:'Volume Confirm',weight:'10%',desc:'Volumen > 2× 20-SMA?'},
+    {name:'News Momentum',weight:'10%',desc:'Sentiment-Trend letzte 48h'},
+    {name:'Signal Confluence',weight:'15%',desc:'Mehrere Lead-Lag Signale?'},
+    {name:'Backtest Perf',weight:'10%',desc:'Historische Win-Rate für Setup'},
+    {name:'Correlation',weight:'5%',desc:'Portfolio-Diversifikation'},
+    {name:'Sector Rotation',weight:'10%',desc:'Sektor-Momentum 20 Tage'},
+  ];
+  factors.forEach(f=>{
+    html+='<div class="card" style="padding:8px;font-size:13px"><strong>'+f.name+'</strong> ('+f.weight+')<br><span style="color:#888">'+f.desc+'</span></div>';
+  });
+  html+='</div>';
+  
+  html+='<p style="color:#888;margin-top:12px">Self-Calibration aktiviert sich nach 50+ geschlossenen Trades. Aktuell: 3 geschlossen.</p>';
+  el.innerHTML=html;
 }
 
 async function loadMacro(){
   const el=document.getElementById('macro-content');
-  try{
-    const r=await fetch('/api/macro');
-    const data=await r.json();
-    
-    const order=['VIX','WTI','BRENT','GOLD','DXY','US10Y','US2Y','COPPER','EURUSD','SP500','NASDAQ','BRENT_WTI_SPREAD','YIELD_SPREAD_2Y10Y'];
-    const names={VIX:'VIX',WTI:'WTI Öl',BRENT:'Brent',GOLD:'Gold',DXY:'Dollar Index',US10Y:'US 10Y Yield',US2Y:'US 2Y Yield',COPPER:'Kupfer',EURUSD:'EUR/USD',SP500:'S&P 500',NASDAQ:'Nasdaq','BRENT_WTI_SPREAD':'Brent-WTI Spread','YIELD_SPREAD_2Y10Y':'Yield Spread 2Y-10Y'};
-    const units={VIX:'',WTI:'$',BRENT:'$',GOLD:'$',DXY:'',US10Y:'%',US2Y:'%',COPPER:'$',EURUSD:'',SP500:'',NASDAQ:''};
-    
-    let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
-    order.forEach(ind=>{
-      const d=data[ind];
-      if(!d)return;
-      const chg=d.change_pct||0;
-      const color=chg>0?'#2ecc71':(chg<0?'#e74c3c':'#888');
-      const unit=units[ind]||'';
-      html+='<div class="card" style="padding:12px">';
-      html+='<div style="color:#888;font-size:11px">'+(names[ind]||ind)+'</div>';
-      html+='<div style="font-size:20px;font-weight:bold">'+unit+(d.current?d.current.toFixed(2):'—')+'</div>';
-      html+='<div style="color:'+color+';font-size:13px">'+(chg>0?'+':'')+chg.toFixed(2)+'%</div>';
-      html+='</div>';
-    });
+  // Macro-Daten aus prices (bereits geladen via loadAll)
+  if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten…</div>';return;}
+  
+  const macroTickers=[
+    {key:'^VIX',name:'VIX',unit:'',warn:25,crit:30},
+    {key:'CL=F',name:'WTI Öl',unit:'$',warn:90,crit:100},
+    {key:'BZ=F',name:'Brent',unit:'$',warn:100,crit:110},
+    {key:'GC=F',name:'Gold',unit:'$'},
+    {key:'^DJI',name:'Dow Jones',unit:''},
+    {key:'^GSPC',name:'S&P 500',unit:''},
+    {key:'^IXIC',name:'Nasdaq',unit:''},
+    {key:'^N225',name:'Nikkei 225',unit:''},
+    {key:'HG=F',name:'Kupfer',unit:'$'},
+    {key:'EURUSD=X',name:'EUR/USD',unit:''},
+  ];
+  
+  let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px">';
+  macroTickers.forEach(m=>{
+    const d=prices[m.key];
+    if(!d)return;
+    const price=d.price||d.regularMarketPrice||0;
+    const chg=d.change_pct||0;
+    const color=chg>0?'#2ecc71':(chg<0?'#e74c3c':'#888');
+    let border='';
+    if(m.crit&&price>=m.crit)border='border-left:3px solid #e74c3c';
+    else if(m.warn&&price>=m.warn)border='border-left:3px solid #f39c12';
+    html+='<div class="card" style="padding:12px;'+border+'">';
+    html+='<div style="color:#888;font-size:11px">'+m.name+'</div>';
+    html+='<div style="font-size:18px;font-weight:bold">'+m.unit+price.toFixed(2)+'</div>';
+    html+='<div style="color:'+color+';font-size:12px">'+(chg>0?'+':'')+chg.toFixed(2)+'%</div>';
     html+='</div>';
-    
-    // Sparkline für VIX (30 Tage)
-    if(data.VIX&&data.VIX.history){
-      const hist=data.VIX.history.reverse();
-      const vals=hist.map(h=>h.value);
-      const min=Math.min(...vals),max=Math.max(...vals);
-      const w=400,h=80;
-      let path='M';
-      vals.forEach((v,i)=>{
-        const x=i/(vals.length-1)*w;
-        const y=h-(v-min)/(max-min||1)*h;
-        path+=(i===0?'':' L')+x.toFixed(1)+','+y.toFixed(1);
-      });
-      html+='<div class="card" style="padding:12px;margin-top:12px"><div style="color:#888;margin-bottom:4px">VIX 30 Tage</div>';
-      html+='<svg width="'+w+'" height="'+h+'" style="width:100%;height:auto"><path d="'+path+'" fill="none" stroke="#e74c3c" stroke-width="2"/></svg></div>';
-    }
-    
-    el.innerHTML=html;
-  }catch(e){el.innerHTML='<p style="color:red">Fehler: '+e.message+'</p>';}
+  });
+  html+='</div>';
+  
+  // Regime Info
+  html+='<div class="card" style="padding:12px;margin-top:12px">';
+  html+='<div class="card-title">Aktuelles Regime</div>';
+  const vix=(prices['^VIX']||{}).price||0;
+  let regime='NEUTRAL',rColor='#f39c12';
+  if(vix<15){regime='BULL_CALM';rColor='#2ecc71';}
+  else if(vix<20){regime='BULL_VOLATILE';rColor='#27ae60';}
+  else if(vix<25){regime='NEUTRAL';rColor='#f39c12';}
+  else if(vix<30){regime='CORRECTION';rColor='#e67e22';}
+  else if(vix<35){regime='BEAR';rColor='#e74c3c';}
+  else{regime='CRISIS';rColor='#c0392b';}
+  html+='<div style="font-size:24px;font-weight:bold;color:'+rColor+'">'+regime+'</div>';
+  html+='<div style="color:#888">VIX: '+vix.toFixed(1)+' | Position Factor: '+(vix<20?'1.2':(vix<25?'0.8':(vix<30?'0.6':'0.4')))+'</div>';
+  html+='</div>';
+  
+  // Spread Info (wenn Daten da)
+  const brent=(prices['BZ=F']||{}).price||0;
+  const wti=(prices['CL=F']||{}).price||0;
+  if(brent&&wti){
+    const spread=(brent-wti).toFixed(2);
+    const spreadColor=spread>10?'#e74c3c':(spread>5?'#f39c12':'#2ecc71');
+    html+='<div class="card" style="padding:12px;margin-top:8px">';
+    html+='<div style="color:#888;font-size:11px">Brent-WTI Spread</div>';
+    html+='<div style="font-size:18px;font-weight:bold;color:'+spreadColor+'">$'+spread+'</div>';
+    html+='<div style="color:#888;font-size:11px">>$10 = strukturelle Lieferunterbrechung</div>';
+    html+='</div>';
+  }
+  
+  el.innerHTML=html;
 }
 
 // Theme aus localStorage laden
