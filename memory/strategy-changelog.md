@@ -141,3 +141,38 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 **🟢 STARK — unverändert** (Score: 80)
 **Gründe:** Momentum Ø +13.7% | News +100 (Iran-Kriegs-Eskalation bullish)
 Victor informiert: ✅ Discord DM gesendet
+
+
+## 2026-03-19 08:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
+**Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+
+
+## 2026-03-19 — Strategie-Monitor 08:00
+
+**PS2 Tanker-Lag-These** | 🟢 STARK → 🟡 NEUTRAL (Score 52/100)
+- Auslöser: Preise positiv +3.1% (14T) aber News neutral (Score +0) — Tanker-Momentum schwächt ab, kein neuer Newsflow
+
+**PS3 NATO/EU-Rüstung** | 🟢 STARK → 🔴 GESCHWÄCHT (Score 31/100)
+- Auslöser: Preise schwach -3.2% (14T) | News neutral (Score +20) — Rüstungsaktien drehen trotz geopolitischem Umfeld negativ
+
+**PS4 Edelmetalle/Miner** | 🟢 STARK → 🔴 GESCHWÄCHT (Score 28/100)
+- Auslöser: Preise schwach -6.1% (14T) | News neutral (Score +0) — Miner underperformen, kein Newsflow
+
+**PS5 Dünger/Agrar-Superzyklus** | 🟢 STARK → 🔴 GESCHWÄCHT (Score 28/100)
+- Auslöser: Preise schwach -5.2% (14T) | News neutral (Score +0) — Agrar-Momentum fehlt vollständig
+

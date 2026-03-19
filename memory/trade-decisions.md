@@ -315,3 +315,10 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 
 *Dieses Log wird bei jeder relevanten Entscheidung aktualisiert.*
 *Offene Positionen ("Ergebnis: offen") werden nachgetragen sobald die Position geschlossen wird.*
+
+### 2026-03-19 10:26 — Trailing Stop EQNR @ 33.00€
+**Entscheidung:** Stop von 30€ auf 33.00€ nachgezogen
+**Entry:** 27.45€ | Kurs: 35.21€ | P&L: +28.3%
+**Gesicherter Mindestgewinn:** +20.2% (wenn Stop triggert)
+**Begründung:** Brent +7% heute, EQNR läuft stark — Gewinne sichern, Rest laufen lassen
+**Lesson:** Trailing Stop nach starkem Tageslauf (>5%) auf EMA20-Niveau nachziehen

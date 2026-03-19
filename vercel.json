@@ -1,7 +1,8 @@
 {
   "framework": null,
   "redirects": [
-    { "source": "/", "destination": "/api/dashboard", "permanent": false }
+    { "source": "/", "destination": "/api/dashboard", "permanent": false },
+    { "source": "/manifest.json", "destination": "/api/manifest", "permanent": false }
   ],
   "headers": [
     {

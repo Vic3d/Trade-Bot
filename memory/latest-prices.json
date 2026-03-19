@@ -1,128 +1,129 @@
 {
-  "timestamp": "2026-03-18T21:45:10.160578+00:00",
+  "timestamp": "2026-03-19T11:45:10.623186+00:00",
   "fx": {
-    "EURUSD": 1.1476,
-    "EURNOK": 11.0009,
-    "GBPEUR": 1.1571
+    "EURUSD": 1.1472,
+    "EURNOK": 10.9854,
+    "GBPEUR": 1.1577
   },
   "macro": {
-    "wti": 99.05,
-    "vix": 25.09
+    "wti": 97.1,
+    "vix": 25.77,
+    "nikkei": -3.3795986198257086
   },
   "positions": {
     "NVDA": {
       "name": "Nvidia",
-      "price_eur": 157.2,
+      "price_eur": 157.25,
       "price_raw": 180.4,
       "entry_eur": 167.88,
-      "pnl_pct": -6.36,
+      "pnl_pct": -6.33,
       "stop_eur": null,
-      "conviction": 40
+      "conviction": 20
     },
     "MSFT": {
       "name": "Microsoft",
-      "price_eur": 341.4,
+      "price_eur": 341.52,
       "price_raw": 391.79,
       "entry_eur": 351.85,
-      "pnl_pct": -2.97,
+      "pnl_pct": -2.94,
       "stop_eur": 338.0,
       "conviction": 20
     },
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 133.12,
+      "price_eur": 133.17,
       "price_raw": 152.77,
       "entry_eur": 132.11,
-      "pnl_pct": 0.77,
+      "pnl_pct": 0.8,
       "stop_eur": 127.0,
       "conviction": 60
     },
     "EQNR": {
       "name": "Equinor ASA",
-      "price_eur": 32.63,
-      "price_raw": 359.0,
-      "entry_eur": 27.04,
-      "pnl_pct": 20.69,
-      "stop_eur": 30.0,
+      "price_eur": 34.91,
+      "price_raw": 383.5,
+      "entry_eur": 27.45,
+      "pnl_pct": 27.18,
+      "stop_eur": 33.0,
       "conviction": 100
     },
     "BAYN.DE": {
       "name": "Bayer AG",
-      "price_eur": 38.71,
-      "price_raw": 38.71,
+      "price_eur": 38.48,
+      "price_raw": 38.48,
       "entry_eur": 39.95,
-      "pnl_pct": -3.1,
+      "pnl_pct": -3.69,
       "stop_eur": 38.0,
-      "conviction": 20
+      "conviction": 40
     },
     "RIO.L": {
       "name": "Rio Tinto",
-      "price_eur": 77.1,
-      "price_raw": 6663.0,
+      "price_eur": 73.12,
+      "price_raw": 6316.0,
       "entry_eur": 76.92,
-      "pnl_pct": 0.23,
+      "pnl_pct": -4.94,
       "stop_eur": 73.0,
-      "conviction": 40
+      "conviction": 0
     },
     "RHM.DE": {
       "name": "Rheinmetall AG",
-      "price_eur": 1606.0,
-      "price_raw": 1606.0,
+      "price_eur": 1584.5,
+      "price_raw": 1584.5,
       "entry_eur": 1570.0,
-      "pnl_pct": 2.29,
+      "pnl_pct": 0.92,
       "stop_eur": 1520.0
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
-      "price_eur": 49.3,
+      "price_eur": 49.32,
       "price_raw": 56.58,
       "entry_eur": 22.4,
-      "pnl_pct": 120.1,
+      "pnl_pct": 120.18,
       "stop_eur": null,
       "conviction": 60
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 334.07,
+      "price_eur": 334.19,
       "price_raw": 383.38,
       "entry_eur": 27.9,
-      "pnl_pct": 1097.39,
+      "pnl_pct": 1097.8,
       "stop_eur": 24.0,
-      "conviction": 80
+      "conviction": 100
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
-      "price_eur": 56.61,
+      "price_eur": 56.62,
       "price_raw": 64.96,
       "entry_eur": 28.8,
-      "pnl_pct": 96.55,
+      "pnl_pct": 96.61,
       "stop_eur": 25.95,
-      "conviction": 80
+      "conviction": 60
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 142.72,
+      "price_eur": 142.76,
       "price_raw": 163.78,
       "entry_eur": 7.0,
-      "pnl_pct": 1938.79,
+      "pnl_pct": 1939.5,
       "stop_eur": 6.3,
-      "conviction": 60
+      "conviction": 40
     }
   },
   "watchlist": {
     "AG": {
       "name": "First Majestic Silver",
-      "price_eur": 17.73,
+      "price_eur": 17.74,
       "price_raw": 20.35
     },
     "BHP.L": {
       "name": "BHP Group",
-      "price_eur": 30.14,
-      "price_raw": 2605.0
+      "price_eur": 28.79,
+      "price_raw": 2487.0
     },
     "ASML": {
       "name": "ASML Holding",
-      "price_eur": 1180.87,
+      "price_eur": 1181.28,
       "price_raw": 1355.17
     }
   }

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>TradeMind</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --blue: #3b82f6;
+    --yellow: #eab308;
+    --accent: #6366f1;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+  header .ts { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+  nav {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 10px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .15s;
+  }
+  nav button.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab { display: none; padding: 16px; }
+  .tab.active { display: block; }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .card-title { font-weight: 600; font-size: 15px; }
+  .card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Badge */
+  .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge-green { background: rgba(34,197,94,.15); color: var(--green); }
+  .badge-red   { background: rgba(239,68,68,.15);  color: var(--red); }
+  .badge-orange{ background: rgba(249,115,22,.15); color: var(--orange); }
+  .badge-blue  { background: rgba(59,130,246,.15); color: var(--blue); }
+  .badge-muted { background: rgba(100,116,139,.15);color: var(--muted); }
+
+  /* Grid */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .stat-value { font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .stat-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  /* Position row */
+  .pos-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .pos-row:last-child { border-bottom: none; }
+  .pos-ticker { font-weight: 700; font-size: 13px; width: 65px; flex-shrink: 0; }
+  .pos-name   { font-size: 11px; color: var(--muted); }
+  .pos-price  { font-weight: 600; margin-left: auto; text-align: right; }
+  .pos-pnl    { font-size: 12px; font-weight: 600; }
+  .pos-stop   { font-size: 11px; color: var(--muted); }
+  .pos-conv   { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+  /* Stop-Abstand Bar */
+  .stop-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .stop-fill { height: 100%; border-radius: 2px; transition: width .3s; }
+
+  /* Forms */
+  .form-group { margin-bottom: 12px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+  input, select, textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface); }
+
+  /* Buttons */
+  .btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary  { background: var(--accent); color: #fff; }
+  .btn-green    { background: var(--green);  color: #000; }
+  .btn-red      { background: var(--red);    color: #fff; }
+  .btn-orange   { background: var(--orange); color: #000; }
+  .btn-muted    { background: var(--border); color: var(--text); }
+  .btn-sm       { padding: 6px 12px; font-size: 12px; }
+  .btn-full     { width: 100%; }
+
+  .action-row { display: flex; gap: 8px; }
+
+  /* Tabs für BUY/SELL */
+  .toggle-group { display: flex; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 12px; }
+  .toggle-btn { flex: 1; padding: 10px; border: none; background: var(--bg); color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; }
+  .toggle-btn.active-buy  { background: rgba(34,197,94,.2);  color: var(--green); }
+  .toggle-btn.active-sell { background: rgba(239,68,68,.2);  color: var(--red); }
+
+  /* Macro strip */
+  .macro-strip { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 2px; }
+  .macro-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; white-space: nowrap; flex-shrink: 0; }
+  .macro-key  { font-size: 10px; color: var(--muted); }
+  .macro-val  { font-size: 14px; font-weight: 700; }
+  .macro-chg  { font-size: 11px; }
+
+  /* Prediction card */
+  .pred-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+  .pred-title { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .pred-meta  { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .pred-btns  { display: flex; gap: 8px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity .3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Empty state */
+  .empty { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 13px; }
+
+  .green { color: var(--green); }
+  .red   { color: var(--red); }
+  .orange{ color: var(--orange); }
+  .muted { color: var(--muted); }
+
+  .section-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <span style="font-size:20px">🎩</span>
+  <h1>TradeMind</h1>
+  <span class="ts" id="last-update">Lädt...</span>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('portfolio')">📊 Portfolio</button>
+  <button onclick="showTab('trade')">➕ Trade</button>
+  <button onclick="showTab('screener')">🔍 Screener</button>
+  <button onclick="showTab('predictions')">🎯 Dirk</button>
+</nav>
+
+<!-- ── TAB: PORTFOLIO ── -->
+<div id="tab-portfolio" class="tab active">
+
+  <div class="macro-strip" id="macro-strip">
+    <div class="macro-item"><div class="macro-key">VIX</div><div class="macro-val" id="m-vix">—</div><div class="macro-chg" id="m-vix-sig">—</div></div>
+    <div class="macro-item"><div class="macro-key">WTI</div><div class="macro-val" id="m-wti">—</div><div class="macro-chg muted">Öl</div></div>
+    <div class="macro-item"><div class="macro-key">Nikkei</div><div class="macro-val" id="m-nk">—</div><div class="macro-chg muted">225</div></div>
+    <div class="macro-item"><div class="macro-key">EUR/USD</div><div class="macro-val" id="m-fx">—</div><div class="macro-chg muted">FX</div></div>
+  </div>
+
+  <div class="grid3" style="margin-bottom:14px">
+    <div class="stat-box">
+      <div class="stat-label">Ges. P&L</div>
+      <div class="stat-value" id="total-pnl">—</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Positionen</div>
+      <div class="stat-value" id="pos-count">—</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Ø Conviction</div>
+      <div class="stat-value" id="avg-conv">—</div>
+    </div>
+  </div>
+
+  <div class="section-title">Aktive Positionen</div>
+  <div class="card" style="padding:0 14px">
+    <div id="positions-list"><div class="empty">Lädt...</div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:14px">Watchlist</div>
+  <div class="card" style="padding:0 14px">
+    <div id="watchlist-list"><div class="empty">Lädt...</div></div>
+  </div>
+</div>
+
+<!-- ── TAB: TRADE ── -->
+<div id="tab-trade" class="tab">
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:14px">Trade eintragen</div>
+
+    <div class="toggle-group">
+      <button class="toggle-btn active-buy" id="btn-buy" onclick="setAction('BUY')">KAUF</button>
+      <button class="toggle-btn" id="btn-sell" onclick="setAction('SELL')">VERKAUF</button>
+    </div>
+
+    <div class="form-group">
+      <label>Ticker</label>
+      <select id="t-ticker">
+        <option value="">Ticker wählen...</option>
+      </select>
+    </div>
+
+    <div class="grid2">
+      <div class="form-group">
+        <label>Preis (€)</label>
+        <input type="number" id="t-price" placeholder="0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Stop (€)</label>
+        <input type="number" id="t-stop" placeholder="0.00" step="0.01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Ziel (€) — optional</label>
+      <input type="number" id="t-target" placeholder="0.00" step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label>Strategie</label>
+      <select id="t-strategy">
+        <option value="">— wählen —</option>
+        <option>S1 Iran/Öl</option>
+        <option>S2 Rüstung</option>
+        <option>S3 KI-Halbleiter</option>
+        <option>S4 Silber/Gold</option>
+        <option>S5 Rohstoffe</option>
+        <option>S6 Solar</option>
+        <option>S7 Biotech</option>
+        <option>Watchlist Setup</option>
+        <option>Sonstiges</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Notiz</label>
+      <input type="text" id="t-notes" placeholder="z.B. EMA50-Rücklauf, CRV 5:1">
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="submitTrade()">Trade speichern</button>
+  </div>
+
+  <div class="section-title" style="margin-top:6px">Letzte Trades</div>
+  <div id="trade-history"></div>
+</div>
+
+<!-- ── TAB: SCREENER ── -->
+<div id="tab-screener" class="tab">
+
+  <div class="card" style="padding:12px 14px;margin-bottom:12px">
+    <div style="font-size:12px;color:var(--muted);line-height:1.5">
+      Albert scannt jeden Morgen nach Setups. Gib Feedback — das macht den Screener besser.
+    </div>
+  </div>
+
+  <div class="section-title">Heutige Kandidaten</div>
+  <div id="screener-list"><div class="empty">Keine Kandidaten heute — oder Albert hat noch nicht gescannt.</div></div>
+</div>
+
+<!-- ── TAB: PREDICTIONS ── -->
+<div id="tab-predictions" class="tab">
+
+  <div class="card" style="padding:12px 14px;margin-bottom:12px">
+    <div style="font-size:12px;color:var(--muted);line-height:1.5">
+      Dirk 7H Predictions — 2 Wochen nach dem Video: Hat es funktioniert?
+    </div>
+  </div>
+
+  <div class="section-title">Offene Predictions</div>
+  <div id="predictions-open"></div>
+
+  <div class="section-title" style="margin-top:14px">Abgeschlossen</div>
+  <div id="predictions-closed"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://localhost:8080';
+let currentAction = 'BUY';
+let pricesData = null;
+
+// ─── Init ────────────────────────────────────────────────────────────
+
+async function init() {
+  await Promise.all([
+    loadPrices(),
+    loadConfig(),
+    loadTrades(),
+    loadScreener(),
+    loadPredictions(),
+  ]);
+  // Auto-refresh alle 60s
+  setInterval(loadPrices, 60000);
+}
+
+// ─── Tabs ─────────────────────────────────────────────────────────────
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── Prices / Portfolio ───────────────────────────────────────────────
+
+async function loadPrices() {
+  try {
+    const r = await fetch(`${API}/api/prices`);
+    if (!r.ok) { document.getElementById('last-update').textContent = '⚠️ Monitor offline'; return; }
+    pricesData = await r.json();
+    renderPortfolio(pricesData);
+    const ts = new Date(pricesData.timestamp);
+    document.getElementById('last-update').textContent = ts.toLocaleTimeString('de-DE', {hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    document.getElementById('last-update').textContent = '⚠️ Offline';
+  }
+}
+
+function renderPortfolio(data) {
+  // Macro strip
+  const vix = data.macro?.vix || 0;
+  const wti = data.macro?.wti || 0;
+  const nk  = data.macro?.nikkei || 0;
+  const fx  = data.fx?.EURUSD || 0;
+
+  document.getElementById('m-vix').textContent = vix.toFixed(1);
+  document.getElementById('m-wti').textContent = '$' + wti.toFixed(0);
+  document.getElementById('m-nk').textContent = (nk >= 0 ? '+' : '') + nk.toFixed(1) + '%';
+  document.getElementById('m-nk').className = 'macro-val ' + (nk < -3 ? 'red' : nk < 0 ? 'orange' : 'green');
+  document.getElementById('m-fx').textContent = fx.toFixed(4);
+
+  const vixSig = vix > 30 ? '🔴 Panik' : vix > 25 ? '🟠 Erhöht' : vix > 20 ? '🟡 Mild' : '🟢 Normal';
+  document.getElementById('m-vix-sig').textContent = vixSig;
+  document.getElementById('m-vix-sig').className = 'macro-chg ' + (vix > 30 ? 'red' : vix > 25 ? 'orange' : vix > 20 ? 'yellow' : 'green');
+
+  // Positionen
+  const positions = Object.entries(data.positions || {}).filter(([,p]) => p.pnl_pct !== undefined);
+  let totalPnlSum = 0;
+  let convSum = 0, convCount = 0;
+
+  const rows = positions.map(([key, p]) => {
+    const pnl = p.pnl_pct || 0;
+    totalPnlSum += pnl;
+
+    const conv = p.conviction ?? null;
+    if (conv !== null) { convSum += conv; convCount++; }
+
+    const pnlColor = pnl > 0 ? 'green' : pnl < 0 ? 'red' : 'muted';
+    const pnlStr = (pnl >= 0 ? '+' : '') + pnl.toFixed(1) + '%';
+
+    // Stop-Abstand
+    let stopHtml = '<span class="muted" style="font-size:11px">Kein Stop ⚠️</span>';
+    let stopBarHtml = '';
+    if (p.stop_eur && p.price_eur) {
+      const margin = (p.price_eur - p.stop_eur) / p.price_eur * 100;
+      const barColor = margin < 1.5 ? '#ef4444' : margin < 3 ? '#f97316' : '#22c55e';
+      const barWidth = Math.min(margin * 10, 100);
+      stopHtml = `<span class="muted" style="font-size:11px">Stop ${p.stop_eur}€ · ${margin.toFixed(1)}%</span>`;
+      stopBarHtml = `<div class="stop-bar"><div class="stop-fill" style="width:${barWidth}%;background:${barColor}"></div></div>`;
+    }
+
+    // Conviction circle
+    const convColor = conv >= 80 ? '#22c55e' : conv >= 50 ? '#3b82f6' : conv >= 20 ? '#f97316' : '#ef4444';
+    const convHtml = conv !== null
+      ? `<div class="pos-conv" style="background:${convColor}22;color:${convColor}">${conv}</div>`
+      : `<div class="pos-conv" style="background:#2a2d3a;color:#64748b">—</div>`;
+
+    return `
+      <div class="pos-row">
+        ${convHtml}
+        <div>
+          <div class="pos-ticker">${key}</div>
+          <div class="pos-name">${p.name}</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="pos-price">${p.price_eur?.toFixed(2)}€</div>
+          <div class="pos-pnl ${pnlColor}">${pnlStr}</div>
+          ${stopHtml}
+          ${stopBarHtml}
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('positions-list').innerHTML = rows.join('') || '<div class="empty">Keine Positionen</div>';
+
+  // Summary stats
+  const avgPnl = positions.length ? (totalPnlSum / positions.length) : 0;
+  const pnlEl = document.getElementById('total-pnl');
+  pnlEl.textContent = (avgPnl >= 0 ? '+' : '') + avgPnl.toFixed(1) + '%';
+  pnlEl.className = 'stat-value ' + (avgPnl >= 0 ? 'green' : 'red');
+  document.getElementById('pos-count').textContent = positions.length;
+  document.getElementById('avg-conv').textContent = convCount ? Math.round(convSum / convCount) : '—';
+
+  // Watchlist
+  const wlItems = Object.entries(data.watchlist || {});
+  const wlRows = wlItems.map(([key, w]) => `
+    <div class="pos-row">
+      <div>
+        <div class="pos-ticker">${key}</div>
+        <div class="pos-name">${w.name}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="pos-price">${w.price_eur?.toFixed(2) || '—'}€</div>
+        <div class="muted" style="font-size:11px">Watchlist</div>
+      </div>
+    </div>`);
+  document.getElementById('watchlist-list').innerHTML = wlRows.join('') || '<div class="empty">Leer</div>';
+}
+
+// ─── Config / Trade ───────────────────────────────────────────────────
+
+async function loadConfig() {
+  try {
+    const r = await fetch(`${API}/api/config`);
+    const cfg = await r.json();
+    const sel = document.getElementById('t-ticker');
+    // Positionen
+    Object.entries(cfg.positions || {}).forEach(([k, v]) => {
+      const o = document.createElement('option');
+      o.value = k;
+      o.textContent = `${k} — ${v.name}`;
+      sel.appendChild(o);
+    });
+    // Separator
+    const sep = document.createElement('option');
+    sep.disabled = true;
+    sep.textContent = '── Watchlist ──';
+    sel.appendChild(sep);
+    // Watchlist
+    Object.entries(cfg.watchlist || {}).forEach(([k, v]) => {
+      const o = document.createElement('option');
+      o.value = k;
+      o.textContent = `${k} — ${v.name} (WL)`;
+      sel.appendChild(o);
+    });
+    // Manuell
+    const man = document.createElement('option');
+    man.value = '__manual__';
+    man.textContent = '✏️ Manuell eingeben';
+    sel.appendChild(man);
+  } catch(e) {}
+}
+
+function setAction(a) {
+  currentAction = a;
+  document.getElementById('btn-buy').className = 'toggle-btn' + (a === 'BUY' ? ' active-buy' : '');
+  document.getElementById('btn-sell').className = 'toggle-btn' + (a === 'SELL' ? ' active-sell' : '');
+}
+
+async function submitTrade() {
+  let ticker = document.getElementById('t-ticker').value;
+  if (ticker === '__manual__') {
+    ticker = prompt('Ticker eingeben:');
+    if (!ticker) return;
+  }
+  const price = parseFloat(document.getElementById('t-price').value);
+  const stop  = parseFloat(document.getElementById('t-stop').value) || null;
+  const target = parseFloat(document.getElementById('t-target').value) || null;
+  const strategy = document.getElementById('t-strategy').value;
+  const notes = document.getElementById('t-notes').value;
+
+  if (!ticker || !price) { showToast('Ticker + Preis pflicht!', 'red'); return; }
+
+  try {
+    const r = await fetch(`${API}/api/trade`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ ticker, action: currentAction, price_eur: price, stop_eur: stop, target_eur: target, strategy, notes }),
+    });
+    if (r.ok) {
+      showToast(`${currentAction === 'BUY' ? '✅ Kauf' : '🔴 Verkauf'} ${ticker} @ ${price}€ gespeichert!`);
+      document.getElementById('t-price').value = '';
+      document.getElementById('t-stop').value = '';
+      document.getElementById('t-target').value = '';
+      document.getElementById('t-notes').value = '';
+      loadTrades();
+    }
+  } catch(e) { showToast('Fehler beim Speichern', 'red'); }
+}
+
+async function loadTrades() {
+  try {
+    const r = await fetch(`${API}/api/trades`);
+    const trades = await r.json();
+    const el = document.getElementById('trade-history');
+    if (!trades.length) { el.innerHTML = '<div class="empty">Noch keine Trades geloggt.</div>'; return; }
+    el.innerHTML = [...trades].reverse().slice(0, 10).map(t => {
+      const isBuy = t.action === 'BUY';
+      const stopStr = t.stop_eur ? `Stop ${t.stop_eur}€` : '⚠️ kein Stop';
+      const dt = new Date(t.ts).toLocaleString('de-DE', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `
+        <div class="card" style="padding:10px 14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:700">${t.ticker}</span>
+            <span class="badge ${isBuy ? 'badge-green' : 'badge-red'}">${isBuy ? 'KAUF' : 'VERKAUF'}</span>
+          </div>
+          <div style="margin-top:4px;font-size:13px">${t.price_eur}€ · ${stopStr}</div>
+          <div style="margin-top:2px;font-size:11px;color:var(--muted)">${dt}${t.strategy ? ' · ' + t.strategy : ''}${t.notes ? ' · ' + t.notes : ''}</div>
+        </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+// ─── Screener ─────────────────────────────────────────────────────────
+
+async function loadScreener() {
+  try {
+    const r = await fetch(`${API}/api/screener`);
+    const candidates = await r.json();
+    const el = document.getElementById('screener-list');
+    if (!candidates.length) {
+      el.innerHTML = '<div class="empty">Keine Kandidaten heute.<br>Albert scannt ab 08:00 täglich.</div>';
+      return;
+    }
+    el.innerHTML = candidates.map((c, i) => `
+      <div class="pred-card">
+        <div class="pred-title">${c.ticker || c.name}</div>
+        <div class="pred-meta">${c.setup || ''} ${c.crv ? '· CRV ' + c.crv : ''} ${c.entry ? '· Entry ~' + c.entry + '€' : ''}</div>
+        <div class="pred-btns">
+          <button class="btn btn-green btn-sm" onclick="sendScreenerFeedback('${c.ticker}','${c.date || today()}','TRADED')">✅ Gehandelt</button>
+          <button class="btn btn-orange btn-sm" onclick="sendScreenerFeedback('${c.ticker}','${c.date || today()}','WATCHING')">👀 Beobachte</button>
+          <button class="btn btn-muted btn-sm" onclick="sendScreenerFeedback('${c.ticker}','${c.date || today()}','SKIPPED')">❌ Skip</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+async function sendScreenerFeedback(candidate, date, action) {
+  try {
+    await fetch(`${API}/api/screener`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ candidate, date, action, reason: '' }),
+    });
+    showToast(`${action} für ${candidate} gespeichert`);
+    loadScreener();
+  } catch(e) { showToast('Fehler', 'red'); }
+}
+
+// ─── Predictions ──────────────────────────────────────────────────────
+
+async function loadPredictions() {
+  try {
+    const r = await fetch(`${API}/api/predictions`);
+    const preds = await r.json();
+    const open   = preds.filter(p => p.is_open);
+    const closed = preds.filter(p => !p.is_open);
+
+    const elOpen = document.getElementById('predictions-open');
+    const elClosed = document.getElementById('predictions-closed');
+
+    elOpen.innerHTML = open.length ? open.map(p => `
+      <div class="pred-card">
+        <div class="pred-title">${p.ticker !== '?' ? p.ticker + ' — ' : ''}${p.title.substring(0, 60)}</div>
+        <div class="pred-meta">📅 ${p.date} · Offen</div>
+        <div class="pred-btns">
+          <button class="btn btn-green btn-sm" onclick="closePrediction('${escId(p.id)}','WON')">✅ Hat funktioniert</button>
+          <button class="btn btn-red btn-sm"   onclick="closePrediction('${escId(p.id)}','LOST')">❌ Nicht funktioniert</button>
+        </div>
+      </div>`).join('') : '<div class="empty">Keine offenen Predictions.</div>';
+
+    elClosed.innerHTML = closed.length ? closed.map(p => {
+      const mr = p.manual_result;
+      const isWon = mr?.result === 'WON';
+      return `
+        <div class="pred-card" style="opacity:.7">
+          <div style="display:flex;justify-content:space-between">
+            <div class="pred-title" style="font-size:12px">${p.ticker !== '?' ? p.ticker + ' — ' : ''}${p.title.substring(0, 50)}</div>
+            <span class="badge ${isWon ? 'badge-green' : 'badge-red'}">${isWon ? 'WON' : 'LOST'}</span>
+          </div>
+          ${mr?.notes ? `<div class="pred-meta" style="margin-top:4px">${mr.notes}</div>` : ''}
+        </div>`;
+    }).join('') : '<div class="empty">Noch keine abgeschlossenen Predictions.</div>';
+
+  } catch(e) {
+    document.getElementById('predictions-open').innerHTML = '<div class="empty">Fehler beim Laden.</div>';
+  }
+}
+
+async function closePrediction(id, result) {
+  const notes = prompt(`Notiz (optional):`);
+  try {
+    await fetch(`${API}/api/predictions`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ prediction_id: id, result, notes: notes || '' }),
+    });
+    showToast(result === 'WON' ? '✅ Als Gewinn markiert' : '❌ Als Verlust markiert');
+    loadPredictions();
+  } catch(e) { showToast('Fehler', 'red'); }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────
+
+function showToast(msg, type = 'green') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = type === 'red' ? 'var(--red)' : 'var(--green)';
+  t.style.color = type === 'red' ? '#fff' : '#000';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function escId(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+
+// ─── Start ────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

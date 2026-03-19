@@ -868,3 +868,93 @@ Alberts unabhängige Analyse:
 → **Tool-Feature:** Entry/Stop anpassen je nach Szenario. Panik = halbe Position + enge Stops. Aktion = volle Position + normales CRV.
 
 ---
+
+## Transcript-Analyse: Lars Eriksen (2026-03-18)
+*Quelle: eriksen-athtargets-2026-03-18.txt*
+
+## Lars Eriksen — 2026-03-18 — ATH-Targets & Scaling-Systematik
+
+### Kernmethodik
+
+**Position Scaling (nicht binär Ein/Aus):**
+- NICHT: "Jetzt kaufe ich / Jetzt verkaufe ich" (binäres Denken)
+- JA: "Ich scale rein, ich scale raus" — inkrementelle Positionen in Trends
+- Vorbild: Stanley Druckenmiller, Paul Tudo Jones
+- Zweck: Zusätzliche Rendite-Performance in trendstarken Phasen (+ 55-56% in 14 Monaten möglich, statt nur Markt-Rendite)
+- Trade-off: Man kauft nicht immer at-Tief, verkauft nicht immer at-Hoch — aber Langziel ist Überrendite.
+
+**Bankensektor als Frühindikatör:**
+- "Kein Bullenmarkt korrigiert groß ohne dass Banken korrigieren"
+- Wenn Banken sich erholen → quasi-automatisch Markt-Erholung
+- **Tool-Feature:** Bankensektor-Überwachung als Stop/Entry-Signal im aktiven Trading
+
+**Risikofilter: „Zu wissen was man kauft" = Grundvoraussetzung**
+- Beispiel: BDCs (Business Development Corps) mit 10% Dividende NICHT kaufen wenn Private Credit unter Druck
+- Grund: Wenn Brennpunkt entsteht, geraten diese Aktien "massiv unter Druck"
+- Gilt auch für Banken 2./3. Reihe mit hohem Private Credit Exposure
+- Disclaimer setzen wenn man einen Wert auf aktuellem Niveau nicht mehr empfehlen würde
+
+### Geopolitik-Kontext (Iran-Straße Hormus)
+
+**Ausgangslage March 2026:**
+- Unsicherheit gepreist, aber strukturelle Effekte gering
+- Ölpreis: Historisch waren 70-80$/Bbl normal → S&P500 stieg trotzdem
+- Korrelation "steigender Ölpreis = fallender Markt" zu einfach
+- Key Insight: Professionelle handeln nicht nach simplen Korrelationen, sondern gewichten Argumente
+
+### Put-Optionen & Hedging als Kontraindikator
+
+**Interpretations-Fehler vermeiden:**
+- Traders kaufen Puts nicht weil sie automatisch Kurssturz erwarten
+- Oft: Optionsstrategien zur Absicherung bestehender Long-Positionen
+- = Professionelle sind INVESTIERT (Long), absichern sich nur
+
+**4-Jahres-High in Nachfrage nach Downside-Protection (März 2026):**
+- Hochgradig hedged → oft Gegensignal für Wendepunkt
+- "Wenn alle sich gegen fallende Kurse absichert, sollte man kaufen"
+- Einschränkung: Timing nötig, nicht automatisch
+
+### Sentiment & Kontrarität
+
+**Extreme Bärenstimmung (März 2026) + hohe Hedging = Konträr-Bullish:**
+- Max 7 so billig seit 2017-2018 nicht (trotz guter Ergebnisse)
+- Forward EPS steigend, keine Ergebnisdelle sichtbar
+- KI-Investitionen real + über Cashflow finanzierbar (außer Oracle mit hoher Verschuldung)
+- "Man muss wissen was man kauft" — Oracle ist KI-Story auf Hebel, läuft gut in bullisch, nicht für Risk-Avoidant
+- Markt kann 2-3 Wochen neue ATH reachen wenn Stimmung dreht
+
+### Psychologische Fallstricke
+
+**Zu NICHT tun:**
+- "Jetzt sind die Zeiten unsicher, ich verkaufe alles, warte auf Ruhe, dann kaufe ich wieder"
+  → Das ist der sicherste Weg Markt-Rendite zu verfehlen (immer oben kaufen)
+- Nicht auf Michael Burry hören nur weil er sagt "verkaufen" (Track Record nicht überragend)
+- Nicht in extremer Private-Credit-Risk einfach BDCs kaufen weil Dividende verlockend
+
+**Zu TUN:**
+- Wie Druckenmiller/Jones: nicht rein/raus, sondern scale rein, scale raus
+- Bei Cash-Staging: Geld nicht auf Bank liegen lassen (1.500€ aus 10.000€ in 10 Jahren wenn nur 2,48% Zins)
+- Regelmäßig rebalancen — emotionslos, nicht nach Sentiment
+
+### Red Flags aus diesem Transkript
+
+- Ölpreis-Korrelation zu simpel nehmen (falsch)
+- BDCs in Crisis-Phasen unterschätzen
+- Private Credit Market (1,2 Billionen) kleinteilig vs. Gesamtkreditsystem (224+ Billionen) → Context-Fehler
+- Narrative (KI-Hype, War-Scare) vor Daten (Forward EPS, Cashflow) gewichten
+
+---
+
+## 📊 Wochenauswertung — Woche 2 (2026-03-14 bis 20.03)
+
+**Stand:** Analysen laufen, neuer Fokus auf Scaling-Methodik.
+- Lars Eriksen Transcript (18.03) → Scaling-System, Bankensektor-Signal, Hedging-Interpretation
+- Bankensektor-Korrelation als Ergänzung zu bestehenden Dimensionen (Öl, KI, Rohstoffe)
+
+**Neue Feature-Anforderungen:**
+1. Bankensektor-Überwachung als Frühindikatör (EMA, technische Level)
+2. Private Credit Exposure-Screening für Banken + BDCs
+3. Hedging-Quote-Tracking (Put-Optionen-Nachfrage) als Kontraindikator
+4. Scaling-Modul: automatische Positionierung in Rücksetzer/Rallies (3-5 Tranchen vordefinieren)
+
+---
