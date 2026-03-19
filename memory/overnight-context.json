@@ -1,54 +1,39 @@
 {
-  "generated": "2026-03-18T21:00:13.795395",
+  "generated": "2026-03-19T21:00:06.523934",
   "prices": {
-    "NVDA": {
-      "price_eur": 157.49,
-      "pnl_pct": -6.2
-    },
-    "MSFT": {
-      "price_eur": 342.03,
-      "pnl_pct": -2.8
-    },
     "PLTR": {
-      "price_eur": 133.37,
-      "pnl_pct": 1.0
+      "price_eur": 134.3,
+      "pnl_pct": 1.7
     },
     "EQNR": {
-      "price_eur": 32.62,
-      "pnl_pct": 20.6
+      "price_eur": 36.28,
+      "pnl_pct": 32.2
     },
     "BAYN.DE": {
-      "price_eur": 39.53,
-      "pnl_pct": -1.1
-    },
-    "RIO.L": {
-      "price_eur": 77.14,
-      "pnl_pct": 0.3
+      "price_eur": 38.47,
+      "pnl_pct": -3.7
     },
     "A2QQ9R": {
-      "price_eur": 49.39,
-      "pnl_pct": 120.5
+      "price_eur": 49.13,
+      "pnl_pct": 119.3
     },
     "A3D42Y": {
-      "price_eur": 334.68,
-      "pnl_pct": 1099.6
+      "price_eur": 338.7,
+      "pnl_pct": 1114.0
     },
     "A14WU5": {
-      "price_eur": 56.71,
-      "pnl_pct": 96.9
+      "price_eur": 56.27,
+      "pnl_pct": 95.4
     },
     "A2DWAW": {
-      "price_eur": 142.98,
-      "pnl_pct": 1942.5
+      "price_eur": 141.87,
+      "pnl_pct": 1926.8
     }
   },
-  "vix": 25.09,
-  "wti": 99.14,
+  "vix": 24.06,
+  "wti": 94.49,
   "risks": [
-    "Nvidia (NVDA): KEIN STOP gesetzt!",
-    "Microsoft (MSFT): Stop nur 1.2% weg",
-    "Palantir (PLTR): Stop nur 4.8% weg",
-    "Bayer AG (BAYN.DE): Stop nur 3.9% weg",
+    "Bayer AG (BAYN.DE): Stop nur 1.2% weg",
     "Invesco Solar Energy ETF (A2QQ9R): KEIN STOP gesetzt!"
   ]
 }

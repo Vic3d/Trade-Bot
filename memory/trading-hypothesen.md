@@ -47,6 +47,7 @@
 - **Angelegt:** 07.03.2026 (VIX bei 29,49)
 - **Update KW11:** ✅ **BESTÄTIGT** — NVDA −6% bei VIX 24–32 Band. Dirk MSFT auch nicht auf Kaufliste (bestätigt).
 - **Status:** ✅ BESTÄTIGT
+- **Learning-System Update 19.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These

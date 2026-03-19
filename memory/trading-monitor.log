@@ -642,3 +642,24 @@
 [2026-03-19 20:45:10] Risk Score: 50/100 (MEDIUM)
 [2026-03-19 20:45:10] State Snapshot geschrieben: 11 Positionen, 0 Alerts
 [2026-03-19 20:45:10] Overnight Context geschrieben: 19.03.2026
+[2026-03-19 21:00:14] Fetching 15 Yahoo tickers...
+[2026-03-19 21:00:20] Fetching Onvista prices (cache)...
+[2026-03-19 21:00:21] Onvista: 2/2 URLs gecacht
+[2026-03-19 21:00:21] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-03-19 21:00:21] Risk Score: 50/100 (MEDIUM)
+[2026-03-19 21:00:21] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-19 21:00:21] Overnight Context geschrieben: 19.03.2026
+[2026-03-19 21:15:02] Fetching 15 Yahoo tickers...
+[2026-03-19 21:15:08] Fetching Onvista prices (cache)...
+[2026-03-19 21:15:09] Onvista: 2/2 URLs gecacht
+[2026-03-19 21:15:09] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-03-19 21:15:09] Risk Score: 50/100 (MEDIUM)
+[2026-03-19 21:15:09] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-19 21:15:09] Overnight Context geschrieben: 19.03.2026
+[2026-03-19 21:30:02] Fetching 15 Yahoo tickers...
+[2026-03-19 21:30:08] Fetching Onvista prices (cache)...
+[2026-03-19 21:30:09] Onvista: 2/2 URLs gecacht
+[2026-03-19 21:30:09] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-03-19 21:30:09] Risk Score: 30/100 (MEDIUM)
+[2026-03-19 21:30:09] State Snapshot geschrieben: 11 Positionen, 0 Alerts
+[2026-03-19 21:30:09] Overnight Context geschrieben: 19.03.2026
