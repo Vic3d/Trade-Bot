@@ -1,5 +1,6 @@
-// TradeMind Pro — Vollständiges Trading Dashboard
-// Tabs: Real Portfolio | Paper Trades | News | Watchlist | Kalender | Risiko
+// TradeMind Pro v2 — Vollständiges Trading Dashboard
+// Tabs: Real | Paper | News | Watchlist | Kalender | Risiko | Signale | DNA | Macro
+// Build: 2026-03-19 21:12 CET
 
 const PAPER = [
   {ticker:'ASML.AS',  name:'ASML Holding',          entry:1187.60, strategy:'PS3', stop:1100.0, target:1380.0},
