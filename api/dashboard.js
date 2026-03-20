@@ -1457,104 +1457,78 @@ function renderPnlSummary(){
 // ── Macro Tab ────────────────────────────────────────────
 async function loadMacro(){
   const el=document.getElementById('macro-content');
-  if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten…</div>';return;}
+  if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten\u2026</div>';return;}
 
-  const px=t=>prices[t]?.price||0;
-  const chg=t=>prices[t]?.change_pct||0;
-  const vix=px('^VIX')||prices?.macro?.vix||0;
+  const px=function(t){return(prices[t]&&prices[t].price)||0;};
+  const chgP=function(t){return(prices[t]&&prices[t].change_pct)||0;};
+  const vix=px('^VIX')||((prices.macro)&&prices.macro.vix)||0;
   const wti=px('CL=F');
   const brent=px('BZ=F');
-  const spread=brent&&wti?+(brent-wti).toFixed(2):null;
-  const nk=chg('^N225');
+  const spread=(brent&&wti)?+(brent-wti).toFixed(2):null;
+  const nk=chgP('^N225');
   const eurusd=px('EURUSD=X');
 
-  // Regime bestimmen
-  let regime,rColor,rIcon,rText,rDo;
-  if(vix<15){
-    regime='Ruhiger Bullenmarkt';rColor='#2ecc71';rIcon='🟢';
-    rText='Märkte sind entspannt. Geringes Risiko.';
-    rDo='Positionen laufen lassen. Stops können weiter sein. Neue Setups eingehen.';
-  } else if(vix<20){
-    regime='Normales Umfeld';rColor='#27ae60';rIcon='🟢';
-    rText='Normaler Markt mit leichter Schwankung.';
-    rDo='Business as usual. Stops wie geplant.';
-  } else if(vix<25){
-    regime='Erhöhte Volatilität';rColor='#f39c12';rIcon='🟡';
-    rText='Markt ist nervös. Bewegungen werden größer.';
-    rDo='Keine neuen Positionen. Stops verteidigen. Auf Stops ≥5% achten.';
-  } else if(vix<30){
-    regime='Korrektur-Modus';rColor='#e67e22';rIcon='🟠';
-    rText='Spürbarer Stress. Institutionelle verkaufen.';
-    rDo='Stops auf Breakeven nachziehen. Keine Nachkäufe. Ggf. verkleinern.';
-  } else if(vix<35){
-    regime='Bären-Markt';rColor='#e74c3c';rIcon='🔴';
-    rText='Markt im Ausverkauf. Panik wahrscheinlich.';
-    rDo='Absicherung prüfen. Keine neuen Long-Positionen. Cash ist Position.';
-  } else {
-    regime='Krise';rColor='#c0392b';rIcon='🚨';
-    rText='Extremer Stress. Markt funktioniert kaum.';
-    rDo='Stopp aller Aktivitäten. Defensive Position. Warten.';
+  var regime,rColor,rIcon,rText,rDo;
+  if(vix<15){regime='Ruhiger Bullenmarkt';rColor='#2ecc71';rIcon='🟢';rText='M\xe4rkte sind entspannt. Geringes Risiko.';rDo='Positionen laufen lassen. Neue Setups eingehen.';}
+  else if(vix<20){regime='Normales Umfeld';rColor='#27ae60';rIcon='🟢';rText='Normaler Markt.';rDo='Business as usual. Stops wie geplant.';}
+  else if(vix<25){regime='Erh\xf6hte Volatilit\xe4t';rColor='#f39c12';rIcon='🟡';rText='Markt ist nerv\xf6s. Bewegungen werden gr\xf6\xdfer.';rDo='Keine neuen Positionen. Stops verteidigen. Stops \u22655% sicherstellen.';}
+  else if(vix<30){regime='Korrektur-Modus';rColor='#e67e22';rIcon='🟠';rText='Sp\xfcrbarer Stress. Institutionelle verkaufen.';rDo='Stops auf Breakeven nachziehen. Keine Nachk\xe4ufe.';}
+  else if(vix<35){regime='B\xe4ren-Markt';rColor='#e74c3c';rIcon='🔴';rText='Markt im Ausverkauf. Panik wahrscheinlich.';rDo='Absicherung pr\xfcfen. Keine neuen Longs. Cash ist Position.';}
+  else{regime='Krise';rColor='#c0392b';rIcon='🚨';rText='Extremer Stress.';rDo='Stopp aller Aktivit\xe4ten. Defensive. Warten.';}
+
+  var signals=[];
+  if(spread!==null&&spread>8)signals.push({icon:'🛢\ufe0f',text:'Brent-WTI Spread $'+spread+' \u2014 Lieferunterbrechung aktiv',impact:'EQNR + A3D42Y bullisch',color:'#2ecc71'});
+  if(spread!==null&&spread<=5)signals.push({icon:'🛢\ufe0f',text:'Brent-WTI Spread $'+spread+' \u2014 normalisiert',impact:'\xd6l-These unter Druck',color:'#e74c3c'});
+  if(wti>95)signals.push({icon:'\u26fd',text:'WTI $'+wti.toFixed(1)+' \u2014 \xfcber $95',impact:'EQNR + A3D42Y profitieren',color:'#2ecc71'});
+  if(wti>0&&wti<80)signals.push({icon:'\u26fd',text:'WTI $'+wti.toFixed(1)+' \u2014 unter $80',impact:'\xd6l-Positionen unter Druck',color:'#e74c3c'});
+  if(nk<-2)signals.push({icon:'🇯🇵',text:'Nikkei '+nk.toFixed(1)+'% \u2014 Asienschw\xe4che',impact:'Kupfer schw\xe4cher in 24h (Lead-Lag)',color:'#f39c12'});
+  if(vix>25)signals.push({icon:'\u26a0\ufe0f',text:'VIX '+vix.toFixed(1)+' \u2014 Stops bei PLTR (127\u20ac) + A14WU5 (25.95\u20ac) gef\xe4hrdet',impact:'Stop-Abst\xe4nde pr\xfcfen',color:'#e74c3c'});
+
+  var sigHtml='';
+  if(signals.length){
+    sigHtml='<div class="card" style="padding:14px;margin-bottom:16px"><div class="card-title">\u26a1 Was das f\xfcr dich bedeutet</div>';
+    for(var i=0;i<signals.length;i++){
+      var s=signals[i];
+      sigHtml+='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'
+        +'<span style="font-size:20px">'+s.icon+'</span>'
+        +'<div><div style="font-size:13px">'+s.text+'</div>'
+        +'<div style="color:'+s.color+';font-size:12px;margin-top:2px">\u2192 '+s.impact+'</div></div></div>';
+    }
+    sigHtml+='</div>';
   }
 
-  // Portfolio-Impact Signale
-  const signals=[];
-  if(spread!==null&&spread>8) signals.push({icon:'🛢️',text:`Brent-WTI Spread $${spread} — Lieferunterbrechung aktiv`,impact:'EQNR + A3D42Y bullisch',color:'#2ecc71'});
-  if(spread!==null&&spread<=5) signals.push({icon:'🛢️',text:`Brent-WTI Spread $${spread} — normalisiert`,impact:'Öl-These unter Druck',color:'#e74c3c'});
-  if(wti>95) signals.push({icon:'⛽',text:`WTI $${wti.toFixed(1)} — über $95`,impact:'EQNR + A3D42Y profitieren',color:'#2ecc71'});
-  if(wti<80) signals.push({icon:'⛽',text:`WTI $${wti.toFixed(1)} — unter $80`,impact:'Öl-Positionen unter Druck',color:'#e74c3c'});
-  if(nk<-2) signals.push({icon:'🇯🇵',text:`Nikkei ${nk.toFixed(1)}% — Asienschwäche`,impact:'Kupfer schwächer in 24h (Lead-Lag Signal)',color:'#f39c12'});
-  if(vix>25) signals.push({icon:'⚠️',text:`VIX ${vix.toFixed(1)} — Stops bei PLTR (127€) und A14WU5 (25.95€) gefährdet`,impact:'Stop-Abstände prüfen',color:'#e74c3c'});
-  if(eurusd>1.12) signals.push({icon:'💶',text:`EUR/USD ${eurusd.toFixed(4)} — starker Euro`,impact:'US-Positionen (PLTR) in EUR günstiger',color:'#888'});
+  var tiles=[
+    {label:'WTI \xd6l',val:'$'+wti.toFixed(1),sub:(chgP('CL=F')>=0?'+':'')+chgP('CL=F').toFixed(1)+'%',color:chgP('CL=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Brent',val:'$'+brent.toFixed(1),sub:'Spread $'+(spread!==null?spread:'\u2014'),color:spread>8?'#e74c3c':(spread>5?'#f39c12':'#2ecc71')},
+    {label:'S&P 500',val:px('^GSPC').toFixed(0),sub:(chgP('^GSPC')>=0?'+':'')+chgP('^GSPC').toFixed(1)+'%',color:chgP('^GSPC')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Nasdaq',val:px('^IXIC').toFixed(0),sub:(chgP('^IXIC')>=0?'+':'')+chgP('^IXIC').toFixed(1)+'%',color:chgP('^IXIC')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Nikkei',val:(nk>=0?'+':'')+nk.toFixed(1)+'%',sub:'Lead \u2192 Kupfer 24h',color:nk>=0?'#2ecc71':'#e74c3c'},
+    {label:'Gold',val:'$'+px('GC=F').toFixed(0),sub:(chgP('GC=F')>=0?'+':'')+chgP('GC=F').toFixed(1)+'%',color:chgP('GC=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Kupfer',val:'$'+px('HG=F').toFixed(3),sub:(chgP('HG=F')>=0?'+':'')+chgP('HG=F').toFixed(1)+'%',color:chgP('HG=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'EUR/USD',val:eurusd.toFixed(4),sub:'FX f\xfcr US-P&L',color:'#888'},
+  ];
+  var tileHtml='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">';
+  for(var j=0;j<tiles.length;j++){
+    var k=tiles[j];
+    tileHtml+='<div class="card" style="padding:12px">'
+      +'<div style="color:#888;font-size:11px">'+k.label+'</div>'
+      +'<div style="font-size:17px;font-weight:bold">'+k.val+'</div>'
+      +'<div style="color:'+k.color+';font-size:12px">'+k.sub+'</div></div>';
+  }
+  tileHtml+='</div>';
 
-  let html=`
-  <!-- REGIME BLOCK -->
-  <div style="background:${rColor}18;border:2px solid ${rColor};border-radius:12px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px">
-    <div style="font-size:48px;line-height:1">${rIcon}</div>
-    <div style="flex:1">
-      <div style="font-size:22px;font-weight:800;color:${rColor}">${regime}</div>
-      <div style="color:#ccc;margin:4px 0 8px">${rText}</div>
-      <div style="background:rgba(0,0,0,.3);border-radius:6px;padding:8px 12px;font-size:13px;color:#fff">
-        <strong>Was tun:</strong> ${rDo}
-      </div>
-    </div>
-    <div style="text-align:right;white-space:nowrap">
-      <div style="color:#888;font-size:11px">VIX</div>
-      <div style="font-size:32px;font-weight:bold;color:${rColor}">${vix.toFixed(1)}</div>
-    </div>
-  </div>
-
-  <!-- PORTFOLIO SIGNALE -->
-  ${signals.length?`
-  <div class="card" style="padding:14px;margin-bottom:16px">
-    <div class="card-title">⚡ Was das für dich bedeutet</div>
-    ${signals.map(s=>`
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-        <span style="font-size:20px">${s.icon}</span>
-        <div>
-          <div style="font-size:13px">${s.text}</div>
-          <div style="color:${s.color};font-size:12px;margin-top:2px">→ ${s.impact}</div>
-        </div>
-      </div>`).join('')}
-  </div>`:''}
-
-  <!-- KENNZAHLEN (kompakt) -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">
-  ${[
-    {label:'WTI Öl',val:`$${wti.toFixed(1)}`,sub:`${chg('CL=F')>=0?'+':''}${chg('CL=F').toFixed(1)}%`,color:chg('CL=F')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Brent',val:`$${brent.toFixed(1)}`,sub:`Spread $${spread??'—'}`,color:spread>8?'#e74c3c':(spread>5?'#f39c12':'#2ecc71')},
-    {label:'S&P 500',val:px('^GSPC').toFixed(0),sub:`${chg('^GSPC')>=0?'+':''}${chg('^GSPC').toFixed(1)}%`,color:chg('^GSPC')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Nasdaq',val:px('^IXIC').toFixed(0),sub:`${chg('^IXIC')>=0?'+':''}${chg('^IXIC').toFixed(1)}%`,color:chg('^IXIC')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Nikkei',val:`${nk>=0?'+':''}${nk.toFixed(1)}%`,sub:'Lead → Kupfer 24h',color:nk>=0?'#2ecc71':'#e74c3c'},
-    {label:'Gold',val:`$${px('GC=F').toFixed(0)}`,sub:`${chg('GC=F')>=0?'+':''}${chg('GC=F').toFixed(1)}%`,color:chg('GC=F')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Kupfer',val:`$${px('HG=F').toFixed(3)}`,sub:`${chg('HG=F')>=0?'+':''}${chg('HG=F').toFixed(1)}%`,color:chg('HG=F')>=0?'#2ecc71':'#e74c3c'},
-    {label:'EUR/USD',val:eurusd.toFixed(4),sub:'FX für US-P&L',color:'#888'},
-  ].map(k=>`<div class="card" style="padding:12px">
-    <div style="color:#888;font-size:11px">${k.label}</div>
-    <div style="font-size:17px;font-weight:bold">${k.val}</div>
-    <div style="color:${k.color};font-size:12px">${k.sub}</div>
-  </div>`).join('')}
-  </div>`;
-  el.innerHTML=html;
+  el.innerHTML=
+    '<div style="background:'+rColor+'18;border:2px solid '+rColor+';border-radius:12px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px">'
+    +'<div style="font-size:48px;line-height:1">'+rIcon+'</div>'
+    +'<div style="flex:1">'
+    +'<div style="font-size:22px;font-weight:800;color:'+rColor+'">'+regime+'</div>'
+    +'<div style="color:#ccc;margin:4px 0 8px">'+rText+'</div>'
+    +'<div style="background:rgba(0,0,0,.3);border-radius:6px;padding:8px 12px;font-size:13px;color:#fff"><strong>Was tun:</strong> '+rDo+'</div>'
+    +'</div>'
+    +'<div style="text-align:right;white-space:nowrap">'
+    +'<div style="color:#888;font-size:11px">VIX</div>'
+    +'<div style="font-size:32px;font-weight:bold;color:'+rColor+'">'+vix.toFixed(1)+'</div></div></div>'
+    +sigHtml+tileHtml;
 }
 
 // ── Day Trading Tab (TRA-140, TRA-141) ──────────────────
