@@ -11,7 +11,12 @@
   },
   "1e0dde7a...": {
     "filename": "eriksen-athtargets-2026-03-18.txt",
-    "processed_at": "2026-03-19T16:01:47.661161+00:00",
+    "processed_at": "2026-03-20T08:00:59.213492+00:00",
+    "had_insights": true
+  },
+  "1e0dde7a": {
+    "filename": "eriksen-athtargets-2026-03-18.txt",
+    "processed_at": "2026-03-20T12:00:29.991754+00:00",
     "had_insights": true
   }
 }

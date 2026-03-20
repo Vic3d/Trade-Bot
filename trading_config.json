@@ -115,8 +115,8 @@
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
-      "yahoo": "TAN",
-      "currency": "USD",
+      "onvista": "https://www.onvista.de/etf/INVESCO-SOLAR-ENERGY-UCITS-ETF-IE00B23D9570",
+      "currency": "EUR",
       "entry_eur": 22.4,
       "stop_eur": null,
       "targets_eur": [
@@ -129,8 +129,8 @@
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "yahoo": "OIH",
-      "currency": "USD",
+      "onvista": "https://www.onvista.de/etf/VanEck-Oil-Services-UCITS-ETF-A-USD-ACC-ETF-IE000NXF88S1",
+      "currency": "EUR",
       "entry_eur": 27.9,
       "stop_eur": 24.0,
       "targets_eur": [],
@@ -141,8 +141,8 @@
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
-      "yahoo": "CIBR",
-      "currency": "USD",
+      "onvista": "https://www.onvista.de/etf/L-G-CYBER-SECURITY-UCITS-ETF-IE00BYPLS672",
+      "currency": "EUR",
       "entry_eur": 28.8,
       "stop_eur": 25.95,
       "targets_eur": [],
@@ -153,8 +153,8 @@
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "yahoo": "IBB",
-      "currency": "USD",
+      "onvista": "https://www.onvista.de/etf/iShares-NASDAQ-US-Biotechnology-UCITS-ETF-USD-Acc-ETF-IE00BYXG2H39",
+      "currency": "EUR",
       "entry_eur": 7.0,
       "stop_eur": 6.3,
       "targets_eur": [],
@@ -209,9 +209,14 @@
   "macro": {
     "wti_ticker": "CL=F",
     "vix_ticker": "^VIX",
+    "nikkei_ticker": "^N225",
     "wti_30m_alert_pct": 3.0,
     "wti_daily_alert_pct": 5.0,
-    "vix_spike_delta": 5.0
+    "vix_spike_delta": 5.0,
+    "brent_ticker": "BZ=F",
+    "brent_wti_spread_alert": 8.0,
+    "sx7e_ticker": "EXV1.DE",
+    "sx7e_drop_pct": -2.0
   },
   "settings": {
     "stop_warn_pct": 3.0,

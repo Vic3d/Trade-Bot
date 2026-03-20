@@ -1,6 +1,6 @@
 # Projekt: Trading Tool (Arbeitstitel: "TradeMind")
 
-**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-09
+**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-20
 **Status:** 🌱 Phase 1 — Lernphase (aktiv)
 **Beteiligte:** Victor (Lead), Albert (Proto-Tool + Dokumentation)
 **Ziel:** Beste Retail-Trading-App der Welt. Start als persönliches Tool, Vermarktung ~2027.
@@ -1040,3 +1040,36 @@ Alberts unabhängige Analyse:
 4. Scaling-Modul: automatische Positionierung in Rücksetzer/Rallies (3-5 Tranchen vordefinieren)
 
 ---
+
+
+---
+## Transcript-Analyse: Lars Eriksen (2026-03-20)
+*Quelle: eriksen-athtargets-2026-03-18.txt*
+
+## Lars Eriksen — ATH-Targets (2026-03-18)
+
+**Methodik-Erkenntnisse:**
+- **Scaling rein/raus, nicht binär:** Professionelle aktive Anleger (Druckenmiller, Tudor Jones) skalieren Positionen graduell auf und ab, statt binär all-in/all-out zu gehen. Damit outperformt man langfristig durch besseres Timing in trendstarken Phasen.
+- **Banken-Korrelation als Leitlinie:** "Kein Bullenmarkt korrigiert groß ohne dass Banken korrigieren." Die Bankenerholung führt nahezu automatisch zu Aktienmarkt-Erholung. Das ist ein präzises technisches Signal für Richtungswechsel.
+
+**Pattern-Erkennung:**
+- **Private Credit Risiko ist kontrolliert:** 1,2 Billionen USD im Private Credit Markt — klingt groß, aber im Kontext von 145 Billionen USD globalem Aktienmarkt und deutlich höheren Fixed-Income-Märkten ist es managebar. Nicht vergleichbar mit Finanzkrise-Trigger (damals Immobilienkredite, jetzt kontrollierter Non-Depository sektor).
+- **Extreme Absicherungshaltung = Kaufsignal:** Wenn Demand für Put-Optionen (Downside Protection) auf 4-Jahres-High ist → institutionelle Anleger hedgen massiv. Historisch ein starkes Gegensignal zu Crashes (nicht automatisch, aber statistisch zuverlässig).
+
+**Risiko-Regeln:**
+- **Nicht in die Brennpunkte kaufen:** BDCs und hochverschuldete Unternehmen meiden wenn Risiken akut sind — auch wenn die Dividendenrendite (10%+) verführerisch wirkt. Im Drawdown-Fall geraten diese massiv unter Druck.
+- **Leverage-Positionen verstehen:** KI-Story auf Hebel (z.B. Oracle: hohe Verschuldung bei KI-Wachstum) läuft in Bull-Märkten sehr gut, aber es ist kritisch zu wissen, was man kauft — nicht blind auf das Narrativ folgen.
+
+**Psychologie / Denkmuster:**
+- **Emotionale Massenbewegungen erkennen:** Wenn "Gott, die Welt und sein Nachbar sich auf fallende Kurse eingestellt haben" → das ist ein psychologisches Extremsignal. Professionelle Anleger skalieren rein, wenn die Masse panisch ist.
+- **Nicht wie Michael Burry denken (all-out, dann warten):** Der Track Record von Binary-Aussagen (jetzt verkaufen, später wieder einsteigen) ist schwach. Professionelle Strategien: graduelles Rebalancing, nicht dramatische Ein-/Aus-Bewegungen.
+- **Markt ist nüchtern bei Geopolitik:** Iran-Risiken, Straße von Hormus — werden eingepreist, lösen aber nicht automatisch Crashes aus. Historisch haben längere Kriege (Afghanistan, Irak) den Aktienmarkt nicht fundamental beschädigt.
+
+**Nicht tun (Red Flags):**
+- Nicht binär denken (all-in bei Schwäche oder all-out bei Stärke)
+- Nicht in hochverschuldete KI-Play-Unternehmen einsteigen wenn Narrative fragil sind
+- Nicht in Sektoren mit extremem Drawdown-Risiko (BDCs) einsteigen, nur weil Dividendenrendite hoch ist
+- Nicht einfach warten "bis sich die Lage beruhigt" — das führt zu höheren Einstiegspreisen (Buy-High-Fehler)
+
+**Alberts Gesamteinschätzung:**
+Die Scaling-Logik ist zeitlos wertvoll — graduelles Aufbauen/Abbauen outperformt binäre Strategien in trendstarken Märkten signifikant. Die Banken-Korrelation als Leit-Signal ist präzise und praxisrelevant. Das Absicherungs-Extrema als Gegensignal ist statistisch valide, aber erfordert Timing-Disziplin (nicht mechanisch umsetzen).

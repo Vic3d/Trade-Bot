@@ -1,24 +1,20 @@
 # State Snapshot — Trading Bot
-**Zuletzt aktualisiert:** 2026-03-19 21:45 UTC
-**Positionen:** 11 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
+**Zuletzt aktualisiert:** 2026-03-20 11:45 UTC
+**Positionen:** 7 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
 
 ---
 
-## Portfolio (11 Positionen)
+## Portfolio (7 Positionen)
 
-| Aktie | Kurs | Entry | P&L | Stop | Conviction | Letzter Alert |
-|---|---|---|---|---|---|---|
-| Nvidia (NVDA) | 154.06€ | 167.88€ | -8.2% | ❌ kein Stop | — | — |
-| Microsoft (MSFT) | 335.65€ | 351.85€ | -4.6% | 338.00€ | — | — |
-| Palantir (PLTR) | 134.32€ | 132.11€ | +1.7% | 127.00€ | 57 | — |
-| Equinor ASA (EQNR) | 36.26€ | 27.45€ | +32.1% | 33.00€ | 45 | — |
-| Bayer AG (BAYN.DE) | 38.68€ | 39.95€ | -3.2% | 38.00€ | 40 | — |
-| Rio Tinto (RIO.L) | 73.49€ | 76.92€ | -4.5% | 73.00€ | — | — |
-| Rheinmetall AG (RHM.DE) | 1557.50€ | 1570.00€ | -0.8% | 1520.00€ | — | — |
-| Invesco Solar Energy ETF (A2QQ9R) | 49.14€ | 22.40€ | +119.4% | ❌ kein Stop | 47 | — |
-| VanEck Oil Services ETF (A3D42Y) | 338.76€ | 27.90€ | +1114.2% | 24.00€ | 47 | — |
-| L&G Cyber Security ETF (A14WU5) | 56.28€ | 28.80€ | +95.4% | 25.95€ | 39 | — |
-| iShares Biotech ETF (A2DWAW) | 141.90€ | 7.00€ | +1927.1% | 6.30€ | 39 | — |
+| Aktie | Kurs | Entry | P&L | Stop | Conviction | RS/QQQ | Letzter Alert |
+|---|---|---|---|---|---|---|---|
+| Palantir (PLTR) | 134.42€ | 132.11€ | +1.8% | 127.00€ | 57 | -6.0x | — |
+| Equinor ASA (EQNR) | 35.24€ | 27.45€ | +28.4% | 33.00€ | 45 | +7.5x | — |
+| Bayer AG (BAYN.DE) | 39.27€ | 39.95€ | -1.7% | 38.00€ | 40 | — | — |
+| Invesco Solar Energy ETF (A2QQ9R) | 9.88€ | 22.40€ | -55.9% | ❌ kein Stop | 47 | — | — |
+| VanEck Oil Services ETF (A3D42Y) | 27.89€ | 27.90€ | -0.0% | 24.00€ | 47 | — | — |
+| L&G Cyber Security ETF (A14WU5) | 26.28€ | 28.80€ | -8.8% | 25.95€ | 39 | — | — |
+| iShares Biotech ETF (A2DWAW) | 7.13€ | 7.00€ | +1.9% | 6.30€ | 39 | — | — |
 
 ## Watchlist
 
@@ -28,10 +24,10 @@ _(keine Watchlist-Daten)_
 
 | Indikator | Wert | Signal |
 |---|---|---|
-| VIX | 24.1 | 🟡 Erhöht |
-| WTI | $94.59 | 🟡 Erhöht |
+| VIX | 24.8 | 🟡 Erhöht |
+| WTI | $94.50 | 🟡 Erhöht |
 | Nikkei 225 | -3.4% | Öl-Frühindikator |
-| EUR/USD | 1.1590 | — |
+| EUR/USD | 1.1582 | — |
 
 ## Strategien-Status
 
@@ -47,10 +43,7 @@ _(keine Watchlist-Daten)_
 
 ## Offene Alerts / Handlungsbedarf
 
-- ⚠️ Microsoft (MSFT): -0.7% über Stop 338.00€
-- ⚠️ Bayer AG (BAYN.DE): 1.8% über Stop 38.00€
-- ⚠️ Rio Tinto (RIO.L): 0.7% über Stop 73.00€
-- ⚠️ Rheinmetall AG (RHM.DE): 2.4% über Stop 1520.00€
+- ⚠️ L&G Cyber Security ETF (A14WU5): 1.3% über Stop 25.95€
 
 ## Letzte Conviction Scores
 

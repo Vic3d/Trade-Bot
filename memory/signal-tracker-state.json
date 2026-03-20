@@ -6,10 +6,20 @@
       "lag_price_at_signal": 5.483,
       "signal_pct": -3.3795986198257086,
       "check_at_ts": 1774032992.533189
+    },
+    {
+      "pair_id": "NIKKEI_COPPER",
+      "issue_id": "6e139f2e-864e-4de9-9db9-f2d221646413",
+      "lag_price_at_signal": 5.515,
+      "signal_pct": -3.3795986198257086,
+      "check_at_ts": 1774072805.2399328
     }
   ],
   "fired_today": {
     "2026-03-19": [
+      "NIKKEI_COPPER"
+    ],
+    "2026-03-20": [
       "NIKKEI_COPPER"
     ]
   }

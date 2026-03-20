@@ -764,6 +764,21 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
 
         state['prev_wti'] = wti
 
+    # ── Brent-WTI Spread (TRA-177) ──
+    brent_t = macro.get('brent_ticker', 'BZ=F')
+    if brent_t in prices and wti_t in prices:
+        brent = prices[brent_t]['price']
+        wti   = prices[wti_t]['price']
+        spread = brent - wti
+        threshold_spread = macro.get('brent_wti_spread_alert', 8.0)
+        if spread > threshold_spread:
+            skey = 'MACRO_BRENT_WTI_SPREAD'
+            if skey not in sent_today:
+                msg = (f"⚠️ BRENT-WTI SPREAD: ${spread:.2f} "
+                       f"(Brent ${brent:.2f} - WTI ${wti:.2f}) — Lieferunterbrechung Warnsignal!")
+                alerts.append(msg)
+                sent_today.add(skey)
+
     # ── VIX ──
     vix_t = macro.get('vix_ticker', '^VIX')
     if vix_t in prices:
@@ -809,6 +824,26 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
                 )
                 alerts.append(msg)
                 sent_today.add(nkey)
+
+    # ── SX7E Euro Stoxx Banks (TRA-178) ──
+    # Frühindikator für europäischen Bankensektor / systemische Risiken
+    sx7e_t = macro.get('sx7e_ticker', 'EXV1.DE')
+    if sx7e_t in prices:
+        sx7e      = prices[sx7e_t]
+        sx7e_chg  = sx7e.get('change_pct', 0)
+        threshold_sx7e = macro.get('sx7e_drop_pct', -2.0)
+        if sx7e_chg <= threshold_sx7e:
+            xkey = 'MACRO_SX7E_DROP'
+            if xkey not in sent_today:
+                headlines = fetch_macro_headlines('Euro Stoxx Banks EXV1 European banks fall today')
+                cause     = classify_macro_cause(headlines, fallback='us_contagion')
+                msg       = build_macro_alert(
+                    'EURO STOXX BANKS (SX7E)',
+                    f'{sx7e_chg:+.1f}%',
+                    cause, positions
+                )
+                alerts.append(msg)
+                sent_today.add(xkey)
 
     state['alerts_sent_today'] = sent_today
     return alerts
@@ -1003,6 +1038,8 @@ def update_state_snapshot(config: dict, export: dict, strategy_statuses: dict,
     critical_alerts = []
 
     for key, p in positions.items():
+        if p.get('status') == 'CLOSED':  # TRA-174: CLOSED überspringen
+            continue
         price = p.get('price_eur', 0)
         entry = p.get('entry_eur', 0)
         pnl   = p.get('pnl_pct', 0)
@@ -1020,14 +1057,21 @@ def update_state_snapshot(config: dict, export: dict, strategy_statuses: dict,
                     f"⚠️ {name} ({key}): {margin_pct:.1f}% über Stop {stop_str}"
                 )
 
+        # Relative Stärke vs. QQQ (TRA-179)
+        rs_raw = p.get('rs_qqq')
+        if rs_raw is not None:
+            rs_str = f"+{rs_raw:.1f}x" if rs_raw >= 0 else f"{rs_raw:.1f}x"
+        else:
+            rs_str = "—"
+
         portfolio_rows.append(
             f"| {name} ({key}) | {price:.2f}€ | {entry:.2f}€ | {pnl:+.1f}% | "
-            f"{stop_str} | {conv.get('score', '—')} | {last_alert} |"
+            f"{stop_str} | {conv.get('score', '—')} | {rs_str} | {last_alert} |"
         )
 
     portfolio_table = (
-        "| Aktie | Kurs | Entry | P&L | Stop | Conviction | Letzter Alert |\n"
-        "|---|---|---|---|---|---|---|\n"
+        "| Aktie | Kurs | Entry | P&L | Stop | Conviction | RS/QQQ | Letzter Alert |\n"
+        "|---|---|---|---|---|---|---|---|\n"
         + "\n".join(portfolio_rows)
     )
 
@@ -1258,6 +1302,9 @@ def main():
     yahoo_tickers.add(config.get('macro', {}).get('wti_ticker', 'CL=F'))
     yahoo_tickers.add(config.get('macro', {}).get('vix_ticker', '^VIX'))
     yahoo_tickers.add(config.get('macro', {}).get('nikkei_ticker', '^N225'))
+    yahoo_tickers.add(config.get('macro', {}).get('brent_ticker', 'BZ=F'))    # TRA-177: Brent Crude
+    yahoo_tickers.add(config.get('macro', {}).get('sx7e_ticker', 'EXV1.DE'))  # TRA-178: Euro Stoxx Banks
+    yahoo_tickers.add('QQQ')                                                   # TRA-179: Nasdaq RS
 
     for pos in config.get('positions', {}).values():
         if pos.get('yahoo'):
@@ -1322,12 +1369,26 @@ def main():
     if vix_t in prices: export['macro']['vix']    = prices[vix_t]['price']
     if nk_t  in prices: export['macro']['nikkei'] = prices[nk_t]['change_pct']
 
+    # QQQ für Relative Stärke (TRA-179)
+    qqq_data   = prices.get('QQQ', {})
+    qqq_change = qqq_data.get('change_pct') if qqq_data else None
+
     # Positionen (nutzt onvista_cache — kein zweiter Crawl)
     for key, pos in config.get('positions', {}).items():
+        if pos.get('status') == 'CLOSED':  # TRA-174: CLOSED überspringen
+            continue
         price_eur, price_raw = get_price_eur(pos, prices, fx, onvista_cache, key)
         if price_eur is not None:
             entry = pos.get('entry_eur', 0)
             pnl   = (price_eur - entry) / entry * 100 if entry else 0
+
+            # Relative Stärke vs. QQQ (TRA-179)
+            yahoo_t    = pos.get('yahoo')
+            pos_change = prices[yahoo_t].get('change_pct') if (yahoo_t and yahoo_t in prices) else None
+            rs_qqq     = None
+            if pos_change is not None and qqq_change and abs(qqq_change) > 0.1:
+                rs_qqq = round(pos_change / qqq_change, 2)
+
             export['positions'][key] = {
                 'name':      pos['name'],
                 'price_eur': round(price_eur, 2),
@@ -1335,6 +1396,7 @@ def main():
                 'entry_eur': entry,
                 'pnl_pct':   round(pnl, 2),
                 'stop_eur':  pos.get('stop_eur'),
+                'rs_qqq':    rs_qqq,
             }
 
     # Watchlist (nutzt onvista_cache)
