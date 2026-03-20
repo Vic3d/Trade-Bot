@@ -1,6 +1,24 @@
 {
   "signals": [
     {
+      "pair_id": "VIX_TECH",
+      "lead_ticker": "^VIX",
+      "lead_name": "VIX Volatility Index",
+      "lag_ticker": "PLTR",
+      "lag_name": "Palantir (als Tech-Proxy)",
+      "signal_value": "+10.0%",
+      "signal_pct": 9.97506234413966,
+      "lead_price": 26.46,
+      "lag_price_at_signal": 151.82,
+      "lag_hours": 24,
+      "direction": "inverse",
+      "outcome": "PENDING",
+      "issue_id": "dfec9019-0cc9-4302-b4b3-5449625223e0",
+      "issue_key": "TRA-216",
+      "confidence": "0/20 samples",
+      "created_at": "2026-03-20T14:30:27Z"
+    },
+    {
       "pair_id": "NIKKEI_COPPER",
       "lead_ticker": "^N225",
       "lead_name": "Nikkei 225",
@@ -38,11 +56,11 @@
     }
   ],
   "stats": {
-    "total": 2,
+    "total": 3,
     "wins": 0,
     "losses": 0,
-    "pending": 2,
+    "pending": 3,
     "accuracy_pct": null
   },
-  "updated": "2026-03-20T06:00:05Z"
+  "updated": "2026-03-20T14:30:27Z"
 }
