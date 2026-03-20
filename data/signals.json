@@ -7,6 +7,24 @@
       "lag_ticker": "HG=F",
       "lag_name": "Copper Futures",
       "signal_value": "-3.4%",
+      "signal_pct": -3.3795986198257086,
+      "lead_price": 53372.53,
+      "lag_price_at_signal": 5.515,
+      "lag_hours": 24,
+      "direction": "same",
+      "outcome": "PENDING",
+      "issue_id": "6e139f2e-864e-4de9-9db9-f2d221646413",
+      "issue_key": "TRA-172",
+      "confidence": "0/20 samples",
+      "created_at": "2026-03-20T06:00:05Z"
+    },
+    {
+      "pair_id": "NIKKEI_COPPER",
+      "lead_ticker": "^N225",
+      "lead_name": "Nikkei 225",
+      "lag_ticker": "HG=F",
+      "lag_name": "Copper Futures",
+      "signal_value": "-3.4%",
       "signal_pct": -3.38,
       "lead_price": 35372.0,
       "lag_price_at_signal": 5.12,
@@ -20,11 +38,11 @@
     }
   ],
   "stats": {
-    "total": 1,
+    "total": 2,
     "wins": 0,
     "losses": 0,
-    "pending": 1,
+    "pending": 2,
     "accuracy_pct": null
   },
-  "updated": "2026-03-19T20:30:00Z"
+  "updated": "2026-03-20T06:00:05Z"
 }
