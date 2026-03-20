@@ -1458,57 +1458,102 @@ function renderPnlSummary(){
 async function loadMacro(){
   const el=document.getElementById('macro-content');
   if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten…</div>';return;}
-  
-  const macroTickers=[
-    {key:'^VIX',name:'VIX',unit:'',warn:25,crit:30},
-    {key:'CL=F',name:'WTI Öl',unit:'$',warn:90,crit:100},
-    {key:'BZ=F',name:'Brent',unit:'$',warn:100,crit:110},
-    {key:'GC=F',name:'Gold',unit:'$'},
-    {key:'^DJI',name:'Dow Jones',unit:''},
-    {key:'^GSPC',name:'S&P 500',unit:''},
-    {key:'^IXIC',name:'Nasdaq',unit:''},
-    {key:'^N225',name:'Nikkei 225',unit:''},
-    {key:'HG=F',name:'Kupfer',unit:'$'},
-    {key:'EURUSD=X',name:'EUR/USD',unit:''},
-  ];
-  
-  let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px">';
-  macroTickers.forEach(m=>{
-    const d=prices[m.key];
-    if(!d)return;
-    const price=d.price||d.regularMarketPrice||0;
-    const chg=d.change_pct||0;
-    const color=chg>0?'#2ecc71':(chg<0?'#e74c3c':'#888');
-    let border='';
-    if(m.crit&&price>=m.crit)border='border-left:3px solid #e74c3c';
-    else if(m.warn&&price>=m.warn)border='border-left:3px solid #f39c12';
-    html+='<div class="card" style="padding:12px;'+border+'">';
-    html+='<div style="color:#888;font-size:11px">'+m.name+'</div>';
-    html+='<div style="font-size:18px;font-weight:bold">'+m.unit+price.toFixed(2)+'</div>';
-    html+='<div style="color:'+color+';font-size:12px">'+(chg>0?'+':'')+chg.toFixed(2)+'%</div>';
-    html+='</div>';
-  });
-  html+='</div>';
-  
-  const vix=(prices['^VIX']||{}).price||prices?.macro?.vix||0;
-  let regime='NEUTRAL',rColor='#f39c12';
-  if(vix<15){regime='BULL_CALM';rColor='#2ecc71';}
-  else if(vix<20){regime='BULL_VOLATILE';rColor='#27ae60';}
-  else if(vix<25){regime='NEUTRAL';rColor='#f39c12';}
-  else if(vix<30){regime='CORRECTION';rColor='#e67e22';}
-  else if(vix<35){regime='BEAR';rColor='#e74c3c';}
-  else{regime='CRISIS';rColor='#c0392b';}
-  html+='<div class="card" style="padding:12px;margin-top:12px"><div class="card-title">Aktuelles Regime</div>';
-  html+='<div style="font-size:24px;font-weight:bold;color:'+rColor+'">'+regime+'</div>';
-  html+='<div style="color:#888">VIX: '+vix.toFixed(1)+'</div></div>';
-  
-  const brent=(prices['BZ=F']||{}).price||0;
-  const wti=(prices['CL=F']||{}).price||0;
-  if(brent&&wti){
-    const spread=(brent-wti).toFixed(2);
-    const spreadColor=spread>10?'#e74c3c':(spread>5?'#f39c12':'#2ecc71');
-    html+='<div class="card" style="padding:12px;margin-top:8px"><div style="color:#888;font-size:11px">Brent-WTI Spread</div><div style="font-size:18px;font-weight:bold;color:'+spreadColor+'">$'+spread+'</div></div>';
+
+  const px=t=>prices[t]?.price||0;
+  const chg=t=>prices[t]?.change_pct||0;
+  const vix=px('^VIX')||prices?.macro?.vix||0;
+  const wti=px('CL=F');
+  const brent=px('BZ=F');
+  const spread=brent&&wti?+(brent-wti).toFixed(2):null;
+  const nk=chg('^N225');
+  const eurusd=px('EURUSD=X');
+
+  // Regime bestimmen
+  let regime,rColor,rIcon,rText,rDo;
+  if(vix<15){
+    regime='Ruhiger Bullenmarkt';rColor='#2ecc71';rIcon='🟢';
+    rText='Märkte sind entspannt. Geringes Risiko.';
+    rDo='Positionen laufen lassen. Stops können weiter sein. Neue Setups eingehen.';
+  } else if(vix<20){
+    regime='Normales Umfeld';rColor='#27ae60';rIcon='🟢';
+    rText='Normaler Markt mit leichter Schwankung.';
+    rDo='Business as usual. Stops wie geplant.';
+  } else if(vix<25){
+    regime='Erhöhte Volatilität';rColor='#f39c12';rIcon='🟡';
+    rText='Markt ist nervös. Bewegungen werden größer.';
+    rDo='Keine neuen Positionen. Stops verteidigen. Auf Stops ≥5% achten.';
+  } else if(vix<30){
+    regime='Korrektur-Modus';rColor='#e67e22';rIcon='🟠';
+    rText='Spürbarer Stress. Institutionelle verkaufen.';
+    rDo='Stops auf Breakeven nachziehen. Keine Nachkäufe. Ggf. verkleinern.';
+  } else if(vix<35){
+    regime='Bären-Markt';rColor='#e74c3c';rIcon='🔴';
+    rText='Markt im Ausverkauf. Panik wahrscheinlich.';
+    rDo='Absicherung prüfen. Keine neuen Long-Positionen. Cash ist Position.';
+  } else {
+    regime='Krise';rColor='#c0392b';rIcon='🚨';
+    rText='Extremer Stress. Markt funktioniert kaum.';
+    rDo='Stopp aller Aktivitäten. Defensive Position. Warten.';
   }
+
+  // Portfolio-Impact Signale
+  const signals=[];
+  if(spread!==null&&spread>8) signals.push({icon:'🛢️',text:`Brent-WTI Spread $${spread} — Lieferunterbrechung aktiv`,impact:'EQNR + A3D42Y bullisch',color:'#2ecc71'});
+  if(spread!==null&&spread<=5) signals.push({icon:'🛢️',text:`Brent-WTI Spread $${spread} — normalisiert`,impact:'Öl-These unter Druck',color:'#e74c3c'});
+  if(wti>95) signals.push({icon:'⛽',text:`WTI $${wti.toFixed(1)} — über $95`,impact:'EQNR + A3D42Y profitieren',color:'#2ecc71'});
+  if(wti<80) signals.push({icon:'⛽',text:`WTI $${wti.toFixed(1)} — unter $80`,impact:'Öl-Positionen unter Druck',color:'#e74c3c'});
+  if(nk<-2) signals.push({icon:'🇯🇵',text:`Nikkei ${nk.toFixed(1)}% — Asienschwäche`,impact:'Kupfer schwächer in 24h (Lead-Lag Signal)',color:'#f39c12'});
+  if(vix>25) signals.push({icon:'⚠️',text:`VIX ${vix.toFixed(1)} — Stops bei PLTR (127€) und A14WU5 (25.95€) gefährdet`,impact:'Stop-Abstände prüfen',color:'#e74c3c'});
+  if(eurusd>1.12) signals.push({icon:'💶',text:`EUR/USD ${eurusd.toFixed(4)} — starker Euro`,impact:'US-Positionen (PLTR) in EUR günstiger',color:'#888'});
+
+  let html=`
+  <!-- REGIME BLOCK -->
+  <div style="background:${rColor}18;border:2px solid ${rColor};border-radius:12px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:20px">
+    <div style="font-size:48px;line-height:1">${rIcon}</div>
+    <div style="flex:1">
+      <div style="font-size:22px;font-weight:800;color:${rColor}">${regime}</div>
+      <div style="color:#ccc;margin:4px 0 8px">${rText}</div>
+      <div style="background:rgba(0,0,0,.3);border-radius:6px;padding:8px 12px;font-size:13px;color:#fff">
+        <strong>Was tun:</strong> ${rDo}
+      </div>
+    </div>
+    <div style="text-align:right;white-space:nowrap">
+      <div style="color:#888;font-size:11px">VIX</div>
+      <div style="font-size:32px;font-weight:bold;color:${rColor}">${vix.toFixed(1)}</div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO SIGNALE -->
+  ${signals.length?`
+  <div class="card" style="padding:14px;margin-bottom:16px">
+    <div class="card-title">⚡ Was das für dich bedeutet</div>
+    ${signals.map(s=>`
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:20px">${s.icon}</span>
+        <div>
+          <div style="font-size:13px">${s.text}</div>
+          <div style="color:${s.color};font-size:12px;margin-top:2px">→ ${s.impact}</div>
+        </div>
+      </div>`).join('')}
+  </div>`:''}
+
+  <!-- KENNZAHLEN (kompakt) -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">
+  ${[
+    {label:'WTI Öl',val:`$${wti.toFixed(1)}`,sub:`${chg('CL=F')>=0?'+':''}${chg('CL=F').toFixed(1)}%`,color:chg('CL=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Brent',val:`$${brent.toFixed(1)}`,sub:`Spread $${spread??'—'}`,color:spread>8?'#e74c3c':(spread>5?'#f39c12':'#2ecc71')},
+    {label:'S&P 500',val:px('^GSPC').toFixed(0),sub:`${chg('^GSPC')>=0?'+':''}${chg('^GSPC').toFixed(1)}%`,color:chg('^GSPC')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Nasdaq',val:px('^IXIC').toFixed(0),sub:`${chg('^IXIC')>=0?'+':''}${chg('^IXIC').toFixed(1)}%`,color:chg('^IXIC')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Nikkei',val:`${nk>=0?'+':''}${nk.toFixed(1)}%`,sub:'Lead → Kupfer 24h',color:nk>=0?'#2ecc71':'#e74c3c'},
+    {label:'Gold',val:`$${px('GC=F').toFixed(0)}`,sub:`${chg('GC=F')>=0?'+':''}${chg('GC=F').toFixed(1)}%`,color:chg('GC=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Kupfer',val:`$${px('HG=F').toFixed(3)}`,sub:`${chg('HG=F')>=0?'+':''}${chg('HG=F').toFixed(1)}%`,color:chg('HG=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'EUR/USD',val:eurusd.toFixed(4),sub:'FX für US-P&L',color:'#888'},
+  ].map(k=>`<div class="card" style="padding:12px">
+    <div style="color:#888;font-size:11px">${k.label}</div>
+    <div style="font-size:17px;font-weight:bold">${k.val}</div>
+    <div style="color:${k.color};font-size:12px">${k.sub}</div>
+  </div>`).join('')}
+  </div>`;
   el.innerHTML=html;
 }
 
