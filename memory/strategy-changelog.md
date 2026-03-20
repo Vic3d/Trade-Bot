@@ -216,3 +216,29 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
 
+
+## 2026-03-20 — EQNR Stop 33€ → 34,50€
+**Entscheidung:** Trailing Stop nachgezogen
+**Auslöser:** Kurs 35,94€ (+33% vom Entry) nahe 30-Tage-Hoch (36,13€)
+**Neuer Stop:** 34,50€ | Gesicherter Gewinn: +27,6%
+**Empfehlung war:** 34,00€ — Victor hat auf 34,50€ gesetzt (enger, gut)
+
+
+## 2026-03-20 20:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
+**Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+

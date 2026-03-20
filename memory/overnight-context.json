@@ -1,39 +1,23 @@
 {
-  "generated": "2026-03-19T21:00:06.523934",
+  "generated": "2026-03-20T21:00:11.064386",
   "prices": {
     "PLTR": {
-      "price_eur": 134.3,
-      "pnl_pct": 1.7
+      "price_eur": 130.19,
+      "pnl_pct": -1.5
     },
     "EQNR": {
-      "price_eur": 36.28,
-      "pnl_pct": 32.2
+      "price_eur": 35.69,
+      "pnl_pct": 30.0
     },
     "BAYN.DE": {
-      "price_eur": 38.47,
-      "pnl_pct": -3.7
-    },
-    "A2QQ9R": {
-      "price_eur": 49.13,
-      "pnl_pct": 119.3
-    },
-    "A3D42Y": {
-      "price_eur": 338.7,
-      "pnl_pct": 1114.0
-    },
-    "A14WU5": {
-      "price_eur": 56.27,
-      "pnl_pct": 95.4
-    },
-    "A2DWAW": {
-      "price_eur": 141.87,
-      "pnl_pct": 1926.8
+      "price_eur": 38.38,
+      "pnl_pct": -3.9
     }
   },
-  "vix": 24.06,
-  "wti": 94.49,
+  "vix": 26.78,
+  "wti": 97.9,
   "risks": [
-    "Bayer AG (BAYN.DE): Stop nur 1.2% weg",
-    "Invesco Solar Energy ETF (A2QQ9R): KEIN STOP gesetzt!"
+    "Palantir (PLTR): Stop nur 2.4% weg",
+    "Bayer AG (BAYN.DE): Stop nur 1.0% weg"
   ]
 }

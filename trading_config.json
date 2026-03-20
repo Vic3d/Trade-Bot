@@ -176,10 +176,14 @@
     {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "entryMin": 20,
-      "entryMax": 26,
-      "stop": 17,
-      "note": "EMA50-Rücklauf, Umkehrkerze nötig, CRV 5.8:1"
+      "entryMin": 13.0,
+      "entryMax": 16.5,
+      "stop": 11.5,
+      "note": "First Majestic Silver — -42% v.ATH, hochspekulativ. NUR nach Reversal-Kerze einsteigen! Kein Falling Knife.",
+      "target1": 20.0,
+      "target2": 25.0,
+      "strategy": "PS6_Rohstoffe",
+      "signal": "Wochenkerze Hammer/Engulfing + Volumen. AG folgt Gold."
     },
     {
       "ticker": "ASML.AS",
@@ -204,6 +208,48 @@
       "entryMax": 78,
       "stop": 69,
       "note": "Re-Entry nach Rohstoffkrise. Bedingungen: 1) Nikkei stabilisiert (>−1% 3 Tage), 2) Brent-WTI Spread < 8$ (Lieferlage normal), 3) China PMI > 50 (Nachfrage erholt). Entry-Zone 74–78€, Stop 69€, Ziel 90€, CRV ~3:1"
+    },
+    {
+      "ticker": "FCX",
+      "name": "Freeport-McMoRan (Kupfer)",
+      "source": "yahoo",
+      "currency": "USD",
+      "entryMin": 43.0,
+      "entryMax": 46.5,
+      "stop": 39.0,
+      "target1": 52.0,
+      "target2": 58.0,
+      "note": "KI-Rechenzentren + E-Auto Kupfernachfrage. Bodenbildung abwarten. CRV ~3.5:1",
+      "strategy": "PS6_Rohstoffe",
+      "signal": "Bodenbildung auf Wochenbasis (2 Wochen Seitwärts ohne neue Tiefs)"
+    },
+    {
+      "ticker": "GOLD",
+      "name": "Barrick Gold",
+      "source": "yahoo",
+      "currency": "USD",
+      "entryMin": 34.0,
+      "entryMax": 38.0,
+      "stop": 30.0,
+      "target1": 44.0,
+      "target2": 50.0,
+      "note": "Goldminer, gehebelt auf Goldpreis. Iran + Fed-Cuts + USD-Schwäche. CRV ~3:1",
+      "strategy": "PS6_Rohstoffe",
+      "signal": "Wochenkerze Hammer/Bullish Engulfing unter MA20w"
+    },
+    {
+      "ticker": "NEM",
+      "name": "Newmont Mining (Gold)",
+      "source": "yahoo",
+      "currency": "USD",
+      "entryMin": 75.0,
+      "entryMax": 85.0,
+      "stop": 70.0,
+      "target1": 100.0,
+      "target2": 115.0,
+      "note": "Weltgrößter Goldminer, konservativer als Barrick. CRV ~3:1",
+      "strategy": "PS6_Rohstoffe",
+      "signal": "Wochenkerze Reversal + Gold > MA20w"
     }
   ],
   "macro": {
@@ -230,69 +276,250 @@
     "default_size_eur": 2500
   },
   "strategies": [
-    {"id":"PS1","color":"#3498db","name":"Iran/Öl-Geopolitik","status":"🟢","conviction":"Hoch","tickers":["OXY","TTE.PA","NOVO-B.CO"],"desc":"Hormuz-Bedrohung → Öl teuer → Ölproduzenten profitieren.<br><br><strong>Kernthese:</strong> Iran + Houthi = Ölpreis-Versicherungsprämie.<br><strong>Ausstieg:</strong> Iran-Deal oder WTI dauerhaft &lt; 70$."},
-    {"id":"PS2","color":"#e67e22","name":"Tanker-Lag-These","status":"🟢","conviction":"Mittel","tickers":["FRO","DHT"],"desc":"Öl steigt → Tanker folgen mit 2–4W Verzögerung.<br><br><strong>Kernthese:</strong> Steigende Ölpreise → höhere Frachtraten → Tanker-Aktien ziehen nach.<br><strong>Ausstieg:</strong> Öl &lt; 70$ oder Frachtraten kollabieren."},
-    {"id":"PS3","color":"#2ecc71","name":"NATO/EU-Rüstung","status":"🟡","conviction":"Mittel","tickers":["ASML.AS","HO.PA"],"desc":"Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand."},
-    {"id":"PS4","color":"#f1c40f","name":"Edelmetalle/Miner","status":"🟡","conviction":"Mittel","tickers":["HL","PAAS"],"desc":"VIX hoch + Geopolitik → Gold/Silber → Miner überproportional.<br><br><strong>Kernthese:</strong> Miner = gehebelte Metallwette. Gold +20% → Miner +40–60%.<br><strong>Ausstieg:</strong> VIX &lt; 18, Gold &lt; 2.500$."},
-    {"id":"PS5","color":"#8b4513","name":"Dünger/Agrar-Superzyklus","status":"🟡","conviction":"Niedrig","tickers":["MOS","GLEN.L"],"desc":"Russische Kali-Sanktionen → westliche Düngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung."}
+    {
+      "id": "PS1",
+      "color": "#3498db",
+      "name": "Iran/Öl-Geopolitik",
+      "status": "🟢",
+      "conviction": "Hoch",
+      "tickers": [
+        "OXY",
+        "TTE.PA",
+        "NOVO-B.CO"
+      ],
+      "desc": "Hormuz-Bedrohung → Öl teuer → Ölproduzenten profitieren.<br><br><strong>Kernthese:</strong> Iran + Houthi = Ölpreis-Versicherungsprämie.<br><strong>Ausstieg:</strong> Iran-Deal oder WTI dauerhaft &lt; 70$."
+    },
+    {
+      "id": "PS2",
+      "color": "#e67e22",
+      "name": "Tanker-Lag-These",
+      "status": "🟢",
+      "conviction": "Mittel",
+      "tickers": [
+        "FRO",
+        "DHT"
+      ],
+      "desc": "Öl steigt → Tanker folgen mit 2–4W Verzögerung.<br><br><strong>Kernthese:</strong> Steigende Ölpreise → höhere Frachtraten → Tanker-Aktien ziehen nach.<br><strong>Ausstieg:</strong> Öl &lt; 70$ oder Frachtraten kollabieren."
+    },
+    {
+      "id": "PS3",
+      "color": "#2ecc71",
+      "name": "NATO/EU-Rüstung",
+      "status": "🟡",
+      "conviction": "Mittel",
+      "tickers": [
+        "ASML.AS",
+        "HO.PA"
+      ],
+      "desc": "Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand."
+    },
+    {
+      "id": "PS4",
+      "color": "#f1c40f",
+      "name": "Edelmetalle/Miner",
+      "status": "🟡",
+      "conviction": "Mittel",
+      "tickers": [
+        "HL",
+        "PAAS"
+      ],
+      "desc": "VIX hoch + Geopolitik → Gold/Silber → Miner überproportional.<br><br><strong>Kernthese:</strong> Miner = gehebelte Metallwette. Gold +20% → Miner +40–60%.<br><strong>Ausstieg:</strong> VIX &lt; 18, Gold &lt; 2.500$."
+    },
+    {
+      "id": "PS5",
+      "color": "#8b4513",
+      "name": "Dünger/Agrar-Superzyklus",
+      "status": "🟡",
+      "conviction": "Niedrig",
+      "tickers": [
+        "MOS",
+        "GLEN.L"
+      ],
+      "desc": "Russische Kali-Sanktionen → westliche Düngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung."
+    }
   ],
   "earnings": [
-    {"ticker":"MSFT","name":"Microsoft","date":"2026-04-29","type":"earnings"},
-    {"ticker":"NVDA","name":"Nvidia","date":"2026-05-28","type":"earnings"},
-    {"ticker":"PLTR","name":"Palantir","date":"2026-05-05","type":"earnings"},
-    {"ticker":"BAYN.DE","name":"Bayer","date":"2026-05-06","type":"earnings"},
-    {"ticker":"EQNR","name":"Equinor","date":"2026-05-08","type":"earnings"},
-    {"ticker":"RIO.L","name":"Rio Tinto","date":"2026-07-30","type":"earnings"}
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft",
+      "date": "2026-04-29",
+      "type": "earnings"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "Nvidia",
+      "date": "2026-05-28",
+      "type": "earnings"
+    },
+    {
+      "ticker": "PLTR",
+      "name": "Palantir",
+      "date": "2026-05-05",
+      "type": "earnings"
+    },
+    {
+      "ticker": "BAYN.DE",
+      "name": "Bayer",
+      "date": "2026-05-06",
+      "type": "earnings"
+    },
+    {
+      "ticker": "EQNR",
+      "name": "Equinor",
+      "date": "2026-05-08",
+      "type": "earnings"
+    },
+    {
+      "ticker": "RIO.L",
+      "name": "Rio Tinto",
+      "date": "2026-07-30",
+      "type": "earnings"
+    }
   ],
   "macro_events": [
-    {"name":"US NFP","date":"2026-04-03","desc":"Non-Farm Payrolls"},
-    {"name":"US CPI","date":"2026-04-10","desc":"Inflationsdaten USA"},
-    {"name":"EZB Sitzung","date":"2026-04-17","desc":"Zinsentscheidung Europa"},
-    {"name":"Fed FOMC","date":"2026-04-29","desc":"Zinsentscheidung USA"},
-    {"name":"US NFP","date":"2026-05-01","desc":"Non-Farm Payrolls"},
-    {"name":"Fed FOMC","date":"2026-06-10","desc":"Zinsentscheidung USA"},
-    {"name":"EZB Sitzung","date":"2026-06-05","desc":"Zinsentscheidung Europa"}
+    {
+      "name": "US NFP",
+      "date": "2026-04-03",
+      "desc": "Non-Farm Payrolls"
+    },
+    {
+      "name": "US CPI",
+      "date": "2026-04-10",
+      "desc": "Inflationsdaten USA"
+    },
+    {
+      "name": "EZB Sitzung",
+      "date": "2026-04-17",
+      "desc": "Zinsentscheidung Europa"
+    },
+    {
+      "name": "Fed FOMC",
+      "date": "2026-04-29",
+      "desc": "Zinsentscheidung USA"
+    },
+    {
+      "name": "US NFP",
+      "date": "2026-05-01",
+      "desc": "Non-Farm Payrolls"
+    },
+    {
+      "name": "Fed FOMC",
+      "date": "2026-06-10",
+      "desc": "Zinsentscheidung USA"
+    },
+    {
+      "name": "EZB Sitzung",
+      "date": "2026-06-05",
+      "desc": "Zinsentscheidung Europa"
+    }
   ],
   "sector_map": {
-    "NVDA":"KI/Tech","MSFT":"KI/Tech","PLTR":"KI/Tech","ASML.AS":"KI/Tech",
-    "EQNR":"Energie","OXY":"Energie","TTE.PA":"Energie","FRO":"Energie","DHT":"Energie",
-    "RIO.L":"Rohstoffe","GLEN.L":"Rohstoffe","MOS":"Rohstoffe",
-    "HL":"Edelmetalle","PAAS":"Edelmetalle",
-    "BAYN.DE":"Pharma","NOVO-B.CO":"Pharma",
-    "HO.PA":"Rüstung"
+    "NVDA": "KI/Tech",
+    "MSFT": "KI/Tech",
+    "PLTR": "KI/Tech",
+    "ASML.AS": "KI/Tech",
+    "EQNR": "Energie",
+    "OXY": "Energie",
+    "TTE.PA": "Energie",
+    "FRO": "Energie",
+    "DHT": "Energie",
+    "RIO.L": "Rohstoffe",
+    "GLEN.L": "Rohstoffe",
+    "MOS": "Rohstoffe",
+    "HL": "Edelmetalle",
+    "PAAS": "Edelmetalle",
+    "BAYN.DE": "Pharma",
+    "NOVO-B.CO": "Pharma",
+    "HO.PA": "Rüstung"
   },
   "sector_colors": {
-    "KI/Tech":"#7c3aed","Energie":"#e67e22","Rohstoffe":"#8b4513",
-    "Edelmetalle":"#f1c40f","Pharma":"#2ecc71","Rüstung":"#3498db"
+    "KI/Tech": "#7c3aed",
+    "Energie": "#e67e22",
+    "Rohstoffe": "#8b4513",
+    "Edelmetalle": "#f1c40f",
+    "Pharma": "#2ecc71",
+    "Rüstung": "#3498db"
   },
   "corr_groups": [
-    {"name":"KI/Halbleiter","color":"#7c3aed","tickers":["NVDA","MSFT","PLTR","ASML.AS"]},
-    {"name":"Öl/Energie","color":"#e67e22","tickers":["OXY","TTE.PA","EQNR"]},
-    {"name":"Tanker","color":"#3498db","tickers":["FRO","DHT"]},
-    {"name":"Silber/Miner","color":"#f1c40f","tickers":["HL","PAAS"]},
-    {"name":"Agrar/Dünger","color":"#2ecc71","tickers":["MOS","GLEN.L"]}
+    {
+      "name": "KI/Halbleiter",
+      "color": "#7c3aed",
+      "tickers": [
+        "NVDA",
+        "MSFT",
+        "PLTR",
+        "ASML.AS"
+      ]
+    },
+    {
+      "name": "Öl/Energie",
+      "color": "#e67e22",
+      "tickers": [
+        "OXY",
+        "TTE.PA",
+        "EQNR"
+      ]
+    },
+    {
+      "name": "Tanker",
+      "color": "#3498db",
+      "tickers": [
+        "FRO",
+        "DHT"
+      ]
+    },
+    {
+      "name": "Silber/Miner",
+      "color": "#f1c40f",
+      "tickers": [
+        "HL",
+        "PAAS"
+      ]
+    },
+    {
+      "name": "Agrar/Dünger",
+      "color": "#2ecc71",
+      "tickers": [
+        "MOS",
+        "GLEN.L"
+      ]
+    }
   ],
   "sector_vol": {
     "KI/Tech": 0.028,
     "Energie": 0.022,
-    "Rohstoffe": 0.020,
+    "Rohstoffe": 0.02,
     "Edelmetalle": 0.025,
     "Pharma": 0.016,
     "Rüstung": 0.018
   },
   "correlations": {
-    "NVDA-MSFT": 0.82, "NVDA-PLTR": 0.71, "NVDA-ASML.AS": 0.68,
-    "MSFT-PLTR": 0.65, "MSFT-ASML.AS": 0.60, "PLTR-ASML.AS": 0.55,
-    "OXY-TTE.PA": 0.78, "OXY-EQNR": 0.75, "OXY-FRO": 0.52, "OXY-DHT": 0.48,
-    "TTE.PA-EQNR": 0.80, "TTE.PA-FRO": 0.50, "TTE.PA-DHT": 0.45,
-    "EQNR-FRO": 0.55, "EQNR-DHT": 0.50,
+    "NVDA-MSFT": 0.82,
+    "NVDA-PLTR": 0.71,
+    "NVDA-ASML.AS": 0.68,
+    "MSFT-PLTR": 0.65,
+    "MSFT-ASML.AS": 0.6,
+    "PLTR-ASML.AS": 0.55,
+    "OXY-TTE.PA": 0.78,
+    "OXY-EQNR": 0.75,
+    "OXY-FRO": 0.52,
+    "OXY-DHT": 0.48,
+    "TTE.PA-EQNR": 0.8,
+    "TTE.PA-FRO": 0.5,
+    "TTE.PA-DHT": 0.45,
+    "EQNR-FRO": 0.55,
+    "EQNR-DHT": 0.5,
     "FRO-DHT": 0.88,
     "HL-PAAS": 0.85,
     "MOS-GLEN.L": 0.62,
     "BAYN.DE-NOVO-B.CO": 0.35,
-    "NVDA-OXY": 0.15, "NVDA-HL": 0.10, "NVDA-BAYN.DE": 0.08,
-    "MSFT-OXY": 0.12, "PLTR-OXY": 0.18,
-    "OXY-HL": 0.25, "OXY-MOS": 0.30,
-    "HL-MOS": 0.40
+    "NVDA-OXY": 0.15,
+    "NVDA-HL": 0.1,
+    "NVDA-BAYN.DE": 0.08,
+    "MSFT-OXY": 0.12,
+    "PLTR-OXY": 0.18,
+    "OXY-HL": 0.25,
+    "OXY-MOS": 0.3,
+    "HL-MOS": 0.4
   }
 }

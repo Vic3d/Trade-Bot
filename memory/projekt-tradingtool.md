@@ -1073,3 +1073,156 @@ Alberts unabhängige Analyse:
 
 **Alberts Gesamteinschätzung:**
 Die Scaling-Logik ist zeitlos wertvoll — graduelles Aufbauen/Abbauen outperformt binäre Strategien in trendstarken Märkten signifikant. Die Banken-Korrelation als Leit-Signal ist präzise und praxisrelevant. Das Absicherungs-Extrema als Gegensignal ist statistisch valide, aber erfordert Timing-Disziplin (nicht mechanisch umsetzen).
+
+---
+## Transcript-Analyse: Lars Eriksen (2026-03-20)
+*Quelle: eriksen-athtargets-2026-03-18.txt*
+
+## Lars Eriksen — Skalierungs-Methodik (2026-03-18)
+
+**Kernmethodologie:**
+- **Scaling statt binärer Ein/Aus**: Kontinuierliche Positionsanpassung in Trends, nicht "all-in" oder "all-out"
+- **C/R-Verhältnis vor Emotion**: Kaufentscheidung nur wenn Chancen/Risiko-Verhältnis stimmt, nicht nach Bauchgefühl
+- **Contrarian-Sentiment nutzen**: Extreme Hedging-Quote (höchste seit 4 Jahren) = klassisches Gegensignal, nicht Warnsignal
+
+**Patterns erkannt:**
+- Banken-Korrektur + Markt-Korrektur zeitgleich; wenn Banken wieder steigen → Markt folgt
+- Max 7 Bewertungen trotz Korrektur billiger als 2017/2018 + starke Earnings = keine Überteuerung
+- Private-Credit-Risiko (1,2 Billionen) ist übertrieben eingepreist (nicht vergleichbar mit 2008-Finanzkrise)
+
+**Zu vermeiden (Red Flags):**
+- BDCs mit >10% Dividende (Private-Credit-Brennpunkt-Risiko)
+- Banken der 2./3. Reihe mit hohem PC-Exposure
+- Binäre Entscheidungen basierend auf Sentiment
+
+**Keine konkreten Long-Signale:** Video nennt narrative Argumente für ATHs, aber keine Kaufpositionen mit Einstiegszonen.
+
+**Nutzen für Strategie S:** Skalierungs-Logik validiert Taktik; Hedging-Quote als Contrarian-Indikator wertvoll.
+## Woche 12/2026 — Lern-Report (KW12)
+
+**Beste Strategie:** Hypothesen-driven Research (H005/H006/H007 bestätigt)
+**Trefferquote:** 3 von 7 Hypothesen verifiziert (43%)
+**P&L realisiert:** -7.73€ (4 Trades geschlossen)
+**Portfolio:** 10 offen, 4 geschlossen
+
+### Gelernte Regeln
+
+**1. VIX-Hedge für Tech obligatorisch**
+   - Pattern bestätigt: Tech-Losses bei VIX >18 (H005)
+   - Lösung: Entry erst nach VIX-Rückgang oder Hedge mit Puts
+
+**2. Semiconductor-Sektor aktuell überkauft**
+   - H006: Semiconductor-Losses auch bei flachem VIX (H006)
+   - Conviction-Anpassung: S3/S4 Tech-Overweight reduzieren
+
+**3. PLTR/EQNR bleibt Core-Thesis**
+   - H007: Beide Positionen outperformen despite Drawdowns
+   - Aktion: Hold bestätigt, Position-Sizing nicht reduzieren
+
+### Nächste Woche (KW13)
+
+- Entry-Daten in Trades-JSON für EMA-Hypothesis (H003)
+- Geo-Trades intensivieren (H002 noch offen)
+- Setup-Details dokumentieren (H004)
+
+---
+
+## Transcript-Analyse: Lars Eriksen (2026-03-18)
+
+### Methodik-Erkenntnisse
+
+**1. Scaling vs. Binär-Denken** (Core Rule)
+- Position-Management ist NICHT: "Jetzt raus, später rein"
+- Position-Management IST: Kontinuierlich skalieren in Aufwärtstrends, reduzieren bei Unsicherheitssignalen
+- Beispiel Eriksen: 50% Cash-Quote hindert NICHT neue Käufe, wenn Scaling-Strategie aktiv ist
+- **Für S?:** Position-Sizing nach Trend-Kraft (nicht all-in-all-out)
+
+**2. Know What You Buy** (Risk Filter)
+- ⚠️ Private Credit / BDCs: Hohe Dividenden sind Risiko-Prämie. Bei Brennpunkt brutal abverkauft.
+- ⚠️ Kleine Banken mit Private-Credit-Exposure: Risikograde deutlich höher als JPM/Goldman
+- ✅ Fundamentale Überprüfung: "Verstehe ich das Risiko wirklich?"
+
+**3. EPS über Narrative**
+- Forward-EPS aktuell steigend (kein Crash-Signal)
+- Hyperscaler können KI-Investitionen aus Cashflow bezahlen (Oracle ist Ausnahme — highly leveraged)
+- Earning Season April → konkrete Bewährungsprobe
+
+### Pattern-Erkennung
+
+**Hedging-Quote als Konträr-Indikator**
+- Institutionelle hedgen auf 4-Jahres-High (Putoptionen)
+- Historisches Signal: Nicht "Markt crasht jetzt", sondern "Angst ist Chance"
+- Caveat: Nur nutzen mit Timing (nicht blind all-in gehen)
+
+**Banken-Sektor als Früherkenner**
+- "Kein Bullenmarkt korrigiert groß ohne dass Banken korrigieren"
+- Umkehr: Banken-Erholung → schnelle Markt-Erholung
+- Prüfe: Bankensektor-Position in S3/S4?
+
+**Bewertungen-Resets**
+- Max 7 jetzt so günstig wie seit 2017-18 (gemessen an aktuellen EPS)
+- Klassisches Buy-Signal bei guten Fundamentals
+
+### Risiko-Management-Regeln
+
+**Private Credit: Nicht im Portfolio**
+- 1,2 Billionen USD, aber andere Struktur als 2008 (kein anonymer Dominoeffekt)
+- Dennoch: Bei Stress brutal abverkauft
+- **Regel:** Private-Credit-Exposure checken, nicht spekulieren
+
+**Makro-Unsicherheit != Markt-Crash**
+- Iran, Ölpreis, Geopolitik: Volatilitätsauslöser, nicht Marktentscheider
+- Marktes bleibt nüchtern (nicht emotional wie private Trader)
+- Ölpreis 70-80$+ → Markt stieg trotzdem jahrelang
+
+### Psychologie
+
+**Buy When Fear Is Peak**
+- Hedging-Welle = Angst-Signal → konträr nutzen
+- ABER: Mit Scaling (nicht all-in), nicht einfach warten
+
+**Die Masse-Falle**
+- Standard-Investor: "Ruhe kommt, dann kaufe ich"
+- Resultat: Buys teuer (nach Bounce), verkauft billig (nach Drop)
+- Professionelle: Scaling während Trend, kontinuierliche Rebalance
+
+**Beispiele professioneller Skalier:**
+- Stanley Druckenmiller, Paul Tudor Jones
+- Continuous Position-Management (nicht Timing Moves)
+- In Bull-Phasen: 55-56% Outperformance in 14 Monaten möglich (nicht Standard, aber real)
+
+### Red Flags (Nicht Tun)
+
+❌ Alles auf Max 7 konzentrieren (Tunnel-Vision)
+❌ "Unsichere Zeiten = raus" → sicherer Weg zu Underperformance
+❌ Private Credit / BDC-Dividenden-Fallen
+❌ Michael-Burry-Ansatz (sell, wait, buy) statt kontinuierlicher Scaling
+
+### Thesen aus diesem Transcript
+
+**Keine konkreten Aktien-Empfehlungen** (nur Makro-Analyse)
+
+Eriksen nennt:
+- Aircon (48-49% Plus, aber "nicht mehr kaufen auf aktuellem Niveau")
+- Oracle ("KI-Story auf Hebel", nicht als Kaufempfehlung)
+
+**Vier Gründe für Markt-Bullishkeit (Narrative, nicht Thesen):**
+1. Private Credit: Nicht wie 2008, Risiko überschätzt
+2. Iran: Preist ein, nicht Marktentscheider
+3. Unternehmensgewinne: Steigend, keine Delle
+4. Sentiment: Massive Hedging = konträr bullisch
+
+### Alberts Einschätzung
+
+**Wertvollstes Takeaway:** Scaling-Konzept (nicht binär, kontinuierlich) + Psychologie-Warnung (Masse buy-high-sell-low)
+
+**Konkrete Aktien-Analyse:** Fehlt (nur Makro)
+
+**Für S-Strategie:** 
+- Hedging-Quote beobachten (Konträr-Signal)
+- Banken-Rebound als Bull-Signal nutzen
+- Position-Sizing nach Scaling-Logik (nicht all-in-all-out)
+- Private Credit filtern (explizit meiden)
+
+**Aktion:** Beobachten (kein direkte Trade-Signal), aber Frameworks sehr verwertbar für Portfolio-Management
+

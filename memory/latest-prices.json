@@ -1,82 +1,82 @@
 {
-  "timestamp": "2026-03-20T11:45:13.178310+00:00",
+  "timestamp": "2026-03-20T21:45:17.259458+00:00",
   "fx": {
-    "EURUSD": 1.1582,
-    "EURNOK": 11.0404,
-    "GBPEUR": 1.1571
+    "EURUSD": 1.1575,
+    "EURNOK": 11.0678,
+    "GBPEUR": 1.1528
   },
   "macro": {
-    "wti": 94.5,
-    "vix": 24.82,
+    "wti": 98.09,
+    "vix": 26.78,
     "nikkei": -3.3795986198257086
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 134.42,
-      "price_raw": 155.68,
+      "price_eur": 130.18,
+      "price_raw": 150.68,
       "entry_eur": 132.11,
-      "pnl_pct": 1.75,
+      "pnl_pct": -1.46,
       "stop_eur": 127.0,
-      "rs_qqq": -6.03,
+      "rs_qqq": 1.74,
       "conviction": 57
     },
     "EQNR": {
       "name": "Equinor ASA",
-      "price_eur": 35.24,
-      "price_raw": 389.1,
+      "price_eur": 35.68,
+      "price_raw": 394.9,
       "entry_eur": 27.45,
-      "pnl_pct": 28.39,
+      "pnl_pct": 29.98,
       "stop_eur": 33.0,
-      "rs_qqq": 7.54,
+      "rs_qqq": 0.5,
       "conviction": 45
     },
     "BAYN.DE": {
       "name": "Bayer AG",
-      "price_eur": 39.27,
-      "price_raw": 39.27,
+      "price_eur": 37.65,
+      "price_raw": 37.65,
       "entry_eur": 39.95,
-      "pnl_pct": -1.71,
+      "pnl_pct": -5.76,
       "stop_eur": 38.0,
       "rs_qqq": null,
       "conviction": 40
     },
     "A2QQ9R": {
       "name": "Invesco Solar Energy ETF",
-      "price_eur": 9.88,
-      "price_raw": 9.88,
+      "price_eur": 9.69,
+      "price_raw": 9.69,
       "entry_eur": 22.4,
-      "pnl_pct": -55.88,
+      "pnl_pct": -56.75,
       "stop_eur": null,
       "rs_qqq": null,
       "conviction": 47
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 27.89,
-      "price_raw": 27.89,
+      "price_eur": 27.09,
+      "price_raw": 27.09,
       "entry_eur": 27.9,
-      "pnl_pct": -0.04,
+      "pnl_pct": -2.9,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 47
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
-      "price_eur": 26.28,
-      "price_raw": 26.28,
+      "price_eur": 26.0,
+      "price_raw": 26.0,
       "entry_eur": 28.8,
-      "pnl_pct": -8.75,
+      "pnl_pct": -9.74,
       "stop_eur": 25.95,
       "rs_qqq": null,
       "conviction": 39
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.13,
-      "price_raw": 7.13,
+      "price_eur": 7.04,
+      "price_raw": 7.04,
       "entry_eur": 7.0,
-      "pnl_pct": 1.87,
+      "pnl_pct": 0.5,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 39

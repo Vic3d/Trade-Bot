@@ -24,7 +24,7 @@
         "Bloomberg RSS"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 4
+      "conviction_current": 3
     },
     "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
     "sector": "energy",
@@ -78,14 +78,14 @@
       "peace iran"
     ],
     "performance": {
-      "total_trades": 0,
+      "total_trades": 3,
       "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
+      "losses": 3,
+      "win_rate": 0.0,
       "avg_win_pct": 0,
-      "avg_loss_pct": 0,
-      "expectancy": 0,
-      "last_evaluated": null
+      "avg_loss_pct": 0.0,
+      "expectancy": 0.0,
+      "last_evaluated": "2026-03-20 22:30"
     }
   },
   "PS2": {
@@ -178,7 +178,7 @@
         "Rheinmetall FY2025 Zahlen"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 3
+      "conviction_current": 2
     },
     "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
     "sector": "defense",
@@ -221,14 +221,14 @@
       "ukraine ceasefire"
     ],
     "performance": {
-      "total_trades": 3,
+      "total_trades": 4,
       "wins": 0,
-      "losses": 3,
+      "losses": 4,
       "win_rate": 0.0,
       "avg_win_pct": 0,
-      "avg_loss_pct": 0.77,
-      "expectancy": -0.77,
-      "last_evaluated": "2026-03-18 09:10"
+      "avg_loss_pct": 0.58,
+      "expectancy": -0.58,
+      "last_evaluated": "2026-03-20 22:30"
     }
   },
   "PS4": {
@@ -253,7 +253,7 @@
         "eigene VIX-Analyse"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 3
+      "conviction_current": 2
     },
     "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
     "sector": "metals",
@@ -298,14 +298,14 @@
       "risk on rally"
     ],
     "performance": {
-      "total_trades": 0,
+      "total_trades": 3,
       "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
+      "losses": 3,
+      "win_rate": 0.0,
       "avg_win_pct": 0,
-      "avg_loss_pct": 0,
-      "expectancy": 0,
-      "last_evaluated": null
+      "avg_loss_pct": -4.3,
+      "expectancy": -4.3,
+      "last_evaluated": "2026-03-20 22:30"
     }
   },
   "PS5": {

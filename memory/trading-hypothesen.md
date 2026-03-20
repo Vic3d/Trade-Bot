@@ -24,7 +24,9 @@
 - **Neue Regel:** EQNR läuft +12,4% in 5 Tagen, echte strukturelle Eskalation laufend
 - **Angelegt:** 07.03.2026 | **Revidiert:** 14.03.2026
 - **Trades:** EQNR (seit 09.03., +12,4%)
-- **Status:** 🟡 Offen
+- **Status:** ✅ BESTÄTIGT
+- **Learning-System Update 20.03.2026:** 1 Semiconductor-Losses bestätigen These
+- **Learning-System Update 20.03.2026:** 3 Geo-Trades: 0 WIN
 
 ### H003 — EMA-Rücklauf hat besseres R/R als Opening Range High
 - **These:** Einstieg am EMA-10 Rücklauf hat besseres Risk/Reward als Opening Range High Entry
@@ -47,6 +49,7 @@
 - **Angelegt:** 07.03.2026 (VIX bei 29,49)
 - **Update KW11:** ✅ **BESTÄTIGT** — NVDA −6% bei VIX 24–32 Band. Dirk MSFT auch nicht auf Kaufliste (bestätigt).
 - **Status:** ✅ BESTÄTIGT
+- **Learning-System Update 20.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 19.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 18.03.2026:** 1 Semiconductor-Losses bestätigen These

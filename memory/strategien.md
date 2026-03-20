@@ -366,3 +366,117 @@ Template:
 **Negierende Events:** ❌ [Liste]
 **Thesis-Log:** [Tabelle]
 ```
+
+---
+
+## STRATEGIE 6: Edelmetalle & Industrie-Rohstoffe — Korrektur als Einstieg
+**Angelegt:** 2026-03-20
+**Status: 🟡 SETUP — Einstieg vorbereiten, noch nicht aktiv**
+
+### These
+Gold, Silber und Kupfer haben in 12 Monaten brutal performt (+52%, +111%, +6%). Alle drei sind jetzt im Korrektur-Modus (-13%, -31%, -10% von 52W-Hoch). Die Makro-Treiber bleiben intakt:
+- **Iran-Geopolitik** → Safe-Haven-Nachfrage (Gold + Silber)
+- **Fed-Zinssenkungen 2026** → Reale Zinsen sinken → Edelmetalle profitieren
+- **USD-Schwäche** (EUR/USD 1.1546) → Metalle in USD = günstiger für EUR-Käufer
+- **KI-Boom + E-Autos + Energiewende** → Strukturelle Kupfernachfrage
+
+### Daten-Stand (20.03.2026)
+| Asset | Kurs | 52W-Range | 1J-Perf | v.ATH | MA20w |
+|-------|------|-----------|---------|-------|-------|
+| Gold (GC=F) | 3.963€/oz | 2.609–4.530€ | +52% | -13% | 4.006€ |
+| Silver (SI=F) | 60,70€/oz | 25–87€ | +111% | -31% | 64€ |
+| Copper (HG=F) | 4,66€/lb | 4–5€ | +6% | -10% | 5€ |
+| AG (First Majestic) | 15,98€ | 5–28€ | +167% | -42% | 17€ |
+| FCX (Freeport) | 45,22€ | 25–59€ | +30% | -23% | 47€ |
+
+---
+
+### Sub-These A: GOLD — Konsolidierung kaufen
+**Status: 🟡 WARTEN** — Rücklauf weiter möglich
+
+**Thesis:** Bull-Trend intakt (+52% in 1J). Iran-Krise + Fed-Cuts + USD-Schwäche. Aktuell unter MA20w (4.006€) → Einstiegsgelegenheit wenn Boden bestätigt.
+
+**Instrumente (Trade Republic):**
+- `IGLN.DE` — iShares Physical Gold ETC (Xetra, EUR-denominiert, kein Währungsrisiko)
+- `GOLD` (Barrick Gold) — NYSE, gehebelt auf Gold-Preis, höhere Vola
+
+**Setup:**
+- Entry-Zone: **3.800–3.900€/oz** (weiterer Rücklauf möglich, Geduld)
+- Stop: **3.600€** (unter starker Supportzone)
+- Ziel 1: **4.300€** (+13% vom Entry) | Ziel 2: **4.500€** (neues ATH)
+- CRV: ~3,5:1
+- Positionsgröße: max. 10% Portfolio
+
+**Signal-Trigger:**
+- ✅ Wochenkerze mit Hammer oder Bullish Engulfing unter MA20w
+- ✅ Iran-Eskalation → Safe Haven Run
+- ❌ Fed hawkisher als erwartet → Einstieg verschieben
+
+---
+
+### Sub-These B: SILBER — Extreme Korrektur als Chance (HOCHRISKANT)
+**Status: 🔴 FALLING KNIFE — Noch NICHT einsteigen, Bestätigung abwarten**
+
+**Thesis:** -31% vom ATH, noch +111% im Jahresvergleich. Silber hat hohe industrielle Nachfrage (Solar, Elektronik) + Safe-Haven-Komponente. Bei -42% (AG) extrem aggressiver Rücklauf.
+
+**WICHTIG:** Silber ist die volatilste der drei Währungen. Kein Einstieg ohne Reversal-Kerze!
+
+**Instrumente (Trade Republic):**
+- `PHAG.DE` — WisdomTree Physical Silver ETC (Xetra, empfohlen als ersten Schritt)
+- `AG` (First Majestic Silver) — NYSE, -42% vom ATH, spekulativ, sehr hohe CRV
+
+**Setup Physisches Silber (PHAG.DE, konservativ):**
+- Entry-Zone: **58–62€/oz** — ABER NUR nach Wochenkerzen-Bestätigung (Hammer + Close > MA20w)
+- Stop: **50€** (-15% — breit wegen hoher Silber-Vola)
+- Ziel: **80€** (Rückkehr zu ATH-Bereich)
+- CRV: ~3,5:1
+
+**Setup First Majestic Silver (AG, spekulativ):**
+- Entry-Zone: **14–16€** (aktueller Bereich) — NUR bei Reversal-Kerze!
+- Stop: **12,50€** (-15%)
+- Ziel 1: **20€** | Ziel 2: **25€** (alte Entry-Zone)
+- CRV: ~3:1
+- ACHTUNG: War früher Entry-Setup bei 24-29€ — Price ist WEIT darunter durchgebrochen
+
+**Signal-Trigger:**
+- ✅ Wochenkerze: Hammer / Bullish Engulfing + hohes Volumen
+- ✅ Close über MA20w (64€) wäre starke Bestätigung
+- ✅ Gold-Bestätigung (wenn Gold dreht, zieht Silber nach)
+- ❌ Kein Einstieg ohne Kerzen-Bestätigung — kein Fallen Knife
+
+---
+
+### Sub-These C: KUPFER — KI & Energiewende als Strukturthese
+**Status: 🟡 SETUP** — Bodenbildung prüfen
+
+**Thesis:** Strukturelle Kupfernachfrage: KI-Rechenzentren brauchen massive Mengen Kupfer (Kühlung, Kabel, Chips). E-Auto-Boom (3–4x mehr Kupfer als Verbrenner). Energiewende (Windräder, Solar). Freeport (FCX) = günstigster Weg rein, diversifiziert über mehrere Minen.
+
+**Instrument:**
+- `FCX` (Freeport-McMoRan) — NYSE, weltgrößter Kupfer-/Goldproduzent
+- Ebenfalls möglich: `COPX` (Global X Copper Miners ETF) — ETF falls Einzelaktie zu riskant
+
+**Setup:**
+- Entry-Zone: **43–46€** (aktueller Bereich, Bodenbildung abwarten)
+- Stop: **39€** (unter 52W-Tief-Zone, -13% vom Entry)
+- Ziel 1: **52€** | Ziel 2: **58€** (ATH-Zone)
+- CRV: ~3,5:1
+- Einstieg eher möglich als Silber — Trend nicht so extrem gebrochen
+
+**Signal-Trigger:**
+- ✅ Chinadaten positiv (PMI, Industrieproduktion)
+- ✅ Neue KI-Infrastruktur-Ankündigungen (AWS, Azure, Google Cloud Capex)
+- ✅ Bodenbildung auf Wochenbasis (2 Wochen Seitwärts ohne neue Tiefs)
+- ❌ China-Abschwächung → Einstieg verschieben
+
+---
+
+### Priorisierung
+1. **FCX (Kupfer)** — am nächsten am Setup, klarste Thesis, moderate Vola
+2. **Gold (IGLN.DE)** — sicherster Einstieg, warte auf Rücklauf zu 3.800–3.900€
+3. **Silber (PHAG.DE)** — erst wenn Gold dreht und Silber folgt
+4. **AG First Majestic** — nur für Risikoappetit, spekulativ
+
+### Thesis-Log
+| Datum | Event | Wirkung |
+|-------|-------|---------|
+| 20.03.2026 | Strategie angelegt. Silber -31%, Gold -13%, Kupfer -10% v.ATH. | Start 🟡 |

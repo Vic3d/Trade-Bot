@@ -23,9 +23,9 @@
       "lag_hours": 24,
       "direction": "same",
       "threshold_pct": 2.0,
-      "accuracy_pct": null,
-      "sample_count": 0,
-      "wins": 0,
+      "accuracy_pct": 100.0,
+      "sample_count": 1,
+      "wins": 1,
       "losses": 0,
       "description": "Nikkei als Fr\u00fchindikator f\u00fcr Japan-Industrienachfrage \u2192 Kupfer"
     },

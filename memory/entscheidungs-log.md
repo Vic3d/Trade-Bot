@@ -55,3 +55,27 @@ Victor: "Vielleicht sollten wir auch wichtige Nachrichten festhalten die wichtig
 1. Stop muss REAL in TR gesetzt sein — aber auch dann kann TR "nicht handelbar" zeigen → mentale Backup-Entscheidung trotzdem klar haben
 2. RIO.L hatte Conviction 0 im Monitor — das war das richtige Signal, die Position zu klein zu halten
 3. Nikkei als Frühindikator für Rohstoffe hat funktioniert (09:15 Warnung → 13:50 Exit)
+
+## 2026-03-20 — MSFT geschlossen + Neue Rohstoff-Strategie
+
+**Entscheidung:** 
+1. MSFT Microsoft (MSFT) verkauft (Stop getriggert)
+2. Neue Strategie PS6: Edelmetalle & Kupfer angelegt
+
+**Kontext:** 
+- MSFT Stop 338€ wurde getriggert, Victor hat Position am 20.03. geschlossen
+- Victor sieht Einstiegsmöglichkeiten bei Silber, Gold und Kupfer
+- Alle drei sind -10% bis -31% von 52W-Hochs korrigiert
+
+**Kern-Reasoning:**
+- Makro-Treiber intakt: Iran-Geopolitik, Fed-Cuts, USD-Schwäche
+- Strukturelle Kupfernachfrage durch KI-Boom + E-Autos
+- Kein sofortiger Einstieg Silber — Reversal-Bestätigung abwarten
+
+**Lesson:** Stop bei MSFT konsequent exekutiert — richtig. Nicht am fallenden Messer festhalten.
+
+## 2026-03-20 — Bayer AG (BAYN.DE) Exit
+**Entscheidung:** Stop 38€ ausgelöst, Marktorder bei 37.48€ exekutiert
+**Kontext:** Kurs fiel durch Stop ohne Teilfüllung bei 38€ (Lücke)
+**Kern-Reasoning:** Konsequente Stop-Disziplin — kein Nachkauf, kein Hoffen
+**Lesson:** Bei volatilen Titeln Limit-Order statt Market-Order am Stop erwägen → weniger Slippage (hier: -0.52€ = ca. 1.3% zusätzlich)

@@ -1,5 +1,5 @@
 # State Snapshot — Trading Bot
-**Zuletzt aktualisiert:** 2026-03-20 11:45 UTC
+**Zuletzt aktualisiert:** 2026-03-20 21:45 UTC
 **Positionen:** 7 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
 
 ---
@@ -8,13 +8,13 @@
 
 | Aktie | Kurs | Entry | P&L | Stop | Conviction | RS/QQQ | Letzter Alert |
 |---|---|---|---|---|---|---|---|
-| Palantir (PLTR) | 134.42€ | 132.11€ | +1.8% | 127.00€ | 57 | -6.0x | — |
-| Equinor ASA (EQNR) | 35.24€ | 27.45€ | +28.4% | 33.00€ | 45 | +7.5x | — |
-| Bayer AG (BAYN.DE) | 39.27€ | 39.95€ | -1.7% | 38.00€ | 40 | — | — |
-| Invesco Solar Energy ETF (A2QQ9R) | 9.88€ | 22.40€ | -55.9% | ❌ kein Stop | 47 | — | — |
-| VanEck Oil Services ETF (A3D42Y) | 27.89€ | 27.90€ | -0.0% | 24.00€ | 47 | — | — |
-| L&G Cyber Security ETF (A14WU5) | 26.28€ | 28.80€ | -8.8% | 25.95€ | 39 | — | — |
-| iShares Biotech ETF (A2DWAW) | 7.13€ | 7.00€ | +1.9% | 6.30€ | 39 | — | — |
+| Palantir (PLTR) | 130.18€ | 132.11€ | -1.5% | 127.00€ | 57 | +1.7x | — |
+| Equinor ASA (EQNR) | 35.68€ | 27.45€ | +30.0% | 33.00€ | 45 | +0.5x | — |
+| Bayer AG (BAYN.DE) | 37.65€ | 39.95€ | -5.8% | 38.00€ | 40 | — | — |
+| Invesco Solar Energy ETF (A2QQ9R) | 9.69€ | 22.40€ | -56.8% | ❌ kein Stop | 47 | — | — |
+| VanEck Oil Services ETF (A3D42Y) | 27.09€ | 27.90€ | -2.9% | 24.00€ | 47 | — | — |
+| L&G Cyber Security ETF (A14WU5) | 26.00€ | 28.80€ | -9.7% | 25.95€ | 39 | — | — |
+| iShares Biotech ETF (A2DWAW) | 7.04€ | 7.00€ | +0.5% | 6.30€ | 39 | — | — |
 
 ## Watchlist
 
@@ -24,10 +24,10 @@ _(keine Watchlist-Daten)_
 
 | Indikator | Wert | Signal |
 |---|---|---|
-| VIX | 24.8 | 🟡 Erhöht |
-| WTI | $94.50 | 🟡 Erhöht |
+| VIX | 26.8 | 🟡 Erhöht |
+| WTI | $98.09 | 🔴 Nahe $100 |
 | Nikkei 225 | -3.4% | Öl-Frühindikator |
-| EUR/USD | 1.1582 | — |
+| EUR/USD | 1.1575 | — |
 
 ## Strategien-Status
 
@@ -43,7 +43,9 @@ _(keine Watchlist-Daten)_
 
 ## Offene Alerts / Handlungsbedarf
 
-- ⚠️ L&G Cyber Security ETF (A14WU5): 1.3% über Stop 25.95€
+- ⚠️ Palantir (PLTR): 2.4% über Stop 127.00€
+- ⚠️ Bayer AG (BAYN.DE): -0.9% über Stop 38.00€
+- ⚠️ L&G Cyber Security ETF (A14WU5): 0.2% über Stop 25.95€
 
 ## Letzte Conviction Scores
 

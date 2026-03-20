@@ -47,5 +47,40 @@
     "ticker": "",
     "message": "\u26a1 Stop-N\u00e4he: Bayer AG (BAYN.DE) @ 39.09\u20ac | Stop: 38.0\u20ac | 2.8% Abstand [Conviction: 40/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-20T14:00:19.900599+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 130.50\u20ac | Stop: 127.0\u20ac | 2.7% Abstand [Conviction: 57/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-20T14:30:13.008991+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Bayer AG (BAYN.DE) @ 38.52\u20ac | Stop: 38.0\u20ac | Nur noch 1.3% Abstand! [Conviction: 40/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-20T17:00:20.653727+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.0%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mi",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-20T18:00:25.814374+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: L&G Cyber Security ETF (A14WU5) @ 25.93\u20ac | Stop: 25.95\u20ac | SOFORT PR\u00dcFEN! [Conviction: 39/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-20T20:30:12.524060+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Bayer AG (BAYN.DE) @ 37.60\u20ac | Stop: 38.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 40/100]",
+    "value": ""
   }
 ]

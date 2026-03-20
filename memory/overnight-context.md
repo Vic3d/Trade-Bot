@@ -1,5 +1,5 @@
-# Overnight Context — 19.03.2026
-*Erstellt: 2026-03-19 21:45 UTC | Für Morgen-Briefing 08:00*
+# Overnight Context — 20.03.2026
+*Erstellt: 2026-03-20 21:45 UTC | Für Morgen-Briefing 08:00*
 
 ---
 
@@ -9,21 +9,19 @@
 — keine Alerts heute
 
 ### Top-Performer heute
-- iShares Biotech ETF (A2DWAW): 141.90€ (+1927.1%)
-- VanEck Oil Services ETF (A3D42Y): 338.76€ (+1114.2%)
-- Invesco Solar Energy ETF (A2QQ9R): 49.14€ (+119.4%)
+- Equinor ASA (EQNR): 35.68€ (+30.0%)
+- iShares Biotech ETF (A2DWAW): 7.04€ (+0.5%)
 
 ### Underperformer / Verlierer
-- Nvidia (NVDA): 154.06€ (-8.2%)
-- Microsoft (MSFT): 335.65€ (-4.6%)
-- Rio Tinto (RIO.L): 73.49€ (-4.5%)
+- Invesco Solar Energy ETF (A2QQ9R): 9.69€ (-56.8%)
+- L&G Cyber Security ETF (A14WU5): 26.00€ (-9.7%)
+- Bayer AG (BAYN.DE): 37.65€ (-5.8%)
 
 ## Kritische Positionen (Stop <3% entfernt)
 
-- ⚠️ Microsoft (MSFT): -0.7% über Stop 338.00€
-- ⚠️ Bayer AG (BAYN.DE): 1.8% über Stop 38.00€
-- ⚠️ Rio Tinto (RIO.L): 0.7% über Stop 73.00€
-- ⚠️ Rheinmetall AG (RHM.DE): 2.4% über Stop 1520.00€
+- ⚠️ Palantir (PLTR): 2.4% über Stop 127.00€
+- ⚠️ Bayer AG (BAYN.DE): -0.9% über Stop 38.00€
+- ⚠️ L&G Cyber Security ETF (A14WU5): 0.2% über Stop 25.95€
 
 ## Geopolitik-Lage (aus Strategie-Status)
 
@@ -37,9 +35,9 @@
 
 ## Makro-Schlusskurse
 
-- VIX: 24.06
-- WTI: $94.59
-- EUR/USD: 1.159
+- VIX: 26.78
+- WTI: $98.09
+- EUR/USD: 1.1575
 
 ## Entscheidungen die morgen anstehen
 

@@ -1,20 +1,25 @@
 {
   "date": "2026-03-20",
   "alerts_sent_today": [
-    "A14WU5_STOP_CRIT",
     "BAYN.DE_STOP_WARN",
-    "A14WU5_STOP_WARN",
-    "MACRO_BRENT_WTI_SPREAD",
+    "BAYN.DE_STOP_CRIT",
+    "PLTR_STOP_WARN",
+    "BAYN.DE_STOP_HIT",
     "A2QQ9R_ZIEL1",
+    "A14WU5_STOP_WARN",
+    "A14WU5_STOP_HIT",
+    "MACRO_SX7E_DROP",
+    "A14WU5_STOP_CRIT",
+    "MACRO_BRENT_WTI_SPREAD",
     "MACRO_NIKKEI_DROP"
   ],
-  "run_count": 22,
+  "run_count": 62,
   "trail_sent": {
     "EQNR_TRAIL_5": "2026-03-19",
     "EQNR_TRAIL_10": "2026-03-19"
   },
   "wti_open": 94.34,
-  "prev_wti": 94.5,
+  "prev_wti": 98.09,
   "vix_open": 24.06,
-  "last_run": "2026-03-20T11:45:13.178082+00:00"
+  "last_run": "2026-03-20T21:45:17.259188+00:00"
 }

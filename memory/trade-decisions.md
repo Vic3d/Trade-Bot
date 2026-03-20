@@ -341,3 +341,22 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 **Grund:** Victor hat abverkauft (16:31 CET) — Begründung "abverkauft" (Marktbewegung)
 **Hinweis:** Exit-Kurs ist Schätzung (aktueller Marktpreis), exakter TR-Ausführungspreis ausstehend
 **Lektion:** Kein Stop war gesetzt — Position lief seit Entry im Minus, kein Handlungspunkt vorhanden. Eriksen-Lektion "Aktiv vs. Passiv"-Bucket missachtet. NVDA ohne Stop bis Earnings zu halten war inkonsistent mit aktivem Trading-Ansatz.
+
+## 2026-03-20 — MSFT Microsoft geschlossen
+**Instrument:** Microsoft (MSFT)
+**Verkauf:** 20.03.2026 (Victor bestätigt)
+**Entry:** 351,85€ | Stop war: 338€ | Verkaufspreis: Stop wurde getriggert ~336-338€ (exakter Preis unbekannt)
+**Ergebnis:** ca. -0,8% bis -4,6% (Victor soll exakten Preis nachtragen)
+**Lektion:** Stop konsequent exekutiert — gut gemacht. Stop war korrekt gesetzt (338€) und wurde eingehalten.
+
+## 2026-03-20 — Bayer AG (BAYN.DE) GESCHLOSSEN
+**Entscheidung:** Stop 38€ ausgelöst → Position geschlossen
+**Entry:** 39.95€ | **Exit:** ~38.00€ | **P&L:** -4.9%
+**Haltedauer:** ~9 Tage (ca. 11.03.–20.03.2026)
+**Lektion:** Stop konsequent gehalten — richtig. Bayer war strukturell schwach (Glyphosat-Klagen, Pipeline-Probleme). Keine Reue, kein Averaging Down.
+
+**Korrektur:** Exit war 37.48€ (Slippage unter Stop 38€) → P&L: -6.2%
+
+## 2026-03-20 — L&G Cyber Security ETF (A14WU5) GESCHLOSSEN
+**Entry:** 28.80€ | **Exit:** ~Stop-Bereich | **P&L:** ca. -9-10%
+**Lektion:** Conviction 39, -9% seit Entry — Position hätte früher geschlossen werden sollen.
