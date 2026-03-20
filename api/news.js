@@ -53,7 +53,7 @@ async function googleNewsRSS(query) {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'max-age=300'); // 5 Min Cache OK für News
+  res.setHeader('Cache-Control', 'max-age=60, s-maxage=60'); // max 1 Min Cache
 
   const tickers = req.query.tickers
     ? req.query.tickers.split(',').slice(0, 5)

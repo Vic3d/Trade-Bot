@@ -180,8 +180,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 
 <div class="main-nav">
   <button class="active" onclick="showMain('real',this)">📈 Real</button>
-  <button onclick="showMain('paper',this)">🧪 Swing</button>
-  <button onclick="showMain('daytrade',this);loadDayTrades()">🏎️ Day Trade</button>
+  <button onclick="showMain('paperlabs',this)">🧪 Paper Labs</button>
   <button onclick="showMain('news',this);loadNews()">📰 News</button>
   <button onclick="showMain('watchlist',this)">👁 Watchlist</button>
   <button onclick="showMain('calendar',this)">📅 Kalender</button>
@@ -255,90 +254,98 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   </div>
 </div>
 
-<!-- PAPER TRADES / SWING -->
-<div id="main-paper" class="main-panel">
-  <div class="sub-nav">
-    <button class="active" onclick="showSub('paper','positions',this)">📋 Positionen</button>
-    <button onclick="showSub('paper','performance',this)">📊 Performance</button>
-    <button onclick="showSub('paper','entry',this)">➕ Eintragen</button>
-    <button onclick="showSub('paper','strat',this)">🧠 Strategien</button>
+<!-- PAPER LABS (Swing + Day Trade als Sub-Tabs) -->
+<div id="main-paperlabs" class="main-panel">
+  <div class="sub-nav" style="background:var(--surface);border-bottom:2px solid var(--border);padding:0 12px;gap:4px">
+    <button class="active" onclick="showPaperSub('swing',this)">📊 Swing</button>
+    <button onclick="showPaperSub('daytrade',this);loadDayTrades()">🏎️ Day Trade</button>
   </div>
-  <div id="paper-positions" class="sub-panel active">
-    <div class="stat-row" id="paper-stats"></div>
-    <div id="paper-heatmap"></div>
-    <div id="paper-table"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="paper-performance" class="sub-panel">
-    <div id="strat-perf"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="paper-entry" class="sub-panel">
-    <div class="card">
-      <div class="card-title">Paper Trade eintragen</div>
-      <div class="action-row">
-        <button id="pb-buy" class="btn btn-primary" onclick="setPaperAction('BUY')">✅ KAUF</button>
-        <button id="pb-sell" class="btn btn-muted" onclick="setPaperAction('SELL')">🔴 VERKAUF</button>
-      </div>
-      <div class="form-row">
-        <div class="ff"><label>Ticker</label><input id="pl-ticker" placeholder="z.B. OXY"></div>
-        <div class="ff"><label>Preis (€)</label><input id="pl-price" type="number" step="0.01"></div>
-        <div class="ff"><label>Stop (€)</label><input id="pl-stop" type="number" step="0.01"></div>
-        <div class="ff"><label>Ziel (€)</label><input id="pl-target" type="number" step="0.01"></div>
-      </div>
-      <div class="form-row">
-        <div class="ff"><label>Strategie</label>
-          <select id="pl-strat"></select>
-        </div>
-        <div class="ff" style="flex:2"><label>Notiz</label><input id="pl-notes" placeholder="Begründung"></div>
-      </div>
-      <button class="btn btn-primary" onclick="logPaperTrade()">💾 Speichern</button>
-      <span id="pl-status" class="save-msg"></span>
-    </div>
-  </div>
-  <div id="paper-strat" class="sub-panel"><div id="strat-list"></div></div>
-</div>
 
-<!-- DAY TRADING -->
-<div id="main-daytrade" class="main-panel">
-  <div class="sub-nav">
-    <button class="active" onclick="showSub('daytrade','live',this)">⚡ Live</button>
-    <button onclick="showSub('daytrade','history',this)">📜 History</button>
-    <button onclick="showSub('daytrade','stats',this)">📊 Statistik</button>
-    <button onclick="showSub('daytrade','config',this)">⚙️ Setup</button>
-  </div>
-  <div id="daytrade-live" class="sub-panel active">
-    <div id="dt-live-content"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="daytrade-history" class="sub-panel">
-    <div id="dt-history-content"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="daytrade-stats" class="sub-panel">
-    <div id="dt-stats-content"><div class="loading">Lädt…</div></div>
-  </div>
-  <div id="daytrade-config" class="sub-panel">
-    <div class="card" style="padding:16px">
-      <div class="card-title">🏎️ Day Trading Setup</div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
-        <div class="card" style="padding:12px">
-          <strong>Kapital:</strong> 25.000€<br>
-          <strong>Position:</strong> 5.000€ (20%)<br>
-          <strong>Max Positionen:</strong> 5<br>
-          <strong>Risk/Trade:</strong> 1% (250€)
+  <!-- SWING SUB-PANEL -->
+  <div id="paperlabs-swing">
+    <div class="sub-nav">
+      <button class="active" onclick="showSub('paper','positions',this)">📋 Positionen</button>
+      <button onclick="showSub('paper','performance',this)">📊 Performance</button>
+      <button onclick="showSub('paper','entry',this)">➕ Eintragen</button>
+      <button onclick="showSub('paper','strat',this)">🧠 Strategien</button>
+    </div>
+    <div id="paper-positions" class="sub-panel active">
+      <div class="stat-row" id="paper-stats"></div>
+      <div id="paper-heatmap"></div>
+      <div id="paper-table"><div class="loading">Lädt…</div></div>
+    </div>
+    <div id="paper-performance" class="sub-panel">
+      <div id="strat-perf"><div class="loading">Lädt…</div></div>
+    </div>
+    <div id="paper-entry" class="sub-panel">
+      <div class="card">
+        <div class="card-title">Paper Trade eintragen</div>
+        <div class="action-row">
+          <button id="pb-buy" class="btn btn-primary" onclick="setPaperAction('BUY')">✅ KAUF</button>
+          <button id="pb-sell" class="btn btn-muted" onclick="setPaperAction('SELL')">🔴 VERKAUF</button>
         </div>
-        <div class="card" style="padding:12px">
-          <strong>Daily Loss Limit:</strong> -500€<br>
-          <strong>EOD Close:</strong> 21:45 CET<br>
-          <strong>Intervall:</strong> alle 5 Min<br>
-          <strong>Overnight:</strong> ❌ Nie
+        <div class="form-row">
+          <div class="ff"><label>Ticker</label><input id="pl-ticker" placeholder="z.B. OXY"></div>
+          <div class="ff"><label>Preis (€)</label><input id="pl-price" type="number" step="0.01"></div>
+          <div class="ff"><label>Stop (€)</label><input id="pl-stop" type="number" step="0.01"></div>
+          <div class="ff"><label>Ziel (€)</label><input id="pl-target" type="number" step="0.01"></div>
         </div>
+        <div class="form-row">
+          <div class="ff"><label>Strategie</label>
+            <select id="pl-strat"></select>
+          </div>
+          <div class="ff" style="flex:2"><label>Notiz</label><input id="pl-notes" placeholder="Begründung"></div>
+        </div>
+        <button class="btn btn-primary" onclick="logPaperTrade()">💾 Speichern</button>
+        <span id="pl-status" class="save-msg"></span>
       </div>
-      <div class="card-title" style="margin-top:16px">Strategien</div>
-      <table style="margin-top:8px">
-        <tr><th>ID</th><th>Name</th><th>Entry</th><th>Exit</th><th>Timeframe</th></tr>
-        <tr><td style="color:#2ecc71"><strong>DT1</strong></td><td>Momentum Breakout</td><td>Price > VWAP + Volume 1.5x</td><td>+1% oder -0.5%</td><td>5m</td></tr>
-        <tr><td style="color:#3498db"><strong>DT2</strong></td><td>Mean Reversion</td><td>RSI < 30 + unter VWAP</td><td>VWAP oder -1%</td><td>5m</td></tr>
-        <tr><td style="color:#e67e22"><strong>DT3</strong></td><td>Gap Fill</td><td>Gap > 2%</td><td>Prev Close oder -1%</td><td>Opening</td></tr>
-        <tr><td style="color:#9b59b6"><strong>DT4</strong></td><td>EMA Cross</td><td>EMA9/EMA21 Cross</td><td>+0.8% oder -0.2%</td><td>5m</td></tr>
-      </table>
+    </div>
+    <div id="paper-strat" class="sub-panel"><div id="strat-list"></div></div>
+  </div>
+
+  <!-- DAY TRADE SUB-PANEL -->
+  <div id="paperlabs-daytrade" style="display:none">
+    <div class="sub-nav">
+      <button class="active" onclick="showSub('daytrade','live',this)">⚡ Live</button>
+      <button onclick="showSub('daytrade','history',this)">📜 History</button>
+      <button onclick="showSub('daytrade','stats',this)">📊 Statistik</button>
+      <button onclick="showSub('daytrade','config',this)">⚙️ Setup</button>
+    </div>
+    <div id="daytrade-live" class="sub-panel active">
+      <div id="dt-live-content"><div class="loading">Lädt…</div></div>
+    </div>
+    <div id="daytrade-history" class="sub-panel">
+      <div id="dt-history-content"><div class="loading">Lädt…</div></div>
+    </div>
+    <div id="daytrade-stats" class="sub-panel">
+      <div id="dt-stats-content"><div class="loading">Lädt…</div></div>
+    </div>
+    <div id="daytrade-config" class="sub-panel">
+      <div class="card" style="padding:16px">
+        <div class="card-title">🏎️ Day Trading Setup</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+          <div class="card" style="padding:12px">
+            <strong>Kapital:</strong> 25.000€<br>
+            <strong>Position:</strong> 5.000€ (20%)<br>
+            <strong>Max Positionen:</strong> 5<br>
+            <strong>Risk/Trade:</strong> 1% (250€)
+          </div>
+          <div class="card" style="padding:12px">
+            <strong>Daily Loss Limit:</strong> -500€<br>
+            <strong>EOD Close:</strong> 21:45 CET<br>
+            <strong>Intervall:</strong> alle 5 Min<br>
+            <strong>Overnight:</strong> ❌ Nie
+          </div>
+        </div>
+        <div class="card-title" style="margin-top:16px">Strategien</div>
+        <table style="margin-top:8px">
+          <tr><th>ID</th><th>Name</th><th>Entry</th><th>Exit</th><th>Timeframe</th></tr>
+          <tr><td style="color:#2ecc71"><strong>DT1</strong></td><td>Momentum Breakout</td><td>Price > VWAP + Volume 1.5x</td><td>+1% oder -0.5%</td><td>5m</td></tr>
+          <tr><td style="color:#3498db"><strong>DT2</strong></td><td>Mean Reversion</td><td>RSI < 30 + unter VWAP</td><td>VWAP oder -1%</td><td>5m</td></tr>
+          <tr><td style="color:#e67e22"><strong>DT3</strong></td><td>Gap Fill</td><td>Gap > 2%</td><td>Prev Close oder -1%</td><td>Opening</td></tr>
+          <tr><td style="color:#9b59b6"><strong>DT4</strong></td><td>EMA Cross</td><td>EMA9/EMA21 Cross</td><td>+0.8% oder -0.2%</td><td>5m</td></tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -346,6 +353,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
 <!-- NEWS -->
 <div id="main-news" class="main-panel">
   <div style="padding:12px 14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px" id="news-timestamp"></div>
     <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" id="news-filter"></div>
     <div id="news-list"><div class="loading">Lädt…</div></div>
   </div>
@@ -461,6 +469,13 @@ function showSub(main,sub,btn){
   panel.querySelectorAll('.sub-nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById(main+'-'+sub).classList.add('active');
   btn.classList.add('active');
+}
+function showPaperSub(name,btn){
+  ['swing','daytrade'].forEach(n=>{
+    document.getElementById('paperlabs-'+n).style.display=n===name?'':'none';
+  });
+  document.querySelectorAll('#main-paperlabs>.sub-nav button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
 }
 
 // ── Helpers ──────────────────────────────────────────────
@@ -619,18 +634,24 @@ function renderSummary(cfg,prices){
     else if(eur&&(eur-p.stop_eur)/eur*100<5)danger++;
   });
   
-  // TRA-132: Portfolio NAV
-  const cash=startCapital-totalInvested;
-  const nav=startCapital+totalPnlEur;
+  // Echter P&L ohne fake startCapital
   const avg=cnt?sumPnl/cnt:0;
   
   document.getElementById('portfolio-summary').innerHTML=\`
-    <div class="scard" style="border-color:var(--accent)"><div class="scard-label">Portfolio NAV</div><div class="scard-val">\${Math.round(nav).toLocaleString()}€</div><div class="scard-sub \${totalPnlEur>=0?'green':'red'}">Heute: \${eurFmt(totalPnlEur)}</div></div>
-    <div class="scard"><div class="scard-label">Cash</div><div class="scard-val">\${Math.round(cash).toLocaleString()}€</div><div class="scard-sub muted">Frei verfügbar</div></div>
+    <div class="scard" style="border-color:var(--accent)">
+      <div class="scard-label">Investiert</div>
+      <div class="scard-val">\${Math.round(totalInvested).toLocaleString()}€</div>
+      <div class="scard-sub muted">\${pos.length} Positionen</div>
+    </div>
+    <div class="scard" style="border-color:\${totalPnlEur>=0?'var(--green)':'var(--red)'}">
+      <div class="scard-label">P&amp;L Gesamt</div>
+      <div class="scard-val \${totalPnlEur>=0?'green':'red'}">\${totalPnlEur>=0?'+':''}\${Math.round(totalPnlEur).toLocaleString()}€</div>
+      <div class="scard-sub \${totalPnlEur>=0?'green':'red'}">\${avg>=0?'+':''}\${avg.toFixed(1)}%</div>
+    </div>
     <div class="scard"><div class="scard-label">Positionen</div><div class="scard-val">\${pos.length}</div><div class="scard-sub muted">\${winning} im Plus</div></div>
     <div class="scard"><div class="scard-label">Ø P&amp;L</div><div class="scard-val \${avg>=0?'green':'red'}">\${avg>=0?'+':''}\${avg.toFixed(1)}%</div></div>
-    <div class="scard" style="\${danger>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Stop &lt;5%</div><div class="scard-val \${danger>0?'orange':''}">\${danger}</div></div>
-    <div class="scard" style="\${noStop>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Kein Stop</div><div class="scard-val \${noStop>0?'red':''}">\${noStop}</div></div>
+    <div class="scard" style="\${danger>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Stop &lt;5%</div><div class="scard-val \${danger>0?'orange':''}">⚠️ \${danger}</div></div>
+    <div class="scard" style="\${noStop>0?'border-color:rgba(248,81,73,.4)':''}"><div class="scard-label">Kein Stop</div><div class="scard-val \${noStop>0?'red':''}">🔴 \${noStop}</div></div>
   \`;
   const dangerPos=pos.filter(p=>{const eur=getP(px,p.ticker)?.eur;return p.stop_eur&&eur&&(eur-p.stop_eur)/eur*100<5;});
   document.getElementById('alert-box').innerHTML=dangerPos.length?\`<div class="alert-box">⚠️ <strong>Stop-Alarm:</strong> \${dangerPos.map(p=>{const d=getP(px,p.ticker)?.eur?((getP(px,p.ticker).eur-p.stop_eur)/getP(px,p.ticker).eur*100).toFixed(1):'?';return\`<strong>\${p.ticker}</strong> (\${d}% vom Stop)\`;}).join(' · ')}</div>\`:'';
@@ -856,13 +877,21 @@ function toggleStrat(i){document.getElementById('sbody-'+i).classList.toggle('op
 
 // ── News ──────────────────────────────────────────────────
 let newsFilter='ALL';
-async function loadNews(){
-  if(newsLoaded)return;
+let newsTimestamp=null;
+async function loadNews(force=false){
+  if(newsLoaded&&!force)return;
   document.getElementById('news-list').innerHTML='<div class="loading">Lädt…</div>';
   try{
     const tickers=cfg?(cfg.positions||[]).filter(p=>p.status!=='CLOSED').map(p=>p.ticker).slice(0,5).join(','):'NVDA,EQNR,RIO';
     const d=await fetch(\`/api/news?tickers=\${tickers}\`).then(r=>r.json());
-    allNews=d.news||[];renderNews('ALL');newsLoaded=true;
+    allNews=d.news||[];
+    newsTimestamp=d.timestamp||null;
+    renderNews('ALL');
+    newsLoaded=true;
+    // Zeige Timestamp + Refresh-Button
+    const ts=newsTimestamp?new Date(newsTimestamp).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'—';
+    const tsEl=document.getElementById('news-timestamp');
+    if(tsEl)tsEl.innerHTML=\`<span style="color:var(--muted);font-size:12px">Zuletzt aktualisiert: \${ts} Uhr</span> <button class="btn btn-muted btn-xs" onclick="newsLoaded=false;loadNews(true)">🔄 Aktualisieren</button>\`;
   }catch(e){document.getElementById('news-list').innerHTML=\`<div class="empty">⚠️ \${e.message}</div>\`;}
 }
 function renderNews(filter){
@@ -1501,6 +1530,7 @@ function renderDTLive(dt,dna){
   const used=openDT.reduce((s,p)=>s+(p.entry||0)*(p.shares||1),0);
   const capital=25000,free=capital-used,usedPct=Math.round(used/capital*100);
   
+  if(dt&&dt.auto_generated)html+='<div style="background:rgba(124,58,237,.15);border:1px solid var(--accent);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px">⚡ Auto-Setups — warte auf Entry-Signal. Kein aktiver Trade.</div>';
   html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px">';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold">25.000€</div><div style="color:#888;font-size:11px">Kapital</div></div>';
   html+='<div class="card" style="padding:10px;text-align:center"><div style="font-size:20px;font-weight:bold;color:#3498db">'+used.toFixed(0)+'€</div><div style="color:#888;font-size:11px">Investiert</div></div>';
@@ -1521,12 +1551,12 @@ function renderDTLive(dt,dna){
   html+='</div></div>';
   
   if(openDT.length>0){
-    html+='<div class="card-title" style="margin-bottom:8px">⚡ Offene Day Trades</div>';
+    html+='<div class="card-title" style="margin-bottom:8px">'+(dt&&dt.auto_generated?'🔍 Auto-Setup Watchlist':'⚡ Offene Day Trades')+'</div>';
     html+='<table><tr><th>Ticker</th><th>Richtung</th><th>Entry</th><th>Stop</th><th>Target</th><th>Strategie</th></tr>';
     openDT.forEach(p=>{
       const dir=p.direction||'LONG';
       const dirColor=dir==='LONG'?'#2ecc71':'#e74c3c';
-      html+='<tr><td><strong>'+p.ticker+'</strong></td><td style="color:'+dirColor+'">'+(dir==='LONG'?'🟢':'🔴')+' '+dir+'</td><td>'+(p.entry||0).toFixed(2)+'€</td><td style="color:#e74c3c">'+(p.stop||0).toFixed(2)+'€</td><td style="color:#2ecc71">'+(p.target||0).toFixed(2)+'€</td><td>'+p.strategy+'</td></tr>';
+      html+='<tr><td><strong>'+p.ticker+'</strong><br><span style="font-size:10px;color:#888">'+(p.setup_type||p.trade_type||'')+'</span></td><td style="color:'+dirColor+'">'+(dir==='LONG'?'🟢':'🔴')+' '+dir+'</td><td>'+(p.entry!=null?p.entry.toFixed(2)+'€':'<span style="color:#888">warte…</span>')+'</td><td style="color:#e74c3c">'+(p.stop_pct!=null?'-'+p.stop_pct+'%':(p.stop||0).toFixed(2)+'€')+'</td><td style="color:#2ecc71">'+(p.target_pct!=null?'+'+p.target_pct+'%':(p.target||0).toFixed(2)+'€')+'</td><td>'+(p.strategy||p.setup_type||'Auto')+'<br><span style="font-size:10px;color:#888">CRV '+(p.crv||'—')+'</span></td></tr>';
     });
     html+='</table>';
   } else {
