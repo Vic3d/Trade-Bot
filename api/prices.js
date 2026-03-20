@@ -43,7 +43,7 @@ module.exports = async function handler(req, res) {
     'OXY','FRO','DHT','HL','PAAS','MOS','TTE.PA',
     'HO.PA','GLEN.L','ASML.AS','NOVO-B.CO',
   ];
-  const macroTickers = ['EURUSD=X','EURGBP=X','EURDKK=X','EURNOK=X','^VIX','CL=F','^N225'];
+  const macroTickers = ['EURUSD=X','EURGBP=X','EURDKK=X','EURNOK=X','^VIX','CL=F','BZ=F','^N225','^GSPC','^IXIC','GC=F','HG=F'];
 
   const results = {};
   const errors = [];
@@ -101,12 +101,34 @@ module.exports = async function handler(req, res) {
   // WTI in USD
   const wtiUSD = results['CL=F']?.price || null;
 
+  // Nikkei chg already calculated above
+  const spxD  = results['^GSPC'];
+  const ndxD  = results['^IXIC'];
+  const goldD = results['GC=F'];
+  const copD  = results['HG=F'];
+  const brentD= results['BZ=F'];
+
+  const dayChgPct = (d) => (d?.price && d?.previousClose)
+    ? Math.round((d.price - d.previousClose) / d.previousClose * 10000) / 100
+    : null;
+
   res.json({
     prices,
     macro: {
-      vix:    results['^VIX']?.price    || null,
-      wti:    wtiUSD,
-      nikkei: nikkeiChg,
+      vix:        results['^VIX']?.price    || null,
+      wti:        wtiUSD,
+      wti_chg:    dayChgPct(results['CL=F']),
+      brent:      brentD?.price || null,
+      brent_chg:  dayChgPct(brentD),
+      nikkei:     nikkeiChg,
+      spx:        spxD?.price || null,
+      spx_chg:    dayChgPct(spxD),
+      nasdaq:     ndxD?.price || null,
+      nasdaq_chg: dayChgPct(ndxD),
+      gold:       goldD?.price || null,
+      gold_chg:   dayChgPct(goldD),
+      copper:     copD?.price || null,
+      copper_chg: dayChgPct(copD),
     },
     fx: {
       EURUSD: eurusd,

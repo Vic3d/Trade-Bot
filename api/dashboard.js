@@ -1459,14 +1459,24 @@ async function loadMacro(){
   const el=document.getElementById('macro-content');
   if(!prices){el.innerHTML='<div class="loading">Warte auf Preisdaten\u2026</div>';return;}
 
-  const px=function(t){return(prices[t]&&prices[t].price)||0;};
-  const chgP=function(t){return(prices[t]&&prices[t].change_pct)||0;};
-  const vix=px('^VIX')||((prices.macro)&&prices.macro.vix)||0;
-  const wti=px('CL=F');
-  const brent=px('BZ=F');
+  var m=prices.macro||{};
+  var fx=prices.fx||{};
+  const vix=m.vix||0;
+  const wti=m.wti||0;
+  const wti_chg=m.wti_chg||0;
+  const brent=m.brent||0;
+  const brent_chg=m.brent_chg||0;
   const spread=(brent&&wti)?+(brent-wti).toFixed(2):null;
-  const nk=chgP('^N225');
-  const eurusd=px('EURUSD=X');
+  const nk=m.nikkei||0;
+  const spx=m.spx||0;
+  const spx_chg=m.spx_chg||0;
+  const ndx=m.nasdaq||0;
+  const ndx_chg=m.nasdaq_chg||0;
+  const gold=m.gold||0;
+  const gold_chg=m.gold_chg||0;
+  const copper=m.copper||0;
+  const copper_chg=m.copper_chg||0;
+  const eurusd=fx.EURUSD||0;
 
   var regime,rColor,rIcon,rText,rDo;
   if(vix<15){regime='Ruhiger Bullenmarkt';rColor='#2ecc71';rIcon='🟢';rText='M\xe4rkte sind entspannt. Geringes Risiko.';rDo='Positionen laufen lassen. Neue Setups eingehen.';}
@@ -1478,7 +1488,7 @@ async function loadMacro(){
 
   var signals=[];
   if(spread!==null&&spread>8)signals.push({icon:'🛢\ufe0f',text:'Brent-WTI Spread $'+spread+' \u2014 Lieferunterbrechung aktiv',impact:'EQNR + A3D42Y bullisch',color:'#2ecc71'});
-  if(spread!==null&&spread<=5)signals.push({icon:'🛢\ufe0f',text:'Brent-WTI Spread $'+spread+' \u2014 normalisiert',impact:'\xd6l-These unter Druck',color:'#e74c3c'});
+  if(spread!==null&&spread>0&&spread<=5)signals.push({icon:'🛢\ufe0f',text:'Brent-WTI Spread $'+spread+' \u2014 normalisiert',impact:'\xd6l-These unter Druck',color:'#e74c3c'});
   if(wti>95)signals.push({icon:'\u26fd',text:'WTI $'+wti.toFixed(1)+' \u2014 \xfcber $95',impact:'EQNR + A3D42Y profitieren',color:'#2ecc71'});
   if(wti>0&&wti<80)signals.push({icon:'\u26fd',text:'WTI $'+wti.toFixed(1)+' \u2014 unter $80',impact:'\xd6l-Positionen unter Druck',color:'#e74c3c'});
   if(nk<-2)signals.push({icon:'🇯🇵',text:'Nikkei '+nk.toFixed(1)+'% \u2014 Asienschw\xe4che',impact:'Kupfer schw\xe4cher in 24h (Lead-Lag)',color:'#f39c12'});
@@ -1498,13 +1508,13 @@ async function loadMacro(){
   }
 
   var tiles=[
-    {label:'WTI \xd6l',val:'$'+wti.toFixed(1),sub:(chgP('CL=F')>=0?'+':'')+chgP('CL=F').toFixed(1)+'%',color:chgP('CL=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'WTI \xd6l',val:'$'+wti.toFixed(1),sub:(wti_chg>=0?'+':'')+wti_chg.toFixed(1)+'%',color:wti_chg>=0?'#2ecc71':'#e74c3c'},
     {label:'Brent',val:'$'+brent.toFixed(1),sub:'Spread $'+(spread!==null?spread:'\u2014'),color:spread>8?'#e74c3c':(spread>5?'#f39c12':'#2ecc71')},
-    {label:'S&P 500',val:px('^GSPC').toFixed(0),sub:(chgP('^GSPC')>=0?'+':'')+chgP('^GSPC').toFixed(1)+'%',color:chgP('^GSPC')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Nasdaq',val:px('^IXIC').toFixed(0),sub:(chgP('^IXIC')>=0?'+':'')+chgP('^IXIC').toFixed(1)+'%',color:chgP('^IXIC')>=0?'#2ecc71':'#e74c3c'},
+    {label:'S&P 500',val:spx.toFixed(0),sub:(spx_chg>=0?'+':'')+spx_chg.toFixed(1)+'%',color:spx_chg>=0?'#2ecc71':'#e74c3c'},
+    {label:'Nasdaq',val:ndx.toFixed(0),sub:(ndx_chg>=0?'+':'')+ndx_chg.toFixed(1)+'%',color:ndx_chg>=0?'#2ecc71':'#e74c3c'},
     {label:'Nikkei',val:(nk>=0?'+':'')+nk.toFixed(1)+'%',sub:'Lead \u2192 Kupfer 24h',color:nk>=0?'#2ecc71':'#e74c3c'},
-    {label:'Gold',val:'$'+px('GC=F').toFixed(0),sub:(chgP('GC=F')>=0?'+':'')+chgP('GC=F').toFixed(1)+'%',color:chgP('GC=F')>=0?'#2ecc71':'#e74c3c'},
-    {label:'Kupfer',val:'$'+px('HG=F').toFixed(3),sub:(chgP('HG=F')>=0?'+':'')+chgP('HG=F').toFixed(1)+'%',color:chgP('HG=F')>=0?'#2ecc71':'#e74c3c'},
+    {label:'Gold',val:'$'+gold.toFixed(0),sub:(gold_chg>=0?'+':'')+gold_chg.toFixed(1)+'%',color:gold_chg>=0?'#2ecc71':'#e74c3c'},
+    {label:'Kupfer',val:'$'+copper.toFixed(3),sub:(copper_chg>=0?'+':'')+copper_chg.toFixed(1)+'%',color:copper_chg>=0?'#2ecc71':'#e74c3c'},
     {label:'EUR/USD',val:eurusd.toFixed(4),sub:'FX f\xfcr US-P&L',color:'#888'},
   ];
   var tileHtml='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">';
