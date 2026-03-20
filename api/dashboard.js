@@ -882,8 +882,8 @@ async function loadNews(force=false){
   if(newsLoaded&&!force)return;
   document.getElementById('news-list').innerHTML='<div class="loading">Lädt…</div>';
   try{
-    const tickers=cfg?(cfg.positions||[]).filter(p=>p.status!=='CLOSED').map(p=>p.ticker).slice(0,5).join(','):'NVDA,EQNR,RIO';
-    const d=await fetch(\`/api/news?tickers=\${tickers}\`).then(r=>r.json());
+    const tickers=cfg?(cfg.positions||[]).filter(p=>p.status!=='CLOSED').map(p=>p.ticker).slice(0,6).join(','):'PLTR,EQNR,BAYN.DE,RIO.L,A3D42Y';
+    const d=await fetch(\`/api/news?tickers=\${tickers}&t=\${Date.now()}\`,{cache:'no-store'}).then(r=>r.json());
     allNews=d.news||[];
     newsTimestamp=d.timestamp||null;
     renderNews('ALL');
@@ -891,9 +891,11 @@ async function loadNews(force=false){
     // Zeige Timestamp + Refresh-Button
     const ts=newsTimestamp?new Date(newsTimestamp).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'—';
     const tsEl=document.getElementById('news-timestamp');
-    if(tsEl)tsEl.innerHTML=\`<span style="color:var(--muted);font-size:12px">Zuletzt aktualisiert: \${ts} Uhr</span> <button class="btn btn-muted btn-xs" onclick="newsLoaded=false;loadNews(true)">🔄 Aktualisieren</button>\`;
+    if(tsEl)tsEl.innerHTML=\`<span style="color:var(--muted);font-size:12px">🕐 \${ts} Uhr · \${allNews.length} Artikel (Auto-Refresh alle 5 Min)</span> <button class="btn btn-muted btn-xs" onclick="newsLoaded=false;loadNews(true)" style="margin-left:8px">🔄 Jetzt</button>\`;
   }catch(e){document.getElementById('news-list').innerHTML=\`<div class="empty">⚠️ \${e.message}</div>\`;}
 }
+// Auto-Refresh News alle 5 Minuten
+setInterval(()=>{ if(document.getElementById('main-news')?.classList.contains('active')){ newsLoaded=false; loadNews(true); } }, 5*60*1000);
 function renderNews(filter){
   newsFilter=filter;
   const tickers=['ALL','MACRO',...new Set(allNews.filter(n=>n.ticker!=='MACRO').map(n=>n.ticker))];
