@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-21T09:02:45Z",
+  "updated": "2026-03-21T09:03:41Z",
   "stats": {
     "total": 22,
     "open": 7,
@@ -16,6 +16,7 @@
   },
   "strategies": [
     {
+      "id": "PS3",
       "strategy": "PS3",
       "strategy_name": "NATO/EU-R\u00fcstung",
       "total": 4,
@@ -31,6 +32,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "PS1",
       "strategy": "PS1",
       "strategy_name": "Iran/\u00d6l-Geopolitik",
       "total": 4,
@@ -46,6 +48,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "S3",
       "strategy": "S3",
       "strategy_name": "KI-Infrastruktur-Boom \u2192 Halbleiter",
       "total": 3,
@@ -61,6 +64,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "PS4",
       "strategy": "PS4",
       "strategy_name": "Edelmetalle/Miner",
       "total": 3,
@@ -76,6 +80,7 @@
       "max_consecutive_losses": 2
     },
     {
+      "id": "S2",
       "strategy": "S2",
       "strategy_name": "Europ\u00e4ische Aufr\u00fcstung \u2192 R\u00fcstung",
       "total": 2,
@@ -91,6 +96,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "PS5",
       "strategy": "PS5",
       "strategy_name": "D\u00fcnger/Agrar-Superzyklus",
       "total": 2,
@@ -106,6 +112,7 @@
       "max_consecutive_losses": 1
     },
     {
+      "id": "S1",
       "strategy": "S1",
       "strategy_name": "Iran-Konflikt \u2192 \u00d6l & Silber",
       "total": 1,
@@ -121,6 +128,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "S7",
       "strategy": "S7",
       "strategy_name": "Biotech-Zyklus \u2192 US-Pharma/Biotech",
       "total": 1,
@@ -136,6 +144,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "S5",
       "strategy": "S5",
       "strategy_name": "Rohstoff-Superzyklus \u2192 Basismetalle",
       "total": 1,
@@ -151,6 +160,7 @@
       "max_consecutive_losses": 0
     },
     {
+      "id": "new",
       "strategy": "new",
       "strategy_name": "new",
       "total": 1,

@@ -216,6 +216,7 @@ def generate_dna_json():
         # Map strategy ID to name from strategies.json
         strat_name = _get_strategy_name(name)
         strategy_list.append({
+            'id': name,
             'strategy': name,
             'strategy_name': strat_name,
             'total': st['total'],
