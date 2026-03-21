@@ -17,12 +17,12 @@
 
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
 
-## AKTUELLE ALERTS (heute 20.03.2026)
+## AKTUELLE ALERTS (heute 21.03.2026)
 
-- ⚠️ **BAYN.DE**: Stop 38€ — heute bei 38.36€, nur 0.9% Puffer
-- ⚠️ **A14WU5**: Stop 25.95€ — heute bei 26.18€, nur 0.9% Puffer
-- 📋 **Josh Dashboard Deploy**: Vercel-Limit erschöpft (100/Tag) — Reset 02:00 CET. Deploy-Checklist: `memory/morgen-deploy-checklist.md`
-- 💊 **Day Trades geschlossen**: Friday Gap-Recovery These gescheitert. Ø -1.6%, WPM + NEM Stop getriggert. Lektion gespeichert.
+- ✅ **BAYN.DE + A14WU5**: Geschlossen 20.03 — Alerts gelöscht
+- 🚨 **Iran-Eskalation**: 2.500 US Marines + amphibischer Verband verschickt 20.03 — EQNR Stop 34.50€, neueste News-Alerts eingerichtet
+- 📡 **News-System Update**: Position-Matcher mit Dedup + Severity-Level + Watchlist live (4x täglich, 7 Tage). Opportunity-Detector in Planung
+- 📋 **Josh Backoffice Automation**: B&O Annehmen-Button + Superchat Template-Senden — DevTools Network-Capture Montag geplant
 
 ## Regeln
 
