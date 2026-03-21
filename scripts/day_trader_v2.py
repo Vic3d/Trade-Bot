@@ -27,37 +27,59 @@ RISK_PCT = 0.01
 EOD_CLOSE_HOUR = 21
 EOD_CLOSE_MIN = 45
 
-# Erweitertes Universum — mehr Aktien = mehr Signale
+# Erweitertes Universum — ALLE Börsen, ganzer Tag abgedeckt
+# Xetra 09:00-17:30 | London 09:00-17:30 | Euronext 09:00-17:30 | Oslo 09:00-16:20 | US 15:30-22:00
 DT_UNIVERSE = [
-    # US Large Cap
-    {'ticker': 'NVDA',  'name': 'Nvidia',     'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'AAPL',  'name': 'Apple',      'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'MSFT',  'name': 'Microsoft',  'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'TSLA',  'name': 'Tesla',      'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'AMD',   'name': 'AMD',        'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'META',  'name': 'Meta',       'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'AMZN',  'name': 'Amazon',     'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'PLTR',  'name': 'Palantir',   'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'GOOGL', 'name': 'Alphabet',   'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'NFLX',  'name': 'Netflix',    'market': 'US', 'open_h': 15, 'close_h': 22},
-    # Energie (unser Sektor)
-    {'ticker': 'XOM',   'name': 'ExxonMobil', 'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'OXY',   'name': 'Occidental', 'market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'HAL',   'name': 'Halliburton','market': 'US', 'open_h': 15, 'close_h': 22},
-    # Rohstoffe
-    {'ticker': 'FCX',   'name': 'Freeport Cu','market': 'US', 'open_h': 15, 'close_h': 22},
-    {'ticker': 'NEM',   'name': 'Newmont',    'market': 'US', 'open_h': 15, 'close_h': 22},
-    # DE Xetra
-    {'ticker': 'RHM.DE','name': 'Rheinmetall','market': 'DE', 'open_h': 9, 'close_h': 17},
-    {'ticker': 'SAP.DE','name': 'SAP',        'market': 'DE', 'open_h': 9, 'close_h': 17},
-    {'ticker': 'SIE.DE','name': 'Siemens',    'market': 'DE', 'open_h': 9, 'close_h': 17},
+    # ── DE Xetra (09:00-17:30 CET) ──
+    {'ticker': 'RHM.DE', 'name': 'Rheinmetall',   'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'SAP.DE', 'name': 'SAP',           'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'SIE.DE', 'name': 'Siemens',       'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'DTE.DE', 'name': 'Dt. Telekom',   'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'ALV.DE', 'name': 'Allianz',       'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'MBG.DE', 'name': 'Mercedes-Benz', 'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'BAS.DE', 'name': 'BASF',          'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'IFX.DE', 'name': 'Infineon',      'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'BAYN.DE','name': 'Bayer',          'market': 'DE', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'ADS.DE', 'name': 'Adidas',        'market': 'DE', 'open_h': 9,  'close_h': 17},
+    # ── UK London (09:00-17:30 CET = 08:00-16:30 GMT) ──
+    {'ticker': 'SHEL.L', 'name': 'Shell',         'market': 'UK', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'BP.L',   'name': 'BP',            'market': 'UK', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'RIO.L',  'name': 'Rio Tinto',     'market': 'UK', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'GLEN.L', 'name': 'Glencore',      'market': 'UK', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'HSBA.L', 'name': 'HSBC',          'market': 'UK', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'AZN.L',  'name': 'AstraZeneca',   'market': 'UK', 'open_h': 9,  'close_h': 17},
+    # ── EU Euronext (09:00-17:30 CET) ──
+    {'ticker': 'ASML.AS','name': 'ASML',           'market': 'EU', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'TTE.PA', 'name': 'TotalEnergies',  'market': 'EU', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'MC.PA',  'name': 'LVMH',           'market': 'EU', 'open_h': 9,  'close_h': 17},
+    {'ticker': 'SAN.PA', 'name': 'Sanofi',         'market': 'EU', 'open_h': 9,  'close_h': 17},
+    # ── Norwegen Oslo (09:00-16:20 CET) ──
+    {'ticker': 'EQNR.OL','name': 'Equinor',        'market': 'NO', 'open_h': 9,  'close_h': 16},
+    # ── US NYSE/NASDAQ (15:30-22:00 CET) ──
+    {'ticker': 'NVDA',   'name': 'Nvidia',         'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'AAPL',   'name': 'Apple',          'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'MSFT',   'name': 'Microsoft',      'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'TSLA',   'name': 'Tesla',          'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'AMD',    'name': 'AMD',            'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'META',   'name': 'Meta',           'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'AMZN',   'name': 'Amazon',         'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'PLTR',   'name': 'Palantir',       'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'GOOGL',  'name': 'Alphabet',       'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'NFLX',   'name': 'Netflix',        'market': 'US', 'open_h': 15, 'close_h': 22},
+    # US Energie
+    {'ticker': 'XOM',    'name': 'ExxonMobil',     'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'OXY',    'name': 'Occidental',     'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'HAL',    'name': 'Halliburton',    'market': 'US', 'open_h': 15, 'close_h': 22},
+    # US Rohstoffe
+    {'ticker': 'FCX',    'name': 'Freeport Cu',    'market': 'US', 'open_h': 15, 'close_h': 22},
+    {'ticker': 'NEM',    'name': 'Newmont',        'market': 'US', 'open_h': 15, 'close_h': 22},
 ]
 
-# Sektor-Mapping für DT9
+# Sektor-Mapping für DT9 (erweitert auf EU/UK)
 SECTOR_MAP = {
-    'XLK': ['NVDA','AAPL','MSFT','AMD','META','AMZN','GOOGL','NFLX','PLTR'],
-    'XLE': ['XOM','OXY','HAL'],
-    'XLF': [],
+    'XLK': ['NVDA','AAPL','MSFT','AMD','META','AMZN','GOOGL','NFLX','PLTR','SAP.DE','ASML.AS','IFX.DE'],
+    'XLE': ['XOM','OXY','HAL','SHEL.L','BP.L','TTE.PA','EQNR.OL'],
+    'XLF': ['ALV.DE','HSBA.L'],
     'XLV': [],
     'XLI': ['RHM.DE','SIE.DE'],
 }
@@ -92,14 +114,23 @@ def yahoo_intraday(ticker):
 
 def to_eur(price, currency):
     if currency == 'EUR': return price
+    # GBp = Pence → erst in GBP umrechnen
+    if currency == 'GBp':
+        price = price / 100
+        currency = 'GBP'
     try:
-        url = f"https://query2.finance.yahoo.com/v8/finance/chart/EUR{currency}=X?interval=1d&range=1d"
+        # FX-Rate holen (EURGBP, EURUSD, EURNOK etc.)
+        pair = f"EUR{currency}=X"
+        url = f"https://query2.finance.yahoo.com/v8/finance/chart/{pair}?interval=1d&range=1d"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         d = json.loads(urllib.request.urlopen(req, timeout=8).read())
         fx = d['chart']['result'][0]['meta']['regularMarketPrice']
         return round(price / fx, 4) if fx else price
     except:
-        if currency == 'USD': return round(price / 1.15, 4)  # Fallback
+        # Fallbacks für häufige Währungen
+        fallbacks = {'USD': 1.08, 'GBP': 0.86, 'NOK': 11.5, 'CHF': 0.97}
+        if currency in fallbacks:
+            return round(price / fallbacks[currency], 4)
         return price
 
 
