@@ -26,8 +26,10 @@ MAX_POSITIONS = 5
 RISK_PCT = 0.01
 EOD_CLOSE_HOUR = 21
 EOD_CLOSE_MIN = 45
+DYNAMIC_UNIVERSE_PATH = WORKSPACE / 'data' / 'dynamic_universe.json'
 
-# Erweitertes Universum — ALLE Börsen, ganzer Tag abgedeckt
+# Statisches Fallback-Universum (wird genutzt wenn dynamic_universe.json nicht existiert)
+# Im Normalbetrieb: stock_scanner.py liefert 30-50 Top-Mover aus ~120 Aktien
 # Xetra 09:00-17:30 | London 09:00-17:30 | Euronext 09:00-17:30 | Oslo 09:00-16:20 | US 15:30-22:00
 DT_UNIVERSE = [
     # ── DE Xetra (09:00-17:30 CET) ──
@@ -534,6 +536,28 @@ def main():
         return
 
     hour = now_cet.hour
+
+    # ── Dynamisches Universum laden (wenn vorhanden) ──
+    active_universe = DT_UNIVERSE  # Fallback
+    if DYNAMIC_UNIVERSE_PATH.exists():
+        try:
+            dyn = json.loads(DYNAMIC_UNIVERSE_PATH.read_text())
+            dyn_list = dyn.get('universe', [])
+            if dyn_list:
+                # Konvertiere in DT_UNIVERSE Format
+                active_universe = []
+                for item in dyn_list:
+                    active_universe.append({
+                        'ticker': item['ticker'],
+                        'name': item.get('name', item['ticker']),
+                        'market': item.get('market', 'US'),
+                        'open_h': item.get('open_h', 9),
+                        'close_h': item.get('close_h', 22),
+                    })
+                print(f"  🌍 Dynamisches Universum: {len(active_universe)} Aktien aus {', '.join(dyn.get('markets_active', []))}")
+        except Exception as e:
+            print(f"  ⚠️ Dynamisches Universum Fehler: {e} → Fallback")
+
     # ── Sektor-Momentum berechnen (für DT9) ──
     sector_perf = {}
     for etf in ['XLK', 'XLE', 'XLF', 'XLV', 'XLI']:
@@ -548,7 +572,7 @@ def main():
         print(f"  📊 Sektor-Momentum: {best_sector_etf} {best_sector_perf:+.2f}% → {len(sector_tickers)} Ticker")
 
     new_trades = 0
-    for ti in DT_UNIVERSE:
+    for ti in active_universe:
         if open_count >= MAX_POSITIONS: break
 
         ticker = ti['ticker']
@@ -612,8 +636,7 @@ def main():
         best_signal = None
         best_ticker = None
         best_data = None
-        for ti in DT_UNIVERSE:
-            if ti['market'] != 'US': continue
+        for ti in active_universe:
             ticker = ti['ticker']
             conn = get_db()
             existing = conn.execute("SELECT id FROM trades WHERE ticker=? AND trade_type='day_trade' AND status='OPEN'", (ticker,)).fetchone()
