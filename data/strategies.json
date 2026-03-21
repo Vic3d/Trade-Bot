@@ -1120,5 +1120,97 @@
       "win_rate": 0,
       "last_evaluated": null
     }
+  },
+  "DT6": {
+    "name": "Mean Reversion (Triple RSI)",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "RSI(5) < 35 + fallend + Aufwärtstrend — backtested seit 1993, 90% Win-Rate auf SPY",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Kurzfristig überverkaufte Aktien im Aufwärtstrend bouncen zuverlässig",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT7": {
+    "name": "Internal Bar Strength (IBS)",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "IBS < 0.2 (LONG) oder > 0.8 (SHORT) — Mean Reversion auf Kerzenbasis",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Kerzen nahe Tageshoch/-tief kehren häufig zum Mittelwert zurück",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT8": {
+    "name": "Bollinger Band Squeeze Breakout",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Volatilitäts-Kompression (Squeeze) → Ausbruch mit Volumen",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Niedrige Volatilität führt zu explosiven Ausbrüchen — Squeeze + Volume = Signal",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT9": {
+    "name": "Sektor-Momentum",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Stärkster Sektor-ETF (XLK/XLE/XLF/XLV/XLI) bestimmt Richtung",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Aktien aus dem stärksten Sektor haben Momentum-Rückenwind intraday",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
   }
 }

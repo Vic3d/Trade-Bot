@@ -53,6 +53,15 @@ DT_UNIVERSE = [
     {'ticker': 'SIE.DE','name': 'Siemens',    'market': 'DE', 'open_h': 9, 'close_h': 17},
 ]
 
+# Sektor-Mapping für DT9
+SECTOR_MAP = {
+    'XLK': ['NVDA','AAPL','MSFT','AMD','META','AMZN','GOOGL','NFLX','PLTR'],
+    'XLE': ['XOM','OXY','HAL'],
+    'XLF': [],
+    'XLV': [],
+    'XLI': ['RHM.DE','SIE.DE'],
+}
+
 
 def yahoo_intraday(ticker):
     url = f"https://query2.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(ticker)}?interval=5m&range=1d"
@@ -217,6 +226,103 @@ def detect_signals(ticker_info, data):
             target = round(price - (range_high - range_low), 2)
             signals.append({'strategy': 'DT5', 'direction': 'SHORT', 'stop': stop, 'target': target,
                 'confidence': 60, 'reason': f'Range Breakdown: {range_low:.0f}-{range_high:.0f} ({range_pct:.1f}%)'})
+
+
+    # ── DT6: Mean Reversion (Triple RSI Variation) ──
+    # Backtested seit 1993, 90% Win-Rate auf SPY (QuantifiedStrategies.com)
+    # RSI(5) < 35, RSI fallend, Preis > Vortagsclose (Aufwärtstrend-Proxy)
+    rsi5 = calc_rsi(closes, 5)
+    if rsi5 is not None and len(closes) >= 7:
+        rsi5_prev_closes = closes[:-1]
+        rsi5_prev = calc_rsi(rsi5_prev_closes, 5)
+        uptrend = price > prev_close  # Proxy für SMA(200) bei 5min-Kerzen
+        if rsi5 < 35 and rsi5_prev is not None and rsi5 < rsi5_prev and uptrend:
+            stop6 = round(price * 0.985, 2)
+            target6 = round(vwap if vwap and vwap > price else price * 1.01, 2)
+            conf6 = min(90, int(70 + (35 - rsi5) * 2))
+            signals.append({'strategy': 'DT6', 'direction': 'LONG', 'stop': stop6, 'target': target6,
+                'confidence': conf6, 'reason': f'MeanRev RSI(5)={rsi5:.1f} (prev {rsi5_prev:.1f}), uptrend'})
+
+    # ── DT7: Internal Bar Strength (IBS) ──
+    # IBS = (Close - Low) / (High - Low) der letzten Kerze
+    if len(candles) >= 20:
+        last_c = candles[-1]
+        ibs_range = last_c['high'] - last_c['low']
+        if ibs_range > 0:
+            ibs = (last_c['close'] - last_c['low']) / ibs_range
+            # Bollinger Middle Band für Target
+            if len(closes) >= 20:
+                bb_mid = sum(closes[-20:]) / 20
+            else:
+                bb_mid = None
+            if ibs < 0.2:
+                stop7 = round(price * 0.988, 2)
+                target7 = round(bb_mid if bb_mid and bb_mid > price else price * 1.008, 2)
+                conf7 = 55 + (15 if ibs < 0.1 else 0)
+                signals.append({'strategy': 'DT7', 'direction': 'LONG', 'stop': stop7, 'target': target7,
+                    'confidence': conf7, 'reason': f'IBS={ibs:.3f} (near low) → bounce expected'})
+            elif ibs > 0.8:
+                stop7 = round(price * 1.012, 2)
+                target7 = round(bb_mid if bb_mid and bb_mid < price else price * 0.992, 2)
+                conf7 = 55 + (15 if ibs > 0.9 else 0)
+                signals.append({'strategy': 'DT7', 'direction': 'SHORT', 'stop': stop7, 'target': target7,
+                    'confidence': conf7, 'reason': f'IBS={ibs:.3f} (near high) → pullback expected'})
+
+    # ── DT8: Bollinger Band Squeeze Breakout ──
+    # Volatilitäts-Kompression → Ausbruch mit Volumen
+    if len(closes) >= 50:
+        bb_period = 20
+        bb_sma = sum(closes[-bb_period:]) / bb_period
+        bb_std = (sum((c - bb_sma) ** 2 for c in closes[-bb_period:]) / bb_period) ** 0.5
+        bb_upper = bb_sma + 2 * bb_std
+        bb_lower = bb_sma - 2 * bb_std
+        bb_bandwidth = (bb_upper - bb_lower) / bb_sma if bb_sma > 0 else 0
+        # Calculate historical bandwidths for squeeze detection
+        bandwidths = []
+        for j in range(50):
+            idx_end = len(closes) - j
+            if idx_end < bb_period:
+                break
+            slice_c = closes[idx_end - bb_period:idx_end]
+            s = sum(slice_c) / bb_period
+            std_j = (sum((c - s) ** 2 for c in slice_c) / bb_period) ** 0.5
+            bw_j = (2 * std_j * 2) / s if s > 0 else 0
+            bandwidths.append(bw_j)
+        if bandwidths:
+            bandwidths_sorted = sorted(bandwidths)
+            squeeze_threshold = bandwidths_sorted[max(0, len(bandwidths_sorted) // 4)]
+            is_squeeze = bb_bandwidth <= squeeze_threshold
+            vol_confirm = vol_ratio > 1.3
+            if is_squeeze and vol_confirm:
+                if price > bb_upper:
+                    stop8 = round(bb_sma, 2)
+                    target8 = round(price + (bb_upper - bb_lower), 2)
+                    signals.append({'strategy': 'DT8', 'direction': 'LONG', 'stop': stop8, 'target': target8,
+                        'confidence': 65, 'reason': f'BB Squeeze Breakout UP: BW={bb_bandwidth:.4f}, Vol {vol_ratio:.1f}x'})
+                elif price < bb_lower:
+                    stop8 = round(bb_sma, 2)
+                    target8 = round(price - (bb_upper - bb_lower), 2)
+                    signals.append({'strategy': 'DT8', 'direction': 'SHORT', 'stop': stop8, 'target': target8,
+                        'confidence': 65, 'reason': f'BB Squeeze Breakdown: BW={bb_bandwidth:.4f}, Vol {vol_ratio:.1f}x'})
+
+    # ── DT9: Sektor-Momentum (vereinfacht) ──
+    # Nur Aktien aus dem stärksten Sektor bekommen Signal
+    # sector_momentum wird in main() berechnet und als Attribut übergeben
+    _sector_perf = ticker_info.get('_sector_perf')
+    _sector_etf = ticker_info.get('_sector_etf')
+    if _sector_perf is not None and _sector_etf:
+        if _sector_perf > 0.5:
+            stop9 = round(price * 0.99, 2)
+            target9 = round(price * 1.008, 2)
+            conf9 = min(80, 50 + int(abs(_sector_perf) * 20))
+            signals.append({'strategy': 'DT9', 'direction': 'LONG', 'stop': stop9, 'target': target9,
+                'confidence': conf9, 'reason': f'Sector Momentum: {_sector_etf} +{_sector_perf:.1f}%'})
+        elif _sector_perf < -0.5:
+            stop9 = round(price * 1.01, 2)
+            target9 = round(price * 0.992, 2)
+            conf9 = min(80, 50 + int(abs(_sector_perf) * 20))
+            signals.append({'strategy': 'DT9', 'direction': 'SHORT', 'stop': stop9, 'target': target9,
+                'confidence': conf9, 'reason': f'Sector Momentum: {_sector_etf} {_sector_perf:+.1f}%'})
 
     return signals
 
@@ -397,6 +503,19 @@ def main():
         return
 
     hour = now_cet.hour
+    # ── Sektor-Momentum berechnen (für DT9) ──
+    sector_perf = {}
+    for etf in ['XLK', 'XLE', 'XLF', 'XLV', 'XLI']:
+        etf_data = yahoo_intraday(etf)
+        if etf_data and etf_data.get('prev_close'):
+            perf = ((etf_data['price'] / etf_data['prev_close']) - 1) * 100
+            sector_perf[etf] = perf
+    best_sector_etf = max(sector_perf, key=lambda k: abs(sector_perf[k])) if sector_perf else None
+    best_sector_perf = sector_perf.get(best_sector_etf, 0) if best_sector_etf else 0
+    sector_tickers = SECTOR_MAP.get(best_sector_etf, []) if best_sector_etf else []
+    if best_sector_etf:
+        print(f"  📊 Sektor-Momentum: {best_sector_etf} {best_sector_perf:+.2f}% → {len(sector_tickers)} Ticker")
+
     new_trades = 0
     for ti in DT_UNIVERSE:
         if open_count >= MAX_POSITIONS: break
@@ -419,6 +538,13 @@ def main():
         state['scanned'] = state.get('scanned', 0) + 1
         if not data: continue
 
+        # Inject sector momentum for DT9
+        if ti['ticker'] in sector_tickers:
+            ti['_sector_perf'] = best_sector_perf
+            ti['_sector_etf'] = best_sector_etf
+        else:
+            ti['_sector_perf'] = None
+            ti['_sector_etf'] = None
         signals = detect_signals(ti, data)
         state['signals_found'] = state.get('signals_found', 0) + len(signals)
 
@@ -441,6 +567,54 @@ def main():
 
     if new_trades:
         log_to_file(f"Neue Trades: {new_trades} | Offen: {open_count}")
+
+    # ── 4. Minimum Trade Garantie ──
+    # Wenn es 20:00+ CET ist und heute noch KEIN Trade eröffnet wurde:
+    # → Nimm das beste Signal aus dem letzten Scan, auch bei niedriger Confidence
+    # Daten > Perfektion. Wir brauchen Trades zum Lernen.
+    conn = get_db()
+    open_count = conn.execute("SELECT COUNT(*) FROM trades WHERE trade_type='day_trade' AND status='OPEN'").fetchone()[0]
+    conn.close()
+    if hour >= 20 and state.get('daily_trades', 0) == 0 and open_count < MAX_POSITIONS:
+        print("  ⚠️ MINIMUM TRADE GARANTIE — Erzwinge mindestens 1 Trade heute")
+        # Scanne alle US-Aktien nochmal mit ALLEN Strategien
+        best_signal = None
+        best_ticker = None
+        best_data = None
+        for ti in DT_UNIVERSE:
+            if ti['market'] != 'US': continue
+            ticker = ti['ticker']
+            conn = get_db()
+            existing = conn.execute("SELECT id FROM trades WHERE ticker=? AND trade_type='day_trade' AND status='OPEN'", (ticker,)).fetchone()
+            conn.close()
+            if existing: continue
+            data = yahoo_intraday(ticker)
+            if not data: continue
+            # Inject sector momentum for DT9
+            if ticker in sector_tickers:
+                ti['_sector_perf'] = best_sector_perf
+                ti['_sector_etf'] = best_sector_etf
+            else:
+                ti['_sector_perf'] = None
+                ti['_sector_etf'] = None
+            signals = detect_signals(ti, data)
+            for s in signals:
+                if best_signal is None or s['confidence'] > best_signal['confidence']:
+                    best_signal = s
+                    best_ticker = ti
+                    best_data = data
+        if best_signal and best_data:
+            p_eur = to_eur(best_data['price'], best_data['currency'])
+            if p_eur:
+                stop_eur = to_eur(best_signal['stop'], best_data['currency']) or best_signal['stop']
+                target_eur = to_eur(best_signal['target'], best_data['currency']) or best_signal['target']
+                open_trade(best_ticker['ticker'], best_ticker['name'], best_signal['strategy'],
+                          best_signal['direction'], p_eur, stop_eur, target_eur,
+                          f"MIN_TRADE_GARANTIE: {best_signal['reason']}")
+                state.setdefault('signals_today', []).append(best_ticker['ticker'])
+                log_to_file(f"⚠️ Min Trade Garantie: {best_ticker['ticker']} {best_signal['strategy']}")
+        else:
+            log_to_file("⚠️ Min Trade Garantie: Kein einziges Signal gefunden!")
 
     DT_STATE.write_text(json.dumps(state, indent=2))
     print(f"\n  📊 Scans: {state.get('scanned',0)} | Signale: {state.get('signals_found',0)} | Neu: {new_trades} | P&L: {state.get('daily_pnl',0):+.0f}€")
