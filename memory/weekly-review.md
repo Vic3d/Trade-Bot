@@ -211,3 +211,42 @@ Alle Hauptthesen intakt:
 - ⚠️ Keine Meldung von Hormuz-Closure oder neuer Iran-Eskalation
 - **Fazit:** Konflikt-Plateau, keine akuten Schocks erwartet
 
+## Woche KW 12 (17.–21.03.2026)
+
+### 📊 Was hat funktioniert?
+
+**Echtes Portfolio stabil:**
+- Palantir (PLTR), Equinor (EQNR), Öl-ETF + Biotech-ETF laufen ohne Stopauslöser
+- Stops sind korrekt platziert, Regeln werden befolgt
+- Keine emotionalen Entscheidungen — diszipliniert
+
+**Hypothesen-Check erfolgreich:**
+- H002 (Geopolitik-Trades schlagen fehl) ✅ BESTÄTIGT → Geo-Spekulation wird eingestellt
+- H005 + H007 (VIX-Effekt, PLTR/EQNR) ✅ BESTÄTIGT → Core-Positionen sind stabil
+
+### ❌ Was nicht funktioniert hat?
+
+**Paper-Portfolio: 0% Win-Rate über 12 Trades**
+- PS1 (Iran/Öl): -9€ über 3 Trades — Timing schlecht
+- PS3 (NATO/Rüstung): -19.73€ über 4 Trades — These falsch zeitlich
+- PS5 (Agrar): -332€ (!) über 2 Trades — völlig daneben
+
+**Conviction-Rückgang:**
+- PS1: 4 → 3 (Öl-Geopolitik weniger überzeugend)
+- PS3: 4 → 2 (Rüstung-Superzyklus zu früh gespielt)
+- PS4: 3 → 2 (Edelmetalle/Miner nicht laufen)
+
+### 🎓 Learnings (konkret)
+
+1. **CRV ist Boss**: PAAS-Loss zeigte: CRV 1.5:1 reicht nicht. Minimum 2.0:1 oder nicht spielen.
+
+2. **Stops funktionieren**: MOS, HL, PAAS — alle haben Stop regelkonform ausgelöst. System arbeitet. Aber Entry-Seite ist noch zu spekulativ.
+
+3. **Geo-Timing ist unmöglich**: H002 bestätigt — geopolitische Trades brauchen zu viel Glück. Nächste Woche: Geo-Positionen minimieren, nur auf echte geopolitische Eskalation warten (nicht auf Basis von Nachrichten-Rauschen).
+
+### 📋 Plan nächste Woche
+
+1. **Paper-Portfolio reduzieren:** PS3 + PS4 auf Conviction 1 senken (= sehr selektiv)
+2. **Core halten:** PLTR, EQNR, Öl, Biotech — nicht anfassen
+3. **Neue Entries nur bei:** CRV ≥2.0, Setup klar (EMA, Breakout), keine Geo-Spekulation
+4. **Hypothesen weiter testen:** H001 (Earnings), H003 (EMA-Quality) — Datenerfassung verbessern

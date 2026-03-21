@@ -760,6 +760,21 @@ def mode_full():
     print("=" * 50)
     mode_report()
     print("=" * 50)
+    # Strategy Feedback Loop — auto-adjusts conviction in strategies.json
+    print("\n📊 Running Strategy Feedback Loop...")
+    try:
+        import subprocess
+        result = subprocess.run(
+            [sys.executable, str(Path(__file__).parent / 'intelligence' / 'strategy_feedback.py')],
+            capture_output=True, text=True, timeout=30
+        )
+        if result.stdout:
+            print(result.stdout)
+        if result.returncode != 0 and result.stderr:
+            print(f"  ⚠️ Feedback errors: {result.stderr[:200]}")
+    except Exception as e:
+        print(f"  ⚠️ Strategy Feedback failed: {e}")
+    print("=" * 50)
     print("\n✅ FULL RUN abgeschlossen!")
 
 

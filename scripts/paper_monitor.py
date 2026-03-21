@@ -138,6 +138,21 @@ def close_paper_trade(trade_id, exit_price, status, ticker):
 
 # ─── DNA Report Generator ────────────────────────────────────────────
 
+def _get_strategy_name(strategy_id):
+    """Map strategy ID (PS1, S3, DT1...) to human-readable name from strategies.json."""
+    try:
+        strat_path = WORKSPACE / 'data/strategies.json'
+        if strat_path.exists():
+            import json as _json
+            with open(strat_path) as f:
+                strats = _json.load(f)
+            if strategy_id in strats and isinstance(strats[strategy_id], dict):
+                return strats[strategy_id].get('name', strategy_id)
+    except Exception:
+        pass
+    return strategy_id
+
+
 def generate_dna_json():
     """Generiert data/dna.json aus allen Trades (paper + real)."""
     conn = get_db()
@@ -198,8 +213,11 @@ def generate_dna_json():
         if max_consec >= 3:
             kill = True
         
+        # Map strategy ID to name from strategies.json
+        strat_name = _get_strategy_name(name)
         strategy_list.append({
             'strategy': name,
+            'strategy_name': strat_name,
             'total': st['total'],
             'open': st['open'],
             'closed': c,

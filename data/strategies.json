@@ -24,7 +24,10 @@
         "Bloomberg RSS"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-21T09:01:33Z",
+      "feedback_history": []
     },
     "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
     "sector": "energy",
@@ -109,7 +112,10 @@
         "Shipping-Rate-Daten"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
     "sector": "energy",
@@ -178,7 +184,10 @@
         "Rheinmetall FY2025 Zahlen"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 2
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-21T09:01:33Z",
+      "feedback_history": []
     },
     "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
     "sector": "defense",
@@ -253,7 +262,10 @@
         "eigene VIX-Analyse"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 2
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-21T09:01:33Z",
+      "feedback_history": []
     },
     "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
     "sector": "metals",
@@ -330,7 +342,10 @@
         "Agrar-Commodity-Daten"
       ],
       "conviction_at_start": 2,
-      "conviction_current": 2
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-21T09:01:33Z",
+      "feedback_history": []
     },
     "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
     "sector": "fertilizer",
@@ -402,7 +417,10 @@
         "eigene Analyse"
       ],
       "conviction_at_start": 5,
-      "conviction_current": 5
+      "conviction_current": 5,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.",
     "sector": "energy",
@@ -483,7 +501,10 @@
         "Rheinmetall FY2025 Zahlen"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 4
+      "conviction_current": 4,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.",
     "sector": "defense",
@@ -552,7 +573,10 @@
         "eigene SMH/VIX-Analyse"
       ],
       "conviction_at_start": 4,
-      "conviction_current": 4
+      "conviction_current": 4,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
     "sector": "technology",
@@ -621,7 +645,10 @@
         "eigene Analyse"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.",
     "sector": "metals",
@@ -688,7 +715,10 @@
         "Bloomberg"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.",
     "sector": "materials",
@@ -757,7 +787,10 @@
         "Ölpreis-Korrelation"
       ],
       "conviction_at_start": 3,
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
     "sector": "energy_renewable",
@@ -820,7 +853,10 @@
         "eigene Analyse"
       ],
       "conviction_at_start": 2,
-      "conviction_current": 2
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "thesis": "US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.",
     "sector": "healthcare",
@@ -954,7 +990,10 @@
       "thesis_template": "Klimawandel → Wasserknappheit → Infrastruktur-Investitionen"
     },
     "genesis": {
-      "conviction_current": 3
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
     },
     "performance": {
       "total_trades": 0,
@@ -964,6 +1003,121 @@
       "avg_win_pct": 0,
       "avg_loss_pct": 0,
       "expectancy": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT1": {
+    "name": "Momentum-Breakout",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Intraday Momentum-Breakout über Widerstand mit Volumen",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT2": {
+    "name": "Mean-Reversion Oversold",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Überverkaufte Aktien bounced intraday zurück",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT3": {
+    "name": "Gap-Fill",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Gaps werden intraday geschlossen",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT4": {
+    "name": "News-Catalyst",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Positive News/Earnings treiben Intraday-Bewegung",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    }
+  },
+  "DT5": {
+    "name": "VWAP-Bounce",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Kurs prallt am VWAP ab — institutioneller Support",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "VWAP ist institutioneller Ankerpunkt — Abpraller sind tradebar",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
       "last_evaluated": null
     }
   }

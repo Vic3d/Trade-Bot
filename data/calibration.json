@@ -2,7 +2,7 @@
   "conviction_buckets": {
     "0-30": {
       "wins": 0,
-      "total": 2,
+      "total": 12,
       "win_rate": 0.0
     },
     "30-50": {
@@ -28,13 +28,20 @@
   },
   "regime_accuracy": [
     {
-      "regime": "NEUTRAL",
-      "total": 3,
+      "regime": "CORRECTION",
+      "total": 4,
       "wins": 0,
       "win_rate": 0.0,
-      "avg_pnl": 0.77
+      "avg_pnl": 0
+    },
+    {
+      "regime": "NEUTRAL",
+      "total": 9,
+      "wins": 0,
+      "win_rate": 0.0,
+      "avg_pnl": -2.65
     }
   ],
   "lead_lag_accuracy": [],
-  "calibrated_at": "2026-03-19T19:46:45.089530+00:00"
+  "calibrated_at": "2026-03-21T08:55:48.137900+00:00"
 }

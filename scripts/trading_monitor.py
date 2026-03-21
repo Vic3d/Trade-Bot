@@ -1171,6 +1171,100 @@ def update_state_snapshot(config: dict, export: dict, strategy_statuses: dict,
 """
     SNAPSHOT_PATH.write_text(snapshot, encoding='utf-8')
     log(f"State Snapshot geschrieben: {pos_count} Positionen, {len(all_alerts)} Alerts")
+    # Gleichzeitig positions-live.md aktualisieren
+    update_positions_live(config, export)
+
+
+def update_positions_live(config: dict, export: dict):
+    """
+    Schreibt memory/positions-live.md — human-readable Single Source of Truth.
+    Wird bei jedem Monitor-Lauf synchron mit state-snapshot.md überschrieben.
+    Liest direkt aus trading_config.json (Stops, Entries) + live Preise aus export.
+    """
+    now = datetime.now(tz=ZoneInfo("Europe/Berlin")).strftime('%Y-%m-%d %H:%M CET')
+    positions = export.get('positions', {})
+    config_pos = config.get('positions', {})
+
+    active_rows = []
+    closed_rows = []
+    protocol_rows = []
+
+    for key, p in config_pos.items():
+        name  = p.get('name', key)
+        entry = p.get('entry_eur', 0)
+        stop  = p.get('stop_eur')
+        stop_str = f"{stop:.2f}€" if stop else "❌ kein Stop"
+
+        if p.get('status') == 'CLOSED':
+            exit_eur  = p.get('exit_eur')
+            exit_date = p.get('exit_date', '—')
+            exit_str  = f"{exit_eur:.2f}€" if exit_eur else "—"
+            pnl_str   = f"{((exit_eur - entry) / entry * 100):.1f}%" if exit_eur and entry else "—"
+            note      = p.get('notes', '—')
+            closed_rows.append(f"| {name} ({key}) | {entry:.2f}€ | {exit_str} | {pnl_str} | {exit_date} | {note} |")
+        else:
+            live = positions.get(key, {})
+            price = live.get('price_eur', 0)
+            pnl   = live.get('pnl_pct', 0)
+            price_str = f"{price:.2f}€" if price else "—"
+            pnl_str   = f"{pnl:+.1f}%" if price else "—"
+            note      = p.get('notes', '—')
+            active_rows.append(f"| {name} ({key}) | {entry:.2f}€ | {stop_str} | {price_str} | {pnl_str} | {note} |")
+
+    # Update-Protokoll: letzte 10 Einträge aus bestehendem File lesen
+    live_path = WORKSPACE / 'memory' / 'positions-live.md'
+    existing_protocol = ""
+    if live_path.exists():
+        content = live_path.read_text(encoding='utf-8')
+        if '## 📋 Update-Protokoll' in content:
+            existing_protocol = content.split('## 📋 Update-Protokoll')[1].split('---')[0].strip()
+
+    active_table = "\n".join(active_rows) if active_rows else "| — | — | — | — | — | Keine aktiven Positionen |"
+    closed_table = "\n".join(closed_rows) if closed_rows else "| — | — | — | — | — | — |"
+
+    md = f"""# Positions Live — Einzige Wahrheitsquelle für aktuelle Positionen
+
+> **PFLICHT:** Nach jeder Stop-Änderung, jedem Kauf/Verkauf sofort hier updaten.
+> **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
+> Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
+
+**Zuletzt aktualisiert:** {now} (Auto-Sync vom Monitor)
+
+---
+
+## 🟢 Aktive Positionen
+
+| Name (Ticker) | Entry | Stop (REAL in TR) | Letzter Kurs | P&L | Notiz |
+|---|---|---|---|---|---|
+{active_table}
+
+---
+
+## ✅ Geschlossene Positionen (letzte 30 Tage)
+
+| Name (Ticker) | Entry | Exit | P&L | Datum | Notiz |
+|---|---|---|---|---|---|
+{closed_table}
+
+---
+
+## 📋 Update-Protokoll
+
+{existing_protocol}
+
+---
+
+## ⚡ Sync-Regeln (PFLICHT)
+
+Wenn Victor eine Stop-Änderung oder einen Trade mitteilt:
+1. `trading_config.json` updaten (positions Array) — Monitor liest von hier
+2. Diese Datei wird beim nächsten Monitor-Run (alle 15 Min) automatisch aktualisiert
+3. Bei dringenden Änderungen: Albert updated beide Dateien sofort manuell
+4. `state-snapshot.md` = Monitor-Output mit live Preisen, kann 15 Min veraltet sein
+5. `projekt-trading.md` = nur Strategie-Doku — NICHT für live Daten
+"""
+    live_path.write_text(md, encoding='utf-8')
+    log(f"positions-live.md aktualisiert: {len(active_rows)} aktiv, {len(closed_rows)} geschlossen")
 
 
 def _last_alert_for(ticker: str, alerts: list) -> str:

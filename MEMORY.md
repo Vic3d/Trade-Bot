@@ -246,7 +246,7 @@
 - First Majestic Silver (AG): Entry-Zone $26–29 aktiv, Stop ~20,50€, Ziel 25,86€/32,76€, CRV 4:1
 - ASML Holding (ASML): Warten auf Rücklauf ~1.160€ (EMA50), CRV 5:1
 
-## Trading-Lektionen (Stand 15.03.2026)
+## Trading-Lektionen (Stand 21.03.2026)
 - **Stop IMMER real in TR setzen** — mentale Stops versagen wenn Markt schnell dreht (RHM-Lektion 11.03.)
 - **Trailing Stop nach +5% Gewinn** — Stop auf Breakeven/EMA nachziehen (Dirk 7H Regel). EQNR-Beispiel: +5,3% Gewinn → Stop von 25€ auf 27€ gezogen (12.03.). Schützt Gewinne, lässt Rest laufen.
 - **RSI 75+ + Wochenende = kritisches Risiko** — EQNR am 13.03.: RSI 79, +12,4% über 5 Tage → sehr hohe Wahrscheinlichkeit für Profit-taking über Wochenende. NVDA + A2QQ9R ohne Stops am 13.03. waren exposiert. Position mit Stop überwachen, NIEMALS ohne Schutz über 2-3 Tage gehen.
@@ -254,6 +254,10 @@
 - **Drumpelmiller-Pattern (AI-Rotation)** — "Big Spender" KI-Unternehmen werden verkauft, "Profitable" KI gekauft. NVDA + PLTR = Winners in diesem Regime. Thesis bestätigt 11.03–13.03.
 - **VIX 25-30 = Tech defensiv** — Bei hoher Geopolitik-Volatilität: Tech muss breiter gestreut werden, nicht konzentriert (NVDA/MSFT/PLTR gemischt halten). Kein Nachkauf Tech solange VIX > 28.
 - **Conviction Score System** (ab 15.03.2026) — jede Position hat Conviction 0-5. Bewertet Sicherheit/Überzeugungsgrad. Feeds in Trade Journal + Monitoring.
+- **Phase-1/2-Schockmodell** (Eriksen, 20.03.2026) — Makroschocks haben zwei Phasen: Phase 1 = Inflationsschock (noch abwendbar), Phase 2 = Wachstumsschock (Rezession eingepreist, Indizes –20–25%). Kipppunkt: hohe Energiepreise >2–3 Monate → Phase 2 unvermeidlich. Aktuell (21.03.2026): Phase 1.
+- **1-Jahres-Inflationsswap als Fed-Frühindikator** (Eriksen, 20.03.2026) — Wichtiger als PCE für Fed-Prognosen. <2% + Arbeitsmarkt-Schwäche = Fed kann senken. >3% = Fed blockiert, egal was Wachstum macht. Aktuell bei 3,25% = kein Zinssenkungsspielraum.
+- **Konsumenten-Puffer-Indikator** (Eriksen, 20.03.2026) — US-Sparquote von 8,4% auf 4% halbiert + Kreditkarten-Schulden Rekord = Kostenschocks treffen schneller durch. $150–200/Monat Mehrbelastung bei Öl >$100 pro US-Haushalt.
+- **Transmissionsmechanismus-Timing** (Eriksen, 20.03.2026) — Kette: Öl hoch → Inputkosten → Margen → Capex-Stopp → Hiring-Freeze → Arbeitsmarkt dreht → Fed reagiert (zu spät). Gesamtkette 3–6 Monate. Früh-Indikatoren: Capex-Guidance in Earnings + Hiring-Freeze Announcements (vor Jobless Claims!).
 - **Versprechen atomar absichern** — Sub-Agent/Cron sofort anlegen, nie nur im Chat zusagen
 - **Kein Averaging Down unter Stop** — Dirks Regel, konsequent einhalten
 - **Verlustreiche Woche ≠ Revenge Trade** — nur echte Setups handeln

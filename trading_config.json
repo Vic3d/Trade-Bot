@@ -11,7 +11,7 @@
         "stufe1_below_usd": 180.0,
         "stufe2_above_usd": 190.0
       },
-      "notes": "HALTEN bis Earnings 27.05.2026",
+      "notes": "Manuell geschlossen",
       "status": "CLOSED",
       "exit_eur": 154.56,
       "exit_date": "2026-03-19",
@@ -29,9 +29,9 @@
         404
       ],
       "alerts": {},
-      "notes": "",
+      "notes": "Stop 338€ ausgelöst",
       "status": "CLOSED",
-      "exit_eur": 337.71,
+      "exit_eur": 338.0,
       "exit_date": "2026-03-19",
       "size_eur": 2500,
       "conviction": 50
@@ -56,8 +56,8 @@
       "name": "Equinor ASA",
       "yahoo": "EQNR.OL",
       "currency": "NOK",
-      "entry_eur": 27.45,
-      "stop_eur": 33.0,
+      "entry_eur": 27.04,
+      "stop_eur": 34.5,
       "targets_eur": [],
       "alerts": {},
       "notes": "Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuft",
@@ -74,9 +74,12 @@
         44
       ],
       "alerts": {},
-      "notes": "Stop real in TR",
+      "notes": "Stop ausgelöst + Slippage",
       "size_eur": 2500,
-      "conviction": 55
+      "conviction": 55,
+      "status": "CLOSED",
+      "exit_date": "2026-03-20",
+      "exit_eur": 37.48
     },
     "RIO.L": {
       "name": "Rio Tinto",
@@ -88,9 +91,9 @@
         85
       ],
       "alerts": {},
-      "notes": "⚠️ Stop 73€ in TR setzen!",
+      "notes": "Stop 73€ ausgelöst",
       "status": "CLOSED",
-      "exit_eur": 72.25,
+      "exit_eur": 73.0,
       "exit_date": "2026-03-19",
       "size_eur": 2500,
       "conviction": 45
@@ -123,9 +126,11 @@
         28
       ],
       "alerts": {},
-      "notes": "⚠️ KEIN STOP — Breakeven 22,40€ setzen!",
+      "notes": "Phantom-Position, nie gekauft",
       "size_eur": 2500,
-      "conviction": 40
+      "conviction": 40,
+      "status": "CLOSED",
+      "exit_date": "2026-03-20"
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
@@ -147,9 +152,12 @@
       "stop_eur": 25.95,
       "targets_eur": [],
       "alerts": {},
-      "notes": "Stop 2% weg — eng",
+      "notes": "Stop ausgelöst",
       "size_eur": 2500,
-      "conviction": 45
+      "conviction": 45,
+      "status": "CLOSED",
+      "exit_date": "2026-03-20",
+      "exit_eur": 25.95
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",

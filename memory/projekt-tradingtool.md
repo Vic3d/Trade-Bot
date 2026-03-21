@@ -1226,3 +1226,65 @@ Eriksen nennt:
 
 **Aktion:** Beobachten (kein direkte Trade-Signal), aber Frameworks sehr verwertbar für Portfolio-Management
 
+---
+
+## Woche 12/2026 — Lars Eriksen: Rezessionsszenarien + Fed-Dilemma
+
+*Transcript vom 20.03.2026, aufgenommen von Eriksen am Donnerstag*
+
+### Neue Frameworks — Direkt anwendbar für TradeMind
+
+**1. Phase-1/2-Schockmodell (TOP PRIORITÄT für TradeMind)**
+
+Neues Framework: Makroschock hat zwei Phasen:
+- **Phase 1 (Inflationsschock):** Öl/Energie hoch, Fed blockiert, Aktien unter Druck — aber noch abwendbar
+- **Phase 2 (Wachstumsschock):** Wenn Phase 1 zu lang → Transmissionsmechanismus greift → Rezession eingepreist → S&P –20–25%
+- Kipppunkt: hohe Energiepreise >2–3 Monate = Phase 2 unvermeidlich
+- **Feature-Idee:** TradeMind zeigt "Makro-Phase-Indikator" (1/2) basierend auf Öl-Dauer + Konsumenten-Stress
+
+**2. Fed-Frühindikator: 1-Jahres-Inflationsswap**
+- Wichtiger als PCE oder CPI für Fed-Entscheidungsprognosen
+- Unter 2% + Arbeitsmarkt-Schwäche = Fed kann senken
+- Über 3% = Fed blockiert, egal was Wachstum macht
+- **Feature-Idee:** 1Y-Swap als permanenter Makro-Indikator neben VIX + DXY
+
+**3. Konsumenten-Puffer als Leading Indicator**
+- Sparquote + Kreditkarten-Schulden = vorgelagerter Stress-Indikator
+- Je niedriger der Puffer, desto schneller schlägt Kostenschock durch
+- **Anwendung:** US-Konsum-Sektor (MSFT Cloud, PLTR Gov) vs. US-Consumer-Discretionary differently bewertet
+
+**4. Transmissionsmechanismus als Checklist**
+Vollständige Kette: Öl hoch → Inputkosten → Margen → Investitionen → Einstellungen → Arbeitsmarkt → Fed
+- Jeder Schritt 3–6 Wochen Verzögerung
+- Früh-Indikatoren: Capex-Guidance in Earnings-Calls, Hiring Freeze Announcements
+- **Anwendung:** Frühwarnsystem in TradeMind bevor Jobless Claims steigen
+
+**5. Energie-Tail-Risk-Analyse**
+- US-Exportstopp = Eigentor: Raffinerien ausgelegt auf schwerem Öl → leichtes Permian-Öl kann nicht ersetzt werden
+- EU: 90% LNG-Abhängigkeit von USA
+- Brent/WTI-Spread als Sensor: ungewöhnlich weiter Spread = Institutionelle preisen Exportstopp ein
+- **Feature-Idee:** Brent/WTI-Spread Monitor mit Anomalie-Alert
+
+### Portfolio-Relevanz dieser Session
+
+**Sofort-Auswirkungen auf aktive Positionen:**
+
+| Position | Eriksen-Insight | Konsequenz |
+|----------|----------------|-----------|
+| EQNR (Öl-These) | Wahrscheinlichster Case: De-Eskalation <4 Wo → Öl 80–85$ | Stop 28,50€ gut positioniert. Bei Deeskalationssignal → Exit vorbereiten |
+| NVDA/MSFT/PLTR | Phase 1→2 Risiko: wenn Konflikt >2 Mo → Tech –20–25% | NVDA ohne Stop = kritisch. Phase-2-Eintritt = sofortiger Handlungsbedarf |
+| BAYN.DE | Konsumenten-Stress + milde Rezession = Pharma unter Druck | Tight Stop (38€) bei 38,36€ Puffer = im Einklang mit Eriksens Warnung |
+
+**Learning für den Learning Loop:**
+- Eriksens Szenario-Matrix bestätigt: Wir sind in Phase 1, Deeskalation wahrscheinlichster Case binnen 1–4 Wochen
+- Wenn Szenario stimmt: Öl fällt, EQNR-Stop fliegt, aber mit Gewinn
+- Wenn nicht: Phase 2 = alle Tech-Positionen ohne Stops gefährdet → Stop für NVDA ist die wichtigste offene Baustelle
+
+### Feature-Backlog Update (aus dieser Session)
+
+- [ ] **Makro-Phase-Indikator (1/2):** Öl-Dauer × Konsumenten-Stress = Rezessionswahrscheinlichkeit — anzeigen
+- [ ] **1Y-Inflationsswap:** Als Makro-Dashboard-Indikator (neben VIX)
+- [ ] **Brent/WTI-Spread-Monitor:** Anomalie = Tail-Risk-Alert (Exportstopp)
+- [ ] **Transmissions-Checklist:** Capex-Guidance + Hiring-Freeze als Frühindikator (vor Jobless Claims)
+- [ ] **Konsumenten-Stress-Score:** Sparquote + Kreditkartenschulden als US-Consumer-Risiko-Layer
+
