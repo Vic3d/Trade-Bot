@@ -89,6 +89,23 @@
       "avg_loss_pct": 0.0,
       "expectancy": 0.0,
       "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "PS2": {
@@ -159,6 +176,23 @@
       "avg_loss_pct": 0,
       "expectancy": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "PS3": {
@@ -238,6 +272,23 @@
       "avg_loss_pct": 0.58,
       "expectancy": -0.58,
       "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "PS4": {
@@ -318,6 +369,23 @@
       "avg_loss_pct": -4.3,
       "expectancy": -4.3,
       "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "PS5": {
@@ -388,6 +456,23 @@
       "avg_loss_pct": 0,
       "expectancy": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "S1": {
@@ -1027,6 +1112,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT2": {
@@ -1050,6 +1152,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT3": {
@@ -1073,6 +1192,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT4": {
@@ -1096,6 +1232,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT5": {
@@ -1119,6 +1272,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT6": {
@@ -1142,6 +1312,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT7": {
@@ -1165,6 +1352,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT8": {
@@ -1188,6 +1392,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   },
   "DT9": {
@@ -1211,6 +1432,23 @@
       "losses": 0,
       "win_rate": 0,
       "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-22 11:36"
     }
   }
 }
