@@ -928,7 +928,10 @@ def mode_macro_update():
     if bad_news_regime:
         print(f"  ⚠️ 'Bad News = Good News'-Regime AKTIV (Öl ${wti:.0f} + VIX {vix:.1f})")
     if fed_pause_regime:
-        print(f"  ⚠️ Fed-Pause-Regime: Growth-Exposition (NVDA/PLTR) max. 2 Tranchen")
+        # Validation: VIX > 25 allein reicht NICHT als Growth-Signal (nur 29% Trefferquote)
+        # Erst bei VIX > 25 + Öl > $95 + Fed-Pause kombiniert = relevantes Signal
+        print(f"  ⚠️ Fed-Pause-Regime: Growth-Vorsicht (kombiniertes Signal — nicht VIX allein)")
+        print(f"     Hinweis: VIX > 25 allein schwaches Signal (Backtesting: 29% WR)")
 
     # ── 7. Bankensektor-Check (Eriksen: Markt-Gesundheitsindikator) ──
     bank_signal = "neutral"
