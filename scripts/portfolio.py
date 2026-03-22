@@ -49,6 +49,25 @@ from typing import Optional
 WS = Path("/data/.openclaw/workspace")
 CONFIG_PATH = WS / "trading_config.json"
 DB_PATH = WS / "data" / "trading.db"
+
+def sync_config_from_github():
+    """Zieht trading_config.json frisch aus GitHub — Single Source of Truth."""
+    import urllib.request, base64, os
+    token = os.environ.get('GITHUB_TOKEN', '')
+    if not token:
+        return False
+    try:
+        url = 'https://api.github.com/repos/Vic3d/Trade-Bot/contents/trading_config.json'
+        req = urllib.request.Request(url, headers={
+            'Authorization': f'token {token}',
+            'User-Agent': 'Albert-TradeMind'
+        })
+        d = json.loads(urllib.request.urlopen(req, timeout=8).read())
+        content = base64.b64decode(d['content']).decode()
+        CONFIG_PATH.write_text(content)
+        return True
+    except Exception as e:
+        return False
 EVENTS_PATH = WS / "data" / "portfolio_events.json"
 STRATEGIES_PATH = WS / "data" / "strategies.json"
 
@@ -117,7 +136,8 @@ class Portfolio:
         self._load_events()
 
     def _load_real(self):
-        """Liest echte Positionen aus trading_config.json."""
+        """Liest echte Positionen aus trading_config.json — zieht automatisch aus GitHub."""
+        sync_config_from_github()  # immer frisch vom Server
         if not CONFIG_PATH.exists():
             return
         try:

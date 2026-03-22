@@ -733,3 +733,11 @@ Neu: 8 | 🔴 0 | 🟡 1 | ⚪ 7 | Alerts: 1
 Neu: 2 Kandidaten | 🔴 0 | 🟡 1 | ⚪ 1 | Alerts: 1
 
 **EQNR (Position):** Iran Hormuz-Spannungen → Ölpreis-Bull-Case
+
+## [2026-03-22 13:00 UTC]
+Neue Kandidaten: 2 | 🔴 CRITICAL: 0 | 🟡 IMPORTANT: 1 | ⚪ INFO: 1 | Alerts gesendet: 1
+
+- **EQNR (Equinor)** — RELEVANT: Iran-Militär-Eskalation → Ölpreis-Impact
+- **PLTR (Palantir)** — RAUSCHEN: Pentagon-Vergleich, keine neuen Fakten zur Defense-These
+
+---

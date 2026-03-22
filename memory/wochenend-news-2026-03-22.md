@@ -1,67 +1,65 @@
-# Wochenend-News-Sammlung — 22. März 2026, 10:00 CET
+# 📰 Wochenend-News 22.03.2026 — Handels-Woche 23.–27.03.2026
 
-**Stand:** Sonntag 10:00 (vor Asien-Opening)  
-**Letzter Update:** 2026-03-22 09:00 UTC
-
----
-
-## ⚠️ ESKALATIONS-WARNUNG: IRAN-ISRAEL KONFLIKT
-
-### Lage (Aktuelle Stunde)
-- **TRUMP-ULTIMATUM:** Iran hat 48h Zeit, Hormuz-Straße zu öffnen — sonst Kraftwerk-Zerstörung
-- **Iran-Angriff:** Luftbasen Isfahan + Ahvaz unter Feuer
-- **Israel kontert:** Air-Defense aktiv, aber ballistische Rakete traf Arad (88 Verletzte)
-- **Libanon-Eskalation:** Israel bombardiert — 1.024 Todesfälle, Hezbollah-Drohnen
-- **Hormuz-Blockade droht** → ÖLPREIS-BOMBE
-
-### Portfolio-Impact: EQNR 🚨 KRITISCH
-| Position | Status |
-|----------|--------|
-| EQNR Stop | **34,50€** |
-| Aktueller Kurs | 35,68€ |
-| P&L | **+30%** |
-| Risiko | **Stop könnte gerissen werden!** |
-
-**Szenario:** Hormuz-Blockade → Ölpreis +10-20% → EQNR >40€ möglich, aber auch volatil.  
-Stop-Nachzug sollte stündlich überwacht werden. **AKTIVE POSITION.**
+**Zuletzt aktualisiert:** 2026-03-22 14:00 CET | Status: Pre-Market Summary
 
 ---
 
-## 📰 NEWS-ÜBERBLICK
+## ⚠️ GEOPOLITIK-ESKALATION — HORMUZ-BLOCKADE RISIKO
 
-### Ölmarkt (PLTR-Öl-ETF)
-- Hormus-Blockade droht: OPEC-Förderung sinkt um 8M Barrel, Brent unter Druck
-- Straße von Hormus: Ölpreis steigtIterationPolicy
-- Handel gefährdet durch Hormus-Blockade — WTI-S & Brent volatil
+### 🌍 Iran/Israel — KRITISCH
 
-### Nasdaq / Fed
-- Fed belässt Zinsen UNVERÄNDERT (stabil, keine Überraschung)
-- NASDAQ 100 testet EMA50 vor Entscheid
-- Bullisches Setup, Ziele bis 26.000 (PLTR-Kontext)
+**Top Events (letzte 24h):**
+- **Trump-Ultimatum:** 48-Stunden-Frist für Iran zur Öffnung der Straße von Hormuz; droht sonst mit Luftschlägen auf iranische Kraftwerke
+- **Militärische Eskalation:** US-israelische Luftschläge auf Isfahan-Atomanlage + Ahvaz Luftwaffenbasis
+- **Iranische Gegenschläge:** Ballistische Raketen auf Israel (Arad, Dimona); 64–88 Verletzte
+- **Hezbollah aktiv:** Lebanon-Kanal eskaliert (1.024 Tote, 2.740 Verletzte bisher)
+- **Hormuz-Impact:** OPEC-Förderung sinkt um 8 Mio. Barrel/Tag; Ölpreis-Momentum nach oben
 
-### Einzelwerte
-- **EQNR:** UBS stuft hoch, Goldman Sachs hebt Kursziel auf 270 NOK — aber Volatilität jetzt
-- **PLTR:** AIPCon 9, Verteidigungsnachfrage stabil, KI-Momentum
+**Portfolio-Impact:** 🟢 **EQNR (+30%, Stop 34,50€) — HUGE GEWINNER** | Ölpreise >110 USD/bbl unterstützen | Kuwait protestiert bei ICAO
 
----
+### 🌍 Ukraine — Steady State
+Intensive Kämpfe über alle Fronten (Pokrovsk, Kherson, Kupyansk). Keine neuen Trends.
+PLTR-Impuls von Pentagon-Maya-KI-Kontrakt kompensiert geopolitische Unsicherheit.
 
-## 📅 RISIKOEREIGNISSE — Woche 24-28 März
-
-- **Mi 26.3:** Ifo-Geschäftsklima (DE) — Konjunktur-Stimmung
-- **Do 27.3:** US PCE (Inflation) — Fed-Fokus-Indikator
-- **Fr 28.3:** US-Arbeitsmarktbericht (Jobs) — Risiko für Nasdaq
-- **laufend:** Iran-Israel Eskalation (Hormuz-Durchfahrt) = Tages-X-Faktor
+### 🌍 China/Taiwan — Monitoring
+28 PLA-Sorties, 21 über Taiwan-Median-Linie. Trump verschob China-Besuch um 1,5 Monate wegen Iran-Krieg.
 
 ---
 
-## DE-ESKALATIONS-CHECK
+## 📊 NEWS-FOKUS — Aktive Positionen
 
-❌ KEINE Waffenstillstands-Verhandlungen sichtbar  
-❌ Hormuz-Öffnung: FALSCH — Blockade droht  
-⚠️ Ölpreis-Bewegung: +8-10% erwartet → EQNR direkt betroffen
-
-**FAZIT:** Eskalation bleibt. EQNR steht unter Volatilitäts-Risiko. Stop-Management AKTIV.
+| Ticker | Kontext | Signal |
+|--------|---------|--------|
+| **EQNR** (Equinor) | Ölpreisanstieg + UBS-Upgrade auf Öl-/Gas-Prognosen | 🟢 KAUFSIGNAL bestätigt |
+| **PLTR** (Palantir) | Pentagon Maven AI = KI-Standard; Kursdruck bei Gewinnmitnahmen | 🟡 Halten; ggf. Einstieg bei 127€+ |
+| **A3D42Y** (Oil Services ETF) | Direkt mit Ölpreis korreliert; Unterstützung bei 24€ | 🟡 Halten bis OPEC-Aussage |
+| **A2DWAW** (Biotech ETF) | Ohne besondere Nachrichten | 🟢 Halten |
 
 ---
 
-**Aktualisiert:** 2026-03-22T09:00:00Z
+## 📈 Makro-Events nächste Woche
+
+- **Fed-Entscheidung:** Powell hält Zinsen stabil (erwartet)
+- **Nasdaq-Test:** EMA50-Unterstützung vor Fed-Hearing
+- **OPEC-Kommuniqué:** Förderungskürzungen + Hormuz-Sicherheit Thema
+
+---
+
+## ✅ DE-ESKALATIONS-CHECK
+
+**Keine positive Signale:**
+- ❌ Waffenstillstandsverhandlungen Iran-Israel: KEINE
+- ❌ Hormuz-Entspannung: GEGENTEIL — Trump-Ultimatum verschärft
+- ❌ Ölpreis >5% DOWN: GEGENTEIL — UP (Richtung 110–115 USD/bbl)
+
+**Ergebnis:** Geopolitisches Risiko STEIGT. Ölpreis-Momentum bleibt aufwärts bis zur Antwort Irans (vor Dienstagabend CET).
+
+---
+
+## 🎯 Empfehlung für Victor
+
+1. **EQNR:** Stop nachgezogen bei 34,50€ ist defensiv positioniert. Bei Ölpreis >112 USD Stop auf 32€ nachziehen (Gewinnmitnahme-Schutz).
+2. **PLTR:** Entry-Niveau 127€ bleibt spannend, aktuell 130,18€ = -1,5%. Pentagon-Kontrakt ist Fundamentalstärke.
+3. **Oil ETF:** Halten. Hormuz-Unsicherheit = Tailwind für nächste 3–5 Tage.
+
+**Nächster Checkpoint:** Montag 10:00 CET — Irans Reaktion auf Trump-Ultimatum.
