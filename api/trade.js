@@ -24,7 +24,9 @@ async function ghPut(token, path, content, sha, message) {
   if (!r.ok) throw new Error(`GitHub PUT ${path}: ${r.status}`);
 }
 
+const { requireAuth } = require('../lib/auth');
 module.exports = async function handler(req, res) {
+  if (req.method !== 'OPTIONS' && !requireAuth(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

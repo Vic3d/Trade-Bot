@@ -1,7 +1,9 @@
 // GET /api/trade-log — liest data/trade-log.json aus GitHub
 const OWNER = 'Vic3d', REPO = 'Trade-Bot', BRANCH = 'master';
 
+const { requireAuth } = require('../lib/auth');
 module.exports = async function handler(req, res) {
+  if (!requireAuth(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
   const token = process.env.GITHUB_TOKEN;

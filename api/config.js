@@ -47,7 +47,9 @@ async function updateFile(token, content, sha, message) {
   return await r.json();
 }
 
+const { requireAuth } = require('../lib/auth');
 module.exports = async function handler(req, res) {
+  if (req.method !== 'OPTIONS' && !requireAuth(req, res)) return;
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

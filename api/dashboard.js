@@ -174,6 +174,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   <button class="hbtn" onclick="loadAll()">🔄</button>
   <button class="hbtn" onclick="toggleTheme()" id="theme-btn" title="Dark/Light">🌙</button>
   <button class="hbtn" onclick="requestNotifications()" id="notif-btn" title="Push-Alerts">🔔</button>
+  <button class="hbtn" onclick="location.href='/api/login?logout=1'" title="Logout">🔒</button>
   <span class="ts" id="ts">Lädt…</span>
   <span class="refresh-indicator" id="refresh-ind"></span>
 </header>
@@ -1670,7 +1671,10 @@ renderCalendar();
 </html>`;
 };
 
+const { requireAuth } = require('../lib/auth');
+
 module.exports = async function handler(req, res) {
+  if (!requireAuth(req, res)) return;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store, no-cache');
   res.status(200).send(HTML());
