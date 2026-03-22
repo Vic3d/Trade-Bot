@@ -223,3 +223,65 @@ Das perfekte System gibt es nicht — aber einen disziplinierten Umgang mit dem 
 - PLTR/NVDA: "Bad News = Good News"-Regime aktiv → Growth-Exposure kritisch beobachten
 
 ---
+
+## 2026-03-22 — NACHTRAG: Begründete Mechanismen (bisher aussortiert)
+
+> Korrektur: Eriksens und Dirk 7Hs begründete Prognosen enthalten lernbare Mechanismen.
+> Filter ab jetzt: "Mechanismus vorhanden?" → Ja = relevant, unabhängig ob Meinung.
+
+---
+
+### Eriksen 22.03 — Mechanismus 1: Zinserwartungen vs. Immobilien (Vonovia-Case)
+- **Beobachtung:** Vonovia +4,8 Mrd. € Gewinn + erhöhte Dividende → Aktie fällt zweistellig
+- **Mechanismus:** Steigende Zinserwartungen → höhere Diskontierungsrate → Immobilienbewertungen fallen,
+  unabhängig von aktuellen Gewinnen
+- **Regel:** Wenn Bundesanleihen-Rendite >3% steigt → Immobilien-/REIT-Sektor strukturell unter Druck
+- **Umkehrung:** Wenn Zinsen fallen/Senkungserwartungen steigen → Immobilien als erstes profitieren
+- **TradeMind:** Sektor-Signal: BundRendite als Vorlaufindikator für Immobilien-ETFs (z.B. IPRP)
+
+### Eriksen 22.03 — Mechanismus 2: Hormus-Dauer als Phase-Trigger
+- **Mechanismus:** Je länger Hormus-Krise dauert, desto sicherer Phase-2-Übergang
+  - <4 Wochen: Phase 1 (Inflationsschock), Realwirtschaft hält
+  - 4-8 Wochen: Phase-2-Risiko steigt auf >50%
+  - >8 Wochen: Phase 2 fast sicher (Wachstumsschock, Rezession)
+- **Eskalations-Start:** ~20.03.2026 (US-israelische Luftangriffe)
+- **Countdown:** Täglich überwachen — je Tag mehr = Phase-2-Druck steigt
+- **Regel:** Wenn Hormus-Krise >28 Tage → PS1 Positionen trailing, NICHT aufbauen
+
+### Eriksen 22.03 — Mechanismus 3: Fed "Held All Year" → Growth-Druck
+- **Macquarie-These:** Nächster Fed-Schritt = Erhöhung 2027
+- **Mechanismus:** Wenn Markt Fed-Pause für ganzes Jahr einpreist → Growth-Multiples
+  (KGV von NVDA, PLTR, MSFT) stehen unter strukturellem Druck
+- **Quantifizierung:** Fed-Funds-Futures einpreisen → wenn <1 Zinssenkung für 2026 → Risk-Off für Growth
+- **Regel:** Fed-Pause-Regime + VIX > 25 → Growth-Exposition (NVDA/PLTR) auf max. 2 Tranchen begrenzen
+
+### Dirk 7H 22.03 — Mechanismus: Historischer Analogie-Ansatz (Bitcoin-Beispiel)
+- **Methodik (universell):** Wenn technische Konstellation + Makrobedingungen ein früheres Muster spiegeln
+  → ähnlicher Ausgang wahrscheinlicher als Basisrate
+- **Zwei-Säulen-Check:**
+  1. Technisch: Gleiche Chart-Struktur? (Topbildung, Flaggen, MA-Position)
+  2. Makro: Gleiche Bedingungen? (Geopolitik, Inflation, Zinszyklus)
+- **Nur valide wenn BEIDE Säulen übereinstimmen** — eine allein reicht nicht
+- **Anwendung TradeMind:** Vor jedem größeren Trade: "Welcher historische Fall ähnelt dem am meisten?"
+  → Gleiche Marktphase, gleiche Sektor-Dynamik, gleiche Makrolage
+
+### Dirk 7H 22.03 — Mechanismus: Movement-Flagge-Movement-Pattern
+- **Definition:** Impulsive Bewegung → Konsolidierung (Flagge, 2-4 Wochen) → gleich große Anschlussbewegung
+- **Messung:** Flaggenhöhe = erwartetes Ziel der Anschlussbewegung
+- **Bestätigung:** Ausbruch aus Flagge mit erhöhtem Volumen
+- **Invalidierung:** Kurs bewegt sich nachhaltig über/unter gleitenden Durchschnitt in Gegenrichtung
+- **Relevant für:** DT3 (Gap-Fill), DT8 (BB Squeeze), PS-Swing-Entries
+
+### Eriksen 13.03 — WPR-Signal (bisher nur kurz erwähnt, hier vollständig)
+- **Williams Percentage Range (WPR) auf Monatsbasis** = sehr seltenes, starkes Signal
+- **Bedeutung:** Zeigt Akkumulation durch große Marktteilnehmer (Smart Money kauft leise)
+- **Wichtig:** Kurs kann noch fallen während WPR akkumuliert → kein Kaufsignal im klassischen Sinn
+- **Tranchenkauf-Methodik daraus:**
+  1. Tranche 1 bei erstem WPR-Signal (auch wenn Kurs noch fällt)
+  2. Tranche 2 nach Bestätigung (zweites WPR-Signal oder Kurs-Stabilisierung)
+  3. Tranche 3 nach Trendbestätigung (Kurs über MA20 + Volumen)
+- **Rollende Korrelation prüfen:** Vor jeder Markt-Ableitung: Korrelation der letzten 3 Monate messen,
+  nicht historische Durchschnittswerte annehmen
+- **TradeMind:** WPR als monatliches Signal-Check für alle Watchlist-Positionen
+
+---

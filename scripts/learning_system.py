@@ -883,6 +883,31 @@ def mode_macro_update():
             spread_signal = "PS1_EXIT_CHECK"  # De-Eskalation möglich
         print(f"  Brent-WTI Spread: ${brent_wti_spread:.2f} → {spread_signal}")
 
+    # ── 4b. Hormus-Dauer-Counter (Eriksen 22.03: Dauer = Phase-Trigger) ──
+    # Eskalations-Start: ~20.03.2026
+    from datetime import date
+    hormus_start = date(2026, 3, 20)
+    hormus_days = (date.today() - hormus_start).days
+    hormus_phase_risk = "low"
+    if hormus_days >= 28:
+        hormus_phase_risk = "critical"   # Phase 2 fast sicher
+    elif hormus_days >= 14:
+        hormus_phase_risk = "elevated"   # Phase-2-Risiko >50%
+    elif hormus_days >= 7:
+        hormus_phase_risk = "moderate"
+    print(f"  Hormus-Krise: Tag {hormus_days} → Risiko: {hormus_phase_risk}")
+
+    # Phase-2-Update wenn Dauer kritisch
+    if hormus_days >= 28:
+        macro_phase = 2
+        phase_reason.append(f"Hormus-Krise Tag {hormus_days} (>28 Tage = Phase 2)")
+
+    # ── 4c. Bund-Rendite als Immobilien-Indikator (Eriksen 22.03) ──
+    # Wenn >3% → Immobilien/REIT-Sektor unter Druck
+    bund_yield = yahoo("^TNX")  # US 10Y als Proxy (Bund nicht direkt via Yahoo)
+    if bund_yield:
+        print(f"  10Y-Yield: {bund_yield:.2f}%")
+
     # ── 5. 200-MA Marktgesundheit (Eriksen 22.03) ──
     # S&P 500 unter 200-MA = Risk-Off, keine neuen aggressiven Longs
     spy = yahoo("SPY")  # S&P 500 ETF als Proxy
@@ -895,12 +920,15 @@ def mode_macro_update():
             risk_mode = "risk_off"
             print(f"  Risiko-Modus: RISK-OFF (VIX {vix:.1f})")
 
-    # ── 6. "Bad News = Good News"-Regime Erkennung (Eriksen 22.03) ──
-    # Aktiv wenn: Inflation hoch + Öl > $100 + Fed im Dilemma
+    # ── 6. "Bad News = Good News"-Regime + Fed-Pause-Signal (Eriksen 22.03) ──
+    # Aktiv wenn: Inflation hoch + Öl > $95 + VIX erhöht
     bad_news_regime = (wti and wti > 95) and (vix and vix > 22)
+    # Fed-Pause-Regime: VIX >25 + Öl >$95 = Fed hält ganzes Jahr → Growth unter Druck
+    fed_pause_regime = (vix and vix > 25) and (wti and wti > 95)
     if bad_news_regime:
         print(f"  ⚠️ 'Bad News = Good News'-Regime AKTIV (Öl ${wti:.0f} + VIX {vix:.1f})")
-        print(f"     → Growth-Aktien (NVDA/PLTR) erhöhte Vorsicht")
+    if fed_pause_regime:
+        print(f"  ⚠️ Fed-Pause-Regime: Growth-Exposition (NVDA/PLTR) max. 2 Tranchen")
 
     # ── 7. Bankensektor-Check (Eriksen: Markt-Gesundheitsindikator) ──
     bank_signal = "neutral"
@@ -938,6 +966,9 @@ def mode_macro_update():
             "brent_wti_signal": spread_signal,
             "risk_mode": risk_mode,
             "bad_news_regime": bad_news_regime,
+            "fed_pause_regime": fed_pause_regime,
+            "hormus_days": hormus_days,
+            "hormus_phase_risk": hormus_phase_risk,
             # Dirk 7H + Eriksen: Positionsgröße
             "cash_recommendation": cash_recommendation,
             "last_macro_update": timestamp,
@@ -955,6 +986,9 @@ def mode_macro_update():
         ("BRENT_WTI_SPREAD", brent_wti_spread),
         ("SPY", spy), ("DAX", dax),
         ("BAD_NEWS_REGIME", 1 if bad_news_regime else 0),
+        ("FED_PAUSE_REGIME", 1 if fed_pause_regime else 0),
+        ("HORMUS_DAYS", hormus_days),
+        ("BUND_10Y", bund_yield),
     ]:
         if value is not None:
             conn.execute("""
@@ -965,7 +999,9 @@ def mode_macro_update():
     conn.close()
 
     print(f"\n  📊 Makro-Phase: {macro_phase} ({' | '.join(phase_reason) or 'Standard'})")
+    print(f"  ⏱️  Hormus-Krise: Tag {hormus_days} → {hormus_phase_risk}")
     print(f"  💵 Cash-Empfehlung: {cash_recommendation*100:.0f}%")
+    print(f"  📉 Fed-Pause-Regime: {'JA' if fed_pause_regime else 'NEIN'}")
     print(f"  🏦 Tranchenlogik aktiviert für alle PS/DT-Strategien")
     print(f"  strategies.json aktualisiert")
 
