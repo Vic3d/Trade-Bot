@@ -18,7 +18,7 @@
     {
       "id": "PS3",
       "strategy": "PS3",
-      "strategy_name": "NATO/EU-R\u00fcstung",
+      "strategy_name": "NATO/EU-Rüstung",
       "total": 4,
       "open": 0,
       "closed": 4,
@@ -34,7 +34,7 @@
     {
       "id": "PS1",
       "strategy": "PS1",
-      "strategy_name": "Iran/\u00d6l-Geopolitik",
+      "strategy_name": "Iran/Öl-Geopolitik",
       "total": 4,
       "open": 1,
       "closed": 3,
@@ -50,7 +50,7 @@
     {
       "id": "S3",
       "strategy": "S3",
-      "strategy_name": "KI-Infrastruktur-Boom \u2192 Halbleiter",
+      "strategy_name": "KI-Infrastruktur-Boom → Halbleiter",
       "total": 3,
       "open": 3,
       "closed": 0,
@@ -82,7 +82,7 @@
     {
       "id": "S2",
       "strategy": "S2",
-      "strategy_name": "Europ\u00e4ische Aufr\u00fcstung \u2192 R\u00fcstung",
+      "strategy_name": "Europäische Aufrüstung → Rüstung",
       "total": 2,
       "open": 0,
       "closed": 0,
@@ -98,7 +98,7 @@
     {
       "id": "PS5",
       "strategy": "PS5",
-      "strategy_name": "D\u00fcnger/Agrar-Superzyklus",
+      "strategy_name": "Dünger/Agrar-Superzyklus",
       "total": 2,
       "open": 0,
       "closed": 2,
@@ -114,7 +114,7 @@
     {
       "id": "S1",
       "strategy": "S1",
-      "strategy_name": "Iran-Konflikt \u2192 \u00d6l & Silber",
+      "strategy_name": "Iran-Konflikt → Öl & Silber",
       "total": 1,
       "open": 1,
       "closed": 0,
@@ -130,7 +130,7 @@
     {
       "id": "S7",
       "strategy": "S7",
-      "strategy_name": "Biotech-Zyklus \u2192 US-Pharma/Biotech",
+      "strategy_name": "Biotech-Zyklus → US-Pharma/Biotech",
       "total": 1,
       "open": 1,
       "closed": 0,
@@ -146,7 +146,7 @@
     {
       "id": "S5",
       "strategy": "S5",
-      "strategy_name": "Rohstoff-Superzyklus \u2192 Basismetalle",
+      "strategy_name": "Rohstoff-Superzyklus → Basismetalle",
       "total": 1,
       "open": 1,
       "closed": 0,
@@ -260,5 +260,7 @@
       "trade_type": "paper",
       "entry_date": "2026-03-17"
     }
-  ]
+  ],
+  "last_sync": "2026-03-22T09:52:57.835987Z",
+  "recent_day_trades": []
 }
