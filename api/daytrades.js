@@ -4,15 +4,15 @@ const fs = require('fs');
 const path = require('path');
 
 const STRATEGY_META = {
-  DT1: { setup_type: 'Momentum-Breakout',         trigger: 'Break über Widerstand + Volumen > 1.5x', stop_pct: 1.5, target_pct: 3.0, crv: 2.0 },
-  DT2: { setup_type: 'Mean-Reversion Oversold',    trigger: 'RSI < 30 + Tageskerze Hammer',           stop_pct: 1.2, target_pct: 2.5, crv: 2.1 },
-  DT3: { setup_type: 'Gap-Fill',                   trigger: 'Gap-Up/Down > 1% vorbörslich + Retest',  stop_pct: 1.0, target_pct: 2.0, crv: 2.0 },
-  DT4: { setup_type: 'News-Catalyst',              trigger: 'CRITICAL/IMPORTANT News-Alert + Kurs bewegt sich', stop_pct: 2.0, target_pct: 4.0, crv: 2.0 },
-  DT5: { setup_type: 'VWAP-Bounce',               trigger: 'Kurs unter VWAP + Bounce mit Volumen',   stop_pct: 1.2, target_pct: 2.4, crv: 2.0 },
-  DT6: { setup_type: 'Triple RSI Mean Reversion',  trigger: 'RSI(2)<10 + RSI(5)<25 + RSI(14)<40',    stop_pct: 1.5, target_pct: 3.0, crv: 2.0 },
-  DT7: { setup_type: 'Internal Bar Strength (IBS)', trigger: 'IBS < 0.2 (Close nahe Low)',            stop_pct: 1.0, target_pct: 2.5, crv: 2.5 },
-  DT8: { setup_type: 'BB Squeeze Breakout',        trigger: 'Bollinger Bands < 1% Breite + Break',    stop_pct: 1.5, target_pct: 4.5, crv: 3.0 },
-  DT9: { setup_type: 'Sektor-Momentum',            trigger: 'Stärkster Sektor heute + Top-Aktie',     stop_pct: 1.5, target_pct: 3.0, crv: 2.0 },
+  DT1: { setup_type: 'Momentum-Breakout',          trigger: 'Break über Widerstand + Volumen > 1.5x', stop_pct: 1.5, target_pct: 3.0, crv: 2.0,  watch: 'Scanner ermittelt täglich' },
+  DT2: { setup_type: 'Mean-Reversion Oversold',    trigger: 'RSI < 30 + Tageskerze Hammer',           stop_pct: 1.2, target_pct: 2.5, crv: 2.1,  watch: 'Scanner ermittelt täglich' },
+  DT3: { setup_type: 'Gap-Fill',                   trigger: 'Gap-Up/Down > 1% vorbörslich + Retest',  stop_pct: 1.0, target_pct: 2.0, crv: 2.0,  watch: 'Scanner ermittelt täglich' },
+  DT4: { setup_type: 'News-Catalyst',              trigger: 'CRITICAL News-Alert + Kurs bewegt sich', stop_pct: 2.0, target_pct: 4.0, crv: 2.0,  watch: 'EQNR / PLTR / A3D42Y'      },
+  DT5: { setup_type: 'VWAP-Bounce',                trigger: 'Kurs unter VWAP + Bounce mit Volumen',   stop_pct: 1.2, target_pct: 2.4, crv: 2.0,  watch: 'Scanner ermittelt täglich' },
+  DT6: { setup_type: 'Triple RSI Mean Reversion',  trigger: 'RSI(2)<10 + RSI(5)<25 + RSI(14)<40',    stop_pct: 1.5, target_pct: 3.0, crv: 2.0,  watch: 'Scanner ermittelt täglich' },
+  DT7: { setup_type: 'Internal Bar Strength (IBS)', trigger: 'IBS < 0.2 (Close nahe Tagestief)',      stop_pct: 1.0, target_pct: 2.5, crv: 2.5,  watch: 'Scanner ermittelt täglich' },
+  DT8: { setup_type: 'BB Squeeze Breakout',        trigger: 'Bollinger Bands < 1% Breite + Break',    stop_pct: 1.5, target_pct: 4.5, crv: 3.0,  watch: 'Scanner ermittelt täglich' },
+  DT9: { setup_type: 'Sektor-Momentum',            trigger: 'Stärkster Sektor + Top-Aktie',           stop_pct: 1.5, target_pct: 3.0, crv: 2.0,  watch: 'Stärkster Sektor des Tages' },
 };
 
 module.exports = (req, res) => {
@@ -69,7 +69,7 @@ module.exports = (req, res) => {
       .filter(s => s.status === 'active' && s.conviction >= 2)
       .map((s, i) => ({
         id:         `DT-AUTO-${today}-${s.id}`,
-        ticker:     null,
+        ticker:     STRATEGY_META[s.id]?.watch || null,
         strategy:   s.id,
         trade_type: 'day_trade',
         direction:  'LONG',

@@ -1596,7 +1596,8 @@ function renderDTLive(dt,dna){
     openDT.forEach(p=>{
       const dir=p.direction||'LONG';
       const dirColor=dir==='LONG'?'#2ecc71':'#e74c3c';
-      html+='<tr><td><strong>'+p.ticker+'</strong><br><span style="font-size:10px;color:#888">'+(p.setup_type||p.trade_type||'')+'</span></td><td style="color:'+dirColor+'">'+(dir==='LONG'?'🟢':'🔴')+' '+dir+'</td><td>'+(p.entry!=null?p.entry.toFixed(2)+'€':'<span style="color:#888">warte…</span>')+'</td><td style="color:#e74c3c">'+(p.stop_pct!=null?'-'+p.stop_pct+'%':(p.stop||0).toFixed(2)+'€')+'</td><td style="color:#2ecc71">'+(p.target_pct!=null?'+'+p.target_pct+'%':(p.target||0).toFixed(2)+'€')+'</td><td>'+(p.strategy||p.setup_type||'Auto')+'<br><span style="font-size:10px;color:#888">CRV '+(p.crv||'—')+'</span></td></tr>';
+      const tickerDisplay=p.ticker&&p.ticker!=='null'?p.ticker:'<span style="color:#888;font-style:italic">wird ermittelt</span>';
+      html+='<tr><td><strong>'+tickerDisplay+'</strong><br><span style="font-size:10px;color:#888">'+(p.setup_type||p.trade_type||'')+'</span></td><td style="color:'+dirColor+'">'+(dir==='LONG'?'🟢':'🔴')+' '+dir+'</td><td>'+(p.entry!=null?p.entry.toFixed(2)+'€':'<span style="color:#888">warte…</span>')+'</td><td style="color:#e74c3c">'+(p.stop_pct!=null?'-'+p.stop_pct+'%':(p.stop||0).toFixed(2)+'€')+'</td><td style="color:#2ecc71">'+(p.target_pct!=null?'+'+p.target_pct+'%':(p.target||0).toFixed(2)+'€')+'</td><td>'+(p.strategy||p.setup_type||'Auto')+'<br><span style="font-size:10px;color:#888">CRV '+(p.crv||'—')+'</span></td></tr>';
     });
     html+='</table>';
   } else {
