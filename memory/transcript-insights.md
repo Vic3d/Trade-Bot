@@ -133,3 +133,36 @@ Eriksen: Wahrscheinlichstes Szenario aktuell = De-Eskalation binnen 1–4 Wochen
 
 ---
 *Letzte Aktualisierung: 19.03.2026*
+
+## 2026-03-22 — Dirk 7H / Tradermacher: 3 Kardinalsfehler im Trading
+
+**Quelle:** René Berheit (Tradermacher), wöchentliches Video
+**Archiv:** memory/transcripts/dirk7h-kardinalsfehler-2026-03-22.txt
+
+### Fehler 1: Hohe Trefferquote → sinkendes Konto (Asymmetrisches Verhältnis)
+- 60–70% Trefferquote aber Konto schrumpft = Gewinne zu früh mitgenommen, Verluste laufen gelassen
+- Psychologischer Mechanismus: Trader will "recht haben" statt Profit machen
+- **Diagnose-Tool:** Average Win vs. Average Loss tracken. Wenn Avg Loss > Avg Win → Problem
+- **Regel:** Avg Win muss größer sein als Avg Loss. Trefferquote ist sekundär.
+- Relevanz für TradeMind: Conviction-Score allein reicht nicht — Win/Loss-Ratio ist der kritische KPI
+
+### Fehler 2: Strategiehopping
+- In Drawdown-Phasen zur "gerade laufenden" Strategie wechseln = systemischer Fehler
+- Timing-Problem: Man wechselt immer zur falschen Zeit, weil man nach dem Wechsel die nächste Schwächephase erwischt
+- **Lösung:** Marktphasen-Analyse — wann funktioniert Strategie X, wann nicht?
+- Schlechte Phase: Positionsgröße runter + durchhalten, NICHT wechseln
+- Nur aufgeben wenn echter Edge nachweislich weg ist (nicht wegen normaler Drawdown-Phase)
+- **Relevanz für TradeMind:** PS1–PS5 haben unterschiedliche Marktumfeld-Profile. Stop-Loss ist
+  nicht Strategieversagen — erst nach >20 Trades statistisch bewerten.
+
+### Fehler 3: Stop-Loss Regeln brechen
+- Stop einmal verschoben → sofort emotionaler Zustand → restlichen Tag/Woche pausieren
+- Stop-Fischen (Argument gegen Stops) ist irrelevant: 5x gefischt ist besser als 1x Kontoruin
+- **Regel:** Stop-Bruch = sofortiger Handelsstopp für den Tag (Emotionaler Reset)
+- **Relevanz für TradeMind:** Paper Trades: Stop unter Entry IMMER. Kein "mentaler Stop".
+
+### Meta-Lektion
+Jede Strategie hat Gut- und Schlechtphasen. Geduld + Disziplin + Risikomanagement > perfektes System.
+Das perfekte System gibt es nicht — aber einen disziplinierten Umgang mit dem eigenen System.
+
+---

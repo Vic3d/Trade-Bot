@@ -1288,3 +1288,20 @@ Vollständige Kette: Öl hoch → Inputkosten → Margen → Investitionen → E
 - [ ] **Transmissions-Checklist:** Capex-Guidance + Hiring-Freeze als Frühindikator (vor Jobless Claims)
 - [ ] **Konsumenten-Stress-Score:** Sparquote + Kreditkartenschulden als US-Consumer-Risiko-Layer
 
+
+
+### Woche 2026-11 — Dirk 7H: Kardinalsfehler + Win/Loss-Ratio als KPI
+
+**Wichtigste neue Erkenntnis:**
+Average Win / Average Loss = kritischerer KPI als Trefferquote
+→ TradeMind muss Avg Win vs Avg Loss pro Strategie tracken, nicht nur Win Rate
+
+**Strategiehopping-Schutz:**
+- Jede PS-Strategie braucht definiertes Marktumfeld (z.B. PS1 = Öl-Geopolitik aktiv)
+- In Schwächephase: Positionsgröße ×0.5, nicht Strategie wechseln
+- Erst nach 20+ Trades statistisch bewerten ob Edge noch vorhanden
+
+**Stop-Disziplin (bestätigt):**
+- Stop-Bruch = sofortiger Handelsstopp für den Tag (auch Paper Trades)
+- Gilt ab sofort für autonomes Paper Trading
+
