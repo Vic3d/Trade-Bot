@@ -262,6 +262,17 @@
       "note": "Weltgrößter Goldminer, konservativer als Barrick. CRV ~3:1",
       "strategy": "PS6_Rohstoffe",
       "signal": "Wochenkerze Reversal + Gold > MA20w"
+    },
+    {
+      "ticker": "BAYN.DE",
+      "name": "Bayer AG",
+      "yahoo": "BAYN.DE",
+      "entry_zone": "35.00-38.50",
+      "stop": 32.5,
+      "target": 46.0,
+      "thesis": "Re-Entry nach Stop — Glyphosat-Urteil + Pipeline-Katalysator abwarten",
+      "added": "2026-03-22",
+      "note": "Ausgestoppt 22.03 @ 38€. Re-Entry wenn Stabilisierung + Katalysator"
     }
   ],
   "macro": {
