@@ -413,3 +413,7 @@ def push_to_git():
 
 if __name__ == '__main__':
     main()
+    # Dashboard sync: Paper Trades → GitHub
+    import subprocess
+    subprocess.run(['python3', '/data/.openclaw/workspace/scripts/sync_dashboard.py', 'paper'],
+                   capture_output=True, timeout=60)

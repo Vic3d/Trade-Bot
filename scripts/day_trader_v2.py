@@ -676,3 +676,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # Dashboard sync: Day Trades + DNA → GitHub
+    import subprocess
+    subprocess.run(['python3', '/data/.openclaw/workspace/scripts/sync_dashboard.py', 'daytrades'],
+                   capture_output=True, timeout=60)

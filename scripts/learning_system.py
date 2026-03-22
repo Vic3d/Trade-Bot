@@ -798,3 +798,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     MODES[sys.argv[1]]()
+    # Dashboard sync: DNA + Strategies → GitHub (nach Conviction-Updates)
+    import subprocess
+    subprocess.run(['python3', '/data/.openclaw/workspace/scripts/sync_dashboard.py', 'dna'],
+                   capture_output=True, timeout=60)
