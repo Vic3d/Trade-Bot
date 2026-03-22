@@ -1406,3 +1406,95 @@ Pattern-Analyse ist solide, aber:
 - **Relevanz für Portfolio:** Crypto ist nicht in unserer Strategie, daher low relevance. **ABER:** Wenn Bitcoin crasht = Risk-Off-Regime = kann auf Equities durchschlagen (→ NVDA, MSFT unter Druck)
 
 **Action:** Beobachten, nicht direkt traden. Bitcoin als Canary für Risk-Off-Umgebung nutzen.
+
+---
+
+## Woche 12/2026 — Lars Eriksen: Phase 1 vs Phase 2, Energieunabhängigkeit, Hormus-Krise
+
+**Quelle:** Bericht "Rendite-Spezialisten 12/26" — 22.03.2026
+**Datum:** 22.03.2026 | Redaktionsschluss: Samstag morgens
+
+### Makro-Kontext: Das Schock-Zwei-Phasen-Modell
+
+**Phase 1 (JETZT aktiv):** Inputkosten-Schock
+- Hohe Energiepreise (Brent ~105–110 USD)
+- Inflationsdruck steigt (EZB hob 2026-Prognose auf 2,6%)
+- Direkte Produktionskosten ↑ (Unternehmen können weitergeben)
+- **Symptom:** Märkte noch relativ stabil, da Phase 1 "eingepreist wird"
+
+**Phase 2 (NOCH ausstehend):** Realwirtschafts-Schaden
+- Sinkender Konsum (teurere Energie → weniger diskretionär)
+- Schwächere Unternehmensgewinne
+- Lohnstagnation vs. steigende Lebenshaltungskosten
+- **Marktimpact:** DANN kommt der echte Drawdown — Märkte preisen Phase 2 noch nicht ein
+
+**Eriksens These:**
+Der Markt wird überrascht sein, wenn Phase 2 eintritt. Koreanische Handelsdaten (beste Frühindikatoren für globale Warenströme) zeigen NOCH keine Warnung, aber das kann sich schnell ändern.
+
+### Energieunabhängigkeit = Dekaden-Trend
+
+**Kernaussage:** 
+Energieunabhängigkeit ist nicht "eines von vielen Themen", sondern **der wahrscheinlich größte Trend der kommenden Dekade** für Europa.
+- Nicht aus Ideologie, sondern aus **Notwendigkeit**
+- Trump-Debatte um "Grönland, NATO-Druck" zeigt: USA setzen Energieexporte als Druckmittel ein
+- Alte Gewissheiten (transatlantische Partnerschaft, US-Schutz/US-Energie) sind beschädigt
+- **Konklusion:** Kein EU-Land kann ohne Energiesouveränität ein echter Akteur bleiben
+
+**Sektor-Implikationen für TradeMind:**
+- Erneuerbare Energien (Solar, Wind) werden **institutionell gepusht** (nicht mehr nur ESG-Marketing)
+- Energieversorger mit eigenen Ressourcen (Unternehmen mit stabilen Gas/Öl-Portfolios) = defensiv
+- Green-Tech Lager ist nicht "nice to have", sondern **strategische Notwendigkeit**
+
+### Charts + Indikatoren
+
+#### Brent vs. WTI Spread
+- **Aktuell:** Brent steigt DEUTLICH schneller als WTI
+- **Interpretation:** Märkte preisen Möglichkeit eines US-Energieexport-Stopps ein
+- **Signal:** Wenn Spread > 8 USD = Risk-Off für Equities
+
+#### DAX-Status
+- Unter 200-Tage-Linie (seit ~3 Wochen)
+- Abstand vom ATH (25.507): –12%+ (bei ~22.000 Support)
+- **EZB-Dilemma:** Inflation ↑ (2,6% Prognose), Growth ↓ (0,9% erwartet)
+- Kann nicht aggressiv senken (würde Inflation verschärfen) — stagflationär trapped
+
+#### S&P 500 Status
+- Auch unter 200er-Linie (erste Mal seit Mai 2025)
+- Realwirtschaft "hält — vorerst"
+- **FedEx** (Frühindikat für Warenströme) wird beobachtet
+
+### Eriksens Depot (persönlicher Kontext)
+- **Rendite seit Depot-Start (Okt 2024):** 56,6% (abgeschlossene Positionen)
+- **Cashquote:** 65,7% — sehr defensiv positioniert
+- **Strategie:** "Ich warte auf Kaufsignale" — nicht "Buy the Dip"
+- **These:** Der Hang zum Zyklischen liegt in der Natur des Menschen, hat aber seinen Preis
+
+### Alberts Integration in TradeMind
+
+**1. Phase-Detection:** Implement Phase 1/2-Switching
+```python
+# In macro_update():
+if brent_wti_spread > 8 and inflation_forecast > 2.5 and gdp_growth < 1.0:
+    return PHASE_1  # Inputkosten-Schock aktiv
+elif consumption_index_korea < MA_20 and corporate_profit_growth < 0:
+    return PHASE_2  # Realwirtschaftsschaden eingesetzt
+```
+
+**2. Energy-Independence Sektor-Bias**
+- [ ] Renewables (EQNR.OL, Siemens Energy wahrscheinlich) → Long-Bias in Phase 1+2
+- [ ] Energy-Versorger mit stabilen Ressourcen → defensiv halten
+- [ ] Brent-WTI Spread > 8 als Hedging-Trigger verwenden
+
+**3. Defensive Positionierung (Eriksen-Vorbild)**
+- High Cash Bucket in Phase 1 end + Phase 2 start (nicht aktiv short, aber defensiv)
+- Nicht "Buy the Dip"-mental, sondern "Warte auf Kaufsignale"
+- Timing > Recht haben
+
+**4. Neue KPIs für Monitoring**
+- Brent-WTI Spread (>8 = Risk, <3 = all-clear)
+- Korea Trade Index (YoY Veränderung)
+- EZB Inflationsprognose vs. Growth-Prognose
+- Konsumindices (US, Eurozone)
+
+**Alberts Gesamteinschätzung:**
+Eriksens Report ist ein Master-Klasse in "Makro-Framing". Phase 1/2 ist direkt auf unsere PS-Strategien übertragbar. Die Energieunabhängigkeits-These gibt TradeMind einen structurellen Tailwind für Renewables/Green-Tech — sowohl für Mentor Mode (Nutzer lernt Sektor-Dynamik) als auch für Autonomous Mode (long-bias in definierten Sektoren). **Fazit:** Nicht actionbar als "sofort kaufen", aber als **Umgebungs-Update** kritisch.

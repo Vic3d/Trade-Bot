@@ -250,3 +250,48 @@ Alle Hauptthesen intakt:
 2. **Core halten:** PLTR, EQNR, Öl, Biotech — nicht anfassen
 3. **Neue Entries nur bei:** CRV ≥2.0, Setup klar (EMA, Breakout), keine Geo-Spekulation
 4. **Hypothesen weiter testen:** H001 (Earnings), H003 (EMA-Quality) — Datenerfassung verbessern
+## Woche bis 2026-03-22
+
+### Wöchentliche Review
+**Win-Rate:** 0% (0W/13L) — klare Lernchance statt Schadenfreude.
+**Paper P&L:** -€30,43 (Fehler: zu frühe Exits?, falsche Szenarien?).
+**Best Performer:** EQNR +30% — einzige Position im Plus. Regel-Einhaltung: entry war korrekt, Stop sitzt.
+
+**Was funktionierte:** 
+- EQNR-Position hält. Setups ohne Panic-Verkauf hätten besser geendet.
+
+**Was nicht:**
+- Entry-Logik zu agressiv (3–4 schnelle Losses hintereinander = Signal ignoriert).
+- Stop-Placements teilweise zu eng (Volatilität unterschätzt).
+- Exitiert bei kleinsten -2% Drawdowns — Strategie-Treu = 0.
+
+**Lektionen:**
+1. Paper-Phase heißt: Regeln befolgen, nicht Überlebensinstinkt.
+2. Eine bullish-Position muss min. 5–7% Spielraum haben, sonst ist sie rausgeflogen, bevor sie lädt.
+3. Szenarien-Planung VOR Entry (A=bullish, B=bearish), nicht während Panic.
+
+**Regel-Verstöße:** Keiner strukturel, aber disziplinarische Umsetzung 40%.
+
+### Geopolitik-Check
+- **Ukraine:** Routine-Aktivität, kein neuer Threshold.
+- **Iran (⚠️):** Heavy bombardment in Tehran, air defenses activated — Risk-Off Signal stärker.
+
+### Wochenstrategie (KW 12/2026)
+
+**VIX-Regime:** Risk-Off anhaltend (Iran-Spannungen, Unsicherheit USA-Policy).
+
+**Szenario A (Bullish):** Fed-Daten schwächer → Risk-On, Techs könnten pullen.
+- Entry-Zonen: PLTR 128€, NVDA auf Dips
+- Stop: -4% fest, nicht -2%
+- Ziel: +6–8%
+
+**Szenario B (Bearish):** Iran escalates oder USD-Stärke weiterhin → Deflation-Play.
+- Position: EQNR halten (+30%, Risiko gering), aber keine Neukäufe
+- Stop auf BAYN auf 36€ nachziehen (aktuell 37,65€)
+
+**Watchlist:** 
+- BAYN 36€ (Biotech-Recovery)?
+- RHHBY-Cluster falls Healthcare-Tailwind
+- Kein Momentum-Chasing diese Woche
+
+**Standing Rule:** Mindestens 24h Wartezeit vor Exit nach Entry — Volatilität ist Feature, nicht Bug.

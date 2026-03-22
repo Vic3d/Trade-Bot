@@ -751,3 +751,8 @@ Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3 | Alerts: 0
 ## [2026-03-22 17:00 UTC]
 Neu: 0 | 🔴 0 | 🟡 0 | ⚪ 0 | Alerts: 0 (KEIN_SIGNAL)
 ---
+
+## [2026-03-22 19:01 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1 | Alerts: 0 | Status: INFO_ONLY
+- iShares Biotech ETF (A2DWAW) — FDA user fees (Endpoints News)
+---

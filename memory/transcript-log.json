@@ -26,15 +26,17 @@
     "summary": "Scaling-Methodik, Hedging als Kontr\u00e4r-Signal, Risk-Management (Private Credit vermeiden)"
   },
   "dirk7h-kardinalsfehler-2026-03-22.txt": {
-    "timestamp": "2026-03-22T16:00:00Z",
-    "status": "processed_ok",
+    "timestamp": "2026-03-22T20:00:00Z",
+    "status": "analysiert",
     "had_insights": true,
-    "notes": "3 Kardinalsfehler + Bitcoin-Szenario \u2192 projekt-tradingtool.md"
+    "insights": "3 Kardinalsfehler (Trefferquote vs Gewinn, Strategiehopping, Stop-Brüche) + Bitcoin Crash-Szenario 40-50k USD",
+    "stored": "projekt-tradingtool.md (Woche 12/2026)"
   },
   "eriksen-rendite-spezialisten-2026-03-22.pdf": {
-    "timestamp": "2026-03-22T16:00:00Z",
-    "status": "failed_read",
-    "had_insights": false,
-    "error": "PDF corrupted or invalid format"
+    "timestamp": "2026-03-22T20:00:00Z",
+    "status": "analysiert",
+    "had_insights": true,
+    "insights": "Phase 1/2 Makro-Modell, Energieunabhängigkeit Dekaden-Trend, Brent-WTI Spread als Signal",
+    "stored": "projekt-tradingtool.md (Woche 12/2026) + extrahiert zu .txt"
   }
 }
