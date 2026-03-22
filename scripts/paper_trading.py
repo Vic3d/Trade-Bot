@@ -340,19 +340,34 @@ def open_paper_trade(
     active = _parse_active_trades(content)
     closed = _parse_closed_trades(content)
 
+    # Position-Sizing aus strategies.json (Issue #2)
+    try:
+        from pathlib import Path
+        import json as _json
+        strat_path = Path(__file__).parent.parent / 'data/strategies.json'
+        strats = _json.loads(strat_path.read_text()) if strat_path.exists() else {}
+        pos_mgmt = strats.get(strategy, {}).get('position_management', {})
+        size_factor = pos_mgmt.get('position_size_factor', 1.0)
+        in_drawdown = pos_mgmt.get('in_drawdown', False)
+        if in_drawdown:
+            print(f"  ⚠️ {strategy} Drawdown — Position ×{size_factor}")
+    except Exception:
+        size_factor = 1.0
+
     new_trade = {
-        "id":         trade_id,
-        "date":       _today(),
-        "ticker":     ticker,
-        "direction":  direction.upper(),
-        "entry":      entry,
-        "stop":       stop,
-        "target1":    target1,
-        "target2":    target2,
-        "strategy":   strategy,
-        "status":     "⏳ Offen",
-        "conviction": f"{conviction}/100",
-        "note":       note,
+        "id":          trade_id,
+        "date":        _today(),
+        "ticker":      ticker,
+        "direction":   direction.upper(),
+        "entry":       entry,
+        "stop":        stop,
+        "target1":     target1,
+        "target2":     target2,
+        "strategy":    strategy,
+        "status":      "⏳ Offen",
+        "conviction":  f"{conviction}/100",
+        "size_factor": size_factor,
+        "note":        note,
     }
     active.append(new_trade)
 

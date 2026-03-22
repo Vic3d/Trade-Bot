@@ -1136,7 +1136,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 3,
+      "backtest_wr": 57.7,
+      "backtest_wl": 1.46,
+      "backtest_exp": 1.24
     },
     "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
     "sector": "mixed",
@@ -1183,7 +1187,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 3,
+      "backtest_wr": 55.9,
+      "backtest_wl": 1.42,
+      "backtest_exp": 0.99
     },
     "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
     "sector": "mixed",
@@ -1230,7 +1238,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 3,
+      "backtest_wr": 54.6,
+      "backtest_wl": 1.2,
+      "backtest_exp": 0.81
     },
     "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
     "sector": "mixed",
@@ -1371,7 +1383,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 71.8,
+      "backtest_wl": 0.65,
+      "backtest_exp": 0.78
     },
     "thesis": "Kurzfristig überverkaufte Aktien im Aufwärtstrend bouncen zuverlässig",
     "sector": "mixed",
@@ -1418,7 +1434,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 54.5,
+      "backtest_wl": 1.13,
+      "backtest_exp": 0.54
     },
     "thesis": "Kerzen nahe Tageshoch/-tief kehren häufig zum Mittelwert zurück",
     "sector": "mixed",
@@ -1465,7 +1485,11 @@
       "conviction_current": 3,
       "auto_adjusted": false,
       "last_updated": "never",
-      "feedback_history": []
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 57.6,
+      "backtest_wl": 0.85,
+      "backtest_exp": 0.17
     },
     "thesis": "Niedrige Volatilität führt zu explosiven Ausbrüchen — Squeeze + Volume = Signal",
     "sector": "mixed",

@@ -555,6 +555,22 @@ def main():
 
     hour = now_cet.hour
 
+    # ── Marktregime laden (Issue #4) ──
+    regime_path = WORKSPACE / 'memory/market-regime.json'
+    current_regime = 'RANGE'
+    active_dt_strategies = ['DT1','DT2','DT3','DT4','DT5','DT6','DT7','DT8','DT9']  # Default: alle
+    if regime_path.exists():
+        try:
+            regime_data = json.loads(regime_path.read_text())
+            current_regime = regime_data.get('regime', 'RANGE')
+            active_dt_strategies = regime_data.get('active_dt', active_dt_strategies)
+            print(f"  🧭 Markt-Regime: {current_regime} | Aktive DT: {active_dt_strategies or 'CRASH-Modus (keine)'}")
+            if current_regime == 'CRASH':
+                print("  🛑 CRASH-Modus — Day Trader pausiert")
+                return
+        except Exception:
+            pass
+
     # ── Dynamisches Universum laden (wenn vorhanden) ──
     active_universe = DT_UNIVERSE  # Fallback
     if DYNAMIC_UNIVERSE_PATH.exists():
@@ -623,16 +639,33 @@ def main():
 
         if not signals: continue
 
+        # Regime-Filter: nur Strategien die zum Marktmodus passen (Issue #4)
+        signals = [s for s in signals if s.get('strategy','').split('-')[0] in active_dt_strategies]
+        if not signals: continue
+
         # Bestes Signal
         best = max(signals, key=lambda s: s['confidence'])
         p_eur = to_eur(data['price'], data['currency'])
         if not p_eur: continue
 
-        stop_eur = to_eur(best['stop'], data['currency']) or best['stop']
+        stop_eur   = to_eur(best['stop'],   data['currency']) or best['stop']
         target_eur = to_eur(best['target'], data['currency']) or best['target']
 
+        # Position-Sizing aus strategies.json (Issue #2)
+        try:
+            strat_path = WORKSPACE / 'data/strategies.json'
+            strats     = json.loads(strat_path.read_text()) if strat_path.exists() else {}
+            strat_id   = best.get('strategy','').split('-')[0]
+            pos_mgmt   = strats.get(strat_id, {}).get('position_management', {})
+            size_factor = pos_mgmt.get('position_size_factor', 1.0)
+            if pos_mgmt.get('in_drawdown'):
+                print(f"  ⚠️ {strat_id} Drawdown — Position ×{size_factor}")
+        except Exception:
+            size_factor = 1.0
+
         open_trade(ticker, ti['name'], best['strategy'], best['direction'],
-                   p_eur, stop_eur, target_eur, best['reason'])
+                   p_eur, stop_eur, target_eur,
+                   f"{best['reason']} [regime={current_regime}, size={size_factor}x]")
 
         state.setdefault('signals_today', []).append(ticker)
         open_count += 1

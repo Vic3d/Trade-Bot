@@ -728,3 +728,8 @@ Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2 | Alerts: 0
 Neu: 8 | 🔴 0 | 🟡 1 | ⚪ 7 | Alerts: 1
 **Versendet:** PLTR Anduril $20B (RELEVANT)
 ---
+
+## [2026-03-22 11:00 UTC]
+Neu: 2 Kandidaten | 🔴 0 | 🟡 1 | ⚪ 1 | Alerts: 1
+
+**EQNR (Position):** Iran Hormuz-Spannungen → Ölpreis-Bull-Case

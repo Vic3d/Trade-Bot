@@ -566,7 +566,7 @@ def mode_feedback():
 
 
 def _append_learning_log(changes, timestamp):
-    """Conviction-Änderungen in learning-log.md festhalten."""
+    """Conviction-Änderungen in learning-log.md + Discord-Alert (Issue #1)."""
     LEARNING_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     if not LEARNING_LOG_PATH.exists():
@@ -577,7 +577,8 @@ def _append_learning_log(changes, timestamp):
         arrow = f"{c['old']} → {c['new']}"
         lines.append(
             f"- **{c['strat_id']}**: Conviction {arrow} "
-            f"(WR={c['win_rate']}%, Expectancy={c['expectancy']:.2f}, n={c['total']})\n"
+            f"(WR={c['win_rate']}%, WL={c.get('wl_ratio','?')}, "
+            f"Expectancy={c['expectancy']:.2f}, n={c['total']})\n"
         )
     lines.append("\n")
 
@@ -585,6 +586,37 @@ def _append_learning_log(changes, timestamp):
         f.writelines(lines)
 
     print(f"  📝 learning-log.md aktualisiert")
+
+    # ── Discord-Alert bei echten Conviction-Änderungen (Issue #1) ──
+    real_changes = [c for c in changes if c['old'] != c['new']]
+    if not real_changes:
+        return
+
+    try:
+        import subprocess
+        now = datetime.now().strftime('%d.%m %H:%M')
+        alert_lines = [f"🧠 **Learning Update [{now}]**\n"]
+        for c in real_changes:
+            icon = "📈" if c['new'] > c['old'] else "📉"
+            drawdown = " ⚠️ [DRAWDOWN: pos×0.5]" if c.get('direction') == '⚠️' else ""
+            alert_lines.append(
+                f"{icon} **{c['strat_id']}**: Conviction {c['old']} → {c['new']}{drawdown}\n"
+                f"   WR: {c['win_rate']}% | WL-Ratio: {c.get('wl_ratio','?')} | "
+                f"Expectancy: {c['expectancy']:.2f} | Trades: {c['total']}"
+            )
+        msg = "\n".join(alert_lines)
+
+        # Speichere Alert für Cron-Delivery (sicherer als direkter subprocess)
+        alert_path = Path(__file__).parent.parent / 'memory/alert-queue.json'
+        existing = []
+        if alert_path.exists():
+            try: existing = json.loads(alert_path.read_text())
+            except: pass
+        existing.append({"message": msg, "channel": "1475255728313864413"})
+        alert_path.write_text(json.dumps(existing, indent=2))
+        print(f"  🔔 Conviction-Alert in Queue: {len(real_changes)} Änderungen")
+    except Exception as e:
+        print(f"  ⚠️ Alert-Queue Fehler: {e}")
 
 
 # ─────────────────────────── MODUS: report ───────────────────
