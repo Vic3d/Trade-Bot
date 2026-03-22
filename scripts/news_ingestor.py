@@ -24,6 +24,13 @@ QUERIES = [
     ('DAX VIX Volatilität',        None, None),
     ('NATO Rüstung Europa',        None, 2),
     ('Fed Zinsen Markt',           None, None),
+    # Asien / Japan — Frühindikatoren
+    ('Nikkei Tokyo Börse',         None, None),
+    ('INPEX Japan Öl',             'INPEX.T', 1),
+    ('Japan Wirtschaft Yen',       None, None),
+    ('China Shanghai Markt',       None, None),
+    ('Toyota Aktie',               '7203.T', None),
+    ('Asien Börsen Risk-On Risk-Off', None, None),
 ]
 
 # Bloomberg RSS Feeds — kein API-Key, ~30 Min Lag
@@ -33,6 +40,7 @@ BLOOMBERG_FEEDS = [
     ('https://feeds.bloomberg.com/energy/news.rss',    'EQNR,DR0.DE', 1,   'Bloomberg Energy'),
     ('https://feeds.bloomberg.com/technology/news.rss','NVDA,PLTR',   3,   'Bloomberg Tech'),
     ('https://feeds.bloomberg.com/politics/news.rss',  None,          None, 'Bloomberg Politics'),
+    ('https://feeds.bloomberg.com/asia/news.rss',      None,          None, 'Bloomberg Asia'),
 ]
 
 def bloomberg_rss(url, source_name, n=6):
