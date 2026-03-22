@@ -741,3 +741,13 @@ Neue Kandidaten: 2 | 🔴 CRITICAL: 0 | 🟡 IMPORTANT: 1 | ⚪ INFO: 1 | Alerts
 - **PLTR (Palantir)** — RAUSCHEN: Pentagon-Vergleich, keine neuen Fakten zur Defense-These
 
 ---
+
+## [2026-03-22 15:00 UTC]
+Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3 | Alerts: 0
+- EQNR (Position): Oil Markets Refocus on OPEC — Iran-Israel Conflict *(INFO)*
+- AG (Watchlist): Gold/Silver prices fell 12–20% — safe-haven analysis *(INFO)*
+- ASML.AS (Watchlist): China chip leaders call for national ASML effort *(INFO)*
+---
+## [2026-03-22 17:00 UTC]
+Neu: 0 | 🔴 0 | 🟡 0 | ⚪ 0 | Alerts: 0 (KEIN_SIGNAL)
+---

@@ -1319,3 +1319,90 @@ Average Win / Average Loss = kritischerer KPI als Trefferquote
 **Nächste Implementierung:**
 - FedEx + 200-MA in mode_macro_update() ergänzen
 - Brent-WTI Spread als aktives Signal in position_management nutzen (nicht nur tracken)
+
+---
+
+## Woche 12/2026 — Dirk 7H (René Berheit, Tradermacher): Die 3 Kardinalsfehler + Bitcoin-Szenario
+
+**Quelle:** Transkript "Kardinalsfehler im Trading" — 22.03.2026
+
+### 1. Kardinalsfehler: Hohe Trefferquote, wachsendes Konto fällt
+
+**Problem:** Win Rate 60–70%, aber Kontostand sinkt oder stagniert
+- **Root Cause:** Gewinne werden zu schnell realisiert, Verluste laufen/wachsen
+- **Psychologie:** Trader sucht Bestätigung (Recht-haben) statt Profit
+- **Symptom:** Average Loss >> Average Win
+
+**Alberts Take:**
+Genau das Gegenteil unseres TradeMind Designs. Wir forcen per Algorithmus: Gewinne laufen lassen, Verluste schnell begrenzen (inverse des natürlichen Trader-Verhaltens). 
+- **Action für TradeMind:** Avg Win/Avg Loss Ratio muss pro Strategie getrackt + prominent angezeigt werden (nicht Win Rate!)
+- **Alert:** Wenn Average Loss > Average Win → Strategie-Review erzwingen
+
+### 2. Kardinalsfehler: Strategiehopping
+
+**Problem:** Strategien ständig wechseln, wenn sie schlechte Phase haben
+- **Auslöser:** Andere Strategien funktionieren gerade → FOMO → sofort wechseln
+- **Resultat:** Garantierter Weg zur Kontopleite. Immer zur falschen Zeit wechseln.
+- **Psychologie:** Suche nach dem "perfekten System" statt Geduld mit eigenem Edge
+
+**Dirk-Lösung:**
+Jede Strategie hat gute + schlechte Marktphasen → **nicht wechseln, sondern:**
+1. Analyse: Wann läuft die Strategie gut, wann schlecht? (Marktumfeld-Abhängig)
+2. In schlechten Phasen: Position-Sizing ×0.5, nicht aufgeben
+3. Erst nach 20+ Trades bewerten ob Edge noch da ist
+
+**Alberts Take — KRITISCH für TradeMind:**
+Dies ist **direkt unser PS1/PS2/PS3-Strategie-System.** Wir müssen:
+- [ ] **Strategie-Modes definieren:** Wann läuft PS1 (Öl/Geopolitik-Motive)? Wann PS2? Wann PS3?
+- [ ] **Drawdown-Management:** In schwachen Phasen nicht Exit-Signal, sondern Reduce-Sizing
+- [ ] **UI-Flag:** "Strategie in Schwächephase → Position ×0.5, nicht wechsel-fokus"
+- **Learning:** Dirks Punkt = wir brauchen ein Docstring-System für jede Strategie, das erklärt "Läuft gut wenn... Schwach wenn..."
+
+### 3. Kardinalsfehler: Stop-Loss-Verletzungen
+
+**Problem:** Stop-Regeln werden ständig gebrochen (verschoben, missachtet)
+- **Fokus:** Banale Regel, aber Dirk sagt = garantierter Weg zum Ruin
+- **Persönliches Beispiel:** Dirk hat mit Stoppverletzungen sein erstes Konto zur Wand gefahren
+- **Psychologie:** "Stoppfischen"-Mythos (Stops helfen nicht) ist hochgradig falsch
+
+**Dirks Regel:**
+- Stops sind gut, auch wenn sie mal "gefischt" werden
+- Stop-Bruch → **sofortiger Handels-Freeze für den Rest des Tages/Woche**
+- Reset Disziplin → erst wieder traden wenn emotional in der Spur
+
+**Alberts Take — HARD RULE für TradeMind:**
+- [ ] **Papier-Trades:** Stop-Bruch-Mechnismus auch in Papier implementieren (nicht nur Live)
+- [ ] **Alert:** Wenn Stop gebrochen wird → Trader benachrichtigung + Pause-Empfehlung
+- Stops sind nicht verhandelt. Punkt.
+
+---
+
+### BONUS: Bitcoin Crash-Szenario
+
+**These:** Bitcoin wird 40.000–50.000 USD ansteuern (–30–40% vom Hoch bei ~76.250 USD)
+
+**Argumente:**
+1. **Technisches Pattern:** 2021 vs. heute = nahezu identische Konstellation
+   - 2021: Hoch → Bewegung → Flagge → Bewegung → Flagge → Crash (–75%)
+   - Heute: Exakt gleiche Formation, gerade am MA (Moving Average)
+
+2. **Makroökonomi:** 2021 + 2022 = ähnliche Umgebung heute
+   - Kriegerische Auseinandersetzung damals (Russland 2022) ↔ heute (Nahost/Ukraine eskaliert)
+   - Inflationärer Schock + Geopolitik = ähnliche Trigger
+
+3. **Technischer Ankerpunkt:** 77.000 USD MA
+   - Wenn Bitcoin nachhaltig über 77.000 USD bleibt → bärisches Szenario wird unwahrscheinlich
+   - Ideal: Hoch bei 76.250 USD ist final, nächster Push nach unten
+
+**Wahrscheinlichere Drawdown-Ranges:**
+- **Best Case:** –30% (50.000 USD)
+- **Base Case:** –30–40% (45.000 USD)
+- **Worst Case:** –40%+ (wie 2021: –75%)
+
+**Alberts Bewertung:**
+Pattern-Analyse ist solide, aber:
+- Makro-Parallele 2021 ↔ 2026 ist stark vereinfacht (Fed war damals tighter, heute hybrider Mix)
+- Größeres Fragezeichen: **Timing**. Wann kippt das Muster wirklich? Diese Woche? Nächste Monat?
+- **Relevanz für Portfolio:** Crypto ist nicht in unserer Strategie, daher low relevance. **ABER:** Wenn Bitcoin crasht = Risk-Off-Regime = kann auf Equities durchschlagen (→ NVDA, MSFT unter Druck)
+
+**Action:** Beobachten, nicht direkt traden. Bitcoin als Canary für Risk-Off-Umgebung nutzen.

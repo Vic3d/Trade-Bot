@@ -24,5 +24,17 @@
     "processed_at": "2026-03-20T20:01:14.826736+00:00",
     "had_insights": true,
     "summary": "Scaling-Methodik, Hedging als Kontr\u00e4r-Signal, Risk-Management (Private Credit vermeiden)"
+  },
+  "dirk7h-kardinalsfehler-2026-03-22.txt": {
+    "timestamp": "2026-03-22T16:00:00Z",
+    "status": "processed_ok",
+    "had_insights": true,
+    "notes": "3 Kardinalsfehler + Bitcoin-Szenario \u2192 projekt-tradingtool.md"
+  },
+  "eriksen-rendite-spezialisten-2026-03-22.pdf": {
+    "timestamp": "2026-03-22T16:00:00Z",
+    "status": "failed_read",
+    "had_insights": false,
+    "error": "PDF corrupted or invalid format"
   }
 }
