@@ -463,8 +463,11 @@ def mode_feedback():
         """, (strat_id,)).fetchall()
 
         total = len(closed)
-        if total < 3:
-            print(f"  ⏭  {strat_id}: Nur {total} Trades — zu wenig für Anpassung (min. 3)")
+        # Dirk 7H Lektion: Erst ab 20 Trades statistisch aussagekräftig.
+        # Unter 20: Positionsgröße-Empfehlung statt Conviction-Änderung.
+        MIN_TRADES_FOR_CONVICTION = 20
+        if total < MIN_TRADES_FOR_CONVICTION:
+            print(f"  ⏭  {strat_id}: Nur {total} Trades — zu wenig für Conviction-Anpassung (min. {MIN_TRADES_FOR_CONVICTION})")
             continue
 
         wins = [t for t in closed if t["status"] == "WIN"]
@@ -473,6 +476,9 @@ def mode_feedback():
         win_rate = len(wins) / total * 100
         avg_win = (sum(t["pnl_pct"] or 0 for t in wins) / len(wins)) if wins else 0
         avg_loss = (sum(t["pnl_pct"] or 0 for t in losses) / len(losses)) if losses else 0
+        # Dirk 7H KPI #1: Win/Loss-Ratio — wichtiger als Win Rate allein
+        # Ein Konto kann bei 70% Win Rate schrumpfen wenn Avg Loss >> Avg Win
+        wl_ratio = abs(avg_win / avg_loss) if avg_loss != 0 else 0
         expectancy = (win_rate/100 * avg_win) - ((1 - win_rate/100) * abs(avg_loss))
 
         # Idempotenz: nur anpassen wenn neue Trades seit letztem Feedback
@@ -487,6 +493,12 @@ def mode_feedback():
         if "performance" not in strategies[strat_id]:
             strategies[strat_id]["performance"] = {}
 
+        # Dirk 7H Lektion: Letzte 10 Trades für Drawdown-Erkennung
+        recent = closed[-10:] if len(closed) >= 10 else closed
+        recent_wins = [t for t in recent if t["status"] == "WIN"]
+        recent_wr = len(recent_wins) / len(recent) * 100 if recent else 0
+        in_drawdown = recent_wr < 35  # Letzte 10 Trades < 35% Win Rate = Schwächephase
+
         strategies[strat_id]["performance"].update({
             "total_trades": total,
             "wins": len(wins),
@@ -494,20 +506,32 @@ def mode_feedback():
             "win_rate": round(win_rate, 1),
             "avg_win_pct": round(avg_win, 2),
             "avg_loss_pct": round(avg_loss, 2),
+            # Dirk 7H KPI #1: Win/Loss-Ratio als primärer KPI
+            "wl_ratio": round(wl_ratio, 2),
             "expectancy": round(expectancy, 2),
+            "recent_win_rate": round(recent_wr, 1),
+            "in_drawdown": in_drawdown,
+            # Dirk 7H: Positionsgröße-Empfehlung in Schwächephase
+            "position_size_factor": 0.5 if in_drawdown else 1.0,
             "last_evaluated": timestamp,
         })
 
-        # Conviction anpassen
+        # Conviction anpassen — NUR auf Basis robuster Statistik (20+ Trades)
+        # Dirk 7H: Win/Loss-Ratio ist der primäre KPI, nicht Win Rate allein
         current_conviction = get_conviction_current(strat_id, strategies)
         new_conviction = current_conviction
 
-        if win_rate > 60 and expectancy > 0:
+        # Positiv: gutes WL-Ratio UND positive Expectancy (Edge ist real)
+        if wl_ratio >= 1.5 and expectancy > 0 and win_rate > 45:
             new_conviction = min(5, current_conviction + 1)
             direction = "↑"
-        elif win_rate < 40 or expectancy < 0:
+        # Kritisch: Expectancy negativ ODER WL-Ratio < 0.8 (Verluste >> Gewinne)
+        elif expectancy < -1.0 or wl_ratio < 0.8:
             new_conviction = max(1, current_conviction - 1)
             direction = "↓"
+        # Drawdown: Nicht Conviction senken, sondern Positionsgröße reduzieren (Dirk 7H)
+        elif in_drawdown:
+            direction = "⚠️"  # Drawdown — keine Conviction-Änderung, aber Warnung
         else:
             direction = "→"
 
@@ -527,9 +551,10 @@ def mode_feedback():
         }
         changes.append(change_info)
 
-        emoji = "🟢" if direction == "↑" else ("🔴" if direction == "↓" else "⚪")
-        print(f"  {emoji} {strat_id}: WR={win_rate:.0f}% Exp={expectancy:.2f} "
-              f"Conviction {current_conviction}{direction}{new_conviction}")
+        emoji = "🟢" if direction == "↑" else ("🔴" if direction == "↓" else ("⚠️" if direction == "⚠️" else "⚪"))
+        drawdown_hint = " [DRAWDOWN: pos_size×0.5]" if in_drawdown else ""
+        print(f"  {emoji} {strat_id}: WR={win_rate:.0f}% WL={wl_ratio:.2f} Exp={expectancy:.2f} "
+              f"Conviction {current_conviction}{direction}{new_conviction}{drawdown_hint}")
 
     conn.close()
     save_strategies(strategies)
