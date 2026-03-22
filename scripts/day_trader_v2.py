@@ -7,7 +7,7 @@ Paper Money = kein echtes Risiko. Lieber 10 Trades mit 40% Win-Rate
 als 0 Trades mit theoretisch perfektem Setup.
 
 Kapital: 25.000€ | Position: 5.000€ | Max 5 gleichzeitig | 1% Risk
-Läuft alle 5 Min via Cron (Mo-Fr 09:00-22:00 CET)
+Läuft alle 5 Min via Cron (Mo-Fr 01:00-22:00 CET, inkl. Asien)
 """
 
 import sqlite3, json, math, urllib.request, urllib.parse
@@ -75,15 +75,33 @@ DT_UNIVERSE = [
     # US Rohstoffe
     {'ticker': 'FCX',    'name': 'Freeport Cu',    'market': 'US', 'open_h': 15, 'close_h': 22},
     {'ticker': 'NEM',    'name': 'Newmont',        'market': 'US', 'open_h': 15, 'close_h': 22},
+    # ── Japan TSE (01:00-07:30 CET) ──
+    {'ticker': '1605.T', 'name': 'INPEX',          'market': 'JP', 'open_h': 1,  'close_h': 7},
+    {'ticker': '7203.T', 'name': 'Toyota',         'market': 'JP', 'open_h': 1,  'close_h': 7},
+    {'ticker': '9984.T', 'name': 'SoftBank',       'market': 'JP', 'open_h': 1,  'close_h': 7},
+    {'ticker': '6758.T', 'name': 'Sony',           'market': 'JP', 'open_h': 1,  'close_h': 7},
+    {'ticker': '8306.T', 'name': 'Mitsubishi UFJ', 'market': 'JP', 'open_h': 1,  'close_h': 7},
+    {'ticker': '7974.T', 'name': 'Nintendo',       'market': 'JP', 'open_h': 1,  'close_h': 7},
+    # ── Hong Kong HKEX (02:30-09:00 CET) ──
+    {'ticker': '9988.HK','name': 'Alibaba',        'market': 'HK', 'open_h': 2,  'close_h': 9},
+    {'ticker': '0883.HK','name': 'CNOOC',          'market': 'HK', 'open_h': 2,  'close_h': 9},
+    {'ticker': '1211.HK','name': 'BYD',            'market': 'HK', 'open_h': 2,  'close_h': 9},
+    {'ticker': '0700.HK','name': 'Tencent',        'market': 'HK', 'open_h': 2,  'close_h': 9},
+    {'ticker': '2318.HK','name': 'Ping An',        'market': 'HK', 'open_h': 2,  'close_h': 9},
+    # ── China Shanghai A-Shares via ETF-Proxy (02:30-08:00 CET) ──
+    # Shanghai direkt nicht über Yahoo verfügbar — ETF-Proxies stattdessen
+    {'ticker': 'FXI',    'name': 'China Large-Cap ETF', 'market': 'CN_PROXY', 'open_h': 2, 'close_h': 8},
+    {'ticker': 'KWEB',   'name': 'China Internet ETF',  'market': 'CN_PROXY', 'open_h': 2, 'close_h': 8},
 ]
 
 # Sektor-Mapping für DT9 (erweitert auf EU/UK)
 SECTOR_MAP = {
-    'XLK': ['NVDA','AAPL','MSFT','AMD','META','AMZN','GOOGL','NFLX','PLTR','SAP.DE','ASML.AS','IFX.DE'],
-    'XLE': ['XOM','OXY','HAL','SHEL.L','BP.L','TTE.PA','EQNR.OL'],
-    'XLF': ['ALV.DE','HSBA.L'],
+    'XLK': ['NVDA','AAPL','MSFT','AMD','META','AMZN','GOOGL','NFLX','PLTR','SAP.DE','ASML.AS','IFX.DE','9984.T','6758.T'],
+    'XLE': ['XOM','OXY','HAL','SHEL.L','BP.L','TTE.PA','EQNR.OL','1605.T','0883.HK'],
+    'XLF': ['ALV.DE','HSBA.L','8306.T','2318.HK'],
     'XLV': [],
-    'XLI': ['RHM.DE','SIE.DE'],
+    'XLI': ['RHM.DE','SIE.DE','7203.T'],
+    'CN':  ['9988.HK','0700.HK','1211.HK','FXI','KWEB'],
 }
 
 
