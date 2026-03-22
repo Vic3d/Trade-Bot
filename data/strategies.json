@@ -105,7 +105,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "PS2": {
@@ -192,7 +196,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "PS3": {
@@ -288,7 +296,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "PS4": {
@@ -385,7 +397,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "PS5": {
@@ -472,7 +488,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "S1": {
@@ -1128,7 +1148,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT2": {
@@ -1168,7 +1192,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT3": {
@@ -1208,7 +1236,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT4": {
@@ -1248,7 +1280,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT5": {
@@ -1288,7 +1324,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT6": {
@@ -1328,7 +1368,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT7": {
@@ -1368,7 +1412,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT8": {
@@ -1408,7 +1456,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   },
   "DT9": {
@@ -1448,7 +1500,11 @@
       "macro_phase": 1,
       "macro_phase_reason": "Phase 1 (Standard)",
       "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-22 11:36"
+      "last_macro_update": "2026-03-22 11:39",
+      "brent_wti_spread": 8.18,
+      "brent_wti_signal": "PS1_CONFIRMED",
+      "risk_mode": "risk_off",
+      "bad_news_regime": true
     }
   }
 }
