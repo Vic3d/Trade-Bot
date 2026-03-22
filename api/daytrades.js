@@ -59,42 +59,14 @@ module.exports = (req, res) => {
     })
     .sort((a, b) => a.id.localeCompare(b.id));
 
-  // Wenn keine offenen Trades: Auto-Setups aus echten DT-Strategien generieren
-  let open = openDT;
-  let auto_generated = false;
-  if (openDT.length === 0 && dtStrategies.length > 0) {
-    const today = new Date().toISOString().split('T')[0];
-    // Nur aktive Strategien mit Conviction >= 2
-    open = dtStrategies
-      .filter(s => s.status === 'active' && s.conviction >= 2)
-      .map((s, i) => ({
-        id:         `DT-AUTO-${today}-${s.id}`,
-        ticker:     STRATEGY_META[s.id]?.watch || null,
-        strategy:   s.id,
-        trade_type: 'day_trade',
-        direction:  'LONG',
-        entry:      null,
-        setup_type: s.setup_type,
-        trigger:    s.trigger,
-        stop_pct:   s.stop_pct,
-        target_pct: s.target_pct,
-        crv:        s.crv,
-        confidence: Math.round(40 + s.conviction * 10 + s.win_rate * 10),
-        thesis:     s.thesis,
-        status:     'WATCHING',
-        generated:  new Date().toISOString(),
-      }));
-    auto_generated = true;
-  }
-
   res.status(200).json({
-    open,
+    open:          openDT,   // Nur echte Trades aus der DB
     strategies:    dtStrategies,
     state,
     capital:       25000,
     pos_size:      5000,
     max_positions: 5,
     updated:       dna.updated || null,
-    auto_generated,
+    auto_generated: false,
   });
 };
