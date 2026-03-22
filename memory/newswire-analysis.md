@@ -681,6 +681,12 @@ Hormuz-Blockade vertieft sich → Ölpreisanstieg supportet beide Energy/Commodi
 
 ---
 
+## [2026-03-22 09:00 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2 | Alerts: 0
+- ⚪ [POSITION] PLTR: Palantir's US$10b Army Deal Reshapes Defense Software
+- ⚪ [WATCHLIST] ASML.AS: Top chip leaders urge national drive to 'build China's ASML'
+---
+
 ## [2026-03-13 21:31 UTC]
 
 **Rheinmetall AG (RHM.DE)**
@@ -716,4 +722,9 @@ Hormuz-Blockade vertieft sich → Ölpreisanstieg supportet beide Energy/Commodi
 
 **Status:** KEIN_SIGNAL — keine relevanten Events
 
+---
+
+## [2026-03-22 07:00 UTC]
+Neu: 8 | 🔴 0 | 🟡 1 | ⚪ 7 | Alerts: 1
+**Versendet:** PLTR Anduril $20B (RELEVANT)
 ---

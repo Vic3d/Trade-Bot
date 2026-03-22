@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-03-21 23:00 | Learning System v1.0*
+*Generiert: 2026-03-22 11:32 | Learning System v1.0*
 
 ---
 
@@ -9,13 +9,13 @@
 |---|---|---|
 | Startkapital | 1000€ | — |
 | Cash | 71.36€ | — |
-| Investiert | 200.00€ | — |
-| Portfolio-Wert | 271.36€ | — |
-| Realisierte P&L | -7.73€ | — |
-| Offene Positionen | 2 | — |
-| Geschlossene Positionen | 12 | — |
+| Investiert | 100.00€ | — |
+| Portfolio-Wert | 171.36€ | — |
+| Realisierte P&L | -30.43€ | — |
+| Offene Positionen | 1 | — |
+| Geschlossene Positionen | 13 | — |
 
-**Paper Win-Rate:** 0% (0W / 12L)
+**Paper Win-Rate:** 0% (0W / 13L)
 
 ## 🏆 Strategie-Ranking (nach Expectancy)
 
