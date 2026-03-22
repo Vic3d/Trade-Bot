@@ -10,6 +10,15 @@
 - Vincent: 282605911133126656 | DM: 1475257112509550713
 - Branding Brothers Server: 980590461142069298
 
+## TradeMind Dashboard (DER EINZIGE TRADE BOT)
+- **URL:** https://trade-bot-mauve.vercel.app/api/dashboard
+- **API:** https://trade-bot-mauve.vercel.app/api/config
+- **Code:** /data/.openclaw/workspace/api/dashboard.js (Dashboard HTML)
+- **Code:** /data/.openclaw/workspace/api/config.js (Config API)
+- **Config-Datei:** trading_config.json im GitHub Repo Vic3d/Trade-Bot (Branch: master)
+- **Deploy:** Vercel → Vic3d/Trade-Bot (automatisch bei Push)
+- ⚠️ NICHT verwechseln mit: trading-dashboard/, lernbot/, dashboard.html, Port 8080 — alles falsch!
+
 ## Taskboard API
 curl -s -H "X-Password: Fichte" http://todo.dobro-work.com:3333/[board]/api/tasks
 

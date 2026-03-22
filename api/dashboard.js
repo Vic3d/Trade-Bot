@@ -264,10 +264,10 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   <!-- SWING SUB-PANEL -->
   <div id="paperlabs-swing">
     <div class="sub-nav">
-      <button class="active" onclick="showSub('paper','positions',this)">📋 Positionen</button>
-      <button onclick="showSub('paper','performance',this)">📊 Performance</button>
-      <button onclick="showSub('paper','entry',this)">➕ Eintragen</button>
-      <button onclick="showSub('paper','strat',this)">🧠 Strategien</button>
+      <button class="active" onclick="showSwingSub('positions',this)">📋 Positionen</button>
+      <button onclick="showSwingSub('performance',this)">📊 Performance</button>
+      <button onclick="showSwingSub('entry',this)">➕ Eintragen</button>
+      <button onclick="showSwingSub('strat',this)">🧠 Strategien</button>
     </div>
     <div id="paper-positions" class="sub-panel active">
       <div class="stat-row" id="paper-stats"></div>
@@ -465,10 +465,19 @@ function showMain(n,btn){
 }
 function showSub(main,sub,btn){
   const panel=document.getElementById('main-'+main);
+  if(!panel) return;
   panel.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
   panel.querySelectorAll('.sub-nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById(main+'-'+sub).classList.add('active');
   btn.classList.add('active');
+}
+function showSwingSub(sub,btn){
+  const panel=document.getElementById('paperlabs-swing');
+  panel.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+  panel.querySelectorAll('.sub-nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('paper-'+sub).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(sub==='strat')renderStrat();
 }
 function showPaperSub(name,btn){
   ['swing','daytrade'].forEach(n=>{
