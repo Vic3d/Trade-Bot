@@ -166,3 +166,60 @@ Jede Strategie hat Gut- und Schlechtphasen. Geduld + Disziplin + Risikomanagemen
 Das perfekte System gibt es nicht — aber einen disziplinierten Umgang mit dem eigenen System.
 
 ---
+
+## 2026-03-22 — Eriksen / Rendite Spezialisten 12/26: Hormus-Krise + Makro-Framework
+
+**Quelle:** Rendite Spezialisten, Ausgabe 12/2026, 22.03.2026
+**Archiv:** memory/transcripts/eriksen-rendite-spezialisten-2026-03-22.pdf
+
+### Methodik 1: Brent-WTI-Spread als Energieexport-Risikoindikator
+- Wenn Brent deutlich schneller steigt als WTI → Markt preist US-Energieexportstopp-Risiko ein
+- Historisch normal: Brent 3-5$ über WTI (Qualitätsprämie + Transportkosten)
+- Anomalie: Spread > 8-10$ = geopolitisches Risikopricing aktiv
+- **Regel:** Brent-WTI Spread > 8$ = PS1-These bestätigt, keine Absicherung nötig
+- **Regel:** Spread kollabiert plötzlich (< 3$) = De-Eskalations-Signal → Exit PS1-Positionen prüfen
+- Bereits in macro_daily Tabelle getrackt ✅ — jetzt als Signal nutzen
+
+### Methodik 2: FedEx als realwirtschaftlicher Frühindikator
+- Logistikkonzerne (FedEx, UPS) sehen Wirtschaftsdaten 4-6 Wochen früher als offizielle Statistiken
+- FedEx erhöht Guidance trotz Energiekrise = Realwirtschaft hält noch
+- **Regel:** FedEx Quarterly Guidance ↑ = Rezession noch 1-2 Quartale entfernt
+- **Regel:** FedEx Guidance ↓ = Phase-2-Übergang wahrscheinlich (Eriksen-Framework)
+- TradeMind: FDX als Makro-Indikator bei phase_check ergänzen
+
+### Methodik 3: "Bad News = Good News" Regime-Erkennung
+- Normales Regime: Schlechte Wirtschaftsdaten → Zinssenkungshoffnung → Aktien steigen
+- Aktuell AKTIV wenn: Inflation hoch + Zentralbank im Dilemma + Öl > $100
+- Erkennungsmerkmal: Starke Konjunkturdaten beunruhigen Märkte (weil sie Zinssenkungen verhindern)
+- **Regel:** Wenn starke ISM/NFP-Daten zu Kursrückgängen führen → "Bad News = Good News"-Regime aktiv
+- Bedeutung: In diesem Regime sind defensive Sektoren attraktiver, Growth-Aktien (NVDA/PLTR) anfälliger
+- TradeMind: Regime-Flag in learning_system.py ergänzen
+
+### Methodik 4: EZB Stagflations-Indikator
+- Signal: Inflation-Prognose ↑ + Wachstums-Prognose ↓ gleichzeitig = Stagflation
+- Konsequenz: EZB kann weder senken (Inflation) noch straffen (Wachstum) → Dilemma
+- Zinssenkungswahrscheinlichkeit sinkt → Immobilien, Versorger, wachstumsabhängige Sektoren leiden
+- **Regel:** Wenn EZB Inflation >2,5% + Wachstum <1% prognostiziert → europäische Tech/Wachstums-Exposure reduzieren
+- Bestätigt Eriksens 20.03 Phase-1/2-Framework: EZB-Stagflation = Phase-2-Beschleuniger
+
+### Methodik 5: 200-Tage-Linie als Marktgesundheits-Checkpoint
+- S&P 500 unter 200-Tage-MA erstmals seit Mai 2025 = strukturelle Schwäche
+- Regel (technisch): Solange Index unter 200-MA → Risk-Off Modus, keine neuen aggressiven Longs
+- Umkehr über 200-MA = Risk-On Signal, Positionen aufbauen (Tranchenlogik)
+- TradeMind: 200-MA-Check für S&P 500 + DAX in Trading Monitor ergänzen
+
+### Methodik 6: Energie-Unabhängigkeit als Dekaden-Trend
+- Nicht politisch/ideologisch — sondern geopolitische Notwendigkeit
+- Mechanismus: Gasabhängigkeit (erst Russland, jetzt USA) zeigt strukturelle Verwundbarkeit
+- **Investitions-Implikation:** Erneuerbare Energie in Europa = struktureller Bull-Trend über 5-10 Jahre
+- Betroffene Sektoren: Offshore-Wind, Solar, Netzinfrastruktur, Kernkraft (SMR)
+- Konkret: Vestas (VWS.CO), Orsted (ORSTED.CO), Siemens Energy (ENR.DE), RWE (RWE.DE)
+- PS1-Erweiterung: Neben kurzfristigem Öl-Play auch langfristige Energie-Unabhängigkeits-These ergänzen
+
+### Direkte Portfolio-Relevanz (aktuell)
+- EQNR: Brent-WTI Spread weiterhin hoch → These intakt, Stop 34,50€ halten
+- OXY: Energie-Export-Risikopricing bestätigt Öl-Bull-Thesis kurzfristig
+- A2QQ9R (Solar ETF): Energie-Unabhängigkeits-Trend bestätigt die langfristige These (auch wenn kurzfristig schwach)
+- PLTR/NVDA: "Bad News = Good News"-Regime aktiv → Growth-Exposure kritisch beobachten
+
+---

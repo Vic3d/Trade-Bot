@@ -1305,3 +1305,17 @@ Average Win / Average Loss = kritischerer KPI als Trefferquote
 - Stop-Bruch = sofortiger Handelsstopp für den Tag (auch Paper Trades)
 - Gilt ab sofort für autonomes Paper Trading
 
+
+### Woche 2026-11 — Eriksen Rendite Spezialisten 12/26: Neue Makro-Indikatoren
+
+**Neue Indikatoren für Learning Loop:**
+1. Brent-WTI Spread > 8$ = PS1-These aktiv | Kollaps < 3$ = Exit-Signal
+2. FedEx Guidance als Frühindikator für Phase-1/2-Übergang
+3. "Bad News = Good News"-Regime erkennen (starke Daten → Kursverluste)
+4. EZB Stagflation = Inflation ↑ + Wachstum ↓ gleichzeitig
+5. 200-MA S&P/DAX als Risk-On/Off Checkpoint
+6. Energie-Unabhängigkeit als struktureller Dekaden-Trend (Sektor-Erweiterung)
+
+**Nächste Implementierung:**
+- FedEx + 200-MA in mode_macro_update() ergänzen
+- Brent-WTI Spread als aktives Signal in position_management nutzen (nicht nur tracken)

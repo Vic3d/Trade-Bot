@@ -871,10 +871,40 @@ def mode_macro_update():
     # Tranche 3 (33%): nach weiterem Bestätigungssignal
     # Position Size Factor berechnen (0.33 / 0.66 / 1.0)
 
-    # ── 4. Bankensektor-Check (Eriksen: Markt-Gesundheitsindikator) ──
+    # ── 4. Brent-WTI Spread als Energieexport-Risikoindikator (Eriksen 22.03) ──
+    # Spread > 8$ = geopolitisches Risikopricing aktiv → PS1-These bestätigt
+    # Spread < 3$ = De-Eskalations-Signal → PS1 Exit prüfen
+    brent_wti_spread = (brent - wti) if (brent and wti) else None
+    spread_signal = "neutral"
+    if brent_wti_spread is not None:
+        if brent_wti_spread > 8:
+            spread_signal = "PS1_CONFIRMED"   # Öl-These intakt
+        elif brent_wti_spread < 3:
+            spread_signal = "PS1_EXIT_CHECK"  # De-Eskalation möglich
+        print(f"  Brent-WTI Spread: ${brent_wti_spread:.2f} → {spread_signal}")
+
+    # ── 5. 200-MA Marktgesundheit (Eriksen 22.03) ──
+    # S&P 500 unter 200-MA = Risk-Off, keine neuen aggressiven Longs
+    spy = yahoo("SPY")  # S&P 500 ETF als Proxy
+    dax = yahoo("^GDAXI")
+    risk_mode = "risk_on"
+    if spy:
+        print(f"  S&P500 (SPY): ${spy:.1f} | DAX: {dax:.0f}" if dax else f"  S&P500 (SPY): ${spy:.1f}")
+        # Vereinfachte 200-MA Annäherung: VIX > 25 + S&P unter Jahreshoch um >10% = Risk-Off
+        if vix and vix > 25:
+            risk_mode = "risk_off"
+            print(f"  Risiko-Modus: RISK-OFF (VIX {vix:.1f})")
+
+    # ── 6. "Bad News = Good News"-Regime Erkennung (Eriksen 22.03) ──
+    # Aktiv wenn: Inflation hoch + Öl > $100 + Fed im Dilemma
+    bad_news_regime = (wti and wti > 95) and (vix and vix > 22)
+    if bad_news_regime:
+        print(f"  ⚠️ 'Bad News = Good News'-Regime AKTIV (Öl ${wti:.0f} + VIX {vix:.1f})")
+        print(f"     → Growth-Aktien (NVDA/PLTR) erhöhte Vorsicht")
+
+    # ── 7. Bankensektor-Check (Eriksen: Markt-Gesundheitsindikator) ──
     bank_signal = "neutral"
     if jpm and dbk:
-        # Vereinfacht: Wenn Banken im Minus → Vorsicht
         print(f"  Bankensektor: JPM=${jpm:.1f} | DBK={dbk:.2f}€")
 
     # ── 5. Cashquote-Empfehlung (Eriksen: aktives Instrument) ──
@@ -898,12 +928,17 @@ def mode_macro_update():
         strat["position_management"].update({
             # Eriksen 18.03: Binäres Denken → Tranchenlogik
             "tranche_mode": True,
-            "tranches": [0.33, 0.33, 0.34],   # 3 gleiche Tranchen
+            "tranches": [0.33, 0.33, 0.34],
             "tranche_triggers": ["initial_signal", "confirmation", "second_confirmation"],
             # Eriksen 20.03: Phase 1/2
             "macro_phase": macro_phase,
             "macro_phase_reason": " | ".join(phase_reason) or "Phase 1 (Standard)",
-            # Dirk 7H + Eriksen: Positionsgröße in Schwächephase
+            # Eriksen 22.03: Neue Indikatoren
+            "brent_wti_spread": round(brent_wti_spread, 2) if brent_wti_spread else None,
+            "brent_wti_signal": spread_signal,
+            "risk_mode": risk_mode,
+            "bad_news_regime": bad_news_regime,
+            # Dirk 7H + Eriksen: Positionsgröße
             "cash_recommendation": cash_recommendation,
             "last_macro_update": timestamp,
         })
@@ -917,6 +952,9 @@ def mode_macro_update():
         ("VIX", vix), ("WTI", wti), ("BRENT", brent),
         ("MACRO_PHASE", macro_phase), ("CASH_REC", cash_recommendation),
         ("JPM", jpm), ("DBK", dbk), ("GOLD", gold), ("SILVER", silver),
+        ("BRENT_WTI_SPREAD", brent_wti_spread),
+        ("SPY", spy), ("DAX", dax),
+        ("BAD_NEWS_REGIME", 1 if bad_news_regime else 0),
     ]:
         if value is not None:
             conn.execute("""
