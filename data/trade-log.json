@@ -4,10 +4,10 @@
     "ticker": "OXY",
     "action": "BUY",
     "price_eur": 50.63,
-    "stop_eur": 59.58,
+    "stop_eur": 50.63,
     "target_eur": 58.22,
     "strategy": "PS1",
-    "notes": "",
+    "notes": "Stop: Breakeven (Entry). Stop-Fehler korrigiert 22.03.",
     "shares": 1.9751,
     "status": "OPEN",
     "paper": true
@@ -131,9 +131,20 @@
     "stop_eur": 25.38,
     "target_eur": 32.0,
     "strategy": "PS1",
-    "notes": "",
+    "notes": "Stop ausgelöst (Kurs unter Breakeven-Stop). Geschlossen 22.03.",
     "shares": 3.9402,
-    "status": "OPEN",
+    "status": "CLOSED",
+    "paper": true
+  },
+  {
+    "ts": "2026-03-22",
+    "ticker": "MOS",
+    "action": "SELL",
+    "price_eur": 20.38,
+    "pnl_eur": -22.7,
+    "pnl_pct": -19.7,
+    "strategy": "PS1",
+    "notes": "Closed | P&L: -19.7%",
     "paper": true
   },
   {
