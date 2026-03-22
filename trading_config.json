@@ -82,7 +82,8 @@
       "exit_eur": 37.48,
       "close_date": "2026-03-22",
       "close_price_eur": 38.0,
-      "close_reason": "Stop ausgelöst"
+      "close_reason": "Stop 38.00€ ausgelöst",
+      "pnl_pct": -4.88
     },
     "RIO.L": {
       "name": "Rio Tinto",
