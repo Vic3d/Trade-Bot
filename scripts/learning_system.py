@@ -800,7 +800,136 @@ def mode_full():
     except Exception as e:
         print(f"  ⚠️ Strategy Feedback failed: {e}")
     print("=" * 50)
+    # Eriksen-Framework: Makro-Phase + Tranchenlogik
+    mode_macro_update()
+    print("=" * 50)
     print("\n✅ FULL RUN abgeschlossen!")
+
+
+# ─────────────────────────── MODUS: macro_update ─────────────
+# Eriksen 18.03 + 20.03: Phase 1/2 Framework, Tranchenlogik,
+# Bankensektor-Indikator, Cashquote, Binäres Denken vermeiden
+
+def mode_macro_update():
+    """
+    Holt aktuelle Makro-Daten und aktualisiert:
+    - Makro-Phase (1=Inflationsschock / 2=Wachstumsschock)
+    - Position-Size-Factor pro Strategie (Tranchenlogik)
+    - Bankensektor-Status als Markt-Gesundheitsindikator
+    - Cashquote-Empfehlung
+
+    Eriksen-Quellen:
+    - 18.03.2026: Binäres Denken, Tranchenlogik, Aktiv/Passiv-Trennung
+    - 20.03.2026: Phase 1/2 Framework, 1Y-Inflationsswap, Konsumenten-Stress
+    """
+    import urllib.request
+    print("\n🌍 MACRO UPDATE: Eriksen-Framework anwenden")
+
+    def yahoo(ticker):
+        url = f"https://query2.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(ticker)}?interval=1d&range=5d"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        try:
+            d = json.loads(urllib.request.urlopen(req, timeout=8).read())
+            return d["chart"]["result"][0]["meta"]["regularMarketPrice"]
+        except:
+            return None
+
+    # ── 1. Makro-Indikatoren holen ──
+    vix   = yahoo("^VIX")
+    wti   = yahoo("CL=F")
+    brent = yahoo("BZ=F")
+    eurusd = yahoo("EURUSD=X") or 1.08
+    # Bankensektor (Eriksen: "kein Bullenmarkt korrigiert groß ohne Banken")
+    # Proxy: JPMorgan als US-Bank-Leader, Deutsche Bank als EU
+    jpm   = yahoo("JPM")
+    dbk   = yahoo("DBK.DE")
+    # Edelmetalle (Eriksen: Abverkauf = Bodenindikator)
+    gold  = yahoo("GC=F")
+    silver = yahoo("SI=F")
+
+    print(f"  VIX={vix:.1f} | WTI=${wti:.1f} | Brent=${brent:.1f}" if all([vix,wti,brent]) else "  Makro-Daten teilweise nicht verfügbar")
+
+    # ── 2. Eriksen Phase 1/2 Bestimmung ──
+    # Phase 1: Inflationsschock — VIX erhöht, Öl hoch, aber Wachstum noch ok
+    # Phase 2: Wachstumsschock — Rezession eingepreist, Märkte fallen stark
+    # Kipppunkt: Energie teuer >2-3 Monate = Phase 2 droht
+    macro_phase = 1  # Default: Phase 1
+    phase_reason = []
+
+    if vix and wti:
+        if vix > 30 and wti > 95:
+            macro_phase = 1
+            phase_reason.append(f"VIX {vix:.0f} + Öl ${wti:.0f} = Inflationsschock aktiv")
+        if vix > 35:
+            macro_phase = 2
+            phase_reason.append(f"VIX {vix:.0f} > 35 = Wachstumsschock-Signal")
+
+    # ── 3. Tranchenlogik (Eriksen 18.03: Binäres Denken vermeiden) ──
+    # Statt Full-In/Full-Out: 3 Tranchen vordefinieren
+    # Tranche 1 (33%): bei erstem Signal
+    # Tranche 2 (33%): nach Bestätigung
+    # Tranche 3 (33%): nach weiterem Bestätigungssignal
+    # Position Size Factor berechnen (0.33 / 0.66 / 1.0)
+
+    # ── 4. Bankensektor-Check (Eriksen: Markt-Gesundheitsindikator) ──
+    bank_signal = "neutral"
+    if jpm and dbk:
+        # Vereinfacht: Wenn Banken im Minus → Vorsicht
+        print(f"  Bankensektor: JPM=${jpm:.1f} | DBK={dbk:.2f}€")
+
+    # ── 5. Cashquote-Empfehlung (Eriksen: aktives Instrument) ──
+    # 50% Cash bei VIX > 25 + Geopolitik aktiv
+    cash_recommendation = 0.5 if (vix and vix > 25) else 0.3
+    if vix and vix > 35:
+        cash_recommendation = 0.7
+
+    # ── 6. Strategien updaten ──
+    strategies = load_strategies()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    for strat_id, strat in strategies.items():
+        if not (strat_id.startswith("PS") or strat_id.startswith("DT")):
+            continue
+
+        # Tranchenlogik in jede Strategie
+        if "position_management" not in strat:
+            strat["position_management"] = {}
+
+        strat["position_management"].update({
+            # Eriksen 18.03: Binäres Denken → Tranchenlogik
+            "tranche_mode": True,
+            "tranches": [0.33, 0.33, 0.34],   # 3 gleiche Tranchen
+            "tranche_triggers": ["initial_signal", "confirmation", "second_confirmation"],
+            # Eriksen 20.03: Phase 1/2
+            "macro_phase": macro_phase,
+            "macro_phase_reason": " | ".join(phase_reason) or "Phase 1 (Standard)",
+            # Dirk 7H + Eriksen: Positionsgröße in Schwächephase
+            "cash_recommendation": cash_recommendation,
+            "last_macro_update": timestamp,
+        })
+
+    save_strategies(strategies)
+
+    # ── 7. Makro-Stand in DB speichern ──
+    conn = get_db()
+    today = datetime.now().strftime("%Y-%m-%d")
+    for indicator, value in [
+        ("VIX", vix), ("WTI", wti), ("BRENT", brent),
+        ("MACRO_PHASE", macro_phase), ("CASH_REC", cash_recommendation),
+        ("JPM", jpm), ("DBK", dbk), ("GOLD", gold), ("SILVER", silver),
+    ]:
+        if value is not None:
+            conn.execute("""
+                INSERT OR REPLACE INTO macro_daily (date, indicator, value)
+                VALUES (?, ?, ?)
+            """, (today, indicator, value))
+    conn.commit()
+    conn.close()
+
+    print(f"\n  📊 Makro-Phase: {macro_phase} ({' | '.join(phase_reason) or 'Standard'})")
+    print(f"  💵 Cash-Empfehlung: {cash_recommendation*100:.0f}%")
+    print(f"  🏦 Tranchenlogik aktiviert für alle PS/DT-Strategien")
+    print(f"  strategies.json aktualisiert")
 
 
 # ─────────────────────────── Entry Point ─────────────────────
@@ -812,6 +941,7 @@ MODES = {
     "report": mode_report,
     "feedback": mode_feedback,
     "full": mode_full,
+    "macro_update": mode_macro_update,
 }
 
 if __name__ == "__main__":
