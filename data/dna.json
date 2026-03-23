@@ -261,13 +261,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "ANTO.L",
+      "ticker": "HFG.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 34.7,
-      "stop": 34.89,
-      "target": 34.42,
-      "opened_at": "2026-03-23 10:15",
+      "entry": 3.71,
+      "stop": 3.69,
+      "target": 3.74,
+      "opened_at": "2026-03-23 10:20",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T10:15:33.738305Z",
+  "last_sync": "2026-03-23T10:20:09.552037Z",
   "recent_day_trades": [
+    {
+      "ticker": "ANTO.L",
+      "strategy": "DT4",
+      "entry_price": 34.7,
+      "exit_price": 34.97,
+      "entry_date": "2026-03-23 10:15",
+      "exit_date": "2026-03-23 10:20",
+      "pnl_pct": -0.77,
+      "status": "LOSS"
+    },
     {
       "ticker": "NG.L",
       "strategy": "DT4",
