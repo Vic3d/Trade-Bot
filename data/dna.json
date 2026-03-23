@@ -261,13 +261,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "HFG.DE",
+      "ticker": "NG.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 3.68,
-      "stop": 3.71,
-      "target": 3.65,
-      "opened_at": "2026-03-23 10:40",
+      "entry": 13.99,
+      "stop": 14.09,
+      "target": 13.88,
+      "opened_at": "2026-03-23 10:50",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T10:45:58.408717Z",
+  "last_sync": "2026-03-23T10:50:05.265838Z",
   "recent_day_trades": [
+    {
+      "ticker": "HFG.DE",
+      "strategy": "DT4",
+      "entry_price": 3.68,
+      "exit_price": 3.71,
+      "entry_date": "2026-03-23 10:40",
+      "exit_date": "2026-03-23 10:50",
+      "pnl_pct": -0.89,
+      "status": "LOSS"
+    },
     {
       "ticker": "HFG.DE",
       "strategy": "DT4",
