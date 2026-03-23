@@ -261,13 +261,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "RIO.L",
+      "ticker": "NWG.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 72.98,
-      "stop": 71.68,
-      "target": 73.56,
-      "opened_at": "2026-03-23 12:20",
+      "entry": 6.11,
+      "stop": 6.04,
+      "target": 6.16,
+      "opened_at": "2026-03-23 13:01",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T12:55:04.100344Z",
+  "last_sync": "2026-03-23T13:01:16.245978Z",
   "recent_day_trades": [
+    {
+      "ticker": "RIO.L",
+      "strategy": "DT4",
+      "entry_price": 72.98,
+      "exit_price": 74.02,
+      "entry_date": "2026-03-23 12:20",
+      "exit_date": "2026-03-23 13:01",
+      "pnl_pct": 1.42,
+      "status": "WIN"
+    },
     {
       "ticker": "NWG.L",
       "strategy": "DT4",
@@ -501,16 +511,6 @@
       "entry_date": "2026-03-23 01:00",
       "exit_date": "2026-03-23 01:50",
       "pnl_pct": 0.97,
-      "status": "WIN"
-    },
-    {
-      "ticker": "9988.HK",
-      "strategy": "DT4",
-      "entry_price": 13.43,
-      "exit_price": 13.31,
-      "entry_date": "2026-03-23 01:25",
-      "exit_date": "2026-03-23 01:45",
-      "pnl_pct": 0.93,
       "status": "WIN"
     }
   ]
