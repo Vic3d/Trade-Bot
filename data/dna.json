@@ -264,10 +264,10 @@
       "ticker": "9988.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 13.55,
+      "entry": 13.43,
       "stop": 13.69,
-      "target": 13.44,
-      "opened_at": "2026-03-23 01:20",
+      "target": 13.32,
+      "opened_at": "2026-03-23 01:25",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T01:20:05.687652Z",
+  "last_sync": "2026-03-23T01:25:05.196122Z",
   "recent_day_trades": [
+    {
+      "ticker": "9988.HK",
+      "strategy": "DT4",
+      "entry_price": 13.55,
+      "exit_price": 13.43,
+      "entry_date": "2026-03-23 01:20",
+      "exit_date": "2026-03-23 01:25",
+      "pnl_pct": 0.87,
+      "status": "WIN"
+    },
     {
       "ticker": "0700.HK",
       "strategy": "DT4",
