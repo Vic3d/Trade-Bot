@@ -261,6 +261,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "0700.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 55.24,
+      "stop": 54.98,
+      "target": 55.68,
+      "opened_at": "2026-03-23 07:50",
+      "status": "OPEN"
+    },
+    {
       "ticker": "1605.T",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -301,7 +311,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T07:45:27.289891Z",
+  "last_sync": "2026-03-23T07:50:04.711808Z",
   "recent_day_trades": [
     {
       "ticker": "0883.HK",
