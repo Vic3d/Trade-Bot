@@ -261,23 +261,23 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "VNA.DE",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 21.07,
-      "stop": 20.32,
-      "target": 21.24,
-      "opened_at": "2026-03-23 11:25",
-      "status": "OPEN"
-    },
-    {
       "ticker": "EQNR.OL",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 33.04,
+      "entry": 32.5,
       "stop": 34.93,
-      "target": 32.78,
-      "opened_at": "2026-03-23 11:25",
+      "target": 32.24,
+      "opened_at": "2026-03-23 11:31",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ANTO.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 37.57,
+      "stop": 35.48,
+      "target": 37.87,
+      "opened_at": "2026-03-23 11:31",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,28 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T11:25:06.032540Z",
+  "last_sync": "2026-03-23T11:31:07.621620Z",
   "recent_day_trades": [
+    {
+      "ticker": "VNA.DE",
+      "strategy": "DT4",
+      "entry_price": 21.07,
+      "exit_price": 21.44,
+      "entry_date": "2026-03-23 11:25",
+      "exit_date": "2026-03-23 11:31",
+      "pnl_pct": 1.76,
+      "status": "WIN"
+    },
+    {
+      "ticker": "EQNR.OL",
+      "strategy": "DT4",
+      "entry_price": 33.04,
+      "exit_price": 32.5,
+      "entry_date": "2026-03-23 11:25",
+      "exit_date": "2026-03-23 11:31",
+      "pnl_pct": 1.67,
+      "status": "WIN"
+    },
     {
       "ticker": "VNA.DE",
       "strategy": "DT4",
