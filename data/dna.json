@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-21T09:03:41Z",
+  "updated": "2026-03-23T15:19:05.585215",
   "stats": {
     "total": 22,
     "open": 7,
@@ -198,24 +198,6 @@
   },
   "open_positions": [
     {
-      "ticker": "NVDA",
-      "strategy": "S3",
-      "entry": 167.88,
-      "stop": null,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-02-25"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "S3",
-      "entry": 351.85,
-      "stop": 338.0,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-02-25"
-    },
-    {
       "ticker": "PLTR",
       "strategy": "S3",
       "entry": 132.11,
@@ -223,42 +205,6 @@
       "target": null,
       "trade_type": "real",
       "entry_date": "2026-02-25"
-    },
-    {
-      "ticker": "EQNR",
-      "strategy": "S1",
-      "entry": 27.04,
-      "stop": 30.0,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-02-25"
-    },
-    {
-      "ticker": "BAYN.DE",
-      "strategy": "S7",
-      "entry": 39.95,
-      "stop": 38.0,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-03-04"
-    },
-    {
-      "ticker": "RIO.L",
-      "strategy": "S5",
-      "entry": 76.92,
-      "stop": 73.0,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-03-04"
-    },
-    {
-      "ticker": "OXY",
-      "strategy": "PS1",
-      "entry": 50.63,
-      "stop": 45.57,
-      "target": 58.22,
-      "trade_type": "paper",
-      "entry_date": "2026-03-17"
     },
     {
       "ticker": "RIO.L",
@@ -512,6 +458,21 @@
       "exit_date": "2026-03-23 06:45",
       "pnl_pct": -0.93,
       "status": "LOSS"
+    }
+  ],
+  "closed_trades": [
+    {
+      "ticker": "EQNR",
+      "strategy": "S1",
+      "entry": 27.04,
+      "stop": 30.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25",
+      "exit": 34.46,
+      "pnl_pct": 27.4,
+      "close_date": "2026-03-23",
+      "close_reason": "Stop ausgelöst (Iran-Krise Phase-1-Schock)"
     }
   ]
 }
