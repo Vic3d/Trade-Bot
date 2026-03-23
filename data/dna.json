@@ -261,22 +261,22 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "RIO.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 72.98,
+      "stop": 71.68,
+      "target": 73.56,
+      "opened_at": "2026-03-23 12:20",
+      "status": "OPEN"
+    },
+    {
       "ticker": "FRES.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 36.86,
       "stop": 35.2,
       "target": 37.16,
-      "opened_at": "2026-03-23 11:50",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "NWG.L",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 6.12,
-      "stop": 5.95,
-      "target": 6.17,
       "opened_at": "2026-03-23 11:50",
       "status": "OPEN"
     },
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T12:16:08.168805Z",
+  "last_sync": "2026-03-23T12:20:05.308571Z",
   "recent_day_trades": [
+    {
+      "ticker": "NWG.L",
+      "strategy": "DT4",
+      "entry_price": 6.12,
+      "exit_price": 5.88,
+      "entry_date": "2026-03-23 11:50",
+      "exit_date": "2026-03-23 12:20",
+      "pnl_pct": -3.94,
+      "status": "LOSS"
+    },
     {
       "ticker": "ANTO.L",
       "strategy": "DT4",
@@ -502,16 +512,6 @@
       "exit_date": "2026-03-23 01:45",
       "pnl_pct": 0.93,
       "status": "WIN"
-    },
-    {
-      "ticker": "1211.HK",
-      "strategy": "DT4",
-      "entry_price": 11.45,
-      "exit_price": 11.51,
-      "entry_date": "2026-03-23 01:20",
-      "exit_date": "2026-03-23 01:40",
-      "pnl_pct": -0.49,
-      "status": "LOSS"
     }
   ]
 }
