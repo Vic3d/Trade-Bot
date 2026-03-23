@@ -264,10 +264,10 @@
       "ticker": "HAL",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 32.11,
-      "stop": 32.32,
-      "target": 31.85,
-      "opened_at": "2026-03-23 15:35",
+      "entry": 32.36,
+      "stop": 32.2,
+      "target": 32.62,
+      "opened_at": "2026-03-23 15:55",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T15:50:03.523253Z",
+  "last_sync": "2026-03-23T15:55:04.700466Z",
   "recent_day_trades": [
+    {
+      "ticker": "HAL",
+      "strategy": "DT4",
+      "entry_price": 32.11,
+      "exit_price": 32.36,
+      "entry_date": "2026-03-23 15:35",
+      "exit_date": "2026-03-23 15:55",
+      "pnl_pct": -0.78,
+      "status": "LOSS"
+    },
     {
       "ticker": "NEM",
       "strategy": "DT4",
@@ -501,16 +511,6 @@
       "entry_date": "2026-03-23 10:20",
       "exit_date": "2026-03-23 10:40",
       "pnl_pct": -0.75,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "ANTO.L",
-      "strategy": "DT4",
-      "entry_price": 34.7,
-      "exit_price": 34.97,
-      "entry_date": "2026-03-23 10:15",
-      "exit_date": "2026-03-23 10:20",
-      "pnl_pct": -0.77,
       "status": "LOSS"
     }
   ]
