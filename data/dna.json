@@ -261,13 +261,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "ZAL.DE",
+      "ticker": "NEM",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 21.84,
-      "stop": 21.92,
-      "target": 21.67,
-      "opened_at": "2026-03-23 15:01",
+      "entry": 85.68,
+      "stop": 85.31,
+      "target": 86.37,
+      "opened_at": "2026-03-23 15:10",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T15:05:03.576997Z",
+  "last_sync": "2026-03-23T15:10:05.538555Z",
   "recent_day_trades": [
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT4",
+      "entry_price": 21.84,
+      "exit_price": 21.92,
+      "entry_date": "2026-03-23 15:01",
+      "exit_date": "2026-03-23 15:10",
+      "pnl_pct": -0.36,
+      "status": "LOSS"
+    },
     {
       "ticker": "MTX.DE",
       "strategy": "DT4",
@@ -501,16 +511,6 @@
       "entry_date": "2026-03-23 01:00",
       "exit_date": "2026-03-23 09:45",
       "pnl_pct": -0.42,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "entry_price": 3.35,
-      "exit_price": 3.38,
-      "entry_date": "2026-03-23 07:20",
-      "exit_date": "2026-03-23 07:35",
-      "pnl_pct": -0.81,
       "status": "LOSS"
     }
   ]
