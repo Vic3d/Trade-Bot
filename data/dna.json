@@ -261,32 +261,32 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "9988.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 13.55,
+      "stop": 13.69,
+      "target": 13.44,
+      "opened_at": "2026-03-23 01:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "1211.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 11.45,
+      "stop": 11.5,
+      "target": 11.36,
+      "opened_at": "2026-03-23 01:20",
+      "status": "OPEN"
+    },
+    {
       "ticker": "0883.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 3.36,
       "stop": 3.32,
       "target": 3.38,
-      "opened_at": "2026-03-23 01:00",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "0700.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 56.16,
-      "stop": 56.54,
-      "target": 55.71,
-      "opened_at": "2026-03-23 01:00",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "2318.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 6.83,
-      "stop": 6.8,
-      "target": 6.88,
       "opened_at": "2026-03-23 01:00",
       "status": "OPEN"
     },
@@ -311,6 +311,27 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T01:15:03.968167Z",
-  "recent_day_trades": []
+  "last_sync": "2026-03-23T01:20:05.687652Z",
+  "recent_day_trades": [
+    {
+      "ticker": "0700.HK",
+      "strategy": "DT4",
+      "entry_price": 56.16,
+      "exit_price": 54.11,
+      "entry_date": "2026-03-23 01:00",
+      "exit_date": "2026-03-23 01:20",
+      "pnl_pct": 3.78,
+      "status": "WIN"
+    },
+    {
+      "ticker": "2318.HK",
+      "strategy": "DT4",
+      "entry_price": 6.83,
+      "exit_price": 6.63,
+      "entry_date": "2026-03-23 01:00",
+      "exit_date": "2026-03-23 01:20",
+      "pnl_pct": -2.98,
+      "status": "LOSS"
+    }
+  ]
 }
