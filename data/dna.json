@@ -261,6 +261,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "MTX.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 312.9,
+      "stop": 307.41,
+      "target": 315.4,
+      "opened_at": "2026-03-23 13:05",
+      "status": "OPEN"
+    },
+    {
       "ticker": "NWG.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -268,16 +278,6 @@
       "stop": 6.04,
       "target": 6.16,
       "opened_at": "2026-03-23 13:01",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "FRES.L",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 36.86,
-      "stop": 35.2,
-      "target": 37.16,
-      "opened_at": "2026-03-23 11:50",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T13:01:16.245978Z",
+  "last_sync": "2026-03-23T13:05:05.817242Z",
   "recent_day_trades": [
+    {
+      "ticker": "FRES.L",
+      "strategy": "DT4",
+      "entry_price": 36.86,
+      "exit_price": 37.41,
+      "entry_date": "2026-03-23 11:50",
+      "exit_date": "2026-03-23 13:05",
+      "pnl_pct": 1.49,
+      "status": "WIN"
+    },
     {
       "ticker": "RIO.L",
       "strategy": "DT4",
@@ -501,16 +511,6 @@
       "entry_date": "2026-03-23 01:55",
       "exit_date": "2026-03-23 02:00",
       "pnl_pct": 0.88,
-      "status": "WIN"
-    },
-    {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "entry_price": 3.36,
-      "exit_price": 3.39,
-      "entry_date": "2026-03-23 01:00",
-      "exit_date": "2026-03-23 01:50",
-      "pnl_pct": 0.97,
       "status": "WIN"
     }
   ]
