@@ -289,20 +289,20 @@
       "target": 17.84,
       "opened_at": "2026-03-23 01:55",
       "status": "OPEN"
-    },
+    }
+  ],
+  "last_sync": "2026-03-23T09:50:10.236619Z",
+  "recent_day_trades": [
     {
       "ticker": "KWEB",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 24.44,
-      "stop": 24.55,
-      "target": 24.24,
-      "opened_at": "2026-03-23 01:00",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-23T09:45:32.543739Z",
-  "recent_day_trades": [
+      "entry_price": 24.44,
+      "exit_price": 24.55,
+      "entry_date": "2026-03-23 01:00",
+      "exit_date": "2026-03-23 09:50",
+      "pnl_pct": -0.46,
+      "status": "LOSS"
+    },
     {
       "ticker": "FXI",
       "strategy": "DT4",
