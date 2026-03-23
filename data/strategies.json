@@ -118,7 +118,7 @@
     "avg_pnl": -0.4,
     "win_loss_ratio": 0.6,
     "n_trades": 5,
-    "last_evaluated": "2026-03-23 22:13"
+    "last_evaluated": "2026-03-23 22:30"
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -217,7 +217,7 @@
     "avg_pnl": 23.01,
     "win_loss_ratio": 999,
     "n_trades": 2,
-    "last_evaluated": "2026-03-23 22:13"
+    "last_evaluated": "2026-03-23 22:30"
   },
   "PS3": {
     "name": "NATO/EU-Rüstung",
