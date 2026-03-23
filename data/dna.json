@@ -261,6 +261,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "FRES.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 36.53,
+      "stop": 34.75,
+      "target": 36.82,
+      "opened_at": "2026-03-23 11:35",
+      "status": "OPEN"
+    },
+    {
       "ticker": "EQNR.OL",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -278,16 +288,6 @@
       "stop": 35.48,
       "target": 37.87,
       "opened_at": "2026-03-23 11:31",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "0700.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 55.24,
-      "stop": 54.98,
-      "target": 55.68,
-      "opened_at": "2026-03-23 07:50",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T11:31:07.621620Z",
+  "last_sync": "2026-03-23T11:35:09.450913Z",
   "recent_day_trades": [
+    {
+      "ticker": "0700.HK",
+      "strategy": "DT4",
+      "entry_price": 55.24,
+      "exit_price": 54.94,
+      "entry_date": "2026-03-23 07:50",
+      "exit_date": "2026-03-23 11:35",
+      "pnl_pct": -0.55,
+      "status": "LOSS"
+    },
     {
       "ticker": "VNA.DE",
       "strategy": "DT4",
@@ -502,16 +512,6 @@
       "exit_date": "2026-03-23 01:20",
       "pnl_pct": 3.78,
       "status": "WIN"
-    },
-    {
-      "ticker": "2318.HK",
-      "strategy": "DT4",
-      "entry_price": 6.83,
-      "exit_price": 6.63,
-      "entry_date": "2026-03-23 01:00",
-      "exit_date": "2026-03-23 01:20",
-      "pnl_pct": -2.98,
-      "status": "LOSS"
     }
   ]
 }
