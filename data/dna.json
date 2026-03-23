@@ -261,13 +261,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "RIO.L",
+      "ticker": "HEI.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 74.42,
-      "stop": 73.18,
-      "target": 75.01,
-      "opened_at": "2026-03-23 13:25",
+      "entry": 179.1,
+      "stop": 177.61,
+      "target": 180.53,
+      "opened_at": "2026-03-23 14:35",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T14:30:34.020501Z",
+  "last_sync": "2026-03-23T14:35:14.438847Z",
   "recent_day_trades": [
+    {
+      "ticker": "RIO.L",
+      "strategy": "DT4",
+      "entry_price": 74.42,
+      "exit_price": 73.07,
+      "entry_date": "2026-03-23 13:25",
+      "exit_date": "2026-03-23 14:35",
+      "pnl_pct": -1.81,
+      "status": "LOSS"
+    },
     {
       "ticker": "NWG.L",
       "strategy": "DT4",
@@ -502,16 +512,6 @@
       "exit_date": "2026-03-23 07:20",
       "pnl_pct": 0.88,
       "status": "WIN"
-    },
-    {
-      "ticker": "6758.T",
-      "strategy": "DT4",
-      "entry_price": 17.52,
-      "exit_price": 17.36,
-      "entry_date": "2026-03-23 01:55",
-      "exit_date": "2026-03-23 06:45",
-      "pnl_pct": -0.93,
-      "status": "LOSS"
     }
   ]
 }
