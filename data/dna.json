@@ -261,16 +261,6 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 3.36,
-      "stop": 3.32,
-      "target": 3.38,
-      "opened_at": "2026-03-23 01:00",
-      "status": "OPEN"
-    },
-    {
       "ticker": "FXI",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -291,8 +281,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T01:45:06.283713Z",
+  "last_sync": "2026-03-23T01:50:04.093233Z",
   "recent_day_trades": [
+    {
+      "ticker": "0883.HK",
+      "strategy": "DT4",
+      "entry_price": 3.36,
+      "exit_price": 3.39,
+      "entry_date": "2026-03-23 01:00",
+      "exit_date": "2026-03-23 01:50",
+      "pnl_pct": 0.97,
+      "status": "WIN"
+    },
     {
       "ticker": "9988.HK",
       "strategy": "DT4",
