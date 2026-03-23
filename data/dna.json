@@ -261,22 +261,22 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ANTO.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 34.7,
+      "stop": 34.89,
+      "target": 34.42,
+      "opened_at": "2026-03-23 10:15",
+      "status": "OPEN"
+    },
+    {
       "ticker": "VNA.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 20.19,
       "stop": 20.5,
       "target": 20.03,
-      "opened_at": "2026-03-23 09:55",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "NG.L",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 14.03,
-      "stop": 14.13,
-      "target": 13.91,
       "opened_at": "2026-03-23 09:55",
       "status": "OPEN"
     },
@@ -311,8 +311,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T10:10:06.401951Z",
+  "last_sync": "2026-03-23T10:15:33.738305Z",
   "recent_day_trades": [
+    {
+      "ticker": "NG.L",
+      "strategy": "DT4",
+      "entry_price": 14.03,
+      "exit_price": 14.14,
+      "entry_date": "2026-03-23 09:55",
+      "exit_date": "2026-03-23 10:15",
+      "pnl_pct": -0.78,
+      "status": "LOSS"
+    },
     {
       "ticker": "KWEB",
       "strategy": "DT4",
