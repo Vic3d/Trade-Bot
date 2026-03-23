@@ -261,23 +261,23 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "HAL",
+      "ticker": "ABBV",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 32.36,
-      "stop": 32.2,
-      "target": 32.62,
-      "opened_at": "2026-03-23 15:55",
+      "entry": 176.63,
+      "stop": 177.52,
+      "target": 175.22,
+      "opened_at": "2026-03-23 16:01",
       "status": "OPEN"
     },
     {
-      "ticker": "NEM",
+      "ticker": "BA",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 85.3,
-      "stop": 85.9,
-      "target": 84.62,
-      "opened_at": "2026-03-23 15:35",
+      "entry": 171.54,
+      "stop": 172.83,
+      "target": 170.16,
+      "opened_at": "2026-03-23 16:01",
       "status": "OPEN"
     },
     {
@@ -311,8 +311,28 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T15:55:04.700466Z",
+  "last_sync": "2026-03-23T16:01:29.595660Z",
   "recent_day_trades": [
+    {
+      "ticker": "NEM",
+      "strategy": "DT4",
+      "entry_price": 85.3,
+      "exit_price": 84.34,
+      "entry_date": "2026-03-23 15:35",
+      "exit_date": "2026-03-23 16:01",
+      "pnl_pct": 1.13,
+      "status": "WIN"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT4",
+      "entry_price": 32.36,
+      "exit_price": 32.2,
+      "entry_date": "2026-03-23 15:55",
+      "exit_date": "2026-03-23 16:01",
+      "pnl_pct": -0.51,
+      "status": "LOSS"
+    },
     {
       "ticker": "HAL",
       "strategy": "DT4",
@@ -491,26 +511,6 @@
       "entry_date": "2026-03-23 10:50",
       "exit_date": "2026-03-23 11:25",
       "pnl_pct": -1.91,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "HFG.DE",
-      "strategy": "DT4",
-      "entry_price": 3.68,
-      "exit_price": 3.71,
-      "entry_date": "2026-03-23 10:40",
-      "exit_date": "2026-03-23 10:50",
-      "pnl_pct": -0.89,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "HFG.DE",
-      "strategy": "DT4",
-      "entry_price": 3.71,
-      "exit_price": 3.68,
-      "entry_date": "2026-03-23 10:20",
-      "exit_date": "2026-03-23 10:40",
-      "pnl_pct": -0.75,
       "status": "LOSS"
     }
   ]
