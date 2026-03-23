@@ -79,3 +79,17 @@ Victor: "Vielleicht sollten wir auch wichtige Nachrichten festhalten die wichtig
 **Kontext:** Kurs fiel durch Stop ohne Teilfüllung bei 38€ (Lücke)
 **Kern-Reasoning:** Konsequente Stop-Disziplin — kein Nachkauf, kein Hoffen
 **Lesson:** Bei volatilen Titeln Limit-Order statt Market-Order am Stop erwägen → weniger Slippage (hier: -0.52€ = ca. 1.3% zusätzlich)
+
+## 2026-03-23 — EQNR Stop ausgelöst, Position geschlossen
+
+**Entscheidung:** Position Equinor ASA (EQNR) durch Stop-Loss bei 34,46€ automatisch geschlossen
+
+**Kontext:** Bearischer Markt am 23.03.2026 — Iran-Krise Phase-1-Schock (Trump 48h-Ultimatum 22.03., Asiatische Märkte -4 bis -6% über Nacht, Brent ~$112). Victor: "sehr bärischer Markt heute, vielleicht zu einem späteren Zeitpunkt Wiedereintritt beobachten"
+
+**Kern-Reasoning:** Trailing Stop hatte Gewinne gesichert — Entry 27,04€, Stop nachgezogen auf 34,50€ (20.03.). Phase-1-Schock verkauft alles, auch Gewinner. Stop hat sauber funktioniert.
+
+**Ergebnis:** +27,4% (Entry 27,04€ → Exit 34,46€, ~3 Wochen Haltedauer)
+
+**Lesson:** Trailing Stop Regel bestätigt: nach +5% Gewinne mitnehmen durch Stop-Nachziehen. Phase-1-Schocks sind nicht prognostizierbar — Schutz durch mechanischen Stop besser als Bauchgefühl.
+
+**Nächster Schritt:** Re-Entry EQNR beobachten wenn Phase-2 (Gewinner-Selektion) einsetzt

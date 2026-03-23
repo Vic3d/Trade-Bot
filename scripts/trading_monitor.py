@@ -1453,7 +1453,7 @@ def main():
         'fx':        fx,
         'macro':     {},
         'positions': {},
-        'watchlist': {},
+        'watchlist': [],
     }
 
     wti_t   = config.get('macro', {}).get('wti_ticker', 'CL=F')

@@ -4,6 +4,14 @@
 - Hetzner Server: root@167.235.250.10
 - GitHub SSH Key: /home/node/openclaw/.ssh-keys/id_ed25519
 - Josh's Windows VPS: 2.59.132.214
+- Vic3d GitHub Key: `~/.ssh/id_ed25519_vic3d`
+
+## Josh Dashboard — Deploy (PFLICHT)
+- **URL:** https://sanit-r.vercel.app ← EINZIGE richtige URL
+- **Code:** `/data/.openclaw/workspace/josh-dashboard/`
+- **Repo:** `Vic3d/Sanit-r-` (remote name: `vic3d`)
+- **Push:** `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_vic3d -o StrictHostKeyChecking=no" git push vic3d main`
+- ⚠️ NICHT auf `bb-de/josh-dashbord` pushen — falscher Repo, falsche URL!
 
 ## Discord
 - Victor: 452053147620343808 | DM: 1475255728313864413

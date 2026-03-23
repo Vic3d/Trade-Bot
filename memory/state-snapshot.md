@@ -9,7 +9,7 @@
 | Aktie | Kurs | Entry | P&L | Stop | Conviction | RS/QQQ | Letzter Alert |
 |---|---|---|---|---|---|---|---|
 | Palantir (PLTR) | 130.18€ | 132.11€ | -1.5% | 127.00€ | 57 | +1.7x | — |
-| Equinor ASA (EQNR) | 35.68€ | 27.45€ | +30.0% | 33.00€ | 45 | +0.5x | — |
+| Equinor ASA (EQNR) | 35.68€ | 27.04€ | +30.0% | 34.50€ | 45 | +0.5x | — |
 | Bayer AG (BAYN.DE) | 37.65€ | 39.95€ | -5.8% | 38.00€ | 40 | — | — |
 | Invesco Solar Energy ETF (A2QQ9R) | 9.69€ | 22.40€ | -56.8% | ❌ kein Stop | 47 | — | — |
 | VanEck Oil Services ETF (A3D42Y) | 27.09€ | 27.90€ | -2.9% | 24.00€ | 47 | — | — |

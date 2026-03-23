@@ -82,5 +82,54 @@
     "ticker": "",
     "message": "\ud83d\udd34 STOP GETROFFEN: Bayer AG (BAYN.DE) @ 37.60\u20ac | Stop: 38.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 40/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T07:00:39.900673+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 130.64\u20ac | Stop: 127.0\u20ac | 2.8% Abstand [Conviction: 57/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T07:00:39.901819+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f BRENT-WTI SPREAD: $8.27 (Brent $108.65 - WTI $100.38) \u2014 Lieferunterbrechung Warnsignal!",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T07:00:39.902235+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: NIKKEI 225 -3.5%\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLTR: neutral \u2014 Kein direkter \u00d6",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T07:00:39.902724+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.0%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mi",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T08:45:12.486535+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Equinor ASA (EQNR) @ 35.37\u20ac | Stop: 34.5\u20ac | 2.5% Abstand [Conviction: 51/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T11:30:15.686032+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: WTI \u00d6L 30-Min-Bewegung -9.0% ($98.62\u2192$89.70)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLT",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-23T11:30:15.686500+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung -10.6% ($100.38\u2192$89.70)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLT",
+    "value": ""
   }
 ]

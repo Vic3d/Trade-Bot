@@ -1,7 +1,7 @@
 {
   "regime": "TREND_DOWN",
-  "prev_regime": "UNBEKANNT",
-  "changed": true,
+  "prev_regime": "TREND_DOWN",
+  "changed": false,
   "reason": "ADX 45.3 > 25 + SPY unter MA20",
   "active_dt": [
     "DT4"
@@ -13,5 +13,5 @@
     "adx": 45.3,
     "vix": 26.8
   },
-  "updated": "2026-03-22 12:02"
+  "updated": "2026-03-23 07:45"
 }

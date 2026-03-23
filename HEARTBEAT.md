@@ -17,10 +17,10 @@
 
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
 
-## AKTUELLE ALERTS (heute 21.03.2026)
+## AKTUELLE ALERTS (heute 23.03.2026)
 
-- ✅ **BAYN.DE + A14WU5**: Geschlossen 20.03 — Alerts gelöscht
-- 🚨 **Iran-Eskalation**: 2.500 US Marines + amphibischer Verband verschickt 20.03 — EQNR Stop 34.50€, neueste News-Alerts eingerichtet
+- ✅ **BAYN.DE + A14WU5 + EQNR**: Alle 3 Positionen geschlossen (20.03 + 23.03) — Alerts gelöscht
+- 🚨 **Iran-Krise Phase-1-Schock**: Trump 48h-Ultimatum (22.03), Asiatische Märkte -4-6%, Brent ~$112 — Alle Öl-Positionen für Watchlist
 - 📡 **News-System Update**: Position-Matcher mit Dedup + Severity-Level + Watchlist live (4x täglich, 7 Tage). Opportunity-Detector in Planung
 - 📋 **Josh Backoffice Automation**: B&O Annehmen-Button + Superchat Template-Senden — DevTools Network-Capture Montag geplant
 

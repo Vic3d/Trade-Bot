@@ -1,29 +1,27 @@
 {
-  "date": "2026-03-20",
-  "regime": "NEUTRAL",
+  "date": "2026-03-23",
+  "regime": "CORRECTION",
   "velocity": "VOLATILE",
   "factors": {
-    "vix": 23.94,
+    "vix": 26.78,
     "dxy": 99.103,
     "us10y": 4.281,
     "us2y": 3.612,
-    "wti": 93.01,
-    "gold": 4657.0,
+    "wti": 98.23,
+    "gold": 4574.9,
     "sp500_vs_ma200": -0.17
   },
   "config": {
-    "desc": "Seitw\u00e4rtsmarkt, moderate Volatilit\u00e4t",
-    "position_factor": 0.8,
-    "stop_factor": 1.2,
+    "desc": "R\u00fccksetzer 5-10%, erh\u00f6hte Volatilit\u00e4t",
+    "position_factor": 0.6,
+    "stop_factor": 1.5,
     "allowed_strategies": [
       "S1",
-      "S2",
       "S4",
-      "S6",
       "PS1",
       "PS3",
       "PS4"
     ]
   },
-  "updated_at": "2026-03-20T21:45:17.262783+00:00"
+  "updated_at": "2026-03-23T11:45:19.619333+00:00"
 }

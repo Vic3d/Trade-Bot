@@ -1498,3 +1498,54 @@ elif consumption_index_korea < MA_20 and corporate_profit_growth < 0:
 
 **Alberts Gesamteinschätzung:**
 Eriksens Report ist ein Master-Klasse in "Makro-Framing". Phase 1/2 ist direkt auf unsere PS-Strategien übertragbar. Die Energieunabhängigkeits-These gibt TradeMind einen structurellen Tailwind für Renewables/Green-Tech — sowohl für Mentor Mode (Nutzer lernt Sektor-Dynamik) als auch für Autonomous Mode (long-bias in definierten Sektoren). **Fazit:** Nicht actionbar als "sofort kaufen", aber als **Umgebungs-Update** kritisch.
+
+---
+
+## 📈 Woche 2026-W12 (22. März 2026) — Transcript-Analyse
+
+### Dirk 7H: „Drei Kardinalsfehler im Trading"
+
+**Kernerkenntnisse:**
+1. **Win-Rate ist ein Trap-KPI** — Fokus muss auf Average Win vs. Average Loss sein. 70% Win-Rate + fallender Account = fatales Money Management (Gewinne quick-take, Verluste laufen). Psychologische Bestätigung ≠ Profit.
+2. **Strategiehopping = garantierter Ruin** — Jede Strategie hat gute/schlechte Phasen. Drawdowns sind normal. FOMO + Social-Media treiben zum Wechsel. Resultat: Man wechselt immer zur falschen Zeit (zur alten Strat zurück, wenn's wieder bergauf geht).
+3. **Stop-Loss ist nicht verhandelbar** — Ein Break kann das Konto ruinieren; fünf gefischte Stops sind verkraftbar. Regelverstöße (Stop verschieben) → sofortige Trading-Pause.
+
+**Für TradeMind-Design:**
+- [ ] **Win-Rate-Trap-Alert:** Nutzer sieht 70% Win-Rate, aber P&L -5% → KI warnt: "Dein Profit-Factor sinkt. Überprüfe AVG Win/Loss Ratio."
+- [ ] **Strategiehopping-Schutz:** Wenn Nutzer in Phase 2/3 (Drawdown-Phase) die Strategie wechseln will → KI zeigt historisch: "Diese Strategie hat solche Phasen 3x erlebt, danach 40% Gewinn. Jetzt ist Phase X/5." Geduldsförderer.
+- [ ] **Stop-Enforcer:** Nutzer kann Stop nicht manuell verschieben; nur System kann anpassen nach neuer Konfirmation.
+
+**Bitcoin-Warnung (Dirk):**
+- Pattern-Ebene: Bewegung-Flagge-Bewegung-Flagge wie 2021 erkannt
+- Crash-Szenario: 40-50K USD möglich (30-40% Abgabe)
+- Trigger: Wenn Bitcoin nicht über 77K kommt → Wahrscheinlichkeit steigt
+- **Alberts Bewertung:** WATCHLIST, nicht SHORT jetzt — braucht mehr Konfirmation. Signale 77K+-Test + Abweis oder Makro-News (Fed-Pivot) als Catalyst.
+
+---
+
+### Lars Eriksen: „Strukturelle Trends vs. Zyklen"
+
+**Kern-Methodik:**
+1. **Strukturelle Trends erkennen** — externe Anker (regulatorisch, tech, geo, demo). Korrektionen sind sentimentgetrieben, nicht fundamental. Beispiel: Energieinfrastruktur-Engpässe (2-4 Jahre backlog) sind echt, nicht wechselbar.
+2. **In Korrektionen kaufen, nicht nach Ausbruch** — Timing ist psychologisch: Dalbar-Studie zeigt Retail-Anleger verdienen 3,9% vs. S&P 500 10,9% (Timing-Fehler). Eriksen hält 65,7% Cash → wartet auf Signal, dann zugreift.
+3. **Charttechnische Signale als Trigger** — nicht emotion-getrieben.
+
+**Drei strukturelle Thesen:**
+
+| These | Stärke | Timing | TradeMind-Integration |
+|-------|--------|--------|----------------------|
+| **Linde (LIN) — Helium-Engpass** | ⭐⭐⭐⭐⭐ | Jetzt kaufen (Korrektur) | Long-Bias in Halbleiter-Supply-Chain. Helium-Knappheit 2026-2028 = Margin-Boom |
+| **Energieinfrastruktur (Prysmian u.a.)** | ⭐⭐⭐⭐⭐ | Multi-Jahr-Trend, buyable in dips | AI-Strombedarf +160% bis 2030. Transformatoren-Backlog 2-4 Jahre. EU-Energieunabhängigkeit = Budget |
+| **AWK (Utility, defensiv)** | ⭐⭐⭐ | WAIT für Zinsklarheit | Timing fragwürdig bei EZB-Zinsrisiken. Eher entry bei 10-15% Rückgang |
+
+**Für TradeMind-Design:**
+- [ ] **Strukturelle Trend Scanner:** Automatisch Engpässe + Backlog-Daten tracken (Prysmian, Transformatoren-Hersteller)
+- [ ] **Helium-Knappheit Monitor:** Qatar-Produktionsstatus + Linde-Reservenbestände (makro-sense-check)
+- [ ] **Energy-Infra Sektor-Allokation:** Auto-Overweight in Long-Calls bei Prysmian, Netzbauer, Datenzentrum-REITs
+- [ ] **Defensive Rotation bei Zinsanstieg:** AWK, Wasser-Utilities nicht blind kaufen; bessere setups in defensiven Rotation-Phasen
+
+**Alberts Gesamtintake:**
+- Dirk warnt vor **Psycho-Traps** (Win-Rate, Hopping, Disziplin)
+- Eriksen zeigt **strukturelle Chancen** + **Timing-Regeln** (wait for signal, nicht emotion)
+- **Kombo für TradeMind:** KI als "Disziplin-Enforcer" + "Trend-Spotter" = Nutzer lernt Geduld + Pattern-Erkennung gleichzeitig
+- **Bitcoin:** KEIN Trade jetzt, aber als Medium-Term-Macro-Risiko monitoren (Hedging-Hedge-Kandidat bei Eriksen: wenn Energieinfra-Rally + Zinsrisiken → kleine Short BTC als Macro-Hedge legitim)

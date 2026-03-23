@@ -1,0 +1,17 @@
+[2026-03-23 02:00] Neue Trades: 5 | Offen: 5
+[2026-03-23 02:20] Neue Trades: 2 | Offen: 5
+[2026-03-23 02:25] Neue Trades: 1 | Offen: 5
+[2026-03-23 02:55] Neue Trades: 3 | Offen: 5
+[2026-03-23 03:00] Neue Trades: 1 | Offen: 5
+[2026-03-23 07:45] Neue Trades: 1 | Offen: 5
+[2026-03-23 08:20] Neue Trades: 1 | Offen: 5
+[2026-03-23 08:50] Neue Trades: 1 | Offen: 5
+[2026-03-23 10:55] Neue Trades: 2 | Offen: 5
+[2026-03-23 11:15] Neue Trades: 1 | Offen: 5
+[2026-03-23 11:20] Neue Trades: 1 | Offen: 5
+[2026-03-23 11:40] Neue Trades: 1 | Offen: 5
+[2026-03-23 11:50] Neue Trades: 1 | Offen: 5
+[2026-03-23 12:25] Neue Trades: 2 | Offen: 5
+[2026-03-23 12:31] Neue Trades: 2 | Offen: 5
+[2026-03-23 12:35] Neue Trades: 1 | Offen: 5
+[2026-03-23 12:50] Neue Trades: 2 | Offen: 5

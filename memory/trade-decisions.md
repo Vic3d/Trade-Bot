@@ -360,3 +360,11 @@ Ziel: Victor kann nachvollziehen ob Albert richtig lag und warum.
 ## 2026-03-20 — L&G Cyber Security ETF (A14WU5) GESCHLOSSEN
 **Entry:** 28.80€ | **Exit:** ~Stop-Bereich | **P&L:** ca. -9-10%
 **Lektion:** Conviction 39, -9% seit Entry — Position hätte früher geschlossen werden sollen.
+
+## 2026-03-23 — EQNR Stop ausgelöst
+- **Entry:** 27,04€ | **Exit:** 34,46€ | **P&L:** +27,4%
+- **Stop:** 34,50€ (nachgezogen 20.03.) → ausgelöst mit Slippage auf 34,46€
+- **Haltedauer:** ~3 Wochen
+- **Kontext:** Bearischer Markt am 23.03., Iran-Krise Phase-1-Schock (Asien -4-6% über Nacht)
+- **Lesson:** Trailing Stop hat perfekt funktioniert — Entry 27€, Stop hochgezogen auf 34,50€, +27% mitgenommen. Klassischer Phase-1-Schock: alles wird verkauft, auch Gewinner. Stop hat Gewinne gesichert.
+- **Wiedereintritt:** Victor beobachtet für späteren Re-Entry

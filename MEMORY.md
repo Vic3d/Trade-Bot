@@ -117,7 +117,9 @@
 
 ### Josh Dashboard (Gebr. Schutzeichel Back-Office)
 - **Status:** ✅ Live auf Vercel (16.03.2026 neu gebaut + deployed)
-- **URL:** https://josh-dashboard-three.vercel.app
+- **URL:** https://sanit-r.vercel.app ← EINZIGE RICHTIGE URL
+- **⚠️ GitHub Push IMMER:** `git push vic3d main` mit `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_vic3d -o StrictHostKeyChecking=no"`
+- **Richtiger Repo:** `Vic3d/Sanit-r-` (nicht bb-de/josh-dashbord — das ist falsch!)
 - Victor arbeitet als Back-Office bei Josh (SHK-Betrieb Gebr. Schutzeichel)
 - Aufgaben: B&O Portal (bohwk.de), Hero Software, Superchat überwachen
 - Dashboard: `/data/.openclaw/workspace/josh-dashboard/` (Vercel Serverless, kein Playwright)

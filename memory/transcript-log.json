@@ -23,7 +23,7 @@
     "filename": "eriksen-athtargets-2026-03-18.txt",
     "processed_at": "2026-03-20T20:01:14.826736+00:00",
     "had_insights": true,
-    "summary": "Scaling-Methodik, Hedging als Kontr\u00e4r-Signal, Risk-Management (Private Credit vermeiden)"
+    "summary": "Scaling-Methodik, Hedging als Konträr-Signal, Risk-Management (Private Credit vermeiden)"
   },
   "dirk7h-kardinalsfehler-2026-03-22.txt": {
     "timestamp": "2026-03-22T20:00:00Z",
@@ -38,5 +38,12 @@
     "had_insights": true,
     "insights": "Phase 1/2 Makro-Modell, Energieunabhängigkeit Dekaden-Trend, Brent-WTI Spread als Signal",
     "stored": "projekt-tradingtool.md (Woche 12/2026) + extrahiert zu .txt"
+  },
+  "eriksen-rendite-spezialisten-2026-03-22.txt": {
+    "timestamp": "2026-03-23T08:01:55.788616+00:00",
+    "status": "analysiert",
+    "had_insights": true,
+    "insights": "Strukturelle Trends (Helium-Knappheit, Energieinfra-Engpass, Linde long), Timing-Psychologie (Dalbar-Studie 3,9% vs 10,9%), 65,7% Cash-Quote",
+    "stored": "projekt-tradingtool.md (Woche 12/2026)"
   }
 }

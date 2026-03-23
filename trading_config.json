@@ -52,18 +52,6 @@
       "size_eur": 2500,
       "conviction": 65
     },
-    "EQNR": {
-      "name": "Equinor ASA",
-      "yahoo": "EQNR.OL",
-      "currency": "NOK",
-      "entry_eur": 27.04,
-      "stop_eur": 34.5,
-      "targets_eur": [],
-      "alerts": {},
-      "notes": "Stop auf 30€ nachgezogen 16.03. | Buy-back Q1 läuft",
-      "size_eur": 2500,
-      "conviction": 70
-    },
     "BAYN.DE": {
       "name": "Bayer AG",
       "onvista": "https://www.onvista.de/aktien/Bayer-Aktie-DE000BAY0017",
@@ -544,5 +532,16 @@
     "OXY-HL": 0.25,
     "OXY-MOS": 0.3,
     "HL-MOS": 0.4
+  },
+  "closed_positions": {
+    "EQNR": {
+      "name": "Equinor ASA",
+      "entry_eur": 27.04,
+      "exit_eur": 34.46,
+      "pnl_pct": 27.4,
+      "closed_date": "2026-03-23",
+      "reason": "Stop ausgelöst, bearischer Markt (Iran-Krise Phase-1-Schock)",
+      "watchlist_reentry": true
+    }
   }
 }
