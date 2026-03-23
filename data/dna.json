@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-21T09:03:41Z",
+  "updated": "2026-03-23T15:19:05.585215",
   "stats": {
     "total": 22,
     "open": 7,
@@ -197,24 +197,6 @@
     "avg_hold_days": 0.6
   },
   "open_positions": [
-    {
-      "ticker": "NVDA",
-      "strategy": "S3",
-      "entry": 167.88,
-      "stop": null,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-02-25"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "S3",
-      "entry": 351.85,
-      "stop": 338.0,
-      "target": null,
-      "trade_type": "real",
-      "entry_date": "2026-02-25"
-    },
     {
       "ticker": "PLTR",
       "strategy": "S3",
@@ -462,6 +444,21 @@
       "exit_date": "2026-03-23 11:50",
       "pnl_pct": 0.91,
       "status": "WIN"
+    }
+  ],
+  "closed_trades": [
+    {
+      "ticker": "EQNR",
+      "strategy": "S1",
+      "entry": 27.04,
+      "stop": 30.0,
+      "target": null,
+      "trade_type": "real",
+      "entry_date": "2026-02-25",
+      "exit": 34.46,
+      "pnl_pct": 27.4,
+      "close_date": "2026-03-23",
+      "close_reason": "Stop ausgelöst (Iran-Krise Phase-1-Schock)"
     }
   ]
 }
