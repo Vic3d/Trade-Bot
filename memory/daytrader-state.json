@@ -1,6 +1,6 @@
 {
-  "daily_pnl": -95.33619999999914,
-  "daily_trades": 23,
+  "daily_pnl": -291.34830000000034,
+  "daily_trades": 41,
   "last_date": "2026-03-23",
   "signals_today": [
     "0883.HK",
@@ -30,8 +30,21 @@
     "ANTO.L",
     "FRES.L",
     "FRES.L",
-    "NWG.L"
+    "NWG.L",
+    "RIO.L",
+    "NWG.L",
+    "MTX.DE",
+    "RIO.L",
+    "HEI.DE",
+    "ZAL.DE",
+    "NEM",
+    "ZAL.DE",
+    "HAL",
+    "NEM",
+    "HAL",
+    "ABBV",
+    "BA"
   ],
-  "scanned": 272,
-  "signals_found": 305
+  "scanned": 295,
+  "signals_found": 353
 }

@@ -285,3 +285,58 @@ Das perfekte System gibt es nicht — aber einen disziplinierten Umgang mit dem 
 - **TradeMind:** WPR als monatliches Signal-Check für alle Watchlist-Positionen
 
 ---
+
+---
+
+## Lars Eriksen — 23.03.2026 (Gold-Korrektur)
+
+**Quelle:** Transcript eriksen-2026-03-23-gold.txt
+**Kontext:** Gold –5,6% an dem Tag, Trump de-eskaliert Iran, Brent –14%
+
+### METHODIK
+
+**1. Antizyklisches Kaufen — Voraussetzung: vorher definiertes Szenario**
+- Regel: Man darf nur antizyklisch kaufen wenn man das Szenario VOR dem ersten Kauf definiert hat
+- "Ist Gold in 2-3 Jahren höher?" → Ja → Also kaufe ich in Korrekturen nach
+- Ohne vorab definierte These ist antizyklisches Kaufen kein Konzept sondern Hoffnung
+- Gilt für Victor: Jede Position braucht eine ausformulierte These BEVOR der erste Kauf
+
+**2. Seitenlinie = Rendite-Killer (mit Datenbasis)**
+- 30 Jahre US-Privatanleger-Daten: Wer "an die Seitenlinie tritt" kauft meist NACH der Erholung
+- Die 10 besten Tage eines Jahrzehnts passieren oft kurz nach großen Korrekturen
+- Wer diese 10 Tage verpasst, halbiert seine Langfrist-Rendite
+- Albert-Schluss: Gilt für Langfrist-Positionen. Kurzfristige Trades (EQNR) sind anders — da ist aktives Stop-Management korrekt.
+
+**3. Warum Gold in Krisen fällt (Framework)**
+- Wenn alles fällt → auch stark gelaufene Assets werden verkauft (erhöhte Investitionsquoten = mehr zu verkaufen)
+- Inflationsangst → Zinssenkungen werden ausgepreist → Realrenditen steigen → bärisch für Gold
+- Dollar wertet auf (in Krisen: Flight to Safety) → Gold in anderen Währungen teurer → weniger Nachfrage
+- Wichtig: Gold-Fundis ≠ kurzfristige Gold-Kursbewegung. Beide können gleichzeitig stimmen.
+
+**4. Überkauft/Überverkauft als Entry-Signal (nicht Charttechnik)**
+- Eriksen kauft nicht auf Chartsignale sondern auf "Erstmals seit Jahren überverkauft"
+- RSI-artiger Blick auf historische Extrema, nicht auf kurzfristige Muster
+- Dann: Tranche kaufen, Weiteres Tief möglich (+5-10%) akzeptieren, nicht Boden erwischen versuchen
+
+**5. Tranchenweise Entry statt perfekter Einstieg**
+- "Ich kaufe, wissend dass ich vielleicht nicht das Tief erwische"
+- Kapital für Nachkauf reservieren wenn möglich
+- Perfekter Einstieg ist Glück, nicht Skill — Skill ist die Häufigkeit des richtigen Kaufbereichs
+
+**6. Positionstypen trennen**
+- Eriksen hat: aktives Depot (Trading, nimmt Gewinne mit) vs. Zukunftsdepot (Langfrist, hält durch)
+- Im Zukunftsdepot keine Finger-Trading-Gedanken ("hätte bei 300 verkaufen können")
+- Konsequenz für Albert+Victor: Strategien müssen klar sein: ist das ein Trade (aktiver Stop) oder Langfrist (durchhalten mit Thesis)
+
+### BEGRÜNDETE THESE (Eriksen's Kaufargument Royal Gold / RGLD)
+
+- **Ticker:** Royal Gold (RGLD), Goldstreaming-/Royalty-Unternehmen
+- **Argument:** In vordefinierter Kaufzone, Gold strukturell bullisch durch Schuldenberg + Fiat-Entwertung
+- **Zeitrahmen:** 2-3 Jahre
+- **Albert's Einschätzung:** Royalty-Modell interessant (kaum Produktionsrisiken, partizipiert am Goldpreis). Aber: heute –~20% von 260 auf 207 — wenn Ceasefire Iran und Dollar weiter stark, könnte noch tiefer gehen. Strukturell überzeugend, kurzfristig weiteres Risiko. Watchlist für Victor: A14WU5 / First Majestic Silver (AG) ist ähnliche Logik aber Silber.
+
+### ÜBERTRAGBAR AUF UNSER SYSTEM
+
+- Langfrist-Positionen (NVDA, MSFT, PLTR) → Eriksen-Logik: nicht panikverkaufen, These prüfen nicht Kurs
+- Kurzfrist-Trades (EQNR, Paper Trades) → aktiver Stop ist korrekt, Eriksen würde zustimmen
+- Gold/Rohstoffe als Portfoliobaustein: bei nächstem Crisi-Crash als antizyklischen Buy prüfen

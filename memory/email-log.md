@@ -188,3 +188,17 @@
 | 20.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 19.03.2026 18:12 |
 | 20.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 19.03.2026 18:12 |
 | 20.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 19.03.2026 18:12 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 11:22 |
+| 23.03.2026 14:00 | **AUFTRAG** | TSP-AM-Nord Als Anlage erhalten Sie: BuO_Auf... | 23.03.2026 11:20 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 10:47 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 10:17 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 09:12 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 08:57 |
+| 23.03.2026 14:00 | **AUFTRAG** | info/gebr-schutz... WG: Auftrag Bieberberg 88 | 23.03.2026 03:47 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 21.03.2026 10:47 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 21.03.2026 10:47 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 21.03.2026 10:43 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 20.03.2026 19:57 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 20.03.2026 19:42 |
+| 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 20.03.2026 19:37 |
+| 23.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 15:22 |

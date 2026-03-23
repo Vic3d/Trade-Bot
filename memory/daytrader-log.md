@@ -15,3 +15,15 @@
 [2026-03-23 12:31] Neue Trades: 2 | Offen: 5
 [2026-03-23 12:35] Neue Trades: 1 | Offen: 5
 [2026-03-23 12:50] Neue Trades: 2 | Offen: 5
+[2026-03-23 13:20] Neue Trades: 1 | Offen: 5
+[2026-03-23 14:01] Neue Trades: 1 | Offen: 5
+[2026-03-23 14:05] Neue Trades: 1 | Offen: 5
+[2026-03-23 14:25] Neue Trades: 1 | Offen: 5
+[2026-03-23 15:35] Neue Trades: 1 | Offen: 5
+[2026-03-23 16:01] Neue Trades: 1 | Offen: 5
+[2026-03-23 16:10] Neue Trades: 1 | Offen: 5
+[2026-03-23 16:20] Neue Trades: 1 | Offen: 5
+[2026-03-23 16:35] Neue Trades: 2 | Offen: 5
+[2026-03-23 16:55] Neue Trades: 1 | Offen: 5
+[2026-03-23 17:01] Neue Trades: 2 | Offen: 5
+[2026-03-23 21:45] EOD Close: 5 Trades, Daily P&L: -291€

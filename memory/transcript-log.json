@@ -23,20 +23,20 @@
     "filename": "eriksen-athtargets-2026-03-18.txt",
     "processed_at": "2026-03-20T20:01:14.826736+00:00",
     "had_insights": true,
-    "summary": "Scaling-Methodik, Hedging als Konträr-Signal, Risk-Management (Private Credit vermeiden)"
+    "summary": "Scaling-Methodik, Hedging als Kontr\u00e4r-Signal, Risk-Management (Private Credit vermeiden)"
   },
   "dirk7h-kardinalsfehler-2026-03-22.txt": {
     "timestamp": "2026-03-22T20:00:00Z",
     "status": "analysiert",
     "had_insights": true,
-    "insights": "3 Kardinalsfehler (Trefferquote vs Gewinn, Strategiehopping, Stop-Brüche) + Bitcoin Crash-Szenario 40-50k USD",
+    "insights": "3 Kardinalsfehler (Trefferquote vs Gewinn, Strategiehopping, Stop-Br\u00fcche) + Bitcoin Crash-Szenario 40-50k USD",
     "stored": "projekt-tradingtool.md (Woche 12/2026)"
   },
   "eriksen-rendite-spezialisten-2026-03-22.pdf": {
     "timestamp": "2026-03-22T20:00:00Z",
     "status": "analysiert",
     "had_insights": true,
-    "insights": "Phase 1/2 Makro-Modell, Energieunabhängigkeit Dekaden-Trend, Brent-WTI Spread als Signal",
+    "insights": "Phase 1/2 Makro-Modell, Energieunabh\u00e4ngigkeit Dekaden-Trend, Brent-WTI Spread als Signal",
     "stored": "projekt-tradingtool.md (Woche 12/2026) + extrahiert zu .txt"
   },
   "eriksen-rendite-spezialisten-2026-03-22.txt": {
@@ -45,5 +45,30 @@
     "had_insights": true,
     "insights": "Strukturelle Trends (Helium-Knappheit, Energieinfra-Engpass, Linde long), Timing-Psychologie (Dalbar-Studie 3,9% vs 10,9%), 65,7% Cash-Quote",
     "stored": "projekt-tradingtool.md (Woche 12/2026)"
+  },
+  "ce173403226815db0f579ba957d89612": {
+    "filename": "dirk7h-kardinalsfehler-2026-03-22.txt",
+    "processed_at": "2026-03-23T12:04:29.186531+00:00",
+    "had_insights": true
+  },
+  "0aaa51db9904c825f64bbd8a12546b2e": {
+    "filename": "eriksen-rendite-spezialisten-2026-03-22.txt",
+    "processed_at": "2026-03-23T12:05:32.321586+00:00",
+    "had_insights": true
+  },
+  "010c99b16ef33c3e64953cd5a59a381f": {
+    "filename": "eriksen-rendite-spezialisten-2026-03-22.pdf",
+    "processed_at": "2026-03-23T12:05:32.321935+00:00",
+    "had_insights": false
+  },
+  "eriksen-2026-03-23-gold.txt": {
+    "hash": "f718035117d2f4975b2fd02c5611f27d",
+    "processed": "2026-03-23T20:33",
+    "source": "Lars Eriksen"
+  },
+  "f7180351": {
+    "filename": "eriksen-2026-03-23-gold.txt",
+    "processed_at": "2026-03-23T20:01:05.962220+00:00",
+    "had_insights": true
   }
 }

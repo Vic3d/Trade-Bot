@@ -1,5 +1,5 @@
-# Overnight Context — 20.03.2026
-*Erstellt: 2026-03-20 21:45 UTC | Für Morgen-Briefing 08:00*
+# Overnight Context — 23.03.2026
+*Erstellt: 2026-03-23 21:45 UTC | Für Morgen-Briefing 08:00*
 
 ---
 
@@ -9,19 +9,16 @@
 — keine Alerts heute
 
 ### Top-Performer heute
-- Equinor ASA (EQNR): 35.68€ (+30.0%)
-- iShares Biotech ETF (A2DWAW): 7.04€ (+0.5%)
+- Palantir (PLTR): 138.45€ (+4.8%)
+- VanEck Oil Services ETF (A3D42Y): 28.18€ (+1.0%)
+- iShares Biotech ETF (A2DWAW): 7.07€ (+1.0%)
 
 ### Underperformer / Verlierer
-- Invesco Solar Energy ETF (A2QQ9R): 9.69€ (-56.8%)
-- L&G Cyber Security ETF (A14WU5): 26.00€ (-9.7%)
-- Bayer AG (BAYN.DE): 37.65€ (-5.8%)
+— keine
 
 ## Kritische Positionen (Stop <3% entfernt)
 
-- ⚠️ Palantir (PLTR): 2.4% über Stop 127.00€
-- ⚠️ Bayer AG (BAYN.DE): -0.9% über Stop 38.00€
-- ⚠️ L&G Cyber Security ETF (A14WU5): 0.2% über Stop 25.95€
+— alle Stops sicher
 
 ## Geopolitik-Lage (aus Strategie-Status)
 
@@ -35,9 +32,9 @@
 
 ## Makro-Schlusskurse
 
-- VIX: 26.78
-- WTI: $98.09
-- EUR/USD: 1.1575
+- VIX: 26.15
+- WTI: $88.87
+- EUR/USD: 1.1617
 
 ## Entscheidungen die morgen anstehen
 

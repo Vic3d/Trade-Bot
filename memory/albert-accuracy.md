@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-03-22 23:00 | Learning System v1.0*
+*Generiert: 2026-03-23 23:00 | Learning System v1.0*
 
 ---
 
@@ -9,21 +9,22 @@
 |---|---|---|
 | Startkapital | 1000€ | — |
 | Cash | 71.36€ | — |
-| Investiert | 100.00€ | — |
-| Portfolio-Wert | 171.36€ | — |
-| Realisierte P&L | -30.43€ | — |
-| Offene Positionen | 1 | — |
-| Geschlossene Positionen | 13 | — |
+| Investiert | 5152.00€ | — |
+| Portfolio-Wert | 5223.36€ | — |
+| Realisierte P&L | -18.07€ | — |
+| Offene Positionen | 2 | — |
+| Geschlossene Positionen | 14 | — |
 
-**Paper Win-Rate:** 0% (0W / 13L)
+**Paper Win-Rate:** 7% (1W / 13L)
 
 ## 🏆 Strategie-Ranking (nach Expectancy)
 
 | Strategie | Trades | WR | Expectancy | P&L |
 |---|---|---|---|---|
+| PS1 (Iran/Öl-Geopolitik) | 4 | 25% | 0.00 | +11.16€ |
 | PS5 (Dünger/Agrar-Superzyklus) | 2 | 0% | 0.00 | -332.28€ |
-| PS1 (Iran/Öl-Geopolitik) | 3 | 0% | 0.00 | -9.00€ |
 | new (new) | 1 | 0% | 0.00 | -3.00€ |
+| DT4 (News-Catalyst) | 41 | 44% | -0.13 | -291.33€ |
 | PS3 (NATO/EU-Rüstung) | 4 | 0% | -0.58 | -19.73€ |
 | PS4 (Edelmetalle/Miner) | 3 | 0% | -4.30 | -15.10€ |
 
@@ -45,9 +46,9 @@
 
 ## 📚 Top Lektionen
 
-- **MOS** (LOSS): Stop korrekt ausgelöst bei 22.02. Regel befolgt.
-- **PAAS** (LOSS): CRV 1.5:1 war zu niedrig — schlechtes Setup.
-- **HL** (LOSS): Stop korrekt ausgelöst bei 15.20. Regel befolgt.
+- **OXY** (WIN): Win trotz schwachem CRV 1.5:1. Luck oder Thesis?
+- **7203.T** (LOSS): Stop korrekt ausgelöst bei 17.67. Regel befolgt.
+- **1605.T** (LOSS): Stop korrekt ausgelöst bei 24.36. Regel befolgt.
 
 ---
 *Nächste Evaluierung: Manuell via `python3 scripts/learning_system.py full`*

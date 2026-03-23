@@ -1549,3 +1549,249 @@ Eriksens Report ist ein Master-Klasse in "Makro-Framing". Phase 1/2 ist direkt a
 - Eriksen zeigt **strukturelle Chancen** + **Timing-Regeln** (wait for signal, nicht emotion)
 - **Kombo für TradeMind:** KI als "Disziplin-Enforcer" + "Trend-Spotter" = Nutzer lernt Geduld + Pattern-Erkennung gleichzeitig
 - **Bitcoin:** KEIN Trade jetzt, aber als Medium-Term-Macro-Risiko monitoren (Hedging-Hedge-Kandidat bei Eriksen: wenn Energieinfra-Rally + Zinsrisiken → kleine Short BTC als Macro-Hedge legitim)
+
+
+---
+## Transcript-Analyse: Dirk 7H (Tradermacher) (2026-03-23)
+*Quelle: dirk7h-kardinalsfehler-2026-03-22.txt*
+
+## Dirk 7H (Tradermacher) — 2026-03-22 — 3 Kardinalsfehler im Trading
+
+**Methodik-Erkenntnisse:**
+- **Diagnose-Checkliste als Stop-Loss-System:** 3 Fehler mit Single-Trigger-Logik (1 von 3 reicht). Kein Gradual-Scoring — hartes Entscheidungsframework (Trading fortsetzen vs. stoppen). Ungewöhnlich konsequent.
+- **Trefferquote ≠ Profitabilität:** Hohe Win-Rate (60-70%) bei sinkendem Konto = Warnsignal. Ursache: Gewinne werden zu früh realisiert, Verluste laufen gelassen. Die Trefferquote befriedigt das Ego, nicht das Konto.
+- **Strategiehopping-Diagnose:** Jede Strategie hat Phasen — in Drawdown-Phasen wechseln ist garantierter Weg zur Kontopleite, weil man immer zur falschen Zeit wechselt. Lösung: Marktumfeld analysieren, wann Strategie gut/schlecht funktioniert, dann Geld zusammenhalten statt wechseln.
+
+**Pattern-Erkennung:**
+- **Bewegung-Flagge-Bewegung-Flagge (Abwärtstrend):** Klassisches Trendsetzungspattern im Bärmarkt. Gültig: unter allen gleitenden Durchschnitten, bärische Tendenz bestätigt. Angewendet bei Bitcoin-Analyse.
+- **Technische Ähnlichkeit 2021:** Bitcoin-Topbildung + Korrektur-Pattern strukturell ähnlich zu 2021 — beide Male: Topbildung über langen Zeitraum, erster Push nach unten, dann Flaggenbildung am GD.
+
+**Risiko-Regeln:**
+- **Stop-Loss-Integrität:** Stops werden nie verschoben, nie ignoriert. Wenn einmal gebrochen → Trading sofort stoppen (ganzer Tag oder ganze Woche), erst wieder starten wenn emotional stabil.
+- **Stop-Loss trotz "Stoppfischen" einhalten:** 5x gefischt werden ist besser als einmal das Konto ruinieren. Stops schützen vor den großen Dramen.
+- **Drawdown-Phase = Positionsgröße runter:** In schlechter Strategie-Phase nicht aufgeben, sondern Risiko reduzieren und durchstehen.
+
+**Psychologie:**
+- **Recht haben vs. Geld verdienen:** Hohe Trefferquote bei sinkendem Konto = Trader sucht persönliche Bestätigung, nicht Performance. Klassische Ego-Falle.
+- **Strategiehopping-Trigger:** Entsteht meist in Drawdown-Phasen durch Social-Media-Ablenkung ("andere gewinnen gerade"). FOMO führt zu prozyklischem Wechsel zum schlechtesten Zeitpunkt.
+- **Stop-Loss als emotionaler Trigger:** Wenn Stop gebrochen → emotional angekratzt → Handeln stoppen bis emotional in der Spur. Disziplin resetten.
+
+**Nicht tun (Red Flags):**
+- Gewinne früh nehmen und Verluste laufen lassen (invertiertes Verhältnis)
+- Strategie wechseln weil andere gerade besser performen
+- Stops verschieben oder ignorieren ("nur diesmal")
+- Trades zum perfekten System suchen — das perekte System gibt es nicht
+
+**Begründete These:**
+
+### These: Bitcoin (BTC) — short/bearish
+**Argumente der Quelle:**
+- Unter allen gleitenden Durchschnitten, klare bärische Tendenz
+- Technische Struktur ähnlich zu 2021 (Topbildung, Flagge-Bewegung-Flagge)
+- Makroökonomisch ähnliche Konstellation wie 2022 (geopolitische Spannungen)
+- Erstes Flaggensignal bereits ausgelöst (Push nach unten am GD)
+- Hoch bei ~76.250 USD als potenzielles Top
+
+**Crashziel:** 40.000–50.000 USD (30-40% Correction)
+**Invalidierung:** Nachhaltiger Aufenthalt über 77.000 USD
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung mit eigenen Daten: teilweise — technische Struktur plausibel, aber keine Newswire-Bestätigung für Makro-Ähnlichkeit zu 2022
+- Gegenargumente: Institutionelle BTC-Adoption 2026 ist strukturell anders als 2022; ETF-Flows fehlen in der Analyse
+- Eigener Schluss: schwach als Trading-These für Victor's Portfolio (kein Krypto-Trading laut Strategie), aber das Pattern selbst (Flagge-Bewegung im Abwärtstrend) ist methodisch wertvoll
+- Empfehlung: ablehnen für Portfolio-Aktion — beobachten als Methodik-Lernbeispiel
+
+**Alberts Gesamteinschätzung:**
+Stärkstes Takeaway: Die Stop-Loss-Disziplin-Regel (1x gebrochen = ganzen Tag stoppen) ist unmittelbar portierbar auf Victor's Trading. Passt direkt zu Strategie S als emotionale Checkregel.
+
+---
+## Transcript-Analyse: Lars Eriksen (Rendite Spezialisten) (2026-03-23)
+*Quelle: eriksen-rendite-spezialisten-2026-03-22.txt*
+
+## Lars Eriksen (Rendite Spezialisten) — 2026-03-22 — Energieunabhängigkeit + Depotstrategie
+
+**Methodik-Erkenntnisse:**
+- **Strukturelle Trends > Zyklische Bewegungen:** Kern-Framework: Identifiziere Trends mit externalem Anker (regulatorisch, demographisch, technologisch, geopolitisch) — diese Anker ändern sich nicht durch kurzfristiges Sentiment. Korrekturen innerhalb solcher Trends sind meist sentimentgetrieben, nicht fundamentalgetrieben.
+- **Kaufen in Korrekturen, nicht nach Ausbruch:** Belegt mit Dalbar-Studie: US-Privatanleger erzielten über 30 Jahre 3,9%/Jahr vs. 10,9% S&P — Differenz entstand fast vollständig durch prozyklisches Timing. Systematische Umsetzung: charttechnisches Signal abwarten, dann kaufen.
+- **Phase 1 / Phase 2 Schock-Unterscheidung:** Bei Makroschocks erst Phase 1 (Inputkosten) dann Phase 2 (Wachstumsschaden, sinkender Konsum) — Phase 2 oft noch nicht eingepreist. Timing-Framework für Einstieg: kaufe wenn Phase 1 läuft, bevor Phase 2 eingepreist wird.
+- **Hohe Cashquote als aktive Strategie:** 65,7% Cash aktuell — explizit als Teil des Plans, nicht als Unentschlossenheit. In volatilen Märkten kein Aktionismus, sondern auf Kaufsignale warten.
+- **Frühindikator-System:** FedEx als Realwirtschafts-Indikator (Logistikvolumen), Koreanische Handelsdaten als früheste Globaldaten, Halbleiteroperationen als Tech-Stress-Indikator.
+
+**Pattern-Erkennung:**
+- **Bärische Hedge-Konzentration auf Indexebene:** Wenn institutionelle Short-Positionen sich auf Futures/Puts konzentrieren (nicht auf Einzeltitel), dann ist das Einzeltitel-Downside begrenzt. Plus: Angst vor Short-Squeeze bei Waffenstillstand hält aggressive Netto-Shorts in Schach — asymmetrisches Setup.
+- **"Schlechte Nachrichten = Gute Nachrichten" Regime:** Entsteht wenn starke Konjunkturdaten Fed-Zinssenkungshoffnungen zerstören. Aktuell wieder in diesem Regime. Wichtig für Reaktion auf Datenveröffentlichungen.
+
+**Risiko-Regeln:**
+- **Mentale Stops (nicht fest im Markt):** Eriksen nutzt ausschließlich mentale Stopp-Marken, keine harten Stops in Dauerläufer-Depots (Zukunfts-Depot, Zukunfts-Depot Plus). Begründung: Stopfischen bei Langfrist-Positionen vermeiden, aber Disziplin durch mentale Marken wahren.
+- **Ausgestoppte Position = Zukünftige Chance:** MSCI World Health Care ETF ausgestoppt mit -3,8% — Kommentar: "Diese Schwäche wird später vermutlich zu einer hochattraktiven Chance". Stop nicht als Fehler, sondern als Risiko-Reset.
+- **Volatilität = Teil des Plans:** Explizit kommuniziert. Depotinhaber werden nicht durch Volatilität zu Verkäufen getrieben, wenn die Strategie von Anfang an auf Volatilität ausgelegt war.
+
+**Psychologie:**
+- **Zyklisches Denken als teuerster Fehler:** Menschen kaufen zu spät im Aufschwung und verkaufen zu früh/spät in Korrekturen. Gegenmittel: strukturelle These formulieren BEVOR der Trade läuft, dann Korrekturen als Gelegenheit definieren statt als Bedrohung.
+- **"Hang zur Zyklik ist menschlich — aber er ist auch teuer":** Kernaussage. Wer ein charttechnisches Signal konsequent umsetzt, verdient langfristig — nicht weil er immer richtig liegt, sondern weil die Methode diszipliniert ist.
+
+**Nicht tun (Red Flags):**
+- Kaufen nach Ausbruch aus Korrektur (zahlt Momentum-Prämie)
+- Sich von Tail-Risks verrückt machen lassen (Extremszenarien nicht überbewerten)
+- Aktionismus aus Volatilität — ohne charttechnisches Signal kein Einstieg
+
+**Begründete Thesen:**
+
+### These 1: Cheniere Energy (LNG-Exporter, USA) — long strukturell
+**Argumente der Quelle:**
+- Qatar hat 12,8 Mio. Tonnen Jahreskapazität verloren (17% Exportkapazität), Wiederherstellungszeit 3-5 Jahre
+- LNG-Spotmarkt angespannt, Käufer (Italien, Südkorea, China) müssen alle gleichzeitig Ersatz suchen
+- US-LNG-Exporteure profitieren strukturell und auf Jahre — kein temporärer Effekt
+- Markt kaufte Cheniere aggressiv letzte Woche, kleine Korrektur als Einstieg abgewartet
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung: hoch — Qatar-Kapazitätsverlust und Hormus-Spannungen sind newswire-bestätigt
+- Gegenargument: Kurz- bis mittelfristig könnte Waffenstillstand zu schneller Normalisierung führen
+- Eigener Schluss: überzeugend — struktureller Angebotsschock mit 3-5 Jahren Reichweite, unabhängig vom Konflikt-Ende
+- Empfehlung: beobachten, in Watchlist — Einstieg bei charttechnischer Konsolidierung
+
+### These 2: American Water Works (AWK) — long defensiv
+**Argumente der Quelle:**
+- Größter regulierter Wasserversorger USA, 14 Mio. Menschen in 14 Bundesstaaten
+- Geschäftsmodell: staatlich genehmigte Tariferhöhungen, kein Konjunkturrisiko, kein Tech-Disruptor
+- 8,9% Gewinnwachstum 2025, Guidance 2026: +7-9% langfristig, Investment-Grade-Rating (S&P: A)
+- Geopolitische Unsicherheit treibt institutionelles Kapital in regulierte Versorger mit sichtbaren Cashflows
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung: hoch — defensiver Charakter passt zu aktueller Risikoaversion
+- Gegenargument: Steigende Renditen auf Staatsanleihen (→3%) könnten Versorger kurzfristig unter Druck setzen (Yield-Konkurrenz)
+- Eigener Schluss: teilweise überzeugend — gutes Fundament, aber Timing abhängig von Zinsrichtung
+- Empfehlung: beobachten
+
+### These 3: Linde AG — long strukturell
+**Argumente der Quelle:**
+- Weltgrößter Industriegasehersteller: Sauerstoff, Stickstoff, Wasserstoff, Helium
+- 35% des weltweiten Heliumangebots fließt durch Hormus (Qatar als Nebenprodukt LNG)
+- Helium kann nicht umgeleitet/aus Reserven ersetzt werden (entweicht in Atmosphäre)
+- Linde hält strategische Reserven + Verflüssigungsanlagen außerhalb Krisenregion + Langfristverträge
+- Halbleiterhersteller (TSMC, SK Hynix) brauchen Helium für Wafer-Kühlung — kritische Abhängigkeit
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung: hoch — Helium-Angebotsstruktur und Hormus-Abhängigkeit sind strukturell belegt
+- Gegenargument: Linde ist Large-Cap — Alpha-Potenzial begrenzt, Move bereits passiert
+- Eigener Schluss: überzeugend als defensive Absicherungsposition mit strukturellem Upside
+- Empfehlung: beobachten, in Watchlist
+
+### These 4: Kupfer — long strukturell
+**Argumente der Quelle:**
+- ICSG prognostiziert kumuliertes Angebotsdefizit >10 Mio. Tonnen bis 2035
+- Minen-Entwicklungszeit 16-17 Jahre von Entdeckung bis Produktion — Angebot kann nicht kurzfristig reagieren
+- Strukturelle Nachfrage: Energiewende, Rechenzentren, Elektrifizierung, Rüstung
+- Korrekturen (15-25%) entstehen durch Rezessionsängste/China-Enttäuschungen, nicht durch Fundamentalveränderung → Einstiegsgelegenheiten
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung: hoch — Angebotsstruktur langfristig gut dokumentiert
+- Gegenargument: China-Konjunkturschwäche könnte strukturelles Defizit zeitlich verschieben
+- Eigener Schluss: überzeugend als 3-5 Jahres-These, Korrekturen aktiv nutzen
+- Empfehlung: in Watchlist — Rio Tinto (RIO.L) und BHP (BHP.L) bereits im Eriksen-Depot mit +13.8% / +11.7%
+
+**Alberts Gesamteinschätzung:**
+Bestes Takeaway: Das Phase-1/Phase-2-Schock-Framework ist sofort anwendbar für Timing-Entscheidungen. Außerdem: Eriksen's Linde-These ist die stärkste strukturelle Einzelposition — Helium-Knappheit mit Linde als einzigem globalem Absicherungsmechanismus ist ein echtes Alleinstellungsmerkmal. Passt zu Strategie S (strukturelle Trends, nicht Zyklisches).
+
+---
+
+## Lars Eriksen (Rendite Spezialisten) — 2026-03-23 — Gold-Korrektur & Antizyklisches Denken
+
+*Quelle: eriksen-2026-03-23-gold.txt | 14.988 Zeichen | Einordnung: Lernfall für Psychologie + Szenario-basierte Position-Skalierung*
+
+**Methodik-Erkenntnisse:**
+
+- **Szenario definieren BEVOR der Trade läuft:** Eriksen stellt die Frage strukturiert: "Ist mein Langfrist-Szenario noch wahr?" (Fiat-Entwertung bei Hochverschuldung = ja). Falls ja → Korrektur = Kaufgelegenheit, nicht Beweis des Szenario-Fehlers. Dies ist Kern-Disziplin zwischen Emotionalem Exit vs. systematischem Nachkauf.
+
+- **Antizyklisches Timing mit Überverkauft-Signals:** Gold zum ersten Mal seit 2023 technisch überverkauft → Eriksen definiert das explizit als Green Light für Nachkauf. Nicht: "Ich warte bis es wieder steigt." Sondern: "Überverkauft + mein Szenario gültig = Kaufzone aktiv."
+
+- **Ignorieren von Kurzfrist-Rationalität bei Langfrist-Position:** Die Marktrealität (Inflationssorgen → Realrenditen steigen → Gold fällt) ist kurzfristig rational, ändert aber nicht die Longfrist-These (hohe Verschuldung → Fiat-Entwertung obligat). Das explizit zu trennen ist Disziplin.
+
+- **Mentale Stopp vs. Perfekten Boden:** "Ich kann den perfekten Boden nicht erwischen, und das ist OK." Eriksen kauft in Tranchen, wissend dass er noch tiefer könnte, aber weil sein Zeithorizont (2-3 Jahre) eine Korrektur von 5-10% vom überverkauften Punkt absorbiert.
+
+- **Nicht-Investiert-Sein hat Kosten:** Dalbar-Studie (30 Jahre US-Privatanleger): Wer an der Seitenlinie wartet bis "sich die Situation beruhigt" (Waffenstillstand, "Markt stabilisiert sich") verpasst durchschnittlich die 10 besten Markttage pro Dekade. Alein diese 10 Tage machten den Unterschied zwischen 10,9% und 3,9% Jahresrendite aus. Framework: Kaufen bei definierten technischen Signalen, NICHT bei "gefühlt sicheren Phasen."
+
+**Pattern-Erkennung:**
+
+- **Überverkauft-Markt mit fundamentaler Stärke:** Gold fällt auf 5,6% Tagesminusauf Inflationssorgen + Zinssteigerungen, aber: (1) großer Portfolioanteil ist niedrig im Gold historisch, (2) strukturelle Fallgründe (Dollaraufwertung, Realrenditen) sind zyklisch, nicht fundamentalverändernd. → Pattern: Zu schnelle Korrektur in Bezug auf echte Narrative-Änderung = Überreaktionssignal.
+
+- **Chartechnische Interessante Marke mit Downside-Szenario:** Eriksen erwähnt "chartechnisch interessante Marke" unterschreitet → könnte nochmal 5-10% schwächer werden. Aber: für Langfrist-Investor nicht relevant. Pattern: Es kann sein, dass das Tief noch nicht erreicht ist, aber der Kauf-Trigger (überverkauft + Szenario gültig) ist trotzdem aktiv.
+
+**Risiko-Regeln:**
+
+- **Unbegrenztes Kapital ist nicht erforderlich:** "Ich habe nicht unbegrenzt Kapital, aber das ist nicht die Frage." Eriksen skaliert nicht auf perfekten Boden, sondern auf "reicht mein Kapital für Tranchen in der Kaufzone" — Position-Sizing nach Verfügbarkeit, nicht nach Price-Action.
+
+- **Einzelaktie vs. ETF — Risikoabstufung:** Royal Gold (Einzelaktie) hat höheres Risiko → nur Nachkauf in definierten Kaufzonen. Gold ETF mit Goldaktien hat Lower Risk → mehr Flexibilität. Eriksen nutzt beide, aber mit unterschiedlicher Disziplin.
+
+- **Szenario-Fehler ist der echte Risiko:** "Wenn du davon ausgehst Gold geht auf 800 USD [Fehler-Szenario], dann hätte man auch vorher schon verkaufen sollen." Risiko ist nicht die Kursbewegung, sondern der fehlerhafte Szenario-Glaube.
+
+**Psychologie:**
+
+- **Antizyklik ist anstrengend:** Mehrfach unterstrichen. Es kostet Überwindung zu kaufen, wenn Kurse fallen und "alles ist rot." Eriksen bekennt das offen. Lösung: Strategie vorher definieren, dann emotional abstellen.
+
+- **Warum nicht jeden Tag ins Depot schauen wenn man langfristig investiert?** Kernfrage. Antwort: "Wenn du es sowieso nicht verkaufen würdest, unabhängig von Bewegungen, warum dich täglich damit belasten?" Psychologie: Die Reduzierung der Beobachtungsfrequenz senkt emotionale Volatilität.
+
+- **"Diesmal ist alles anders" ist Warnsignal:** Eriksen zitiert ironisch, dass Menschen immer denken "jetzt ist es anders, jetzt geht die Welt unter." Dann sagt er: "Klar, diesmal ist alles anders. Bis eines Tages die Welt wirklich untergeht. Und das wäre wahrscheinlich mal ein Event." = Reminder: Extreme Szenarien sind statistisch selten, sollten also nicht Basis des Plans sein.
+
+**Nicht tun (Red Flags):**
+
+- Gehen zur Seitenlinie und kaufen erst "wenn sich Lage beruhigt hat" (mathematisch teuer, Dalbar zeigt's)
+- Verkaufen einer überverkauften Position weil "es könnte noch 10% tiefer gehen" (ignoriert das Szenario, konzentriert sich aufs Timing)
+- Täglich ins Depot schauen bei Langfrist-Investitionen (mentale Belastung ohne Aktion)
+- Einzelszenarien wie "Gold auf 2800 USD Tief" als Handelsbasis nehmen — stattdessen Wahrscheinlichkeits-Framework nutzen
+
+**Begründete Thesen aus diesem Transkript:**
+
+### These 1: Gold (physisch oder GLD/IAU ETF) — Long, Strukturell
+**Argumente der Quelle:**
+- Kurzfristig: Realrenditen steigen durch Inflationssorgen + Zinssteigerungen → bearish für Gold
+- Mittelfristig: Ein-Krisen-Rückkehr zu Normalisierung → Zinserwartungen sinken → Realrenditen normalisieren
+- Langfristig: Hochverschuldete Staaten KÖNNEN keine positiven realen Renditen zulassen → Fiat-Entwertung ist Zwang, nicht Wahloption → Gold als Inflationsschutz essentiell
+- Timing: Gold technisch überverkauft (erstes Mal seit 2023) → Kaufzone aktiv
+- Zeithorizont: 2-3 Jahre
+- Erwartete Zielpreise: "Wenn sich Lage beruhigt, Gold wahrscheinlich $5000+" (heute ~$2400, also ~2x in 3 Jahren)
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung mit Daten: hoch — Schuldendynamiken sind strukturell belegt, Fiat-Entwertung ohne echte Zinsanpassung ist Konsens bei Macro-Analysten
+- Gegenargumente: (1) Zentralbanken könnten Zinsangleichungen doch zulassen (Risiko zu Szenario), (2) Technologische Deflation könnte strukturelle Schuldenprobleme vermindern
+- Alberts Schluss: überzeugend — Longfrist-Szenario hat hohe Wahrscheinlichkeit, Kurzfrist-Weakness ist methodisch Kaufgelegenheit
+- Empfehlung: **In Watchlist — auf Überverkauft-Signal (Eriksen definiert es) oder weitere -5% warten → dann Tranche (2-3% Portfolio) aufbauen**
+
+### These 2: Royal Gold Inc. (RGLD, Royalty-Unternehmen) — Long, strukturell
+**Argumente der Quelle:**
+- Goldaktien outperformen Gold-ETCs in Bullen-Märkten (Eriksen: +293% auf lange Position, jetzt -20% von Hoch = Nachkauf-Zone)
+- Royal Gold hat definierte Kaufzone seit Wochen → Kurssturz macht Zone erreichbar
+- Eriksen plant Nachkauf bei Öffnung US-Börse (14:30 CET) in weitere Tranche
+- Timing: Jetzt (23.03.2026) technisch überverkauft, strukturell gleiches Szenario wie Gold (Fiat-Entwertung)
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung: hoch — Royalty-Plays haben tatsächlich höheres Beta zu strukturellen Rohstoff-Bullenmärkten
+- Gegenargument: RGLD ist Einzelaktie mit operativen Risiken (Minenverträge, Währungen, Management)
+- Alberts Schluss: teilweise überzeugend — besser als direktes Gold, aber höhere Volatilität
+- Empfehlung: **Beobachten, NICHT jetzt kaufen (Victor tradet keine Rohstoff-Einzelaktien laut Strategie S) — aber als Methodik-Lernfall wertvoll: "Wie nutzen strukturelle Player von Bullen-Szenarios?"**
+
+**Alberts Gesamteinschätzung:**
+
+**Bestes Takeaway:** Eriksen's Antizyklisches-Denken-Framework ist Kern-Psychologie für erfolgreiche Langfrist-Trader. Die Kombination aus (1) Szenario-Definition vorher, (2) Überverkauft-Signals nutzen, (3) Tranchen-Scaling statt Perfektem-Boden-Warten ist direkt auf Victor's Strategie übertragbar. Gold selbst passt zu Strategie S als defensives Hedge. Die Methodik ist Gold (pardon) — nicht die Einzelposition.
+
+**Für Trading-Tool relevant:** Das "mentale Stop + langfristige Horizon + technische Überkauft/Überverkauft-Signals" Framework sollte in **Learning-Modul "Antizyklisches Timing"** wandern.
+## Woche 2026-13 — Paper Fund Learnings
+
+### Analyse 23.03.2026 (15 Trades)
+- Win Rate 80% täuscht: Avg Win/Loss = 0,80x → System verliert Geld trotz hoher WR
+- MOS –19,7% = größter Einzelschaden, Stop hat nicht funktioniert
+- PS3-Strategie: 3 Trades mit je ~0% Gewinn — zu schwacher Edge
+
+### Regeländerungen umgesetzt:
+1. **CRV min. 2:1** — kein Entry ohne mind. 2:1 Gewinn/Verlust-Verhältnis
+2. **Min. Position 200€** — Gebühren müssen <1,5% des Trades sein
+3. **PS3 gesperrt** — bis Score >60 in strategies.json
+4. **Stop-Integrity Monitor** — läuft bei jedem Check
+
+### Learning Loop Status:
+- Manuell (Albert+Victor review): ✅
+- Automatisch (System lernt selbst): ❌ noch nicht
+- Ziel: ab >20 Trades/Strategie → Auto-Analyse einbauen (Trigger-Korrelation, Strategy Health)
+
+### Eriksen-Bestätigung (heute):
+"Avg Win / Avg Loss = kritischerer KPI als Trefferquote" — genau das haben wir heute in unseren Daten gesehen und behoben.

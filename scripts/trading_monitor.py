@@ -1077,8 +1077,10 @@ def update_state_snapshot(config: dict, export: dict, strategy_statuses: dict,
 
     # Watchlist-Tabelle
     wl_rows = []
+    # Build watchlist config dict from list
+    wl_config_dict = {x['ticker']: x for x in config.get('watchlist', [])}
     for key, w in wl_data.items():
-        wconf  = config.get('watchlist', {}).get(key, {})
+        wconf  = wl_config_dict.get(key, {})
         name   = w.get('name', key)
         price_r = w.get('price_raw', w.get('price_eur', '?'))
         currency = wconf.get('currency', 'USD')
@@ -1453,7 +1455,7 @@ def main():
         'fx':        fx,
         'macro':     {},
         'positions': {},
-        'watchlist': [],
+        'watchlist': {},
     }
 
     wti_t   = config.get('macro', {}).get('wti_ticker', 'CL=F')
@@ -1498,12 +1500,12 @@ def main():
         key = watch['ticker']
         price_eur, price_raw = get_price_eur(watch, prices, fx, onvista_cache, key)
         if price_raw is not None:
-            export['watchlist'].append({
+            export['watchlist'][key] = {
                 'ticker':    key,
                 'name':      watch['name'],
                 'price_eur': round(price_eur, 2) if price_eur else None,
                 'price_raw': round(price_raw, 2),
-            })
+            }
 
     # Conviction Scores einbauen
     for key, conv in conviction_cache.items():

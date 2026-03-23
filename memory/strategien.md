@@ -480,3 +480,30 @@ Gold, Silber und Kupfer haben in 12 Monaten brutal performt (+52%, +111%, +6%). 
 | Datum | Event | Wirkung |
 |-------|-------|---------|
 | 20.03.2026 | Strategie angelegt. Silber -31%, Gold -13%, Kupfer -10% v.ATH. | Start 🟡 |
+
+---
+
+## EQNR Re-Entry Playbook (Stand 23.03.2026)
+
+**Status:** 🔴 Kein Entry — Wartemodus
+
+**Warum kein Entry jetzt:**
+- Analysten-Konsensus 22,37€ → 29,5% unter aktuellem Kurs (31,74€)
+- Brent hat noch $13-17 Kriegsprämie bei $98 (Pre-Krise: $81)
+- Trump-De-Eskalation: postponed strikes, Iran-Gespräche → Prämie deflationiert weiter
+
+**Szenarien:**
+- Ceasefire (30%): EQNR → 22-25€. Kein Entry bis Boden.
+- De-Eskalation ohne Deal (50%): EQNR pendelt 28-30€. Entry erst bei Bodenbestätigung.
+- Re-Eskalation (20%): EQNR >34€. Entry bei bestätigtem Break über 34€ + Volumen.
+
+**Entry-Zonen:**
+- Aggressiv: 28,5-29,8€ (nur wenn Brent >$90 stabil + 2-3 Tage Boden)
+- Konservativ: 24-26€ (Fair Value ohne Geopolitik-Premium, Stop 22€)
+- Re-Eskalation: >34€ bei Volumen-Ausbruch
+
+**Trigger zum Beobachten:**
+- Trump-Iran Ceasefire-News
+- Brent unter $88 → Prämie nahezu weg
+- Brent Stabilisierung >$95 für 3 Tage → Entry-Chance
+- EQNR Tagestief mit langem unterem Docht + hohem Volumen = Bodenkerze

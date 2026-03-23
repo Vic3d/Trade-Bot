@@ -1,23 +1,12 @@
 {
-  "generated": "2026-03-20T21:00:11.064386",
+  "generated": "2026-03-23T21:00:04.855000",
   "prices": {
     "PLTR": {
-      "price_eur": 130.19,
-      "pnl_pct": -1.5
-    },
-    "EQNR": {
-      "price_eur": 35.69,
-      "pnl_pct": 30.0
-    },
-    "BAYN.DE": {
-      "price_eur": 38.38,
-      "pnl_pct": -3.9
+      "price_eur": 138.45,
+      "pnl_pct": 4.8
     }
   },
-  "vix": 26.78,
-  "wti": 97.9,
-  "risks": [
-    "Palantir (PLTR): Stop nur 2.4% weg",
-    "Bayer AG (BAYN.DE): Stop nur 1.0% weg"
-  ]
+  "vix": 26.15,
+  "wti": 88.89,
+  "risks": []
 }

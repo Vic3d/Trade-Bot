@@ -93,3 +93,24 @@ Victor: "Vielleicht sollten wir auch wichtige Nachrichten festhalten die wichtig
 **Lesson:** Trailing Stop Regel bestätigt: nach +5% Gewinne mitnehmen durch Stop-Nachziehen. Phase-1-Schocks sind nicht prognostizierbar — Schutz durch mechanischen Stop besser als Bauchgefühl.
 
 **Nächster Schritt:** Re-Entry EQNR beobachten wenn Phase-2 (Gewinner-Selektion) einsetzt
+
+## 2026-03-23 — EQNR Re-Entry verworfen
+
+**Entscheidung:** Kein Re-Entry in Equinor ASA (EQNR) zum jetzigen Zeitpunkt
+
+**Kontext:** Victor fragte nach Re-Entry um 16:29. EQNR bei 31,74€ nach –5,5% heute. Brent –14% ($112→$98) nach Trump-De-Eskalation (postponed Iran strikes, "productive talks"). Trade Republic zeigt 29,5% Downside vs Analysten-Konsensus.
+
+**Kern-Reasoning:**
+- Analysten-Konsensus: ~22,37€ → EQNR noch 29,5% über Fair Value
+- Unser Entry war 27,04€ — Analysten-Ziel liegt DARUNTER
+- Brent $98 hat noch ~$13-17 Kriegsprämie drin (Pre-Krise: $81)
+- Vollständiger Ceasefire würde EQNR auf 22-25€ drücken
+- Victor: "Einstieg jetzt wäre pokern auf einen Rebound" ✅
+
+**Lesson:** Geopolitische Risikoprämien können schnell und vollständig deflationieren. Nach +38% Ölrally genug Gewinn mitgenommen (Stop +27,4%). Re-Entry erst wenn Boden bestätigt.
+
+**Re-Entry Bedingungen (dokumentiert für spätere Nutzung):**
+- Entry-Zone: 335-350 NOK (28,5-29,8€) nur wenn Brent 2-3 Tage stabil >$90
+- Stop: 310 NOK (26,4€)
+- Realistischer Einstieg erst bei 24-26€ (Fair Value ohne Geopolitik-Premium)
+- Oder: Re-Eskalation Signal (Hormuz erneut blockiert) → dann sofort über 400 NOK kaufen

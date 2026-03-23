@@ -214,14 +214,20 @@ def score_opportunity(profile, matched_bullish, matched_bearish, price_eur, vix,
         reasons.append("Strategie-Health: 🔴 (0 Punkte)")
 
     # 4. Makro (VIX) (0–2)
+    # VIX > 30 ist kein Hard-Block mehr — in geopolitischen Krisen (Iran, Öl) können
+    # Thesen-Trades trotzdem aufgehen. Nur -1 statt kompletter 0-Punkte.
     if vix < 20:
         score += 2
         reasons.append(f"VIX {vix:.1f} (Risk-On)")
     elif vix < 30:
         score += 1
         reasons.append(f"VIX {vix:.1f} (neutral)")
+    elif vix < 40:
+        score = max(0, score - 1)
+        reasons.append(f"VIX {vix:.1f} (erhöht, -1)")
     else:
-        reasons.append(f"VIX {vix:.1f} (Risk-Off, 0 Punkte)")
+        score = max(0, score - 2)
+        reasons.append(f"VIX {vix:.1f} (extrem, -2)")
 
     return score, reasons
 
@@ -231,15 +237,30 @@ def open_paper_trade(ticker, profile, price_eur, score, matched_triggers, top_he
     if price_eur is None:
         return False, "Kein Kurs verfügbar"
 
-    # Stop und Target in EUR
-    stop_eur = profile['stop']
-    if profile['currency'] in ('USD', 'GBP'):
-        # Bereits als EUR übergeben, aber stop/target sind in Originalwährung
-        # → Stop/Target aus Profil sind in der Originalwährung definiert
-        # Wir speichern den EUR-Preis
-        pass
+    # Fix 1: Mindest-Position 200€ (Gebühren <1,5%)
+    MIN_POSITION = 200.0
+    position_size = max(PAPER_CAPITAL, MIN_POSITION)
 
-    shares = round(PAPER_CAPITAL / price_eur, 4)
+    # Fix 2: CRV-Check — Ziel muss mindestens 2x so weit wie Stop
+    stop_eur = profile.get('stop', price_eur * 0.90)
+    target_eur = profile.get('target', price_eur * 1.20)
+
+    risk = abs(price_eur - stop_eur)
+    reward = abs(target_eur - price_eur)
+
+    if risk <= 0:
+        return False, f"Ungültiger Stop ({stop_eur:.2f}€ bei Kurs {price_eur:.2f}€)"
+
+    crv = reward / risk
+    if crv < 2.0:
+        return False, f"CRV zu niedrig: {crv:.2f}x (min. 2:1) — Stop {stop_eur:.2f}€, Ziel {target_eur:.2f}€"
+
+    # Fix 3: PS3-Sperre — Strategie mit bekannten Problemen nicht traden
+    strategy_id = profile.get('strategy', '')
+    if strategy_id == 'PS3':
+        return False, "PS3 gesperrt (Score 31/100 — zu schwach für neuen Entry)"
+
+    shares = round(position_size / price_eur, 4)
 
     try:
         conn = sqlite3.connect(DB_PATH)
@@ -401,3 +422,45 @@ if __name__ == '__main__':
         print(f"  Trigger: {o['matched_bullish']}")
         print(f"  Top-News: {o['top_headline'][:70]}")
         print(f"  Gründe: {o['reasons']}")
+
+
+def check_stop_integrity():
+    """Prüft alle offenen Paper Trades auf gültige Stops. Gibt Warnungen aus."""
+    import sqlite3
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    open_trades = c.execute(
+        'SELECT * FROM paper_portfolio WHERE status="OPEN"'
+    ).fetchall()
+
+    issues = []
+    for t in open_trades:
+        ticker = t['ticker']
+        entry = t['entry_price']
+        stop = t['stop_price']
+        target = t['target_price']
+
+        if stop is None or stop <= 0:
+            issues.append(f"  ⚠️  {ticker}: KEIN STOP gesetzt!")
+        elif stop >= entry:
+            issues.append(f"  ⚠️  {ticker}: Stop {stop:.2f}€ >= Entry {entry:.2f}€ (Long-Trade? Stop muss darunter)")
+        elif target and target > entry:
+            risk = entry - stop
+            reward = target - entry
+            crv = reward / risk if risk > 0 else 0
+            if crv < 1.5:
+                issues.append(f"  ⚠️  {ticker}: CRV nur {crv:.2f}x (Stop {stop:.2f}€, Ziel {target:.2f}€)")
+
+    conn.close()
+    return issues
+
+
+if __name__ == '__main__' and '--check-stops' in __import__('sys').argv:
+    issues = check_stop_integrity()
+    if issues:
+        print("STOP-INTEGRITY ISSUES:")
+        for i in issues: print(i)
+    else:
+        print("OK — alle offenen Trades haben gültige Stops")
