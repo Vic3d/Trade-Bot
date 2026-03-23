@@ -261,6 +261,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "VNA.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 20.19,
+      "stop": 20.5,
+      "target": 20.03,
+      "opened_at": "2026-03-23 09:55",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "NG.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 14.03,
+      "stop": 14.13,
+      "target": 13.91,
+      "opened_at": "2026-03-23 09:55",
+      "status": "OPEN"
+    },
+    {
       "ticker": "0700.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -291,7 +311,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-23T09:50:10.236619Z",
+  "last_sync": "2026-03-23T09:55:06.702244Z",
   "recent_day_trades": [
     {
       "ticker": "KWEB",
