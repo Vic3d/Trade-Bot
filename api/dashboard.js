@@ -189,6 +189,7 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
   <button onclick="showMain('signals',this);loadSignals()">📡 Signale</button>
   <button onclick="showMain('analytics',this);loadAnalytics()">📊 DNA</button>
   <button onclick="showMain('macro',this);loadMacro()">🌍 Macro</button>
+  <button onclick="showMain('flow',this);loadFlow()">📡 Flow</button>
 </div>
 
 <!-- REAL PORTFOLIO -->
@@ -434,6 +435,156 @@ label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}
     <div id="macro-content"><div class="loading">Lädt…</div></div>
   </div>
 </div>
+
+<!-- FLOW INTELLIGENCE TAB -->
+<div id="main-flow" class="main-panel">
+<style>
+.flow-intro{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.flow-intro h2{font-size:1rem;font-weight:700;margin-bottom:8px;color:#e2e8f0}
+.flow-intro p{font-size:0.82rem;color:#94a3b8;line-height:1.6;margin-bottom:6px}
+.flow-intro .pill{display:inline-block;background:#1e3a5f;color:#60a5fa;border-radius:20px;padding:2px 10px;font-size:0.75rem;font-weight:600;margin:2px 3px 2px 0}
+.flow-intro .pill.green{background:#14532d;color:#4ade80}
+.flow-intro .pill.orange{background:#431407;color:#fb923c}
+.flow-score-row{display:grid;grid-template-columns:auto 1fr;gap:16px;margin-bottom:16px;align-items:center}
+.flow-gauge{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;min-width:140px}
+.flow-gauge-num{font-size:3.2rem;font-weight:900;line-height:1}
+.flow-gauge-label{font-size:0.82rem;font-weight:700;margin-top:6px}
+.flow-gauge-action{font-size:0.75rem;color:#94a3b8;margin-top:4px}
+.flow-factors{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;flex:1}
+.flow-factor-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:0.82rem}
+.flow-factor-row:last-child{margin-bottom:0}
+.flow-fname{width:155px;color:#94a3b8;flex-shrink:0;font-size:0.8rem}
+.flow-fbar{flex:1;height:7px;background:#1e293b;border-radius:4px;overflow:hidden}
+.flow-ffill{height:100%;border-radius:4px;transition:width 0.6s cubic-bezier(.4,0,.2,1)}
+.flow-fpts{width:36px;text-align:right;font-weight:700;font-size:0.85rem}
+.flow-freason{color:#64748b;font-size:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.flow-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.flow-kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.flow-kpi-label{font-size:0.72rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.flow-kpi-val{font-size:1.5rem;font-weight:800;line-height:1}
+.flow-kpi-sub{font-size:0.73rem;color:#64748b;margin-top:4px}
+.flow-acc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
+.flow-acc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+.flow-acc-name{font-size:0.72rem;color:#94a3b8;letter-spacing:.3px;margin-bottom:3px}
+.flow-acc-val{font-size:1.6rem;font-weight:800}
+.flow-acc-sub{font-size:0.73rem;color:#64748b;margin-top:3px}
+.flow-acc-bar{height:5px;background:#1e293b;border-radius:3px;overflow:hidden;margin-top:7px}
+.flow-acc-fill{height:100%;border-radius:3px;transition:width .6s}
+.flow-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.72rem;font-weight:700}
+.flow-badge.win{background:#14532d;color:#4ade80}
+.flow-badge.loss{background:#450a0a;color:#f87171}
+.flow-badge.pending{background:#3f2c00;color:#fbbf24}
+.flow-badge.neutral{background:#1e293b;color:#64748b}
+.flow-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.flow-section h3{font-size:0.85rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.flow-section .flow-hint{font-size:0.75rem;color:#64748b;margin-bottom:12px;line-height:1.5}
+/* SVG Donut */
+.flow-donut-wrap{display:flex;align-items:center;gap:20px;margin-top:8px}
+.flow-legend{display:flex;flex-direction:column;gap:6px}
+.flow-legend-item{display:flex;align-items:center;gap:7px;font-size:0.78rem}
+.flow-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+/* Mini spark bar */
+.flow-spark{display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:6px}
+.flow-spark-bar{flex:1;border-radius:2px 2px 0 0;min-height:3px;transition:height .4s}
+/* Pipeline viz */
+.flow-pipeline{display:flex;align-items:center;gap:0;margin:12px 0;overflow-x:auto}
+.flow-pnode{text-align:center;flex-shrink:0}
+.flow-pbox{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;white-space:nowrap}
+.flow-pbox.active{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd}
+.flow-pbox.done{background:#14532d;border-color:#16a34a;color:#4ade80}
+.flow-parrow{color:#334155;font-size:1.1rem;padding:0 6px;flex-shrink:0}
+.flow-pstep{font-size:0.68rem;color:#64748b;margin-top:4px}
+</style>
+
+<div style="padding:12px 14px">
+
+<!-- Intro-Erklärung -->
+<div class="flow-intro">
+  <h2>📡 Flow Intelligence — Was ist das?</h2>
+  <p>Kurz vor wichtigen Nachrichten (z.B. Trump-Tweets, Geopolitik) kaufen Insider und informierte Händler massenhaft <strong>kurzlaufende OTM-Calls</strong> auf Öl-Aktien.
+  Diese Aktivität ist an einem ungewöhnlich hohen <strong>Vol/OI-Verhältnis</strong> erkennbar — Volumen weit über dem bestehenden Open Interest.</p>
+  <p>Das System überwacht <span class="pill">USO</span><span class="pill">XOM</span><span class="pill">OXY</span><span class="pill">XLE</span><span class="pill">CVX</span><span class="pill">BNO</span> alle 30 Minuten (14-21:30 Uhr CET) und öffnet bei einem Alarm automatisch einen <strong>Paper Trade auf Equinor ASA (EQNR.OL)</strong> — ohne echtes Kapital, aber mit echtem Tracking. So lernt das System, ob diese Signale wirklich funktionieren.</p>
+  <div style="margin-top:8px">
+    <span class="pill green">🔥 FRISCH = OI=0 + hohes Vol → brandneue Wette von heute</span>
+    <span class="pill orange">📈 HOCH = Vol/OI &gt;3x → ungewöhnliches Nachladen in bestehende Position</span>
+  </div>
+</div>
+
+<!-- Pipeline-Visualisierung -->
+<div class="flow-section">
+  <h3>🔄 Wie der Loop funktioniert</h3>
+  <div class="flow-hint">Jedes Signal durchläuft automatisch alle Stufen — von der Erkennung bis zum Lerneffekt.</div>
+  <div class="flow-pipeline">
+    <div class="flow-pnode"><div class="flow-pbox done">📊 Scanner</div><div class="flow-pstep">alle 30 Min</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox done">🔍 Quality Check</div><div class="flow-pstep">Accuracy-Filter</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox done">📋 Paper Trade</div><div class="flow-pstep">EQNR.OL auto</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox active">⏰ 24-48h warten</div><div class="flow-pstep">Horizont</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox">✅ Validator</div><div class="flow-pstep">WIN/LOSS</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox">🧠 Accuracy Update</div><div class="flow-pstep">lag_knowledge</div></div>
+    <div class="flow-parrow">→</div>
+    <div class="flow-pnode"><div class="flow-pbox">🔁 besserer Filter</div><div class="flow-pstep">selbstlernend</div></div>
+  </div>
+</div>
+
+<!-- Score + Faktoren -->
+<div id="flow-score-section">
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px">
+    <div class="flow-gauge" id="flow-gauge"><div style="color:#64748b;font-size:0.8rem;padding:20px">Lädt…</div></div>
+    <div class="flow-factors" id="flow-factors-panel"><div style="color:#64748b;font-size:0.8rem">Lade Faktoren…</div></div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="flow-grid3" id="flow-kpis">
+  <div class="flow-kpi"><div class="flow-kpi-label">Markt-Zustand</div><div class="flow-kpi-val" id="fk-brent">—</div><div class="flow-kpi-sub">Brent Crude (USD)</div></div>
+  <div class="flow-kpi"><div class="flow-kpi-label">Volatilität (VIX)</div><div class="flow-kpi-val" id="fk-vix">—</div><div class="flow-kpi-sub">Fear &amp; Greed Proxy</div></div>
+  <div class="flow-kpi"><div class="flow-kpi-label">EQNR.OL Momentum</div><div class="flow-kpi-val" id="fk-eqnr">—</div><div class="flow-kpi-sub">vs. EMA20</div></div>
+</div>
+
+<!-- Signal-Qualität / Accuracy mit Donut -->
+<div class="flow-section">
+  <h3>🎯 Signal-Qualität (Lernfortschritt)</h3>
+  <div class="flow-hint">
+    <strong>Wie liest man das?</strong> Das System braucht mindestens 10 Samples pro Signal-Typ bevor es gefiltert wird.
+    Danach gilt: ≥60% Trefferquote = Signal bleibt aktiv. &lt;55% = Signal wird blockiert.
+    Grün = verlässlich · Gelb = noch lernend · Rot = gesperrt.
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+    <div id="flow-donut-wrap" style="flex-shrink:0"></div>
+    <div class="flow-acc-grid" id="flow-acc-grid" style="flex:1;min-width:250px"></div>
+  </div>
+</div>
+
+<!-- Letzte Alarme mit Sparkline -->
+<div class="flow-section">
+  <h3>🔥 Letzte Flow-Alarme</h3>
+  <div class="flow-hint">
+    <strong>Ticker</strong> = welche Öl-Aktie hatte ungewöhnlichen Options-Flow ·
+    <strong>Strike</strong> = Ausübungspreis des Calls (je weiter vom aktuellen Kurs, desto spekulativer) ·
+    <strong>Vol/OI</strong> = wie viel mehr gehandelt als offen liegt · 
+    <strong>Outcome</strong> = hat EQNR.OL danach die erwartete Richtung genommen?
+  </div>
+  <div id="flow-alarms-table"><div style="color:#64748b;font-size:0.8rem">Lade Alarme…</div></div>
+</div>
+
+<!-- Paper Trades -->
+<div class="flow-section">
+  <h3>📋 Options-Flow Paper Trades (Equinor ASA / EQNR.OL)</h3>
+  <div class="flow-hint">
+    Jeder Alarm öffnet automatisch einen virtuellen Trade auf EQNR.OL.
+    <strong>Entry</strong> = Kurs bei Signal · <strong>Stop</strong> = −5% · <strong>Ziel</strong> = +8% (CRV 1.6) ·
+    <strong>Horizont</strong> = 24h (Kurzläufer) oder 48h (Mittelfristig) · P&amp;L in % vs. Entry.
+  </div>
+  <div id="flow-paper-table"><div style="color:#64748b;font-size:0.8rem">Lade Paper Trades…</div></div>
+</div>
+
+</div><!-- /padding -->
+</div><!-- /main-flow -->
 
 <!-- MODAL for TRA-138 -->
 <div id="trade-modal" style="display:none"></div>
@@ -1658,6 +1809,190 @@ function renderDTStats(dt,dna){
 if(localStorage.getItem('theme')==='light'){isDark=false;document.body.classList.add('light');document.getElementById('theme-btn').textContent='☀️';}
 
 loadAll();
+
+// ── Flow Intelligence Tab ────────────────────────────────────────────────────
+async function loadFlow(){
+  try {
+    const [scoreRes, lagRes, sigRes] = await Promise.all([
+      fetch('/api/confidence_score').then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('/api/lag_knowledge').then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('/api/signals').then(r=>r.ok?r.json():null).catch(()=>null),
+    ]);
+    renderFlowScore(scoreRes);
+    renderFlowAccuracy(lagRes, sigRes);
+    renderFlowAlarms(sigRes);
+    renderFlowPaperTrades(sigRes);
+  } catch(e) {
+    console.error('Flow load error:', e);
+  }
+}
+
+function renderFlowScore(d) {
+  if (!d) { document.getElementById('flow-gauge').innerHTML='<div style="color:#64748b">Score nicht verfügbar</div>'; return; }
+  const score = d.score || 0;
+  const col   = score>=7?'#ef4444':score>=5?'#f97316':score>=3?'#f59e0b':'#64748b';
+  const bar   = Math.round((score/10)*100);
+
+  document.getElementById('flow-gauge').innerHTML = \`
+    <svg width="120" height="70" viewBox="0 0 120 70">
+      <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="#1e293b" stroke-width="10" stroke-linecap="round"/>
+      <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round"
+            stroke-dasharray="${bar*1.57} 157" style="transition:stroke-dasharray .8s"/>
+    </svg>
+    <div class="flow-gauge-num" style="color:${col};margin-top:-8px">${score}<span style="font-size:1.2rem;opacity:.6">/10</span></div>
+    <div class="flow-gauge-label" style="color:${col}">${d.label||'—'}</div>
+    <div class="flow-gauge-action">${d.action||''}</div>
+    <div style="font-size:0.7rem;color:#475569;margin-top:6px">${d.updated?'Stand '+_fmtT(d.updated):''}</div>\`;
+
+  // KPIs
+  document.getElementById('fk-brent').textContent = d.brent_usd ? '$'+d.brent_usd.toFixed(1) : '—';
+  document.getElementById('fk-brent').style.color = d.brent_usd>100?'#f97316':d.brent_usd?'#e2e8f0':'#64748b';
+  document.getElementById('fk-vix').textContent = d.vix ? d.vix.toFixed(1) : '—';
+  document.getElementById('fk-vix').style.color = d.vix<20?'#4ade80':d.vix<30?'#fbbf24':'#f87171';
+  const eqnrOk = d.eqnr_ema20 && d.eqnr_nok > d.eqnr_ema20;
+  document.getElementById('fk-eqnr').textContent = d.eqnr_nok ? d.eqnr_nok.toFixed(0)+' NOK' : '—';
+  document.getElementById('fk-eqnr').style.color = eqnrOk?'#4ade80':'#f87171';
+
+  // Faktoren
+  const factors = d.factors || [];
+  if (!factors.length) return;
+  const html = factors.map(f=>{
+    const pct   = Math.round((f.points/f.max)*100);
+    const fCol  = f.points===0?'#334155':f.points===f.max?'#4ade80':'#06b6d4';
+    return \`<div class="flow-factor-row">
+      <span class="flow-fname">${f.factor}</span>
+      <div class="flow-fbar"><div class="flow-ffill" style="width:${pct}%;background:${fCol}"></div></div>
+      <span class="flow-fpts" style="color:${fCol}">${f.points}/${f.max}</span>
+      <span class="flow-freason">${f.reason||''}</span>
+    </div>\`;
+  }).join('');
+  document.getElementById('flow-factors-panel').innerHTML =
+    '<div style="font-size:0.8rem;font-weight:700;color:#94a3b8;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Konfidenz-Faktoren</div>' + html;
+}
+
+function renderFlowAccuracy(lk, sigData) {
+  const pairs = lk?.pairs || {};
+  const ofPairs = Object.entries(pairs).filter(([k])=>k.startsWith('OPTIONS_FLOW'));
+  const sigs = (sigData?.signals||[]).filter(s=>s.pair_id?.startsWith('OPTIONS_FLOW'));
+  const wins    = sigs.filter(s=>s.outcome==='WIN').length;
+  const losses  = sigs.filter(s=>s.outcome==='LOSS').length;
+  const pending = sigs.filter(s=>s.outcome==='PENDING').length;
+  const total   = wins+losses;
+
+  // Donut SVG
+  const donutEl = document.getElementById('flow-donut-wrap');
+  if (total > 0) {
+    const r=40, cx=52, cy=52, circ=2*Math.PI*r;
+    const wPct = wins/total, lPct = losses/total;
+    const wDash = wPct*circ, lDash = lPct*circ;
+    const pPct = pending/(pending+total||1), pDash=pPct*circ;
+    donutEl.innerHTML = \`
+      <div class="flow-donut-wrap">
+        <svg width="104" height="104" viewBox="0 0 104 104">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1e293b" stroke-width="14"/>
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f87171" stroke-width="14"
+            stroke-dasharray="${lDash} ${circ}" stroke-dashoffset="${-wDash}" stroke-linecap="round"/>
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#4ade80" stroke-width="14"
+            stroke-dasharray="${wDash} ${circ}" stroke-dashoffset="0" stroke-linecap="round"/>
+          <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
+            fill="#e2e8f0" font-size="16" font-weight="800">${total>0?Math.round(wins/total*100)+'%':'?'}</text>
+          <text x="${cx}" y="${cy+14}" text-anchor="middle" fill="#64748b" font-size="9">Accuracy</text>
+        </svg>
+        <div class="flow-legend">
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#4ade80"></div>${wins} WIN</div>
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#f87171"></div>${losses} LOSS</div>
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#fbbf24"></div>${pending} PENDING</div>
+        </div>
+      </div>\`;
+  } else {
+    donutEl.innerHTML = \`<div style="color:#64748b;font-size:0.8rem;padding:10px 0">Noch keine abgeschlossenen Signale.<br>Lernphase läuft — erster Check in 24-48h.</div>\`;
+  }
+
+  // Accuracy-Cards
+  if (!ofPairs.length) {
+    document.getElementById('flow-acc-grid').innerHTML='<div style="color:#64748b;font-size:0.8rem">Pairs noch nicht initialisiert.</div>';
+    return;
+  }
+  const shortNames = {OPTIONS_FLOW_OIL_SHORT:'Öl Kurzläufer\n(<7 Tage)', OPTIONS_FLOW_OIL_MEDIUM:'Öl Mittelfristig\n(7-30 Tage)', OPTIONS_FLOW_PUT_OIL:'Put-Flow\n(Short-Signal)'};
+  const html = ofPairs.map(([id,p])=>{
+    const acc = p.accuracy_pct, samp=p.sample_count||0, w=p.wins||0, l=p.losses||0;
+    const col = acc===null?'#94a3b8':acc>=65?'#4ade80':acc>=55?'#fbbf24':'#f87171';
+    const status = samp<10?\`🟡 Lernend (${samp}/10)\`:acc>=60?'🟢 Verlässlich':acc>=55?'🟡 Bewährt':'🔴 Gesperrt';
+    const name = (shortNames[id]||id.replace('OPTIONS_FLOW_','')).replace('\n','<br>');
+    return \`<div class="flow-acc">
+      <div class="flow-acc-name">${name}</div>
+      <div class="flow-acc-val" style="color:${col}">${acc!==null?acc.toFixed(0)+'%':'—'}</div>
+      <div class="flow-acc-sub">${samp} Samples · ${w}W/${l}L · ${status}</div>
+      <div class="flow-acc-bar"><div class="flow-acc-fill" style="width:${acc||0}%;background:${col}"></div></div>
+    </div>\`;
+  }).join('');
+  document.getElementById('flow-acc-grid').innerHTML = html;
+}
+
+function renderFlowAlarms(sigData) {
+  const sigs = (sigData?.signals||[]).filter(s=>s.pair_id?.startsWith('OPTIONS_FLOW')).slice(-20).reverse();
+  if (!sigs.length) {
+    document.getElementById('flow-alarms-table').innerHTML='<div style="color:#64748b;font-size:0.8rem">Noch keine Alarme — Scanner läuft ab 14:00 CET.</div>';
+    return;
+  }
+  const rows = sigs.map(s=>{
+    const ocls = {WIN:'win',LOSS:'loss',PENDING:'pending',NEUTRAL:'neutral'}[s.outcome]||'neutral';
+    const ratio = s.signal_pct||0;
+    const tag   = s.options_fresh?'🔥 FRISCH':'📈 HOCH';
+    return \`<tr>
+      <td style="color:#64748b;font-size:0.75rem">${_fmtT(s.created_at)}</td>
+      <td><strong>${s.lead_ticker||'—'}</strong></td>
+      <td style="font-family:monospace">$${s.lead_price?.toFixed(0)||'—'}</td>
+      <td style="color:#94a3b8;font-size:0.78rem">${s.options_expiry||'—'}<br><span style="color:#475569">${s.options_days??'?'}d</span></td>
+      <td><span style="font-size:0.75rem">${tag}</span><br><span style="color:#94a3b8;font-size:0.75rem">${ratio>=1?ratio.toFixed(1)+'x':'neu'}</span></td>
+      <td><span class="flow-badge ${ocls}">${s.outcome||'PENDING'}</span></td>
+      <td style="color:#475569;font-size:0.72rem">${s.quality_label||'—'}</td>
+    </tr>\`;
+  }).join('');
+  document.getElementById('flow-alarms-table').innerHTML=\`<table>
+    <thead><tr><th>Zeit</th><th>Ticker</th><th>Strike</th><th>Ablauf</th><th>Signal</th><th>Outcome</th><th>Qualität</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>\`;
+}
+
+function renderFlowPaperTrades(sigData) {
+  const trades = (sigData?.signals||[]).filter(s=>s.pair_id?.startsWith('OPTIONS_FLOW')&&s.paper_trade_id).slice(-15).reverse();
+  if (!trades.length) {
+    document.getElementById('flow-paper-table').innerHTML='<div style="color:#64748b;font-size:0.8rem">Noch keine Paper Trades — Bridge erstellt sie automatisch nach Scanner-Alarm.</div>';
+    return;
+  }
+  const rows = trades.map(t=>{
+    const ocls   = {WIN:'win',LOSS:'loss',PENDING:'pending',NEUTRAL:'neutral'}[t.outcome]||'neutral';
+    const chg    = t.actual_change_pct;
+    const chgStr = chg!==undefined?\`${chg>0?'+':''}${chg.toFixed(1)}%\`:'—';
+    const chgCol = chg>0?'#4ade80':chg<0?'#f87171':'#64748b';
+    const entry  = t.lag_price_at_signal;
+    const stop   = entry?entry*0.95:null;
+    const target = entry?entry*1.08:null;
+    const stopPct = entry && t.lag_price_after ? Math.round(((t.lag_price_after-entry)/entry)*100) : null;
+    return \`<tr>
+      <td style="font-family:monospace;font-size:0.78rem">${t.paper_trade_id||'—'}</td>
+      <td style="color:#64748b;font-size:0.75rem">${_fmtT(t.created_at)}</td>
+      <td><strong>EQNR.OL</strong></td>
+      <td style="font-family:monospace">${entry?entry.toFixed(2)+'€':'—'}</td>
+      <td style="font-family:monospace;color:#f87171">${stop?stop.toFixed(2)+'€':'—'}</td>
+      <td style="font-family:monospace;color:#4ade80">${target?target.toFixed(2)+'€':'—'}</td>
+      <td style="font-weight:700;color:${chgCol}">${chgStr}</td>
+      <td><span class="flow-badge ${ocls}">${t.outcome||'PENDING'}</span></td>
+      <td style="color:#475569;font-size:0.72rem">${(t.pair_id||'').replace('OPTIONS_FLOW_','')}</td>
+    </tr>\`;
+  }).join('');
+  document.getElementById('flow-paper-table').innerHTML=\`<table>
+    <thead><tr><th>ID</th><th>Eröffnet</th><th>Ticker</th><th>Entry</th><th>Stop (-5%)</th><th>Ziel (+8%)</th><th>P&L</th><th>Outcome</th><th>Signal-Typ</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>\`;
+}
+
+function _fmtT(iso){
+  if(!iso)return '—';
+  const d=new Date(iso);
+  return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
 
 // TRA-130: Auto-refresh timers
 priceTimer=setInterval(()=>{refreshPrices();checkStopAlerts();},30000);
