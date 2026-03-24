@@ -94,7 +94,7 @@
       "direction": "same",
       "threshold_pct": 2.0,
       "accuracy_pct": null,
-      "sample_count": 6,
+      "sample_count": 10,
       "wins": 0,
       "losses": 0,
       "description": "Mittelfristige Energie-Calls auf XLE/BNO \u2192 \u00d6l steigt in 48h"

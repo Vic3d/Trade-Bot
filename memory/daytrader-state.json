@@ -1,6 +1,6 @@
 {
-  "daily_pnl": 228.23890000000088,
-  "daily_trades": 7,
+  "daily_pnl": 20.794200000003308,
+  "daily_trades": 18,
   "last_date": "2026-03-24",
   "signals_today": [
     "9988.HK",
@@ -14,8 +14,14 @@
     "7203.T",
     "1605.T",
     "1211.HK",
-    "0883.HK"
+    "0883.HK",
+    "HFG.DE",
+    "HFG.DE",
+    "VNA.DE",
+    "VNA.DE",
+    "NEM",
+    "NEM"
   ],
-  "scanned": 108,
-  "signals_found": 77
+  "scanned": 114,
+  "signals_found": 92
 }

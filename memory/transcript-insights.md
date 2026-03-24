@@ -4,6 +4,79 @@
 
 ---
 
+## Dirk 7H — 24.03.2026 — Aktives Warten + Relative Stärke + Position Entry
+
+*Quelle: Tradermacher Video, Dienstag 24.03.2026*
+
+### Kern-Erkenntnisse
+
+**"Aktives Warten" als Regime-Strategie**
+- In unsicheren Märkten NICHT voll investieren, aber auch NICHT komplett raus
+- "Fuß ins Wasser halten" — kleine Positionen, schnell raus wenn's nicht funktioniert
+- Langsam in den Markt kommen, nicht 3 Aktien gleichzeitig ins Risiko
+- TradeMind: Regime "CORRECTION/VOLATILE" → automatisch Positionsgrößen reduzieren, Anzahl offener Trades limitieren
+
+**Relative Stärke — Simpel ohne Indikator**
+- Methode: Die letzten 3 Tiefs des Index anschauen (tiefere Tiefs?)
+- Dann Aktie vergleichen: Macht die Aktie HÖHERE Tiefs während der Index TIEFERE Tiefs macht?
+- Wenn ja → echte relative Stärke, Kaufkandidat
+- Beispiel: Nasdaq 3x tieferes Tief, Nebius 3x höheres Tief → Top-Kandidat
+- TradeMind: "Tief-Vergleich-Score" — automatisch letzte 3 Tiefs von Aktie vs. Index vergleichen
+
+**Öl als inverser Aktienmarkt-Indikator**
+- Solange WTI UNTER der 10-Tage-Linie bleibt → positiver Druck auf Aktienmarkt
+- WTI ÜBER 10-Tage-Linie → weiterer Druck auf Aktien
+- Diese Parallele IMMER im Auge behalten
+- TradeMind: WTI vs. EMA10 als Regime-Signal einbauen (bullisch/bärisch für Tech)
+
+**EMA Crossback Pattern**
+- Aktie bricht über gleitende Durchschnitte aus → fällt zurück IN die EMAs → bricht wieder aus
+- Der Retest des Ausbruchs = zweite Einstiegschance (oft besser als erster Kauf)
+- Im Stundenchart: Erster Ausbruch → Retest → Kauf am Retest mit engerem Stop
+- TradeMind: EMA Crossback als eigenes Pattern erkennen + alertieren
+
+**Inside Day als Konsolidierungs-Signal**
+- Inside Day = Tageskerze komplett innerhalb der Vortageskerze
+- In Kombination mit relativer Stärke = bullisches Continuation-Signal
+- Mehrere Inside Days nacheinander = Spannung baut sich auf → Ausbruch kommt
+- TradeMind: Inside Day Detection + Scoring (Inside Day + RS + Volumen)
+
+**Average Daily Range (ADR) für Positionssizing**
+- Applied Opto: ADR 13,22% → extrem volatil
+- Wenn so eine Aktie 2 Tage in die richtige Richtung läuft mit 25% Depotanteil → massive Rendite
+- Aber: Nur kaufen wenn der Markt STARTET (Follow-Through Day), nicht vorher
+- TradeMind: ADR als Faktor für Positionsgröße — hohe ADR = kleinere Position ODER größere Position bei bestätigtem Trend
+
+**15-Minuten-Chart für enge Entries**
+- Bei Intraday-Schwäche: Warten bis Kurs die 20-Tage-Linie antestet
+- Im 15-Min-Chart einsteigen → engerer Stop möglich → größere Position
+- TradeMind: Intraday-Entry-Optimizer — "Warte auf Pullback zum EMA20 im 15min"
+
+**Follow-Through Day als Regime-Wechsel**
+- Kann der Markt sich durch die 200-Tage-Linie arbeiten?
+- FTD = bestätigter Aufwärtstag mit Volumen nach Korrektur
+- Erst NACH FTD aggressiver positionieren
+- TradeMind: FTD-Detection als Regime-Switch-Trigger (CORRECTION → RECOVERY)
+
+### Aktien-Watchlist (nur Methodik-relevant, keine Kursziele)
+- **Nebius** — EMA Crossback + höhere Tiefs vs. Index = Top RS
+- **Palantir (PLTR)** — Seitwärtskonsolidierung am Widerstand, hält bei Markt-Rückfall, überdurchschnittl. Volumen → bullisch (Victor hat Position!)
+- **Robinhood Markets (HOOD)** — Boden bei $70, Inside Day, fundamental stark (EPS + Umsatz steigend), Bitcoin-RS als Rückenwind
+- **Marvell Technology (MRVL)** — Saubere Flagge, EMA Crossback, Ausbruch über $91
+- **Corning (GLW)** — Base-Breakout + Konsolidierung, hält während Markt fällt, Inside Day
+- **Applied Opto Electronics (AAOI)** — ADR 13%, höhere Tiefs, High-Tight-Flag Formation, Potenzial $100→$150
+
+### Für TradeMind umsetzen
+1. **Tief-Vergleich-Score** — Automatisch letzte 3 Index-Tiefs vs. Aktien-Tiefs vergleichen
+2. **WTI/EMA10 als Regime-Signal** — Öl unter EMA10 = bullisch für Tech
+3. **EMA Crossback Detection** — Pattern-Scanner
+4. **Inside Day + RS Combo** — Scoring-System
+5. **ADR-basiertes Positionssizing** — In Conviction-Score einbauen
+6. **FTD-Detection** — Regime-Wechsel automatisieren
+7. **15-Min Entry Optimizer** — Intraday-Pullback zum EMA20 erkennen
+
+---
+
 ## Lars Eriksen — 18.03.2026 — ATH-Szenarien + Scale-Trading
 *Quelle: eriksen-athtargets-2026-03-18.txt*
 

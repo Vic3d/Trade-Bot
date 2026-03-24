@@ -44,7 +44,11 @@
 | P038 | 24.03.2026 | EQNR.OL | LONG | 33.17€ | 31.52€ | 35.83€ | 38.15€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P039 | 24.03.2026 | EQNR.OL | LONG | 33.17€ | 31.52€ | 35.83€ | 38.15€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P040 | 24.03.2026 | EQNR.OL | LONG | 33.17€ | 31.52€ | 35.83€ | 38.15€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
-| P041 | 24.03.2026 | EQNR.OL | LONG | 33.17€ | 31.52€ | 35.83€ | 38.15€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow | CALL-Flow BNO Strike$65.0 2026-04-17 (23d) | Vol:2,226 OI:0 FRISCH | Pair:OPTIONS_FLOW_OIL_MEDIUM | Horizont:48h | Qualität:LERNEND (5/10 Samples) |
+| P041 | 24.03.2026 | EQNR.OL | LONG | 33.17€ | 31.52€ | 35.83€ | 38.15€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P042 | 24.03.2026 | EQNR.OL | LONG | 34.21€ | 32.50€ | 36.94€ | 39.34€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P043 | 24.03.2026 | EQNR.OL | LONG | 34.24€ | 32.53€ | 36.98€ | 39.38€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P044 | 24.03.2026 | EQNR.OL | LONG | 34.23€ | 32.52€ | 36.97€ | 39.36€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P045 | 24.03.2026 | EQNR.OL | LONG | 34.20€ | 32.49€ | 36.94€ | 39.33€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow | CALL-Flow XLE Strike$62.0 2026-03-31 (6d) | Vol:3,617 OI:0 FRISCH | Pair:OPTIONS_FLOW_OIL_MEDIUM | Horizont:48h | Qualität:LERNEND (9/10 Samples) |
 
 ## Abgeschlossene Paper Trades
 

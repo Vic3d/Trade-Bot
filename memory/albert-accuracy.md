@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-03-23 23:00 | Learning System v1.0*
+*Generiert: 2026-03-24 23:00 | Learning System v1.0*
 
 ---
 
@@ -24,7 +24,7 @@
 | PS1 (Iran/Öl-Geopolitik) | 4 | 25% | 0.00 | +11.16€ |
 | PS5 (Dünger/Agrar-Superzyklus) | 2 | 0% | 0.00 | -332.28€ |
 | new (new) | 1 | 0% | 0.00 | -3.00€ |
-| DT4 (News-Catalyst) | 41 | 44% | -0.13 | -291.33€ |
+| DT4 (News-Catalyst) | 59 | 46% | -0.08 | -270.51€ |
 | PS3 (NATO/EU-Rüstung) | 4 | 0% | -0.58 | -19.73€ |
 | PS4 (Edelmetalle/Miner) | 3 | 0% | -4.30 | -15.10€ |
 
@@ -46,9 +46,9 @@
 
 ## 📚 Top Lektionen
 
-- **OXY** (WIN): Win trotz schwachem CRV 1.5:1. Luck oder Thesis?
-- **7203.T** (LOSS): Stop korrekt ausgelöst bei 17.67. Regel befolgt.
-- **1605.T** (LOSS): Stop korrekt ausgelöst bei 24.36. Regel befolgt.
+- **FXI** (WIN): Win trotz schwachem CRV 1.8:1. Luck oder Thesis?
+- **9988.HK** (LOSS): Stop korrekt ausgelöst bei 13.56. Regel befolgt.
+- **0700.HK** (LOSS): Stop korrekt ausgelöst bei 56.59. Regel befolgt.
 
 ---
 *Nächste Evaluierung: Manuell via `python3 scripts/learning_system.py full`*

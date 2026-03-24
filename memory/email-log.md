@@ -202,3 +202,5 @@
 | 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 20.03.2026 19:42 |
 | 23.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 20.03.2026 19:37 |
 | 23.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 23.03.2026 15:22 |
+| 24.03.2026 14:00 | **INFO2** | zahlungsavise@bo... TSP - TechnikServicePlus GmbH - ... | 24.03.2026 12:39 |
+| 24.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 24.03.2026 13:47 |

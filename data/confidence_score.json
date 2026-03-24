@@ -1,5 +1,5 @@
 {
-  "score": 7,
+  "score": 8,
   "max_score": 10,
   "label": "\ud83d\udd34 STARKER EINSTIEG",
   "action": "Volle Position vertretbar",
@@ -18,15 +18,15 @@
     },
     {
       "factor": "Brent >$100",
-      "points": 0,
+      "points": 1,
       "max": 1,
-      "reason": "Brent $97.11"
+      "reason": "Brent $102.10 > $100"
     },
     {
       "factor": "EQNR Momentum",
       "points": 1,
       "max": 1,
-      "reason": "EQNR 374.5 > EMA20 335.1"
+      "reason": "EQNR 384.3 > EMA20 339.8"
     },
     {
       "factor": "Tanker-News",
@@ -38,28 +38,28 @@
       "factor": "Brent-WTI Spread",
       "points": 1,
       "max": 1,
-      "reason": "Spread $7.50 > $5"
+      "reason": "Spread $11.95 > $5"
     },
     {
       "factor": "VIX <20",
       "points": 0,
       "max": 1,
-      "reason": "VIX 26.1"
+      "reason": "VIX 26.9"
     }
   ],
   "details": {
     "options_flow": 2,
     "iran": 2,
-    "brent": 0,
+    "brent": 1,
     "eqnr_momentum": 1,
     "tanker": 1,
     "brent_wti_spread": 1,
     "vix": 0
   },
-  "brent_usd": 97.11,
-  "wti_usd": 89.61,
-  "eqnr_nok": 374.5,
-  "eqnr_ema20": 335.07,
-  "vix": 26.06,
-  "updated": "2026-03-24T08:10:02Z"
+  "brent_usd": 102.1,
+  "wti_usd": 90.15,
+  "eqnr_nok": 384.3,
+  "eqnr_ema20": 339.76,
+  "vix": 26.95,
+  "updated": "2026-03-24T20:31:31Z"
 }

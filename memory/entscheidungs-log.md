@@ -114,3 +114,24 @@ Victor: "Vielleicht sollten wir auch wichtige Nachrichten festhalten die wichtig
 - Stop: 310 NOK (26,4€)
 - Realistischer Einstieg erst bei 24-26€ (Fair Value ohne Geopolitik-Premium)
 - Oder: Re-Eskalation Signal (Hormuz erneut blockiert) → dann sofort über 400 NOK kaufen
+
+## 2026-03-24 — Options-Flow als primärer Trade-Trigger (Grundsatzentscheidung)
+
+**Entscheidung:** Options-Flow-Signale ab sofort als **Echtzeit-Trigger für Trade-Entscheidungen** nutzen — nicht nur beobachten, sondern bei starken Signalen sofort handlungsfähig sein.
+
+**Kontext:** Am 24.03.2026 kamen über den ganzen Tag hinweg massive bullische Öl/Energie-Flows rein:
+- 08:45: XLE $65 Call → 12.677 Vol (dickster Flow des Tages)
+- 17:02: XLE $66 Call → 2.448 Vol (neuer Strike, neue Laufzeit)
+- 17:30: OXY $65 Call → 7.849 Vol, **Vol/OI 59.9x** (fast alles frisch eröffnet)
+- Zusätzlich: USO, XOM, CVX, BNO — alles Calls, alles bullisch, alles April-Verfall
+- Das war kein einmaliger Spike — **anhaltende Käufe über den ganzen Tag**
+
+Victor: "Genau solche Informationen sind super wichtig. Wenn so was passiert, muss man sofort gucken ob man da einen Trade tätigt."
+
+**Kern-Reasoning:** Options-Flow kommt 30-90 Minuten VOR den News. Wer Calls mit 60x Vol/OI kauft, hat eine informierte Wette laufen. Das ist der nächstbeste Indikator nach Insider-Wissen — und legal handelbar.
+
+**Lesson:**
+1. Bei Vol/OI >10x + OI=0 (🔥 FRISCH) → **sofort** Victor benachrichtigen mit konkretem Trade-Vorschlag
+2. Bei mehreren Tickern gleichzeitig bullisch (Cluster-Signal) → Konfidenz erhöhen, aggressiver
+3. Nicht nur melden, sondern direkt sagen: "Entry X, Stop Y, Ziel Z"
+4. April-Verfall = Smart Money erwartet Bewegung in 2-4 Wochen → Horizont beachten
