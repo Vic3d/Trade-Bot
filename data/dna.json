@@ -243,22 +243,22 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "7203.T",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 17.89,
+      "stop": 17.97,
+      "target": 17.74,
+      "opened_at": "2026-03-24 02:00",
+      "status": "OPEN"
+    },
+    {
       "ticker": "9988.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 14.1,
       "stop": 13.18,
       "target": 14.21,
-      "opened_at": "2026-03-24 01:20",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "1211.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 11.51,
-      "stop": 11.28,
-      "target": 11.6,
       "opened_at": "2026-03-24 01:20",
       "status": "OPEN"
     },
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-24T01:55:03.281342Z",
+  "last_sync": "2026-03-24T02:00:11.011257Z",
   "recent_day_trades": [
+    {
+      "ticker": "1211.HK",
+      "strategy": "DT4",
+      "entry_price": 11.51,
+      "exit_price": 11.18,
+      "entry_date": "2026-03-24 01:20",
+      "exit_date": "2026-03-24 02:00",
+      "pnl_pct": -2.91,
+      "status": "LOSS"
+    },
     {
       "ticker": "9988.HK",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-23 11:50",
       "exit_date": "2026-03-23 13:05",
       "pnl_pct": 1.49,
-      "status": "WIN"
-    },
-    {
-      "ticker": "RIO.L",
-      "strategy": "DT4",
-      "entry_price": 72.98,
-      "exit_price": 74.02,
-      "entry_date": "2026-03-23 12:20",
-      "exit_date": "2026-03-23 13:01",
-      "pnl_pct": 1.42,
       "status": "WIN"
     }
   ],
