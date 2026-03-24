@@ -246,10 +246,10 @@
       "ticker": "HFG.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 4.03,
-      "stop": 4.06,
-      "target": 4.0,
-      "opened_at": "2026-03-24 13:50",
+      "entry": 4.08,
+      "stop": 4.04,
+      "target": 4.12,
+      "opened_at": "2026-03-24 14:01",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-24T13:55:06.318161Z",
+  "last_sync": "2026-03-24T14:01:39.479581Z",
   "recent_day_trades": [
+    {
+      "ticker": "HFG.DE",
+      "strategy": "DT4",
+      "entry_price": 4.03,
+      "exit_price": 4.08,
+      "entry_date": "2026-03-24 13:50",
+      "exit_date": "2026-03-24 14:01",
+      "pnl_pct": -1.32,
+      "status": "LOSS"
+    },
     {
       "ticker": "KWEB",
       "strategy": "DT4",
@@ -484,16 +494,6 @@
       "exit_date": "2026-03-23 15:20",
       "pnl_pct": 0.92,
       "status": "WIN"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "strategy": "DT4",
-      "entry_price": 21.84,
-      "exit_price": 21.92,
-      "entry_date": "2026-03-23 15:01",
-      "exit_date": "2026-03-23 15:10",
-      "pnl_pct": -0.36,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
