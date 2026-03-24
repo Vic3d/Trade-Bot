@@ -243,13 +243,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "7203.T",
+      "ticker": "1605.T",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 17.89,
-      "stop": 17.97,
-      "target": 17.74,
-      "opened_at": "2026-03-24 02:00",
+      "entry": 24.84,
+      "stop": 24.98,
+      "target": 24.64,
+      "opened_at": "2026-03-24 05:25",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-24T05:20:05.025004Z",
+  "last_sync": "2026-03-24T05:25:04.588044Z",
   "recent_day_trades": [
+    {
+      "ticker": "7203.T",
+      "strategy": "DT4",
+      "entry_price": 17.89,
+      "exit_price": 17.73,
+      "entry_date": "2026-03-24 02:00",
+      "exit_date": "2026-03-24 05:25",
+      "pnl_pct": 0.89,
+      "status": "WIN"
+    },
     {
       "ticker": "1211.HK",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-23 13:01",
       "exit_date": "2026-03-23 13:25",
       "pnl_pct": 1.0,
-      "status": "WIN"
-    },
-    {
-      "ticker": "FRES.L",
-      "strategy": "DT4",
-      "entry_price": 36.86,
-      "exit_price": 37.41,
-      "entry_date": "2026-03-23 11:50",
-      "exit_date": "2026-03-23 13:05",
-      "pnl_pct": 1.49,
       "status": "WIN"
     }
   ],
