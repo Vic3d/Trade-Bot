@@ -241,60 +241,60 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
-    },
+    }
+  ],
+  "last_sync": "2026-03-24T20:45:41.328721Z",
+  "recent_day_trades": [
     {
-      "ticker": "NEM",
+      "ticker": "FXI",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 85.24,
-      "stop": 84.6,
-      "target": 85.92,
-      "opened_at": "2026-03-24 18:15",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 3.24,
-      "stop": 3.28,
-      "target": 3.21,
-      "opened_at": "2026-03-24 07:25",
-      "status": "OPEN"
+      "entry_price": 30.52,
+      "exit_price": 30.44,
+      "entry_date": "2026-03-24 01:00",
+      "exit_date": "2026-03-24 20:45",
+      "pnl_pct": 0.25,
+      "status": "WIN"
     },
     {
       "ticker": "9988.HK",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 14.1,
-      "stop": 13.18,
-      "target": 14.21,
-      "opened_at": "2026-03-24 01:20",
-      "status": "OPEN"
+      "entry_price": 14.1,
+      "exit_price": 13.56,
+      "entry_date": "2026-03-24 01:20",
+      "exit_date": "2026-03-24 20:45",
+      "pnl_pct": -3.8,
+      "status": "LOSS"
     },
     {
       "ticker": "0700.HK",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 56.73,
-      "stop": 54.93,
-      "target": 57.18,
-      "opened_at": "2026-03-24 01:20",
-      "status": "OPEN"
+      "entry_price": 56.73,
+      "exit_price": 56.59,
+      "entry_date": "2026-03-24 01:20",
+      "exit_date": "2026-03-24 20:45",
+      "pnl_pct": -0.24,
+      "status": "LOSS"
     },
     {
-      "ticker": "FXI",
+      "ticker": "0883.HK",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 30.52,
-      "stop": 30.65,
-      "target": 30.28,
-      "opened_at": "2026-03-24 01:00",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-24T20:40:04.894239Z",
-  "recent_day_trades": [
+      "entry_price": 3.24,
+      "exit_price": 3.24,
+      "entry_date": "2026-03-24 07:25",
+      "exit_date": "2026-03-24 20:45",
+      "pnl_pct": -0.04,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "NEM",
+      "strategy": "DT4",
+      "entry_price": 85.24,
+      "exit_price": 85.3,
+      "entry_date": "2026-03-24 18:15",
+      "exit_date": "2026-03-24 20:45",
+      "pnl_pct": 0.07,
+      "status": "WIN"
+    },
     {
       "ticker": "NEM",
       "strategy": "DT4",
@@ -443,56 +443,6 @@
       "entry_date": "2026-03-23 02:00",
       "exit_date": "2026-03-23 20:45",
       "pnl_pct": -0.48,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "EQNR.OL",
-      "strategy": "DT4",
-      "entry_price": 32.5,
-      "exit_price": 33.13,
-      "entry_date": "2026-03-23 11:31",
-      "exit_date": "2026-03-23 20:45",
-      "pnl_pct": -1.89,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "ABBV",
-      "strategy": "DT4",
-      "entry_price": 176.63,
-      "exit_price": 176.42,
-      "entry_date": "2026-03-23 16:01",
-      "exit_date": "2026-03-23 20:45",
-      "pnl_pct": 0.12,
-      "status": "WIN"
-    },
-    {
-      "ticker": "BA",
-      "strategy": "DT4",
-      "entry_price": 171.54,
-      "exit_price": 170.81,
-      "entry_date": "2026-03-23 16:01",
-      "exit_date": "2026-03-23 20:45",
-      "pnl_pct": 0.43,
-      "status": "WIN"
-    },
-    {
-      "ticker": "NEM",
-      "strategy": "DT4",
-      "entry_price": 85.3,
-      "exit_price": 84.34,
-      "entry_date": "2026-03-23 15:35",
-      "exit_date": "2026-03-23 16:01",
-      "pnl_pct": 1.13,
-      "status": "WIN"
-    },
-    {
-      "ticker": "HAL",
-      "strategy": "DT4",
-      "entry_price": 32.36,
-      "exit_price": 32.2,
-      "entry_date": "2026-03-23 15:55",
-      "exit_date": "2026-03-23 16:01",
-      "pnl_pct": -0.51,
       "status": "LOSS"
     }
   ],
