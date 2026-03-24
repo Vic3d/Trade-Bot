@@ -1814,8 +1814,8 @@ loadAll();
 async function loadFlow(){
   try {
     const [scoreRes, lagRes, sigRes] = await Promise.all([
-      fetch('/api/confidence_score').then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('/api/lag_knowledge').then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('/api/signals?type=confidence').then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('/api/signals?type=lag').then(r=>r.ok?r.json():null).catch(()=>null),
       fetch('/api/signals').then(r=>r.ok?r.json():null).catch(()=>null),
     ]);
     renderFlowScore(scoreRes);
