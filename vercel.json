@@ -2,7 +2,8 @@
   "framework": null,
   "redirects": [
     { "source": "/", "destination": "/api/dashboard", "permanent": false },
-    { "source": "/manifest.json", "destination": "/api/manifest", "permanent": false }
+    { "source": "/manifest.json", "destination": "/api/manifest", "permanent": false },
+    { "source": "/flow", "destination": "/dashboard/options_flow_tab.html", "permanent": false }
   ],
   "headers": [
     {

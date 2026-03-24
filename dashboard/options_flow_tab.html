@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow Intelligence — TradeMind</title>
+<style>
+  :root {
+    --bg: #0f172a; --surface: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #06b6d4;
+    --green: #22c55e; --red: #ef4444; --yellow: #f59e0b; --orange: #f97316;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
+
+  h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+
+  /* Score Gauge */
+  .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .score-big { font-size: 3rem; font-weight: 800; line-height: 1; }
+  .score-label { font-size: 0.9rem; font-weight: 600; margin-top: 8px; }
+  .score-action { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .score-red    { color: var(--red); }
+  .score-orange { color: var(--orange); }
+  .score-yellow { color: var(--yellow); }
+  .score-muted  { color: var(--muted); }
+
+  /* Factor bars */
+  .factors { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+  .factors h2 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+  .factor-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 0.85rem; }
+  .factor-name { width: 160px; color: var(--muted); flex-shrink: 0; }
+  .factor-bar  { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .factor-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.5s; }
+  .factor-pts  { width: 40px; text-align: right; font-weight: 600; }
+  .factor-reason { color: var(--muted); font-size: 0.78rem; }
+
+  /* Signal table */
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+  .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .badge { font-size: 0.72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+  .badge-green  { background: #14532d; color: var(--green); }
+  .badge-red    { background: #450a0a; color: var(--red); }
+  .badge-yellow { background: #422006; color: var(--yellow); }
+  .badge-muted  { background: var(--border); color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 8px; border-bottom: 1px solid #1e293b; }
+  tr:hover td { background: #1e2d3d; }
+
+  /* Accuracy pills */
+  .accuracy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .acc-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .acc-pair { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+  .acc-val  { font-size: 1.4rem; font-weight: 700; }
+  .acc-sub  { font-size: 0.75rem; color: var(--muted); }
+  .acc-bar  { margin-top: 8px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .acc-fill { height: 100%; border-radius: 3px; }
+
+  .refresh { float: right; font-size: 0.78rem; color: var(--muted); }
+  .loading { color: var(--muted); font-size: 0.85rem; padding: 20px 0; text-align: center; }
+  .error   { color: var(--red); font-size: 0.85rem; }
+  .no-data { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>📡 Flow Intelligence</h1>
+<p class="subtitle">Options-Flow Lead-Indikator System — Self-Learning Loop</p>
+
+<!-- Score + Faktoren -->
+<div class="score-grid" id="scoreCards">
+  <div class="score-card"><div class="loading">Lade Score...</div></div>
+</div>
+
+<div class="factors" id="factorsPanel">
+  <h2>📊 Konfidenz-Faktoren <span class="refresh" id="scoreUpdated"></span></h2>
+  <div class="loading">Lade Faktoren...</div>
+</div>
+
+<!-- Accuracy pro Pair -->
+<div class="section">
+  <h2>🎯 Signal-Qualität (Accuracy)</h2>
+  <div class="accuracy-grid" id="accuracyGrid">
+    <div class="loading">Lade Accuracy...</div>
+  </div>
+</div>
+
+<!-- Letzte Alarme -->
+<div class="section">
+  <h2>🔥 Letzte Options-Flow Alarme</h2>
+  <div id="flowTable"><div class="loading">Lade Flow-Daten...</div></div>
+</div>
+
+<!-- Paper Trades -->
+<div class="section">
+  <h2>📋 Options-Flow Paper Trades</h2>
+  <div id="paperTradeTable"><div class="loading">Lade Paper Trades...</div></div>
+</div>
+
+<script>
+const BASE = window.location.origin;
+
+// ── Hilfsfunktionen ─────────────────────────────────────────────────────────
+
+function scoreColor(score) {
+  if (score >= 7) return 'score-red';
+  if (score >= 5) return 'score-orange';
+  if (score >= 3) return 'score-yellow';
+  return 'score-muted';
+}
+
+function outcomeClass(outcome) {
+  return {WIN:'badge-green', LOSS:'badge-red', PENDING:'badge-yellow', NEUTRAL:'badge-muted'}[outcome] || 'badge-muted';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'}) + ' ' +
+         d.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+}
+
+// ── Score laden ──────────────────────────────────────────────────────────────
+
+async function loadScore() {
+  try {
+    const r = await fetch('/api/confidence_score');
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+
+    // Score Card
+    const col = scoreColor(d.score);
+    document.getElementById('scoreCards').innerHTML = `
+      <div class="score-card">
+        <div class="score-big ${col}">${d.score}<span style="font-size:1.5rem">/10</span></div>
+        <div class="score-label ${col}">${d.label || '—'}</div>
+        <div class="score-action">${d.action || ''}</div>
+      </div>
+      <div class="score-card">
+        <div style="color:var(--muted);font-size:0.8rem;margin-bottom:8px">Brent Crude</div>
+        <div class="score-big" style="font-size:2rem;color:${d.brent_usd>100?'var(--orange)':'var(--text)'}">$${d.brent_usd?.toFixed(1)||'—'}</div>
+        <div class="score-action">WTI $${d.wti_usd?.toFixed(1)||'—'}</div>
+      </div>
+      <div class="score-card">
+        <div style="color:var(--muted);font-size:0.8rem;margin-bottom:8px">VIX</div>
+        <div class="score-big" style="font-size:2rem;color:${d.vix<20?'var(--green)':d.vix<30?'var(--yellow)':'var(--red)'}">
+          ${d.vix?.toFixed(1)||'—'}
+        </div>
+        <div class="score-action">${d.vix<20?'Ruhig':d.vix<30?'Erhöht':'Hoch'}</div>
+      </div>
+    `;
+
+    // Faktoren
+    document.getElementById('scoreUpdated').textContent = d.updated ? 'Stand: ' + fmtDate(d.updated) : '';
+    const factorsHTML = (d.factors||[]).map(f => {
+      const pct = Math.round((f.points / f.max) * 100);
+      const fillColor = f.points > 0 ? (f.points === f.max ? 'var(--green)' : 'var(--accent)') : 'var(--border)';
+      return `<div class="factor-row">
+        <span class="factor-name">${f.factor}</span>
+        <div class="factor-bar"><div class="factor-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+        <span class="factor-pts" style="color:${f.points>0?'var(--accent)':'var(--muted)'}">${f.points}/${f.max}</span>
+        <span class="factor-reason">${f.reason||''}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('factorsPanel').innerHTML = `
+      <h2>📊 Konfidenz-Faktoren <span class="refresh" id="scoreUpdated">Stand: ${fmtDate(d.updated)}</span></h2>
+      ${factorsHTML || '<div class="no-data">Keine Faktoren</div>'}
+    `;
+  } catch(e) {
+    document.getElementById('scoreCards').innerHTML = `<div class="score-card"><div class="error">Score nicht verfügbar: ${e.message}</div></div>`;
+  }
+}
+
+// ── Accuracy laden ───────────────────────────────────────────────────────────
+
+async function loadAccuracy() {
+  try {
+    const r = await fetch('/api/lag_knowledge');
+    if (!r.ok) throw new Error(r.status);
+    const lk = await r.json();
+    const pairs = lk.pairs || {};
+
+    const ofPairs = Object.entries(pairs).filter(([k]) => k.startsWith('OPTIONS_FLOW'));
+    if (!ofPairs.length) {
+      document.getElementById('accuracyGrid').innerHTML = '<div class="no-data">Noch keine Accuracy-Daten (Lernphase läuft)</div>';
+      return;
+    }
+
+    const html = ofPairs.map(([id, p]) => {
+      const acc   = p.accuracy_pct;
+      const samp  = p.sample_count || 0;
+      const wins  = p.wins || 0;
+      const losses = p.losses || 0;
+      const color = acc === null ? 'var(--muted)' : acc >= 65 ? 'var(--green)' : acc >= 55 ? 'var(--yellow)' : 'var(--red)';
+      const status = samp < 10 ? '🟡 LERNEND' : acc >= 60 ? '🟢 VERLÄSSLICH' : acc >= 55 ? '🟡 BEWÄHRT' : '🔴 GESPERRT';
+      const fillPct = acc !== null ? Math.min(acc, 100) : 0;
+      return `<div class="acc-card">
+        <div class="acc-pair">${id.replace('OPTIONS_FLOW_', '')}</div>
+        <div class="acc-val" style="color:${color}">${acc !== null ? acc.toFixed(1)+'%' : '—'}</div>
+        <div class="acc-sub">${samp} Samples | ${wins}W / ${losses}L | ${status}</div>
+        <div class="acc-bar"><div class="acc-fill" style="width:${fillPct}%;background:${color}"></div></div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('accuracyGrid').innerHTML = html;
+  } catch(e) {
+    document.getElementById('accuracyGrid').innerHTML = `<div class="error">Accuracy-Daten nicht verfügbar: ${e.message}</div>`;
+  }
+}
+
+// ── Flow Alarme laden ────────────────────────────────────────────────────────
+
+async function loadFlowTable() {
+  try {
+    const r = await fetch('/api/signals');
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const sigs = (d.signals || []).filter(s => s.pair_id && s.pair_id.startsWith('OPTIONS_FLOW')).slice(-20).reverse();
+
+    if (!sigs.length) {
+      document.getElementById('flowTable').innerHTML = '<div class="no-data">Noch keine Signale — Scanner läuft ab 14:00 CET</div>';
+      return;
+    }
+
+    const rows = sigs.map(s => {
+      const cls = outcomeClass(s.outcome);
+      return `<tr>
+        <td>${fmtDate(s.created_at)}</td>
+        <td><strong>${s.lead_ticker||'—'}</strong></td>
+        <td>$${s.lead_price?.toFixed(0)||'—'}</td>
+        <td>${s.options_expiry||'—'} (${s.options_days??'?'}d)</td>
+        <td>${s.signal_pct?.toFixed(1)||'—'}x Vol/OI</td>
+        <td><span class="badge ${cls}">${s.outcome||'PENDING'}</span></td>
+        <td style="color:var(--muted);font-size:0.75rem">${s.quality_label||'—'}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('flowTable').innerHTML = `<table>
+      <thead><tr><th>Zeit</th><th>Ticker</th><th>Strike</th><th>Ablauf</th><th>Vol/OI</th><th>Outcome</th><th>Qualität</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  } catch(e) {
+    document.getElementById('flowTable').innerHTML = `<div class="error">Flow-Daten nicht verfügbar: ${e.message}</div>`;
+  }
+}
+
+// ── Paper Trades laden ───────────────────────────────────────────────────────
+
+async function loadPaperTrades() {
+  try {
+    const r = await fetch('/api/signals');
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const trades = (d.signals || []).filter(s => s.pair_id?.startsWith('OPTIONS_FLOW') && s.paper_trade_id).slice(-15).reverse();
+
+    if (!trades.length) {
+      document.getElementById('paperTradeTable').innerHTML = '<div class="no-data">Noch keine Paper Trades — Bridge erstellt automatisch nach Scanner-Alarm</div>';
+      return;
+    }
+
+    const rows = trades.map(t => {
+      const cls = outcomeClass(t.outcome);
+      const chg = t.actual_change_pct;
+      const chgStr = chg !== undefined ? `${chg > 0 ? '+' : ''}${chg.toFixed(1)}%` : '—';
+      const chgColor = chg > 0 ? 'var(--green)' : chg < 0 ? 'var(--red)' : 'var(--muted)';
+      return `<tr>
+        <td><code style="font-size:0.78rem">${t.paper_trade_id||'—'}</code></td>
+        <td>${fmtDate(t.created_at)}</td>
+        <td><strong>${t.lag_ticker||'EQNR.OL'}</strong></td>
+        <td>${t.lag_price_at_signal?.toFixed(2)||'—'}€</td>
+        <td style="color:${chgColor}">${chgStr}</td>
+        <td><span class="badge ${cls}">${t.outcome||'PENDING'}</span></td>
+        <td style="color:var(--muted);font-size:0.75rem">${t.pair_id?.replace('OPTIONS_FLOW_','')||'—'}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('paperTradeTable').innerHTML = `<table>
+      <thead><tr><th>Trade-ID</th><th>Eröffnet</th><th>Ticker</th><th>Entry</th><th>P&L</th><th>Outcome</th><th>Signal-Typ</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  } catch(e) {
+    document.getElementById('paperTradeTable').innerHTML = `<div class="error">Paper-Trade-Daten nicht verfügbar: ${e.message}</div>`;
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+
+async function init() {
+  await Promise.all([loadScore(), loadAccuracy(), loadFlowTable(), loadPaperTrades()]);
+}
+
+init();
+setInterval(init, 5 * 60 * 1000); // alle 5 Min refreshen
+</script>
+</body>
+</html>
