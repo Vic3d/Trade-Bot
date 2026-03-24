@@ -243,13 +243,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "VNA.DE",
+      "ticker": "NEM",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 21.09,
-      "stop": 20.96,
-      "target": 21.26,
-      "opened_at": "2026-03-24 15:31",
+      "entry": 84.52,
+      "stop": 84.07,
+      "target": 85.19,
+      "opened_at": "2026-03-24 16:15",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-24T16:10:04.715392Z",
+  "last_sync": "2026-03-24T16:15:26.565937Z",
   "recent_day_trades": [
+    {
+      "ticker": "VNA.DE",
+      "strategy": "DT4",
+      "entry_price": 21.09,
+      "exit_price": 20.92,
+      "entry_date": "2026-03-24 15:31",
+      "exit_date": "2026-03-24 16:15",
+      "pnl_pct": -0.81,
+      "status": "LOSS"
+    },
     {
       "ticker": "VNA.DE",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-23 15:35",
       "exit_date": "2026-03-23 15:55",
       "pnl_pct": -0.78,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "NEM",
-      "strategy": "DT4",
-      "entry_price": 85.68,
-      "exit_price": 85.3,
-      "entry_date": "2026-03-23 15:10",
-      "exit_date": "2026-03-23 15:35",
-      "pnl_pct": -0.45,
       "status": "LOSS"
     }
   ],
