@@ -243,13 +243,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "1605.T",
+      "ticker": "1211.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 24.84,
-      "stop": 24.98,
-      "target": 24.64,
-      "opened_at": "2026-03-24 05:25",
+      "entry": 11.6,
+      "stop": 11.53,
+      "target": 11.69,
+      "opened_at": "2026-03-24 06:20",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-24T06:15:04.142756Z",
+  "last_sync": "2026-03-24T06:20:06.885590Z",
   "recent_day_trades": [
+    {
+      "ticker": "1605.T",
+      "strategy": "DT4",
+      "entry_price": 24.84,
+      "exit_price": 24.6,
+      "entry_date": "2026-03-24 05:25",
+      "exit_date": "2026-03-24 06:20",
+      "pnl_pct": 0.97,
+      "status": "WIN"
+    },
     {
       "ticker": "7203.T",
       "strategy": "DT4",
@@ -484,16 +494,6 @@
       "exit_date": "2026-03-23 14:35",
       "pnl_pct": -1.81,
       "status": "LOSS"
-    },
-    {
-      "ticker": "NWG.L",
-      "strategy": "DT4",
-      "entry_price": 6.11,
-      "exit_price": 6.17,
-      "entry_date": "2026-03-23 13:01",
-      "exit_date": "2026-03-23 13:25",
-      "pnl_pct": 1.0,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
