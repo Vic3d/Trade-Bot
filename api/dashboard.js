@@ -2013,4 +2013,4 @@ module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store, no-cache');
   res.status(200).send(HTML());
-};
+};// Flow Intelligence Tab deployed Tue Mar 24 09:29:33 CET 2026
