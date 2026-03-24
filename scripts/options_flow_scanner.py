@@ -204,6 +204,12 @@ def main():
     # Bridge ausführen (Flow → Paper Trade)
     _run_bridge()
 
+    # ── Cluster-Erkennung ──────────────────────────────────────────────────
+    cluster = _detect_cluster(all_hits)
+    cluster_line = ""
+    if cluster:
+        cluster_line = _format_cluster_alert(cluster, score_data)
+
     # Alert bauen — nur Signale die Quality-Filter bestehen
     qualifying = []
     for h in all_hits:
@@ -232,6 +238,8 @@ def main():
             f"  Vol/OI: {ratio_str}"
         )
 
+    if cluster_line:
+        lines.append(cluster_line)
     if score_line:
         lines.append(score_line)
     lines.append(f"\n_Scan: {datetime.now().strftime('%H:%M')} CET — Quelle: Yahoo Finance_")
@@ -260,6 +268,116 @@ def _run_confidence_scorer() -> dict | None:
     except Exception as e:
         print(f"  ⚠️ Confidence-Scorer Fehler: {e}")
         return None
+
+# ── Cluster-Erkennung ─────────────────────────────────────────────────────────
+
+def _detect_cluster(hits: list[dict]) -> dict | None:
+    """
+    Erkennt Cluster-Signale: mehrere verschiedene Ticker im gleichen Scan bullisch.
+    Returns dict mit Cluster-Info oder None.
+    """
+    if not hits:
+        return None
+
+    # Einzigartige Ticker zählen
+    unique_tickers = set(h["ticker"] for h in hits)
+    total_volume = sum(h["volume"] for h in hits)
+    max_ratio = max((h.get("ratio") or 0) for h in hits)
+    fresh_count = sum(1 for h in hits if h.get("fresh"))
+
+    # Cluster-Stärke berechnen
+    # 2 Ticker = mild, 3+ = stark, 4+ = extrem
+    if len(unique_tickers) < 2:
+        return None  # Kein Cluster — nur ein Ticker
+
+    strength = "MILD"
+    if len(unique_tickers) >= 4:
+        strength = "EXTREM"
+    elif len(unique_tickers) >= 3:
+        strength = "STARK"
+    elif total_volume > 10000:
+        strength = "STARK"
+
+    # Conviction-Boost basierend auf Cluster
+    base_conviction = 60
+    conviction_boost = (len(unique_tickers) - 1) * 10  # +10 pro zusätzlichem Ticker
+    if total_volume > 20000:
+        conviction_boost += 10
+    if fresh_count >= 2:
+        conviction_boost += 5
+    conviction = min(95, base_conviction + conviction_boost)
+
+    return {
+        "tickers": sorted(unique_tickers),
+        "ticker_count": len(unique_tickers),
+        "total_hits": len(hits),
+        "total_volume": total_volume,
+        "max_ratio": max_ratio,
+        "fresh_count": fresh_count,
+        "strength": strength,
+        "conviction": conviction,
+    }
+
+
+def _format_cluster_alert(cluster: dict, score_data: dict | None) -> str:
+    """Formatiert den Cluster-Alert als Trade-Vorschlag."""
+    emoji = {"MILD": "🟡", "STARK": "🟠", "EXTREM": "🔴"}
+    e = emoji.get(cluster["strength"], "🟡")
+
+    lines = [
+        f"\n{e} **CLUSTER-SIGNAL {cluster['strength']}** — {cluster['ticker_count']} Ticker gleichzeitig bullisch",
+        f"Ticker: {', '.join(cluster['tickers'])} | Gesamt-Vol: {cluster['total_volume']:,} | Frisch: {cluster['fresh_count']}",
+    ]
+
+    # Konkreter Trade-Vorschlag
+    if cluster["strength"] in ("STARK", "EXTREM"):
+        lines.append(
+            f"\n💡 **Trade-Vorschlag:** EQNR.OL / A3D42Y nachkaufen bei Pullback"
+            f"\n  Conviction: {cluster['conviction']}% | Horizont: 2-4 Wochen (April-Verfall)"
+            f"\n  ⚠️ Nicht chasing bei +5%+ Tagen — Pullback 3-5% abwarten!"
+        )
+
+    # Cluster-Daten als JSON für Paper Trade speichern
+    _save_cluster_data(cluster)
+
+    return "\n".join(lines)
+
+
+def _save_cluster_data(cluster: dict):
+    """Cluster-Signal in cluster_signals.json speichern für Tracking."""
+    cluster_file = WORKSPACE / "data/cluster_signals.json"
+    try:
+        if cluster_file.exists():
+            with open(cluster_file) as f:
+                data = json.load(f)
+        else:
+            data = {"clusters": []}
+
+        cluster["timestamp"] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        cluster["date"] = datetime.now().strftime('%Y-%m-%d')
+
+        # Dedup: nicht zweimal am gleichen Tag den gleichen Cluster
+        today = cluster["date"]
+        existing_today = [c for c in data["clusters"] if c.get("date") == today]
+        if existing_today:
+            # Update statt duplikat
+            last = existing_today[-1]
+            if set(last.get("tickers", [])) == set(cluster["tickers"]):
+                # Gleiche Ticker → updaten
+                existing_today[-1].update(cluster)
+                with open(cluster_file, 'w') as f:
+                    json.dump(data, f, indent=2)
+                return
+
+        data["clusters"].append(cluster)
+        # Max 100 Einträge behalten
+        data["clusters"] = data["clusters"][-100:]
+
+        with open(cluster_file, 'w') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"  ⚠️ Cluster-Save Fehler: {e}")
+
 
 if __name__ == "__main__":
     main()
