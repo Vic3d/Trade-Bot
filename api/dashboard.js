@@ -1836,13 +1836,13 @@ function renderFlowScore(d) {
   document.getElementById('flow-gauge').innerHTML = \`
     <svg width="120" height="70" viewBox="0 0 120 70">
       <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="#1e293b" stroke-width="10" stroke-linecap="round"/>
-      <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round"
-            stroke-dasharray="${bar*1.57} 157" style="transition:stroke-dasharray .8s"/>
+      <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="\${col}" stroke-width="10" stroke-linecap="round"
+            stroke-dasharray="\${bar*1.57} 157" style="transition:stroke-dasharray .8s"/>
     </svg>
-    <div class="flow-gauge-num" style="color:${col};margin-top:-8px">${score}<span style="font-size:1.2rem;opacity:.6">/10</span></div>
-    <div class="flow-gauge-label" style="color:${col}">${d.label||'—'}</div>
-    <div class="flow-gauge-action">${d.action||''}</div>
-    <div style="font-size:0.7rem;color:#475569;margin-top:6px">${d.updated?'Stand '+_fmtT(d.updated):''}</div>\`;
+    <div class="flow-gauge-num" style="color:\${col};margin-top:-8px">\${score}<span style="font-size:1.2rem;opacity:.6">/10</span></div>
+    <div class="flow-gauge-label" style="color:\${col}">\${d.label||'—'}</div>
+    <div class="flow-gauge-action">\${d.action||''}</div>
+    <div style="font-size:0.7rem;color:#475569;margin-top:6px">\${d.updated?'Stand '+_fmtT(d.updated):''}</div>\`;
 
   // KPIs
   document.getElementById('fk-brent').textContent = d.brent_usd ? '$'+d.brent_usd.toFixed(1) : '—';
@@ -1860,10 +1860,10 @@ function renderFlowScore(d) {
     const pct   = Math.round((f.points/f.max)*100);
     const fCol  = f.points===0?'#334155':f.points===f.max?'#4ade80':'#06b6d4';
     return \`<div class="flow-factor-row">
-      <span class="flow-fname">${f.factor}</span>
-      <div class="flow-fbar"><div class="flow-ffill" style="width:${pct}%;background:${fCol}"></div></div>
-      <span class="flow-fpts" style="color:${fCol}">${f.points}/${f.max}</span>
-      <span class="flow-freason">${f.reason||''}</span>
+      <span class="flow-fname">\${f.factor}</span>
+      <div class="flow-fbar"><div class="flow-ffill" style="width:\${pct}%;background:\${fCol}"></div></div>
+      <span class="flow-fpts" style="color:\${fCol}">\${f.points}/\${f.max}</span>
+      <span class="flow-freason">\${f.reason||''}</span>
     </div>\`;
   }).join('');
   document.getElementById('flow-factors-panel').innerHTML =
@@ -1889,19 +1889,19 @@ function renderFlowAccuracy(lk, sigData) {
     donutEl.innerHTML = \`
       <div class="flow-donut-wrap">
         <svg width="104" height="104" viewBox="0 0 104 104">
-          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1e293b" stroke-width="14"/>
-          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f87171" stroke-width="14"
-            stroke-dasharray="${lDash} ${circ}" stroke-dashoffset="${-wDash}" stroke-linecap="round"/>
-          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#4ade80" stroke-width="14"
-            stroke-dasharray="${wDash} ${circ}" stroke-dashoffset="0" stroke-linecap="round"/>
-          <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
-            fill="#e2e8f0" font-size="16" font-weight="800">${total>0?Math.round(wins/total*100)+'%':'?'}</text>
-          <text x="${cx}" y="${cy+14}" text-anchor="middle" fill="#64748b" font-size="9">Accuracy</text>
+          <circle cx="\${cx}" cy="\${cy}" r="\${r}" fill="none" stroke="#1e293b" stroke-width="14"/>
+          <circle cx="\${cx}" cy="\${cy}" r="\${r}" fill="none" stroke="#f87171" stroke-width="14"
+            stroke-dasharray="\${lDash} \${circ}" stroke-dashoffset="\${-wDash}" stroke-linecap="round"/>
+          <circle cx="\${cx}" cy="\${cy}" r="\${r}" fill="none" stroke="#4ade80" stroke-width="14"
+            stroke-dasharray="\${wDash} \${circ}" stroke-dashoffset="0" stroke-linecap="round"/>
+          <text x="\${cx}" y="\${cy}" text-anchor="middle" dominant-baseline="middle"
+            fill="#e2e8f0" font-size="16" font-weight="800">\${total>0?Math.round(wins/total*100)+'%':'?'}</text>
+          <text x="\${cx}" y="\${cy+14}" text-anchor="middle" fill="#64748b" font-size="9">Accuracy</text>
         </svg>
         <div class="flow-legend">
-          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#4ade80"></div>${wins} WIN</div>
-          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#f87171"></div>${losses} LOSS</div>
-          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#fbbf24"></div>${pending} PENDING</div>
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#4ade80"></div>\${wins} WIN</div>
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#f87171"></div>\${losses} LOSS</div>
+          <div class="flow-legend-item"><div class="flow-legend-dot" style="background:#fbbf24"></div>\${pending} PENDING</div>
         </div>
       </div>\`;
   } else {
@@ -1917,13 +1917,13 @@ function renderFlowAccuracy(lk, sigData) {
   const html = ofPairs.map(([id,p])=>{
     const acc = p.accuracy_pct, samp=p.sample_count||0, w=p.wins||0, l=p.losses||0;
     const col = acc===null?'#94a3b8':acc>=65?'#4ade80':acc>=55?'#fbbf24':'#f87171';
-    const status = samp<10?\`🟡 Lernend (${samp}/10)\`:acc>=60?'🟢 Verlässlich':acc>=55?'🟡 Bewährt':'🔴 Gesperrt';
+    const status = samp<10?\`🟡 Lernend (\${samp}/10)\`:acc>=60?'🟢 Verlässlich':acc>=55?'🟡 Bewährt':'🔴 Gesperrt';
     const name = (shortNames[id]||id.replace('OPTIONS_FLOW_','')).replace('\n','<br>');
     return \`<div class="flow-acc">
-      <div class="flow-acc-name">${name}</div>
-      <div class="flow-acc-val" style="color:${col}">${acc!==null?acc.toFixed(0)+'%':'—'}</div>
-      <div class="flow-acc-sub">${samp} Samples · ${w}W/${l}L · ${status}</div>
-      <div class="flow-acc-bar"><div class="flow-acc-fill" style="width:${acc||0}%;background:${col}"></div></div>
+      <div class="flow-acc-name">\${name}</div>
+      <div class="flow-acc-val" style="color:\${col}">\${acc!==null?acc.toFixed(0)+'%':'—'}</div>
+      <div class="flow-acc-sub">\${samp} Samples · \${w}W/\${l}L · \${status}</div>
+      <div class="flow-acc-bar"><div class="flow-acc-fill" style="width:\${acc||0}%;background:\${col}"></div></div>
     </div>\`;
   }).join('');
   document.getElementById('flow-acc-grid').innerHTML = html;
@@ -1940,18 +1940,18 @@ function renderFlowAlarms(sigData) {
     const ratio = s.signal_pct||0;
     const tag   = s.options_fresh?'🔥 FRISCH':'📈 HOCH';
     return \`<tr>
-      <td style="color:#64748b;font-size:0.75rem">${_fmtT(s.created_at)}</td>
-      <td><strong>${s.lead_ticker||'—'}</strong></td>
-      <td style="font-family:monospace">$${s.lead_price?.toFixed(0)||'—'}</td>
-      <td style="color:#94a3b8;font-size:0.78rem">${s.options_expiry||'—'}<br><span style="color:#475569">${s.options_days??'?'}d</span></td>
-      <td><span style="font-size:0.75rem">${tag}</span><br><span style="color:#94a3b8;font-size:0.75rem">${ratio>=1?ratio.toFixed(1)+'x':'neu'}</span></td>
-      <td><span class="flow-badge ${ocls}">${s.outcome||'PENDING'}</span></td>
-      <td style="color:#475569;font-size:0.72rem">${s.quality_label||'—'}</td>
+      <td style="color:#64748b;font-size:0.75rem">\${_fmtT(s.created_at)}</td>
+      <td><strong>\${s.lead_ticker||'—'}</strong></td>
+      <td style="font-family:monospace">$\${s.lead_price?.toFixed(0)||'—'}</td>
+      <td style="color:#94a3b8;font-size:0.78rem">\${s.options_expiry||'—'}<br><span style="color:#475569">\${s.options_days??'?'}d</span></td>
+      <td><span style="font-size:0.75rem">\${tag}</span><br><span style="color:#94a3b8;font-size:0.75rem">\${ratio>=1?ratio.toFixed(1)+'x':'neu'}</span></td>
+      <td><span class="flow-badge \${ocls}">\${s.outcome||'PENDING'}</span></td>
+      <td style="color:#475569;font-size:0.72rem">\${s.quality_label||'—'}</td>
     </tr>\`;
   }).join('');
   document.getElementById('flow-alarms-table').innerHTML=\`<table>
     <thead><tr><th>Zeit</th><th>Ticker</th><th>Strike</th><th>Ablauf</th><th>Signal</th><th>Outcome</th><th>Qualität</th></tr></thead>
-    <tbody>${rows}</tbody>
+    <tbody>\${rows}</tbody>
   </table>\`;
 }
 
@@ -1964,27 +1964,27 @@ function renderFlowPaperTrades(sigData) {
   const rows = trades.map(t=>{
     const ocls   = {WIN:'win',LOSS:'loss',PENDING:'pending',NEUTRAL:'neutral'}[t.outcome]||'neutral';
     const chg    = t.actual_change_pct;
-    const chgStr = chg!==undefined?\`${chg>0?'+':''}${chg.toFixed(1)}%\`:'—';
+    const chgStr = chg!==undefined?\`\${chg>0?'+':''}\${chg.toFixed(1)}%\`:'—';
     const chgCol = chg>0?'#4ade80':chg<0?'#f87171':'#64748b';
     const entry  = t.lag_price_at_signal;
     const stop   = entry?entry*0.95:null;
     const target = entry?entry*1.08:null;
     const stopPct = entry && t.lag_price_after ? Math.round(((t.lag_price_after-entry)/entry)*100) : null;
     return \`<tr>
-      <td style="font-family:monospace;font-size:0.78rem">${t.paper_trade_id||'—'}</td>
-      <td style="color:#64748b;font-size:0.75rem">${_fmtT(t.created_at)}</td>
+      <td style="font-family:monospace;font-size:0.78rem">\${t.paper_trade_id||'—'}</td>
+      <td style="color:#64748b;font-size:0.75rem">\${_fmtT(t.created_at)}</td>
       <td><strong>EQNR.OL</strong></td>
-      <td style="font-family:monospace">${entry?entry.toFixed(2)+'€':'—'}</td>
-      <td style="font-family:monospace;color:#f87171">${stop?stop.toFixed(2)+'€':'—'}</td>
-      <td style="font-family:monospace;color:#4ade80">${target?target.toFixed(2)+'€':'—'}</td>
-      <td style="font-weight:700;color:${chgCol}">${chgStr}</td>
-      <td><span class="flow-badge ${ocls}">${t.outcome||'PENDING'}</span></td>
-      <td style="color:#475569;font-size:0.72rem">${(t.pair_id||'').replace('OPTIONS_FLOW_','')}</td>
+      <td style="font-family:monospace">\${entry?entry.toFixed(2)+'€':'—'}</td>
+      <td style="font-family:monospace;color:#f87171">\${stop?stop.toFixed(2)+'€':'—'}</td>
+      <td style="font-family:monospace;color:#4ade80">\${target?target.toFixed(2)+'€':'—'}</td>
+      <td style="font-weight:700;color:\${chgCol}">\${chgStr}</td>
+      <td><span class="flow-badge \${ocls}">\${t.outcome||'PENDING'}</span></td>
+      <td style="color:#475569;font-size:0.72rem">\${(t.pair_id||'').replace('OPTIONS_FLOW_','')}</td>
     </tr>\`;
   }).join('');
   document.getElementById('flow-paper-table').innerHTML=\`<table>
     <thead><tr><th>ID</th><th>Eröffnet</th><th>Ticker</th><th>Entry</th><th>Stop (-5%)</th><th>Ziel (+8%)</th><th>P&L</th><th>Outcome</th><th>Signal-Typ</th></tr></thead>
-    <tbody>${rows}</tbody>
+    <tbody>\${rows}</tbody>
   </table>\`;
 }
 
