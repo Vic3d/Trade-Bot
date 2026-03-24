@@ -294,3 +294,51 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
 
+
+## 2026-03-23 — PS3 + PS1 auf 🔴 (gekoppelt mit Paper Fund Fixes)
+
+### PS3 — Manuell gesperrt
+- **Status:** 🟡 → 🔴
+- **Grund:** Score 31/100. 3 Trades (KTOS +2,1%, HII +0,1%, HAG +0,1%) = praktisch keine Gewinne nach Gebühren
+- **Aktion:** `locked=true` in strategies.json, kein neuer Entry bis Score >60
+- **Datum:** 2026-03-23 15:30 CET
+
+### PS1 — Automatisch degradiert (via Learning Engine)
+- **Status:** 🟢 → 🔴
+- **Grund:** Win Rate 60% aber Win/Loss-Ratio nur 0,60x. Avg P&L –0,4% pro Trade (Verlust nach Gebühren)
+- **Einzeltrades:** OXY +12,4%, HL +5,2%, TTE +1,7%, PAAS –1,5%, MOS –19,7%
+  - MOS single worst trade: –19,7%, Stop hat nicht funktioniert (wurde bei 20,38€ geschlossen statt 25,38€)
+- **Learning Engine Erkenntnis:** "WR 60% + WL-Ratio 0,60x = Edge nicht vorhanden"
+- **Aktion:** Automatisch auf 🔴 gesetzt 2026-03-23 22:13 CET
+- **Lesson:** Eriksen hatte recht — Avg Win/Loss ist kritischer als Win Rate
+
+### Gemeinsamer Hintergrund
+**Paper Fund Analyse (23.03.2026):**
+- 15 Trades gesamt, 80% Winrate aber –18€ EUR total
+- CRV-Check, Min-Position, PS3-Sperre + Stop-Integrity Monitor eingebaut
+- Learning Engine deployed: täglich 22:30 + nach jedem Trade-Abschluss auto-evaluiert
+
+**Nächste Schritte:**
+- PS1 nicht neuen Entrys bis Edge klar (nach 5+ neuen Trades mit CRV ≥2:1)
+- MOS-Fehler analysieren: Stop war nicht korrekt gesetzt (Breakeven-Stop funktionierte nicht)
+- Weiterhin beobachten: PS2 (2 Trades), PS4, PS5 noch gelb
+
+
+## 2026-03-24 08:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
+**Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+

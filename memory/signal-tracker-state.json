@@ -1,20 +1,5 @@
 {
-  "pending_outcomes": [
-    {
-      "pair_id": "NIKKEI_COPPER",
-      "issue_id": "6e139f2e-864e-4de9-9db9-f2d221646413",
-      "lag_price_at_signal": 5.515,
-      "signal_pct": -3.3795986198257086,
-      "check_at_ts": 1774072805.2399328
-    },
-    {
-      "pair_id": "VIX_TECH",
-      "issue_id": "dfec9019-0cc9-4302-b4b3-5449625223e0",
-      "lag_price_at_signal": 151.82,
-      "signal_pct": 9.97506234413966,
-      "check_at_ts": 1774103427.7665076
-    }
-  ],
+  "pending_outcomes": [],
   "fired_today": {
     "2026-03-19": [
       "NIKKEI_COPPER"

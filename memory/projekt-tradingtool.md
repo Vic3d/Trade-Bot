@@ -1,6 +1,6 @@
 # Projekt: Trading Tool (Arbeitstitel: "TradeMind")
 
-**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-20
+**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-24
 **Status:** 🌱 Phase 1 — Lernphase (aktiv)
 **Beteiligte:** Victor (Lead), Albert (Proto-Tool + Dokumentation)
 **Ziel:** Beste Retail-Trading-App der Welt. Start als persönliches Tool, Vermarktung ~2027.
@@ -1795,3 +1795,122 @@ Bestes Takeaway: Das Phase-1/Phase-2-Schock-Framework ist sofort anwendbar für 
 
 ### Eriksen-Bestätigung (heute):
 "Avg Win / Avg Loss = kritischerer KPI als Trefferquote" — genau das haben wir heute in unseren Daten gesehen und behoben.
+
+---
+
+## Transcript-Analyse: Lars Eriksen (2026-03-23)
+*Quelle: eriksen-2026-03-23-gold.txt*
+
+### Kontext
+Gold fällt um 5-8% an diesem Tag. Eriksen analysiert die Gründe und erklärt, warum er trotzdem nachkauft. Das Transkript ist zu 80% Psychologie + Methodik, nur 20% konkrete Empfehlungen.
+
+---
+
+### METHODISCHE ERKENNTNISSE
+
+**1. Antizyklisches Kaufen in Korrekturphasen**
+> "Mache ich das, was ich mir vorher zurecht gelegt habe. Ich kaufe und gegebenenfalls kriege ich noch mal die Chance noch tiefer zu kaufen."
+
+Regel: Korrektur ist Chance, wenn das Basisvehikel langfristig überzeugend bleibt.
+
+**2. Szenariobasierte Entscheidung vor Einstieg**
+> "Musste man aber ehrlicherweise auch schon vor dem ersten Kauf vor Monaten oder Jahren für sich entscheiden. Ist das ein realistisches Szenario...?"
+
+Regel: Erst Szenario definieren (z.B. "USD entwerte sich über Zeit"), dann nach Gelegenheiten suchen. NICHT: Kaufen, dann Begründung suchen.
+
+**3. Perfekter Boden ist Zeitverschwendung**
+> "Gegebenenfalls kriege ich noch mal die Chance noch tiefer zu kaufen. Habe ich unbegrenzt Kapital? Nein. Aber mir kommt's nicht drauf an, dass ich den perfekten Boden erwische."
+
+Regel: Tranche-Aufbau > Timing-Spiel. Die richtige Richtung und der nächste Kauf ist wichtiger als der exakte Eintrittspreis.
+
+**4. Oversold erkennen**
+> "Zum ersten Mal seit Jahren ich Gold in einem überverkauften Zustand. Das erste Mal seit 2023."
+
+Technisches Werkzeug: Oversold-Zustände (RSI, Sentiment-Extreme) sind Käufer-Zonen, nicht Verkäufer-Zonen für Langfristige.
+
+---
+
+### PSYCHOLOGISCHE ERKENNTNISSE (Kritisch!)
+
+**Das 30-Jahres-Studie-Phänomen:**
+> "Die, die diesen Gedanken hatten: wenn es kracht an der Börse, muss ich ja auch nicht investiert sein. [...] Das wäre ja wohl mal ein Event. Der kauft genau zu dem Zeitpunkt... wenn sich die Lage beruhigt hat. Damit vergisst er... die zehn besten Tage eines Jahrzehns, weil die ganz oft nach solchen Korrektionen stattfinden. Wenn er die verpasst hat... halbert er mal eben seine Rendite."
+
+Lektion: An der Seitenlinie stehen ist psychologisch einleuchtend, aber mathematisch verheerend. FOMO auf Korrekturphasen ausitzen ist Sünde Nr. 1.
+
+**Depot-Schauen-Ritual:**
+> "Sowieso viel zu viele langfristige Anleger gucken jeden Tag auf ihr Depot. Why? Wenn du es sowieso nicht verkaufen würdest, unabhängig davon, ob es steigt oder fällt, warum denn sich jeden Tag damit belasten?"
+
+Lektion: Tägliches Monitoring ist Noise wenn die Thesis unverändert ist. Nur bei Strategie-Änderung überwachen.
+
+**"Diesmal ist es anders"-Fallstricke**
+> "Ich weiß, wie viele denken: ja, aber diesmal ist es anders. Klar, diesmal ist alles anders. Bis dann eines Tages die Welt wirklich untergeht."
+
+Lektion: Skeptisch bleiben gegen Apokalypse-Narrativ. Märkte haben sich 200 Jahre lang erholt.
+
+---
+
+### RISIKO-REGELN
+
+1. **Einzelaktien haben erhöhte Risiken** — Das ist klar, wird aber oft ignoriert. Eriksen empfiehlt stattdessen Gold-Aktien ETFs für Anfänger.
+2. **Position-Sizing für Einzelaktien:** Tranchweise, nicht All-In. Die Royal Gold Position wurde über Monate aufgebaut, nicht in einem Kauf.
+3. **Szenario-Validierung:** Wenn dein Szenario nicht stimmt (z.B. "Gold geht auf 2000 in 2 Jahren"), NICHT kaufen — und hätte auch vorher NICHT kaufen sollen.
+
+---
+
+### BEGRÜNDETE THESEN
+
+#### These 1: GOLD (physisch oder GLD/IAU) — LONG
+**Eriksens Argumente:**
+- Korrektur schafft Einstiegsgelegenheit nach jahrelangem Anstieg
+- Erstes Mal seit 2023 in überverkauftem Zustand
+- Langfristig: USD-Entwertung ist unvermeidlich in hochverschuldeter Welt ("Die Denomination, die Devaluation von Fiat Currency... Das muss das Programm sein. Es geht gar nicht anders.")
+- Realverzinsungen steigen momentan (bärisch kurzfristig), aber langfristig nicht haltbar
+
+**Alberts unabhängige Analyse:**
+- ✅ Szenario plausibel: Fiskale Dominanz (Staaten > Notenbanken) in hochverschuldeten Ländern führt historisch zu Inflation
+- ✅ Oversold-Erkennung stimmt (ist verifizierbar über technische Daten)
+- ⚠️ Schwachpunkt: Eriksen unterschätzt die Möglichkeit, dass reale Zinsen LÄNGER hoch bleiben könnten (Fiskales Dominanzregime ≠ sofortiger Goldboom)
+- ✅ Kaufzone ist defensiv positioniert (Korrektur, nicht gierig)
+
+**Alberts Gesamteinschätzung:** 
+Überzeugend für langfristige Anlage (3+ Jahre). Die Begründung (Fiskale Dominanz → Währungsentwertung → Gold) ist solider als "Inflation" allein. Passt zu Strategie S (deflationäre Schocks hedgen).
+
+#### These 2: ROYAL GOLD CORP (RGLD.US) — LONG (Nachkauf geplant)
+**Eriksens Argumente:**
+- Noch 25% im Plus trotz Korrektur
+- In vorher definierten Kaufzone seit Wochen
+- Fallende Kurse sind notwendig um Zone zu erreichen
+- Zukünftige Position, nicht aktiv-Trading-Entry
+
+**Alberts unabhängige Analyse:**
+- ⚠️ Einzelaktie = hohe Volatilität (Gold Miner sind ~2x Gold Beta)
+- ✅ Korrektur in Kaufzone ist valider Entry-Grund
+- ⚠️ Keine Fundamentals genannt (Produktion, Kosten, Management)
+- ✅ Größer Kontext: Goldaktien outperformt Gold ETCs in diesem Zyklus (Chart steht nicht im Transkript)
+
+**Alberts Empfehlung:**
+Beobachten als Watchlist-Item. NICHT vor eigener Fundamental-Analyse kaufen (Royal Gold Geschäftsmodell, Debt/Equity, Exploration Pipeline checken). Falls Gold-Thesis stimmt, sind Miner-Namen eine optionale Leverage-Komponente.
+
+---
+
+### ROTE FLAGGEN / RED FLAGS
+
+❌ NICHT tun (explizit aus dem Transkript):
+1. **Nicht auf Bauchgefühl handeln** — "Emotionale Nachvollziehbarkeit" ist nicht Begründung
+2. **Nicht tägliche Depot-Checks machen** wenn Strategie unverändert
+3. **Nicht auf den "perfekten Boden" warten** — Das kostet dich die besten Tage
+4. **Nicht "diesmal ist es anders" glauben** — Das führt zu Kapitulation gerade wenn man kaufen sollte
+5. **Nicht All-In in Einzelaktien** — Tranche-Aufbau ist Risk Management
+
+---
+
+### ALBERTS ZUSAMMENFASSUNG
+
+Das wertvollste aus diesem Transkript ist nicht die Gold-These (die ist Standard), sondern die **Psychologie der Antizyklikalität**. Eriksen erklärt, warum die meisten Privatanleger in Korrekturphasen rausgehen, obwohl das mathematisch nachweislich die Rendite halbiert.
+
+**Beste Takeaway für TradeMind:**
+- Wenn die KI einem Nutzer sagt "Das ist eine Kaufzone für dein Szenario", muss die UX die psychologische Hürde senken (nicht erhöhen). Keine "Seid ihr sicher?"-Dialoge.
+- Szenario-Validierung VORHER ist wichtiger als Timing-Optimierung NACHHER.
+- Tranchweise Positionen aufbauen gibt dem Nutzer psychologische Ruhe (nicht All-In-FOMO).
+
+---

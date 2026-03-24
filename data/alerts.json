@@ -131,5 +131,19 @@
     "ticker": "",
     "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung -10.6% ($100.38\u2192$89.70)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLT",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-24T07:00:52.461217+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f BRENT-WTI SPREAD: $11.60 (Brent $102.98 - WTI $91.38) \u2014 Lieferunterbrechung Warnsignal!",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-24T09:00:58.243112+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: Palantir (PLTR) @ 138.75\u20ac | P&L: +5.0% (>5.0%) | Stop auf Breakeven (132.11\u20ac) nachziehen! [Conviction: 57/100]",
+    "value": ""
   }
 ]

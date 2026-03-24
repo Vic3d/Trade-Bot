@@ -1,32 +1,32 @@
 {
-  "timestamp": "2026-03-23T21:45:14.708592+00:00",
+  "timestamp": "2026-03-24T11:45:13.740815+00:00",
   "fx": {
-    "EURUSD": 1.1617,
-    "EURNOK": 11.3116,
+    "EURUSD": 1.1598,
+    "EURNOK": 11.2265,
     "GBPEUR": 1.1566
   },
   "macro": {
-    "wti": 88.87,
-    "vix": 26.15,
-    "nikkei": -3.4793928637072304
+    "wti": 90.31,
+    "vix": 26.41,
+    "nikkei": 1.4302300143122018
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 138.45,
+      "price_eur": 138.68,
       "price_raw": 160.84,
       "entry_eur": 132.11,
-      "pnl_pct": 4.8,
+      "pnl_pct": 4.97,
       "stop_eur": 127.0,
       "rs_qqq": 5.87,
       "conviction": 57
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.18,
-      "price_raw": 28.18,
+      "price_eur": 28.26,
+      "price_raw": 28.26,
       "entry_eur": 27.9,
-      "pnl_pct": 1.0,
+      "pnl_pct": 1.29,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 51
@@ -46,8 +46,8 @@
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 33.11,
-      "price_raw": 38.47
+      "price_eur": 32.31,
+      "price_raw": 37.48
     }
   }
 }
