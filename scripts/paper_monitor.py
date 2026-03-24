@@ -401,7 +401,7 @@ def push_to_git():
     try:
         subprocess.run(['git', 'add', str(DNA_JSON)], cwd=str(WORKSPACE), capture_output=True, timeout=10)
         result = subprocess.run(
-            ['git', 'commit', '-m', f'📊 DNA update {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")}'],
+            ['git', 'commit', '-m', f'📊 DNA update {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")} [skip ci]'],
             cwd=str(WORKSPACE), capture_output=True, timeout=10
         )
         if result.returncode == 0:

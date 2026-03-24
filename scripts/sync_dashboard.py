@@ -39,8 +39,10 @@ def git_commit_push(files, message):
         if result.returncode == 0:
             print('sync_dashboard: Keine Änderungen — kein Commit nötig')
             return True
+        # [skip ci] verhindert Vercel-Deploy bei Daten-Syncs (spart Hobby-Limit)
+        ci_tag = '' if '[skip ci]' in message else ' [skip ci]'
         subprocess.run(
-            ['git', '-C', str(WS), 'commit', '-m', message],
+            ['git', '-C', str(WS), 'commit', '-m', message + ci_tag],
             capture_output=True, check=True)
         subprocess.run(
             ['git', '-C', str(WS), 'push', 'origin', 'master'],
