@@ -243,13 +243,23 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "1211.HK",
+      "ticker": "9988.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 11.77,
-      "stop": 11.66,
-      "target": 11.86,
-      "opened_at": "2026-03-25 01:00",
+      "entry": 14.27,
+      "stop": 13.56,
+      "target": 14.38,
+      "opened_at": "2026-03-25 01:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "0883.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 3.15,
+      "stop": 3.24,
+      "target": 3.12,
+      "opened_at": "2026-03-25 01:20",
       "status": "OPEN"
     },
     {
@@ -283,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-25T01:15:04.000200Z",
+  "last_sync": "2026-03-25T01:20:08.887861Z",
   "recent_day_trades": [
+    {
+      "ticker": "1211.HK",
+      "strategy": "DT4",
+      "entry_price": 11.77,
+      "exit_price": 11.88,
+      "entry_date": "2026-03-25 01:00",
+      "exit_date": "2026-03-25 01:20",
+      "pnl_pct": 0.94,
+      "status": "WIN"
+    },
     {
       "ticker": "FXI",
       "strategy": "DT4",
@@ -473,16 +493,6 @@
       "entry_date": "2026-03-23 01:55",
       "exit_date": "2026-03-23 20:45",
       "pnl_pct": -0.18,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "1605.T",
-      "strategy": "DT4",
-      "entry_price": 24.48,
-      "exit_price": 24.36,
-      "entry_date": "2026-03-23 02:00",
-      "exit_date": "2026-03-23 20:45",
-      "pnl_pct": -0.48,
       "status": "LOSS"
     }
   ],
