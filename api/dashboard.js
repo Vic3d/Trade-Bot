@@ -685,11 +685,17 @@ async function loadAll(){
   document.getElementById('ts').textContent='⏳';
   try{
     // TRA-127: Load config dynamically (includes strategies, earnings, etc.)
+    const safeFetch=(url)=>fetch(url).then(r=>{
+      if(r.status===302||r.redirected&&r.url.includes('login')){window.location.href='/api/login';throw new Error('auth');}
+      if(!r.ok)throw new Error('http '+r.status);
+      return r.json();
+    });
     const [cfgResp,pricesResp,dnaResp]=await Promise.all([
-      fetch('/api/config').then(r=>r.json()),
-      fetch('/api/prices').then(r=>r.json()),
+      safeFetch('/api/config').catch(e=>{if(e.message!=='auth')console.warn('config:',e);return null;}),
+      safeFetch('/api/prices').catch(e=>{console.warn('prices:',e);return {};}),
       fetch('/api/dna').then(r=>r.json()).catch(()=>null),
     ]);
+    if(!cfgResp){document.getElementById('ts').textContent='⚠️ Session abgelaufen';return;}
     cfg=cfgResp;
     prices=pricesResp;
     dnaData=dnaResp;
@@ -900,7 +906,7 @@ async function loadHistory(){
   if(histLoaded)return;
   document.getElementById('history-table').innerHTML='<div class="loading">Lade…</div>';
   try{
-    const d=await fetch('/api/trade-log').then(r=>r.json());
+    const d=await fetch('/api/trade-log').then(r=>{if(!r.ok||r.redirected)throw new Error('auth');return r.json();});
     tradeHistory=(d.trades||[]).reverse();
     renderHistoryTable();
     histLoaded=true;
