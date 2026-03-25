@@ -695,7 +695,7 @@ async function loadAll(){
       safeFetch('/api/prices').catch(e=>{console.warn('prices:',e);return {};}),
       fetch('/api/dna').then(r=>r.json()).catch(()=>null),
     ]);
-    if(!cfgResp){document.getElementById('ts').textContent='⚠️ Session abgelaufen';return;}
+    if(!cfgResp){window.location.href='/api/login';return;}
     cfg=cfgResp;
     prices=pricesResp;
     dnaData=dnaResp;
