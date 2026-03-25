@@ -241,9 +241,49 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "1211.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 11.77,
+      "stop": 11.66,
+      "target": 11.86,
+      "opened_at": "2026-03-25 01:00",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "2318.HK",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 6.54,
+      "stop": 6.51,
+      "target": 6.6,
+      "opened_at": "2026-03-25 01:00",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "FXI",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 30.39,
+      "stop": 30.53,
+      "target": 30.15,
+      "opened_at": "2026-03-25 01:00",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "KWEB",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 24.32,
+      "stop": 24.43,
+      "target": 24.12,
+      "opened_at": "2026-03-25 01:00",
+      "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-25T00:55:04.087333Z",
+  "last_sync": "2026-03-25T01:00:08.864105Z",
   "recent_day_trades": [
     {
       "ticker": "FXI",
