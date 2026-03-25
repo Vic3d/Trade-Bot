@@ -1919,12 +1919,12 @@ function renderFlowAccuracy(lk, sigData) {
     document.getElementById('flow-acc-grid').innerHTML='<div style="color:#64748b;font-size:0.8rem">Pairs noch nicht initialisiert.</div>';
     return;
   }
-  const shortNames = {OPTIONS_FLOW_OIL_SHORT:'Öl Kurzläufer\n(<7 Tage)', OPTIONS_FLOW_OIL_MEDIUM:'Öl Mittelfristig\n(7-30 Tage)', OPTIONS_FLOW_PUT_OIL:'Put-Flow\n(Short-Signal)'};
+  const shortNames = {OPTIONS_FLOW_OIL_SHORT:'Öl Kurzläufer (<7 Tage)', OPTIONS_FLOW_OIL_MEDIUM:'Öl Mittelfristig (7-30 Tage)', OPTIONS_FLOW_PUT_OIL:'Put-Flow (Short-Signal)'};
   const html = ofPairs.map(([id,p])=>{
     const acc = p.accuracy_pct, samp=p.sample_count||0, w=p.wins||0, l=p.losses||0;
     const col = acc===null?'#94a3b8':acc>=65?'#4ade80':acc>=55?'#fbbf24':'#f87171';
     const status = samp<10?\`🟡 Lernend (\${samp}/10)\`:acc>=60?'🟢 Verlässlich':acc>=55?'🟡 Bewährt':'🔴 Gesperrt';
-    const name = (shortNames[id]||id.replace('OPTIONS_FLOW_','')).replace('\n','<br>');
+    const name = (shortNames[id]||id.replace('OPTIONS_FLOW_',''));
     return \`<div class="flow-acc">
       <div class="flow-acc-name">\${name}</div>
       <div class="flow-acc-val" style="color:\${col}">\${acc!==null?acc.toFixed(0)+'%':'—'}</div>
