@@ -118,7 +118,7 @@
     "avg_pnl": -0.4,
     "win_loss_ratio": 0.6,
     "n_trades": 5,
-    "last_evaluated": "2026-03-25 21:15"
+    "last_evaluated": "2026-03-25 22:31"
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -217,7 +217,7 @@
     "avg_pnl": 13.64,
     "win_loss_ratio": 4.52,
     "n_trades": 3,
-    "last_evaluated": "2026-03-25 21:15"
+    "last_evaluated": "2026-03-25 22:31"
   },
   "PS3": {
     "name": "NATO/EU-Rüstung",
@@ -525,7 +525,7 @@
     "avg_pnl": 4.56,
     "win_loss_ratio": 999,
     "n_trades": 1,
-    "last_evaluated": "2026-03-25 21:15"
+    "last_evaluated": "2026-03-25 22:31"
   },
   "S1": {
     "name": "Iran-Konflikt → Öl & Silber",
@@ -1611,7 +1611,7 @@
     "avg_pnl": -2.2,
     "win_loss_ratio": 0.0,
     "n_trades": 1,
-    "last_evaluated": "2026-03-25 21:15",
+    "last_evaluated": "2026-03-25 22:31",
     "genesis": {
       "last_updated": "2026-03-25T21:31:02Z",
       "auto_adjusted": false
