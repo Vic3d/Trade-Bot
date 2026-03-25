@@ -661,7 +661,7 @@ function stopCell(price,stop){
   return \`<div><span style="color:\${col};font-weight:600">\${stop.toFixed(2)}€</span><span class="muted" style="font-size:11px"> (\${d!=null?d.toFixed(1):'?'}%)</span></div>
           <div class="stop-bar"><div class="stop-fill" style="width:\${bar}%;background:\${col}"></div></div>\`;
 }
-function tvLink(ticker){const tv=TV_MAP[ticker]||TV_MAP[ticker?.split('.')[0]];if(tv)return\`https://www.tradingview.com/chart/?symbol=\${tv}\`;return\`https://www.tradingview.com/chart/?symbol=\${encodeURIComponent(ticker)}\`;}
+function tvLink(ticker){const tv=TV_MAP[ticker]||TV_MAP[ticker?.split('.')[0]];const sym=tv||ticker;return\`https://www.tradingview.com/chart/?symbol=\${encodeURIComponent(sym)}\`;}
 
 // TRA-134: Conviction Badge
 function convictionBadge(score){
