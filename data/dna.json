@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "VNA.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 21.66,
+      "stop": 21.49,
+      "target": 21.83,
+      "opened_at": "2026-03-25 15:10",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ZAL.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -250,16 +260,6 @@
       "stop": 21.49,
       "target": 21.8,
       "opened_at": "2026-03-25 13:32",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "VNA.DE",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 21.55,
-      "stop": 21.64,
-      "target": 21.38,
-      "opened_at": "2026-03-25 13:05",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-25T15:05:04.163056Z",
+  "last_sync": "2026-03-25T15:10:08.264537Z",
   "recent_day_trades": [
+    {
+      "ticker": "VNA.DE",
+      "strategy": "DT4",
+      "entry_price": 21.55,
+      "exit_price": 21.66,
+      "entry_date": "2026-03-25 13:05",
+      "exit_date": "2026-03-25 15:10",
+      "pnl_pct": -0.51,
+      "status": "LOSS"
+    },
     {
       "ticker": "FXI",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-24 01:00",
       "exit_date": "2026-03-24 13:50",
       "pnl_pct": 0.89,
-      "status": "WIN"
-    },
-    {
-      "ticker": "1211.HK",
-      "strategy": "DT4",
-      "entry_price": 11.6,
-      "exit_price": 11.71,
-      "entry_date": "2026-03-24 06:20",
-      "exit_date": "2026-03-24 07:25",
-      "pnl_pct": 0.92,
       "status": "WIN"
     }
   ],
