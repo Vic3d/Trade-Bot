@@ -241,60 +241,60 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
-    },
+    }
+  ],
+  "last_sync": "2026-03-25T20:45:32.015361Z",
+  "recent_day_trades": [
     {
-      "ticker": "GOOGL",
+      "ticker": "9988.HK",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 251.6,
-      "stop": 250.51,
-      "target": 253.61,
-      "opened_at": "2026-03-25 17:35",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "SAP.DE",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 146.8,
-      "stop": 147.84,
-      "target": 145.63,
-      "opened_at": "2026-03-25 15:45",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "9984.T",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 20.93,
-      "stop": 20.64,
-      "target": 21.1,
-      "opened_at": "2026-03-25 04:50",
-      "status": "OPEN"
+      "entry_price": 14.27,
+      "exit_price": 14.27,
+      "entry_date": "2026-03-25 01:20",
+      "exit_date": "2026-03-25 20:45",
+      "pnl_pct": -0.03,
+      "status": "LOSS"
     },
     {
       "ticker": "7203.T",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 18.1,
-      "stop": 18.27,
-      "target": 17.95,
-      "opened_at": "2026-03-25 03:45",
-      "status": "OPEN"
+      "entry_price": 18.1,
+      "exit_price": 18.11,
+      "entry_date": "2026-03-25 03:45",
+      "exit_date": "2026-03-25 20:45",
+      "pnl_pct": -0.07,
+      "status": "LOSS"
     },
     {
-      "ticker": "9988.HK",
+      "ticker": "9984.T",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 14.27,
-      "stop": 13.56,
-      "target": 14.38,
-      "opened_at": "2026-03-25 01:20",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-25T20:40:05.079635Z",
-  "recent_day_trades": [
+      "entry_price": 20.93,
+      "exit_price": 20.67,
+      "entry_date": "2026-03-25 04:50",
+      "exit_date": "2026-03-25 20:45",
+      "pnl_pct": -1.25,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "SAP.DE",
+      "strategy": "DT4",
+      "entry_price": 146.8,
+      "exit_price": 146.9,
+      "entry_date": "2026-03-25 15:45",
+      "exit_date": "2026-03-25 20:45",
+      "pnl_pct": -0.07,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT4",
+      "entry_price": 251.6,
+      "exit_price": 251.63,
+      "entry_date": "2026-03-25 17:35",
+      "exit_date": "2026-03-25 20:45",
+      "pnl_pct": 0.01,
+      "status": "WIN"
+    },
     {
       "ticker": "AMD",
       "strategy": "DT4",
@@ -443,56 +443,6 @@
       "entry_date": "2026-03-25 01:00",
       "exit_date": "2026-03-25 01:20",
       "pnl_pct": 0.94,
-      "status": "WIN"
-    },
-    {
-      "ticker": "FXI",
-      "strategy": "DT4",
-      "entry_price": 30.52,
-      "exit_price": 30.44,
-      "entry_date": "2026-03-24 01:00",
-      "exit_date": "2026-03-24 20:45",
-      "pnl_pct": 0.25,
-      "status": "WIN"
-    },
-    {
-      "ticker": "9988.HK",
-      "strategy": "DT4",
-      "entry_price": 14.1,
-      "exit_price": 13.56,
-      "entry_date": "2026-03-24 01:20",
-      "exit_date": "2026-03-24 20:45",
-      "pnl_pct": -3.8,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "0700.HK",
-      "strategy": "DT4",
-      "entry_price": 56.73,
-      "exit_price": 56.59,
-      "entry_date": "2026-03-24 01:20",
-      "exit_date": "2026-03-24 20:45",
-      "pnl_pct": -0.24,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "entry_price": 3.24,
-      "exit_price": 3.24,
-      "entry_date": "2026-03-24 07:25",
-      "exit_date": "2026-03-24 20:45",
-      "pnl_pct": -0.04,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "NEM",
-      "strategy": "DT4",
-      "entry_price": 85.24,
-      "exit_price": 85.3,
-      "entry_date": "2026-03-24 18:15",
-      "exit_date": "2026-03-24 20:45",
-      "pnl_pct": 0.07,
       "status": "WIN"
     }
   ],
