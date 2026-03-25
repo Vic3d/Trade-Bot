@@ -243,22 +243,22 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "SAP.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 146.8,
+      "stop": 147.84,
+      "target": 145.63,
+      "opened_at": "2026-03-25 15:45",
+      "status": "OPEN"
+    },
+    {
       "ticker": "AMD",
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 189.62,
       "stop": 188.18,
       "target": 191.13,
-      "opened_at": "2026-03-25 15:35",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "EXPN.L",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 28.86,
-      "stop": 29.15,
-      "target": 28.63,
       "opened_at": "2026-03-25 15:35",
       "status": "OPEN"
     },
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-25T15:40:04.202082Z",
+  "last_sync": "2026-03-25T15:45:26.180682Z",
   "recent_day_trades": [
+    {
+      "ticker": "EXPN.L",
+      "strategy": "DT4",
+      "entry_price": 28.86,
+      "exit_price": 29.18,
+      "entry_date": "2026-03-25 15:35",
+      "exit_date": "2026-03-25 15:45",
+      "pnl_pct": -1.1,
+      "status": "LOSS"
+    },
     {
       "ticker": "VNA.DE",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-24 15:31",
       "exit_date": "2026-03-24 16:15",
       "pnl_pct": -0.81,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "VNA.DE",
-      "strategy": "DT4",
-      "entry_price": 20.87,
-      "exit_price": 21.09,
-      "entry_date": "2026-03-24 14:15",
-      "exit_date": "2026-03-24 15:31",
-      "pnl_pct": -1.04,
       "status": "LOSS"
     }
   ],
