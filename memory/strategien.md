@@ -111,6 +111,7 @@ Iran/Golf-Öl ist leichtes Öl (~30-35° API) — wie Brent.
 ---
 
 | 15.03. | Israel expandiert Strikes auf Westiran, Iran-FM: keine Verhandlungen, Trump droht Kharg Island Zerstörung, IEA Notreserven aktiviert | Eskalation fortgesetzt — kein De-Eskalations-Signal. Kharg-Island-Drohung = nukleares Preisniveau-Risiko für Öl | 🟢🔥 |
+| 25.03. | Trump 15-Punkte-Plan + Ceasefire-Hoffnungen → Brent -4%. Victor-Analyse: Deal strukturell unmöglich (Iran kann Atom+Raketen nicht aufgeben ohne Regime-Kollaps — Libyen/Irak-Präzedenz). OXY April-Calls 18.931 Kontrakte = institutionelle Käufer kaufen Schwäche. CoT: Hedge Fonds netto +31.502 long. Entscheidung: HALTEN. | Deal-Wahrscheinlichkeit 10% Großdeal, 30% Teil-Deal, 60% kein Deal. Ceasefire-Rhetoric ≠ Ceasefire-Realität. | 🟢🔥 |
 ## STRATEGIE 2: Europäische Aufrüstung → Rüstung
 
 **Status: 🟢 STARK** *(Stand: 08.03.2026)*

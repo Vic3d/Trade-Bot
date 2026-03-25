@@ -18,6 +18,17 @@ Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
 Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
 ---
 
+## [2026-03-25 11:00 UTC]
+Neu: 4 | 🔴 0 | 🟡 0 | ⚪ 4
+---
+**PLTR (Palantir)** — US-Regierungsaufträge + KI-Defense profitiert von Militärausgaben
+- "GE Aerospace teams with Palantir on AI-driven jet-engine contract" (MSN, 24 Mar)
+- "Palantir Hit by Pentagon's \"Supply Chain Risk\" Declaration, Must Remove Anthropic AI from US Military Systems" (VOI.id, 24 Mar)
+
+**A2DWAW (iShares Biotech ETF)** — Biotech-Aufholpotenzial — FDA-Approvals als Katalysator
+- "UPDATED: FDA illuminates new approval pathway for bespoke gene editing therapies" (Fierce Biotech, 23 Feb)
+- "7 Best Biotech ETFs to Buy Now" (US News Money, 11 Feb)
+
 ## [2026-03-24 09:00 UTC]
 Neu: 5 | 🔴 0 | 🟡 1 | ⚪ 4
 ---
@@ -48,4 +59,12 @@ Neu: 4 | 🔴 0 | 🟡 0 | ⚪ 4
 
 ## [2026-03-24 19:00 UTC]
 Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
+---
+
+## [2026-03-25 07:00 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-25 09:00 UTC]
+Neu: 5 | 🔴 0 | 🟡 0 | ⚪ 5
 ---

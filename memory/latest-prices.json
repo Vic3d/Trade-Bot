@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-03-24T21:45:14.256156+00:00",
+  "timestamp": "2026-03-25T11:45:13.499266+00:00",
   "fx": {
     "EURUSD": 1.161,
-    "EURNOK": 11.2515,
-    "GBPEUR": 1.1557
+    "EURNOK": 11.2943,
+    "GBPEUR": 1.1562
   },
   "macro": {
-    "wti": 88.39,
-    "vix": 26.95,
-    "nikkei": 1.4302300143122018
+    "wti": 87.11,
+    "vix": 25.28,
+    "nikkei": 2.8655974437861924
   },
   "positions": {
     "PLTR": {
@@ -23,20 +23,20 @@
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.92,
-      "price_raw": 28.92,
+      "price_eur": 28.79,
+      "price_raw": 28.79,
       "entry_eur": 27.9,
-      "pnl_pct": 3.66,
+      "pnl_pct": 3.19,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 51
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 6.96,
-      "price_raw": 6.96,
+      "price_eur": 7.09,
+      "price_raw": 7.09,
       "entry_eur": 7.0,
-      "pnl_pct": -0.64,
+      "pnl_pct": 1.24,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 39
@@ -46,8 +46,8 @@
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 32.51,
-      "price_raw": 37.74
+      "price_eur": 32.98,
+      "price_raw": 38.28
     }
   }
 }

@@ -145,5 +145,12 @@
     "ticker": "",
     "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: Palantir (PLTR) @ 138.75\u20ac | P&L: +5.0% (>5.0%) | Stop auf Breakeven (132.11\u20ac) nachziehen! [Conviction: 57/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-25T07:00:45.261533+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f BRENT-WTI SPREAD: $11.16 (Brent $100.56 - WTI $89.40) \u2014 Lieferunterbrechung Warnsignal!",
+    "value": ""
   }
 ]

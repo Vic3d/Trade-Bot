@@ -18,7 +18,7 @@
 
 | Kategorie | Betrag | Status |
 |---|---|---|
-| **Startkapital** | 1000,00€ | |
+| **Startkapital** | 25.000,00€ | |
 | **Investiert** | 919,81€ | 10 Positionen (nach TP-Reduktion) |
 | **Cash** | 118,62€ | Reserve (min. 100€ Regel ✅) |
 | **Realisierte P&L** | +30,22€ | Alle TPs vom 16.03 + 17.03 |

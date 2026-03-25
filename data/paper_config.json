@@ -1,0 +1,12 @@
+{
+  "capital": 25000,
+  "position_size_eur": 2000,
+  "max_positions": 8,
+  "min_crv": 2.0,
+  "fee_per_trade": 1.0,
+  "aggressive_mode": true,
+  "position_size_pct": 0.08,
+  "stop_buffer_vix_low": 0.05,
+  "stop_buffer_vix_high": 0.08,
+  "note": "Aggressiver Modus: 2000\u20ac/Position, max 8 Positionen, 1\u20ac Geb\u00fchr (TR)"
+}

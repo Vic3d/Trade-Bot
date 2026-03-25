@@ -135,3 +135,31 @@ Victor: "Genau solche Informationen sind super wichtig. Wenn so was passiert, mu
 2. Bei mehreren Tickern gleichzeitig bullisch (Cluster-Signal) → Konfidenz erhöhen, aggressiver
 3. Nicht nur melden, sondern direkt sagen: "Entry X, Stop Y, Ziel Z"
 4. April-Verfall = Smart Money erwartet Bewegung in 2-4 Wochen → Horizont beachten
+
+## 2026-03-25 — Öl-Positionen HALTEN trotz Ceasefire-Hoffnungen
+
+**Entscheidung:** A3D42Y (VanEck Oil Services ETF) und alle Öl-Positionen werden gehalten. Kein Teilverkauf trotz Brent -4% overnight und Trump-Ceasefire-Signalen.
+
+**Kontext:**
+- Trump hat 15-Punkte-Plan mit Iran vorgeschlagen (24./25.03.)
+- Brent fiel -4% overnight auf ~$100
+- Silver +8% auf Ceasefire-Hoffnungen
+- OXY April-Calls mit 18.931 Kontrakten — institutioneller Käufer kauft in die Schwäche
+- CFTC CoT (17.03.): Hedge Fonds netto +31.502 long auf WTI
+
+**Kern-Reasoning (Victors Analyse):**
+Trumps Forderungen (Atomanlangen schließen + keine ballistischen Raketen) sind DIESELBEN Forderungen wie vor dem Krieg — damals gab es keine Einigung. Iran KANN diese Forderungen strukturell nicht erfüllen, weil:
+1. Nukleare Fähigkeit + Raketen = einzige Lebensversicherung des Regimes
+2. Historisches Muster: Libyen (Gaddafi gab WMDs auf → 2011 gestürzt), Irak (Saddam kooperierte → 2003 invadiert). Iran hat dieselbe Tabelle vor Augen.
+3. Ohne Deterrence = Iran ist das nächste Libyen. Das ist rational nicht akzeptierbar.
+
+**Deal-Wahrscheinlichkeit:**
+- Kein Deal / Talks scheitern: 60%
+- Kleiner Teil-Deal (Einfrierung, kein Abrüstung): 30%
+- Echter Großdeal (alle Trump-Forderungen): 10%
+
+**Lesson:**
+Ceasefire-Rhetoric ≠ Ceasefire-Realität. Strukturelle Unmöglichkeit eines Deals (Regime-Survival-Logik) schlägt kurzfristige Marktreaktion. Öl-Thesis intakt solange keine konkreten, verifizierbaren Zugeständnisse Irans.
+
+**Risiko-Monitor:**
+Exit-Signal wäre: konkreter Teil-Deal mit verifizierbaren Maßnahmen — NICHT nur Gesprächsankündigung oder Trump-Tweet.
