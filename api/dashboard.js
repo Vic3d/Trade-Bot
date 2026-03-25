@@ -686,16 +686,16 @@ async function loadAll(){
   try{
     // TRA-127: Load config dynamically (includes strategies, earnings, etc.)
     const safeFetch=(url)=>fetch(url).then(r=>{
-      if(r.status===302||r.redirected&&r.url.includes('login')){window.location.href='/api/login';throw new Error('auth');}
+      if(r.redirected&&r.url.includes('login')){window.location.href='/api/login';throw new Error('auth');}
       if(!r.ok)throw new Error('http '+r.status);
       return r.json();
     });
     const [cfgResp,pricesResp,dnaResp]=await Promise.all([
-      safeFetch('/api/config').catch(e=>{if(e.message!=='auth')console.warn('config:',e);return null;}),
+      safeFetch('/api/config').catch(e=>{if(e.message==='auth')throw e;console.warn('config:',e);return null;}),
       safeFetch('/api/prices').catch(e=>{console.warn('prices:',e);return {};}),
       fetch('/api/dna').then(r=>r.json()).catch(()=>null),
     ]);
-    if(!cfgResp){window.location.href='/api/login';return;}
+    if(!cfgResp){document.getElementById('ts').textContent='⚠️ Config-Fehler — bitte Seite neu laden';return;}
     cfg=cfgResp;
     prices=pricesResp;
     dnaData=dnaResp;
