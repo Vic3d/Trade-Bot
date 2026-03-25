@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ZAL.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 21.63,
+      "stop": 21.49,
+      "target": 21.8,
+      "opened_at": "2026-03-25 13:32",
+      "status": "OPEN"
+    },
+    {
       "ticker": "VNA.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -281,20 +291,20 @@
       "target": 14.38,
       "opened_at": "2026-03-25 01:20",
       "status": "OPEN"
-    },
+    }
+  ],
+  "last_sync": "2026-03-25T13:32:12.561070Z",
+  "recent_day_trades": [
     {
       "ticker": "FXI",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 30.39,
-      "stop": 30.53,
-      "target": 30.15,
-      "opened_at": "2026-03-25 01:00",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-25T13:25:05.095747Z",
-  "recent_day_trades": [
+      "entry_price": 30.39,
+      "exit_price": 31.09,
+      "entry_date": "2026-03-25 01:00",
+      "exit_date": "2026-03-25 13:32",
+      "pnl_pct": -2.26,
+      "status": "LOSS"
+    },
     {
       "ticker": "KWEB",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-24 06:20",
       "exit_date": "2026-03-24 07:25",
       "pnl_pct": 0.92,
-      "status": "WIN"
-    },
-    {
-      "ticker": "1605.T",
-      "strategy": "DT4",
-      "entry_price": 24.84,
-      "exit_price": 24.6,
-      "entry_date": "2026-03-24 05:25",
-      "exit_date": "2026-03-24 06:20",
-      "pnl_pct": 0.97,
       "status": "WIN"
     }
   ],
