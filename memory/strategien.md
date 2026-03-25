@@ -508,3 +508,73 @@ Gold, Silber und Kupfer haben in 12 Monaten brutal performt (+52%, +111%, +6%). 
 - Brent unter $88 → Prämie nahezu weg
 - Brent Stabilisierung >$95 für 3 Tage → Entry-Chance
 - EQNR Tagestief mit langem unterem Docht + hohem Volumen = Bodenkerze
+
+---
+
+## STRATEGIE 8: Öl-Lag-These — Phasenweise Knappheit
+
+**Status: 🟢 STARK** *(Angelegt: 2026-03-25)*
+
+**These:**
+Das Öl das jetzt in Europa/Asien ankommt wurde VOR der Hormuz-Krise verschifft. Der echte physische Mangel trifft in 4-8 Wochen auf die Zielländer. Wir spielen die Kausalkette phasenweise:
+
+**Phase 1 — JETZT: Tanker** (bereits aktiv)
+- Hormuz-Disruption → Frachtraten steigen → Tanker-Aktien rallyen
+- Positionen: FRO (Paper), EQNR (Real)
+- Status: ✅ läuft bereits
+
+**Phase 2 — Woche 2-4: Raffinerien** (NÄCHSTER EINSTIEG)
+- Crack Spreads steigen → Raffinerien mit Lagerbeständen verkaufen teuer
+- Top-Picks: MPC (Marathon, P/E 17.7x), PSX (Phillips 66, Div 2.9%), PBF (Ostküste, +89%)
+- Entry-Signal: Crack Spread > $35/bbl ODER steigende Raffinerie-Margins in Earnings
+- Europäisch: Neste (NESTE.HE), OMV (OMV.VI), Repsol (REP.MC)
+
+**Phase 3 — Woche 4-8: Produzenten + LNG**
+- Physische Knappheit → Nicht-OPEC füllt Lücke → Premium-Preise
+- EQNR (bereits drin), Cheniere LNG (US→Europa Export)
+- Entry-Signal: IEA Lagerbestands-Report zeigt Drawdown > 5M bbl
+
+**Phase 4 — Monat 2-6: Storage + Infrastruktur**
+- Strukturelle Neuordnung → Storage-Prämien, neue Routen
+- Vopak (Amsterdam), Enterprise Products (EPD)
+- Entry-Signal: Contango-Struktur in Futures-Kurve > $3/bbl
+
+**Exit-Signal für ALLE Phasen:** Konkreter Iran-Deal mit verifizierbarer Hormuz-Öffnung.
+
+**Tracking:**
+- Crack Spread (3:2:1) wöchentlich prüfen
+- IEA/EIA Lagerbestände (Mittwoch + Donnerstag)
+- Tanker Spot-Raten (Clarksons, Baltic Exchange)
+
+
+### 🚢 LAG-THESE — Ölversorgungskrise mit Zeitverzögerung (25.03.2026)
+
+**Kern-Erkenntnis (Victor, 25.03.2026):**
+Das Öl das JETZT in Europa/Asien ankommt, wurde VOR der Krise verschifft. Die echte Versorgungskrise — der physische Mangel — kommt erst in 4-8 Wochen.
+
+**Phasen-Modell:**
+```
+Phase 1 (JETZT): Tanker profitieren — Hormuz-Umleitung, höhere Frachtraten
+  → FRO, DHT, STNG, TNK steigen
+Phase 2 (4-8 Wo): Lager leeren sich — Storage-Prämien explodieren
+  → Lager-Betreiber (Vopak, EPD), Horten beginnt
+Phase 3 (6-12 Wo): Raffinerien verdienen Mega-Margins — teuer verkaufen, billig eingekauft
+  → MPC, VLO, PSX profitieren
+Phase 4 (8-16 Wo): Nicht-OPEC füllt Lücke — EQNR, Petrobras, Kanada pumpen mehr
+  → Höhere Preise = höhere Gewinne für alle Produzenten außerhalb ME
+Phase 5 (parallel): LNG als Öl-Substitut in Europa
+  → Cheniere (LNG), Golar (GLNG) profitieren von Gas-Nachfrage
+```
+
+**Bestätigungssignale:**
+- Tanker steigen WÄHREND Ölpreis fällt → physischer Markt ≠ Papiermarkt (bestätigt 25.03.)
+- USO A/D 0.5x (Verkäufer) vs. XLE/OXY/FRO A/D >2x (Käufer) → Rotation in physische Proxies
+- $500 Mio. Short-Wette VOR Trump-Tweet (Reuters 24.03.) → Smart Money handelt gegen Rhetoric
+
+**Wichtig:** Bei JEDER Öl-Diskussion diese Phasen mitdenken. Nicht nur den aktuellen Ölpreis betrachten, sondern WO in der Kausalkette wir gerade stehen.
+
+**Positionen entlang der Kette:**
+- Phase 1: A3D42Y (Oil Services), FRO/OXY (Paper Fund)
+- Phase 2-3: Noch nicht positioniert — Raffinerie-Entry beobachten
+- Phase 4: EQNR (Real Trade, Entry 33.58€)
+- Phase 5: Noch nicht positioniert

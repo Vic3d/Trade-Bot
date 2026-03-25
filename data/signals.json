@@ -72,7 +72,7 @@
       "lag_price_at_signal": 33.1742,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "PENDING",
+      "outcome": "WIN",
       "paper_trade_id": "P026",
       "issue_id": null,
       "issue_key": null,
@@ -83,7 +83,10 @@
       "options_expiry": "2026-03-25",
       "options_days": 0,
       "options_fresh": true,
-      "created_at": "2026-03-24T08:10:02Z"
+      "created_at": "2026-03-24T08:10:02Z",
+      "actual_change_pct": 5.54,
+      "lag_price_after": 35.0104,
+      "resolved_at": "2026-03-25T21:01:38Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -568,5 +571,5 @@
     "pending": 1,
     "accuracy_pct": 50.0
   },
-  "updated": "2026-03-25T07:50:54Z"
+  "updated": "2026-03-25T21:01:38Z"
 }

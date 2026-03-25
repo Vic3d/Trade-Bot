@@ -97,6 +97,21 @@
       "conviction": 95,
       "timestamp": "2026-03-25T07:50:54Z",
       "date": "2026-03-25"
+    },
+    {
+      "tickers": [
+        "OXY",
+        "USO"
+      ],
+      "ticker_count": 2,
+      "total_hits": 2,
+      "total_volume": 4273,
+      "max_ratio": 3.664383561643836,
+      "fresh_count": 0,
+      "strength": "MILD",
+      "conviction": 70,
+      "timestamp": "2026-03-25T16:02:44Z",
+      "date": "2026-03-25"
     }
   ]
 }

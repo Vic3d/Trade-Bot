@@ -377,7 +377,7 @@ def build_html(d):
         entry = t.get('entry_price', 0)
         exit_p = t.get('close_price', 0)
         shares = t.get('shares', 0)
-        reason = t.get('notes', '').replace('TARGET HIT', '🎯 Ziel erreicht').replace('STOP HIT', '🛑 Stop ausgelöst')
+        reason = (t.get('notes') or '').replace('TARGET HIT', '🎯 Ziel erreicht').replace('STOP HIT', '🛑 Stop ausgelöst')
         date = t.get('close_date', '?')
         closed_rows += f"""<tr>
             <td>{i}</td>

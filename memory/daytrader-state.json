@@ -1,6 +1,6 @@
 {
-  "daily_pnl": 205.12240000000054,
-  "daily_trades": 6,
+  "daily_pnl": -556.310399999998,
+  "daily_trades": 20,
   "last_date": "2026-03-25",
   "signals_today": [
     "1211.HK",
@@ -13,8 +13,17 @@
     "7203.T",
     "1605.T",
     "7203.T",
-    "9984.T"
+    "9984.T",
+    "VNA.DE",
+    "ZAL.DE",
+    "VNA.DE",
+    "ZAL.DE",
+    "AMD",
+    "EXPN.L",
+    "SAP.DE",
+    "AMD",
+    "GOOGL"
   ],
-  "scanned": 164,
-  "signals_found": 186
+  "scanned": 178,
+  "signals_found": 211
 }

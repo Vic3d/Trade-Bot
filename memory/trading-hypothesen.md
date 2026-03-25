@@ -25,6 +25,7 @@
 - **Angelegt:** 07.03.2026 | **Revidiert:** 14.03.2026
 - **Trades:** EQNR (seit 09.03., +12,4%)
 - **Status:** ✅ BESTÄTIGT
+- **Learning-System Update 25.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 24.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 23.03.2026:** 1 Semiconductor-Losses bestätigen These
 - **Learning-System Update 21.03.2026:** 1 Semiconductor-Losses bestätigen These

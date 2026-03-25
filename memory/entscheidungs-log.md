@@ -163,3 +163,35 @@ Ceasefire-Rhetoric ≠ Ceasefire-Realität. Strukturelle Unmöglichkeit eines De
 
 **Risiko-Monitor:**
 Exit-Signal wäre: konkreter Teil-Deal mit verifizierbaren Maßnahmen — NICHT nur Gesprächsankündigung oder Trump-Tweet.
+
+## 2026-03-25 — Neue Regel: Insider-Geldstrom-Tracking
+
+**Entscheidung:** Ab sofort Geldströme auf Insider-Aktivität überwachen. Bei Erkennung: sofort Paper-Hedge-Trade + Victor informieren.
+
+**Kontext:** Reuters meldete dass Trader $500 Mio. auf Öl-Short gewettet haben BEVOR Trump seinen Verhandlungs-Tweet postete. Brent fiel daraufhin von $112 auf $95 (−15%). Victor: "Du kannst Trump nicht vorhersagen, aber wenn du es an den Geldflüssen erkennst, ob irgendwo schon wieder Insiderwissen gehandelt wird — teste sowas bei Paper Labs und melde dich falls du solche Ströme siehst."
+
+**Kern-Reasoning:** Politische Tweets sind nicht vorhersehbar, aber die Geldströme die VOR den Tweets kommen (Insider/Smart Money) sind messbar. Ungewöhnliches Options-Volumen, CoT-Divergenzen und Put/Call Ratio Spikes sind Frühwarnsignale.
+
+**Tracking-Signale:**
+1. Ungewöhnliches Put-Volumen bei Öl/Energy während bullischer Stimmung
+2. CoT: Non-Commercials bauen heimlich Longs ab während Retail long geht
+3. Put/Call Ratio Spikes bei OXY, XLE, Öl-Futures
+4. Block Trades / Dark Pool Aktivität
+
+**Lesson:** "Follow the money, not the narrative." Wenn alle bullisch reden aber das Smart Money short geht → Hedge aufbauen.
+
+## 2026-03-25 — EQNR Re-Entry (Victor)
+
+**Entscheidung:** Equinor ASA (EQNR) gekauft bei 33,58€, Stop 33,20€.
+
+**Kontext:** Victor: "Ich glaube einfach Donald Trump nicht. Ich denke, der Irak-Krieg ist noch lange nicht zu Ende." Kurs aktuell 34,52€ (+3,3% seit Entry). Öl fällt wegen Trump-Verhandlungsrhetorik (Brent $112→$95), aber:
+- Prof. Jäger (NTV): Deal bis Freitag "sehr skeptisch", 15-Punkt-Plan für Iran inakzeptabel
+- US ADR Accumulation: +65% Volumen-Trend, A/D 2.8x (Amerikaner kaufen)
+- OXY April-Calls 18.931 Kontrakte, CoT netto +31.502 long
+- Tanker +10-14% (physische Nachfrage steigt trotz Papier-Ölpreis-Fall)
+
+**Kern-Reasoning:** Der Papiermarkt preist einen Deal ein, den es strukturell nicht geben kann. Die physischen Signale (Tanker, Accumulation) widersprechen der Verhandlungs-Euphorie. Victor vertraut der eigenen Analyse über die Trump-Rhetoric.
+
+**Risiko:** Stop bei 33,20€ = nur 1,1% Risiko — SEHR eng. Bei VIX 25+ und Öl-Volatilität kann das schnell ausgestoppt werden.
+
+**Lesson:** —

@@ -141,3 +141,40 @@
 
 **Changes:** 0 | Keine
 ---
+
+## [2026-03-25 21:15] Learning Engine Run
+
+- Trades analysiert: 13
+- **PS1: green → red 🔴** | WR 60% | WL-Ratio 0.60x | Avg -0.4% — Edge nicht vorhanden
+- PS2: yellow (unverändert) | Zu wenige Trades (3/5)
+- PS3: Manuell gesperrt — kein Auto-Unlock (Stats: Zu wenige Trades (3/5))
+- **PS5: red → yellow 🟡** | Zu wenige Trades (1/5)
+- new: yellow (unverändert) | Zu wenige Trades (1/5)
+
+**Trigger-Korrelation:** Noch zu wenige Daten (<3 Trades pro Trigger)
+
+**Score-Threshold:** Letzte 10 Trades: Avg +6.2% → Threshold bleibt bei 5
+
+**Changes:** 2 | PS1: green→red, PS5: red→yellow
+---
+
+## 2026-03-25 22:31 — Conviction-Update
+
+- **DT4**: Conviction 3 → 3 (WR=43.0%, WL=?, Expectancy=-0.19, n=79)
+
+
+## [2026-03-25 22:31] Learning Engine Run
+
+- Trades analysiert: 13
+- PS1: red (unverändert) | WR 60% | WL-Ratio 0.60x | Avg -0.4% — Edge nicht vorhanden
+- PS2: yellow (unverändert) | Zu wenige Trades (3/5)
+- PS3: Manuell gesperrt — kein Auto-Unlock (Stats: Zu wenige Trades (3/5))
+- PS5: yellow (unverändert) | Zu wenige Trades (1/5)
+- new: yellow (unverändert) | Zu wenige Trades (1/5)
+
+**Trigger-Korrelation:** Noch zu wenige Daten (<3 Trades pro Trigger)
+
+**Score-Threshold:** Letzte 10 Trades: Avg +6.2% → Threshold bleibt bei 5
+
+**Changes:** 0 | Keine
+---

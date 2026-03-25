@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-03-25 12:45 CET (Auto-Sync vom Monitor)
+**Zuletzt aktualisiert:** 2026-03-25 22:45 CET (Auto-Sync vom Monitor)
 
 ---
 
@@ -12,9 +12,10 @@
 
 | Name (Ticker) | Entry | Stop (REAL in TR) | Letzter Kurs | P&L | Notiz |
 |---|---|---|---|---|---|
-| Palantir (PLTR) | 132.11€ | 127.00€ | 133.32€ | +0.9% | Stop nachgezogen 09.03. |
-| VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 28.79€ | +3.2% |  |
-| iShares Biotech ETF (A2DWAW) | 7.00€ | 6.30€ | 7.09€ | +1.2% |  |
+| Palantir (PLTR) | 132.11€ | 127.00€ | 133.98€ | +1.4% | Stop nachgezogen 09.03. |
+| VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 28.93€ | +3.7% |  |
+| iShares Biotech ETF (A2DWAW) | 7.00€ | 6.30€ | 7.23€ | +3.3% |  |
+| Equinor ASA (EQNR) | 33.58€ | 33.20€ | — | — | Iran-These: Trump nicht glaubwürdig, Krieg nicht vorbei. US ADR Accumulation +65% Vol-Trend. |
 
 ---
 

@@ -116,3 +116,39 @@ Für jede abgeschlossene Position:
 ---
 
 *Dieses Dokument wird nach jedem Trade und jeder Strategie-Erkenntnis aktualisiert.*
+
+## Pipeline: These → Screener → Trade → Loop (25.03.2026)
+
+**Ablauf:**
+1. **These finden:** NewsWire Analyzer, Morgen-Briefing, Makro-Events, eigene Recherche
+2. **Sektor identifizieren:** Welche Branche profitiert von der These?
+3. **Kandidaten sammeln:** Min. 5 Aktien im Sektor
+4. **Screener laufen lassen:** `stock_screener.py` — alle 5 Stufen
+5. **Nur 🟢 KAUFBAR traden** — kein FOMO, kein "die kenn ich"
+6. **Ergebnis tracken:** Jeder Trade wird bewertet
+7. **Loop schließen:** Lektion → Regel anpassen → besser traden
+
+**Regel:** Nicht nur bekannte Sektoren abgrasen. Aktiv neue Thesen und Sektoren suchen.
+**Regel:** Victor nicht fragen. Paper Fund = 100% autonom. Ziel: maximale Rendite.
+
+## Strategie-Typen (25.03.2026 — v2)
+
+### ⚡ PM — Momentum Swing
+- **Edge:** Technisches Breakout, Sektor-Rotation, kurzfristiger Katalysator
+- **Haltezeit:** 2-7 Tage (nach 7 Tagen ohne +5% → schließen)
+- **Stop:** 3-5%
+- **Ziel:** +5-10%
+- **Größe:** 1.000-1.500€
+- **Entry:** Über EMA20+50, RSI 50-70, A/D >1.5x, klarer Katalysator
+
+### 📈 PT — Thesis Swing
+- **Edge:** Makro-These (Lag, Geopolitik, Branchenzyklus)
+- **Haltezeit:** 7-30 Tage (max 30, dann re-evaluate)
+- **Stop:** 5-8% (VIX-abhängig)
+- **Ziel:** +10-20%
+- **Größe:** 2.000-3.000€ (mehr bei Score ≥10)
+- **Entry:** Screener 🟢, These aktiv, Sektor Top-5 Momentum
+- **Exit:** Trailing Stop, These bricht, oder Screener wechselt auf 🔴
+
+### Alte Codes (deprecated)
+PS1-PS5, PD1 → alle reklassifiziert in PM oder PT

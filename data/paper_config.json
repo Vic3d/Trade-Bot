@@ -1,12 +1,131 @@
 {
   "capital": 25000,
-  "position_size_eur": 2000,
-  "max_positions": 8,
-  "min_crv": 2.0,
-  "fee_per_trade": 1.0,
-  "aggressive_mode": true,
-  "position_size_pct": 0.08,
-  "stop_buffer_vix_low": 0.05,
-  "stop_buffer_vix_high": 0.08,
-  "note": "Aggressiver Modus: 2000\u20ac/Position, max 8 Positionen, 1\u20ac Geb\u00fchr (TR)"
+  "fee_per_trade": 1,
+  "autonomy": "full",
+  "goal": "max_return",
+  "position_sizing": {
+    "score_10_plus": 3000,
+    "score_6_to_9": 2000,
+    "score_4_to_5": 1000,
+    "below_4": 0
+  },
+  "max_sector_exposure_pct": 40,
+  "max_same_sector": 4,
+  "exit_rules": {
+    "trailing_stop": {
+      "at_5pct_gain": "move_stop_to_breakeven",
+      "at_10pct_gain": "move_stop_to_plus_5pct",
+      "at_15pct_gain": "move_stop_to_plus_10pct"
+    },
+    "time_based": {
+      "swing_sideways_days": 5,
+      "daily_max_hold": 2
+    },
+    "screener_recheck": "weekly",
+    "thesis_invalidation": "close_immediately"
+  },
+  "sector_etfs": {
+    "XLE": "Energy",
+    "XLF": "Financials",
+    "XLK": "Technology",
+    "XLV": "Healthcare",
+    "XLI": "Industrials",
+    "XLB": "Materials",
+    "XLU": "Utilities",
+    "XLP": "Consumer Staples",
+    "XLY": "Consumer Discretionary",
+    "XLC": "Communication",
+    "XLRE": "Real Estate",
+    "GDX": "Gold Miners",
+    "SIL": "Silver Miners",
+    "URA": "Uranium",
+    "OIH": "Oil Services",
+    "ITA": "Defense/Aerospace",
+    "HACK": "Cybersecurity",
+    "LIT": "Lithium/Battery"
+  },
+  "sector_ranking_day": "monday",
+  "screen_top_n_sectors": 3,
+  "tracking": {
+    "metrics": [
+      "win_rate",
+      "avg_winner",
+      "avg_loser",
+      "expectancy",
+      "profit_factor",
+      "max_drawdown"
+    ],
+    "review_frequency": "weekly"
+  },
+  "earnings_blackout_days": 3,
+  "min_trades_per_day": {
+    "momentum_swing": 1,
+    "thesis_swing": 0,
+    "total_min": 1
+  },
+  "strategies": {
+    "PM": {
+      "name": "Momentum Swing",
+      "description": "Technisches Breakout oder Sektor-Rotation. Kurzfristig.",
+      "hold_days": {
+        "min": 2,
+        "max": 7
+      },
+      "stop_pct": {
+        "min": 3,
+        "max": 5
+      },
+      "target_pct": {
+        "min": 5,
+        "max": 10
+      },
+      "position_size": {
+        "base": 1500,
+        "max": 2000
+      },
+      "entry_criteria": [
+        "\u00dcber EMA20 + EMA50",
+        "RSI 50-70 (Momentum, nicht \u00fcberkauft)",
+        "A/D > 1.5x (K\u00e4ufer-Volumen)",
+        "Katalysator: Breakout, Sektor-Rotation, News"
+      ],
+      "exit_rules": [
+        "Ziel +5-10% erreicht \u2192 schlie\u00dfen",
+        "Nach 7 Tagen ohne +5% \u2192 schlie\u00dfen",
+        "Stop getroffen \u2192 schlie\u00dfen"
+      ]
+    },
+    "PT": {
+      "name": "Thesis Swing",
+      "description": "Makro-These (Lag, Geopolitik, Branchenzyklus). Mittelfristig.",
+      "hold_days": {
+        "min": 7,
+        "max": 30
+      },
+      "stop_pct": {
+        "min": 5,
+        "max": 8
+      },
+      "target_pct": {
+        "min": 10,
+        "max": 20
+      },
+      "position_size": {
+        "base": 2000,
+        "max": 3000
+      },
+      "entry_criteria": [
+        "Screener \ud83d\udfe2 KAUFBAR (alle 5 Stufen)",
+        "Makro-These aktiv und best\u00e4tigt",
+        "Sektor im Top-5 Momentum-Ranking",
+        "Keine Earnings in 3 Tagen"
+      ],
+      "exit_rules": [
+        "Trailing Stop (5% \u2192 BE, 10% \u2192 +5%, 15% \u2192 +10%)",
+        "These invalidiert \u2192 sofort schlie\u00dfen",
+        "Screener wechselt auf \ud83d\udd34 \u2192 schlie\u00dfen",
+        "Max 30 Tage Haltezeit"
+      ]
+    }
+  }
 }

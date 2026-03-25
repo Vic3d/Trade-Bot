@@ -151,6 +151,45 @@ Nicht für: Routine-Checks, Kursbewegungen ohne Handlung, tägliche Updates.
 
 ---
 
+## 🚨 Breaking News — PFLICHT-Protokoll (keine Ausnahmen)
+
+**Auslöser:** Victor schickt eine News, Cron meldet CRITICAL, oder ich stoße auf eine dramatische Headline.
+
+**VERBOTEN:** Sofort eine Analyse/Bewertung/Portfolio-Impact-Tabelle schreiben.
+
+**PFLICHT — Dreistufiger Prozess:**
+
+### Schritt 1: STOP (erste Antwort)
+- "Ich schau mir das an." — KEINE Bewertung, KEINE Prognose.
+- Nur Fakten wiedergeben die ich SICHER weiß.
+
+### Schritt 2: KONTEXT LADEN (vor jeder Bewertung)
+- `memory/strategien.md` lesen — was sind unsere aktiven Thesen?
+- `MEMORY.md` checken — was weiß ich bereits zu diesem Thema?
+- Heutige Entscheidungen prüfen — haben wir heute etwas FALLEN GELASSEN oder GESCHLOSSEN das relevant ist?
+- **Eigenes Wissen GEGEN die Headline prüfen:**
+  - Welche Sanktionen/Embargos gelten?
+  - Welche Handelsströme sind REAL betroffen?
+  - Was war VORHER schon so? (≠ neue Erkenntnis)
+
+### Schritt 3: FAKTENCHECK (recherchieren, DANN bewerten)
+- Mindestens 2 Quellen prüfen
+- Wer ist TATSÄCHLICH betroffen? (nicht: wer KÖNNTE)
+- Zahlen recherchieren (Volumen, Marktanteil)
+- Gegenthese formulieren: Warum könnte das WENIGER wichtig sein?
+- Erst DANN: Bewertung mit Quellenangaben
+
+### Anti-Patterns (VERBOTEN)
+- ❌ "Brent sollte morgen explodieren" — Prognose ohne Faktencheck
+- ❌ "Das ist ein Game-Changer" — Übertreibung ohne Substanz
+- ❌ Alte These recyclen die wir gerade fallen gelassen haben
+- ❌ Bekanntes als "neue Erkenntnis" verkaufen
+- ❌ Reflexartig Portfolio-Impact-Tabelle bauen
+
+**Geschwindigkeit ist KEIN Wert bei Analyse. 2 Minuten später richtig > sofort falsch.**
+
+---
+
 ## 📈 Trading — Pflichtregeln
 
 **Namen + Ticker:** IMMER vollständiger Name + Ticker in Klammern. Nie nur Ticker allein.

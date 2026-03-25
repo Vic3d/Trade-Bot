@@ -1,42 +1,42 @@
 {
-  "timestamp": "2026-03-25T11:45:13.499266+00:00",
+  "timestamp": "2026-03-25T21:45:15.572181+00:00",
   "fx": {
-    "EURUSD": 1.161,
-    "EURNOK": 11.2943,
-    "GBPEUR": 1.1562
+    "EURUSD": 1.1566,
+    "EURNOK": 11.2174,
+    "GBPEUR": 1.1564
   },
   "macro": {
-    "wti": 87.11,
-    "vix": 25.28,
+    "wti": 91.29,
+    "vix": 25.33,
     "nikkei": 2.8655974437861924
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 133.32,
-      "price_raw": 154.78,
+      "price_eur": 133.98,
+      "price_raw": 154.96,
       "entry_eur": 132.11,
-      "pnl_pct": 0.91,
+      "pnl_pct": 1.41,
       "stop_eur": 127.0,
-      "rs_qqq": 5.56,
+      "rs_qqq": 0.18,
       "conviction": 57
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.79,
-      "price_raw": 28.79,
+      "price_eur": 28.93,
+      "price_raw": 28.93,
       "entry_eur": 27.9,
-      "pnl_pct": 3.19,
+      "pnl_pct": 3.71,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 51
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.09,
-      "price_raw": 7.09,
+      "price_eur": 7.23,
+      "price_raw": 7.23,
       "entry_eur": 7.0,
-      "pnl_pct": 1.24,
+      "pnl_pct": 3.34,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 39
@@ -46,8 +46,8 @@
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 32.98,
-      "price_raw": 38.28
+      "price_eur": 32.97,
+      "price_raw": 38.13
     }
   }
 }
