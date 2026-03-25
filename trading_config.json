@@ -162,6 +162,18 @@
       "notes": "",
       "size_eur": 2500,
       "conviction": 35
+    },
+    "EQNR": {
+      "name": "Equinor ASA",
+      "status": "OPEN",
+      "entry_eur": 33.58,
+      "stop_eur": 33.2,
+      "target_eur": null,
+      "size_eur": 2000,
+      "entry_date": "2026-03-25",
+      "strategy": "S1",
+      "conviction": 65,
+      "notes": "Iran-These: Trump nicht glaubwürdig, Krieg nicht vorbei. US ADR Accumulation +65% Vol-Trend."
     }
   },
   "watchlist": [
