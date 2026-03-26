@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "HAL",
+      "strategy": "DT9",
+      "trade_type": "day_trade",
+      "entry": 34.32,
+      "stop": 33.98,
+      "target": 34.6,
+      "opened_at": "2026-03-26 15:45",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT9-CTR",
+      "trade_type": "day_trade",
+      "entry": 34.32,
+      "stop": 33.91,
+      "target": 33.91,
+      "opened_at": "2026-03-26 15:45",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ORCL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -279,16 +299,6 @@
       "entry": 20.7,
       "stop": 20.45,
       "target": 21.11,
-      "opened_at": "2026-03-26 15:10",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "CRH.L",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 91.02,
-      "stop": 91.03,
-      "target": 91.19,
       "opened_at": "2026-03-26 15:10",
       "status": "OPEN"
     },
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:40:09.286037Z",
+  "last_sync": "2026-03-26T15:45:25.866643Z",
   "recent_day_trades": [
+    {
+      "ticker": "CRH.L",
+      "strategy": "DT2",
+      "entry_price": 91.02,
+      "exit_price": 90.99,
+      "entry_date": "2026-03-26 15:10",
+      "exit_date": "2026-03-26 15:45",
+      "pnl_pct": -0.03,
+      "status": "LOSS"
+    },
     {
       "ticker": "ORCL",
       "strategy": "DT2-CTR",
@@ -633,16 +653,6 @@
       "entry_date": "2026-03-26 13:50",
       "exit_date": "2026-03-26 13:55",
       "pnl_pct": -0.02,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "MNDI.L",
-      "strategy": "DT4",
-      "entry_price": 9.86,
-      "exit_price": 9.9,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 13:50",
-      "pnl_pct": -0.4,
       "status": "LOSS"
     }
   ],
