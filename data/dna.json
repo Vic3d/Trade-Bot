@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "PUM.DE",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 21.72,
+      "stop": 21.46,
+      "target": 21.98,
+      "opened_at": "2026-03-26 12:35",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "PUM.DE",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 21.72,
+      "stop": 21.46,
+      "target": 21.46,
+      "opened_at": "2026-03-26 12:35",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ENR.DE",
       "strategy": "DT3",
       "trade_type": "day_trade",
@@ -309,16 +329,6 @@
       "entry": 34.67,
       "stop": 34.25,
       "target": 36.69,
-      "opened_at": "2026-03-26 11:38",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "PUM.DE",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 21.58,
-      "stop": 21.69,
-      "target": 21.41,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
     },
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T12:31:23.517471Z",
+  "last_sync": "2026-03-26T12:35:21.112983Z",
   "recent_day_trades": [
+    {
+      "ticker": "PUM.DE",
+      "strategy": "DT4",
+      "entry_price": 21.58,
+      "exit_price": 21.72,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 12:35",
+      "pnl_pct": -0.64,
+      "status": "LOSS"
+    },
     {
       "ticker": "0883.HK",
       "strategy": "DT4",
@@ -633,16 +653,6 @@
       "entry_date": "2026-03-25 15:35",
       "exit_date": "2026-03-25 16:05",
       "pnl_pct": -1.06,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "EXPN.L",
-      "strategy": "DT4",
-      "entry_price": 28.86,
-      "exit_price": 29.18,
-      "entry_date": "2026-03-25 15:35",
-      "exit_date": "2026-03-25 15:45",
-      "pnl_pct": -1.1,
       "status": "LOSS"
     }
   ],
