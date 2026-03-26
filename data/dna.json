@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "MNDI.L",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 9.9,
+      "stop": 9.78,
+      "target": 10.02,
+      "opened_at": "2026-03-26 13:50",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "MNDI.L",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 9.9,
+      "stop": 9.78,
+      "target": 9.78,
+      "opened_at": "2026-03-26 13:50",
+      "status": "OPEN"
+    },
+    {
       "ticker": "HEI.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -299,16 +319,6 @@
       "entry": 258.0,
       "stop": 254.91,
       "target": 261.1,
-      "opened_at": "2026-03-26 11:38",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "MNDI.L",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 9.86,
-      "stop": 9.89,
-      "target": 9.78,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
     },
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T13:45:30.746337Z",
+  "last_sync": "2026-03-26T13:50:11.774340Z",
   "recent_day_trades": [
+    {
+      "ticker": "MNDI.L",
+      "strategy": "DT4",
+      "entry_price": 9.86,
+      "exit_price": 9.9,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 13:50",
+      "pnl_pct": -0.4,
+      "status": "LOSS"
+    },
     {
       "ticker": "HEI.DE",
       "strategy": "DT4-CTR",
@@ -633,16 +653,6 @@
       "entry_date": "2026-03-25 04:50",
       "exit_date": "2026-03-25 20:45",
       "pnl_pct": -1.25,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "SAP.DE",
-      "strategy": "DT4",
-      "entry_price": 146.8,
-      "exit_price": 146.9,
-      "entry_date": "2026-03-25 15:45",
-      "exit_date": "2026-03-25 20:45",
-      "pnl_pct": -0.07,
       "status": "LOSS"
     }
   ],
