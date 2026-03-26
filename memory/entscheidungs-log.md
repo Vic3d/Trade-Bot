@@ -203,3 +203,38 @@ Exit-Signal wäre: konkreter Teil-Deal mit verifizierbaren Maßnahmen — NICHT 
 **Risiko:** Stop bei 33,20€ = nur 1,1% Risiko — SEHR eng. Bei VIX 25+ und Öl-Volatilität kann das schnell ausgestoppt werden.
 
 **Lesson:** —
+
+## 2026-03-26 — DT3 + DT4 deaktiviert (Statistische Evidenz)
+
+**Entscheidung:** DT3 ("Bollinger Breakout") und DT4 ("Volume Monster") werden aus dem Paper Trading entfernt.
+
+**Kontext:**
+- Phase 4 des TradeMind-Professionalisierungsplans hat erstmals p-values und Sharpe Ratios für alle Strategien berechnet
+- DT4: 102 Trades, 43% WR, Sharpe -4.38, p=0.93 — KEIN statistischer Edge, nicht besser als Münze werfen
+- DT3: 9 Trades, 11% WR, Sharpe -12.55, p=1.00 — signifikant SCHLECHTER als Zufall
+- Zusammen: -1.140€ P&L + geschätzte -900€ Execution-Kosten = ~-2.040€ echte Verluste
+- Monte Carlo (DT4): Nur 24% Wahrscheinlichkeit profitabel über 100 Trades
+
+**Kern-Reasoning:** 102 Trades sind statistisch GENUG für ein Urteil. p=0.93 heißt: 93% Wahrscheinlichkeit dass jedes Ergebnis Zufall war. Da gibt es nichts zu optimieren — der Ansatz funktioniert nicht. Weitermachen wäre Hope-Trading.
+
+**Lesson:**
+1. Volumen allein ist kein Signal (DT4) — Richtung + Volumen wäre besser
+2. Bollinger Breakouts funktionieren nicht bei VIX >25 (DT3)
+3. Hohe Trade-Frequenz + kleiner Edge = Execution-Kosten fressen alles
+4. Man braucht keine 500 Trades um zu wissen dass es nicht funktioniert — 102 reichen
+
+**Dokumentation:** Vollständige Post-Mortems in `memory/strategie-friedhof.md`
+
+## 2026-03-26 — Portfolio-Konzentration erkannt: 91% Energy, 99% US
+
+**Entscheidung:** Zukünftige SA-Trades müssen die Sektor/Region-Limits einhalten (max 40% Sektor, max 60% Region). Korrelationscheck ist jetzt automatisch im Code.
+
+**Kontext:**
+- Risk-Report Phase 3 hat erstmals Portfolio-Exposure berechnet
+- 91,6% Energy, 99,1% US — effektiv eine Einzel-Wette auf Iran/Öl
+- Stress-Test: Öl-Crash würde -6.175€ kosten
+- OXY + FRO sind beide Iran/Hormuz-Theme — Klumpenrisiko
+
+**Kern-Reasoning:** Ich habe mich auf das Iran-Thema fixiert weil der Scanner hohe Scores meldet. Aber ein guter Scanner ist kein Grund alles auf eine Karte zu setzen. Diversifikation ist Pflicht, auch wenn die beste These "nur" Iran ist.
+
+**Lesson:** Edge in einer These ≠ alles in eine These packen. Die nächsten Trades MÜSSEN in andere Sektoren/Regionen.

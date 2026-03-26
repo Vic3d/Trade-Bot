@@ -735,12 +735,16 @@ def main():
     # ── Marktregime laden (Issue #4) ──
     regime_path = WORKSPACE / 'memory/market-regime.json'
     current_regime = 'RANGE'
-    active_dt_strategies = ['DT1','DT2','DT3','DT4','DT5','DT6','DT7','DT8','DT9']  # Default: alle
+    # DT3 + DT4 DEAKTIVIERT (26.03.2026): Statistisch bewiesen kein Edge
+    # DT3: 9 Trades, 11% WR, Sharpe -12.55, p=1.00 → KILL
+    # DT4: 102 Trades, 43% WR, Sharpe -4.38, p=0.93 → KILL
+    # Vollständige Begründung: memory/strategie-friedhof.md
+    active_dt_strategies = ['DT1','DT2','DT5','DT6','DT7','DT8','DT9']  # DT3+DT4 removed
     if regime_path.exists():
         try:
             regime_data = json.loads(regime_path.read_text())
             current_regime = regime_data.get('regime', 'RANGE')
-            # PAPER TRADING: Alle Strategien immer aktiv — wir sammeln Daten!
+            # PAPER TRADING: Aktive Strategien sammeln Daten
             # Regime wird nur geloggt, nicht gefiltert.
             # active_dt_strategies bleibt auf DT1-DT9 (Default)
             print(f"  🧭 Markt-Regime: {current_regime} (INFO ONLY — alle DT aktiv für Paper Learning)")

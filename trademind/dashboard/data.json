@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-03-26T22:44:24.385844",
+    "generated_at": "2026-03-26T23:03:50.309237",
     "version": "1.0",
     "db_path": "/data/.openclaw/workspace/data/trading.db"
   },
@@ -182,7 +182,7 @@
     "total_pnl": -2105.01,
     "cash": 25000.0,
     "position_count": 13,
-    "last_updated": "2026-03-26T22:44:24.081955"
+    "last_updated": "2026-03-26T23:03:50.019993"
   },
   "risk": {
     "circuit_breaker": {
@@ -1736,6 +1736,6 @@
         }
       ]
     },
-    "generated_at": "2026-03-26T22:44:24.385496"
+    "generated_at": "2026-03-26T23:03:50.308900"
   }
 }
