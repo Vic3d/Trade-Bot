@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "GOLD",
-      "strategy": "DT3-CTR",
-      "trade_type": "day_trade",
-      "entry": 35.44,
-      "stop": 35.02,
-      "target": 35.02,
-      "opened_at": "2026-03-26 14:20",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ZAL.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:20:09.651666Z",
+  "last_sync": "2026-03-26T14:25:07.762260Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOLD",
+      "strategy": "DT3-CTR",
+      "entry_price": 35.44,
+      "exit_price": 35.45,
+      "entry_date": "2026-03-26 14:20",
+      "exit_date": "2026-03-26 14:25",
+      "pnl_pct": -0.03,
+      "status": "LOSS"
+    },
     {
       "ticker": "PUM.DE",
       "strategy": "DT1",
@@ -644,16 +644,6 @@
       "exit_date": "2026-03-26 01:20",
       "pnl_pct": 8.57,
       "status": "WIN"
-    },
-    {
-      "ticker": "0700.HK",
-      "strategy": "DT4",
-      "entry_price": 55.96,
-      "exit_price": 54.78,
-      "entry_date": "2026-03-26 01:00",
-      "exit_date": "2026-03-26 01:20",
-      "pnl_pct": -2.11,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
