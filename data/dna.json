@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ENR.DE",
-      "strategy": "DT3-CTR",
-      "trade_type": "day_trade",
-      "entry": 151.35,
-      "stop": 149.53,
-      "target": 149.53,
-      "opened_at": "2026-03-26 15:50",
-      "status": "OPEN"
-    },
-    {
       "ticker": "HAL",
       "strategy": "DT9",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:50:16.429703Z",
+  "last_sync": "2026-03-26T15:55:26.614637Z",
   "recent_day_trades": [
+    {
+      "ticker": "ENR.DE",
+      "strategy": "DT3-CTR",
+      "entry_price": 151.35,
+      "exit_price": 151.1,
+      "entry_date": "2026-03-26 15:50",
+      "exit_date": "2026-03-26 15:55",
+      "pnl_pct": 0.17,
+      "status": "WIN"
+    },
     {
       "ticker": "ENR.DE",
       "strategy": "DT3",
@@ -644,16 +644,6 @@
       "exit_date": "2026-03-26 14:20",
       "pnl_pct": 1.84,
       "status": "WIN"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "strategy": "DT1-CTR",
-      "entry_price": 21.32,
-      "exit_price": 21.33,
-      "entry_date": "2026-03-26 14:10",
-      "exit_date": "2026-03-26 14:15",
-      "pnl_pct": -0.05,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
