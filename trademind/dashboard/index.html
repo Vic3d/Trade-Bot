@@ -11,15 +11,13 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:var(--cyan);text-decoration:none}
 
-/* Top Bar */
-.topbar{background:#0f172a;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar{background:#0f172a;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
 .topbar .logo{font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:8px}
 .topbar .logo span{color:var(--dim);font-size:0.75rem;font-weight:400}
-.topbar .status{display:flex;gap:16px;font-size:0.8rem;color:var(--dim)}
+.topbar .status{display:flex;gap:16px;font-size:0.8rem;color:var(--dim);flex-wrap:wrap}
 .topbar .status .val{font-weight:600}
-.topbar .status .green{color:var(--green)}.topbar .status .red{color:var(--red)}.topbar .status .amber{color:var(--amber)}
+.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.cyan{color:var(--cyan)}.purple{color:var(--purple)}.pink{color:var(--pink)}.dim{color:var(--dim)}
 
-/* Nav */
 .nav{background:#0f172a;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 12px;gap:2px;-webkit-overflow-scrolling:touch}
 .nav::-webkit-scrollbar{height:0}
 .nav-item{padding:10px 14px;font-size:0.78rem;color:var(--dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
@@ -27,82 +25,75 @@ a{color:var(--cyan);text-decoration:none}
 .nav-item.active{color:var(--cyan);border-bottom-color:var(--cyan)}
 .badge{background:var(--cyan);color:#000;border-radius:8px;padding:1px 6px;font-size:0.65rem;font-weight:700;margin-left:4px}
 
-/* Content */
 .content{padding:16px;max-width:1400px;margin:0 auto}
 .section{display:none}.section.active{display:block}
-
-/* Cards */
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
 .card h3{font-size:0.85rem;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
-.kpi{text-align:center;padding:14px 10px}
-.kpi .num{font-size:1.6rem;font-weight:700;line-height:1.2}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.kpi{text-align:center;padding:14px 10px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.kpi .num{font-size:1.5rem;font-weight:700;line-height:1.2}
 .kpi .label{font-size:0.7rem;color:var(--dim);margin-top:4px}
 
-/* Colors */
-.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.cyan{color:var(--cyan)}.purple{color:var(--purple)}.pink{color:var(--pink)}
-.bg-green{background:rgba(16,185,129,0.12)}.bg-red{background:rgba(239,68,68,0.12)}.bg-amber{background:rgba(245,158,11,0.12)}
-
-/* Table */
 table{width:100%;border-collapse:collapse;font-size:0.8rem}
 th{text-align:left;color:var(--dim);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.7rem;text-transform:uppercase}
 td{padding:8px 10px;border-bottom:1px solid rgba(30,41,59,0.4)}
 tr:hover{background:rgba(6,182,212,0.04)}
 .mono{font-family:'SF Mono',Monaco,monospace;font-size:0.78rem}
-
-/* Chart container */
 .chart-box{height:220px;position:relative;margin:8px 0}
 
-/* Regime badge */
 .regime{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.75rem;font-weight:600}
-.regime-BULL{background:rgba(16,185,129,0.2);color:var(--green)}
-.regime-CORRECTION{background:rgba(245,158,11,0.2);color:var(--amber)}
-.regime-BEAR{background:rgba(239,68,68,0.2);color:var(--red)}
+.regime-BULL,.regime-bull{background:rgba(16,185,129,0.2);color:var(--green)}
+.regime-CORRECTION,.regime-correction{background:rgba(245,158,11,0.2);color:var(--amber)}
+.regime-BEAR,.regime-bear{background:rgba(239,68,68,0.2);color:var(--red)}
 .regime-TREND_DOWN{background:rgba(239,68,68,0.15);color:#fb923c}
-.regime-RANGE{background:rgba(100,116,139,0.2);color:var(--dim)}
+.regime-RANGE,.regime-range{background:rgba(100,116,139,0.2);color:var(--dim)}
 
-/* Signal cards */
-.signal-card{padding:10px;border-left:3px solid var(--cyan);margin-bottom:8px;background:rgba(6,182,212,0.04);border-radius:0 6px 6px 0}
-.signal-card.buy{border-left-color:var(--green)}.signal-card.sell{border-left-color:var(--red)}
-
-/* News items */
-.news-item{padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3)}
-.news-item .time{font-size:0.7rem;color:var(--dim)}
-.news-item .title{font-size:0.82rem;margin-top:2px}
-.news-item .source{font-size:0.7rem;color:var(--dim);margin-top:2px}
-
-/* Watchlist */
-.watch-card{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid rgba(30,41,59,0.3)}
-.watch-card .ticker{font-weight:700;color:var(--cyan)}
-.watch-card .range{font-size:0.78rem;color:var(--dim)}
-
-/* Calendar */
-.cal-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3);align-items:center}
-.cal-date{min-width:80px;font-size:0.78rem;color:var(--amber);font-weight:600}
-.cal-type{font-size:0.65rem;padding:2px 8px;border-radius:4px;background:rgba(167,139,250,0.15);color:var(--purple)}
-
-/* Strategy DNA */
-.dna-card{padding:12px;border-left:3px solid var(--purple);margin-bottom:8px;background:rgba(167,139,250,0.04);border-radius:0 6px 6px 0}
-.dna-stat{display:inline-block;margin-right:14px;font-size:0.78rem}
-.dna-stat .v{font-weight:700}
-
-/* CB indicator */
 .cb{padding:6px 12px;border-radius:6px;font-size:0.78rem;font-weight:600;display:inline-block}
 .cb-ok{background:rgba(16,185,129,0.15);color:var(--green)}
 .cb-blocked{background:rgba(239,68,68,0.15);color:var(--red)}
 
-/* Loading */
+.strat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;border-left:4px solid var(--cyan)}
+.strat-card h4{font-size:0.95rem;margin-bottom:6px}
+.strat-card .desc{font-size:0.8rem;color:var(--dim);line-height:1.5}
+.strat-card .meta{font-size:0.75rem;color:var(--dim);margin-top:8px;display:flex;gap:16px;flex-wrap:wrap}
+.strat-card .meta span{display:inline-flex;align-items:center;gap:4px}
+
+.signal-card{padding:10px;border-left:3px solid var(--cyan);margin-bottom:6px;background:rgba(6,182,212,0.04);border-radius:0 6px 6px 0;font-size:0.82rem}
+.signal-card.buy{border-left-color:var(--green)}.signal-card.sell{border-left-color:var(--red)}
+
+.news-item{padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3)}
+.news-item .time{font-size:0.7rem;color:var(--dim)}
+.news-item .title{font-size:0.82rem;margin-top:2px}
+
+.watch-card{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(30,41,59,0.3)}
+.watch-card .ticker{font-weight:700;color:var(--cyan);font-size:0.95rem}
+
+.cal-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3);align-items:center}
+.cal-date{min-width:90px;font-size:0.82rem;font-weight:600}
+.cal-type{font-size:0.65rem;padding:2px 8px;border-radius:4px;font-weight:600;min-width:70px;text-align:center}
+.cal-type.earnings{background:rgba(167,139,250,0.15);color:var(--purple)}
+.cal-type.macro{background:rgba(245,158,11,0.15);color:var(--amber)}
+.cal-type.event{background:rgba(6,182,212,0.15);color:var(--cyan)}
+
+.dna-card{padding:12px;border-left:3px solid var(--purple);margin-bottom:8px;background:rgba(167,139,250,0.04);border-radius:0 6px 6px 0}
+.dna-stat{display:inline-block;margin-right:14px;font-size:0.78rem}
+.dna-stat .v{font-weight:700}
+
 .loading{text-align:center;padding:60px;color:var(--dim)}
-.loading .spin{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
+.spin{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Responsive */
-@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.kpi .num{font-size:1.2rem}}
+@media(max-width:768px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+  .topbar{padding:8px 12px}
+  .topbar .status{gap:8px;font-size:0.72rem}
+}
 </style>
 </head>
 <body>
 
-<!-- Top Bar -->
 <div class="topbar">
   <div class="logo">🎩 TradeMind <span>v2.1.0</span></div>
   <div class="status">
@@ -114,24 +105,23 @@ tr:hover{background:rgba(6,182,212,0.04)}
   </div>
 </div>
 
-<!-- Navigation -->
 <div class="nav" id="nav">
   <div class="nav-item active" onclick="go('overview')">🏠 Übersicht</div>
   <div class="nav-item" onclick="go('positions')">📊 Positionen <span class="badge" id="nav-pos">0</span></div>
-  <div class="nav-item" onclick="go('flow')">💧 Flow / Paper</div>
+  <div class="nav-item" onclick="go('strategies')">🎯 Strategien <span class="badge" id="nav-strat">0</span></div>
+  <div class="nav-item" onclick="go('flow')">💧 Paper Lab</div>
   <div class="nav-item" onclick="go('macro')">🌍 Makro</div>
   <div class="nav-item" onclick="go('dna')">🧬 DNA</div>
-  <div class="nav-item" onclick="go('signals')">📡 Signale</div>
+  <div class="nav-item" onclick="go('signals')">📡 Signale <span class="badge" id="nav-sig">0</span></div>
   <div class="nav-item" onclick="go('risk')">⚡ Risiko</div>
   <div class="nav-item" onclick="go('perf')">📈 Performance</div>
-  <div class="nav-item" onclick="go('calendar')">📅 Kalender</div>
+  <div class="nav-item" onclick="go('calendar')">📅 Kalender <span class="badge" id="nav-cal">0</span></div>
   <div class="nav-item" onclick="go('watchlist')">👁️ Watchlist <span class="badge" id="nav-watch">0</span></div>
-  <div class="nav-item" onclick="go('news')">📰 News</div>
+  <div class="nav-item" onclick="go('news')">📰 News <span class="badge" id="nav-news">0</span></div>
   <div class="nav-item" onclick="go('learning')">🧠 Learning</div>
   <div class="nav-item" onclick="go('backtest')">🔬 Backtest</div>
 </div>
 
-<!-- Content -->
 <div class="content">
   <div class="loading" id="loader"><div class="spin"></div><br>Lade Daten...</div>
 
@@ -139,51 +129,63 @@ tr:hover{background:rgba(6,182,212,0.04)}
   <div class="section active" id="sec-overview">
     <div class="kpi-grid" id="ov-kpis"></div>
     <div class="card"><h3>Equity Curve</h3><div class="chart-box"><canvas id="ov-equity"></canvas></div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="card"><h3>Top Positionen</h3><div id="ov-top"></div></div>
-      <div class="card"><h3>Aktuelle Signale</h3><div id="ov-signals"></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Offene Positionen</h3><div id="ov-positions"></div></div>
+      <div class="card"><h3>Aktive Signale</h3><div id="ov-signals"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Strategien</h3><div id="ov-strategies"></div></div>
+      <div class="card"><h3>Nächste Events</h3><div id="ov-events"></div></div>
     </div>
   </div>
 
   <!-- POSITIONS -->
   <div class="section" id="sec-positions">
-    <div class="card"><h3>Offene Positionen</h3><div id="pos-table"></div></div>
+    <div class="card"><h3>Offene Positionen (Real)</h3><div id="pos-open"></div></div>
     <div class="card"><h3>Geschlossene Positionen</h3><div id="pos-closed"></div></div>
+  </div>
+
+  <!-- STRATEGIES -->
+  <div class="section" id="sec-strategies">
+    <div id="strat-list"></div>
   </div>
 
   <!-- FLOW / PAPER LAB -->
   <div class="section" id="sec-flow">
     <div class="kpi-grid" id="flow-kpis"></div>
-    <div class="card"><h3>Day Trades (DT1–DT9)</h3><div id="flow-trades"></div></div>
-    <div class="card"><h3>Paper Portfolio</h3><div id="flow-paper"></div></div>
+    <div class="card"><h3>Day Trade Strategien (DT1–DT9)</h3><div id="flow-dt-stats"></div></div>
+    <div class="card"><h3>Letzte Day Trades</h3><div id="flow-recent"></div></div>
+    <div class="card"><h3>Paper Portfolio (offen)</h3><div id="flow-paper"></div></div>
   </div>
 
   <!-- MACRO -->
   <div class="section" id="sec-macro">
     <div class="kpi-grid" id="macro-kpis"></div>
     <div class="card"><h3>Marktregime</h3><div id="macro-regime"></div></div>
-    <div class="card"><h3>Sentiment</h3><div id="macro-sentiment"></div></div>
+    <div class="card"><h3>Sentiment (Portfolio)</h3><div id="macro-sentiment"></div></div>
   </div>
 
   <!-- DNA -->
   <div class="section" id="sec-dna">
     <div class="card"><h3>Trader Profil</h3><div id="dna-profile"></div></div>
-    <div class="card"><h3>Strategie-DNA</h3><div id="dna-strategies"></div></div>
+    <div class="card"><h3>Strategie-DNA (Performance)</h3><div id="dna-strategies"></div></div>
     <div class="card"><h3>Regime Performance</h3><div id="dna-regime"></div></div>
   </div>
 
   <!-- SIGNALS -->
   <div class="section" id="sec-signals">
+    <div class="kpi-grid" id="sig-kpis"></div>
     <div class="card"><h3>Aktive Signale</h3><div id="sig-list"></div></div>
-    <div class="card"><h3>Signal-Statistik</h3><div id="sig-stats"></div></div>
   </div>
 
   <!-- RISK -->
   <div class="section" id="sec-risk">
     <div class="card"><h3>Circuit Breaker</h3><div id="risk-cb"></div></div>
-    <div class="card"><h3>Sektor-Exposure</h3><div class="chart-box"><canvas id="risk-pie"></canvas></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Sektor-Exposure</h3><div class="chart-box"><canvas id="risk-pie"></canvas></div></div>
+      <div class="card"><h3>Korrelationen</h3><div id="risk-corr"></div></div>
+    </div>
     <div class="card"><h3>Stress Tests</h3><div id="risk-stress"></div></div>
-    <div class="card"><h3>Korrelation</h3><div id="risk-corr"></div></div>
   </div>
 
   <!-- PERFORMANCE -->
@@ -191,7 +193,7 @@ tr:hover{background:rgba(6,182,212,0.04)}
     <div class="kpi-grid" id="perf-kpis"></div>
     <div class="card"><h3>Equity Curve</h3><div class="chart-box"><canvas id="perf-equity"></canvas></div></div>
     <div class="card"><h3>Monthly P&L</h3><div id="perf-monthly"></div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="grid2">
       <div class="card"><h3>Beste Trades</h3><div id="perf-best"></div></div>
       <div class="card"><h3>Schlechteste Trades</h3><div id="perf-worst"></div></div>
     </div>
@@ -200,7 +202,8 @@ tr:hover{background:rgba(6,182,212,0.04)}
 
   <!-- CALENDAR -->
   <div class="section" id="sec-calendar">
-    <div class="card"><h3>Anstehende Events</h3><div id="cal-list"></div></div>
+    <div class="card"><h3>Earnings</h3><div id="cal-earnings"></div></div>
+    <div class="card"><h3>Makro-Events</h3><div id="cal-macro"></div></div>
   </div>
 
   <!-- WATCHLIST -->
@@ -224,20 +227,20 @@ tr:hover{background:rgba(6,182,212,0.04)}
   <!-- BACKTEST -->
   <div class="section" id="sec-backtest">
     <div class="kpi-grid" id="bt-kpis"></div>
-    <div class="card"><h3>Momentum Backtest</h3><div id="bt-momentum"></div></div>
-    <div class="card"><h3>Mean Reversion Backtest</h3><div id="bt-mr"></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Momentum</h3><div id="bt-momentum"></div></div>
+      <div class="card"><h3>Mean Reversion</h3><div id="bt-mr"></div></div>
+    </div>
   </div>
 </div>
 
 <script>
 let D={};
-
-// Helpers
 const $=id=>document.getElementById(id);
-const fmt=v=>v>=0?'+'+v.toFixed(0)+'€':v.toFixed(0)+'€';
+const fmt=v=>(v>=0?'+':'')+v.toFixed(0)+'€';
 const pct=v=>(v>=0?'+':'')+v.toFixed(1)+'%';
 const cls=v=>v>=0?'green':'red';
-const esc=s=>(s||'').replace(/</g,'&lt;');
+const esc=s=>String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 function go(t){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -247,61 +250,80 @@ function go(t){
 }
 
 function render(){
+  try{_render()}catch(e){console.error('Render error:',e);$('loader').innerHTML='<div class="red">Render-Fehler: '+e.message+'</div>'}
+}
+
+function _render(){
   $('loader').style.display='none';
-  const port=D.portfolio||{};
-  const pos=port.positions||[];
-  const cfg=D.config||{};
-  const cfgPos=cfg.positions||[];
+  const pos=D.positions||{};
+  const openPos=pos.open||[];
+  const closedPos=pos.closed||[];
+  const strats=D.strategies||[];
+  const stratsF=D.strats_full||{};
+  const watch=D.watchlist||[];
+  const earnings=D.earnings||[];
+  const macroEv=D.macro_events||[];
+  const sectorMap=D.sector_map||{};
   const risk=D.risk||{};
   const perf=D.performance||{};
   const learn=D.learning||{};
   const bt=D.backtest||{};
   const dna=D.dna||{};
   const sig=D.signals||{};
-  const regime=D.regime||{};
+  const allSigs=sig.signals||[];
   const news=D.news||[];
+  const regime=D.regime||{};
   const senti=D.sentiment||{};
-  const watchlist=cfg.watchlist||[];
-  const earnings=cfg.earnings||[];
-  const closed=cfg.closed||[];
+  const dtStats=D.dt_stats||{};
+  const recentDT=D.recent_dt||[];
+  const paper=D.paper||[];
+  const factors=regime.factors||{};
+  const ts=D.total_stats||{};
+
+  // Badges
+  $('nav-pos').textContent=openPos.length;
+  $('nav-strat').textContent=strats.length;
+  $('nav-sig').textContent=allSigs.length;
+  $('nav-cal').textContent=earnings.length+macroEv.length;
+  $('nav-watch').textContent=watch.length;
+  $('nav-news').textContent=news.length;
 
   // ── TOP BAR ──
-  const totalPnl=perf.total_closed_pnl||port.total_pnl||0;
-  $('tb-pnl').className='val '+(totalPnl>=0?'green':'red');
+  const totalPnl=ts.total_pnl||perf.total_closed_pnl||0;
+  $('tb-pnl').className='val '+cls(totalPnl);
   $('tb-pnl').textContent=fmt(totalPnl);
-  $('tb-open').textContent=pos.length;
-  $('nav-pos').textContent=pos.length;
-  $('nav-watch').textContent=watchlist.length;
-
-  const factors=regime.factors||{};
-  $('tb-vix').textContent=(factors.vix||'?');
+  $('tb-open').textContent=openPos.length;
+  $('tb-vix').textContent=factors.vix||'?';
   $('tb-vix').className='val '+((factors.vix||0)>25?'amber':(factors.vix||0)>20?'':'green');
-
   const cb=risk.circuit_breaker||{};
-  const cbEl=$('tb-cb');
-  if(cb.trading_allowed){cbEl.innerHTML='<span class="cb cb-ok">● Trading OK</span>'}
-  else{cbEl.innerHTML='<span class="cb cb-blocked">● BLOCKED</span>'}
-
-  $('tb-regime').innerHTML='<span class="regime regime-'+(regime.regime||'RANGE')+'">'+(regime.regime||'?')+' / '+(regime.velocity||'')+'</span>';
+  $('tb-cb').innerHTML=cb.trading_allowed?'<span class="cb cb-ok">● OK</span>':'<span class="cb cb-blocked">● BLOCK</span>';
+  $('tb-regime').innerHTML='<span class="regime regime-'+(regime.regime||'RANGE')+'">'+(regime.regime||'?')+'</span>';
 
   // ── OVERVIEW ──
-  const openPnl=pos.reduce((s,x)=>s+(x.pnl_eur||0),0);
-  const wr=perf.total_closed_trades>0?(perf.strategy_comparison||[]).reduce((s,x)=>s+((x.wins||0)),0)/perf.total_closed_trades:0;
-  $('ov-kpis').innerHTML=`
-    <div class="card kpi"><div class="num ${cls(totalPnl)}">${fmt(totalPnl)}</div><div class="label">Realisiert</div></div>
-    <div class="card kpi"><div class="num ${cls(openPnl)}">${fmt(openPnl)}</div><div class="label">Unrealisiert</div></div>
-    <div class="card kpi"><div class="num">${perf.total_closed_trades||0}</div><div class="label">Geschlossen</div></div>
-    <div class="card kpi"><div class="num">${pos.length}</div><div class="label">Offen</div></div>
-    <div class="card kpi"><div class="num amber">${factors.vix||'?'}</div><div class="label">VIX</div></div>
-    <div class="card kpi"><div class="num">${(factors.wti||0).toFixed(1)}</div><div class="label">WTI $</div></div>`;
+  const openPnl=openPos.reduce((s,x)=>s+(x.pnl_eur||0),0);
+  $('ov-kpis').innerHTML=[
+    {n:fmt(totalPnl),l:'Total P&L',c:cls(totalPnl)},
+    {n:ts.trades||0,l:'Total Trades',c:''},
+    {n:ts.wins||0,l:'Wins',c:'green'},
+    {n:ts.losses||0,l:'Losses',c:'red'},
+    {n:openPos.length,l:'Offene Pos.',c:'cyan'},
+    {n:(factors.vix||0).toFixed(1),l:'VIX',c:'amber'},
+    {n:'$'+(factors.wti||0).toFixed(0),l:'WTI',c:''},
+    {n:'$'+(factors.gold||0).toFixed(0),l:'Gold',c:'amber'},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
 
-  // Top positions
-  const sorted=[...pos].sort((a,b)=>(b.pnl_eur||0)-(a.pnl_eur||0));
-  $('ov-top').innerHTML=sorted.slice(0,5).map(p=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono">${esc(p.ticker)}</span><span class="${cls(p.pnl_pct||0)}">${pct(p.pnl_pct||0)}</span></div>`).join('')||'<div style="color:var(--dim)">Keine Positionen</div>';
+  // Overview positions
+  $('ov-positions').innerHTML=openPos.length?openPos.map(p=>'<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono"><strong>'+esc(p.name||p.ticker)+'</strong> ('+esc(p.ticker)+')</span><span>Entry: '+((p.entry||0).toFixed(2))+'€'+(p.stop?' | Stop: '+p.stop.toFixed(2)+'€':'')+'</span></div>').join(''):'<div class="dim">Keine offenen Positionen</div>';
 
   // Overview signals
-  const sigList=(sig.signals||[]).slice(0,5);
-  $('ov-signals').innerHTML=sigList.map(s=>`<div class="signal-card ${(s.direction||'').toLowerCase().includes('long')?'buy':'sell'}"><strong>${esc(s.ticker)}</strong> — ${esc(s.strategy||s.type||'')} <span class="${(s.direction||'').includes('LONG')?'green':'red'}">${esc(s.direction||'')}</span></div>`).join('')||'<div style="color:var(--dim)">Keine aktiven Signale</div>';
+  $('ov-signals').innerHTML=allSigs.slice(0,5).map(s=>'<div class="signal-card '+(s.direction?.includes('LONG')?'buy':'sell')+'"><strong>'+esc(s.ticker)+'</strong> — '+esc(s.strategy||s.type)+' <span class="'+(s.direction?.includes('LONG')?'green':'red')+'">'+esc(s.direction)+'</span></div>').join('')||'<div class="dim">Keine Signale</div>';
+
+  // Overview strategies
+  $('ov-strategies').innerHTML=strats.map(s=>'<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span>'+s.status+' <strong>'+esc(s.id)+'</strong> — '+esc(s.name)+'</span><span class="dim">'+esc(s.conviction)+'</span></div>').join('');
+
+  // Overview next events
+  const allEvents=[...earnings.map(e=>({...e,cat:'earnings'})),...macroEv.map(e=>({...e,ticker:e.name,name:e.name,type:e.desc||'macro',cat:'macro'}))].sort((a,b)=>a.date?.localeCompare(b.date));
+  $('ov-events').innerHTML=allEvents.slice(0,5).map(e=>'<div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="'+(e.cat==='earnings'?'purple':'amber')+'" style="min-width:80px;font-size:0.8rem">'+esc(e.date)+'</span><span>'+esc(e.name||e.ticker)+'</span></div>').join('')||'<div class="dim">Keine Events</div>';
 
   // Equity curve
   const ec=perf.equity_curve||[];
@@ -313,188 +335,183 @@ function render(){
   }
 
   // ── POSITIONS ──
-  $('pos-table').innerHTML=pos.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Aktuell</th><th>P&L</th><th>Stop</th><th>Tage</th></tr>${pos.map(p=>`<tr><td class="mono"><strong>${esc(p.ticker)}</strong></td><td>${esc(p.strategy)}</td><td class="mono">${(p.entry||0).toFixed(2)}€</td><td class="mono">${(p.current||p.entry||0).toFixed(2)}€</td><td class="mono ${cls(p.pnl_pct||0)}">${pct(p.pnl_pct||0)}</td><td class="mono">${p.stop?p.stop.toFixed(2)+'€':'—'}</td><td>${p.days_held||'?'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine offenen Positionen</div>';
+  $('pos-open').innerHTML=openPos.length?'<table><tr><th>Ticker</th><th>Name</th><th>Entry</th><th>Stop</th><th>Targets</th><th>Size</th><th>Conv.</th><th>Notiz</th></tr>'+openPos.map(p=>'<tr><td class="mono"><strong>'+esc(p.ticker)+'</strong></td><td>'+esc(p.name)+'</td><td class="mono">'+((p.entry||0).toFixed(2))+'€</td><td class="mono">'+(p.stop?p.stop.toFixed(2)+'€':'—')+'</td><td class="mono">'+(p.targets?.length?p.targets.join(' / ')+'€':'—')+'</td><td class="mono">'+(p.size||0)+'€</td><td>'+((p.conviction||0))+'</td><td class="dim" style="max-width:200px">'+esc(p.notes)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine offenen Positionen</div>';
 
-  // Closed
-  const closedTrades=perf.best_trades||[];
-  const worstTrades=perf.worst_trades||[];
-  const allClosed=[...closedTrades,...worstTrades].sort((a,b)=>new Date(b.exit_date||0)-new Date(a.exit_date||0));
-  $('pos-closed').innerHTML=allClosed.length?`<table><tr><th>Ticker</th><th>P&L</th><th>Exit</th></tr>${allClosed.slice(0,10).map(t=>`<tr><td class="mono">${esc(t.ticker)}</td><td class="mono ${cls(t.pnl_eur||0)}">${fmt(t.pnl_eur||0)}</td><td>${esc(t.exit_date||'')}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine geschlossenen Trades</div>';
+  $('pos-closed').innerHTML=closedPos.length?'<table><tr><th>Ticker</th><th>Name</th><th>Entry</th><th>Exit</th><th>P&L</th><th>%</th><th>Datum</th></tr>'+closedPos.map(p=>'<tr><td class="mono"><strong>'+esc(p.ticker)+'</strong></td><td>'+esc(p.name)+'</td><td class="mono">'+(p.entry||0).toFixed(2)+'€</td><td class="mono">'+(p.exit||0).toFixed(2)+'€</td><td class="mono '+cls(p.pnl_eur||0)+'">'+fmt(p.pnl_eur||0)+'</td><td class="mono '+cls(p.pnl_pct||0)+'">'+pct(p.pnl_pct||0)+'</td><td>'+esc(p.exit_date)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine geschlossenen Positionen</div>';
+
+  // ── STRATEGIES ──
+  $('strat-list').innerHTML=strats.map(s=>{
+    const full=stratsF[s.id]||{};
+    const tickers=(s.tickers||[]).join(', ');
+    return '<div class="strat-card" style="border-left-color:'+(s.color||'var(--cyan)')+'"><h4>'+s.status+' '+esc(s.id)+' — '+esc(s.name)+'</h4><div class="desc">'+(s.desc||full.thesis||'')+'</div><div class="meta"><span>📊 Conviction: <strong>'+esc(s.conviction)+'</strong></span><span>🎯 Ticker: <strong>'+esc(tickers)+'</strong></span>'+(full.entry_trigger?'<span>🟢 Entry: '+esc(full.entry_trigger)+'</span>':'')+(full.kill_trigger?'<span>🔴 Kill: '+esc(full.kill_trigger)+'</span>':'')+'</div></div>';
+  }).join('');
 
   // ── FLOW / PAPER LAB ──
-  const dtrades=(dna.recent_day_trades||[]);
-  const openDT=dtrades.filter(t=>t.status==='OPEN');
-  const closedDT=dtrades.filter(t=>t.status!=='OPEN');
-  const dtPnl=closedDT.reduce((s,t)=>s+(t.pnl_eur||0),0);
-  const dtWins=closedDT.filter(t=>(t.pnl_eur||0)>0).length;
-  const dtWR=closedDT.length>0?(dtWins/closedDT.length*100):0;
+  const dtKeys=Object.keys(dtStats).filter(k=>k.startsWith('DT')).sort();
+  const totalDTTrades=Object.values(dtStats).reduce((s,v)=>s+(v.trades||0),0);
+  const totalDTWins=Object.values(dtStats).reduce((s,v)=>s+(v.wins||0),0);
+  const totalDTLosses=Object.values(dtStats).reduce((s,v)=>s+(v.losses||0),0);
+  const totalDTPnl=Object.values(dtStats).reduce((s,v)=>s+(v.pnl||0),0);
+  const totalDTOpen=Object.values(dtStats).reduce((s,v)=>s+(v.open||0),0);
+  const dtWR=totalDTWins+totalDTLosses>0?(totalDTWins/(totalDTWins+totalDTLosses)*100):0;
 
-  $('flow-kpis').innerHTML=`
-    <div class="card kpi"><div class="num">${openDT.length}</div><div class="label">Offen</div></div>
-    <div class="card kpi"><div class="num">${closedDT.length}</div><div class="label">Geschlossen</div></div>
-    <div class="card kpi"><div class="num ${cls(dtPnl)}">${fmt(dtPnl)}</div><div class="label">Day Trade P&L</div></div>
-    <div class="card kpi"><div class="num ${dtWR>45?'green':dtWR>35?'amber':'red'}">${dtWR.toFixed(0)}%</div><div class="label">Win Rate</div></div>`;
+  $('flow-kpis').innerHTML=[
+    {n:totalDTTrades,l:'Day Trades Total',c:''},
+    {n:totalDTOpen,l:'Offen',c:'cyan'},
+    {n:totalDTWins,l:'Wins',c:'green'},
+    {n:totalDTLosses,l:'Losses',c:'red'},
+    {n:fmt(totalDTPnl),l:'Day Trade P&L',c:cls(totalDTPnl)},
+    {n:dtWR.toFixed(0)+'%',l:'Win Rate',c:dtWR>45?'green':dtWR>35?'amber':'red'},
+    {n:paper.length,l:'Paper Offen',c:'purple'},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
 
-  $('flow-trades').innerHTML=dtrades.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Richtung</th><th>Entry</th><th>P&L</th><th>Status</th></tr>${dtrades.slice(0,30).map(t=>`<tr><td class="mono"><strong>${esc(t.ticker)}</strong></td><td>${esc(t.strategy||t.dt_strategy||'')}</td><td>${esc(t.direction||'LONG')}</td><td class="mono">${(t.entry_price||0).toFixed(2)}€</td><td class="mono ${cls(t.pnl_eur||0)}">${t.pnl_eur!=null?fmt(t.pnl_eur):'—'}</td><td>${t.status==='OPEN'?'<span class="cyan">OPEN</span>':'<span class="dim">'+esc(t.status)+'</span>'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Day Trades</div>';
+  // DT strategy breakdown
+  $('flow-dt-stats').innerHTML=dtKeys.length?'<table><tr><th>Strategie</th><th>Trades</th><th>Wins</th><th>Losses</th><th>Offen</th><th>P&L</th><th>WR</th></tr>'+dtKeys.map(k=>{const v=dtStats[k];return '<tr><td class="mono"><strong>'+k+'</strong></td><td>'+v.trades+'</td><td class="green">'+v.wins+'</td><td class="red">'+v.losses+'</td><td>'+v.open+'</td><td class="mono '+cls(v.pnl)+'">'+fmt(v.pnl)+'</td><td class="'+(v.wr>45?'green':v.wr>35?'amber':'red')+'">'+v.wr+'%</td></tr>'}).join('')+'</table>':'<div class="dim">Keine DT-Strategien</div>';
 
-  // Paper portfolio from DNA
-  const paperPos=dna.open_positions||[];
-  $('flow-paper').innerHTML=paperPos.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>P&L</th></tr>${paperPos.map(p=>`<tr><td class="mono">${esc(p.ticker)}</td><td>${esc(p.strategy)}</td><td class="mono">${(p.entry_price||0).toFixed(2)}€</td><td class="mono ${cls(p.pnl_pct||0)}">${p.pnl_pct!=null?pct(p.pnl_pct):'—'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Paper Positionen</div>';
+  // Also show non-DT strategies (SA, PM, PT, PS)
+  const otherDT=Object.keys(dtStats).filter(k=>!k.startsWith('DT')).sort();
+  if(otherDT.length){
+    $('flow-dt-stats').innerHTML+='<h3 style="margin-top:16px;color:var(--dim)">PAPER SWING (SA/PM/PT/PS)</h3><table><tr><th>Strategie</th><th>Trades</th><th>Wins</th><th>Losses</th><th>Offen</th><th>P&L</th><th>WR</th></tr>'+otherDT.map(k=>{const v=dtStats[k];return '<tr><td class="mono"><strong>'+k+'</strong></td><td>'+v.trades+'</td><td class="green">'+v.wins+'</td><td class="red">'+v.losses+'</td><td>'+v.open+'</td><td class="mono '+cls(v.pnl)+'">'+fmt(v.pnl)+'</td><td class="'+(v.wr>45?'green':v.wr>35?'amber':'red')+'">'+v.wr+'%</td></tr>'}).join('')+'</table>';
+  }
+
+  // Recent DT
+  $('flow-recent').innerHTML=recentDT.length?'<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Status</th><th>Datum</th></tr>'+recentDT.map(t=>'<tr><td class="mono"><strong>'+esc(t.ticker)+'</strong></td><td>'+esc(t.strategy)+'</td><td class="mono">'+(t.entry_price||0).toFixed(2)+'€</td><td class="mono">'+(t.exit_price?(t.exit_price).toFixed(2)+'€':'—')+'</td><td class="mono '+cls(t.pnl_eur||0)+'">'+(t.pnl_eur!=null?fmt(t.pnl_eur):'—')+'</td><td>'+(t.status==='OPEN'?'<span class="cyan">OPEN</span>':esc(t.status))+'</td><td style="font-size:0.72rem">'+esc(t.entry_date||'').slice(0,16)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine Day Trades</div>';
+
+  // Paper portfolio
+  $('flow-paper').innerHTML=paper.length?'<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Status</th></tr>'+paper.map(p=>'<tr><td class="mono"><strong>'+esc(p.ticker)+'</strong></td><td>'+esc(p.strategy)+'</td><td class="mono">'+(p.entry_price||0).toFixed(2)+'€</td><td class="cyan">'+esc(p.status)+'</td></tr>').join('')+'</table>':'<div class="dim">Kein Paper Portfolio</div>';
 
   // ── MACRO ──
-  $('macro-kpis').innerHTML=`
-    <div class="card kpi"><div class="num amber">${(factors.vix||0).toFixed(1)}</div><div class="label">VIX</div></div>
-    <div class="card kpi"><div class="num">${(factors.wti||0).toFixed(1)}</div><div class="label">WTI $</div></div>
-    <div class="card kpi"><div class="num">${(factors.gold||0).toFixed(0)}</div><div class="label">Gold $</div></div>
-    <div class="card kpi"><div class="num">${(factors.dxy||0).toFixed(1)}</div><div class="label">DXY</div></div>
-    <div class="card kpi"><div class="num">${(factors.us10y||0).toFixed(2)}%</div><div class="label">US 10Y</div></div>
-    <div class="card kpi"><div class="num">${(factors.us2y||0).toFixed(2)}%</div><div class="label">US 2Y</div></div>
-    <div class="card kpi"><div class="num ${(factors.sp500_vs_ma200||0)>=0?'green':'red'}">${((factors.sp500_vs_ma200||0)*100).toFixed(1)}%</div><div class="label">S&P vs MA200</div></div>`;
+  $('macro-kpis').innerHTML=[
+    {n:(factors.vix||0).toFixed(1),l:'VIX',c:(factors.vix||0)>25?'amber':'green'},
+    {n:'$'+(factors.wti||0).toFixed(1),l:'WTI Crude',c:''},
+    {n:'$'+(factors.gold||0).toFixed(0),l:'Gold',c:'amber'},
+    {n:(factors.dxy||0).toFixed(1),l:'US Dollar (DXY)',c:''},
+    {n:(factors.us10y||0).toFixed(2)+'%',l:'US 10Y Yield',c:''},
+    {n:(factors.us2y||0).toFixed(2)+'%',l:'US 2Y Yield',c:''},
+    {n:pct((factors.sp500_vs_ma200||0)*100),l:'S&P vs MA200',c:cls(factors.sp500_vs_ma200||0)},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
 
-  $('macro-regime').innerHTML=`
-    <div style="font-size:1.1rem;margin-bottom:8px"><span class="regime regime-${regime.regime||'RANGE'}">${regime.regime||'?'}</span> / <strong>${regime.velocity||'?'}</strong></div>
-    <div style="color:var(--dim);font-size:0.8rem">Position Factor: ${(regime.config||{}).position_factor||'?'} | Stop Factor: ${(regime.config||{}).stop_factor||'?'}</div>
-    <div style="color:var(--dim);font-size:0.8rem;margin-top:4px">Erlaubte Strategien: ${((regime.config||{}).allowed_strategies||[]).join(', ')||'alle'}</div>`;
+  const rc=regime.config||{};
+  $('macro-regime').innerHTML='<div style="font-size:1.1rem;margin-bottom:10px"><span class="regime regime-'+(regime.regime||'RANGE')+'">'+(regime.regime||'?')+'</span> <strong>'+(regime.velocity||'?')+'</strong></div><div style="color:var(--dim);font-size:0.82rem">'+(rc.desc||'')+'</div><div style="margin-top:8px;font-size:0.8rem"><span class="dim">Position Factor:</span> <strong>'+((rc.position_factor||1))+'</strong> | <span class="dim">Stop Factor:</span> <strong>'+((rc.stop_factor||1))+'</strong> | <span class="dim">Erlaubt:</span> <strong>'+((rc.allowed_strategies||[]).join(', ')||'alle')+'</strong></div>';
 
-  // Sentiment
-  const sentiScore=senti.portfolio_score||0;
-  const sentiResults=senti.results||{};
-  $('macro-sentiment').innerHTML=`
-    <div style="font-size:1.4rem;font-weight:700;margin-bottom:8px" class="${sentiScore>0.3?'green':sentiScore<-0.3?'red':'amber'}">Portfolio Sentiment: ${sentiScore.toFixed(2)}</div>
-    ${Object.entries(sentiResults).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono">${esc(k)}</span><span class="${(v||0)>0.3?'green':(v||0)<-0.3?'red':'amber'}">${(v||0).toFixed(2)}</span></div>`).join('')}`;
+  const sScore=senti.portfolio_score||0;
+  const sResults=senti.results||{};
+  $('macro-sentiment').innerHTML='<div style="font-size:1.3rem;font-weight:700;margin-bottom:10px" class="'+cls(sScore)+'">Portfolio Score: '+(sScore).toFixed(2)+'</div>'+Object.entries(sResults).map(([k,v])=>'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono">'+esc(k)+'</span><span class="'+(v>0.3?'green':v<-0.3?'red':'amber')+'">'+(v||0).toFixed(2)+'</span></div>').join('');
 
   // ── DNA ──
   const profile=dna.trader_profile||{};
-  $('dna-profile').innerHTML=`
-    <div class="kpi-grid">
-      <div class="card kpi"><div class="num">${profile.total_trades||0}</div><div class="label">Total Trades</div></div>
-      <div class="card kpi"><div class="num ${(profile.win_rate||0)>0.45?'green':'red'}">${((profile.win_rate||0)*100).toFixed(0)}%</div><div class="label">Win Rate</div></div>
-      <div class="card kpi"><div class="num">${(profile.avg_hold_days||0).toFixed(1)}</div><div class="label">Ø Haltezeit (Tage)</div></div>
-      <div class="card kpi"><div class="num ${(profile.sharpe||0)>0?'green':'red'}">${(profile.sharpe||0).toFixed(2)}</div><div class="label">Sharpe</div></div>
-    </div>
-    <div style="color:var(--dim);font-size:0.8rem">${esc(profile.style||'')} | Profit Factor: ${(profile.profit_factor||0).toFixed(2)}</div>`;
+  $('dna-profile').innerHTML='<div class="kpi-grid">'+[
+    {n:profile.total_trades||0,l:'Total Trades'},
+    {n:((profile.win_rate||0)*100).toFixed(0)+'%',l:'Win Rate',c:(profile.win_rate||0)>0.45?'green':'red'},
+    {n:(profile.avg_hold_days||0).toFixed(1),l:'Ø Haltezeit (d)'},
+    {n:(profile.sharpe||0).toFixed(2),l:'Sharpe',c:(profile.sharpe||0)>0?'green':'red'},
+    {n:(profile.profit_factor||0).toFixed(2),l:'Profit Factor'},
+    {n:esc(profile.style||'—'),l:'Style'},
+  ].map(k=>'<div class="kpi"><div class="num '+(k.c||'')+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('')+'</div>';
 
-  const dnaStrats=dna.strategies||{};
-  $('dna-strategies').innerHTML=Object.entries(dnaStrats).map(([k,v])=>`<div class="dna-card"><strong>${esc(k)}</strong> — ${esc(v.name||'')}<br><span class="dna-stat">Trades: <span class="v">${v.trades||0}</span></span><span class="dna-stat">WR: <span class="v ${(v.win_rate||0)>0.45?'green':'red'}">${((v.win_rate||0)*100).toFixed(0)}%</span></span><span class="dna-stat">P&L: <span class="v ${cls(v.total_pnl||0)}">${fmt(v.total_pnl||0)}</span></span><span class="dna-stat">Sharpe: <span class="v">${(v.sharpe||0).toFixed(2)}</span></span></div>`).join('')||'<div style="color:var(--dim)">Keine DNA-Daten</div>';
+  const dnaS=dna.strategies||{};
+  $('dna-strategies').innerHTML=Object.entries(dnaS).length?Object.entries(dnaS).map(([k,v])=>'<div class="dna-card"><strong>'+esc(k)+'</strong> — '+esc(v.name||'')+'<br><span class="dna-stat">Trades: <span class="v">'+((v.trades||0))+'</span></span><span class="dna-stat">WR: <span class="v '+((v.win_rate||0)>0.45?'green':'red')+'">'+((v.win_rate||0)*100).toFixed(0)+'%</span></span><span class="dna-stat">P&L: <span class="v '+cls(v.total_pnl||0)+'">'+fmt(v.total_pnl||0)+'</span></span><span class="dna-stat">Sharpe: <span class="v">'+(v.sharpe||0).toFixed(2)+'</span></span></div>').join(''):'<div class="dim">Keine DNA-Daten</div>';
 
-  const dnaRegime=dna.regime_performance||{};
-  $('dna-regime').innerHTML=Object.entries(dnaRegime).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span><strong>${esc(k)}</strong></span><span>Trades: ${v.trades||0} | WR: ${((v.win_rate||0)*100).toFixed(0)}% | PF: ${(v.profit_factor||0).toFixed(2)}</span></div>`).join('')||'<div style="color:var(--dim)">Keine Regime-Daten</div>';
+  const dnaR=dna.regime_performance||{};
+  $('dna-regime').innerHTML=Object.entries(dnaR).length?'<table><tr><th>Regime</th><th>Trades</th><th>WR</th><th>Profit Factor</th></tr>'+Object.entries(dnaR).map(([k,v])=>'<tr><td><strong>'+esc(k)+'</strong></td><td>'+((v.trades||0))+'</td><td>'+((v.win_rate||0)*100).toFixed(0)+'%</td><td>'+(v.profit_factor||0).toFixed(2)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine Regime-Daten</div>';
 
   // ── SIGNALS ──
-  const allSigs=sig.signals||[];
-  $('sig-list').innerHTML=allSigs.length?allSigs.slice(0,30).map(s=>`<div class="signal-card ${(s.direction||'').includes('LONG')?'buy':'sell'}"><div style="display:flex;justify-content:space-between"><strong>${esc(s.ticker)}</strong><span class="mono">${esc(s.price?s.price.toFixed(2)+'€':'')}</span></div><div style="font-size:0.78rem;color:var(--dim)">${esc(s.strategy||s.type||'')} — ${esc(s.direction||'')} — ${esc(s.reason||'')}</div></div>`).join(''):'<div style="color:var(--dim)">Keine aktiven Signale</div>';
-
   const sigStats=sig.stats||{};
-  $('sig-stats').innerHTML=`<div class="kpi-grid">
-    <div class="card kpi"><div class="num">${sigStats.total||0}</div><div class="label">Total Signale</div></div>
-    <div class="card kpi"><div class="num green">${sigStats.long||0}</div><div class="label">Long</div></div>
-    <div class="card kpi"><div class="num red">${sigStats.short||0}</div><div class="label">Short</div></div>
-  </div>`;
+  $('sig-kpis').innerHTML=[
+    {n:sigStats.total||allSigs.length,l:'Signale gesamt',c:''},
+    {n:sigStats.long||allSigs.filter(s=>s.direction?.includes('LONG')).length,l:'Long',c:'green'},
+    {n:sigStats.short||allSigs.filter(s=>s.direction?.includes('SHORT')).length,l:'Short',c:'red'},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
+
+  $('sig-list').innerHTML=allSigs.length?allSigs.slice(0,40).map(s=>'<div class="signal-card '+(s.direction?.includes('LONG')?'buy':'sell')+'"><div style="display:flex;justify-content:space-between"><strong>'+esc(s.ticker)+'</strong><span class="mono">'+(s.price?(s.price).toFixed(2)+'€':'')+'</span></div><div style="font-size:0.78rem;color:var(--dim)">'+esc(s.strategy||s.type||'')+' — <span class="'+(s.direction?.includes('LONG')?'green':'red')+'">'+esc(s.direction||'')+'</span>'+(s.reason?' — '+esc(s.reason):'')+'</div></div>').join(''):'<div class="dim">Keine aktiven Signale</div>';
 
   // ── RISK ──
-  $('risk-cb').innerHTML=`<div class="${cb.trading_allowed?'cb cb-ok':'cb cb-blocked'}">${cb.trading_allowed?'● Trading erlaubt':'● GESPERRT: '+(cb.breakers_triggered||[]).join(', ')}</div>
-    <div style="margin-top:10px;font-size:0.8rem;color:var(--dim)">${JSON.stringify(cb.details||{},null,2).replace(/\n/g,'<br>').replace(/ /g,'&nbsp;')}</div>`;
+  $('risk-cb').innerHTML='<div class="'+(cb.trading_allowed?'cb cb-ok':'cb cb-blocked')+'">'+(cb.trading_allowed?'● Trading erlaubt':'● GESPERRT: '+(cb.breakers_triggered||[]).join(', '))+'</div><div style="margin-top:8px;font-size:0.8rem;color:var(--dim)"><pre style="white-space:pre-wrap">'+JSON.stringify(cb.details||{},null,2)+'</pre></div>';
 
-  // Exposure pie
   const exposure=risk.exposure||{};
-  const sectors=Object.entries(exposure.by_sector||{});
-  if(sectors.length){
+  const sectors=Object.entries(exposure.by_sector||sectorMap).filter(([k,v])=>typeof v==='string'||typeof v==='number');
+  // Build sector counts from positions
+  const sectorCounts={};
+  openPos.forEach(p=>{const s=sectorMap[p.ticker]||'Andere';sectorCounts[s]=(sectorCounts[s]||0)+1});
+  const sc=Object.entries(sectorCounts);
+  if(sc.length){
     const colors=['#06b6d4','#10b981','#f59e0b','#ef4444','#a78bfa','#f472b6','#6366f1','#14b8a6'];
-    new Chart($('risk-pie'),{type:'doughnut',data:{labels:sectors.map(s=>s[0]),datasets:[{data:sectors.map(s=>s[1]),backgroundColor:colors.slice(0,sectors.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11}}}}}});
+    new Chart($('risk-pie'),{type:'doughnut',data:{labels:sc.map(s=>s[0]+' ('+s[1]+')'),datasets:[{data:sc.map(s=>s[1]),backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8'}}}}});
   }
 
-  // Stress tests
-  const stress=risk.stress_tests||[];
-  $('risk-stress').innerHTML=stress.length?`<table><tr><th>Szenario</th><th>Impact</th></tr>${stress.map(s=>`<tr><td>${esc(s.scenario||s.name)}</td><td class="mono ${cls(s.impact||s.portfolio_impact||0)}">${fmt(s.impact||s.portfolio_impact||0)}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Stress Tests</div>';
+  const corr=D.correlations||{};
+  $('risk-corr').innerHTML=Object.keys(corr).length?'<table><tr><th>Paar</th><th>Korrelation</th></tr>'+Object.entries(corr).slice(0,20).map(([k,v])=>'<tr><td class="mono">'+esc(k)+'</td><td class="mono '+(Math.abs(v)>0.7?'amber':'')+'">'+((v||0).toFixed(3))+'</td></tr>').join('')+'</table>':'<div class="dim">Keine Korrelationsdaten</div>';
 
-  // Correlation
-  const corr=risk.correlation||{};
-  $('risk-corr').innerHTML=corr.matrix?`<div style="font-size:0.78rem;color:var(--dim);white-space:pre;overflow-x:auto">${JSON.stringify(corr.matrix,null,2)}</div>`:'<div style="color:var(--dim)">'+JSON.stringify(corr).slice(0,500)+'</div>';
+  const stress=risk.stress_tests||[];
+  $('risk-stress').innerHTML=stress.length?'<table><tr><th>Szenario</th><th>Impact</th></tr>'+stress.map(s=>'<tr><td>'+esc(s.scenario||s.name)+'</td><td class="mono '+cls(s.impact||s.portfolio_impact||0)+'">'+fmt(s.impact||s.portfolio_impact||0)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine Stress Tests</div>';
 
   // ── PERFORMANCE ──
   const closedN=perf.total_closed_trades||0;
   const closedPnl=perf.total_closed_pnl||0;
   const stratComp=perf.strategy_comparison||[];
-  const totalWins=stratComp.reduce((s,x)=>s+(x.wins||0),0);
-  const wrPct=closedN>0?(totalWins/closedN*100):0;
+  const tw=stratComp.reduce((s,x)=>s+(x.wins||0),0);
+  const wrP=closedN>0?(tw/closedN*100):0;
 
-  $('perf-kpis').innerHTML=`
-    <div class="card kpi"><div class="num ${cls(closedPnl)}">${fmt(closedPnl)}</div><div class="label">Realisiert</div></div>
-    <div class="card kpi"><div class="num">${closedN}</div><div class="label">Trades</div></div>
-    <div class="card kpi"><div class="num ${wrPct>45?'green':'red'}">${wrPct.toFixed(0)}%</div><div class="label">Win Rate</div></div>
-    <div class="card kpi"><div class="num">${totalWins}</div><div class="label">Wins</div></div>`;
+  $('perf-kpis').innerHTML=[
+    {n:fmt(closedPnl),l:'Realisiert',c:cls(closedPnl)},
+    {n:closedN,l:'Geschlossene Trades',c:''},
+    {n:wrP.toFixed(0)+'%',l:'Win Rate',c:wrP>45?'green':'red'},
+    {n:tw,l:'Wins',c:'green'},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
 
-  // Monthly P&L
   const monthly=perf.monthly_pnl||{};
-  $('perf-monthly').innerHTML=Object.keys(monthly).length?`<table><tr><th>Monat</th><th>P&L</th><th>Trades</th></tr>${Object.entries(monthly).sort().map(([m,v])=>`<tr><td>${m}</td><td class="mono ${cls(v.pnl||0)}">${fmt(v.pnl||0)}</td><td>${v.trades||0}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine monatlichen Daten</div>';
+  $('perf-monthly').innerHTML=Object.keys(monthly).length?'<table><tr><th>Monat</th><th>P&L</th><th>Trades</th></tr>'+Object.entries(monthly).sort().map(([m,v])=>'<tr><td>'+m+'</td><td class="mono '+cls(v.pnl||0)+'">'+fmt(v.pnl||0)+'</td><td>'+(v.trades||0)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine monatlichen Daten</div>';
 
-  // Best/Worst
-  const renderTrades=(trades,el)=>{el.innerHTML=trades.length?`<table><tr><th>Ticker</th><th>P&L</th><th>%</th></tr>${trades.map(t=>`<tr><td class="mono">${esc(t.ticker)}</td><td class="mono ${cls(t.pnl_eur||0)}">${fmt(t.pnl_eur||0)}</td><td class="mono ${cls(t.pnl_pct||0)}">${pct(t.pnl_pct||0)}</td></tr>`).join('')}</table>`:'—'};
-  renderTrades(perf.best_trades||[],$('perf-best'));
-  renderTrades(perf.worst_trades||[],$('perf-worst'));
+  const renderTL=(trades,el)=>{el.innerHTML=trades.length?'<table><tr><th>Ticker</th><th>P&L</th><th>%</th></tr>'+trades.map(t=>'<tr><td class="mono">'+esc(t.ticker)+'</td><td class="mono '+cls(t.pnl_eur||0)+'">'+fmt(t.pnl_eur||0)+'</td><td class="mono '+cls(t.pnl_pct||0)+'">'+pct(t.pnl_pct||0)+'</td></tr>').join('')+'</table>':'<div class="dim">—</div>'};
+  renderTL(perf.best_trades||[],$('perf-best'));
+  renderTL(perf.worst_trades||[],$('perf-worst'));
 
-  // Strategy comparison
-  $('perf-strat').innerHTML=stratComp.length?`<table><tr><th>Strategie</th><th>Trades</th><th>Wins</th><th>P&L</th><th>WR</th></tr>${stratComp.map(s=>`<tr><td><strong>${esc(s.strategy)}</strong></td><td>${s.trades||0}</td><td>${s.wins||0}</td><td class="mono ${cls(s.total_pnl||0)}">${fmt(s.total_pnl||0)}</td><td class="${(s.win_rate||0)>0.45?'green':'red'}">${((s.win_rate||0)*100).toFixed(0)}%</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Strategie-Daten</div>';
+  $('perf-strat').innerHTML=stratComp.length?'<table><tr><th>Strategie</th><th>Trades</th><th>Wins</th><th>P&L</th><th>WR</th></tr>'+stratComp.map(s=>'<tr><td><strong>'+esc(s.strategy)+'</strong></td><td>'+s.trades+'</td><td>'+s.wins+'</td><td class="mono '+cls(s.total_pnl||0)+'">'+fmt(s.total_pnl||0)+'</td><td class="'+((s.win_rate||0)>0.45?'green':'red')+'">'+((s.win_rate||0)*100).toFixed(0)+'%</td></tr>').join('')+'</table>':'<div class="dim">Keine Daten</div>';
 
   // ── CALENDAR ──
-  const events=[...earnings].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  $('cal-list').innerHTML=events.length?events.map(e=>`<div class="cal-item"><div class="cal-date">${esc(e.date)}</div><div class="cal-type">${esc(e.type||'event')}</div><div><strong>${esc(e.name||e.ticker)}</strong> (${esc(e.ticker)})</div></div>`).join(''):'<div style="color:var(--dim)">Keine Events geplant</div>';
+  const sortedEarnings=[...earnings].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  $('cal-earnings').innerHTML=sortedEarnings.length?sortedEarnings.map(e=>'<div class="cal-item"><div class="cal-date purple">'+esc(e.date)+'</div><div class="cal-type earnings">Earnings</div><div><strong>'+esc(e.name||e.ticker)+'</strong> ('+esc(e.ticker)+')</div></div>').join(''):'<div class="dim">Keine Earnings geplant</div>';
+
+  const sortedMacro=[...macroEv].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  $('cal-macro').innerHTML=sortedMacro.length?sortedMacro.map(e=>'<div class="cal-item"><div class="cal-date amber">'+esc(e.date)+'</div><div class="cal-type macro">Makro</div><div><strong>'+esc(e.name)+'</strong>'+(e.desc?' — '+esc(e.desc):'')+'</div></div>').join(''):'<div class="dim">Keine Makro-Events</div>';
 
   // ── WATCHLIST ──
-  $('watch-list').innerHTML=watchlist.length?watchlist.map(w=>`<div class="watch-card"><div><div class="ticker">${esc(w.ticker)}</div><div style="font-size:0.82rem">${esc(w.name||'')}</div></div><div style="text-align:right"><div class="range mono">Entry: ${w.entryMin||'?'}–${w.entryMax||'?'}€</div><div style="font-size:0.7rem;color:var(--dim)">Stop: ${w.stop||'?'}€</div><div style="font-size:0.7rem;color:var(--dim)">${esc(w.note||'')}</div></div></div>`).join(''):'<div style="color:var(--dim)">Watchlist leer</div>';
+  $('watch-list').innerHTML=watch.length?watch.map(w=>'<div class="watch-card"><div><div style="font-weight:700;color:var(--cyan);font-size:0.95rem">'+esc(w.ticker)+'</div><div style="font-size:0.85rem">'+esc(w.name||'')+'</div></div><div style="text-align:right"><div class="mono" style="font-size:0.85rem">Entry: '+(w.entryMin||'?')+'–'+(w.entryMax||'?')+'€</div><div style="font-size:0.75rem;color:var(--dim)">Stop: '+(w.stop||'?')+'€</div><div style="font-size:0.72rem;color:var(--dim);margin-top:2px;max-width:300px">'+esc(w.note||'')+'</div></div></div>').join(''):'<div class="dim">Watchlist leer</div>';
 
   // ── NEWS ──
-  $('news-list').innerHTML=news.length?news.map(n=>`<div class="news-item"><div class="time">${esc(n.published||n.date||'')}</div><div class="title">${n.url?'<a href="'+esc(n.url)+'" target="_blank">'+esc(n.title)+'</a>':esc(n.title)}</div><div class="source">${esc(n.source||'')}</div></div>`).join(''):'<div style="color:var(--dim)">Keine News</div>';
+  $('news-list').innerHTML=news.length?news.map(n=>'<div class="news-item"><div class="time">'+esc(n.published||n.date||'')+(n.source?' — '+esc(n.source):'')+'</div><div class="title">'+(n.url?'<a href="'+esc(n.url)+'" target="_blank">'+esc(n.title)+'</a>':esc(n.title))+'</div></div>').join(''):'<div class="dim">Keine News</div>';
 
   // ── LEARNING ──
-  const setupPerf=learn.setup_performance||{};
-  $('learn-setup').innerHTML=Object.keys(setupPerf).length?`<table><tr><th>Setup</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>${Object.entries(setupPerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td class="${(v.win_rate||0)>0.45?'green':'red'}">${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.avg_pnl||0)}">${(v.avg_pnl||0).toFixed(1)}€</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Setup-Daten</div>';
+  const setupP=learn.setup_performance||{};
+  $('learn-setup').innerHTML=Object.keys(setupP).length?'<table><tr><th>Setup</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>'+Object.entries(setupP).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+(v.count||0)+'</td><td class="'+((v.win_rate||0)>0.45?'green':'red')+'">'+((v.win_rate||0)*100).toFixed(0)+'%</td><td class="mono '+cls(v.avg_pnl||0)+'">'+(v.avg_pnl||0).toFixed(1)+'€</td></tr>').join('')+'</table>':'<div class="dim">Keine Setup-Daten</div>';
 
-  const themePerf=learn.theme_performance||{};
-  $('learn-theme').innerHTML=Object.keys(themePerf).length?`<table><tr><th>Theme</th><th>Trades</th><th>WR</th><th>P&L</th></tr>${Object.entries(themePerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td>${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.total_pnl||0)}">${fmt(v.total_pnl||0)}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Theme-Daten</div>';
+  const themeP=learn.theme_performance||{};
+  $('learn-theme').innerHTML=Object.keys(themeP).length?'<table><tr><th>Theme</th><th>Trades</th><th>WR</th><th>P&L</th></tr>'+Object.entries(themeP).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+(v.count||0)+'</td><td>'+((v.win_rate||0)*100).toFixed(0)+'%</td><td class="mono '+cls(v.total_pnl||0)+'">'+fmt(v.total_pnl||0)+'</td></tr>').join('')+'</table>':'<div class="dim">Keine Theme-Daten</div>';
 
-  const vixPerf=learn.vix_performance||{};
-  $('learn-vix').innerHTML=Object.keys(vixPerf).length?`<table><tr><th>VIX Range</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>${Object.entries(vixPerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td>${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.avg_pnl||0)}">${(v.avg_pnl||0).toFixed(1)}€</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine VIX-Daten</div>';
+  const vixP=learn.vix_performance||{};
+  $('learn-vix').innerHTML=Object.keys(vixP).length?'<table><tr><th>VIX Range</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>'+Object.entries(vixP).map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+(v.count||0)+'</td><td>'+((v.win_rate||0)*100).toFixed(0)+'%</td><td class="mono '+cls(v.avg_pnl||0)+'">'+(v.avg_pnl||0).toFixed(1)+'€</td></tr>').join('')+'</table>':'<div class="dim">Keine VIX-Daten</div>';
 
   const lessons=learn.lessons||[];
-  $('learn-lessons').innerHTML=lessons.length?lessons.map(l=>`<div style="padding:8px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><strong>${esc(l.title||l.date||'')}</strong><div style="font-size:0.82rem;color:var(--dim)">${esc(l.text||l.lesson||JSON.stringify(l))}</div></div>`).join(''):'<div style="color:var(--dim)">Keine Lektionen</div>';
+  $('learn-lessons').innerHTML=lessons.length?lessons.map(l=>'<div style="padding:8px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><strong>'+esc(l.title||l.date||'')+'</strong><div style="font-size:0.82rem;color:var(--dim)">'+esc(l.text||l.lesson||JSON.stringify(l))+'</div></div>').join(''):'<div class="dim">Keine Lektionen</div>';
 
   // ── BACKTEST ──
   const mom=bt.momentum||{};
   const mr=bt.mean_reversion||{};
-  $('bt-kpis').innerHTML=`
-    <div class="card kpi"><div class="num">${(bt.tickers_used||[]).length}</div><div class="label">Ticker getestet</div></div>
-    <div class="card kpi"><div class="num ${cls(mom.total_return||0)}">${pct(mom.total_return||0)}</div><div class="label">Momentum Return</div></div>
-    <div class="card kpi"><div class="num ${cls(mr.total_return||0)}">${pct(mr.total_return||0)}</div><div class="label">Mean Rev Return</div></div>`;
+  $('bt-kpis').innerHTML=[
+    {n:(bt.tickers_used||[]).length,l:'Ticker getestet',c:''},
+    {n:pct(mom.total_return||0),l:'Momentum Return',c:cls(mom.total_return||0)},
+    {n:pct(mr.total_return||0),l:'Mean Rev Return',c:cls(mr.total_return||0)},
+  ].map(k=>'<div class="kpi"><div class="num '+k.c+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('');
 
-  const renderBT=(data,el)=>{el.innerHTML=`<div class="kpi-grid"><div class="card kpi"><div class="num">${data.trades||0}</div><div class="label">Trades</div></div><div class="card kpi"><div class="num ${(data.win_rate||0)>0.45?'green':'red'}">${((data.win_rate||0)*100).toFixed(0)}%</div><div class="label">Win Rate</div></div><div class="card kpi"><div class="num">${(data.sharpe||0).toFixed(2)}</div><div class="label">Sharpe</div></div><div class="card kpi"><div class="num">${(data.max_drawdown||0).toFixed(1)}%</div><div class="label">Max DD</div></div></div>`};
+  const renderBT=(d,el)=>{el.innerHTML='<div class="kpi-grid">'+[
+    {n:d.trades||0,l:'Trades'},{n:((d.win_rate||0)*100).toFixed(0)+'%',l:'WR',c:(d.win_rate||0)>0.45?'green':'red'},
+    {n:(d.sharpe||0).toFixed(2),l:'Sharpe'},{n:(d.max_drawdown||0).toFixed(1)+'%',l:'Max DD'}
+  ].map(k=>'<div class="kpi"><div class="num '+(k.c||'')+'">'+k.n+'</div><div class="label">'+k.l+'</div></div>').join('')+'</div>'};
   renderBT(mom,$('bt-momentum'));
   renderBT(mr,$('bt-mr'));
 }
 
-// Load
-async function load(){
-  try{
-    // Try to load fresh data from APIs
-    const [configRes,dnaRes,sigRes,newsRes]=await Promise.allSettled([
-      fetch('/api/config').then(r=>r.json()),
-      fetch('/api/dna').then(r=>r.json()),
-      fetch('/api/signals').then(r=>r.json()),
-      fetch('/api/news').then(r=>r.json())
-    ]);
-    if(configRes.status==='fulfilled'){
-      D.config=D.config||{};
-      Object.assign(D.config,configRes.value);
-    }
-    if(dnaRes.status==='fulfilled') D.dna=dnaRes.value;
-    if(sigRes.status==='fulfilled') D.signals=sigRes.value;
-    if(newsRes.status==='fulfilled'){
-      const nd=newsRes.value;
-      D.news=nd.articles||nd;
-    }
-  }catch(e){console.warn('API fetch failed, using embedded data',e)}
-  render();
-}
+function load(){render()}
 </script>
 </body>
 </html>
