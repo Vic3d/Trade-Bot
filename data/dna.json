@@ -243,13 +243,13 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "9984.T",
+      "ticker": "6758.T",
       "strategy": "DT4",
       "trade_type": "day_trade",
-      "entry": 21.45,
-      "stop": 21.86,
-      "target": 21.27,
-      "opened_at": "2026-03-26 02:20",
+      "entry": 17.59,
+      "stop": 17.7,
+      "target": 17.45,
+      "opened_at": "2026-03-26 02:35",
       "status": "OPEN"
     },
     {
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T02:30:04.883259Z",
+  "last_sync": "2026-03-26T02:35:10.210220Z",
   "recent_day_trades": [
+    {
+      "ticker": "9984.T",
+      "strategy": "DT4",
+      "entry_price": 21.45,
+      "exit_price": 21.26,
+      "entry_date": "2026-03-26 02:20",
+      "exit_date": "2026-03-26 02:35",
+      "pnl_pct": 0.9,
+      "status": "WIN"
+    },
     {
       "ticker": "9984.T",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-25 13:05",
       "exit_date": "2026-03-25 15:10",
       "pnl_pct": -0.51,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "FXI",
-      "strategy": "DT4",
-      "entry_price": 30.39,
-      "exit_price": 31.09,
-      "entry_date": "2026-03-25 01:00",
-      "exit_date": "2026-03-25 13:32",
-      "pnl_pct": -2.26,
       "status": "LOSS"
     }
   ],
