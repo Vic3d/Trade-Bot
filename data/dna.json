@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ZAL.DE",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 21.32,
+      "stop": 21.06,
+      "target": 21.58,
+      "opened_at": "2026-03-26 14:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 21.32,
+      "stop": 21.06,
+      "target": 21.06,
+      "opened_at": "2026-03-26 14:10",
+      "status": "OPEN"
+    },
+    {
       "ticker": "MNDI.L",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -267,7 +287,7 @@
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 21.72,
-      "stop": 21.99,
+      "stop": 22.02,
       "target": 21.98,
       "opened_at": "2026-03-26 12:35",
       "status": "OPEN"
@@ -367,7 +387,7 @@
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 90.61,
-      "stop": 91.29,
+      "stop": 91.41,
       "target": 91.34,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -379,16 +399,6 @@
       "entry": 59.94,
       "stop": 59.22,
       "target": 60.66,
-      "opened_at": "2026-03-26 11:38",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "SGO.PA",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 70.92,
-      "stop": 71.16,
-      "target": 70.35,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
     },
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:05:10.797655Z",
+  "last_sync": "2026-03-26T14:10:09.578866Z",
   "recent_day_trades": [
+    {
+      "ticker": "SGO.PA",
+      "strategy": "DT4",
+      "entry_price": 70.92,
+      "exit_price": 71.24,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 14:10",
+      "pnl_pct": -0.45,
+      "status": "LOSS"
+    },
     {
       "ticker": "MNDI.L",
       "strategy": "DT1-CTR",
@@ -633,16 +653,6 @@
       "entry_date": "2026-03-25 01:20",
       "exit_date": "2026-03-25 20:45",
       "pnl_pct": -0.03,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "7203.T",
-      "strategy": "DT4",
-      "entry_price": 18.1,
-      "exit_price": 18.11,
-      "entry_date": "2026-03-25 03:45",
-      "exit_date": "2026-03-25 20:45",
-      "pnl_pct": -0.07,
       "status": "LOSS"
     }
   ],
