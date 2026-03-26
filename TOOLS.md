@@ -33,30 +33,87 @@ curl -s -H "X-Password: Fichte" http://todo.dobro-work.com:3333/[board]/api/task
 ## News-Quellen — Tool-Strategie
 
 ### Schnelle Quellen (für Crons — web_fetch reicht)
-- **liveuamap.com** → web_fetch, funktioniert direkt
+- **liveuamap.com** → web_fetch, funktioniert direkt (siehe Regionen unten)
 - **Google News RSS** → Python urllib, kein Block, sehr schnell
 - **Al Arabiya / Jerusalem Post / Al Jazeera** → web_fetch meist OK
+- **maritime-executive.com** → web_fetch, kein Paywall, exzellent für Tanker/Geopolitik
+- **Politico / Miami Herald** → web_fetch meist OK, gut für US-Lateinamerika-Themen
+
+### Liveuamap — Zugriffs-Schema
+
+**Regel:** `[beliebiger Ländername].liveuamap.com` → funktioniert für quasi jedes Land/Region.
+Einfach ausprobieren — 404 = nicht vorhanden, 200 = Daten vorhanden.
+
+**Bestätigte Regionen (alle kostenlos via web_fetch):**
+
+*Kriegsgebiete / Aktive Konflikte (Priorität 1):*
+- `liveuamap.com` — Ukraine
+- `iran.liveuamap.com` — Iran 🔥
+- `israelpalestine.liveuamap.com` — Israel/Palästina (redirect von israel.)
+- `iraq.liveuamap.com` — Irak
+- `syria.liveuamap.com` — Syrien
+- `russia.liveuamap.com` — Russland
+- `venezuela.liveuamap.com` — Venezuela
+- `caribbean.liveuamap.com` — Karibik/Kuba
+
+*Strategisch relevant (Priorität 2):*
+- `china.liveuamap.com` — China
+- `taiwan.liveuamap.com` — Taiwan
+- `koreas.liveuamap.com` — Nord/Südkorea
+- `turkey.liveuamap.com` — Türkei
+- `pakistan.liveuamap.com` — Pakistan
+- `india.liveuamap.com` — Indien
+- `libya.liveuamap.com` — Libyen (Öl!)
+- `caucasus.liveuamap.com` — Kaukasus
+
+*Europa / Westliche Länder:*
+- `germany.liveuamap.com` — Deutschland
+- `france.liveuamap.com` — Frankreich
+- `uk.liveuamap.com` — Großbritannien
+- `poland.liveuamap.com` — Polen
+- `usa.liveuamap.com` — USA
+- `dc.liveuamap.com` — Washington D.C.
+
+*Weitere:*
+- `myanmar.liveuamap.com`, `sudan.liveuamap.com`, `ethiopia.liveuamap.com`
+- `japan.liveuamap.com`, `brazil.liveuamap.com`
+
+**Nicht existent:** `middleeast.`, `nagorno.`, `africa.` (letzteres PRO-only)
+
+**Für Geopolitical Scanner:** Priorität-1-Regionen täglich, Priorität-2 bei konkretem Anlass.
 
 ### Gesperrte Quellen (JS-Wall / Bot-Detection)
 - **Reuters** → 401/403 bei web_fetch (Datadome + JS-Wall)
 - **CNBC** → Paywall + JS-Wall
 - **Bloomberg / FT / WSJ** → Hard Paywall
 
-### Lösung für Deep-Dives (auf Anfrage, nicht in Crons!)
-**Option 1 (einfachste): Victor schickt Artikel als Text/Datei**
-- Victor kopiert Artikeltext oder lädt .txt hoch → ich lese per `Read`-Tool
-- Kein Block, kein Browser nötig, sofort analysierbar
-- Bevorzugter Workflow für Reuters, CNBC, Bloomberg, FT
+### Deep Dive — Protokoll (PFLICHT wenn Victor "recherchiere" oder "Deep Dive" sagt)
 
-**Option 2: browser-Tool mit Chromium**
+**Schritt 1:** Google News RSS + verfügbare liveuamap-Regionen (schnell, kostenlos)
+**Schritt 2:** maritime-executive.com, Politico, Al Jazeera, Miami Herald (kein Paywall)
+**Schritt 3:** browser-Tool für Reuters/Bloomberg/CNBC (echter Chromium, ~15s pro Seite)
+  - reuters.com/search/?query=SUCHBEGRIFF
+  - bloomberg.com/search?query=SUCHBEGRIFF
+
+**Trigger-Wörter die Deep Dive auslösen:**
+- "Deep Dive", "recherchiere", "such mal nach", "was schreibt Reuters zu..."
+- Immer: Reuters + mindestens 2 alternative Quellen kombinieren
+
+### Lösung für Deep-Dives (auf Anfrage, nicht in Crons!)
+**Option 1: browser-Tool mit Chromium (Standard für Reuters/Bloomberg)**
 - Führt JS aus, echter Browser-Fingerprint → kommt durch Reuters etc.
 - Langsam (~10-15s pro Seite) → ungeeignet für Crons
-- Fallback wenn Victor keinen Text schicken kann: `browser action=snapshot` + URL
+- `browser action=snapshot` + URL → dann relevante Artikel öffnen
+
+**Option 2: Victor schickt Artikel als Text/Datei**
+- Victor kopiert Artikeltext oder lädt .txt hoch → ich lese per `Read`-Tool
+- Schnellste Option für spezifische Artikel
 
 ### Reihenfolge in Crons
-1. liveuamap (web_fetch) → Echtzeit-Lage
+1. liveuamap relevante Regionen (web_fetch) → Echtzeit-Lage
 2. Google News RSS (Python) → breite Abdeckung
-3. Reuters/CNBC → NUR bei manuellen Deep-Dives per browser-Tool
+3. maritime-executive.com → maritime/geopolitische Tiefe
+4. Reuters/Bloomberg → NUR bei manuellen Deep-Dives per browser-Tool
 
 ## APIs
 - Alpha Vantage Key: 0QEDLYI734MI7O5T (Börsenkurse, 25 req/day Free Tier)
@@ -87,7 +144,7 @@ ISINs: DR0=DE000A0XYG76 | RHM=DE0007030009 | BAYN=DE000BAY0017
 - Alert-Jobs: Agent nutzt `message`-Tool direkt (`channel=discord, target=452053147620343808`)
 - Reports: `delivery: { mode: "announce", channel: "discord", to: "1468584443198570689" }`
 - NIEMALS `channel: "last"` ohne `to`
-- Haiku NICHT erlaubt in dieser Config (model not allowed) → IMMER Sonnet verwenden
+- Haiku ist erlaubt und funktioniert — wird auch für Heartbeats genutzt. Cron-Jobs können Haiku verwenden.
 
 ## Discord IDs
 

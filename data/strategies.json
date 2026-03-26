@@ -43,7 +43,7 @@
     "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
     "horizon_weeks": 12,
     "status": "active",
-    "health": "red",
+    "health": "green",
     "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
     "tickers": [
       "OXY",
@@ -464,7 +464,7 @@
     "kill_trigger": "Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden",
     "horizon_weeks": 20,
     "status": "active",
-    "health": "yellow",
+    "health": "red",
     "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
     "tickers": [
       "MOS"

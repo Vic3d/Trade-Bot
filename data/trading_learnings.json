@@ -1,0 +1,156 @@
+{
+  "last_updated": "2026-03-26T11:55:30Z",
+  "strategy_scores": {
+    "PS1": {
+      "win_rate": 0.556,
+      "avg_pnl_pct": 6.71,
+      "total_pnl_eur": -77.39,
+      "trades": 9,
+      "risk_adj_return": 0.491,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "both"
+    },
+    "PS2": {
+      "win_rate": 0.667,
+      "avg_pnl_pct": 13.65,
+      "total_pnl_eur": -79.03,
+      "trades": 3,
+      "risk_adj_return": 1.0,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
+    "PS3": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": 0.77,
+      "total_pnl_eur": -24.45,
+      "trades": 6,
+      "risk_adj_return": 0.792,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "both"
+    },
+    "PS5": {
+      "win_rate": 0.667,
+      "avg_pnl_pct": -1.37,
+      "total_pnl_eur": -330.98,
+      "trades": 3,
+      "risk_adj_return": -0.164,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "both"
+    },
+    "new": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -2.2,
+      "total_pnl_eur": -4.32,
+      "trades": 1,
+      "risk_adj_return": 0.0,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
+    "PT": {
+      "win_rate": 1.0,
+      "avg_pnl_pct": 17.12,
+      "total_pnl_eur": 341.36,
+      "trades": 1,
+      "risk_adj_return": 0.0,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
+    "PS4": {
+      "win_rate": 0.5,
+      "avg_pnl_pct": 1.83,
+      "total_pnl_eur": -4.85,
+      "trades": 2,
+      "risk_adj_return": 0.545,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "day"
+    },
+    "DT4": {
+      "win_rate": 0.451,
+      "avg_pnl_pct": -0.14,
+      "total_pnl_eur": -701.62,
+      "trades": 91,
+      "risk_adj_return": -0.067,
+      "recommendation": "KEEP",
+      "source": "day"
+    }
+  },
+  "market_scores": {
+    "US": {
+      "trades": 36,
+      "win_rate": 0.472,
+      "total_pnl_eur": -700.95
+    },
+    "EU": {
+      "trades": 21,
+      "win_rate": 0.238,
+      "total_pnl_eur": -347.36
+    },
+    "UK": {
+      "trades": 13,
+      "win_rate": 0.538,
+      "total_pnl_eur": -192.73
+    },
+    "ASIA": {
+      "trades": 44,
+      "win_rate": 0.5,
+      "total_pnl_eur": 373.55
+    },
+    "NO": {
+      "trades": 2,
+      "win_rate": 0.5,
+      "total_pnl_eur": -13.79
+    }
+  },
+  "time_scores": {
+    "evening": {
+      "trades": 57,
+      "win_rate": 0.509,
+      "total_pnl_eur": -350.96
+    },
+    "afternoon": {
+      "trades": 21,
+      "win_rate": 0.429,
+      "total_pnl_eur": -149.46
+    },
+    "morning": {
+      "trades": 9,
+      "win_rate": 0.0,
+      "total_pnl_eur": -542.56
+    },
+    "midday": {
+      "trades": 14,
+      "win_rate": 0.571,
+      "total_pnl_eur": 26.09
+    },
+    "unknown": {
+      "trades": 2,
+      "win_rate": 0.0,
+      "total_pnl_eur": -104.81
+    }
+  },
+  "trailing_stops": {
+    "with_trail": {
+      "trades": 0,
+      "win_rate": 0.0,
+      "avg_pnl_pct": 0,
+      "total_pnl": 0,
+      "avg_max_unrealized": 0,
+      "avg_trail_count": 0
+    },
+    "without_trail": {
+      "trades": 107,
+      "win_rate": 43.0,
+      "avg_pnl_pct": 0.43,
+      "total_pnl": -1133.7,
+      "avg_max_unrealized": 0
+    },
+    "worst_left_on_table": []
+  },
+  "active_rules": [],
+  "confidence_calibration": {
+    "0-50": {
+      "trades": 15,
+      "win_rate": 33.3
+    }
+  }
+}

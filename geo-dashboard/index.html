@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 Geo-Scanner Dashboard</title>
+<style>
+  :root {
+    --bg:      #0f172a;
+    --card:    #1e293b;
+    --border:  #334155;
+    --accent:  #06b6d4;
+    --warning: #f59e0b;
+    --danger:  #ef4444;
+    --ok:      #22c55e;
+    --muted:   #64748b;
+    --text:    #e2e8f0;
+    --subtext: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  header .updated { color: var(--subtext); font-size: 12px; }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .card-label { color: var(--subtext); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .card-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .card-sub   { color: var(--subtext); font-size: 12px; margin-top: 4px; }
+  .card-value.tier-HIGH   { color: var(--danger); }
+  .card-value.tier-MEDIUM { color: var(--warning); }
+  .card-value.tier-LOW    { color: var(--accent); }
+  .card-value.tier-NONE   { color: var(--ok); }
+
+  /* Section headers */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--subtext);
+    margin-bottom: 12px;
+  }
+  .section { margin-bottom: 32px; }
+
+  /* Chart */
+  .chart-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    overflow-x: auto;
+  }
+  svg.chart { display: block; width: 100%; height: 200px; }
+
+  /* Alert list */
+  .alert-list { display: flex; flex-direction: column; gap: 8px; }
+  .alert-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .alert-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .alert-ts   { color: var(--subtext); font-size: 11px; }
+  .tier-badge {
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-HIGH   { background: rgba(239,68,68,.2);  color: var(--danger);  border: 1px solid rgba(239,68,68,.4); }
+  .badge-MEDIUM { background: rgba(245,158,11,.2); color: var(--warning); border: 1px solid rgba(245,158,11,.4); }
+  .badge-LOW    { background: rgba(6,182,212,.15); color: var(--accent);  border: 1px solid rgba(6,182,212,.3); }
+  .badge-NONE   { background: rgba(34,197,94,.15); color: var(--ok);      border: 1px solid rgba(34,197,94,.3); }
+  .alert-score  { font-weight: 700; font-size: 13px; }
+  .alert-meta   { color: var(--subtext); font-size: 11px; }
+  .alert-text   { color: var(--subtext); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .strategy-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .strategy-tag {
+    padding: 1px 6px;
+    background: rgba(6,182,212,.15);
+    border: 1px solid rgba(6,182,212,.25);
+    color: var(--accent);
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .ticker-tag {
+    padding: 1px 6px;
+    background: rgba(148,163,184,.1);
+    border: 1px solid var(--border);
+    color: var(--subtext);
+    border-radius: 3px;
+    font-size: 10px;
+  }
+
+  /* Heatmap */
+  .heatmap-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    overflow-x: auto;
+  }
+  table.heatmap {
+    border-collapse: collapse;
+    min-width: 500px;
+    width: 100%;
+  }
+  table.heatmap th {
+    text-align: center;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--subtext);
+    border-bottom: 1px solid var(--border);
+  }
+  table.heatmap th.row-label { text-align: left; }
+  table.heatmap td {
+    text-align: center;
+    padding: 5px 8px;
+    font-size: 11px;
+    border-bottom: 1px solid rgba(51,65,85,.5);
+  }
+  table.heatmap td.row-label { text-align: left; font-weight: 600; color: var(--text); }
+  .heat-0  { background: rgba(51,65,85,.4);   color: var(--muted); }
+  .heat-low    { background: rgba(34,197,94,.2);  color: var(--ok); }
+  .heat-medium { background: rgba(245,158,11,.25); color: var(--warning); }
+  .heat-orange { background: rgba(249,115,22,.3);  color: #fb923c; }
+  .heat-high   { background: rgba(239,68,68,.3);   color: var(--danger); }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--subtext);
+    font-size: 13px;
+  }
+  .empty-state .icon { font-size: 32px; margin-bottom: 8px; }
+
+  /* Dot legend */
+  .legend { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--subtext); }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🌍 Geo-Scanner Dashboard</h1>
+    <div class="updated" id="last-updated">Lade…</div>
+  </header>
+
+  <!-- Summary Cards -->
+  <div class="cards" id="summary-cards">
+    <div class="card"><div class="card-label">Total Runs</div><div class="card-value" id="c-runs">–</div></div>
+    <div class="card"><div class="card-label">Letzter Score</div><div class="card-value" id="c-score">–</div><div class="card-sub" id="c-tier">–</div></div>
+    <div class="card"><div class="card-label">Aktive Strategien</div><div class="card-value" id="c-strategies">–</div><div class="card-sub" id="c-tickers">–</div></div>
+    <div class="card"><div class="card-label">Deep Dives (7 Tage)</div><div class="card-value" id="c-deepdives">–</div></div>
+  </div>
+
+  <!-- Score Chart -->
+  <div class="section">
+    <div class="section-title">Score-Verlauf (letzte 20 Runs)</div>
+    <div class="chart-wrap">
+      <svg class="chart" id="score-chart" viewBox="0 0 900 200" preserveAspectRatio="none"></svg>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div> HIGH (≥50)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--warning)"></div> MEDIUM (≥30)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> LOW (≥12)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div> NONE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert List -->
+  <div class="section">
+    <div class="section-title">Letzte Alerts (score &gt; 0)</div>
+    <div id="alert-list" class="alert-list">
+      <div class="empty-state"><div class="icon">📡</div>Noch keine Daten</div>
+    </div>
+  </div>
+
+  <!-- Heatmap -->
+  <div class="section">
+    <div class="section-title">Strategie-Heatmap (letzte 7 Tage)</div>
+    <div class="heatmap-wrap">
+      <div id="heatmap-container"><div class="empty-state"><div class="icon">🗓️</div>Noch keine Daten</div></div>
+    </div>
+  </div>
+
+</div>
+<script>
+// ─── Data Loading ─────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('../memory/scanner-dashboard-data.json?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch (e) {
+    console.warn('Could not load dashboard data:', e.message);
+    return null;
+  }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function tierColor(tier) {
+  return { HIGH: 'var(--danger)', MEDIUM: 'var(--warning)', LOW: 'var(--accent)', NONE: 'var(--muted)' }[tier] || 'var(--muted)';
+}
+function tierClass(tier) {
+  return 'tier-' + (tier || 'NONE');
+}
+function fmtTs(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) + ' ' +
+           d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  } catch { return iso; }
+}
+function dayKey(iso) {
+  return iso.slice(0, 10);
+}
+function daysAgo(n) {
+  const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10);
+}
+
+// ─── Summary Cards ────────────────────────────────────────────────────────────
+function renderCards(data) {
+  const runs = data.runs || [];
+  document.getElementById('last-updated').textContent = 'Aktualisiert: ' + fmtTs(data.last_updated);
+  document.getElementById('c-runs').textContent = runs.length;
+
+  if (runs.length > 0) {
+    const last = runs[runs.length - 1];
+    const scoreEl = document.getElementById('c-score');
+    scoreEl.textContent = last.total_score;
+    scoreEl.className = 'card-value ' + tierClass(last.alert_tier);
+    document.getElementById('c-tier').textContent = last.alert_tier;
+
+    const strats = (last.affected_strategies || []).join(', ') || '–';
+    const tickers = (last.affected_tickers || []).join(', ') || '–';
+    document.getElementById('c-strategies').textContent = strats;
+    document.getElementById('c-tickers').textContent = tickers;
+
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+    const deepDives = runs.filter(r => r.deep_dive_recommended && new Date(r.ts) >= cutoff).length;
+    document.getElementById('c-deepdives').textContent = deepDives;
+  } else {
+    document.getElementById('c-score').textContent = '–';
+    document.getElementById('c-tier').textContent = 'Keine Daten';
+    document.getElementById('c-strategies').textContent = '–';
+    document.getElementById('c-deepdives').textContent = '0';
+  }
+}
+
+// ─── SVG Chart ────────────────────────────────────────────────────────────────
+function renderChart(data) {
+  const svg = document.getElementById('score-chart');
+  const runs = (data.runs || []).slice(-20);
+  if (runs.length === 0) {
+    svg.innerHTML = '<text x="450" y="100" text-anchor="middle" fill="#64748b" font-size="14">Noch keine Daten</text>';
+    return;
+  }
+
+  const W = 900, H = 200;
+  const PAD = { top: 15, right: 20, bottom: 30, left: 40 };
+  const chartW = W - PAD.left - PAD.right;
+  const chartH = H - PAD.top - PAD.bottom;
+  const maxScore = Math.max(80, ...runs.map(r => r.total_score));
+
+  function xPos(i) { return PAD.left + (runs.length === 1 ? chartW / 2 : i * chartW / (runs.length - 1)); }
+  function yPos(s) { return PAD.top + chartH - (s / maxScore) * chartH; }
+
+  let out = '';
+
+  // Grid lines
+  [0, 30, 50, maxScore].forEach(v => {
+    const y = yPos(v);
+    out += `<line x1="${PAD.left}" y1="${y}" x2="${W - PAD.right}" y2="${y}" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>`;
+    out += `<text x="${PAD.left - 4}" y="${y + 4}" text-anchor="end" fill="#64748b" font-size="10">${v}</text>`;
+  });
+
+  // Threshold lines
+  out += `<line x1="${PAD.left}" y1="${yPos(50)}" x2="${W - PAD.right}" y2="${yPos(50)}" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>`;
+  out += `<line x1="${PAD.left}" y1="${yPos(30)}" x2="${W - PAD.right}" y2="${yPos(30)}" stroke="#f59e0b" stroke-width="1.5" opacity="0.6"/>`;
+
+  // Area + line
+  if (runs.length > 1) {
+    const pts = runs.map((r, i) => `${xPos(i)},${yPos(r.total_score)}`).join(' ');
+    const areaPath = `M ${xPos(0)},${yPos(0)} L ${runs.map((r, i) => `${xPos(i)},${yPos(r.total_score)}`).join(' L ')} L ${xPos(runs.length - 1)},${yPos(0)} Z`;
+    out += `<path d="${areaPath}" fill="rgba(6,182,212,0.06)"/>`;
+    out += `<polyline points="${pts}" fill="none" stroke="rgba(6,182,212,0.5)" stroke-width="1.5"/>`;
+  }
+
+  // X-axis labels + dots
+  runs.forEach((r, i) => {
+    const x = xPos(i), y = yPos(r.total_score);
+    const color = { HIGH: '#ef4444', MEDIUM: '#f59e0b', LOW: '#06b6d4', NONE: '#64748b' }[r.alert_tier] || '#64748b';
+    out += `<circle cx="${x}" cy="${y}" r="4" fill="${color}" stroke="var(--bg)" stroke-width="1.5"/>`;
+    // X label (every 4th or first/last)
+    if (i === 0 || i === runs.length - 1 || i % Math.max(1, Math.floor(runs.length / 5)) === 0) {
+      out += `<text x="${x}" y="${H - 4}" text-anchor="middle" fill="#64748b" font-size="9">${fmtTs(r.ts).split(' ')[0]}</text>`;
+    }
+  });
+
+  svg.innerHTML = out;
+}
+
+// ─── Alert List ───────────────────────────────────────────────────────────────
+function renderAlerts(data) {
+  const container = document.getElementById('alert-list');
+  const runs = (data.runs || []).filter(r => r.total_score > 0).slice(-10).reverse();
+
+  if (runs.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">✅</div>Keine Alerts — alles ruhig.</div>';
+    return;
+  }
+
+  container.innerHTML = runs.map(r => {
+    const strategies = (r.affected_strategies || []).map(s => `<span class="strategy-tag">${s}</span>`).join('');
+    const tickers = (r.affected_tickers || []).map(t => `<span class="ticker-tag">${t}</span>`).join('');
+    const topText = r.top_items && r.top_items[0] ? r.top_items[0].text.slice(0, 120) + '…' : '';
+
+    return `
+    <div class="alert-item">
+      <div class="alert-header">
+        <span class="alert-ts">${fmtTs(r.ts)}</span>
+        <span class="tier-badge badge-${r.alert_tier}">${r.alert_tier}</span>
+        <span class="alert-score">Score ${r.total_score}</span>
+        <span class="alert-meta">${r.alert_items} Items</span>
+      </div>
+      <div class="strategy-tags">${strategies}${tickers}</div>
+      ${topText ? `<div class="alert-text">${topText}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ─── Heatmap ──────────────────────────────────────────────────────────────────
+function renderHeatmap(data) {
+  const container = document.getElementById('heatmap-container');
+  const runs = data.runs || [];
+  if (runs.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">🗓️</div>Noch keine Daten</div>';
+    return;
+  }
+
+  const STRATEGIES = ['S1','S2','S3','S4','S5','S6','S7','S8','S9'];
+  const days = Array.from({length: 7}, (_, i) => daysAgo(6 - i)); // oldest to newest
+
+  // Build: day → strategy → max score
+  const matrix = {};
+  days.forEach(d => { matrix[d] = {}; STRATEGIES.forEach(s => { matrix[d][s] = 0; }); });
+
+  runs.forEach(r => {
+    const d = dayKey(r.ts);
+    if (!matrix[d]) return;
+    const ss = r.strategy_scores || {};
+    Object.entries(ss).forEach(([strat, score]) => {
+      if (STRATEGIES.includes(strat)) {
+        matrix[d][strat] = Math.max(matrix[d][strat] || 0, score);
+      }
+    });
+    // fallback: if strategy_scores missing, use affected_strategies with total_score
+    if (!r.strategy_scores && r.affected_strategies) {
+      r.affected_strategies.forEach(s => {
+        if (matrix[d][s] !== undefined) {
+          matrix[d][s] = Math.max(matrix[d][s], r.total_score);
+        }
+      });
+    }
+  });
+
+  function heatClass(score) {
+    if (score === 0) return 'heat-0';
+    if (score < 12)  return 'heat-low';
+    if (score < 30)  return 'heat-medium';
+    if (score < 50)  return 'heat-orange';
+    return 'heat-high';
+  }
+  function heatLabel(score) {
+    return score > 0 ? score : '';
+  }
+
+  const dayLabels = days.map(d => {
+    const dt = new Date(d);
+    return dt.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+  });
+
+  let html = '<table class="heatmap"><thead><tr><th class="row-label">Strategie</th>';
+  dayLabels.forEach(dl => { html += `<th>${dl}</th>`; });
+  html += '</tr></thead><tbody>';
+
+  STRATEGIES.forEach(strat => {
+    html += `<tr><td class="row-label">${strat}</td>`;
+    days.forEach(d => {
+      const score = matrix[d][strat] || 0;
+      html += `<td class="${heatClass(score)}">${heatLabel(score)}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
+(async () => {
+  const data = await loadData();
+  if (!data || !data.runs) {
+    document.getElementById('last-updated').textContent = 'Keine Daten geladen';
+    document.getElementById('c-runs').textContent = '0';
+    document.getElementById('alert-list').innerHTML = '<div class="empty-state"><div class="icon">📡</div>Noch keine Daten verfügbar. Scanner muss zuerst laufen.</div>';
+    return;
+  }
+
+  renderCards(data);
+  renderChart(data);
+  renderAlerts(data);
+  renderHeatmap(data);
+
+  // Auto-refresh every 5 minutes
+  setTimeout(() => location.reload(), 5 * 60 * 1000);
+})();
+</script>
+</body>
+</html>

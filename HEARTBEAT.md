@@ -17,12 +17,15 @@
 
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
 
-## AKTUELLE ALERTS (heute 23.03.2026)
+## AKTUELLE ALERTS (heute 26.03.2026 — 09:00 MEZ)
 
-- ✅ **BAYN.DE + A14WU5 + EQNR**: Alle 3 Positionen geschlossen (20.03 + 23.03) — Alerts gelöscht
-- 🚨 **Iran-Krise Phase-1-Schock**: Trump 48h-Ultimatum (22.03), Asiatische Märkte -4-6%, Brent ~$112 — Alle Öl-Positionen für Watchlist
-- 📡 **News-System Update**: Position-Matcher mit Dedup + Severity-Level + Watchlist live (4x täglich, 7 Tage). Opportunity-Detector in Planung
-- 📋 **Josh Backoffice Automation**: B&O Annehmen-Button + Superchat Template-Senden — DevTools Network-Capture Montag geplant
+- 🔴 **KUBA-TANKER KRITISCH:** Anatoly Kolodkin (Sovcomflot, 730k Barrel) trifft 29.03 in Kuba ein. US/UK tracken. Regime-Change in Vorbereitung. **Victor-Info dringend angefordert.** Status: S9 Watchlist → hochaktuell
+- 🟢 **Iran-Trump-Deal 25.03**: 15-Punkte-Plan angekündigt. Victor-Analyse: Deal strukturell unmöglich (Atom+Raketen). CoT Hedge Fonds netto +31.502 long OXY. **S1 These HALTEN.**
+- 🟢 **Portfolio OK**: PLTR +1.5%, A3D42Y +3.5%, A2DWAW +2.4%. VIX 26.4 (erhöht), keine Stops gefährdet.
+- 🟡 **S3 NVDA**: Unter VIX-Druck (25.11 Trades unter $185), aber Hold-Strategie bis 27.05 Earnings bleibt valide. Nachkauf-Kondition VIX < 28 erfüllt.
+- 🟡 **S5 Rio Tinto**: Über Entry A (6.700 GBp), Oyu-Tolgoi Renegotiation noch ungeklärt. Monitoring läuft.
+- 📡 **News-System**: Position-Matcher live. Newswire analysiert 4x täglich.
+- 📋 **Josh Backoffice**: DevTools Network-Capture für B&O geplant
 
 ## Regeln
 

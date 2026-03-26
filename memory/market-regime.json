@@ -2,16 +2,16 @@
   "regime": "TREND_DOWN",
   "prev_regime": "TREND_DOWN",
   "changed": false,
-  "reason": "ADX 47.9 > 25 + SPY unter MA20",
+  "reason": "ADX 47.7 > 25 + SPY unter MA20",
   "active_dt": [
     "DT4"
   ],
   "indicators": {
-    "spy": 653.18,
-    "ma20": 670.62,
+    "spy": 656.82,
+    "ma20": 669.17,
     "ma200": null,
-    "adx": 47.9,
-    "vix": 26.9
+    "adx": 47.7,
+    "vix": 25.3
   },
-  "updated": "2026-03-25 07:45"
+  "updated": "2026-03-26 07:45"
 }

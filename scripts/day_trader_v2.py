@@ -22,7 +22,7 @@ LOG_PATH = WORKSPACE / 'memory/daytrader-log.md'
 
 CAPITAL = 25000
 POS_SIZE = 5000
-MAX_POSITIONS = 5
+MAX_POSITIONS = 20  # Paper Trading: mehr Slots = mehr Daten = schneller lernen
 RISK_PCT = 0.01
 EOD_CLOSE_HOUR = 21
 EOD_CLOSE_MIN = 45
@@ -104,6 +104,14 @@ SECTOR_MAP = {
     'CN':  ['9988.HK','0700.HK','1211.HK','FXI','KWEB'],
 }
 
+# Invertiertes Sektor-Mapping: ticker → sector (für Konzentrations-Check)
+SECTOR_MAP_REVERSE = {}
+for _sector, _tickers in SECTOR_MAP.items():
+    for _t in _tickers:
+        SECTOR_MAP_REVERSE[_t] = _sector
+
+SECTOR_LIMIT = 3  # max 3 Positionen pro Sektor (Verbesserung 3)
+
 
 def yahoo_intraday(ticker):
     url = f"https://query2.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(ticker)}?interval=5m&range=1d"
@@ -181,6 +189,28 @@ def calc_vwap(candles):
         total_vp += typical * c['volume']
         total_vol += c['volume']
     return total_vp / total_vol if total_vol > 0 else None
+
+
+def calc_atr_position_size(candles, portfolio_value=25000, risk_pct=0.01):
+    """ATR-basiertes Position Sizing (Verbesserung 6). Riskiere max 1% pro Trade."""
+    if len(candles) < 14:
+        return POS_SIZE  # Fallback
+    trs = []
+    for i in range(1, min(15, len(candles))):
+        c = candles[i]
+        prev_c = candles[i-1]
+        tr = max(c['high'] - c['low'],
+                 abs(c['high'] - prev_c['close']),
+                 abs(c['low'] - prev_c['close']))
+        trs.append(tr)
+    atr = sum(trs) / len(trs)
+    if atr <= 0:
+        return POS_SIZE
+    risk_budget = portfolio_value * risk_pct  # 250€
+    shares = risk_budget / atr
+    pos_size = shares * candles[-1]['close']
+    # Clamp zwischen 2000 und 8000
+    return max(2000, min(8000, round(pos_size, 0)))
 
 
 def detect_signals(ticker_info, data):
@@ -413,13 +443,17 @@ def get_strategy_conviction(strategy_id):
     return 3, POS_SIZE  # default
 
 
-def open_trade(ticker, name, strategy, direction, entry_eur, stop, target, reason):
+def open_trade(ticker, name, strategy, direction, entry_eur, stop, target, reason, pos_size_override=None):
     # Check conviction before opening
     conviction, pos_size = get_strategy_conviction(strategy)
     if pos_size == 0:
         print(f"  ⛔ BLOCKED {ticker} — Strategy {strategy} suspended (conviction={conviction})")
         return None
-    if pos_size != POS_SIZE:
+    # ATR-basiertes Position Sizing überschreibt wenn angegeben (Verbesserung 6)
+    if pos_size_override is not None:
+        pos_size = int(pos_size_override)
+        print(f"  📐 ATR-Sizing: {pos_size}€")
+    elif pos_size != POS_SIZE:
         print(f"  📈 {strategy} conviction={conviction} → Position Size {pos_size}€")
     shares = max(1, math.floor(pos_size / entry_eur))
     risk = abs(entry_eur - stop) * shares
@@ -454,13 +488,58 @@ def close_trade(trade_id, exit_price, reason='EOD'):
         pnl = (entry - exit_price) * shares
         pnl_pct = (entry / exit_price - 1) * 100
     status = 'WIN' if pnl > 0 else 'LOSS'
-    conn.execute("""UPDATE trades SET exit_price=?, exit_date=?, pnl_eur=?, pnl_pct=?, status=?, holding_days=0
-        WHERE id=?""", (round(exit_price, 2), datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M'),
-                        round(pnl, 2), round(pnl_pct, 2), status, trade_id))
+
+    # ── Erweiterte Logging-Metriken ──
+    now_cet = datetime.now(ZoneInfo('Europe/Berlin'))
+    exit_date_str = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')
+    entry_date_str = trade['entry_date'] or ''
+    holding_days = 0
+    try:
+        from datetime import timedelta
+        entry_dt = datetime.strptime(entry_date_str[:16], '%Y-%m-%d %H:%M')
+        exit_dt  = datetime.strptime(exit_date_str[:16], '%Y-%m-%d %H:%M')
+        holding_days = max(0, (exit_dt - entry_dt).days)
+    except Exception:
+        pass
+
+    # Markt aus Ticker ableiten
+    ticker = trade['ticker'] or ''
+    if ticker.endswith('.DE') or ticker.endswith('.AS') or ticker.endswith('.PA') or ticker.endswith('.CO'):
+        market = 'EU'
+    elif ticker.endswith('.L'):
+        market = 'UK'
+    elif ticker.endswith('.OL'):
+        market = 'NO'
+    elif ticker.endswith('.T') or ticker.endswith('.HK'):
+        market = 'ASIA'
+    else:
+        market = 'US'
+
+    # Tageszeit
+    hour = now_cet.hour
+    if 7 <= hour < 11:
+        time_of_day = 'morning'
+    elif 11 <= hour < 14:
+        time_of_day = 'midday'
+    elif 14 <= hour < 18:
+        time_of_day = 'afternoon'
+    else:
+        time_of_day = 'evening'
+
+    conn.execute("""UPDATE trades
+        SET exit_price=?, exit_date=?, pnl_eur=?, pnl_pct=?, status=?,
+            holding_days=?, exit_type=?, regime_at_exit=?
+        WHERE id=?""",
+        (round(exit_price, 2), exit_date_str,
+         round(pnl, 2), round(pnl_pct, 2), status,
+         holding_days, reason,
+         f"market={market},time={time_of_day}",
+         trade_id))
     conn.commit()
     conn.close()
     emoji = "✅" if status == 'WIN' else "❌"
-    print(f"  {emoji} CLOSE {trade['ticker']}: {entry:.2f} → {exit_price:.2f} ({pnl_pct:+.1f}%) P&L: {pnl:+.1f}€ [{reason}]")
+    print(f"  {emoji} CLOSE {ticker}: {entry:.2f} → {exit_price:.2f} ({pnl_pct:+.1f}%) P&L: {pnl:+.1f}€ [{reason}] hold={holding_days}d market={market} {time_of_day}")
+    log_to_file(f"CLOSE {ticker} {status}: P&L {pnl:+.1f}€ ({pnl_pct:+.1f}%) via {reason} | hold={holding_days}d market={market} time={time_of_day}")
     return pnl
 
 
@@ -474,6 +553,27 @@ def log_to_file(text):
 def main():
     now_cet = datetime.now(ZoneInfo('Europe/Berlin'))
     print(f"[{now_cet.strftime('%H:%M CET')}] Day Trader v2 läuft...")
+
+    # ── Learning Engine: Learnings laden ──
+    learnings_path = WORKSPACE / 'data/trading_learnings.json'
+    learnings = {}
+    suspended_strategies = set()
+    elevated_strategies  = set()
+    if learnings_path.exists():
+        try:
+            learnings = json.loads(learnings_path.read_text())
+            for strat_id, s in learnings.get('strategy_scores', {}).items():
+                rec = s.get('recommendation', 'KEEP')
+                if rec == 'SUSPEND':
+                    suspended_strategies.add(strat_id)
+                elif rec == 'ELEVATE':
+                    elevated_strategies.add(strat_id)
+            if suspended_strategies:
+                print(f"  🛑 Suspended Strategien: {', '.join(suspended_strategies)}")
+            if elevated_strategies:
+                print(f"  🚀 Elevated Strategien: {', '.join(elevated_strategies)}")
+        except Exception as e:
+            print(f"  ⚠️ Learnings laden fehlgeschlagen: {e}")
 
     # Load state
     if DT_STATE.exists():
@@ -493,19 +593,41 @@ def main():
 
     print(f"  Offen: {len(open_trades)}/{MAX_POSITIONS} | Daily P&L: {state.get('daily_pnl',0):+.0f}€ | Scans: {state.get('scanned',0)}")
 
-    # ── 1. EOD Auto-Close ──
+    # ── 1. EOD Auto-Close (Verbesserung 1: Overnight-Logik) ──
+    # Gewinner > 2%: halten (Overnight Hold)
+    # 0% bis +2%: schließen (zu unsicher für Overnight)
+    # Verlierer <= 0%: schließen (Verlierer raus)
     if now_cet.hour >= EOD_CLOSE_HOUR and now_cet.minute >= EOD_CLOSE_MIN:
         if open_trades:
             print(f"  🕘 EOD Close — {len(open_trades)} Positionen")
+            held_overnight = 0
             for t in open_trades:
                 data = yahoo_intraday(t['ticker'])
                 if data:
                     p = to_eur(data['price'], data['currency'])
-                    if p:
-                        pnl = close_trade(t['id'], p, 'EOD')
-                        state['daily_pnl'] += (pnl or 0)
-                        state['daily_trades'] += 1
-            log_to_file(f"EOD Close: {len(open_trades)} Trades, Daily P&L: {state['daily_pnl']:+.0f}€")
+                    if not p:
+                        continue
+                    entry_p = t['entry_price']
+                    direction = t['direction'] or 'LONG'
+                    if entry_p and entry_p > 0:
+                        if direction == 'LONG':
+                            pnl_pct_unrealized = (p / entry_p - 1) * 100
+                        else:
+                            pnl_pct_unrealized = (entry_p / p - 1) * 100
+                    else:
+                        pnl_pct_unrealized = 0
+                    # Gewinner > +2%: Overnight halten
+                    if pnl_pct_unrealized > 2.0:
+                        print(f"  🌙 OVERNIGHT HOLD: {t['ticker']} +{pnl_pct_unrealized:.1f}%")
+                        log_to_file(f"OVERNIGHT HOLD: {t['ticker']} +{pnl_pct_unrealized:.1f}%")
+                        held_overnight += 1
+                        continue
+                    # Verlierer (<=0%) oder unsichere Zone (0-2%): schließen
+                    pnl = close_trade(t['id'], p, 'EOD')
+                    state['daily_pnl'] += (pnl or 0)
+                    state['daily_trades'] += 1
+            closed_count = len(open_trades) - held_overnight
+            log_to_file(f"EOD Close: {closed_count} Trades geschlossen, {held_overnight} Overnight gehalten, Daily P&L: {state['daily_pnl']:+.0f}€")
         DT_STATE.write_text(json.dumps(state, indent=2))
         return
 
@@ -518,6 +640,55 @@ def main():
 
         stop, target = t['stop'], t['target']
         direction = t['direction']
+        entry_p   = t['entry_price']
+
+        # ── Trailing Stop Logik ──
+        pnl_pct_unrealized = 0
+        if direction == 'LONG' and entry_p:
+            pnl_pct_unrealized = (p / entry_p - 1) * 100
+        elif direction == 'SHORT' and entry_p:
+            pnl_pct_unrealized = (entry_p / p - 1) * 100
+
+        new_stop = stop
+        trail_reason = None
+
+        if direction == 'LONG' and entry_p:
+            if pnl_pct_unrealized >= 3.0:
+                # Trail: Stop = Preis - 1.5%
+                trail_stop = round(p * (1 - 0.015), 2)
+                if trail_stop > (stop or 0):
+                    new_stop = trail_stop
+                    trail_reason = f"Trail +3% → Stop {stop:.2f}→{new_stop:.2f}"
+            elif pnl_pct_unrealized >= 1.5:
+                # Breakeven Stop
+                breakeven_stop = round(entry_p, 2)
+                if breakeven_stop > (stop or 0):
+                    new_stop = breakeven_stop
+                    trail_reason = f"Breakeven +1.5% → Stop {stop:.2f}→{new_stop:.2f}"
+
+        # Track max unrealized P&L (für Analyse: wie viel Gewinn lassen wir liegen?)
+        conn_upd = get_db()
+        current_max = conn_upd.execute("SELECT max_unrealized_pct FROM trades WHERE id=?", (t['id'],)).fetchone()
+        cur_max = (current_max[0] or 0) if current_max else 0
+        if pnl_pct_unrealized > cur_max:
+            conn_upd.execute("UPDATE trades SET max_unrealized_pct=? WHERE id=?",
+                           (round(pnl_pct_unrealized, 2), t['id']))
+            conn_upd.commit()
+        conn_upd.close()
+
+        if new_stop and new_stop != stop:
+            conn_upd = get_db()
+            # Trail-Counter + History updaten
+            from datetime import datetime as _dt
+            trail_ts = _dt.now().strftime('%H:%M')
+            conn_upd.execute("""UPDATE trades SET stop=?, trail_count=trail_count+1,
+                trail_history=trail_history || ? WHERE id=?""",
+                (new_stop, f"{trail_ts}:{stop:.2f}→{new_stop:.2f}|", t['id']))
+            conn_upd.commit()
+            conn_upd.close()
+            stop = new_stop
+            log_to_file(f"⬆️ TRAIL {t['ticker']}: {trail_reason} (unrealized {pnl_pct_unrealized:+.1f}%)")
+            print(f"  ⬆️ TRAIL {t['ticker']}: {trail_reason}")
 
         # Stop
         if stop and ((direction == 'LONG' and p <= stop) or (direction == 'SHORT' and p >= stop)):
@@ -526,15 +697,21 @@ def main():
             state['daily_trades'] += 1
             continue
 
-        # Target
+        # Target: NICHT schließen — nur Stop nachziehen (Target als ideales Ziel)
         if target and ((direction == 'LONG' and p >= target) or (direction == 'SHORT' and p <= target)):
-            pnl = close_trade(t['id'], p, 'Target')
-            state['daily_pnl'] += (pnl or 0)
-            state['daily_trades'] += 1
-            continue
+            # Target erreicht → Stop eng nachziehen (0.5% unter aktuellem Preis für LONG)
+            if direction == 'LONG':
+                tight_stop = round(p * 0.995, 2)
+                if tight_stop > (stop or 0):
+                    conn_upd = get_db()
+                    conn_upd.execute("UPDATE trades SET stop=? WHERE id=?", (tight_stop, t['id']))
+                    conn_upd.commit()
+                    conn_upd.close()
+                    log_to_file(f"🎯 TARGET {t['ticker']}: Ziel erreicht, Stop auf {tight_stop:.2f} (nicht geschlossen)")
+                    print(f"  🎯 TARGET {t['ticker']}: Ziel {target:.2f} erreicht → Stop nachgezogen auf {tight_stop:.2f}")
 
         # Status
-        pnl_pct = ((p / t['entry_price'] - 1) * 100) if direction == 'LONG' else ((t['entry_price'] / p - 1) * 100)
+        pnl_pct = pnl_pct_unrealized
         print(f"  {'🟢' if pnl_pct > 0 else '🔴'} {t['ticker']:8s} {p:.2f}€ ({pnl_pct:+.1f}%)")
 
     # ── 3. Neue Signale ──
@@ -563,11 +740,12 @@ def main():
         try:
             regime_data = json.loads(regime_path.read_text())
             current_regime = regime_data.get('regime', 'RANGE')
-            active_dt_strategies = regime_data.get('active_dt', active_dt_strategies)
-            print(f"  🧭 Markt-Regime: {current_regime} | Aktive DT: {active_dt_strategies or 'CRASH-Modus (keine)'}")
+            # PAPER TRADING: Alle Strategien immer aktiv — wir sammeln Daten!
+            # Regime wird nur geloggt, nicht gefiltert.
+            # active_dt_strategies bleibt auf DT1-DT9 (Default)
+            print(f"  🧭 Markt-Regime: {current_regime} (INFO ONLY — alle DT aktiv für Paper Learning)")
             if current_regime == 'CRASH':
-                print("  🛑 CRASH-Modus — Day Trader pausiert")
-                return
+                print("  ⚠️ CRASH-Regime erkannt — Paper Trading läuft trotzdem (Learning Mode)")
         except Exception:
             pass
 
@@ -643,6 +821,12 @@ def main():
         signals = [s for s in signals if s.get('strategy','').split('-')[0] in active_dt_strategies]
         if not signals: continue
 
+        # Learning-Filter: SUSPENDED Strategien ignorieren
+        signals = [s for s in signals if s.get('strategy','').split('-')[0] not in suspended_strategies]
+        if not signals:
+            print(f"  🛑 {ticker}: Signal ignoriert (Strategie suspended by Learning Engine)")
+            continue
+
         # Bestes Signal
         best = max(signals, key=lambda s: s['confidence'])
         p_eur = to_eur(data['price'], data['currency'])
@@ -651,21 +835,67 @@ def main():
         stop_eur   = to_eur(best['stop'],   data['currency']) or best['stop']
         target_eur = to_eur(best['target'], data['currency']) or best['target']
 
+        strat_id_base = best.get('strategy','').split('-')[0]
+
         # Position-Sizing aus strategies.json (Issue #2)
         try:
             strat_path = WORKSPACE / 'data/strategies.json'
             strats     = json.loads(strat_path.read_text()) if strat_path.exists() else {}
-            strat_id   = best.get('strategy','').split('-')[0]
-            pos_mgmt   = strats.get(strat_id, {}).get('position_management', {})
+            pos_mgmt   = strats.get(strat_id_base, {}).get('position_management', {})
             size_factor = pos_mgmt.get('position_size_factor', 1.0)
             if pos_mgmt.get('in_drawdown'):
-                print(f"  ⚠️ {strat_id} Drawdown — Position ×{size_factor}")
+                print(f"  ⚠️ {strat_id_base} Drawdown — Position ×{size_factor}")
         except Exception:
             size_factor = 1.0
 
-        open_trade(ticker, ti['name'], best['strategy'], best['direction'],
+        # Learning-Boost: ELEVATED Strategien → +50% Position Size
+        if strat_id_base in elevated_strategies:
+            size_factor = min(size_factor * 1.5, 2.0)  # Cap bei 2x
+            print(f"  🚀 {strat_id_base} ELEVATED — Position ×{size_factor:.1f}")
+
+        # ── Verbesserung 3: Sektor-Konzentrations-Check ──
+        ticker_sector = SECTOR_MAP_REVERSE.get(ticker, 'OTHER')
+        if ticker_sector != 'OTHER':
+            sector_members = SECTOR_MAP.get(ticker_sector, [])
+            conn_check = get_db()
+            placeholders = ','.join('?' * len(sector_members)) if sector_members else "''"
+            open_in_sector = conn_check.execute(
+                f"SELECT COUNT(*) FROM trades WHERE trade_type='day_trade' AND status='OPEN' AND ticker IN ({placeholders})",
+                sector_members if sector_members else []
+            ).fetchone()[0]
+            conn_check.close()
+            if open_in_sector >= SECTOR_LIMIT:
+                print(f"  ⚠️ SKIP {ticker} — Sektor {ticker_sector} hat schon {open_in_sector} Positionen")
+                continue
+
+        # ── Verbesserung 6: ATR-basiertes Position Sizing ──
+        candles_for_atr = data.get('candles', [])
+        atr_pos_size = calc_atr_position_size(candles_for_atr)
+        # Wende size_factor an (von strategies.json / elevated)
+        atr_pos_size = max(2000, min(8000, round(atr_pos_size * size_factor, 0)))
+
+        trade_id = open_trade(ticker, ti['name'], best['strategy'], best['direction'],
                    p_eur, stop_eur, target_eur,
-                   f"{best['reason']} [regime={current_regime}, size={size_factor}x]")
+                   f"{best['reason']} [regime={current_regime}, size={size_factor}x, atr_pos={atr_pos_size:.0f}€]",
+                   pos_size_override=atr_pos_size)
+
+        # ── Verbesserung 4: Contrarian Shadow Trade ──
+        if trade_id is not None:
+            shadow_direction = 'SHORT' if best['direction'] == 'LONG' else 'LONG'
+            shadow_stop   = round(p_eur * (1.012 if shadow_direction == 'LONG' else 0.988), 2)
+            shadow_target = round(p_eur * (0.988 if shadow_direction == 'SHORT' else 1.012), 2)
+            shadow_shares = max(1, math.floor((POS_SIZE / 2) / p_eur))
+            conn_shadow = get_db()
+            conn_shadow.execute("""INSERT INTO trades (ticker, strategy, direction, entry_price, entry_date,
+                stop, target, shares, status, trade_type, thesis, fees_eur, style)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'OPEN', 'day_trade', ?, 0, 'contrarian')""",
+                (ticker, f"{best['strategy']}-CTR", shadow_direction, round(p_eur, 2),
+                 datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M'),
+                 shadow_stop, shadow_target, shadow_shares,
+                 f"SHADOW CONTRARIAN: Gegenteil von {best['strategy']} {best['direction']}"))
+            conn_shadow.commit()
+            conn_shadow.close()
+            print(f"  🎲 SHADOW {shadow_direction} {ticker} × {shadow_shares} (contrarian)")
 
         state.setdefault('signals_today', []).append(ticker)
         open_count += 1

@@ -3,6 +3,14 @@
 Wichtige Entscheidungen mit dem Kontext der dazu geführt hat.
 Kein Marktrauschen — nur was die Strategie wirklich beeinflusst hat.
 
+## 2026-03-26 — DR0.DE Stop auf 91€ gesetzt
+
+**Entscheidung:** Stop-Loss für Deutsche Rohstoff AG (DR0.DE) auf 91,00€ gesetzt.
+**Position:** Entry 87,44€ | Kurs ~95,50€ (+9%) | Stop 91€ → +4,1% Gewinn gesichert
+**Kontext:** Aktie +8,99% seit Entry. Dirk 7H Trailing-Stop-Regel greift ab +5%. Volatilität DR0 sehr hoch (55% annualisiert). Iran-Krise eskaliert (UAE getroffen, Iraq Rumaila-Ölfeld angegriffen, Libyen-Gas-Pipeline), S1-Thesis 🟢🔥.
+**Kern-Reasoning:** Stop über Breakeven (87,44€) und über "Minimum 90€"-Empfehlung. Gibt ~4,6% Puffer zum aktuellen Kurs bei gleichzeitig +4,1% gesichertem Gewinn. Sinnvoller Kompromiss zwischen Gewinnschutz und Laufenlassen bei starker Thesis.
+**Nächster Schritt:** Bei Kurs >98€ → Stop auf 92-93€ nachziehen.
+
 ---
 
 ## 2026-03-11 — Rheinmetall AG (RHM.DE) Position geschlossen

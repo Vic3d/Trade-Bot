@@ -1,5 +1,5 @@
 # Strategien — Trade Thesis Playbook
-**Angelegt:** 2026-03-08 | **Zuletzt aktualisiert:** 2026-03-08
+**Angelegt:** 2026-03-08 | **Zuletzt aktualisiert:** 2026-03-26
 
 ---
 
@@ -578,3 +578,179 @@ Phase 5 (parallel): LNG als Öl-Substitut in Europa
 - Phase 2-3: Noch nicht positioniert — Raffinerie-Entry beobachten
 - Phase 4: EQNR (Real Trade, Entry 33.58€)
 - Phase 5: Noch nicht positioniert
+
+---
+
+## STRATEGIE S9: Kuba-Krise → Kettenreaktion Welthandel
+**Angelegt:** 2026-03-26
+**Status: 👁️ WATCHLIST — Kein aktiver Trade, Trigger beobachten**
+
+### Hintergrund (Stand 26.03.2026)
+- **03.01.2026:** USA greifen Venezuela an, Maduro verhaftet — 32 kubanische Leibwächter sterben
+- **29.01.2026:** Trump Executive Order: Sanktionen gegen alle Länder die Kuba mit Öl beliefern
+- **Aktuell:** Russischer Öltanker auf dem Weg nach Kuba, offizielles Ziel "USA" (Tarnung)
+- **Kuba:** Kompletter Wirtschaftskollaps. ~100.000 Barrel/Tag Bedarf, null Lieferant mehr. Massenproteste, mehrtägige Stromausfälle, 25€ Durchschnittslohn/Monat
+- **Marco Rubio** (Außenminister, kubanische Eltern) treibt Regime-Wechsel aktiv voran
+- Muster identisch zu Venezuela + Iran: "Verhandlungen" → Angriff
+
+### Der Kern-Insight
+**Kuba selbst ist zu klein für direkte Trades. Kuba ist der TRIGGER — die Kettenreaktion ist der Trade.**
+
+Kuba-GDP: ~$100B. Welthandelswirkung: MARGINAL.
+Geopolitische Dominoeffekte: MASSIV.
+
+---
+
+### Kettenreaktion-Karte: Was Kuba wirklich bewegt
+
+```
+KUBA-KRISE
+    │
+    ├─► RUSSLAND antwortet
+    │       → Tanker-Konfrontation in der Karibik
+    │       → US-Russland-Spannungen eskalieren
+    │       → Öl-Risikoprämie steigt (S1 ✅ bestätigt)
+    │       → Weitere Sanktionen auf Russland → weniger Öl am Markt
+    │
+    ├─► CHINA antwortet
+    │       → Verliert letzten Karibik-Stützpunkt (Huawei-Infrastruktur, Häfen)
+    │       → Kompensiert woanders: Taiwan-Druck steigt
+    │       → Tech-Volatilität (NVDA/MSFT unter geopolitischem Druck)
+    │
+    ├─► LATEINAMERIKA wählt Seiten
+    │       → Venezuela weg, Kuba weg = Monroe-Doktrin 2.0
+    │       → Brasilien, Mexiko, Argentinien unter US-Druck
+    │       → Rohstofflieferketten aus der Region neu bewertet
+    │
+    ├─► NICKEL + KOBALT
+    │       → Kuba = 3.-größte Nickelreserven weltweit
+    │       → US-Kontrolle = kritische Batteriematerialien unter US-Einfluss
+    │       → Bearisch für Nickelpreis (mehr Supply) ABER bullisch für US-kontrollierte EV-Lieferkette
+    │
+    └─► TOURISMUS + INFRASTRUKTUR
+            → 11M Einwohner, 90 Meilen von Florida, völlig unentwickelte Infrastruktur
+            → Bei Opening: eine der größten Tourismus-Chancen seit Jahrzehnten
+            → Miami als Gateway boomt
+```
+
+---
+
+### Drei Szenarien + Trigger + Plays
+
+#### Szenario A: Regime-Kollaps durch Embargo (50% Wahrscheinlichkeit, 3-9 Monate)
+**Was passiert:** Kuba läuft ohne Öl auf Reserve, Stromausfälle werden permanent, Bevölkerung revoltiert, Castro-Clan flieht ins Exil.
+**Welthandel-Impact:** Geordnete Öffnung — größte Latin-America-Öffnung seit Jahrzehnten.
+
+| Play | Ticker | Warum | Entry-Signal |
+|---|---|---|---|
+| Sherritt International | S.TO | Einziger westlicher Konzern mit aktiven Nickel-Minen in Kuba (Moa Bay) | Kursanstieg >50% in kurzer Zeit = Smart Money kauft |
+| Carnival Corporation | CCL | Cuba-Routen sofort reaktivierbar, Miami Hub | Konkrete Normalisierungsmeldung |
+| Nickel Short (indirekt) | VALE, Norilsk-Proxy | Kuba-Supply kommt auf den Markt | Regime-Wechsel bestätigt |
+| Florida REIT / Miami Exposure | Z.B. EQR | Cuban-American Diaspora investiert zurück | Mittel-/langfristig |
+
+---
+
+#### Szenario B: Militärischer Angriff wie Venezuela (25% Wahrscheinlichkeit, 2-6 Monate)
+**Was passiert:** USA greifen schnell und chirurgisch an. Russland/China reagieren — aber wie?
+**Welthandel-Impact:** Kurzfristiger Schock, dann schnelle Öffnung ODER globale Eskalation.
+
+| Play | Ticker | Warum | Entry-Signal |
+|---|---|---|---|
+| Rheinmetall AG | RHM.DE | Rüstungs-Eskalation global (S2) | Re-Entry >1.626€ |
+| Gold ETC | IGLN.DE | Safe Haven bei militärischer Aktion (S6) | Angriffsmeldung |
+| Silber ETC | PHAG.DE | Safe Haven + industriell (S4) | Angriffsmeldung |
+| Öl-Positionen | EQNR, DR0 | Geopolitik-Prämie steigt wieder | Russland-Response |
+
+**Sonderrisiko:** Russland hat echte Militärbases auf Kuba (Lourdes, Cienfuegos). Ein US-Angriff dort ist KEIN normaler Regime-Wechsel — das ist direkter Angriff auf russische Infrastruktur. Schwarzer-Schwan-Potenzial.
+
+---
+
+#### Szenario C: Diplomatisches Exil-Deail / Castro-Familie (25% Wahrscheinlichkeit, 6-18 Monate)
+**Was passiert:** Castro-Clan handelt aus, geht ins Exil, kontrollierter Übergang.
+**Welthandel-Impact:** Glatteste Lösung, langsamste Öffnung, geringste Marktbewegung.
+
+| Play | Ticker | Warum | Entry-Signal |
+|---|---|---|---|
+| CCL / RCL | CCL, RCL | Tourismus-Öffnung, geordnet | Verhandlungsfortschritt bestätigt |
+| Telecom-Infrastruktur | T, VZ | Kuba hat quasi null Infrastruktur — US-Konzerne bauen auf | Deal unterschrieben |
+
+---
+
+### 🚨 Frühwarnsystem — Diese Events beobachten
+
+**Sofortige Relevanz (diese Woche):**
+- [ ] Russischer Öltanker erreicht Kuba: Lässt USA ihn durch? → **Russland-Reaktion definiert alles**
+- [ ] Neue US-Militärbewegungen Richtung Karibik (Caribbean Command SOUTHCOM)
+- [ ] Castro-Familie Reisebewegungen (Exil-Signal)
+
+**Mittelfristig:**
+- [ ] Sherritt International (S.TO) Kurs-Bewegung >+30% ohne News = Insider-Signal
+- [ ] Kubanische Militärs desertieren zu USA (wie bei Venezuela kurz vor Angriff)
+- [ ] China reagiert auf Venezuela/Kuba-Verlust mit Taiwan-Provokation
+
+**Weltwirtschafts-Indikatoren:**
+- [ ] Nickelpreis (LME) — Kuba-Reserven als Fantasie eingepreist?
+- [ ] Caribbean Shipping-Raten (Baltic Exchange)
+- [ ] USD/CUP (inoffiziell) als Krisenbarometer
+
+---
+
+### Verbindung zu bestehenden Strategien
+
+| S1 Öl/Iran | Russischer Tanker-Konflikt = Öl-Risikoprämie bleibt hoch ✅ |
+|---|---|
+| S2 Rüstung | Jede Eskalation in Karibik = mehr NATO-Ausgaben ✅ |
+| S4/S6 Edelmetalle | Militärische Aktion = Safe-Haven-Run ✅ |
+| S8 Tanker-Lag-These | Russischer Tanker = direkter S8-Kandidat ✅ |
+
+### Thesis-Log
+| Datum | Event | Einschätzung | Status |
+|---|---|---|---|
+| 26.03.2026 | Strategie angelegt. Russischer Tanker unterwegs. Kuba im Kollapsmodus. Trump-Rhetorik bestätigt (LA Times 21.03.). Venezuela-Muster eindeutig. | Start — Trigger-Überwachung aktiv | 👁️ WATCHLIST |
+| 26.03.2026 | **TANKER IDENTIFIZIERT:** Anatoly Kolodkin (Sovcomflot, 730k Barrel, Matanzas/Kuba). Ankunft ~29.03. UK Royal Navy + US SOUTHCOM tracken aktiv. Zweiter Tanker Sea Horse (chinesisch) bereits abgedreht. **INDICTMENTS:** US-Staatsanwalt South Florida bereitet Anklagen gegen kuban. Führung vor. Trump-Official: "Regime change is lined up. We don't believe in diplomacy." **3. NATIONALER STROMAUSFALL** — 10 Mio. Menschen ohne Strom. Donovan: Tanker-Ladung kauft Cuba max. 2 Wochen. Szenario A (Kollaps) deutlich wahrscheinlicher als S1-Annahme. | Timeline massiv verkürzt — Tanker-Showdown in 3 Tagen. Regime-Change aktiv vorbereitet. | 🔴 HOCHAKTUELL |
+
+---
+
+## S10 — Silber-Minen: Ratio-Rückkehr + Post-Fahnenstange Entry 🟡 WATCHLIST
+
+**Angelegt:** 2026-03-26 | **Status:** 🟡 WATCHLIST
+**Detailstrategie:** `memory/strategie-silber.md`
+**Horizont:** 3-12 Monate
+**Quelle:** Lars Eriksen Transcript (März 2026) + Deep Dive (26.03.)
+
+### Kern-These
+Silber hat im Feb. 2026 eine Fahnenstange auf $115-120 gemacht → Korrektur auf $60 → aktuell $70. Die Gold/Silber-Ratio steht bei 65:1 (Silber strukturell günstig). Bei einer Ratio-Normalisierung auf 50:1 bei aktuellem Goldpreis ($4.500+) kommt Silber automatisch auf $90+. Silberminen-Aktien haben dazu noch 4-6x Operating Leverage.
+
+### Kandidaten
+| Ticker | Name | Typ | Priorität |
+|---|---|---|---|
+| AG | First Majestic Silver | Reiner Produzent | ⭐ Kern (40%) |
+| PAAS | Pan American Silver | Silber+Gold diversifiziert | ⭐ Kern (35%) |
+| WPM | Wheaton Precious Metals | Royalty/Streaming | ⭐ Defensiv (25%) |
+| HL | Hecla Mining | Reiner Produzent, USA | Erweiterung (Stufe 2) |
+| EXK | Endeavour Silver | Kleiner Produzent, Mexiko | Spekulative Beimischung |
+
+### Kaufsignale (2 Stufen)
+
+**Stufe 1 — Frühsignal (antizyklisch, 30% Position):**
+- [ ] Silber Wochenschluss > $73,50 ODER
+- [ ] Gold/Silber-Ratio < 62
+
+**Stufe 2 — Prozyklisch (restliche 70%):**
+- [ ] Silber über fallenden GD Wochenchart (~$90) ODER
+- [ ] Gold/Silber-Ratio < 55
+
+### Stop/Invalidierung
+- Silber-Wochenschluss < $58 → These ungültig (24-Monate-Regel greift)
+- Gold/Silber-Ratio > 75 → Silber systematisch schwach, warten
+
+### Makro-Verbindung
+| Strategie | Verbindung |
+|---|---|
+| S1 Öl/Iran | Iran-Krise = Safe-Haven → Gold steigt → Silber-Ratio muss irgendwann nachziehen |
+| S9 Kuba | Rohstoff-Disruption → Supply-Shock bei Industriemetallen → Silber profitiert (Industrieanteil ~55%) |
+
+### Thesis-Log
+| Datum | Event | Einschätzung | Status |
+|---|---|---|---|
+| 26.03.2026 | Deep Dive: Silver $69,67 (-4,35%), Gold $4.575, Ratio 65,6:1. BPGDM-Index bei 3,7% (historisch überverkauft). Lars Eriksen Transcript analysiert: Fahnenstangen-Regel + 2-Stufen-Kaufsignal + 24-Monate-Statistik. Barron's: "Miner Stocks May Be a Buy". Lobo Tiggre: "Flush, not a top". | Watchlist aktiv. Kein Signal. Heutiger Abverkauf = Margin-Liquidation, nicht Trendwende. Freitag Wochenschluss prüfen. | 🟡 WATCHLIST |

@@ -4,6 +4,61 @@
 
 ---
 
+## Lars Eriksen — 26.03.2026 — Fahnenstangen-Erkennung + Bodenbildungs-Framework (Silber)
+
+*Quelle: Lars Eriksen YouTube, ca. März 2026*
+
+### Kern-Erkenntnisse
+
+**Fahnenstangen-Regel (Universal)**
+- Definition: Parabolischer Anstieg in kurzer Zeit ("Flagpole") — jede Fahnenstange wird abverkauft. IMMER.
+- Konsequenz für aktive Anleger: Am Top einer Fahnenstange nicht kaufen, besser verkaufen oder Hände weg
+- Das genaue Top erwischt man nie — aber: "Bitte kauft als aktiver Anleger jetzt nicht" reicht als Handlungsregel
+- Timing: Aufzeichnung 27./28. Januar, Silber ~115-120$, warnte vor Kauf → Korrekt
+
+**Psychologie der Fahnenstangen-Opfer (Pattern)**
+- In jeder Fahnenstange: Spekulanten die zu spät rein sind pushen sich gegenseitig hoch
+- Reddit/Forum-Pattern: "Manipulation!", "Fiat ist tot!", "nächste Woche 150$" → immer dieselben Rationalisierungen
+- Erkennungszeichen: Jemand der "langfristig hält" aber jeden Tag den Preis checkt — kognitiver Widerspruch = er ist in Wahrheit in einer Spekulation gefangen
+- TradeMind-Relevanz: Psychology Score — erkennt wenn User selbst in diesem Muster ist
+
+**Bodenbildungs-Framework (2-Stufen Kaufsignal)**
+
+Stufe 1 — "Möglicher Boden" (Frühsignal, antizyklisch):
+- Bedingung: Wochenschlusskurs über X (im Silber-Beispiel: >73,50$)
+- Interpretation: "Das Tief bei Y ist wahrscheinlich drin" — keine Garantie, aber >50% Wahrscheinlichkeit
+- Keine neuen Shorts, erste Long-Positionen möglich (klein)
+
+Stufe 2 — "Prozyklisches Kaufsignal" (bestätigtes Signal):
+- Bedingung: Kurs bricht über den fallenden gleitenden Durchschnitt (Wochenchart) — im Beispiel ~90$
+- Interpretation: Trend dreht, Momentum aufgebaut — volle Positionierung möglich
+- Faustregel: Lieber 15% höher einsteigen mit Bestätigung als im Nirgendwo kaufen
+
+**ABC-Korrektur nach Fahnenstange**
+- Zwei typische Muster nach Fahnenstange: Flache Konsolidierung ODER klassische ABC-Korrektur
+- ABC hat drei Wellen: A (erster Abverkauf), B (Erholung, ca. 38-50% Retracement), C (finaler Abverkauf, oft auf Fibonacci-Level)
+- Das C-Tief ist oft der beste Einstiegspunkt für die nächste Aufwärtsbewegung
+- Vorab sagen, wo genau C endet: "nicht möglich, Wahrscheinlichkeiten, kein ±5%-Ansagen"
+
+**Statistik: 24-Monats-Regel nach Fahnenstangen**
+- Reine Statistik: In 24 Monaten nach einem Fahnenstangen-Abverkauf selten neue Allzeit-Hochs
+- Konsequenz: Kein aggressives Nachkaufen sofort nach dem Absturz — Zeit lassen
+- Bullische Ausnahmen möglich (makrogetrieben), aber statistisch gegen den Trader
+
+**Silber-Aktien vs. physisches Silber**
+- Silberproduzenten-Aktien verstärken Silberbewegung (Hebel): wenn Silber 40% fällt, fallen Aktien oft 50%+
+- Reine Silberproduzenten trennen von diversifizierten Bergbaukonzernen (bei denen Silber Beiprodukt)
+- Kaufsignal in Silber = gleichzeitig Kaufsignal für Silberaktien prüfen (nicht blind kopieren — eigene Chartanalyse)
+
+### TradeMind-Relevanz
+
+- **Fahnenstangen-Detektor**: RSI >80 auf Wochenchart + Kursanstieg >30% in 4 Wochen → automatisch "Fahnenstangen-Warnung" ausgeben
+- **Bodenbildungs-Modul**: 2-Stufen-Framework implementieren — Frühsignal vs. prozyklisches Signal, klare Bedingungen
+- **Psychology Score**: Erkennt Rationalisierungs-Pattern (User kauft mehr statt zuzugeben dass er falsch lag)
+- **Statistik-Overlay**: "X Monate seit Fahnenstange" als Kontext-Info in Trade-Vorschlägen
+
+---
+
 ## Dirk 7H — 24.03.2026 — Aktives Warten + Relative Stärke + Position Entry
 
 *Quelle: Tradermacher Video, Dienstag 24.03.2026*
