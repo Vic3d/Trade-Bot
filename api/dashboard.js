@@ -1,6 +1,6 @@
 // TradeMind v2 Dashboard — Vercel Serverless Function
 // Serves the unified dashboard HTML
-// Data comes from /api/dashboard-data (reads data.json from GitHub)
+// Data comes from /api/dashdata (reads data.json from GitHub)
 
 module.exports = (req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -227,7 +227,7 @@ tr:hover td { background: rgba(6,182,212,0.03); }
 
 <script>
 let D={};
-async function load(){try{const r=await fetch('/api/dashboard-data');D=await r.json();render()}catch(e){console.error(e)}}
+async function load(){try{const r=await fetch('/api/dashdata');D=await r.json();render()}catch(e){console.error(e)}}
 
 function tab(t){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
