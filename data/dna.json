@@ -263,16 +263,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "OXY",
-      "strategy": "DT3",
-      "trade_type": "day_trade",
-      "entry": 55.17,
-      "stop": 55.83,
-      "target": 53.61,
-      "opened_at": "2026-03-26 16:31",
-      "status": "OPEN"
-    },
-    {
       "ticker": "TMO",
       "strategy": "DT6",
       "trade_type": "day_trade",
@@ -433,8 +423,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T19:55:25.193511Z",
+  "last_sync": "2026-03-26T20:02:48.371549Z",
   "recent_day_trades": [
+    {
+      "ticker": "OXY",
+      "strategy": "DT3",
+      "entry_price": 55.17,
+      "exit_price": 55.85,
+      "entry_date": "2026-03-26 16:31",
+      "exit_date": "2026-03-26 20:02",
+      "pnl_pct": -1.22,
+      "status": "LOSS"
+    },
     {
       "ticker": "HAL",
       "strategy": "DT9",
@@ -623,16 +623,6 @@
       "entry_date": "2026-03-26 15:10",
       "exit_date": "2026-03-26 15:15",
       "pnl_pct": -0.05,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "strategy": "DT2-CTR",
-      "entry_price": 20.7,
-      "exit_price": 20.77,
-      "entry_date": "2026-03-26 15:10",
-      "exit_date": "2026-03-26 15:15",
-      "pnl_pct": -0.34,
       "status": "LOSS"
     }
   ],
