@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "HEI.DE",
-      "strategy": "DT4-CTR",
-      "trade_type": "day_trade",
-      "entry": 179.75,
-      "stop": 181.91,
-      "target": 181.91,
-      "opened_at": "2026-03-26 13:33",
-      "status": "OPEN"
-    },
-    {
       "ticker": "PUM.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T13:33:17.197965Z",
+  "last_sync": "2026-03-26T13:35:08.884457Z",
   "recent_day_trades": [
+    {
+      "ticker": "HEI.DE",
+      "strategy": "DT4-CTR",
+      "entry_price": 179.75,
+      "exit_price": 179.65,
+      "entry_date": "2026-03-26 13:33",
+      "exit_date": "2026-03-26 13:35",
+      "pnl_pct": -0.06,
+      "status": "LOSS"
+    },
     {
       "ticker": "KWEB",
       "strategy": "DT4",
@@ -644,16 +644,6 @@
       "exit_date": "2026-03-25 20:45",
       "pnl_pct": -0.07,
       "status": "LOSS"
-    },
-    {
-      "ticker": "GOOGL",
-      "strategy": "DT4",
-      "entry_price": 251.6,
-      "exit_price": 251.63,
-      "entry_date": "2026-03-25 17:35",
-      "exit_date": "2026-03-25 20:45",
-      "pnl_pct": 0.01,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
