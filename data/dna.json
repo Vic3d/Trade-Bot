@@ -277,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 91.02,
-      "stop": 90.86,
+      "stop": 91.03,
       "target": 91.19,
       "opened_at": "2026-03-26 15:10",
       "status": "OPEN"
@@ -443,7 +443,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:15:30.630284Z",
+  "last_sync": "2026-03-26T15:20:08.818779Z",
   "recent_day_trades": [
     {
       "ticker": "BA.L",
