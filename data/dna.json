@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "HEI.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 179.75,
+      "stop": 180.53,
+      "target": 178.31,
+      "opened_at": "2026-03-26 13:33",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "HEI.DE",
+      "strategy": "DT4-CTR",
+      "trade_type": "day_trade",
+      "entry": 179.75,
+      "stop": 181.91,
+      "target": 181.91,
+      "opened_at": "2026-03-26 13:33",
+      "status": "OPEN"
+    },
+    {
       "ticker": "PUM.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -431,20 +451,20 @@
       "target": 54.34,
       "opened_at": "2026-03-26 01:20",
       "status": "OPEN"
-    },
+    }
+  ],
+  "last_sync": "2026-03-26T13:33:17.197965Z",
+  "recent_day_trades": [
     {
       "ticker": "KWEB",
       "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 25.2,
-      "stop": 25.11,
-      "target": 25.4,
-      "opened_at": "2026-03-26 01:00",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-26T13:25:08.094858Z",
-  "recent_day_trades": [
+      "entry_price": 25.2,
+      "exit_price": 24.66,
+      "entry_date": "2026-03-26 01:00",
+      "exit_date": "2026-03-26 13:33",
+      "pnl_pct": -2.13,
+      "status": "LOSS"
+    },
     {
       "ticker": "PUM.DE",
       "strategy": "DT1-CTR",
@@ -634,16 +654,6 @@
       "exit_date": "2026-03-25 20:45",
       "pnl_pct": 0.01,
       "status": "WIN"
-    },
-    {
-      "ticker": "AMD",
-      "strategy": "DT4",
-      "entry_price": 187.61,
-      "exit_price": 189.23,
-      "entry_date": "2026-03-25 16:05",
-      "exit_date": "2026-03-25 17:35",
-      "pnl_pct": -0.86,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
