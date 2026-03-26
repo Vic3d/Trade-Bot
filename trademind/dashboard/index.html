@@ -3,442 +3,498 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎩 TradeMind</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>🎩 TradeMind v2.1</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <style>
-:root { --bg: #0a0f1a; --card: #131b2e; --card-hover: #1a2540; --text: #e2e8f0; --muted: #64748b; --accent: #06b6d4; --accent2: #8b5cf6; --green: #10b981; --red: #ef4444; --amber: #f59e0b; --border: #1e293b; --gradient1: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%); }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--text:#e2e8f0;--dim:#64748b;--cyan:#06b6d4;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--purple:#a78bfa;--pink:#f472b6}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{color:var(--cyan);text-decoration:none}
 
-/* HEADER */
-.header { background: var(--card); padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-.header-left { display: flex; align-items: center; gap: 1rem; }
-.logo { font-size: 1.75rem; font-weight: 800; background: var(--gradient1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.logo-sub { color: var(--muted); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
-.header-right { display: flex; gap: 1.5rem; align-items: center; }
-.header-stat { text-align: center; }
-.header-stat .val { font-size: 1.1rem; font-weight: 700; }
-.header-stat .lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-.cb-indicator { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-.cb-ok { background: rgba(16,185,129,0.15); color: var(--green); }
-.cb-blocked { background: rgba(239,68,68,0.15); color: var(--red); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+/* Top Bar */
+.topbar{background:#0f172a;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.topbar .logo span{color:var(--dim);font-size:0.75rem;font-weight:400}
+.topbar .status{display:flex;gap:16px;font-size:0.8rem;color:var(--dim)}
+.topbar .status .val{font-weight:600}
+.topbar .status .green{color:var(--green)}.topbar .status .red{color:var(--red)}.topbar .status .amber{color:var(--amber)}
 
-/* NAV */
-.nav { display: flex; gap: 0; background: var(--card); border-bottom: 1px solid var(--border); overflow-x: auto; }
-.nav-item { padding: 0.85rem 1.5rem; cursor: pointer; color: var(--muted); font-size: 0.85rem; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.02); }
-.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
-.nav-badge { background: var(--accent); color: #000; font-size: 0.65rem; padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+/* Nav */
+.nav{background:#0f172a;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 12px;gap:2px;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{height:0}
+.nav-item{padding:10px 14px;font-size:0.78rem;color:var(--dim);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.badge{background:var(--cyan);color:#000;border-radius:8px;padding:1px 6px;font-size:0.65rem;font-weight:700;margin-left:4px}
 
-/* LAYOUT */
-.content { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem; }
-.g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; } .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+/* Content */
+.content{padding:16px;max-width:1400px;margin:0 auto}
+.section{display:none}.section.active{display:block}
 
-/* CARDS */
-.card { background: var(--card); border-radius: 12px; padding: 1.25rem; border: 1px solid var(--border); transition: border-color 0.2s; }
-.card:hover { border-color: rgba(6,182,212,0.3); }
-.card-title { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 6px; }
-.card-title .icon { font-size: 1rem; }
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.card h3{font-size:0.85rem;color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.kpi{text-align:center;padding:14px 10px}
+.kpi .num{font-size:1.6rem;font-weight:700;line-height:1.2}
+.kpi .label{font-size:0.7rem;color:var(--dim);margin-top:4px}
 
-/* STATS */
-.kpi { text-align: center; padding: 1rem 0.5rem; }
-.kpi .number { font-size: 2.25rem; font-weight: 800; line-height: 1; }
-.kpi .sublabel { color: var(--muted); font-size: 0.7rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
-.kpi .change { font-size: 0.8rem; margin-top: 2px; font-weight: 600; }
-.green { color: var(--green); } .red { color: var(--red); } .amber { color: var(--amber); } .purple { color: var(--accent2); }
+/* Colors */
+.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.cyan{color:var(--cyan)}.purple{color:var(--purple)}.pink{color:var(--pink)}
+.bg-green{background:rgba(16,185,129,0.12)}.bg-red{background:rgba(239,68,68,0.12)}.bg-amber{background:rgba(245,158,11,0.12)}
 
-/* TABLE */
-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-th { color: var(--muted); text-align: left; padding: 0.6rem 0.75rem; font-weight: 500; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-td { padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(30,41,59,0.5); }
-tr:hover td { background: rgba(6,182,212,0.03); }
-.ticker-cell { font-weight: 700; color: var(--accent); }
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:0.8rem}
+th{text-align:left;color:var(--dim);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--border);font-size:0.7rem;text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid rgba(30,41,59,0.4)}
+tr:hover{background:rgba(6,182,212,0.04)}
+.mono{font-family:'SF Mono',Monaco,monospace;font-size:0.78rem}
 
-/* BADGES */
-.badge { display: inline-block; padding: 2px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
-.b-green { background: rgba(16,185,129,0.15); color: var(--green); }
-.b-red { background: rgba(239,68,68,0.15); color: var(--red); }
-.b-amber { background: rgba(245,158,11,0.15); color: var(--amber); }
-.b-purple { background: rgba(139,92,246,0.15); color: var(--accent2); }
-.b-blue { background: rgba(6,182,212,0.15); color: var(--accent); }
+/* Chart container */
+.chart-box{height:220px;position:relative;margin:8px 0}
 
-/* CHART */
-.chart-box { position: relative; height: 280px; }
+/* Regime badge */
+.regime{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.75rem;font-weight:600}
+.regime-BULL{background:rgba(16,185,129,0.2);color:var(--green)}
+.regime-CORRECTION{background:rgba(245,158,11,0.2);color:var(--amber)}
+.regime-BEAR{background:rgba(239,68,68,0.2);color:var(--red)}
+.regime-TREND_DOWN{background:rgba(239,68,68,0.15);color:#fb923c}
+.regime-RANGE{background:rgba(100,116,139,0.2);color:var(--dim)}
 
-/* PROGRESS BAR */
-.prog-wrap { background: rgba(255,255,255,0.05); border-radius: 8px; height: 8px; overflow: hidden; margin: 4px 0; }
-.prog-bar { height: 100%; border-radius: 8px; transition: width 0.8s ease; }
+/* Signal cards */
+.signal-card{padding:10px;border-left:3px solid var(--cyan);margin-bottom:8px;background:rgba(6,182,212,0.04);border-radius:0 6px 6px 0}
+.signal-card.buy{border-left-color:var(--green)}.signal-card.sell{border-left-color:var(--red)}
 
-/* ALERT FEED */
-.feed-item { padding: 0.6rem 0.75rem; border-left: 3px solid var(--accent); margin: 0.5rem 0; background: rgba(6,182,212,0.03); border-radius: 0 8px 8px 0; font-size: 0.82rem; }
-.feed-item .ts { color: var(--muted); font-size: 0.7rem; }
-.feed-item.loss { border-left-color: var(--red); background: rgba(239,68,68,0.03); }
-.feed-item.win { border-left-color: var(--green); background: rgba(16,185,129,0.03); }
+/* News items */
+.news-item{padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3)}
+.news-item .time{font-size:0.7rem;color:var(--dim)}
+.news-item .title{font-size:0.82rem;margin-top:2px}
+.news-item .source{font-size:0.7rem;color:var(--dim);margin-top:2px}
 
-/* GRAVEYARD */
-.grave { padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 0.5rem 0; opacity: 0.7; }
-.grave:hover { opacity: 1; }
-.grave .name { font-weight: 700; color: var(--red); }
+/* Watchlist */
+.watch-card{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid rgba(30,41,59,0.3)}
+.watch-card .ticker{font-weight:700;color:var(--cyan)}
+.watch-card .range{font-size:0.78rem;color:var(--dim)}
 
-/* EXPOSURE BAR */
-.exp-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; font-size: 0.82rem; }
-.exp-label { width: 100px; color: var(--muted); }
-.exp-bar-wrap { flex: 1; background: rgba(255,255,255,0.05); border-radius: 4px; height: 24px; position: relative; overflow: hidden; }
-.exp-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 0.7rem; font-weight: 600; transition: width 0.8s; }
-.exp-limit { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--red); }
-.exp-val { width: 60px; text-align: right; font-weight: 600; }
+/* Calendar */
+.cal-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(30,41,59,0.3);align-items:center}
+.cal-date{min-width:80px;font-size:0.78rem;color:var(--amber);font-weight:600}
+.cal-type{font-size:0.65rem;padding:2px 8px;border-radius:4px;background:rgba(167,139,250,0.15);color:var(--purple)}
 
-/* TABS */
-.section { display: none; } .section.active { display: block; }
+/* Strategy DNA */
+.dna-card{padding:12px;border-left:3px solid var(--purple);margin-bottom:8px;background:rgba(167,139,250,0.04);border-radius:0 6px 6px 0}
+.dna-stat{display:inline-block;margin-right:14px;font-size:0.78rem}
+.dna-stat .v{font-weight:700}
 
-/* RESPONSIVE */
-@media (max-width: 900px) { .g2,.g3,.g4 { grid-template-columns: 1fr; } .header { flex-direction: column; gap: 1rem; } .header-right { flex-wrap: wrap; justify-content: center; } }
-@media (max-width: 600px) { .content { padding: 0.75rem; } .card { padding: 1rem; } .kpi .number { font-size: 1.5rem; } }
+/* CB indicator */
+.cb{padding:6px 12px;border-radius:6px;font-size:0.78rem;font-weight:600;display:inline-block}
+.cb-ok{background:rgba(16,185,129,0.15);color:var(--green)}
+.cb-blocked{background:rgba(239,68,68,0.15);color:var(--red)}
+
+/* Loading */
+.loading{text-align:center;padding:60px;color:var(--dim)}
+.loading .spin{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Responsive */
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.kpi .num{font-size:1.2rem}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <div>
-      <div class="logo">🎩 TradeMind</div>
-      <div class="logo-sub">Autonomous Trading Intelligence — v2.0.0</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="header-stat"><div class="val" id="h-pnl">—</div><div class="lbl">Gesamt P&L</div></div>
-    <div class="header-stat"><div class="val" id="h-open">—</div><div class="lbl">Offene Pos.</div></div>
-    <div class="header-stat"><div class="val" id="h-vix">—</div><div class="lbl">VIX</div></div>
-    <div id="h-cb" class="cb-indicator cb-ok">● Trading OK</div>
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="logo">🎩 TradeMind <span>v2.1.0</span></div>
+  <div class="status">
+    <div>P&L: <span class="val" id="tb-pnl">—</span></div>
+    <div>Open: <span class="val" id="tb-open">—</span></div>
+    <div>VIX: <span class="val" id="tb-vix">—</span></div>
+    <div id="tb-cb"></div>
+    <div id="tb-regime"></div>
   </div>
 </div>
 
-<!-- NAV -->
-<div class="nav">
-  <div class="nav-item active" onclick="tab('overview')">🏠 Übersicht</div>
-  <div class="nav-item" onclick="tab('positions')">📊 Positionen <span class="nav-badge" id="nav-pos-count">0</span></div>
-  <div class="nav-item" onclick="tab('risk')">⚡ Risk</div>
-  <div class="nav-item" onclick="tab('performance')">📈 Performance</div>
-  <div class="nav-item" onclick="tab('strategies')">🧬 Strategien</div>
-  <div class="nav-item" onclick="tab('learning')">🧠 Learning</div>
-  <div class="nav-item" onclick="tab('backtest')">🔬 Backtest</div>
+<!-- Navigation -->
+<div class="nav" id="nav">
+  <div class="nav-item active" onclick="go('overview')">🏠 Übersicht</div>
+  <div class="nav-item" onclick="go('positions')">📊 Positionen <span class="badge" id="nav-pos">0</span></div>
+  <div class="nav-item" onclick="go('flow')">💧 Flow / Paper</div>
+  <div class="nav-item" onclick="go('macro')">🌍 Makro</div>
+  <div class="nav-item" onclick="go('dna')">🧬 DNA</div>
+  <div class="nav-item" onclick="go('signals')">📡 Signale</div>
+  <div class="nav-item" onclick="go('risk')">⚡ Risiko</div>
+  <div class="nav-item" onclick="go('perf')">📈 Performance</div>
+  <div class="nav-item" onclick="go('calendar')">📅 Kalender</div>
+  <div class="nav-item" onclick="go('watchlist')">👁️ Watchlist <span class="badge" id="nav-watch">0</span></div>
+  <div class="nav-item" onclick="go('news')">📰 News</div>
+  <div class="nav-item" onclick="go('learning')">🧠 Learning</div>
+  <div class="nav-item" onclick="go('backtest')">🔬 Backtest</div>
 </div>
 
+<!-- Content -->
 <div class="content">
+  <div class="loading" id="loader"><div class="spin"></div><br>Lade Daten...</div>
 
-<!-- OVERVIEW -->
-<div class="section active" id="sec-overview">
-  <div class="grid g4" id="overview-kpis"></div>
-  <div class="grid g2" style="margin-top:1rem">
-    <div class="card"><div class="card-title"><span class="icon">📈</span> Equity Curve</div><div class="chart-box"><canvas id="ov-equity"></canvas></div></div>
-    <div class="card"><div class="card-title"><span class="icon">📋</span> Letzte Aktivität</div><div id="ov-feed" style="max-height:280px;overflow-y:auto"></div></div>
-  </div>
-  <div class="grid g3" style="margin-top:1rem">
-    <div class="card"><div class="card-title"><span class="icon">🥇</span> Beste Strategie</div><div id="ov-best"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">💀</span> Schlechteste Strategie</div><div id="ov-worst"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">⚠️</span> Top-Risiko</div><div id="ov-toprisk"></div></div>
-  </div>
-</div>
-
-<!-- POSITIONS -->
-<div class="section" id="sec-positions">
-  <div class="card"><div class="card-title"><span class="icon">📊</span> Offene Positionen</div>
-    <table><thead><tr><th>Ticker</th><th>Strategie</th><th>Theme</th><th>Entry</th><th>Aktuell</th><th>P&L</th><th>Stop</th><th>Risk</th><th>Tage</th></tr></thead><tbody id="pos-tbody"></tbody></table>
-  </div>
-</div>
-
-<!-- RISK -->
-<div class="section" id="sec-risk">
-  <div class="grid g2">
-    <div class="card">
-      <div class="card-title"><span class="icon">🔌</span> Circuit Breaker</div>
-      <div id="risk-cb"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="icon">💥</span> Stress Tests</div>
-      <div id="risk-stress"></div>
+  <!-- OVERVIEW -->
+  <div class="section active" id="sec-overview">
+    <div class="kpi-grid" id="ov-kpis"></div>
+    <div class="card"><h3>Equity Curve</h3><div class="chart-box"><canvas id="ov-equity"></canvas></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="card"><h3>Top Positionen</h3><div id="ov-top"></div></div>
+      <div class="card"><h3>Aktuelle Signale</h3><div id="ov-signals"></div></div>
     </div>
   </div>
-  <div class="grid g2" style="margin-top:1rem">
-    <div class="card"><div class="card-title"><span class="icon">🏭</span> Sektor-Exposure</div><div id="risk-sector"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">🌍</span> Region-Exposure</div><div id="risk-region"></div></div>
-  </div>
-  <div class="card" style="margin-top:1rem">
-    <div class="card-title"><span class="icon">🔗</span> Korrelationsmatrix</div>
-    <div class="chart-box"><canvas id="risk-corr-chart"></canvas></div>
-  </div>
-</div>
 
-<!-- PERFORMANCE -->
-<div class="section" id="sec-performance">
-  <div class="grid g4" id="perf-kpis"></div>
-  <div class="card" style="margin-top:1rem"><div class="card-title"><span class="icon">📈</span> Equity Curve</div><div class="chart-box"><canvas id="perf-equity"></canvas></div></div>
-  <div class="grid g2" style="margin-top:1rem">
-    <div class="card"><div class="card-title"><span class="icon">🥇</span> Top 5 Trades</div><div id="perf-top"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">💀</span> Worst 5 Trades</div><div id="perf-worst"></div></div>
+  <!-- POSITIONS -->
+  <div class="section" id="sec-positions">
+    <div class="card"><h3>Offene Positionen</h3><div id="pos-table"></div></div>
+    <div class="card"><h3>Geschlossene Positionen</h3><div id="pos-closed"></div></div>
   </div>
-</div>
 
-<!-- STRATEGIES -->
-<div class="section" id="sec-strategies">
-  <div class="card"><div class="card-title"><span class="icon">🧬</span> Aktive Strategien — Health Check</div>
-    <table><thead><tr><th>Strategie</th><th>Trades</th><th>Win Rate</th><th>P&L</th><th>Sharpe</th><th>Profit Factor</th><th>p-value</th><th>Status</th></tr></thead><tbody id="strat-tbody"></tbody></table>
+  <!-- FLOW / PAPER LAB -->
+  <div class="section" id="sec-flow">
+    <div class="kpi-grid" id="flow-kpis"></div>
+    <div class="card"><h3>Day Trades (DT1–DT9)</h3><div id="flow-trades"></div></div>
+    <div class="card"><h3>Paper Portfolio</h3><div id="flow-paper"></div></div>
   </div>
-  <div class="card" style="margin-top:1rem">
-    <div class="card-title"><span class="icon">🪦</span> Strategie-Friedhof</div>
-    <div id="strat-graveyard"></div>
-  </div>
-</div>
 
-<!-- LEARNING -->
-<div class="section" id="sec-learning">
-  <div class="grid g3" id="learn-kpis"></div>
-  <div class="grid g2" style="margin-top:1rem">
-    <div class="card"><div class="card-title"><span class="icon">🎯</span> Setup-Performance</div><div id="learn-setup"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">🌍</span> Theme-Performance</div><div id="learn-theme"></div></div>
+  <!-- MACRO -->
+  <div class="section" id="sec-macro">
+    <div class="kpi-grid" id="macro-kpis"></div>
+    <div class="card"><h3>Marktregime</h3><div id="macro-regime"></div></div>
+    <div class="card"><h3>Sentiment</h3><div id="macro-sentiment"></div></div>
   </div>
-  <div class="card" style="margin-top:1rem"><div class="card-title"><span class="icon">📝</span> Lektionen (neueste zuerst)</div><div id="learn-lessons"></div></div>
-  <div class="card" style="margin-top:1rem"><div class="card-title"><span class="icon">🧠</span> Auto-Insights</div><div id="learn-insights"></div></div>
-</div>
 
-<!-- BACKTEST -->
-<div class="section" id="sec-backtest">
-  <div class="grid g2">
-    <div class="card"><div class="card-title"><span class="icon">🚀</span> Momentum (Walk-Forward)</div><div id="bt-mom"></div></div>
-    <div class="card"><div class="card-title"><span class="icon">🔄</span> Mean-Reversion (Walk-Forward)</div><div id="bt-mr"></div></div>
+  <!-- DNA -->
+  <div class="section" id="sec-dna">
+    <div class="card"><h3>Trader Profil</h3><div id="dna-profile"></div></div>
+    <div class="card"><h3>Strategie-DNA</h3><div id="dna-strategies"></div></div>
+    <div class="card"><h3>Regime Performance</h3><div id="dna-regime"></div></div>
   </div>
-  <div class="card" style="margin-top:1rem"><div class="card-title"><span class="icon">📊</span> Benchmark-Vergleich</div>
-    <div class="chart-box"><canvas id="bt-chart"></canvas></div>
-  </div>
-</div>
 
+  <!-- SIGNALS -->
+  <div class="section" id="sec-signals">
+    <div class="card"><h3>Aktive Signale</h3><div id="sig-list"></div></div>
+    <div class="card"><h3>Signal-Statistik</h3><div id="sig-stats"></div></div>
+  </div>
+
+  <!-- RISK -->
+  <div class="section" id="sec-risk">
+    <div class="card"><h3>Circuit Breaker</h3><div id="risk-cb"></div></div>
+    <div class="card"><h3>Sektor-Exposure</h3><div class="chart-box"><canvas id="risk-pie"></canvas></div></div>
+    <div class="card"><h3>Stress Tests</h3><div id="risk-stress"></div></div>
+    <div class="card"><h3>Korrelation</h3><div id="risk-corr"></div></div>
+  </div>
+
+  <!-- PERFORMANCE -->
+  <div class="section" id="sec-perf">
+    <div class="kpi-grid" id="perf-kpis"></div>
+    <div class="card"><h3>Equity Curve</h3><div class="chart-box"><canvas id="perf-equity"></canvas></div></div>
+    <div class="card"><h3>Monthly P&L</h3><div id="perf-monthly"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="card"><h3>Beste Trades</h3><div id="perf-best"></div></div>
+      <div class="card"><h3>Schlechteste Trades</h3><div id="perf-worst"></div></div>
+    </div>
+    <div class="card"><h3>Strategie-Vergleich</h3><div id="perf-strat"></div></div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="section" id="sec-calendar">
+    <div class="card"><h3>Anstehende Events</h3><div id="cal-list"></div></div>
+  </div>
+
+  <!-- WATCHLIST -->
+  <div class="section" id="sec-watchlist">
+    <div class="card"><h3>Watchlist</h3><div id="watch-list"></div></div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="section" id="sec-news">
+    <div class="card"><h3>News Feed</h3><div id="news-list"></div></div>
+  </div>
+
+  <!-- LEARNING -->
+  <div class="section" id="sec-learning">
+    <div class="card"><h3>Setup Performance</h3><div id="learn-setup"></div></div>
+    <div class="card"><h3>Theme Performance</h3><div id="learn-theme"></div></div>
+    <div class="card"><h3>VIX-Regime Performance</h3><div id="learn-vix"></div></div>
+    <div class="card"><h3>Lektionen</h3><div id="learn-lessons"></div></div>
+  </div>
+
+  <!-- BACKTEST -->
+  <div class="section" id="sec-backtest">
+    <div class="kpi-grid" id="bt-kpis"></div>
+    <div class="card"><h3>Momentum Backtest</h3><div id="bt-momentum"></div></div>
+    <div class="card"><h3>Mean Reversion Backtest</h3><div id="bt-mr"></div></div>
+  </div>
 </div>
 
 <script>
 let D={};
-async function load(){try{const r=await fetch('data.json');D=await r.json();render()}catch(e){console.error(e)}}
 
-function tab(t){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sec-'+t).classList.add('active');
-  event.target.closest('.nav-item').classList.add('active');
-}
-
-const fmt=v=>(v>=0?'+':'')+Math.round(v)+'€';
+// Helpers
+const $=id=>document.getElementById(id);
+const fmt=v=>v>=0?'+'+v.toFixed(0)+'€':v.toFixed(0)+'€';
 const pct=v=>(v>=0?'+':'')+v.toFixed(1)+'%';
 const cls=v=>v>=0?'green':'red';
+const esc=s=>(s||'').replace(/</g,'&lt;');
+
+function go(t){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(s=>s.classList.remove('active'));
+  $('sec-'+t)?.classList.add('active');
+  event?.target?.closest('.nav-item')?.classList.add('active');
+}
 
 function render(){
-  const p=D.positions||{}, r=D.risk||{}, perf=D.performance||{}, l=D.learning||{}, bt=D.backtest||{};
-  const open=p.open||[];
-  const totalPnl=perf.total_pnl||0;
-  const openPnl=open.reduce((s,x)=>s+(x.pnl_eur||0),0);
-  const closedN=perf.closed_trades||0;
-  const wr=perf.win_rate||0;
-  const cb=r.circuit_breaker||{};
+  $('loader').style.display='none';
+  const port=D.portfolio||{};
+  const pos=port.positions||[];
+  const cfg=D.config||{};
+  const cfgPos=cfg.positions||[];
+  const risk=D.risk||{};
+  const perf=D.performance||{};
+  const learn=D.learning||{};
+  const bt=D.backtest||{};
+  const dna=D.dna||{};
+  const sig=D.signals||{};
+  const regime=D.regime||{};
+  const news=D.news||[];
+  const senti=D.sentiment||{};
+  const watchlist=cfg.watchlist||[];
+  const earnings=cfg.earnings||[];
+  const closed=cfg.closed||[];
 
-  // Header
-  document.getElementById('h-pnl').className='val '+(totalPnl>=0?'green':'red');
-  document.getElementById('h-pnl').textContent=fmt(totalPnl);
-  document.getElementById('h-open').textContent=open.length;
-  document.getElementById('h-vix').textContent=(cb.details||{}).current_vix||'?';
-  const hcb=document.getElementById('h-cb');
-  if(cb.trading_allowed){hcb.className='cb-indicator cb-ok';hcb.innerHTML='● Trading OK'}
-  else{hcb.className='cb-indicator cb-blocked';hcb.innerHTML='● GESPERRT: '+(cb.breakers_triggered||[]).join(', ')}
-  document.getElementById('nav-pos-count').textContent=open.length;
+  // ── TOP BAR ──
+  const totalPnl=perf.total_closed_pnl||port.total_pnl||0;
+  $('tb-pnl').className='val '+(totalPnl>=0?'green':'red');
+  $('tb-pnl').textContent=fmt(totalPnl);
+  $('tb-open').textContent=pos.length;
+  $('nav-pos').textContent=pos.length;
+  $('nav-watch').textContent=watchlist.length;
 
-  // Overview KPIs
-  document.getElementById('overview-kpis').innerHTML=`
-    <div class="card kpi"><div class="number ${cls(totalPnl)}">${fmt(totalPnl)}</div><div class="sublabel">Realisiert</div></div>
-    <div class="card kpi"><div class="number ${cls(openPnl)}">${fmt(openPnl)}</div><div class="sublabel">Unrealisiert</div></div>
-    <div class="card kpi"><div class="number">${closedN}</div><div class="sublabel">Geschlossene Trades</div></div>
-    <div class="card kpi"><div class="number ${wr>45?'green':wr>35?'amber':'red'}">${(wr*100).toFixed(0)}%</div><div class="sublabel">Win Rate</div></div>`;
+  const factors=regime.factors||{};
+  $('tb-vix').textContent=(factors.vix||'?');
+  $('tb-vix').className='val '+((factors.vix||0)>25?'amber':(factors.vix||0)>20?'':'green');
 
-  // Equity curve (overview + performance)
+  const cb=risk.circuit_breaker||{};
+  const cbEl=$('tb-cb');
+  if(cb.trading_allowed){cbEl.innerHTML='<span class="cb cb-ok">● Trading OK</span>'}
+  else{cbEl.innerHTML='<span class="cb cb-blocked">● BLOCKED</span>'}
+
+  $('tb-regime').innerHTML='<span class="regime regime-'+(regime.regime||'RANGE')+'">'+(regime.regime||'?')+' / '+(regime.velocity||'')+'</span>';
+
+  // ── OVERVIEW ──
+  const openPnl=pos.reduce((s,x)=>s+(x.pnl_eur||0),0);
+  const wr=perf.total_closed_trades>0?(perf.strategy_comparison||[]).reduce((s,x)=>s+((x.wins||0)),0)/perf.total_closed_trades:0;
+  $('ov-kpis').innerHTML=`
+    <div class="card kpi"><div class="num ${cls(totalPnl)}">${fmt(totalPnl)}</div><div class="label">Realisiert</div></div>
+    <div class="card kpi"><div class="num ${cls(openPnl)}">${fmt(openPnl)}</div><div class="label">Unrealisiert</div></div>
+    <div class="card kpi"><div class="num">${perf.total_closed_trades||0}</div><div class="label">Geschlossen</div></div>
+    <div class="card kpi"><div class="num">${pos.length}</div><div class="label">Offen</div></div>
+    <div class="card kpi"><div class="num amber">${factors.vix||'?'}</div><div class="label">VIX</div></div>
+    <div class="card kpi"><div class="num">${(factors.wti||0).toFixed(1)}</div><div class="label">WTI $</div></div>`;
+
+  // Top positions
+  const sorted=[...pos].sort((a,b)=>(b.pnl_eur||0)-(a.pnl_eur||0));
+  $('ov-top').innerHTML=sorted.slice(0,5).map(p=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono">${esc(p.ticker)}</span><span class="${cls(p.pnl_pct||0)}">${pct(p.pnl_pct||0)}</span></div>`).join('')||'<div style="color:var(--dim)">Keine Positionen</div>';
+
+  // Overview signals
+  const sigList=(sig.signals||[]).slice(0,5);
+  $('ov-signals').innerHTML=sigList.map(s=>`<div class="signal-card ${(s.direction||'').toLowerCase().includes('long')?'buy':'sell'}"><strong>${esc(s.ticker)}</strong> — ${esc(s.strategy||s.type||'')} <span class="${(s.direction||'').includes('LONG')?'green':'red'}">${esc(s.direction||'')}</span></div>`).join('')||'<div style="color:var(--dim)">Keine aktiven Signale</div>';
+
+  // Equity curve
   const ec=perf.equity_curve||[];
   if(ec.length>1){
     ['ov-equity','perf-equity'].forEach(id=>{
-      const ctx=document.getElementById(id);
-      if(!ctx)return;
-      new Chart(ctx,{type:'line',data:{labels:ec.map(e=>e.date||''),datasets:[{
-        data:ec.map(e=>e.cumulative_pnl||0),borderColor:'#06b6d4',backgroundColor:'rgba(6,182,212,0.08)',
-        fill:true,tension:0.3,pointRadius:0,borderWidth:2}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{x:{ticks:{color:'#64748b',maxTicksLimit:8,font:{size:10}},grid:{display:false}},
-        y:{ticks:{color:'#64748b',callback:v=>v+'€'},grid:{color:'rgba(30,41,59,0.5)'}}}}});
+      const ctx=$(id);if(!ctx)return;
+      new Chart(ctx,{type:'line',data:{labels:ec.map(e=>e.date||''),datasets:[{data:ec.map(e=>e.cumulative_pnl||0),borderColor:'#06b6d4',backgroundColor:'rgba(6,182,212,0.08)',fill:true,tension:0.3,pointRadius:0,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b',maxTicksLimit:8,font:{size:10}},grid:{display:false}},y:{ticks:{color:'#64748b',callback:v=>v+'€'},grid:{color:'rgba(30,41,59,0.5)'}}}}});
     });
   }
 
-  // Activity feed
-  const trades=perf.recent_trades||ec.slice(-10).reverse();
-  document.getElementById('ov-feed').innerHTML=trades.map(t=>{
-    const c=t.pnl_eur>=0?'win':'loss';
-    return `<div class="feed-item ${c}"><div class="ts">${t.date||''}</div><b>${t.ticker||''}</b> ${t.strategy||''} — <span class="${cls(t.pnl_eur||0)}">${fmt(t.pnl_eur||0)}</span></div>`;
-  }).join('')||'<div style="color:var(--muted)">Keine Trades</div>';
+  // ── POSITIONS ──
+  $('pos-table').innerHTML=pos.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Aktuell</th><th>P&L</th><th>Stop</th><th>Tage</th></tr>${pos.map(p=>`<tr><td class="mono"><strong>${esc(p.ticker)}</strong></td><td>${esc(p.strategy)}</td><td class="mono">${(p.entry||0).toFixed(2)}€</td><td class="mono">${(p.current||p.entry||0).toFixed(2)}€</td><td class="mono ${cls(p.pnl_pct||0)}">${pct(p.pnl_pct||0)}</td><td class="mono">${p.stop?p.stop.toFixed(2)+'€':'—'}</td><td>${p.days_held||'?'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine offenen Positionen</div>';
 
-  // Best/Worst strategy
-  const strats=perf.strategies||[];
-  const best=strats.reduce((a,b)=>(a.total_pnl||0)>(b.total_pnl||0)?a:b,{});
-  const worst=strats.reduce((a,b)=>(a.total_pnl||0)<(b.total_pnl||0)?a:b,{});
-  document.getElementById('ov-best').innerHTML=best.strategy?`<div class="kpi"><div class="number green">${best.strategy}</div><div class="sublabel">${fmt(best.total_pnl||0)} | WR ${((best.win_rate||0)*100).toFixed(0)}% | Sharpe ${(best.sharpe||0).toFixed(2)}</div></div>`:'—';
-  document.getElementById('ov-worst').innerHTML=worst.strategy?`<div class="kpi"><div class="number red">${worst.strategy}</div><div class="sublabel">${fmt(worst.total_pnl||0)} | WR ${((worst.win_rate||0)*100).toFixed(0)}% | Sharpe ${(worst.sharpe||0).toFixed(2)}</div></div>`:'—';
+  // Closed
+  const closedTrades=perf.best_trades||[];
+  const worstTrades=perf.worst_trades||[];
+  const allClosed=[...closedTrades,...worstTrades].sort((a,b)=>new Date(b.exit_date||0)-new Date(a.exit_date||0));
+  $('pos-closed').innerHTML=allClosed.length?`<table><tr><th>Ticker</th><th>P&L</th><th>Exit</th></tr>${allClosed.slice(0,10).map(t=>`<tr><td class="mono">${esc(t.ticker)}</td><td class="mono ${cls(t.pnl_eur||0)}">${fmt(t.pnl_eur||0)}</td><td>${esc(t.exit_date||'')}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine geschlossenen Trades</div>';
 
-  // Top risk
-  const stress=r.stress_tests||[];
-  const topStress=stress[0]||{};
-  document.getElementById('ov-toprisk').innerHTML=`<div class="kpi"><div class="number red">${fmt(topStress.total_loss||0)}</div><div class="sublabel">${topStress.name||'Kein Stress-Test'}</div></div>`;
+  // ── FLOW / PAPER LAB ──
+  const dtrades=(dna.recent_day_trades||[]);
+  const openDT=dtrades.filter(t=>t.status==='OPEN');
+  const closedDT=dtrades.filter(t=>t.status!=='OPEN');
+  const dtPnl=closedDT.reduce((s,t)=>s+(t.pnl_eur||0),0);
+  const dtWins=closedDT.filter(t=>(t.pnl_eur||0)>0).length;
+  const dtWR=closedDT.length>0?(dtWins/closedDT.length*100):0;
 
-  // Positions
-  document.getElementById('pos-tbody').innerHTML=open.map(pos=>`<tr>
-    <td class="ticker-cell">${pos.ticker}</td><td><span class="badge b-blue">${pos.strategy||''}</span></td>
-    <td>${pos.geo_theme||'—'}</td><td>${(pos.entry_price||0).toFixed(2)}€</td>
-    <td>${(pos.current_price||pos.entry_price||0).toFixed(2)}€</td>
-    <td class="${cls(pos.pnl_eur||0)}"><b>${fmt(pos.pnl_eur||0)}</b> (${pct(pos.pnl_pct||0)})</td>
-    <td>${(pos.stop||0).toFixed(2)}€</td>
-    <td>${pos.risk_eur?Math.round(pos.risk_eur)+'€':'—'}</td>
-    <td>${pos.holding_days||0}d</td></tr>`).join('');
+  $('flow-kpis').innerHTML=`
+    <div class="card kpi"><div class="num">${openDT.length}</div><div class="label">Offen</div></div>
+    <div class="card kpi"><div class="num">${closedDT.length}</div><div class="label">Geschlossen</div></div>
+    <div class="card kpi"><div class="num ${cls(dtPnl)}">${fmt(dtPnl)}</div><div class="label">Day Trade P&L</div></div>
+    <div class="card kpi"><div class="num ${dtWR>45?'green':dtWR>35?'amber':'red'}">${dtWR.toFixed(0)}%</div><div class="label">Win Rate</div></div>`;
 
-  // Risk - Circuit Breaker
-  const cbd=cb.details||{};
-  document.getElementById('risk-cb').innerHTML=`
-    <div style="font-size:1.5rem;margin:1rem 0">${cb.trading_allowed?'✅ Trading erlaubt':'🚨 TRADING GESPERRT'}</div>
-    <div class="grid g2" style="gap:0.5rem">
-      <div>Daily P&L: <b class="${cls(cbd.daily_pnl||0)}">${fmt(cbd.daily_pnl||0)}</b> / ${cb.limits?.daily_loss_limit||'-500'}€</div>
-      <div>Weekly P&L: <b class="${cls(cbd.weekly_pnl||0)}">${fmt(cbd.weekly_pnl||0)}</b> / ${cb.limits?.weekly_loss_limit||'-1500'}€</div>
-      <div>Consec Losses: <b>${cbd.consecutive_losses||0}</b> / 5</div>
-      <div>VIX: <b>${cbd.current_vix||'?'}</b> / 45 (panic)</div>
-    </div>`;
+  $('flow-trades').innerHTML=dtrades.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Richtung</th><th>Entry</th><th>P&L</th><th>Status</th></tr>${dtrades.slice(0,30).map(t=>`<tr><td class="mono"><strong>${esc(t.ticker)}</strong></td><td>${esc(t.strategy||t.dt_strategy||'')}</td><td>${esc(t.direction||'LONG')}</td><td class="mono">${(t.entry_price||0).toFixed(2)}€</td><td class="mono ${cls(t.pnl_eur||0)}">${t.pnl_eur!=null?fmt(t.pnl_eur):'—'}</td><td>${t.status==='OPEN'?'<span class="cyan">OPEN</span>':'<span class="dim">'+esc(t.status)+'</span>'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Day Trades</div>';
+
+  // Paper portfolio from DNA
+  const paperPos=dna.open_positions||[];
+  $('flow-paper').innerHTML=paperPos.length?`<table><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>P&L</th></tr>${paperPos.map(p=>`<tr><td class="mono">${esc(p.ticker)}</td><td>${esc(p.strategy)}</td><td class="mono">${(p.entry_price||0).toFixed(2)}€</td><td class="mono ${cls(p.pnl_pct||0)}">${p.pnl_pct!=null?pct(p.pnl_pct):'—'}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Paper Positionen</div>';
+
+  // ── MACRO ──
+  $('macro-kpis').innerHTML=`
+    <div class="card kpi"><div class="num amber">${(factors.vix||0).toFixed(1)}</div><div class="label">VIX</div></div>
+    <div class="card kpi"><div class="num">${(factors.wti||0).toFixed(1)}</div><div class="label">WTI $</div></div>
+    <div class="card kpi"><div class="num">${(factors.gold||0).toFixed(0)}</div><div class="label">Gold $</div></div>
+    <div class="card kpi"><div class="num">${(factors.dxy||0).toFixed(1)}</div><div class="label">DXY</div></div>
+    <div class="card kpi"><div class="num">${(factors.us10y||0).toFixed(2)}%</div><div class="label">US 10Y</div></div>
+    <div class="card kpi"><div class="num">${(factors.us2y||0).toFixed(2)}%</div><div class="label">US 2Y</div></div>
+    <div class="card kpi"><div class="num ${(factors.sp500_vs_ma200||0)>=0?'green':'red'}">${((factors.sp500_vs_ma200||0)*100).toFixed(1)}%</div><div class="label">S&P vs MA200</div></div>`;
+
+  $('macro-regime').innerHTML=`
+    <div style="font-size:1.1rem;margin-bottom:8px"><span class="regime regime-${regime.regime||'RANGE'}">${regime.regime||'?'}</span> / <strong>${regime.velocity||'?'}</strong></div>
+    <div style="color:var(--dim);font-size:0.8rem">Position Factor: ${(regime.config||{}).position_factor||'?'} | Stop Factor: ${(regime.config||{}).stop_factor||'?'}</div>
+    <div style="color:var(--dim);font-size:0.8rem;margin-top:4px">Erlaubte Strategien: ${((regime.config||{}).allowed_strategies||[]).join(', ')||'alle'}</div>`;
+
+  // Sentiment
+  const sentiScore=senti.portfolio_score||0;
+  const sentiResults=senti.results||{};
+  $('macro-sentiment').innerHTML=`
+    <div style="font-size:1.4rem;font-weight:700;margin-bottom:8px" class="${sentiScore>0.3?'green':sentiScore<-0.3?'red':'amber'}">Portfolio Sentiment: ${sentiScore.toFixed(2)}</div>
+    ${Object.entries(sentiResults).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span class="mono">${esc(k)}</span><span class="${(v||0)>0.3?'green':(v||0)<-0.3?'red':'amber'}">${(v||0).toFixed(2)}</span></div>`).join('')}`;
+
+  // ── DNA ──
+  const profile=dna.trader_profile||{};
+  $('dna-profile').innerHTML=`
+    <div class="kpi-grid">
+      <div class="card kpi"><div class="num">${profile.total_trades||0}</div><div class="label">Total Trades</div></div>
+      <div class="card kpi"><div class="num ${(profile.win_rate||0)>0.45?'green':'red'}">${((profile.win_rate||0)*100).toFixed(0)}%</div><div class="label">Win Rate</div></div>
+      <div class="card kpi"><div class="num">${(profile.avg_hold_days||0).toFixed(1)}</div><div class="label">Ø Haltezeit (Tage)</div></div>
+      <div class="card kpi"><div class="num ${(profile.sharpe||0)>0?'green':'red'}">${(profile.sharpe||0).toFixed(2)}</div><div class="label">Sharpe</div></div>
+    </div>
+    <div style="color:var(--dim);font-size:0.8rem">${esc(profile.style||'')} | Profit Factor: ${(profile.profit_factor||0).toFixed(2)}</div>`;
+
+  const dnaStrats=dna.strategies||{};
+  $('dna-strategies').innerHTML=Object.entries(dnaStrats).map(([k,v])=>`<div class="dna-card"><strong>${esc(k)}</strong> — ${esc(v.name||'')}<br><span class="dna-stat">Trades: <span class="v">${v.trades||0}</span></span><span class="dna-stat">WR: <span class="v ${(v.win_rate||0)>0.45?'green':'red'}">${((v.win_rate||0)*100).toFixed(0)}%</span></span><span class="dna-stat">P&L: <span class="v ${cls(v.total_pnl||0)}">${fmt(v.total_pnl||0)}</span></span><span class="dna-stat">Sharpe: <span class="v">${(v.sharpe||0).toFixed(2)}</span></span></div>`).join('')||'<div style="color:var(--dim)">Keine DNA-Daten</div>';
+
+  const dnaRegime=dna.regime_performance||{};
+  $('dna-regime').innerHTML=Object.entries(dnaRegime).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><span><strong>${esc(k)}</strong></span><span>Trades: ${v.trades||0} | WR: ${((v.win_rate||0)*100).toFixed(0)}% | PF: ${(v.profit_factor||0).toFixed(2)}</span></div>`).join('')||'<div style="color:var(--dim)">Keine Regime-Daten</div>';
+
+  // ── SIGNALS ──
+  const allSigs=sig.signals||[];
+  $('sig-list').innerHTML=allSigs.length?allSigs.slice(0,30).map(s=>`<div class="signal-card ${(s.direction||'').includes('LONG')?'buy':'sell'}"><div style="display:flex;justify-content:space-between"><strong>${esc(s.ticker)}</strong><span class="mono">${esc(s.price?s.price.toFixed(2)+'€':'')}</span></div><div style="font-size:0.78rem;color:var(--dim)">${esc(s.strategy||s.type||'')} — ${esc(s.direction||'')} — ${esc(s.reason||'')}</div></div>`).join(''):'<div style="color:var(--dim)">Keine aktiven Signale</div>';
+
+  const sigStats=sig.stats||{};
+  $('sig-stats').innerHTML=`<div class="kpi-grid">
+    <div class="card kpi"><div class="num">${sigStats.total||0}</div><div class="label">Total Signale</div></div>
+    <div class="card kpi"><div class="num green">${sigStats.long||0}</div><div class="label">Long</div></div>
+    <div class="card kpi"><div class="num red">${sigStats.short||0}</div><div class="label">Short</div></div>
+  </div>`;
+
+  // ── RISK ──
+  $('risk-cb').innerHTML=`<div class="${cb.trading_allowed?'cb cb-ok':'cb cb-blocked'}">${cb.trading_allowed?'● Trading erlaubt':'● GESPERRT: '+(cb.breakers_triggered||[]).join(', ')}</div>
+    <div style="margin-top:10px;font-size:0.8rem;color:var(--dim)">${JSON.stringify(cb.details||{},null,2).replace(/\n/g,'<br>').replace(/ /g,'&nbsp;')}</div>`;
+
+  // Exposure pie
+  const exposure=risk.exposure||{};
+  const sectors=Object.entries(exposure.by_sector||{});
+  if(sectors.length){
+    const colors=['#06b6d4','#10b981','#f59e0b','#ef4444','#a78bfa','#f472b6','#6366f1','#14b8a6'];
+    new Chart($('risk-pie'),{type:'doughnut',data:{labels:sectors.map(s=>s[0]),datasets:[{data:sectors.map(s=>s[1]),backgroundColor:colors.slice(0,sectors.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11}}}}}});
+  }
 
   // Stress tests
-  document.getElementById('risk-stress').innerHTML=stress.map(s=>{
-    const sev=s.severity==='critical'?'red':s.severity==='high'?'amber':'green';
-    const w=Math.min(Math.abs(s.total_loss||0)/7000*100,100);
-    return `<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:0.82rem">
-      <span>${s.name}</span><span class="${sev}" style="font-weight:700">${fmt(s.total_loss||0)}</span></div>
-      <div class="prog-wrap"><div class="prog-bar" style="width:${w}%;background:var(--${sev})"></div></div></div>`;
-  }).join('');
+  const stress=risk.stress_tests||[];
+  $('risk-stress').innerHTML=stress.length?`<table><tr><th>Szenario</th><th>Impact</th></tr>${stress.map(s=>`<tr><td>${esc(s.scenario||s.name)}</td><td class="mono ${cls(s.impact||s.portfolio_impact||0)}">${fmt(s.impact||s.portfolio_impact||0)}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Stress Tests</div>';
 
-  // Exposure bars
-  renderExposure('risk-sector', r.exposure?.by_sector||{}, 40);
-  renderExposure('risk-region', r.exposure?.by_region||{}, 60);
+  // Correlation
+  const corr=risk.correlation||{};
+  $('risk-corr').innerHTML=corr.matrix?`<div style="font-size:0.78rem;color:var(--dim);white-space:pre;overflow-x:auto">${JSON.stringify(corr.matrix,null,2)}</div>`:'<div style="color:var(--dim)">'+JSON.stringify(corr).slice(0,500)+'</div>';
 
-  // Performance KPIs
-  const sharpe=perf.sharpe||0;
-  document.getElementById('perf-kpis').innerHTML=`
-    <div class="card kpi"><div class="number">${closedN}</div><div class="sublabel">Trades</div></div>
-    <div class="card kpi"><div class="number ${cls(totalPnl)}">${fmt(totalPnl)}</div><div class="sublabel">P&L</div></div>
-    <div class="card kpi"><div class="number ${sharpe>0?'green':'red'}">${sharpe.toFixed(2)}</div><div class="sublabel">Sharpe Ratio</div></div>
-    <div class="card kpi"><div class="number">${(perf.profit_factor||0).toFixed(2)}</div><div class="sublabel">Profit Factor</div></div>`;
+  // ── PERFORMANCE ──
+  const closedN=perf.total_closed_trades||0;
+  const closedPnl=perf.total_closed_pnl||0;
+  const stratComp=perf.strategy_comparison||[];
+  const totalWins=stratComp.reduce((s,x)=>s+(x.wins||0),0);
+  const wrPct=closedN>0?(totalWins/closedN*100):0;
 
-  // Top/Worst trades
-  const sorted=ec.slice().sort((a,b)=>(b.pnl_eur||0)-(a.pnl_eur||0));
-  document.getElementById('perf-top').innerHTML=sorted.slice(0,5).map(t=>
-    `<div class="feed-item win"><b>${t.ticker||''}</b> ${t.strategy||''} — <span class="green"><b>${fmt(t.pnl_eur||0)}</b></span> (${pct(t.pnl_pct||0)})</div>`).join('');
-  document.getElementById('perf-worst').innerHTML=sorted.slice(-5).reverse().map(t=>
-    `<div class="feed-item loss"><b>${t.ticker||''}</b> ${t.strategy||''} — <span class="red"><b>${fmt(t.pnl_eur||0)}</b></span> (${pct(t.pnl_pct||0)})</div>`).join('');
+  $('perf-kpis').innerHTML=`
+    <div class="card kpi"><div class="num ${cls(closedPnl)}">${fmt(closedPnl)}</div><div class="label">Realisiert</div></div>
+    <div class="card kpi"><div class="num">${closedN}</div><div class="label">Trades</div></div>
+    <div class="card kpi"><div class="num ${wrPct>45?'green':'red'}">${wrPct.toFixed(0)}%</div><div class="label">Win Rate</div></div>
+    <div class="card kpi"><div class="num">${totalWins}</div><div class="label">Wins</div></div>`;
 
-  // Strategies table
-  document.getElementById('strat-tbody').innerHTML=strats.map(s=>{
-    const v=s.verdict||'?';
-    const bc=v==='KILL'?'b-red':v==='REVIEW'?'b-amber':v==='KEEP'?'b-green':'b-blue';
-    return `<tr><td class="ticker-cell">${s.strategy}</td><td>${s.trades}</td>
-      <td>${((s.win_rate||0)*100).toFixed(0)}%</td><td class="${cls(s.total_pnl||0)}">${fmt(s.total_pnl||0)}</td>
-      <td>${(s.sharpe||0).toFixed(2)}</td><td>${(s.profit_factor||0).toFixed(2)}</td>
-      <td>${s.p_value!=null?s.p_value.toFixed(3):'—'}</td>
-      <td><span class="badge ${bc}">${v}</span></td></tr>`;}).join('');
+  // Monthly P&L
+  const monthly=perf.monthly_pnl||{};
+  $('perf-monthly').innerHTML=Object.keys(monthly).length?`<table><tr><th>Monat</th><th>P&L</th><th>Trades</th></tr>${Object.entries(monthly).sort().map(([m,v])=>`<tr><td>${m}</td><td class="mono ${cls(v.pnl||0)}">${fmt(v.pnl||0)}</td><td>${v.trades||0}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine monatlichen Daten</div>';
 
-  // Graveyard
-  const graveyard=D.graveyard||[
-    {name:'DT3',reason:'11% WR, Sharpe -12.55, p=1.00',pnl:-415,trades:9,date:'2026-03-26'},
-    {name:'DT4',reason:'43% WR, Sharpe -4.38, p=0.93',pnl:-725,trades:102,date:'2026-03-26'}
-  ];
-  document.getElementById('strat-graveyard').innerHTML=graveyard.map(g=>
-    `<div class="grave"><div class="name">🪦 ${g.name} <span style="color:var(--muted);font-weight:400">— beerdigt ${g.date}</span></div>
-    <div style="margin-top:4px;font-size:0.82rem">${g.reason}</div>
-    <div style="margin-top:2px;font-size:0.82rem">P&L: <span class="red">${fmt(g.pnl)}</span> | ${g.trades} Trades</div></div>`).join('');
+  // Best/Worst
+  const renderTrades=(trades,el)=>{el.innerHTML=trades.length?`<table><tr><th>Ticker</th><th>P&L</th><th>%</th></tr>${trades.map(t=>`<tr><td class="mono">${esc(t.ticker)}</td><td class="mono ${cls(t.pnl_eur||0)}">${fmt(t.pnl_eur||0)}</td><td class="mono ${cls(t.pnl_pct||0)}">${pct(t.pnl_pct||0)}</td></tr>`).join('')}</table>`:'—'};
+  renderTrades(perf.best_trades||[],$('perf-best'));
+  renderTrades(perf.worst_trades||[],$('perf-worst'));
 
-  // Learning
-  const ta=l.thesis_accuracy||{};
-  const rated=(ta.correct||0)+(ta.incorrect||0);
-  const thPct=rated>0?(ta.correct/rated*100):0;
-  document.getElementById('learn-kpis').innerHTML=`
-    <div class="card kpi"><div class="number ${thPct>50?'green':'amber'}">${rated>0?thPct.toFixed(0)+'%':'—'}</div><div class="sublabel">These-Trefferquote</div></div>
-    <div class="card kpi"><div class="number">${l.total_trades||0}</div><div class="sublabel">SA Trades</div></div>
-    <div class="card kpi"><div class="number ${cls(l.total_pnl||0)}">${fmt(l.total_pnl||0)}</div><div class="sublabel">SA P&L</div></div>`;
+  // Strategy comparison
+  $('perf-strat').innerHTML=stratComp.length?`<table><tr><th>Strategie</th><th>Trades</th><th>Wins</th><th>P&L</th><th>WR</th></tr>${stratComp.map(s=>`<tr><td><strong>${esc(s.strategy)}</strong></td><td>${s.trades||0}</td><td>${s.wins||0}</td><td class="mono ${cls(s.total_pnl||0)}">${fmt(s.total_pnl||0)}</td><td class="${(s.win_rate||0)>0.45?'green':'red'}">${((s.win_rate||0)*100).toFixed(0)}%</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Strategie-Daten</div>';
 
-  renderBars('learn-setup', l.by_setup||{});
-  renderBars('learn-theme', l.by_theme||{});
+  // ── CALENDAR ──
+  const events=[...earnings].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  $('cal-list').innerHTML=events.length?events.map(e=>`<div class="cal-item"><div class="cal-date">${esc(e.date)}</div><div class="cal-type">${esc(e.type||'event')}</div><div><strong>${esc(e.name||e.ticker)}</strong> (${esc(e.ticker)})</div></div>`).join(''):'<div style="color:var(--dim)">Keine Events geplant</div>';
 
-  document.getElementById('learn-lessons').innerHTML=(l.lessons||[]).slice(-10).reverse().map(le=>
-    `<div class="feed-item"><div class="ts">${le.date} — ${le.ticker} (${fmt(le.pnl||0)})</div>${le.lesson}</div>`
-  ).join('')||'<div style="color:var(--muted)">Erste SA-Trades starten die Lektionen-Datenbank.</div>';
+  // ── WATCHLIST ──
+  $('watch-list').innerHTML=watchlist.length?watchlist.map(w=>`<div class="watch-card"><div><div class="ticker">${esc(w.ticker)}</div><div style="font-size:0.82rem">${esc(w.name||'')}</div></div><div style="text-align:right"><div class="range mono">Entry: ${w.entryMin||'?'}–${w.entryMax||'?'}€</div><div style="font-size:0.7rem;color:var(--dim)">Stop: ${w.stop||'?'}€</div><div style="font-size:0.7rem;color:var(--dim)">${esc(w.note||'')}</div></div></div>`).join(''):'<div style="color:var(--dim)">Watchlist leer</div>';
 
-  document.getElementById('learn-insights').innerHTML=(l.meta_insights||[]).map(i=>
-    `<div style="padding:6px 0;font-size:0.85rem">${i}</div>`).join('')||'<div style="color:var(--muted)">Insights ab 5+ geschlossenen SA-Trades.</div>';
+  // ── NEWS ──
+  $('news-list').innerHTML=news.length?news.map(n=>`<div class="news-item"><div class="time">${esc(n.published||n.date||'')}</div><div class="title">${n.url?'<a href="'+esc(n.url)+'" target="_blank">'+esc(n.title)+'</a>':esc(n.title)}</div><div class="source">${esc(n.source||'')}</div></div>`).join(''):'<div style="color:var(--dim)">Keine News</div>';
 
-  // Backtest
-  renderBT('bt-mom', bt.momentum||{});
-  renderBT('bt-mr', bt.mean_reversion||{});
+  // ── LEARNING ──
+  const setupPerf=learn.setup_performance||{};
+  $('learn-setup').innerHTML=Object.keys(setupPerf).length?`<table><tr><th>Setup</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>${Object.entries(setupPerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td class="${(v.win_rate||0)>0.45?'green':'red'}">${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.avg_pnl||0)}">${(v.avg_pnl||0).toFixed(1)}€</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Setup-Daten</div>';
 
-  // Benchmark chart
-  const bmk=bt.benchmark||{};
-  if(bmk.spy_return!=null){
-    const momPnl=(bt.momentum?.aggregate?.total_pnl)||0;
-    const mrPnl=(bt.mean_reversion?.aggregate?.total_pnl)||0;
-    new Chart(document.getElementById('bt-chart'),{type:'bar',
-      data:{labels:['Momentum','Mean-Rev','SPY B&H','DAX B&H'],
-      datasets:[{data:[momPnl,mrPnl,bmk.spy_return*250||0,bmk.dax_return*250||0],
-        backgroundColor:['#06b6d4','#8b5cf6','#64748b','#64748b'],borderRadius:6}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{y:{ticks:{color:'#64748b',callback:v=>v+'€'},grid:{color:'rgba(30,41,59,0.5)'}},
-        x:{ticks:{color:'#64748b'}}}}});
-  }
+  const themePerf=learn.theme_performance||{};
+  $('learn-theme').innerHTML=Object.keys(themePerf).length?`<table><tr><th>Theme</th><th>Trades</th><th>WR</th><th>P&L</th></tr>${Object.entries(themePerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td>${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.total_pnl||0)}">${fmt(v.total_pnl||0)}</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine Theme-Daten</div>';
+
+  const vixPerf=learn.vix_performance||{};
+  $('learn-vix').innerHTML=Object.keys(vixPerf).length?`<table><tr><th>VIX Range</th><th>Trades</th><th>WR</th><th>Avg P&L</th></tr>${Object.entries(vixPerf).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.count||0}</td><td>${((v.win_rate||0)*100).toFixed(0)}%</td><td class="mono ${cls(v.avg_pnl||0)}">${(v.avg_pnl||0).toFixed(1)}€</td></tr>`).join('')}</table>`:'<div style="color:var(--dim)">Keine VIX-Daten</div>';
+
+  const lessons=learn.lessons||[];
+  $('learn-lessons').innerHTML=lessons.length?lessons.map(l=>`<div style="padding:8px 0;border-bottom:1px solid rgba(30,41,59,0.3)"><strong>${esc(l.title||l.date||'')}</strong><div style="font-size:0.82rem;color:var(--dim)">${esc(l.text||l.lesson||JSON.stringify(l))}</div></div>`).join(''):'<div style="color:var(--dim)">Keine Lektionen</div>';
+
+  // ── BACKTEST ──
+  const mom=bt.momentum||{};
+  const mr=bt.mean_reversion||{};
+  $('bt-kpis').innerHTML=`
+    <div class="card kpi"><div class="num">${(bt.tickers_used||[]).length}</div><div class="label">Ticker getestet</div></div>
+    <div class="card kpi"><div class="num ${cls(mom.total_return||0)}">${pct(mom.total_return||0)}</div><div class="label">Momentum Return</div></div>
+    <div class="card kpi"><div class="num ${cls(mr.total_return||0)}">${pct(mr.total_return||0)}</div><div class="label">Mean Rev Return</div></div>`;
+
+  const renderBT=(data,el)=>{el.innerHTML=`<div class="kpi-grid"><div class="card kpi"><div class="num">${data.trades||0}</div><div class="label">Trades</div></div><div class="card kpi"><div class="num ${(data.win_rate||0)>0.45?'green':'red'}">${((data.win_rate||0)*100).toFixed(0)}%</div><div class="label">Win Rate</div></div><div class="card kpi"><div class="num">${(data.sharpe||0).toFixed(2)}</div><div class="label">Sharpe</div></div><div class="card kpi"><div class="num">${(data.max_drawdown||0).toFixed(1)}%</div><div class="label">Max DD</div></div></div>`};
+  renderBT(mom,$('bt-momentum'));
+  renderBT(mr,$('bt-mr'));
 }
 
-function renderExposure(id, data, limit){
-  const el=document.getElementById(id);
-  const entries=Object.entries(data).sort((a,b)=>(b[1].pct||0)-(a[1].pct||0));
-  const colors=['#06b6d4','#10b981','#f59e0b','#8b5cf6','#ef4444','#ec4899','#6366f1'];
-  el.innerHTML=entries.map(([k,v],i)=>{
-    const pctVal=v.pct||0;
-    const over=pctVal>limit;
-    return `<div class="exp-row"><div class="exp-label">${k}</div>
-      <div class="exp-bar-wrap"><div class="exp-bar" style="width:${Math.min(pctVal,100)}%;background:${over?'var(--red)':colors[i%7]}">${pctVal>8?pctVal.toFixed(0)+'%':''}</div>
-      <div class="exp-limit" style="left:${limit}%"></div></div>
-      <div class="exp-val ${over?'red':''}">${pctVal.toFixed(1)}%</div></div>`;
-  }).join('');
+// Load
+async function load(){
+  try{
+    // Try to load fresh data from APIs
+    const [configRes,dnaRes,sigRes,newsRes]=await Promise.allSettled([
+      fetch('/api/config').then(r=>r.json()),
+      fetch('/api/dna').then(r=>r.json()),
+      fetch('/api/signals').then(r=>r.json()),
+      fetch('/api/news').then(r=>r.json())
+    ]);
+    if(configRes.status==='fulfilled'){
+      D.config=D.config||{};
+      Object.assign(D.config,configRes.value);
+    }
+    if(dnaRes.status==='fulfilled') D.dna=dnaRes.value;
+    if(sigRes.status==='fulfilled') D.signals=sigRes.value;
+    if(newsRes.status==='fulfilled'){
+      const nd=newsRes.value;
+      D.news=nd.articles||nd;
+    }
+  }catch(e){console.warn('API fetch failed, using embedded data',e)}
+  render();
 }
-
-function renderBars(id, data){
-  const el=document.getElementById(id);
-  const entries=Object.entries(data);
-  if(!entries.length){el.innerHTML='<div style="color:var(--muted)">Noch keine Daten</div>';return}
-  el.innerHTML=entries.map(([k,v])=>{
-    const pnl=v.pnl||0;
-    return `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:0.82rem;border-bottom:1px solid var(--border)">
-      <span>${k}</span><span>${v.trades||0} trades | <span class="${cls(pnl)}">${fmt(pnl)}</span></span></div>`;
-  }).join('');
-}
-
-function renderBT(id, data){
-  const el=document.getElementById(id);
-  const agg=data.aggregate||{};
-  if(!agg.total_trades){el.innerHTML='<div style="color:var(--muted)">Kein Backtest</div>';return}
-  const oos=data.out_of_sample_valid;
-  el.innerHTML=`
-    <div class="grid g2" style="gap:8px;font-size:0.85rem;margin-bottom:1rem">
-      <div>Trades: <b>${agg.total_trades}</b></div><div>Win Rate: <b>${((agg.win_rate||0)*100).toFixed(0)}%</b></div>
-      <div>P&L: <b class="${cls(agg.total_pnl||0)}">${fmt(agg.total_pnl||0)}</b></div><div>Sharpe: <b>${(agg.sharpe||0).toFixed(2)}</b></div>
-      <div>Max DD: <b class="red">${fmt(agg.max_drawdown||0)}</b></div><div>PF: <b>${(agg.profit_factor||0).toFixed(2)}</b></div>
-    </div>
-    <span class="badge ${oos?'b-green':'b-red'}">Out-of-Sample: ${oos?'✅ Valide':'❌ Nicht valide'}</span>`;
-}
-
-load();
 </script>
 </body>
 </html>
