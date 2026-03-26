@@ -725,10 +725,13 @@ def main():
         DT_STATE.write_text(json.dumps(state, indent=2))
         return
 
+    # PAPER TRADING: Circuit Breaker warnt, aber blockiert NICHT
+    # Begründung: Learning ist wichtiger als Paper-Verluste (26.03.2026)
+    # Bei echtem Geld → diesen Block wieder aktivieren!
     if state.get('daily_pnl', 0) <= -500:
-        print(f"  🛑 Daily Loss Limit: {state['daily_pnl']:.0f}€")
-        DT_STATE.write_text(json.dumps(state, indent=2))
-        return
+        print(f"  ⚠️ Daily Loss Warning: {state['daily_pnl']:.0f}€ (Paper: weiter handeln für Learning)")
+        # DT_STATE.write_text(json.dumps(state, indent=2))
+        # return  # DEAKTIVIERT für Paper Trading
 
     hour = now_cet.hour
 
