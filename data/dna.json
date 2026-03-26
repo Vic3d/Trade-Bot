@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ORCL",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 126.4,
-      "stop": 124.88,
-      "target": 124.88,
-      "opened_at": "2026-03-26 14:31",
-      "status": "OPEN"
-    },
-    {
       "ticker": "GOLD",
       "strategy": "DT3",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:31:13.345941Z",
+  "last_sync": "2026-03-26T14:35:13.583500Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT1-CTR",
+      "entry_price": 126.4,
+      "exit_price": 126.39,
+      "entry_date": "2026-03-26 14:31",
+      "exit_date": "2026-03-26 14:35",
+      "pnl_pct": 0.01,
+      "status": "WIN"
+    },
     {
       "ticker": "ZAL.DE",
       "strategy": "DT1",
@@ -643,16 +643,6 @@
       "entry_date": "2026-03-26 01:20",
       "exit_date": "2026-03-26 01:35",
       "pnl_pct": -8.39,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "1211.HK",
-      "strategy": "DT4",
-      "entry_price": 11.76,
-      "exit_price": 11.7,
-      "entry_date": "2026-03-26 01:20",
-      "exit_date": "2026-03-26 01:30",
-      "pnl_pct": -0.48,
       "status": "LOSS"
     }
   ],
