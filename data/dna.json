@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ORCL",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 124.82,
-      "stop": 123.32,
-      "target": 123.32,
-      "opened_at": "2026-03-26 15:33",
-      "status": "OPEN"
-    },
-    {
       "ticker": "BA.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:33:15.779195Z",
+  "last_sync": "2026-03-26T15:35:08.150492Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT2-CTR",
+      "entry_price": 124.82,
+      "exit_price": 124.71,
+      "entry_date": "2026-03-26 15:33",
+      "exit_date": "2026-03-26 15:35",
+      "pnl_pct": 0.09,
+      "status": "WIN"
+    },
     {
       "ticker": "ORCL",
       "strategy": "DT1",
@@ -643,16 +643,6 @@
       "entry_date": "2026-03-26 11:38",
       "exit_date": "2026-03-26 13:50",
       "pnl_pct": -0.4,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "HEI.DE",
-      "strategy": "DT4-CTR",
-      "entry_price": 179.75,
-      "exit_price": 179.65,
-      "entry_date": "2026-03-26 13:33",
-      "exit_date": "2026-03-26 13:35",
-      "pnl_pct": -0.06,
       "status": "LOSS"
     }
   ],
