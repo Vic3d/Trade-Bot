@@ -317,7 +317,7 @@
       "strategy": "DT3",
       "trade_type": "day_trade",
       "entry": 34.67,
-      "stop": 34.25,
+      "stop": 34.67,
       "target": 36.69,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -443,7 +443,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T13:15:43.102540Z",
+  "last_sync": "2026-03-26T13:20:11.864351Z",
   "recent_day_trades": [
     {
       "ticker": "PUM.DE",
