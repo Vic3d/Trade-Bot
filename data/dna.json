@@ -303,16 +303,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "HAL",
-      "strategy": "DT9",
-      "trade_type": "day_trade",
-      "entry": 34.32,
-      "stop": 33.98,
-      "target": 34.6,
-      "opened_at": "2026-03-26 15:45",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ORCL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -443,8 +433,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T19:05:29.283369Z",
+  "last_sync": "2026-03-26T19:10:27.991315Z",
   "recent_day_trades": [
+    {
+      "ticker": "HAL",
+      "strategy": "DT9",
+      "entry_price": 34.32,
+      "exit_price": 33.97,
+      "entry_date": "2026-03-26 15:45",
+      "exit_date": "2026-03-26 19:10",
+      "pnl_pct": -1.02,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOOGL",
       "strategy": "DT9-CTR",
@@ -633,16 +633,6 @@
       "entry_date": "2026-03-26 15:10",
       "exit_date": "2026-03-26 15:15",
       "pnl_pct": -0.34,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "CRH.L",
-      "strategy": "DT2-CTR",
-      "entry_price": 91.02,
-      "exit_price": 91.32,
-      "entry_date": "2026-03-26 15:10",
-      "exit_date": "2026-03-26 15:15",
-      "pnl_pct": -0.33,
       "status": "LOSS"
     }
   ],
