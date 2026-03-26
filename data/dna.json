@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ZAL.DE",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 21.32,
-      "stop": 21.06,
-      "target": 21.06,
-      "opened_at": "2026-03-26 14:10",
-      "status": "OPEN"
-    },
-    {
       "ticker": "MNDI.L",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -287,7 +277,7 @@
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 21.72,
-      "stop": 22.02,
+      "stop": 22.13,
       "target": 21.98,
       "opened_at": "2026-03-26 12:35",
       "status": "OPEN"
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:10:09.578866Z",
+  "last_sync": "2026-03-26T14:15:30.089658Z",
   "recent_day_trades": [
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT1-CTR",
+      "entry_price": 21.32,
+      "exit_price": 21.33,
+      "entry_date": "2026-03-26 14:10",
+      "exit_date": "2026-03-26 14:15",
+      "pnl_pct": -0.05,
+      "status": "LOSS"
+    },
     {
       "ticker": "SGO.PA",
       "strategy": "DT4",
@@ -644,16 +644,6 @@
       "exit_date": "2026-03-26 01:20",
       "pnl_pct": 2.14,
       "status": "WIN"
-    },
-    {
-      "ticker": "9988.HK",
-      "strategy": "DT4",
-      "entry_price": 14.27,
-      "exit_price": 14.27,
-      "entry_date": "2026-03-25 01:20",
-      "exit_date": "2026-03-25 20:45",
-      "pnl_pct": -0.03,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
