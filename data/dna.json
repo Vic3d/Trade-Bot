@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "CSCO",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 71.5,
-      "stop": 70.64,
-      "target": 70.64,
-      "opened_at": "2026-03-26 16:03",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ENR.DE",
       "strategy": "DT3",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T16:03:15.996125Z",
+  "last_sync": "2026-03-26T16:05:21.193369Z",
   "recent_day_trades": [
+    {
+      "ticker": "CSCO",
+      "strategy": "DT1-CTR",
+      "entry_price": 71.5,
+      "exit_price": 71.59,
+      "entry_date": "2026-03-26 16:03",
+      "exit_date": "2026-03-26 16:05",
+      "pnl_pct": -0.12,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOLD",
       "strategy": "DT3",
@@ -643,16 +643,6 @@
       "entry_date": "2026-03-26 14:10",
       "exit_date": "2026-03-26 14:31",
       "pnl_pct": -1.27,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "GOLD",
-      "strategy": "DT3-CTR",
-      "entry_price": 35.44,
-      "exit_price": 35.45,
-      "entry_date": "2026-03-26 14:20",
-      "exit_date": "2026-03-26 14:25",
-      "pnl_pct": -0.03,
       "status": "LOSS"
     }
   ],
