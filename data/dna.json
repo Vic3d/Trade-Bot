@@ -243,6 +243,156 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ENR.DE",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 153.25,
+      "stop": 151.41,
+      "target": 158.4,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "BAS.DE",
+      "strategy": "DT6",
+      "trade_type": "day_trade",
+      "entry": 50.64,
+      "stop": 49.88,
+      "target": 51.15,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "FRES.L",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 36.68,
+      "stop": 36.24,
+      "target": 38.34,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "KER.PA",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 258.0,
+      "stop": 254.91,
+      "target": 261.1,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "MNDI.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 9.86,
+      "stop": 9.89,
+      "target": 9.78,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ASML.AS",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 1173.4,
+      "stop": 1159.32,
+      "target": 1211.6,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "AAL.L",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 34.67,
+      "stop": 34.25,
+      "target": 36.69,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "PUM.DE",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 21.58,
+      "stop": 21.69,
+      "target": 21.41,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "IFX.DE",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 38.58,
+      "stop": 38.12,
+      "target": 39.04,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "BA.L",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 24.62,
+      "stop": 24.32,
+      "target": 24.65,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ANTO.L",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 38.27,
+      "stop": 37.82,
+      "target": 40.14,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CRH.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 90.61,
+      "stop": 90.27,
+      "target": 91.34,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CON.DE",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 59.94,
+      "stop": 59.22,
+      "target": 60.66,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "SGO.PA",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 70.92,
+      "stop": 71.16,
+      "target": 70.35,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GSK.L",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 23.89,
+      "stop": 23.6,
+      "target": 24.18,
+      "opened_at": "2026-03-26 11:38",
+      "status": "OPEN"
+    },
+    {
       "ticker": "1211.HK",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -293,7 +443,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T11:35:07.426852Z",
+  "last_sync": "2026-03-26T11:38:38.577914Z",
   "recent_day_trades": [
     {
       "ticker": "0883.HK",
