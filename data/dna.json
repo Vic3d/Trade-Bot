@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ORCL",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 126.4,
+      "stop": 124.89,
+      "target": 127.91,
+      "opened_at": "2026-03-26 14:31",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ORCL",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 126.4,
+      "stop": 124.88,
+      "target": 124.88,
+      "opened_at": "2026-03-26 14:31",
+      "status": "OPEN"
+    },
+    {
       "ticker": "GOLD",
       "strategy": "DT3",
       "trade_type": "day_trade",
@@ -250,16 +270,6 @@
       "stop": 35.02,
       "target": 37.34,
       "opened_at": "2026-03-26 14:20",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 21.32,
-      "stop": 21.06,
-      "target": 21.58,
-      "opened_at": "2026-03-26 14:10",
       "status": "OPEN"
     },
     {
@@ -357,7 +367,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 24.62,
-      "stop": 24.32,
+      "stop": 24.54,
       "target": 24.65,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -377,7 +387,7 @@
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 90.61,
-      "stop": 91.42,
+      "stop": 91.43,
       "target": 91.34,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:25:07.762260Z",
+  "last_sync": "2026-03-26T14:31:13.345941Z",
   "recent_day_trades": [
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT1",
+      "entry_price": 21.32,
+      "exit_price": 21.05,
+      "entry_date": "2026-03-26 14:10",
+      "exit_date": "2026-03-26 14:31",
+      "pnl_pct": -1.27,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOLD",
       "strategy": "DT3-CTR",
@@ -634,16 +654,6 @@
       "exit_date": "2026-03-26 01:30",
       "pnl_pct": -0.48,
       "status": "LOSS"
-    },
-    {
-      "ticker": "9988.HK",
-      "strategy": "DT4",
-      "entry_price": 14.27,
-      "exit_price": 15.49,
-      "entry_date": "2026-03-26 01:00",
-      "exit_date": "2026-03-26 01:20",
-      "pnl_pct": 8.57,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
