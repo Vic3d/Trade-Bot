@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "MNDI.L",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 9.9,
-      "stop": 9.78,
-      "target": 9.78,
-      "opened_at": "2026-03-26 13:50",
-      "status": "OPEN"
-    },
-    {
       "ticker": "HEI.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T13:50:11.774340Z",
+  "last_sync": "2026-03-26T13:55:09.197329Z",
   "recent_day_trades": [
+    {
+      "ticker": "MNDI.L",
+      "strategy": "DT1-CTR",
+      "entry_price": 9.9,
+      "exit_price": 9.9,
+      "entry_date": "2026-03-26 13:50",
+      "exit_date": "2026-03-26 13:55",
+      "pnl_pct": -0.02,
+      "status": "LOSS"
+    },
     {
       "ticker": "MNDI.L",
       "strategy": "DT4",
@@ -643,16 +643,6 @@
       "entry_date": "2026-03-25 03:45",
       "exit_date": "2026-03-25 20:45",
       "pnl_pct": -0.07,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "9984.T",
-      "strategy": "DT4",
-      "entry_price": 20.93,
-      "exit_price": 20.67,
-      "entry_date": "2026-03-25 04:50",
-      "exit_date": "2026-03-25 20:45",
-      "pnl_pct": -1.25,
       "status": "LOSS"
     }
   ],
