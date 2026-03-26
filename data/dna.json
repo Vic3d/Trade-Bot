@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "PUM.DE",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 21.72,
-      "stop": 21.46,
-      "target": 21.46,
-      "opened_at": "2026-03-26 12:35",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ENR.DE",
       "strategy": "DT3",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T12:35:21.112983Z",
+  "last_sync": "2026-03-26T12:40:17.546444Z",
   "recent_day_trades": [
+    {
+      "ticker": "PUM.DE",
+      "strategy": "DT1-CTR",
+      "entry_price": 21.72,
+      "exit_price": 21.78,
+      "entry_date": "2026-03-26 12:35",
+      "exit_date": "2026-03-26 12:40",
+      "pnl_pct": -0.28,
+      "status": "LOSS"
+    },
     {
       "ticker": "PUM.DE",
       "strategy": "DT4",
@@ -643,16 +643,6 @@
       "entry_date": "2026-03-25 16:05",
       "exit_date": "2026-03-25 17:35",
       "pnl_pct": -0.86,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "AMD",
-      "strategy": "DT4",
-      "entry_price": 189.62,
-      "exit_price": 187.61,
-      "entry_date": "2026-03-25 15:35",
-      "exit_date": "2026-03-25 16:05",
-      "pnl_pct": -1.06,
       "status": "LOSS"
     }
   ],
