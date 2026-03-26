@@ -243,6 +243,86 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "BA.L",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 24.57,
+      "stop": 24.69,
+      "target": 24.37,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "BA.L",
+      "strategy": "DT4-CTR",
+      "trade_type": "day_trade",
+      "entry": 24.57,
+      "stop": 24.86,
+      "target": 24.86,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 34.95,
+      "stop": 34.54,
+      "target": 37.34,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT3-CTR",
+      "trade_type": "day_trade",
+      "entry": 34.95,
+      "stop": 34.53,
+      "target": 34.53,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 20.7,
+      "stop": 20.45,
+      "target": 21.11,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ZAL.DE",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 20.7,
+      "stop": 20.45,
+      "target": 20.45,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CRH.L",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 91.02,
+      "stop": 89.93,
+      "target": 91.19,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CRH.L",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 91.02,
+      "stop": 89.93,
+      "target": 89.93,
+      "opened_at": "2026-03-26 15:10",
+      "status": "OPEN"
+    },
+    {
       "ticker": "RHM.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -260,26 +340,6 @@
       "stop": 124.89,
       "target": 127.91,
       "opened_at": "2026-03-26 14:31",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "GOLD",
-      "strategy": "DT3",
-      "trade_type": "day_trade",
-      "entry": 35.44,
-      "stop": 35.02,
-      "target": 37.34,
-      "opened_at": "2026-03-26 14:20",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "MNDI.L",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 9.9,
-      "stop": 9.97,
-      "target": 10.02,
-      "opened_at": "2026-03-26 13:50",
       "status": "OPEN"
     },
     {
@@ -363,26 +423,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "BA.L",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 24.62,
-      "stop": 24.57,
-      "target": 24.65,
-      "opened_at": "2026-03-26 11:38",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "ANTO.L",
-      "strategy": "DT3",
-      "trade_type": "day_trade",
-      "entry": 38.27,
-      "stop": 37.82,
-      "target": 40.14,
-      "opened_at": "2026-03-26 11:38",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CON.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -443,8 +483,48 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:05:12.378123Z",
+  "last_sync": "2026-03-26T15:10:13.941707Z",
   "recent_day_trades": [
+    {
+      "ticker": "BA.L",
+      "strategy": "DT2",
+      "entry_price": 24.62,
+      "exit_price": 24.57,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 15:10",
+      "pnl_pct": -0.22,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "ANTO.L",
+      "strategy": "DT3",
+      "entry_price": 38.27,
+      "exit_price": 37.68,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 15:10",
+      "pnl_pct": -1.54,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "MNDI.L",
+      "strategy": "DT1",
+      "entry_price": 9.9,
+      "exit_price": 9.97,
+      "entry_date": "2026-03-26 13:50",
+      "exit_date": "2026-03-26 15:10",
+      "pnl_pct": 0.66,
+      "status": "WIN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT3",
+      "entry_price": 35.44,
+      "exit_price": 34.95,
+      "entry_date": "2026-03-26 14:20",
+      "exit_date": "2026-03-26 15:10",
+      "pnl_pct": -1.38,
+      "status": "LOSS"
+    },
     {
       "ticker": "RHM.DE",
       "strategy": "DT1-CTR",
@@ -604,46 +684,6 @@
       "exit_date": "2026-03-26 06:45",
       "pnl_pct": -0.44,
       "status": "LOSS"
-    },
-    {
-      "ticker": "6758.T",
-      "strategy": "DT4",
-      "entry_price": 17.59,
-      "exit_price": 17.44,
-      "entry_date": "2026-03-26 02:35",
-      "exit_date": "2026-03-26 05:45",
-      "pnl_pct": 0.86,
-      "status": "WIN"
-    },
-    {
-      "ticker": "1605.T",
-      "strategy": "DT4",
-      "entry_price": 25.14,
-      "exit_price": 25.36,
-      "entry_date": "2026-03-26 02:00",
-      "exit_date": "2026-03-26 04:40",
-      "pnl_pct": 0.87,
-      "status": "WIN"
-    },
-    {
-      "ticker": "9984.T",
-      "strategy": "DT4",
-      "entry_price": 21.45,
-      "exit_price": 21.26,
-      "entry_date": "2026-03-26 02:20",
-      "exit_date": "2026-03-26 02:35",
-      "pnl_pct": 0.9,
-      "status": "WIN"
-    },
-    {
-      "ticker": "9984.T",
-      "strategy": "DT4",
-      "entry_price": 21.66,
-      "exit_price": 21.45,
-      "entry_date": "2026-03-26 02:00",
-      "exit_date": "2026-03-26 02:20",
-      "pnl_pct": 1.0,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
