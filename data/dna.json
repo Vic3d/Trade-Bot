@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "RHM.DE",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 1456.5,
-      "stop": 1439.02,
-      "target": 1439.02,
-      "opened_at": "2026-03-26 14:55",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ORCL",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -453,8 +443,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:55:09.786385Z",
+  "last_sync": "2026-03-26T15:02:31.385359Z",
   "recent_day_trades": [
+    {
+      "ticker": "RHM.DE",
+      "strategy": "DT1-CTR",
+      "entry_price": 1456.5,
+      "exit_price": 1451.0,
+      "entry_date": "2026-03-26 14:55",
+      "exit_date": "2026-03-26 15:02",
+      "pnl_pct": 0.38,
+      "status": "WIN"
+    },
     {
       "ticker": "CRH.L",
       "strategy": "DT4",
@@ -644,16 +644,6 @@
       "exit_date": "2026-03-26 02:20",
       "pnl_pct": 1.0,
       "status": "WIN"
-    },
-    {
-      "ticker": "0883.HK",
-      "strategy": "DT4",
-      "entry_price": 3.19,
-      "exit_price": 3.15,
-      "entry_date": "2026-03-26 01:20",
-      "exit_date": "2026-03-26 02:00",
-      "pnl_pct": -1.37,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
