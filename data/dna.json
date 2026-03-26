@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "GOLD",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 35.44,
+      "stop": 35.02,
+      "target": 37.34,
+      "opened_at": "2026-03-26 14:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT3-CTR",
+      "trade_type": "day_trade",
+      "entry": 35.44,
+      "stop": 35.02,
+      "target": 35.02,
+      "opened_at": "2026-03-26 14:20",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ZAL.DE",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -270,16 +290,6 @@
       "stop": 180.53,
       "target": 178.31,
       "opened_at": "2026-03-26 13:33",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "PUM.DE",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 21.72,
-      "stop": 22.13,
-      "target": 21.98,
-      "opened_at": "2026-03-26 12:35",
       "status": "OPEN"
     },
     {
@@ -377,7 +387,7 @@
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 90.61,
-      "stop": 91.41,
+      "stop": 91.42,
       "target": 91.34,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:15:30.089658Z",
+  "last_sync": "2026-03-26T14:20:09.651666Z",
   "recent_day_trades": [
+    {
+      "ticker": "PUM.DE",
+      "strategy": "DT1",
+      "entry_price": 21.72,
+      "exit_price": 22.12,
+      "entry_date": "2026-03-26 12:35",
+      "exit_date": "2026-03-26 14:20",
+      "pnl_pct": 1.84,
+      "status": "WIN"
+    },
     {
       "ticker": "ZAL.DE",
       "strategy": "DT1-CTR",
@@ -634,16 +654,6 @@
       "exit_date": "2026-03-26 01:20",
       "pnl_pct": -2.11,
       "status": "LOSS"
-    },
-    {
-      "ticker": "2318.HK",
-      "strategy": "DT4",
-      "entry_price": 6.69,
-      "exit_price": 6.83,
-      "entry_date": "2026-03-26 01:00",
-      "exit_date": "2026-03-26 01:20",
-      "pnl_pct": 2.14,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
