@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ORCL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 124.82,
+      "stop": 123.32,
+      "target": 125.77,
+      "opened_at": "2026-03-26 15:33",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ORCL",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 124.82,
+      "stop": 123.32,
+      "target": 123.32,
+      "opened_at": "2026-03-26 15:33",
+      "status": "OPEN"
+    },
+    {
       "ticker": "BA.L",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -290,16 +310,6 @@
       "stop": 1439.05,
       "target": 1473.98,
       "opened_at": "2026-03-26 14:55",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "ORCL",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 126.4,
-      "stop": 124.89,
-      "target": 127.91,
-      "opened_at": "2026-03-26 14:31",
       "status": "OPEN"
     },
     {
@@ -443,8 +453,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:25:10.100251Z",
+  "last_sync": "2026-03-26T15:33:15.779195Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT1",
+      "entry_price": 126.4,
+      "exit_price": 124.79,
+      "entry_date": "2026-03-26 14:31",
+      "exit_date": "2026-03-26 15:33",
+      "pnl_pct": -1.27,
+      "status": "LOSS"
+    },
     {
       "ticker": "BA.L",
       "strategy": "DT4-CTR",
@@ -633,16 +653,6 @@
       "entry_date": "2026-03-26 13:33",
       "exit_date": "2026-03-26 13:35",
       "pnl_pct": -0.06,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "KWEB",
-      "strategy": "DT4",
-      "entry_price": 25.2,
-      "exit_price": 24.66,
-      "entry_date": "2026-03-26 01:00",
-      "exit_date": "2026-03-26 13:33",
-      "pnl_pct": -2.13,
       "status": "LOSS"
     }
   ],
