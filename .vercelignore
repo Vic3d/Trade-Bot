@@ -1,0 +1,16 @@
+josh-dashboard/
+trading-dashboard/
+lernbot/
+trademind/
+wtv-prototype/
+modules/
+scripts/
+memory/
+data/
+secrets/
+*.py
+*.md
+*.json
+!api/**
+!vercel.json
+!package.json
