@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "9984.T",
+      "strategy": "DT4",
+      "trade_type": "day_trade",
+      "entry": 21.45,
+      "stop": 21.86,
+      "target": 21.27,
+      "opened_at": "2026-03-26 02:20",
+      "status": "OPEN"
+    },
+    {
       "ticker": "1605.T",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -259,16 +269,6 @@
       "entry": 18.31,
       "stop": 18.37,
       "target": 18.16,
-      "opened_at": "2026-03-26 02:00",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "9984.T",
-      "strategy": "DT4",
-      "trade_type": "day_trade",
-      "entry": 21.66,
-      "stop": 22.0,
-      "target": 21.49,
       "opened_at": "2026-03-26 02:00",
       "status": "OPEN"
     },
@@ -293,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T02:15:05.235051Z",
+  "last_sync": "2026-03-26T02:20:10.913831Z",
   "recent_day_trades": [
+    {
+      "ticker": "9984.T",
+      "strategy": "DT4",
+      "entry_price": 21.66,
+      "exit_price": 21.45,
+      "entry_date": "2026-03-26 02:00",
+      "exit_date": "2026-03-26 02:20",
+      "pnl_pct": 1.0,
+      "status": "WIN"
+    },
     {
       "ticker": "0883.HK",
       "strategy": "DT4",
@@ -483,16 +493,6 @@
       "entry_date": "2026-03-25 01:00",
       "exit_date": "2026-03-25 13:32",
       "pnl_pct": -2.26,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "KWEB",
-      "strategy": "DT4",
-      "entry_price": 24.32,
-      "exit_price": 26.19,
-      "entry_date": "2026-03-25 01:00",
-      "exit_date": "2026-03-25 13:05",
-      "pnl_pct": -7.12,
       "status": "LOSS"
     }
   ],
