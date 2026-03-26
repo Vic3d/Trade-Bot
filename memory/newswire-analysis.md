@@ -1,4 +1,67 @@
 
+## 2026-03-26 22:02 CET — NEWSLINE UPDATE: Iran Ultimatum verlängert bis 06.04
+
+**STATUS S1 — ESKALATION REDUZIERT:**
+Trump verlängert Hormus-Ultimatum (FOCUS + Bloomberg Politik + Bloomberg Markets) bis **6. April 2026**. 
+Das puffert unmittelbare Handelskrieg ab. **Immer noch 10M Barrel/Tag ausfallend** (Morse, Bloomberg Markets).
+
+→ **S1: 🔴 → 🟡** (Eskalation pausiert, aber Ölversorgung bleibt angespannt)
+→ **S9 (Kuba-Tanker):** Weiterhin kritisch — Kolodkin trifft 29.03 ein, Status unverändert
+
+---
+
+## 2026-03-26 19:31 CET — Cron: Geopolitical Scanner ALERT (Score 491)
+
+**🔴 HIGH TIER ALERTS:**
+
+### Iran (Score 73)
+- US Attorney's Office preparing indictments vs. Cuba regime + military leadership
+- Trump admin official: "regime change lined up, no diplomacy"
+- Iran reviews US proposal submitted through Pakistan
+- Active de-escalation talks: Turkey, Egypt, Pakistan mediating
+- Impact: S1 (regime risk), S8 (oil shock risk)
+
+### Pakistan/Afghanistan (Scores 61 + 46)
+- **Pakistan-Iran talks in Islamabad this week** (White House envoy Witkoff, Foreign Minister Araghchi)
+- Israel initially had Araqchi + Qalibaf on target list; removed names after Pakistan request to Washington
+- **Kabul airstrike fallout:** 400+ killed in drug rehab hospital (Pakistani strike, UN confirmed)
+- Taliban announced ceasefire pause after Pakistan's pause-for-Eid; mediation claims "progress"
+- Impact: S1 (geopolitics), Pakistan-US-Iran triangle heating
+
+### Caribbean/Cuba (Score 59)
+- **Cuba's national grid COLLAPSED Saturday** (2nd blackout in 2 weeks)
+- ~10 million without power
+- US oil blockade crippling generation system
+- Protests erupting in Havana (Santos Suárez)
+- Grid operator UNE making emergency updates
+- Impact: S9 (commodity/energy crisis, migration risk)
+
+**Tickers exposed:** EQNR (Norway oil), GLEN.L (Glencore), DR0.DE (Dax), RHM.DE (Rheinmetall defense)
+
+---
+
+## 2026-03-26 18:32 UTC — Geopolitical Scanner
+- **[CRITICAL]** `🇮🇷 Iran/Hormuz` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇵🇰 Pakistan` — He said no casualties were reported and added that the Taliban would retaliate for the attack." src="https://pakistan.li...
+  → Strategien: S1
+- **[CRITICAL]** `🇹🇷 Türkei` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🌊 Karibik/Kuba` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+- **[CRITICAL]** `🇵🇰 Pakistan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇵🇰 Pakistan` — He said no casualties were reported and added that the Taliban would retaliate for the attack.</a><a class="clink" href=...
+  → Strategien: S1
+- **[CRITICAL]** `🇹🇼 Taiwan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S3, S9
+- **[CRITICAL]** `🇮🇶 Irak/Öl` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇻🇪 Venezuela` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+- **[HIGH]** `🇷🇺 Russland` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S2
+
 ## 2026-03-26 12:31 UTC — Geopolitical Scanner (TIER=1)
 **ALERT LEVEL: HIGH** | Aggregate Score: 504 | Execution: 12:31 Berlin
 
@@ -272,4 +335,85 @@ Neu: 2 | 🔴 2 | 🟡 0 | ⚪ 0
 
 ## [2026-03-26 12:00 UTC]
 Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-26 12:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 13:00 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-26 13:32 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 14:01 UTC]
+KEIN_SIGNAL | News ingested: 8
+---
+
+
+## [2026-03-26 14:30 UTC]
+**NewsWire Match:** 1 Kandidaten | 🔴 0 | 🟡 1 | ⚪ 0
+
+- **EQNR** (Equinor ASA): IMPORTANT
+  └─ "US cautious on Hormuz action amid risks of escalation - The Jerusalem Post" (The Jerusalem Post, Tue, 24 Mar 2026 08:44:28 GMT)
+  └─ Thesis: Ölpreis steigt durch Iran-Krise / Hormuz — Equinor als europäischer Öl-Profiteur
+
+---
+## [2026-03-26 15:01 UTC]
+Neu: 4 | 🔴 0 | 🟡 0 | ⚪ 4
+---
+
+## [2026-03-26 15:31 UTC]
+Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
+---
+
+## [2026-03-26 16:00 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 16:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 17:00 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
+---
+
+## [2026-03-26 17:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 18:00 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-26 18:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 19:00 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 19:31 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-26 20:00 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-26 20:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 21:00 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-26 21:30 UTC]
+KEIN_SIGNAL
 ---

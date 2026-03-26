@@ -43,7 +43,7 @@
     "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
     "horizon_weeks": 12,
     "status": "active",
-    "health": "green",
+    "health": "red",
     "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
     "tickers": [
       "OXY",
@@ -118,7 +118,7 @@
     "avg_pnl": -0.4,
     "win_loss_ratio": 0.6,
     "n_trades": 5,
-    "last_evaluated": "2026-03-25 22:31"
+    "last_evaluated": "2026-03-26 21:17"
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -214,10 +214,10 @@
       "hormus_phase_risk": "low"
     },
     "win_rate": 0.667,
-    "avg_pnl": 13.64,
+    "avg_pnl": 13.65,
     "win_loss_ratio": 4.52,
     "n_trades": 3,
-    "last_evaluated": "2026-03-25 22:31"
+    "last_evaluated": "2026-03-26 21:17"
   },
   "PS3": {
     "name": "NATO/EU-Rüstung",
@@ -464,7 +464,7 @@
     "kill_trigger": "Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden",
     "horizon_weeks": 20,
     "status": "active",
-    "health": "red",
+    "health": "yellow",
     "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
     "tickers": [
       "MOS"
@@ -525,7 +525,7 @@
     "avg_pnl": 4.56,
     "win_loss_ratio": 999,
     "n_trades": 1,
-    "last_evaluated": "2026-03-25 22:31"
+    "last_evaluated": "2026-03-26 21:17"
   },
   "S1": {
     "name": "Iran-Konflikt → Öl & Silber",
@@ -1611,10 +1611,18 @@
     "avg_pnl": -2.2,
     "win_loss_ratio": 0.0,
     "n_trades": 1,
-    "last_evaluated": "2026-03-25 22:31",
+    "last_evaluated": "2026-03-26 21:17",
     "genesis": {
       "last_updated": "2026-03-25T21:31:02Z",
       "auto_adjusted": false
     }
+  },
+  "PT": {
+    "health": "yellow",
+    "win_rate": 0.5,
+    "avg_pnl": 8.56,
+    "win_loss_ratio": 999,
+    "n_trades": 2,
+    "last_evaluated": "2026-03-26 21:17"
   }
 }

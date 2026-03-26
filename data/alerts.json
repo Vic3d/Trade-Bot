@@ -166,5 +166,40 @@
     "ticker": "",
     "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.42\u20ac | P&L: +5.4% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 51/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-26T13:32:37.842209+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 130.77\u20ac | Stop: 127.0\u20ac | 2.9% Abstand [Conviction: 57/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-26T14:30:46.873959+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f BRENT-WTI SPREAD: $8.10 (Brent $101.12 - WTI $93.02) \u2014 Lieferunterbrechung Warnsignal!",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-26T15:32:32.791214+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.36\u20ac | P&L: +5.2% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 51/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-26T16:45:27.370252+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.0%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mi",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-26T17:45:21.807977+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 128.89\u20ac | Stop: 127.0\u20ac | Nur noch 1.5% Abstand! [Conviction: 57/100]",
+    "value": ""
   }
 ]

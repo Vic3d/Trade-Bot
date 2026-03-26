@@ -14,6 +14,11 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 
 ## Log
 
+### 2026-03-26 22:02 — Trump Ultimatum Verlängerung bis 06.04
+**S1 (Iran/Ölschock):** 🟢→🟡 | Trump verlängert Hormus-Ultimatum bis 06. April (FOCUS + Bloomberg Politik + Bloomberg Markets, 21:17-21:55 CET). Eskalation pausiert, aber Ölversorgung bleibt kritisch: **10M Barrel/Tag ausfallend** (Morse, Bloomberg). Stops (EQNR 27,00€, DR0 83,50€) bleiben, aber Druck reduziert. **Kontext:** Kurz nach 15-Punkte-Deal-Ansage von Trump am 25.03 — strukturelle Lücken bleiben (Atom+Raketen), aber Zeit bis 6. April.
+
+---
+
 ### 2026-03-18 — Morgen-Check 08:00 — 4 Strategien schwächer
 **PS2 Tanker-Lag-These:** 🟢→🟡 | Momentum +3.1% (14T, FRO/DHT), News-Score neutral (0/100) — Lag-These verliert Kraft
 **PS3 NATO/EU-Rüstung:** 🟢→🔴 | Momentum -3.2% (HII -1.6%, KTOS -7.9%, HAG -0.1%), News-Score +20 — Rüstungsaktien drehen trotz Budgetdebatte ab
@@ -413,6 +418,26 @@ Victor informiert: ✅ Discord DM gesendet
 ### PS3 (NATO/EU-Rüstung)
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 31)
 **Gründe:** Preise schwach -3.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.1% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
+
+
+
+## 2026-03-26 20:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 52)
+**Gründe:** Preise positiv +3.1% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 34)
+**Gründe:** Preise schwach -3.2% (14T) | News bullish (Score +40)
 
 ### PS4 (Edelmetalle/Miner)
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)

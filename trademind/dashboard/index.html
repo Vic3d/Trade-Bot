@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎩 TradeMind Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --muted: #94a3b8; --accent: #06b6d4; --green: #10b981; --red: #ef4444; --amber: #f59e0b; --border: #334155; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.header { background: var(--card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.header h1 { font-size: 1.5rem; } .header h1 span { color: var(--accent); }
+.header .meta { color: var(--muted); font-size: 0.85rem; }
+.tabs { display: flex; gap: 0; background: var(--card); border-bottom: 2px solid var(--border); padding: 0 1rem; }
+.tab { padding: 0.75rem 1.5rem; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.2s; font-size: 0.9rem; }
+.tab:hover { color: var(--text); } .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.content { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+.grid { display: grid; gap: 1rem; } .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.card { background: var(--card); border-radius: 12px; padding: 1.25rem; border: 1px solid var(--border); }
+.card h3 { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.75rem; }
+.stat { text-align: center; padding: 1rem; }
+.stat .value { font-size: 2rem; font-weight: 700; } .stat .label { color: var(--muted); font-size: 0.8rem; margin-top: 0.25rem; }
+.stat .value.green { color: var(--green); } .stat .value.red { color: var(--red); } .stat .value.amber { color: var(--amber); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th { color: var(--muted); text-align: left; padding: 0.5rem; border-bottom: 1px solid var(--border); font-weight: 500; }
+td { padding: 0.5rem; border-bottom: 1px solid var(--border); }
+tr:hover { background: rgba(6,182,212,0.05); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.badge-green { background: rgba(16,185,129,0.2); color: var(--green); }
+.badge-red { background: rgba(239,68,68,0.2); color: var(--red); }
+.badge-amber { background: rgba(245,158,11,0.2); color: var(--amber); }
+.pnl-pos { color: var(--green); } .pnl-neg { color: var(--red); }
+.section { display: none; } .section.active { display: block; }
+.chart-container { position: relative; height: 300px; }
+.bar { height: 20px; border-radius: 4px; margin: 4px 0; transition: width 0.5s; }
+.lesson-item { padding: 0.75rem; border-left: 3px solid var(--accent); margin: 0.5rem 0; background: rgba(6,182,212,0.05); border-radius: 0 6px 6px 0; font-size: 0.85rem; }
+.lesson-item .date { color: var(--muted); font-size: 0.75rem; }
+.cb-lamp { width: 16px; height: 16px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+.cb-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.cb-red { background: var(--red); box-shadow: 0 0 8px var(--red); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .tabs { overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎩 <span>TradeMind</span> Dashboard</h1>
+  <div class="meta" id="lastUpdate">Laden...</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('portfolio')">📊 Portfolio</div>
+  <div class="tab" onclick="showTab('risk')">⚡ Risk</div>
+  <div class="tab" onclick="showTab('performance')">📈 Performance</div>
+  <div class="tab" onclick="showTab('learning')">🧠 Learning</div>
+  <div class="tab" onclick="showTab('backtest')">🔬 Backtest</div>
+</div>
+<div class="content">
+
+<!-- PORTFOLIO -->
+<div class="section active" id="sec-portfolio">
+  <div class="grid grid-3" id="portfolio-stats"></div>
+  <div class="card" style="margin-top:1rem"><h3>Offene Positionen</h3><table id="positions-table"><thead><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Aktuell</th><th>P&L</th><th>Stop</th><th>Tage</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- RISK -->
+<div class="section" id="sec-risk">
+  <div class="grid grid-2">
+    <div class="card"><h3>🔌 Circuit Breaker</h3><div id="cb-status"></div></div>
+    <div class="card"><h3>💥 Stress Tests</h3><div id="stress-tests"></div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>📊 Sektor-Exposure</h3><div class="chart-container"><canvas id="sector-chart"></canvas></div></div>
+    <div class="card"><h3>🌍 Region-Exposure</h3><div class="chart-container"><canvas id="region-chart"></canvas></div></div>
+  </div>
+</div>
+
+<!-- PERFORMANCE -->
+<div class="section" id="sec-performance">
+  <div class="card"><h3>📈 Equity Curve</h3><div class="chart-container"><canvas id="equity-chart"></canvas></div></div>
+  <div class="card" style="margin-top:1rem"><h3>Strategie-Vergleich</h3><table id="strategy-table"><thead><tr><th>Strategie</th><th>Trades</th><th>WR</th><th>P&L</th><th>Sharpe</th><th>Verdict</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- LEARNING -->
+<div class="section" id="sec-learning">
+  <div class="grid grid-3" id="learning-stats"></div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>📊 Setup-Performance</h3><div id="setup-perf"></div></div>
+    <div class="card"><h3>🌍 Theme-Performance</h3><div id="theme-perf"></div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h3>📝 Letzte Lektionen</h3><div id="lessons-list"></div></div>
+</div>
+
+<!-- BACKTEST -->
+<div class="section" id="sec-backtest">
+  <div class="grid grid-2">
+    <div class="card"><h3>📊 Momentum Walk-Forward</h3><div id="bt-momentum"></div></div>
+    <div class="card"><h3>📊 Mean-Reversion Walk-Forward</h3><div id="bt-meanrev"></div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h3>Benchmark-Vergleich</h3><div id="bt-benchmark"></div></div>
+</div>
+
+</div>
+
+<script>
+let D = {};
+async function load() {
+  try {
+    const r = await fetch('data.json');
+    D = await r.json();
+    render();
+  } catch(e) { document.getElementById('lastUpdate').textContent = '❌ data.json nicht gefunden'; }
+}
+
+function showTab(t) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+t).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function pnlClass(v) { return v >= 0 ? 'pnl-pos' : 'pnl-neg'; }
+function fmt(v) { return v >= 0 ? `+${v.toFixed(0)}€` : `${v.toFixed(0)}€`; }
+function pct(v) { return v >= 0 ? `+${v.toFixed(1)}%` : `${v.toFixed(1)}%`; }
+
+function render() {
+  const p = D.positions || {};
+  const r = D.risk || {};
+  const perf = D.performance || {};
+  const l = D.learning || {};
+  const bt = D.backtest || {};
+
+  document.getElementById('lastUpdate').textContent = `Aktualisiert: ${D.generated || '?'}`;
+
+  // Portfolio Stats
+  const totalPnl = perf.total_pnl || 0;
+  const openPnl = (p.open||[]).reduce((s,x) => s + (x.pnl_eur||0), 0);
+  document.getElementById('portfolio-stats').innerHTML = `
+    <div class="card stat"><div class="value ${totalPnl >= 0 ? 'green' : 'red'}">${fmt(totalPnl)}</div><div class="label">Gesamt P&L (geschlossen)</div></div>
+    <div class="card stat"><div class="value ${openPnl >= 0 ? 'green' : 'red'}">${fmt(openPnl)}</div><div class="label">Offenes P&L</div></div>
+    <div class="card stat"><div class="value">${(p.open||[]).length}</div><div class="label">Offene Positionen</div></div>`;
+
+  // Positions table
+  const tbody = document.querySelector('#positions-table tbody');
+  tbody.innerHTML = (p.open||[]).map(pos => `<tr>
+    <td><b>${pos.ticker}</b></td><td>${pos.strategy||''}</td>
+    <td>${(pos.entry_price||0).toFixed(2)}€</td><td>${(pos.current_price||pos.entry_price||0).toFixed(2)}€</td>
+    <td class="${pnlClass(pos.pnl_eur||0)}">${fmt(pos.pnl_eur||0)} (${pct(pos.pnl_pct||0)})</td>
+    <td>${(pos.stop||0).toFixed(2)}€</td><td>${pos.holding_days||0}d</td></tr>`).join('');
+
+  // Risk
+  const cb = r.circuit_breaker || {};
+  const cbOk = cb.trading_allowed;
+  document.getElementById('cb-status').innerHTML = `
+    <p><span class="cb-lamp ${cbOk ? 'cb-green' : 'cb-red'}"></span><b>${cbOk ? 'Trading erlaubt' : 'TRADING GESPERRT'}</b></p>
+    <p style="margin-top:8px;font-size:0.85rem;color:var(--muted)">
+      Daily: ${(cb.details||{}).daily_pnl||0}€ | Weekly: ${(cb.details||{}).weekly_pnl||0}€ | VIX: ${(cb.details||{}).current_vix||'?'}
+    </p>
+    ${(cb.breakers_triggered||[]).length ? `<p class="badge badge-red" style="margin-top:8px">${cb.breakers_triggered.join(', ')}</p>` : ''}`;
+
+  // Stress Tests
+  document.getElementById('stress-tests').innerHTML = ((r.stress_tests||[]).map(s =>
+    `<div style="margin:6px 0;display:flex;justify-content:space-between">
+      <span>${s.name}</span>
+      <span class="${s.total_loss < -3000 ? 'pnl-neg' : s.total_loss < -1000 ? 'badge-amber' : ''}" style="font-weight:600">${fmt(s.total_loss)}</span>
+    </div>`)).join('');
+
+  // Sector/Region Charts
+  renderPie('sector-chart', r.exposure?.by_sector || {});
+  renderPie('region-chart', r.exposure?.by_region || {});
+
+  // Equity Curve
+  const ec = perf.equity_curve || [];
+  if (ec.length > 0) {
+    new Chart(document.getElementById('equity-chart'), {
+      type: 'line',
+      data: { labels: ec.map(e => e.date||e[0]), datasets: [{
+        label: 'Kumuliertes P&L (€)', data: ec.map(e => e.cumulative_pnl||e[1]),
+        borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.1)', fill: true, tension: 0.3, pointRadius: 0
+      }]},
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+        scales: { x: { display: true, ticks: { color: '#94a3b8', maxTicksLimit: 10 } }, y: { ticks: { color: '#94a3b8', callback: v => v+'€' }, grid: { color: '#334155' } } } }
+    });
+  }
+
+  // Strategy table
+  const stb = document.querySelector('#strategy-table tbody');
+  stb.innerHTML = ((perf.strategies||[]).map(s => {
+    const vBadge = s.verdict === 'KILL' ? 'badge-red' : s.verdict === 'REVIEW' ? 'badge-amber' : s.verdict === 'KEEP' ? 'badge-green' : '';
+    return `<tr><td><b>${s.strategy}</b></td><td>${s.trades}</td><td>${(s.win_rate*100).toFixed(0)}%</td>
+      <td class="${pnlClass(s.total_pnl)}">${fmt(s.total_pnl)}</td><td>${(s.sharpe||0).toFixed(2)}</td>
+      <td><span class="badge ${vBadge}">${s.verdict||'?'}</span></td></tr>`;
+  })).join('');
+
+  // Learning
+  const ta = l.thesis_accuracy || {};
+  const totalRated = (ta.correct||0) + (ta.incorrect||0);
+  const thesisPct = totalRated > 0 ? (ta.correct/totalRated*100) : 0;
+  document.getElementById('learning-stats').innerHTML = `
+    <div class="card stat"><div class="value">${totalRated > 0 ? thesisPct.toFixed(0)+'%' : '—'}</div><div class="label">These-Trefferquote</div></div>
+    <div class="card stat"><div class="value">${l.total_trades||0}</div><div class="label">SA Trades gesamt</div></div>
+    <div class="card stat"><div class="value ${(l.total_pnl||0) >= 0 ? 'green' : 'red'}">${fmt(l.total_pnl||0)}</div><div class="label">SA P&L</div></div>`;
+
+  // Setup/Theme performance
+  renderBars('setup-perf', l.by_setup || {});
+  renderBars('theme-perf', l.by_theme || {});
+
+  // Lessons
+  document.getElementById('lessons-list').innerHTML = ((l.lessons||[]).slice(-10).reverse().map(le =>
+    `<div class="lesson-item"><div class="date">${le.date} — ${le.ticker} (${fmt(le.pnl||0)})</div><div>${le.lesson}</div></div>`
+  )).join('') || '<p style="color:var(--muted)">Noch keine Lektionen — erste geschlossene SA-Trades starten die Datenbank.</p>';
+
+  // Backtest
+  renderBacktest('bt-momentum', bt.momentum || {});
+  renderBacktest('bt-meanrev', bt.mean_reversion || {});
+
+  const bmk = bt.benchmark || {};
+  document.getElementById('bt-benchmark').innerHTML = `
+    <p>SPY Buy&Hold: <b>${pct(bmk.spy_return||0)}</b> | DAX Buy&Hold: <b>${pct(bmk.dax_return||0)}</b></p>`;
+}
+
+function renderPie(id, data) {
+  const labels = Object.keys(data);
+  const values = labels.map(k => data[k].pct || data[k].value || 0);
+  const colors = ['#06b6d4','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#6366f1','#14b8a6'];
+  if (labels.length === 0) return;
+  new Chart(document.getElementById(id), {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e2e8f0', font: { size: 11 } } } } }
+  });
+}
+
+function renderBars(id, data) {
+  const el = document.getElementById(id);
+  const entries = Object.entries(data);
+  if (!entries.length) { el.innerHTML = '<p style="color:var(--muted)">Keine Daten</p>'; return; }
+  const maxVal = Math.max(...entries.map(([,v]) => Math.abs(v.pnl||0)), 1);
+  el.innerHTML = entries.map(([k,v]) => {
+    const w = Math.abs(v.pnl||0)/maxVal*100;
+    const c = (v.pnl||0) >= 0 ? 'var(--green)' : 'var(--red)';
+    return `<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:0.85rem"><span>${k}</span><span>${v.trades||0} trades | ${fmt(v.pnl||0)}</span></div>
+    <div class="bar" style="width:${Math.max(w,5)}%;background:${c}"></div></div>`;
+  }).join('');
+}
+
+function renderBacktest(id, data) {
+  const el = document.getElementById(id);
+  const agg = data.aggregate || {};
+  if (!agg.total_trades) { el.innerHTML = '<p style="color:var(--muted)">Kein Backtest</p>'; return; }
+  const oos = data.out_of_sample_valid;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.85rem">
+      <div>Trades: <b>${agg.total_trades}</b></div>
+      <div>Win Rate: <b>${(agg.win_rate*100).toFixed(0)}%</b></div>
+      <div>P&L: <b class="${pnlClass(agg.total_pnl)}">${fmt(agg.total_pnl)}</b></div>
+      <div>Sharpe: <b>${(agg.sharpe||0).toFixed(2)}</b></div>
+      <div>Max DD: <b>${fmt(agg.max_drawdown||0)}</b></div>
+      <div>Profit Factor: <b>${(agg.profit_factor||0).toFixed(2)}</b></div>
+    </div>
+    <p style="margin-top:8px"><span class="badge ${oos ? 'badge-green' : 'badge-red'}">OOS: ${oos ? '✅ Valide' : '❌ Nicht valide'}</span></p>`;
+}
+
+load();
+</script>
+</body>
+</html>

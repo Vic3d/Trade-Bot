@@ -80,8 +80,8 @@
       "direction": "same",
       "threshold_pct": 1.5,
       "accuracy_pct": 100.0,
-      "sample_count": 10,
-      "wins": 10,
+      "sample_count": 57,
+      "wins": 19,
       "losses": 0,
       "description": "Frische kurzlaufende OTM-Calls auf USO/XOM/OXY \u2192 \u00d6l steigt in 24h"
     },
@@ -93,9 +93,9 @@
       "lag_hours": 48,
       "direction": "same",
       "threshold_pct": 2.0,
-      "accuracy_pct": null,
+      "accuracy_pct": 100.0,
       "sample_count": 10,
-      "wins": 0,
+      "wins": 10,
       "losses": 0,
       "description": "Mittelfristige Energie-Calls auf XLE/BNO \u2192 \u00d6l steigt in 48h"
     },

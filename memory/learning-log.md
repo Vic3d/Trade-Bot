@@ -178,3 +178,20 @@
 
 **Changes:** 0 | Keine
 ---
+
+## [2026-03-26 21:17] Learning Engine Run
+
+- Trades analysiert: 15
+- **PS1: green → red 🔴** | WR 60% | WL-Ratio 0.60x | Avg -0.4% — Edge nicht vorhanden
+- PS2: yellow (unverändert) | Zu wenige Trades (3/5)
+- PS3: Manuell gesperrt — kein Auto-Unlock (Stats: Zu wenige Trades (3/5))
+- PT: yellow (unverändert) | Zu wenige Trades (2/5)
+- **PS5: red → yellow 🟡** | Zu wenige Trades (1/5)
+- new: yellow (unverändert) | Zu wenige Trades (1/5)
+
+**Trigger-Korrelation:** Noch zu wenige Daten (<3 Trades pro Trigger)
+
+**Score-Threshold:** Letzte 10 Trades: Avg +7.5% → Threshold bleibt bei 5
+
+**Changes:** 2 | PS1: green→red, PS5: red→yellow
+---

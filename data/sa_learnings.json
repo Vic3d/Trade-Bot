@@ -1,0 +1,20 @@
+{
+  "total_trades": 0,
+  "total_pnl": 0,
+  "wins": 0,
+  "losses": 0,
+  "by_setup": {},
+  "by_theme": {},
+  "by_vix_zone": {},
+  "thesis_accuracy": {"correct": 0, "incorrect": 0, "unknown": 0},
+  "lessons": [],
+  "patterns": {
+    "best_setup": null,
+    "worst_setup": null,
+    "best_theme": null,
+    "avg_winner_hold": 0,
+    "avg_loser_hold": 0,
+    "avg_crv_realized": 0
+  },
+  "meta_insights": []
+}

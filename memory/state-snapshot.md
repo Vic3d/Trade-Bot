@@ -1,5 +1,5 @@
 # State Snapshot — Trading Bot
-**Zuletzt aktualisiert:** 2026-03-26 11:45 UTC
+**Zuletzt aktualisiert:** 2026-03-26 21:45 UTC
 **Positionen:** 3 | **Alerts heute:** 0 | **Queue:** 0 ausstehend
 
 ---
@@ -8,24 +8,24 @@
 
 | Aktie | Kurs | Entry | P&L | Stop | Conviction | RS/QQQ | Letzter Alert |
 |---|---|---|---|---|---|---|---|
-| Palantir (PLTR) | 134.32€ | 132.11€ | +1.7% | 127.00€ | 57 | +0.2x | — |
-| VanEck Oil Services ETF (A3D42Y) | 29.02€ | 27.90€ | +4.0% | 24.00€ | 51 | — | — |
-| iShares Biotech ETF (A2DWAW) | 7.17€ | 7.00€ | +2.4% | 6.30€ | 39 | — | — |
+| Palantir (PLTR) | 127.88€ | 132.11€ | -3.2% | 127.00€ | 56 | +2.0x | — |
+| VanEck Oil Services ETF (A3D42Y) | 29.71€ | 27.90€ | +6.5% | 24.00€ | 51 | — | — |
+| iShares Biotech ETF (A2DWAW) | 7.22€ | 7.00€ | +3.2% | 6.30€ | 39 | — | — |
 
 ## Watchlist
 
 | Aktie | Kurs | Signal | Status |
 |---|---|---|---|
-| Bayer AG (BAYN.DE) | 37.97 USD | Kein Signal | Beobachten |
+| Bayer AG (BAYN.DE) | 38.27 USD | Kein Signal | Beobachten |
 
 ## Makro
 
 | Indikator | Wert | Signal |
 |---|---|---|
-| VIX | 27.5 | 🟡 Erhöht |
-| WTI | $93.71 | 🟡 Erhöht |
+| VIX | 27.4 | 🟡 Erhöht |
+| WTI | $93.79 | 🟡 Erhöht |
 | Nikkei 225 | -0.3% | Öl-Frühindikator |
-| EUR/USD | 1.1537 | — |
+| EUR/USD | 1.1539 | — |
 
 ## Strategien-Status
 
@@ -41,13 +41,13 @@
 
 ## Offene Alerts / Handlungsbedarf
 
-- ✅ Keine kritischen Alerts
+- ⚠️ Palantir (PLTR): 0.7% über Stop 127.00€
 
 ## Letzte Conviction Scores
 
 | Ticker | Score | Empfehlung |
 |---|---|---|
-| PLTR | 57 | HOLD |
+| PLTR | 56 | HOLD |
 | A3D42Y | 51 | HOLD |
 | A2DWAW | 39 | AVOID |
 

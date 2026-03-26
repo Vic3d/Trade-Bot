@@ -48,7 +48,54 @@
 | P042 | 24.03.2026 | EQNR.OL | LONG | 34.21€ | 32.50€ | 36.94€ | 39.34€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P043 | 24.03.2026 | EQNR.OL | LONG | 34.24€ | 32.53€ | 36.98€ | 39.38€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P044 | 24.03.2026 | EQNR.OL | LONG | 34.23€ | 32.52€ | 36.97€ | 39.36€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
-| P045 | 24.03.2026 | EQNR.OL | LONG | 34.20€ | 32.49€ | 36.94€ | 39.33€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow | CALL-Flow XLE Strike$62.0 2026-03-31 (6d) | Vol:3,617 OI:0 FRISCH | Pair:OPTIONS_FLOW_OIL_MEDIUM | Horizont:48h | Qualität:LERNEND (9/10 Samples) |
+| P045 | 24.03.2026 | EQNR.OL | LONG | 34.20€ | 32.49€ | 36.94€ | 39.33€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P046 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P047 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P048 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P049 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P050 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P051 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P052 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P053 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P054 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P055 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P056 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P057 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P058 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P059 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P060 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P061 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P062 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P063 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P064 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P065 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P066 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P067 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P068 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P069 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P070 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P071 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P072 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P073 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P074 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P075 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P076 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P077 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P078 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P079 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P080 | 26.03.2026 | EQNR.OL | LONG | 35.61€ | 33.83€ | 38.46€ | 40.95€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P081 | 26.03.2026 | EQNR.OL | LONG | 35.59€ | 33.81€ | 38.44€ | 40.93€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P082 | 26.03.2026 | EQNR.OL | LONG | 35.59€ | 33.81€ | 38.44€ | 40.93€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P083 | 26.03.2026 | EQNR.OL | LONG | 35.60€ | 33.82€ | 38.45€ | 40.94€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P084 | 26.03.2026 | EQNR.OL | LONG | 35.62€ | 33.84€ | 38.47€ | 40.96€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P085 | 26.03.2026 | EQNR.OL | LONG | 35.62€ | 33.84€ | 38.47€ | 40.96€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P086 | 26.03.2026 | EQNR.OL | LONG | 35.57€ | 33.79€ | 38.42€ | 40.91€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P087 | 26.03.2026 | EQNR.OL | LONG | 35.57€ | 33.79€ | 38.41€ | 40.90€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P088 | 26.03.2026 | EQNR.OL | LONG | 35.57€ | 33.79€ | 38.41€ | 40.90€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P089 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P090 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P091 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
+| P092 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow | CALL-Flow CVX Strike$217.5 2026-04-02 (6d) | Vol:1,998 OI:0 FRISCH | Pair:OPTIONS_FLOW_OIL_SHORT | Horizont:24h | Qualität:STARK |
 
 ## Abgeschlossene Paper Trades
 

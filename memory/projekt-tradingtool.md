@@ -1,7 +1,7 @@
 # Projekt: Trading Tool (Arbeitstitel: "TradeMind")
 
-**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-24
-**Status:** 🌱 Phase 1 — Lernphase (aktiv)
+**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-26
+**Status:** 🌱 Phase 1 — Lernphase (aktiv) | 📋 Professionalisierungs-Bauplan erstellt
 **Beteiligte:** Victor (Lead), Albert (Proto-Tool + Dokumentation)
 **Ziel:** Beste Retail-Trading-App der Welt. Start als persönliches Tool, Vermarktung ~2027.
 

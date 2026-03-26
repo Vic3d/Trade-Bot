@@ -1,6 +1,6 @@
 {
-  "daily_pnl": 125.20289999999994,
-  "daily_trades": 12,
+  "daily_pnl": -712.1948,
+  "daily_trades": 70,
   "last_date": "2026-03-26",
   "signals_today": [
     "9988.HK",
@@ -34,8 +34,27 @@
     "CRH.L",
     "CON.DE",
     "SGO.PA",
-    "GSK.L"
+    "GSK.L",
+    "PUM.DE",
+    "HEI.DE",
+    "MNDI.L",
+    "ZAL.DE",
+    "GOLD",
+    "ORCL",
+    "RHM.DE",
+    "BA.L",
+    "GOLD",
+    "ZAL.DE",
+    "CRH.L",
+    "ORCL",
+    "HAL",
+    "ENR.DE",
+    "CSCO",
+    "OXY",
+    "TMO",
+    "GOOGL",
+    "MRK"
   ],
-  "scanned": 185,
-  "signals_found": 161
+  "scanned": 229,
+  "signals_found": 273
 }

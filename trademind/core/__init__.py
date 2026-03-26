@@ -1,0 +1,1 @@
+# trademind/core — Shared Infrastructure
