@@ -367,7 +367,7 @@
       "strategy": "DT4",
       "trade_type": "day_trade",
       "entry": 90.61,
-      "stop": 91.07,
+      "stop": 91.29,
       "target": 91.34,
       "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
@@ -443,7 +443,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T14:02:42.661489Z",
+  "last_sync": "2026-03-26T14:05:10.797655Z",
   "recent_day_trades": [
     {
       "ticker": "MNDI.L",
