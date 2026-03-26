@@ -243,22 +243,32 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ENR.DE",
+      "strategy": "DT3",
+      "trade_type": "day_trade",
+      "entry": 151.35,
+      "stop": 149.53,
+      "target": 158.4,
+      "opened_at": "2026-03-26 15:50",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ENR.DE",
+      "strategy": "DT3-CTR",
+      "trade_type": "day_trade",
+      "entry": 151.35,
+      "stop": 149.53,
+      "target": 149.53,
+      "opened_at": "2026-03-26 15:50",
+      "status": "OPEN"
+    },
+    {
       "ticker": "HAL",
       "strategy": "DT9",
       "trade_type": "day_trade",
       "entry": 34.32,
       "stop": 33.98,
       "target": 34.6,
-      "opened_at": "2026-03-26 15:45",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "HAL",
-      "strategy": "DT9-CTR",
-      "trade_type": "day_trade",
-      "entry": 34.32,
-      "stop": 33.91,
-      "target": 33.91,
       "opened_at": "2026-03-26 15:45",
       "status": "OPEN"
     },
@@ -320,16 +330,6 @@
       "stop": 180.53,
       "target": 178.31,
       "opened_at": "2026-03-26 13:33",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "ENR.DE",
-      "strategy": "DT3",
-      "trade_type": "day_trade",
-      "entry": 153.25,
-      "stop": 151.41,
-      "target": 158.4,
-      "opened_at": "2026-03-26 11:38",
       "status": "OPEN"
     },
     {
@@ -453,8 +453,28 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T15:45:25.866643Z",
+  "last_sync": "2026-03-26T15:50:16.429703Z",
   "recent_day_trades": [
+    {
+      "ticker": "ENR.DE",
+      "strategy": "DT3",
+      "entry_price": 153.25,
+      "exit_price": 151.2,
+      "entry_date": "2026-03-26 11:38",
+      "exit_date": "2026-03-26 15:50",
+      "pnl_pct": -1.34,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT9-CTR",
+      "entry_price": 34.32,
+      "exit_price": 34.35,
+      "entry_date": "2026-03-26 15:45",
+      "exit_date": "2026-03-26 15:50",
+      "pnl_pct": -0.1,
+      "status": "LOSS"
+    },
     {
       "ticker": "CRH.L",
       "strategy": "DT2",
@@ -633,26 +653,6 @@
       "entry_date": "2026-03-26 14:10",
       "exit_date": "2026-03-26 14:15",
       "pnl_pct": -0.05,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "SGO.PA",
-      "strategy": "DT4",
-      "entry_price": 70.92,
-      "exit_price": 71.24,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 14:10",
-      "pnl_pct": -0.45,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "MNDI.L",
-      "strategy": "DT1-CTR",
-      "entry_price": 9.9,
-      "exit_price": 9.9,
-      "entry_date": "2026-03-26 13:50",
-      "exit_date": "2026-03-26 13:55",
-      "pnl_pct": -0.02,
       "status": "LOSS"
     }
   ],
