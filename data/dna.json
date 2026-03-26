@@ -323,16 +323,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "RHM.DE",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 1456.5,
-      "stop": 1439.05,
-      "target": 1473.98,
-      "opened_at": "2026-03-26 14:55",
-      "status": "OPEN"
-    },
-    {
       "ticker": "HEI.DE",
       "strategy": "DT4",
       "trade_type": "day_trade",
@@ -443,8 +433,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-26T16:35:27.357888Z",
+  "last_sync": "2026-03-26T16:40:30.449948Z",
   "recent_day_trades": [
+    {
+      "ticker": "RHM.DE",
+      "strategy": "DT1",
+      "entry_price": 1456.5,
+      "exit_price": 1438.5,
+      "entry_date": "2026-03-26 14:55",
+      "exit_date": "2026-03-26 16:40",
+      "pnl_pct": -1.24,
+      "status": "LOSS"
+    },
     {
       "ticker": "OXY",
       "strategy": "DT3-CTR",
@@ -634,16 +634,6 @@
       "exit_date": "2026-03-26 15:10",
       "pnl_pct": 0.66,
       "status": "WIN"
-    },
-    {
-      "ticker": "GOLD",
-      "strategy": "DT3",
-      "entry_price": 35.44,
-      "exit_price": 34.95,
-      "entry_date": "2026-03-26 14:20",
-      "exit_date": "2026-03-26 15:10",
-      "pnl_pct": -1.38,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
