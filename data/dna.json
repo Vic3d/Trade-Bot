@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "DIS",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 80.15,
+      "stop": 79.19,
+      "target": 80.87,
+      "opened_at": "2026-03-27 18:25",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "DIS",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 80.15,
+      "stop": 79.19,
+      "target": 79.19,
+      "opened_at": "2026-03-27 18:25",
+      "status": "OPEN"
+    },
+    {
       "ticker": "GOOGL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -267,7 +287,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 34.75,
-      "stop": 34.81,
+      "stop": 34.83,
       "target": 34.72,
       "opened_at": "2026-03-27 17:25",
       "status": "OPEN"
@@ -353,16 +373,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "DIS",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 81.08,
-      "stop": 80.11,
-      "target": 82.05,
-      "opened_at": "2026-03-27 14:20",
-      "status": "OPEN"
-    },
-    {
       "ticker": "MRK",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -373,8 +383,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T18:20:06.409268Z",
+  "last_sync": "2026-03-27T18:25:14.584846Z",
   "recent_day_trades": [
+    {
+      "ticker": "DIS",
+      "strategy": "DT1",
+      "entry_price": 81.08,
+      "exit_price": 80.1,
+      "entry_date": "2026-03-27 14:20",
+      "exit_date": "2026-03-27 18:25",
+      "pnl_pct": -1.21,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOOGL",
       "strategy": "DT2-CTR",
@@ -563,16 +583,6 @@
       "entry_date": "2026-03-27 14:40",
       "exit_date": "2026-03-27 14:45",
       "pnl_pct": -0.09,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "UNH",
-      "strategy": "DT2-CTR",
-      "entry_price": 226.99,
-      "exit_price": 227.97,
-      "entry_date": "2026-03-27 14:40",
-      "exit_date": "2026-03-27 14:45",
-      "pnl_pct": -0.43,
       "status": "LOSS"
     }
   ],
