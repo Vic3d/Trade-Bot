@@ -14,6 +14,9 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 
 ## Log
 
+### 2026-03-27 21:02 — Circuit Breaker aktiviert (weekly_loss_limit + consecutive_losses)
+**Strategie (gesamt):** 🟡→🔴 | Trading-Sperre aktiviert bis 2026-03-28 21:02. Weekly Loss Limit + Consecutive Losses Threshold überschritten. 2/2 Slots belegt (OXY +1.6%, FRO -0.6%). **Auslöser:** Autonomer Zyklus erkannt repeated loss pattern. **Auswirkung:** Keine neuen Trades bis morgen 21:02.
+
 ### 2026-03-26 22:02 — Trump Ultimatum Verlängerung bis 06.04
 **S1 (Iran/Ölschock):** 🟢→🟡 | Trump verlängert Hormus-Ultimatum bis 06. April (FOCUS + Bloomberg Politik + Bloomberg Markets, 21:17-21:55 CET). Eskalation pausiert, aber Ölversorgung bleibt kritisch: **10M Barrel/Tag ausfallend** (Morse, Bloomberg). Stops (EQNR 27,00€, DR0 83,50€) bleiben, aber Druck reduziert. **Kontext:** Kurz nach 15-Punkte-Deal-Ansage von Trump am 25.03 — strukturelle Lücken bleiben (Atom+Raketen), aber Zeit bis 6. April.
 
@@ -467,3 +470,54 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -8.4% (14T) | News neutral (Score +0)
 
+
+
+## 2026-03-27 20:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -10.9% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -14.2% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -28.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -8.4% (14T) | News neutral (Score +0)
+
+### PS10 (Lufthansa — Peace Dividend)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS11 (Defense-EU-Small)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -9.2% (14T) | News neutral (Score +0)
+
+### PS12 (AI-Infrastructure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS13 (Copper-Green-Transition)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS14 (Shipping-Normalization)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS15 (Biotech-Rate-Reversal)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+
+### 2026-03-27 22:44 — S2 Rüstung pausiert (🟡→🔴)
+**Strategie:** S2 Europäische Aufrüstung / Rüstung
+**Alt → Neu:** 🟡 Watchlist → 🔴 PAUSIERT
+**Grund:** RHM.DE –13,7% in 4 Wochen (1.664€ → 1.436€). Klarer Abwärtstrend. Rally war bereits vollständig eingepreist 2024–2025. Waffenstillstandssignale Ukraine als Gegenwind. PS3 Paper-Trades hatten strukturellen Design-Fehler (1-Tages-Haltedauer).
+**Re-Entry-Bedingung:** Bodenbildung unter 1.300€ + bullisches Reversal-Signal. Alternativ: neue Ukraine-Eskalation + Kurs zurück >1.500€ mit Volumenbestätigung.
+**Wer:** Albert (autonom, Paper Lab Traders Tool)

@@ -114,7 +114,7 @@ Iran/Golf-Öl ist leichtes Öl (~30-35° API) — wie Brent.
 | 25.03. | Trump 15-Punkte-Plan + Ceasefire-Hoffnungen → Brent -4%. Victor-Analyse: Deal strukturell unmöglich (Iran kann Atom+Raketen nicht aufgeben ohne Regime-Kollaps — Libyen/Irak-Präzedenz). OXY April-Calls 18.931 Kontrakte = institutionelle Käufer kaufen Schwäche. CoT: Hedge Fonds netto +31.502 long. Entscheidung: HALTEN. | Deal-Wahrscheinlichkeit 10% Großdeal, 30% Teil-Deal, 60% kein Deal. Ceasefire-Rhetoric ≠ Ceasefire-Realität. | 🟢🔥 |
 ## STRATEGIE 2: Europäische Aufrüstung → Rüstung
 
-**Status: 🟢 STARK** *(Stand: 08.03.2026)*
+**Status: 🔴 PAUSIERT** *(Stand: 27.03.2026 — Albert autonome Entscheidung)*
 
 **These:**
 Europa rüstet auf — NATO-Druck, Ukraine-Krieg, jetzt Iran-Konflikt. Rüstungsbudgets steigen strukturell über Jahre. Rheinmetall ist der direkteste Profiteur im deutschen Markt.
@@ -147,6 +147,7 @@ Europa rüstet auf — NATO-Druck, Ukraine-Krieg, jetzt Iran-Konflikt. Rüstungs
 | 11.03. 14:31 | **RHM.DE 1.544€** — weiterhin unter Entry A 1.626€. "Umsatz und Gewinn gestiegen, durchwachsene Prognose, Dividende überraschend hoch" (finanzen.net). Kurs bleibt nach Zahlen-Abverkauf gedrückt. | Thesis 🟢 stabil. Entry A (>1.626€) noch nicht aktiv. Post-Earnings-Konsolidierung normal. | 🟢 |
 | 12.03. 10:30 | **RHM.DE 1.565€** (-1,3%). "Germany's Rheinmetall predicts $16.8B annual order boom, will 'focus entirely' on defense" (Reuters/WSJ). Order-Boom ist Rekord-Confirmation. Post-Earnings-Konsolidierung nach FY2025 Zahlen läuft noch. VIX 25,11 unterstützt. | Thesis 🟢 fundamental noch stärker. Kurs unter Entry A = Kaufchance bei Rückkauf >1.626€. Thesis unverändert. | 🟢 |
 | 16.03. | **RHM.DE verkauft @ 1.605€** — Re-Entry Position (Entry 1.570€) geschlossen, +2,2% Gewinn. Thesis bleibt 🟢. Kurs steigt weiter → Re-Entry Watchlist aktiv: Signal A >1.626€ + Volumenbestätigung. | Position CLOSED. Keine aktive Haltung mehr. Nächster Entry nur bei neuem Signal. | 🟡 (Watchlist) |
+| 27.03. | **Strategie PAUSIERT** — RHM.DE von 1.664€ (27.02.) auf 1.436€ (26.03.) = –13,7% in 4 Wochen. Klarer Abwärtstrend ~32€/Tag. Thesis strukturell korrekt (EU-Rüstungsbudgets steigen), aber Markt hat den Boom bereits 2024–2025 eingepreist. Waffenstillstands-Signale Ukraine + Gewinnmitnahmen nach historischer Rally drücken den Kurs. Re-Entry Signal 1.626€ weit weg. PS3 Paper-Trades hatten Design-Fehler: 1-Tages-Haltedauer sinnlos für Rüstungsthesen. | Strategie PAUSIERT. Kein aktives Trading. Re-Entry nur bei Bodenbildung unter 1.300€ + reversal Signal. Alternativer Watchlist-Trigger: Ukraine-Eskalation + Kurs >1.500€ mit Volumen. | 🔴 PAUSIERT |
 
 ---
 
@@ -754,3 +755,122 @@ Silber hat im Feb. 2026 eine Fahnenstange auf $115-120 gemacht → Korrektur auf
 | Datum | Event | Einschätzung | Status |
 |---|---|---|---|
 | 26.03.2026 | Deep Dive: Silver $69,67 (-4,35%), Gold $4.575, Ratio 65,6:1. BPGDM-Index bei 3,7% (historisch überverkauft). Lars Eriksen Transcript analysiert: Fahnenstangen-Regel + 2-Stufen-Kaufsignal + 24-Monate-Statistik. Barron's: "Miner Stocks May Be a Buy". Lobo Tiggre: "Flush, not a top". | Watchlist aktiv. Kein Signal. Heutiger Abverkauf = Margin-Liquidation, nicht Trendwende. Freitag Wochenschluss prüfen. | 🟡 WATCHLIST |
+
+---
+
+## STRATEGIE S10: Lufthansa — Post-War Recovery (Antizyklisch)
+
+**Status: 👀 WATCHLIST** *(Angelegt: 2026-03-27)*
+
+**These:**
+Lufthansa leidet aktuell doppelt unter dem Iran-Konflikt:
+1. Gestörte Flugrouten (Iran-Luftraum, Rotes Meer) → höhere Kosten, längere Umwege
+2. Hoher Ölpreis → Kerosin macht ~25-30% der Kosten aus
+
+Bei einem Kriegsende / klarer De-Eskalation fallen BEIDE Drücke gleichzeitig weg. Das KGV könnte von aktuell 6 auf 10-12 steigen → **+60-100% Upside** ohne fundamentale Gewinnverbesserung.
+
+**Antizyklischer Ansatz:** Kaufen wenn alle Angst haben (jetzt noch nicht), einsteigen beim ersten konkreten De-Eskalationssignal.
+
+**Aktive Positionen:** keine (Watchlist)
+
+**Entry-Trigger (PFLICHT — nicht früher kaufen):**
+- ✅ Konkreter Waffenstillstand Iran oder glaubwürdige Verhandlungen (nicht nur Gerüchte)
+- ✅ Ölpreis (Brent) fällt unter 75$/Barrel oder klarer Abwärtstrend
+- ✅ LHA.DE bricht über EMA50/200 aus (technische Bestätigung)
+- ✅ Mindestens 2 der 3 Trigger erfüllt → Einstieg
+
+**Entry-Zone (bei Trigger):** 7,00–8,50€
+**Ziel 1:** 11,50€ (+55%)
+**Ziel 2:** 14,00€ (+88%)
+**Stop:** 5,80€ (unter 52w-Tief 5,53€)
+
+**Fundamentals (Stand 27.03.2026):**
+- Kurs: 7,44€ | 52w: 5,53–9,59€
+- KGV 2026e: 6,18 | KGV 2027e: 5,19
+- Dividende 2026e: 4,5%
+- Q1-Report: 6. Mai 2026
+
+**Kill-Switch (Strategie aufgeben):**
+- Iran-Konflikt eskaliert weiter (S1 bullisch bleibt → S10 bleibt Watchlist)
+- Lufthansa-spezifisches Problem (Streik, Bilanzkrise, Kapitalerhöhung)
+- Ölpreis steigt trotz De-Eskalation (strukturelle Nachfrage)
+
+**Monitoring:**
+- Iran-Friedenssignale (liveuamap.com, Google News)
+- Brent-Ölpreis täglich
+- LHA.DE Kurs & Volumen (Einstiegssignal bei Volumen-Ausbruch)
+
+---
+
+## STRATEGIE 11: Antizyklischer Öl-Airline-Flip (PS11)
+
+**Status: 🟢 AKTIV** *(angelegt: 27.03.2026 — Victor + Albert)*
+
+**These:**
+Airlines leiden unter hohem Ölpreis weil Kerosin ihr größter Kostenfaktor ist. Der aktuelle Brent-Anstieg ($78→$105) ist geopolitisch getrieben (Iran/Hormuz) — also temporär, nicht strukturell. Wenn der Auslöser wegfällt (Iran-Deal, Waffenstillstand, Entspannung), fällt Brent zurück auf $75-85 und Airlines erholen sich überproportional.
+
+**Verbindung zu S1:** PS11 ist die Inverse von S1. Wenn S1 (Iran/Öl bullisch) aufgelöst wird → PS11 (Airlines) profitiert direkt. Beide Strategien gleichzeitig halten ist ein natürlicher Hedge.
+
+**Historische Korrelation:**
+- Jan 2026: Brent ~$78, LHA.DE ~9,00€
+- Mär 2026: Brent ~$105, LHA.DE ~7,35€
+- → Brent +35% → LHA –18% (inverse Korrelation bestätigt)
+
+**Aktive Positionen:**
+- Lufthansa AG (LHA.DE) @ 7,35€ | Stop: 5,80€ | Ziel: 9,21€ (52W-High)
+
+**Universe:** LHA.DE, RYA.IR (Ryanair), IAG.L (British Airways), AF.PA (Air France)
+
+**Entry-Bedingungen:**
+- Brent beginnt zu fallen (3-Tages-Rückgang >5%)
+- Erste glaubwürdige Iran-Deal-Signale
+- LHA.DE über EMA-20 nach Rücksetzer
+- VIX unter 25 (Risk-On Bestätigung)
+
+**Exit/Stop:**
+- Stop: 5,80€ (–21% von Entry) — Thesis falsch wenn Iran-Konflikt eskaliert statt deeskaliert
+- Ziel 1: 9,00€ (+22%) — Rückkehr Jan-2026-Niveau
+- Ziel 2: 9,59€ (+30%) — 52W-High Recovery
+
+**Thesis-Log:**
+| Datum | Event | Wirkung | Status |
+|-------|-------|---------|--------|
+| 27.03. | Strategie angelegt — LHA.DE Position PS10 → PS11 umgewidmet | Start | 🟢 |
+
+---
+
+## ANTI-ZYKLISCHES SCREENING — Laufende Analyse
+
+**Konzept (angelegt 27.03.2026):**
+Regelmäßige Suche nach Aktien die unter TEMPORÄREN makroökonomischen Faktoren leiden — und sich erholen sobald der Faktor wegfällt. Zyklisch: wer leidet heute → kaufen, wer gewinnt heute → Gewinnmitnahmen vorbereiten.
+
+**Aktuelle Makro-Stressoren (27.03.2026):**
+- Brent $105 (Haupttreiber: Iran/Hormuz)
+- VIX 30+ (Panik-Modus, Konsumzurückhaltung)
+- Route-Störungen (Rotes Meer, Suez-Kanal)
+
+### Kandidaten-Scan (27.03.2026)
+
+| Ticker | Name | Abstand 52W-High | Stressor | Thesis-Trigger |
+|--------|------|-----------------|----------|----------------|
+| LHA.DE | Lufthansa | –23% | Kerosin $105 | **PS11 aktiv** |
+| RYA.IR | Ryanair | –18% | Kerosin | Öl fällt → erste Kandidat nach LHA |
+| IAG.L | IAG (BA+Iberia) | –23% | Kerosin | Öl fällt |
+| AF.PA | Air France-KLM | –42% | Kerosin + Schulden | Risikoreicher, höheres CRV |
+| HLAG.DE | Hapag-Lloyd | –34% | Suez-Sperrung | Routen öffnen → sofort Erholung |
+| CCL | Carnival Cruises | –29% | Fuel + VIX | VIX fällt + Öl fällt = Doppelwirkung |
+| BMW.DE | BMW | –21% | Konsumzurückhaltung | VIX < 20 → Käufer kommen zurück |
+| VOW3.DE | Volkswagen | –21% | Konsumzurückhaltung | Strukturell schwächer als BMW |
+| BAS.DE | BASF | –1% | Erdgas/Öl | Kaum Abschlag → kein Einstieg jetzt |
+
+**Priorisierung nach CRV und Klarheit des Triggers:**
+1. 🥇 LHA.DE — bereits in PS11, Trigger klar (Öl ↓)
+2. 🥈 HLAG.DE — –34%, direkter Route-Trigger (Suez öffnet)
+3. 🥉 CCL — Doppelwirkung (Öl + VIX), aber US-Aktie, höheres Risiko
+4. RYA.IR — sauber, aber weniger Abschlag als LHA
+5. BMW.DE — VIX-getrieben, etwas weniger direkter Trigger
+
+**Nächste Schritte:**
+- HLAG.DE und CCL für PS12 vormerken
+- Entry-Bedingung für alle: Brent 3-Tages-Rückgang >5% ODER Iran-Deal-Signal
+- Wöchentlich aktualisieren (Freitag Abend-Report integriert)

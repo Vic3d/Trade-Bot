@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-27T08:00:52.144767",
+  "timestamp": "2026-03-27T20:01:36.982795",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
@@ -26,12 +26,12 @@
     "PS3": {
       "name": "NATO/EU-Rüstung",
       "status": "GESCHWÄCHT",
-      "score": 19,
+      "score": 16,
       "momentum_avg": -14.2,
-      "news_score": 20,
+      "news_score": 0,
       "reasons": [
         "Preise sehr schwach -14.2% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     "PS4": {
@@ -55,6 +55,72 @@
         "Preise schwach -8.4% (14T)",
         "News neutral (Score +0)"
       ]
+    },
+    "PS10": {
+      "name": "Lufthansa — Peace Dividend",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS11": {
+      "name": "Defense-EU-Small",
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -9.2,
+      "news_score": 0,
+      "reasons": [
+        "Preise schwach -9.2% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS12": {
+      "name": "AI-Infrastructure",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS13": {
+      "name": "Copper-Green-Transition",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS14": {
+      "name": "Shipping-Normalization",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS15": {
+      "name": "Biotech-Rate-Reversal",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
     }
   },
   "changes": [
@@ -74,10 +140,10 @@
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 19,
+      "score": 16,
       "reasons": [
         "Preise sehr schwach -14.2% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     {
@@ -99,6 +165,72 @@
       "score": 28,
       "reasons": [
         "Preise schwach -8.4% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS10",
+      "name": "Lufthansa — Peace Dividend",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS11",
+      "name": "Defense-EU-Small",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
+      "reasons": [
+        "Preise schwach -9.2% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS12",
+      "name": "AI-Infrastructure",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS13",
+      "name": "Copper-Green-Transition",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS14",
+      "name": "Shipping-Normalization",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS15",
+      "name": "Biotech-Rate-Reversal",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     }

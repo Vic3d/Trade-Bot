@@ -1,0 +1,186 @@
+{
+  "capital": 25000,
+  "invested": 13999.0,
+  "free": 11001.0,
+  "free_tradeable": 9001.0,
+  "invested_pct": 56.0,
+  "position_count": 7,
+  "max_positions": 20,
+  "by_strategy": {
+    "PT": 6000.0,
+    "PM": 4000.0,
+    "PS9": 2000.0,
+    "PS10": 1999.0
+  },
+  "by_sector": {
+    "Energy": 8000.0,
+    "Metals": 2000.0,
+    "Semis": 2000.0,
+    "Aviation": 1999.0
+  },
+  "sector_limit_pct": 35,
+  "positions": [
+    {
+      "ticker": "AG",
+      "strategy": "PM",
+      "entry": 17.33,
+      "stop": 16.81,
+      "target": 25.0,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 14.8,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Metals",
+      "days_open": 0
+    },
+    {
+      "ticker": "DINO",
+      "strategy": "PM",
+      "entry": 52.88,
+      "stop": 51.3,
+      "target": 56.58,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 2.3,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Energy",
+      "days_open": 0
+    },
+    {
+      "ticker": "LHA.DE",
+      "strategy": "PS10",
+      "entry": 7.35,
+      "stop": 5.8,
+      "target": 11.5,
+      "volume": 1999,
+      "pct_of_capital": 8.0,
+      "crv": 2.7,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Aviation",
+      "days_open": 0
+    },
+    {
+      "ticker": "FRO",
+      "strategy": "PS9",
+      "entry": 29.1,
+      "stop": 27.21,
+      "target": 33.47,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 2.3,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Energy",
+      "days_open": 0
+    },
+    {
+      "ticker": "ASML.AS",
+      "strategy": "PT",
+      "entry": 1187.6,
+      "stop": 1090.0,
+      "target": 1350.0,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 1.7,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Semis",
+      "days_open": 0
+    },
+    {
+      "ticker": "TTE.PA",
+      "strategy": "PT",
+      "entry": 76.0,
+      "stop": 70.0,
+      "target": 88.0,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 2.0,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Energy",
+      "days_open": 0
+    },
+    {
+      "ticker": "PSX",
+      "strategy": "PT",
+      "entry": 156.05,
+      "stop": 148.25,
+      "target": 179.46,
+      "volume": 2000,
+      "pct_of_capital": 8.0,
+      "crv": 3.0,
+      "conviction": 0,
+      "regime": "?",
+      "sector": "Energy",
+      "days_open": 0
+    }
+  ],
+  "closed_by_strategy": {
+    "DT1": {
+      "trades": 1,
+      "pnl": -0.15,
+      "wins": 0,
+      "wr": 0.0
+    },
+    "PS1": {
+      "trades": 5,
+      "pnl": -14.74,
+      "wins": 2,
+      "wr": 40.0
+    },
+    "PS2": {
+      "trades": 3,
+      "pnl": -79.03,
+      "wins": 2,
+      "wr": 67.0
+    },
+    "PS3": {
+      "trades": 3,
+      "pnl": -7.72,
+      "wins": 0,
+      "wr": 0.0
+    },
+    "PS5": {
+      "trades": 1,
+      "pnl": 0.65,
+      "wins": 1,
+      "wr": 100.0
+    },
+    "PT": {
+      "trades": 2,
+      "pnl": 341.36,
+      "wins": 1,
+      "wr": 50.0
+    },
+    "new": {
+      "trades": 1,
+      "pnl": -4.32,
+      "wins": 0,
+      "wr": 0.0
+    }
+  },
+  "benchmark": {
+    "date": "2026-03-27",
+    "paper_fund": {
+      "pnl_eur": 236.05,
+      "return_pct": 0.94,
+      "trades": 15,
+      "win_rate": 40.0
+    },
+    "benchmarks": {
+      "SPY_buyhold": {
+        "return_pct": -4.61,
+        "pnl_eur": -1001.04,
+        "vs_paper": 5.55
+      },
+      "60_40": {
+        "return_pct": -4.36,
+        "vs_paper": 5.3
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "DT4": {
+    "enabled": false,
+    "weight": 1.0,
+    "kills": 0,
+    "kill_reason": "EV -7.11 < 0 nach 102 Trades"
+  },
+  "DT3": {
+    "enabled": true,
+    "weight": 1.0,
+    "kills": 0
+  },
+  "DT6": {
+    "enabled": true,
+    "weight": 1.0,
+    "kills": 0
+  },
+  "DT1": {
+    "enabled": true,
+    "weight": 1.0,
+    "kills": 0
+  },
+  "DT2": {
+    "enabled": true,
+    "weight": 1.0,
+    "kills": 0
+  },
+  "DT9": {
+    "enabled": true,
+    "weight": 1.0,
+    "kills": 0
+  },
+  "_last_updated": "2026-03-27T22:30:41.335437"
+}

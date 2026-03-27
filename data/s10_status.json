@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-03-27T20:02:37.520579",
+  "lha": {
+    "price": 7.354,
+    "ema20": 7.865473449132044,
+    "ema50": 8.360249863005025,
+    "above_ema20": false,
+    "above_ema50": false,
+    "week_low": 7.354000091552734,
+    "week_high": 7.618000030517578
+  },
+  "brent_price": 105.18,
+  "triggers": {
+    "brent_below_75": false,
+    "above_ema20": false,
+    "peace_signal": false,
+    "total_met": 0
+  },
+  "in_entry_zone": true,
+  "alert_level": "STANDBY",
+  "alert_msg": "\ud83d\ude34 S10 Standby: 0/3 Trigger aktiv",
+  "risk_reward": {
+    "Jetzt": {
+      "entry": 7.35,
+      "stop": 5.8,
+      "target1": 11.5,
+      "target2": 14.0,
+      "risk_pct": 21.1,
+      "gain_pct_t1": 56.4,
+      "gain_pct_t2": 90.4,
+      "crv_t1": 2.67,
+      "crv_t2": 4.28,
+      "max_loss_eur": 423.0,
+      "gain_t1_eur": 1128.0,
+      "gain_t2_eur": 1807.0
+    },
+    "Entry Min": {
+      "entry": 7.0,
+      "stop": 5.8,
+      "target1": 11.5,
+      "target2": 14.0,
+      "risk_pct": 17.1,
+      "gain_pct_t1": 64.3,
+      "gain_pct_t2": 100.0,
+      "crv_t1": 3.75,
+      "crv_t2": 5.83,
+      "max_loss_eur": 343.0,
+      "gain_t1_eur": 1286.0,
+      "gain_t2_eur": 2000.0
+    },
+    "Entry Max": {
+      "entry": 8.5,
+      "stop": 5.8,
+      "target1": 11.5,
+      "target2": 14.0,
+      "risk_pct": 31.8,
+      "gain_pct_t1": 35.3,
+      "gain_pct_t2": 64.7,
+      "crv_t1": 1.11,
+      "crv_t2": 2.04,
+      "max_loss_eur": 635.0,
+      "gain_t1_eur": 706.0,
+      "gain_t2_eur": 1294.0
+    }
+  },
+  "news": {
+    "peace_signals": [],
+    "risk_signals": [],
+    "peace_trigger": false
+  }
+}

@@ -167,7 +167,7 @@
       "name": "Equinor ASA",
       "status": "OPEN",
       "entry_eur": 33.58,
-      "stop_eur": 33.2,
+      "stop_eur": 34.2,
       "target_eur": null,
       "size_eur": 2000,
       "entry_date": "2026-03-25",
@@ -273,6 +273,21 @@
       "thesis": "Re-Entry nach Stop — Glyphosat-Urteil + Pipeline-Katalysator abwarten",
       "added": "2026-03-22",
       "note": "Ausgestoppt 22.03 @ 38€. Re-Entry wenn Stabilisierung + Katalysator"
+    },
+    {
+      "ticker": "LHA.DE",
+      "name": "Lufthansa AG",
+      "yahoo": "LHA.DE",
+      "strategy": "S10",
+      "entryMin": 7.0,
+      "entryMax": 8.5,
+      "stop": 5.8,
+      "targets": [
+        11.5,
+        14.0
+      ],
+      "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
+      "status": "WATCHLIST"
     }
   ],
   "macro": {
@@ -328,13 +343,15 @@
       "id": "PS3",
       "color": "#2ecc71",
       "name": "NATO/EU-Rüstung",
-      "status": "🟡",
+      "status": "paused",
       "conviction": "Mittel",
       "tickers": [
         "ASML.AS",
         "HO.PA"
       ],
-      "desc": "Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand."
+      "desc": "Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand.",
+      "pause_reason": "RHM.DE -13.7% in 4 Wochen. Rally eingepreist. Re-Entry unter 1.300€ oder neue Eskalation >1.500€.",
+      "paused_date": "2026-03-27"
     },
     {
       "id": "PS4",
@@ -359,6 +376,39 @@
         "GLEN.L"
       ],
       "desc": "Russische Kali-Sanktionen → westliche Düngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung."
+    },
+    {
+      "id": "PS11",
+      "color": "#06b6d4",
+      "name": "Antizyklischer Öl-Airline-Flip",
+      "status": "active",
+      "conviction": 65,
+      "style": "swing",
+      "holding_weeks": "4-12",
+      "tickers": [
+        "LHA.DE",
+        "RYA.IR",
+        "IAG.L",
+        "AF.PA"
+      ],
+      "desc": "Airlines leiden unter hohem Ölpreis (Kerosin = größter Kostenfaktor). Wenn Iran-Deal / Hormuz-Entspannung → Brent fällt → Airlines erholen überproportional. Antizyklischer Kauf im 'Crisis Discount'. Inverse Korrelation LHA/Brent historisch bestätigt: Brent +35% → LHA –18% (Jan→Mär 2026).",
+      "thesis": "Öl-Preisanstieg ist geopolitisch getrieben (Iran/Hormuz) und damit temporär. Wenn Auslöser wegfällt, normalisiert sich Brent Richtung $75-85. Airlines reprisen dann: LHA von 7.35→9.00+ möglich (+22%). Verbindung zu S1: wenn S1-These aufgelöst wird (Frieden/Deal), flippt die Ölkorrelation direkt in einen Airline-Gewinn.",
+      "entry_conditions": [
+        "Brent beginnt zu fallen (3-Tages-Rückgang >5%)",
+        "Erste glaubwürdige Iran-Deal-Signale",
+        "LHA.DE über EMA-20 nach Rücksetzer",
+        "VIX fällt unter 25 (Risk-On Bestätigung)"
+      ],
+      "exit_conditions": [
+        "Brent wieder über $110 (Thesis falsch)",
+        "Iran-Verhandlungen kollabieren endgültig",
+        "LHA.DE unter Stop 5.80€"
+      ],
+      "target_price": 9.21,
+      "stop_price": 5.8,
+      "current_position": "LHA.DE @ 7.35€ (PS10 → umgewandelt in PS11)",
+      "created": "2026-03-27",
+      "linked_strategy": "S1 (invers — wenn S1 endet, PS11 profitiert)"
     }
   ],
   "earnings": [

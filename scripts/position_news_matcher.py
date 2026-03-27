@@ -128,6 +128,22 @@ WATCHLIST_CONFIG = {
             "export ban chips", "china chips", "tsmc production"
         ],
         "queries": ["ASML semiconductor chip equipment EUV"]
+    },
+    "LHA.DE": {
+        "name": "Lufthansa AG (S10 — Post-War Watch)",
+        "thesis": "KEIN KAUF JETZT. Entry nur bei: Iran-Waffenstillstand + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
+        "keywords": [
+            "iran ceasefire", "iran waffenstillstand", "iran peace", "iran deal",
+            "hormuz reopened", "middle east peace", "iran nuclear agreement",
+            "brent falls below 75", "oil price drop", "crude oil plunge",
+            "lufthansa recovery", "airline stocks rally", "lufthansa earnings",
+            "kerosene price drop", "jet fuel falls"
+        ],
+        "queries": [
+            "Iran ceasefire peace deal Hormuz",
+            "Lufthansa Aktie Erholung",
+            "oil price drop Brent 75"
+        ]
     }
 }
 

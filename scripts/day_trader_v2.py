@@ -742,7 +742,21 @@ def main():
     # DT3: 9 Trades, 11% WR, Sharpe -12.55, p=1.00 → KILL
     # DT4: 102 Trades, 43% WR, Sharpe -4.38, p=0.93 → KILL
     # Vollständige Begründung: memory/strategie-friedhof.md
-    active_dt_strategies = ['DT1','DT2','DT5','DT6','DT7','DT8','DT9']  # DT3+DT4 removed
+    # Lade Feedback-Engine Gewichte (dynamisch)
+    dt_weights_path = WORKSPACE / 'data/dt_weights.json'
+    base_strategies = ['DT1','DT2','DT5','DT6','DT7','DT8','DT9']  # DT3+DT4 statisch tot
+    if dt_weights_path.exists():
+        try:
+            dt_weights = json.loads(dt_weights_path.read_text())
+            active_dt_strategies = [s for s in base_strategies
+                                     if dt_weights.get(s, {}).get('enabled', True)]
+            disabled = [s for s in base_strategies if s not in active_dt_strategies]
+            if disabled:
+                print(f"  ⚙️  Feedback-Engine deaktiviert: {disabled}")
+        except Exception:
+            active_dt_strategies = base_strategies
+    else:
+        active_dt_strategies = base_strategies
     if regime_path.exists():
         try:
             regime_data = json.loads(regime_path.read_text())

@@ -2917,3 +2917,295 @@
 [2026-03-27 11:45:14] Risk Score: 80/100 (HIGH)
 [2026-03-27 11:45:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
 [2026-03-27 11:45:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 12:02:07] Fetching 14 Yahoo tickers...
+[2026-03-27 12:02:14] Fetching Onvista prices (cache)...
+[2026-03-27 12:02:18] Onvista: 6/6 URLs gecacht
+[2026-03-27 12:02:18] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 12:02:18] Risk Score: 80/100 (HIGH)
+[2026-03-27 12:02:18] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 12:02:18] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 12:15:03] Fetching 14 Yahoo tickers...
+[2026-03-27 12:15:10] Fetching Onvista prices (cache)...
+[2026-03-27 12:15:14] Onvista: 6/6 URLs gecacht
+[2026-03-27 12:15:14] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 12:15:14] Risk Score: 80/100 (HIGH)
+[2026-03-27 12:15:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 12:15:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 12:30:18] Fetching 14 Yahoo tickers...
+[2026-03-27 12:30:24] Fetching Onvista prices (cache)...
+[2026-03-27 12:30:29] Onvista: 6/6 URLs gecacht
+[2026-03-27 12:30:29] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 12:30:29] Risk Score: 80/100 (HIGH)
+[2026-03-27 12:30:29] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 12:30:29] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 12:45:03] Fetching 14 Yahoo tickers...
+[2026-03-27 12:45:09] Fetching Onvista prices (cache)...
+[2026-03-27 12:45:14] Onvista: 6/6 URLs gecacht
+[2026-03-27 12:45:14] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 12:45:14] Risk Score: 80/100 (HIGH)
+[2026-03-27 12:45:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 12:45:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 13:00:26] Fetching 14 Yahoo tickers...
+[2026-03-27 13:00:33] Fetching Onvista prices (cache)...
+[2026-03-27 13:00:37] Onvista: 6/6 URLs gecacht
+[2026-03-27 13:00:37] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 13:00:37] Risk Score: 80/100 (HIGH)
+[2026-03-27 13:00:37] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 13:00:37] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 13:15:03] Fetching 14 Yahoo tickers...
+[2026-03-27 13:15:09] Fetching Onvista prices (cache)...
+[2026-03-27 13:15:13] Onvista: 6/6 URLs gecacht
+[2026-03-27 13:15:13] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 13:15:13] Risk Score: 80/100 (HIGH)
+[2026-03-27 13:15:13] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 13:15:13] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 13:31:37] Fetching 14 Yahoo tickers...
+[2026-03-27 13:31:44] Fetching Onvista prices (cache)...
+[2026-03-27 13:31:48] Onvista: 6/6 URLs gecacht
+[2026-03-27 13:31:48] ALERT QUEUED: 🔴 STOP GETROFFEN: Palantir (PLTR) @ 126.07€ | Stop: 127.0€ | SOFORT PRÜFEN! [Con...
+[2026-03-27 13:31:48] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 13:31:48] Risk Score: 80/100 (HIGH)
+[2026-03-27 13:31:48] State Snapshot geschrieben: 3 Positionen, 1 Alerts
+[2026-03-27 13:31:48] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 13:45:04] Fetching 14 Yahoo tickers...
+[2026-03-27 13:45:10] Fetching Onvista prices (cache)...
+[2026-03-27 13:45:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 13:45:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 13:45:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 13:45:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 13:45:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 14:00:31] Fetching 14 Yahoo tickers...
+[2026-03-27 14:00:38] Fetching Onvista prices (cache)...
+[2026-03-27 14:00:42] Onvista: 6/6 URLs gecacht
+[2026-03-27 14:00:42] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 14:00:42] Risk Score: 80/100 (HIGH)
+[2026-03-27 14:00:42] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 14:00:42] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 14:15:04] Fetching 14 Yahoo tickers...
+[2026-03-27 14:15:11] Fetching Onvista prices (cache)...
+[2026-03-27 14:15:16] Onvista: 6/6 URLs gecacht
+[2026-03-27 14:15:16] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 14:15:16] Risk Score: 80/100 (HIGH)
+[2026-03-27 14:15:16] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 14:15:16] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 14:30:23] Fetching 14 Yahoo tickers...
+[2026-03-27 14:30:29] Fetching Onvista prices (cache)...
+[2026-03-27 14:30:33] Onvista: 6/6 URLs gecacht
+[2026-03-27 14:30:33] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 14:30:33] Risk Score: 80/100 (HIGH)
+[2026-03-27 14:30:33] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 14:30:33] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 14:45:04] Fetching 14 Yahoo tickers...
+[2026-03-27 14:45:11] Fetching Onvista prices (cache)...
+[2026-03-27 14:45:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 14:45:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 14:45:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 14:45:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 14:45:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 15:00:24] Fetching 14 Yahoo tickers...
+[2026-03-27 15:00:31] Fetching Onvista prices (cache)...
+[2026-03-27 15:00:35] Onvista: 6/6 URLs gecacht
+[2026-03-27 15:00:35] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 15:00:35] Risk Score: 80/100 (HIGH)
+[2026-03-27 15:00:35] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 15:00:35] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 15:15:02] Fetching 14 Yahoo tickers...
+[2026-03-27 15:15:10] Fetching Onvista prices (cache)...
+[2026-03-27 15:15:14] Onvista: 6/6 URLs gecacht
+[2026-03-27 15:15:14] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 15:15:14] Risk Score: 80/100 (HIGH)
+[2026-03-27 15:15:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 15:15:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 15:31:14] Fetching 14 Yahoo tickers...
+[2026-03-27 15:31:20] Fetching Onvista prices (cache)...
+[2026-03-27 15:31:25] Onvista: 6/6 URLs gecacht
+[2026-03-27 15:31:25] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 15:31:25] Risk Score: 80/100 (HIGH)
+[2026-03-27 15:31:25] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 15:31:25] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 15:45:06] Fetching 14 Yahoo tickers...
+[2026-03-27 15:45:12] Fetching Onvista prices (cache)...
+[2026-03-27 15:45:16] Onvista: 6/6 URLs gecacht
+[2026-03-27 15:45:16] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 15:45:16] Risk Score: 80/100 (HIGH)
+[2026-03-27 15:45:16] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 15:45:16] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 16:01:57] Fetching 15 Yahoo tickers...
+[2026-03-27 16:02:04] Fetching Onvista prices (cache)...
+[2026-03-27 16:02:08] Onvista: 6/6 URLs gecacht
+[2026-03-27 16:02:08] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 16:02:08] Risk Score: 80/100 (HIGH)
+[2026-03-27 16:02:08] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 16:02:08] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 16:15:03] Fetching 15 Yahoo tickers...
+[2026-03-27 16:15:10] Fetching Onvista prices (cache)...
+[2026-03-27 16:15:14] Onvista: 6/6 URLs gecacht
+[2026-03-27 16:15:14] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 16:15:14] Risk Score: 80/100 (HIGH)
+[2026-03-27 16:15:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 16:15:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 16:30:37] Fetching 15 Yahoo tickers...
+[2026-03-27 16:30:51] Fetching Onvista prices (cache)...
+[2026-03-27 16:30:56] Onvista: 6/6 URLs gecacht
+[2026-03-27 16:30:56] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 16:30:56] Risk Score: 80/100 (HIGH)
+[2026-03-27 16:30:56] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 16:30:56] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 16:45:04] Fetching 15 Yahoo tickers...
+[2026-03-27 16:45:12] Fetching Onvista prices (cache)...
+[2026-03-27 16:45:16] Onvista: 6/6 URLs gecacht
+[2026-03-27 16:45:16] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 16:45:16] Risk Score: 80/100 (HIGH)
+[2026-03-27 16:45:16] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 16:45:16] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 17:00:32] Fetching 15 Yahoo tickers...
+[2026-03-27 17:00:39] Fetching Onvista prices (cache)...
+[2026-03-27 17:00:44] Onvista: 6/6 URLs gecacht
+[2026-03-27 17:00:44] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 17:00:44] Risk Score: 80/100 (HIGH)
+[2026-03-27 17:00:44] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 17:00:44] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 17:15:04] Fetching 15 Yahoo tickers...
+[2026-03-27 17:15:11] Fetching Onvista prices (cache)...
+[2026-03-27 17:15:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 17:15:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 17:15:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 17:15:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 17:15:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 17:30:28] Fetching 15 Yahoo tickers...
+[2026-03-27 17:30:35] Fetching Onvista prices (cache)...
+[2026-03-27 17:30:39] Onvista: 6/6 URLs gecacht
+[2026-03-27 17:30:39] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 17:30:39] Risk Score: 80/100 (HIGH)
+[2026-03-27 17:30:39] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 17:30:39] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 17:45:02] Fetching 15 Yahoo tickers...
+[2026-03-27 17:45:11] Fetching Onvista prices (cache)...
+[2026-03-27 17:45:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 17:45:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 17:45:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 17:45:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 17:45:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 18:00:27] Fetching 15 Yahoo tickers...
+[2026-03-27 18:00:34] Fetching Onvista prices (cache)...
+[2026-03-27 18:00:38] Onvista: 6/6 URLs gecacht
+[2026-03-27 18:00:38] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 18:00:38] Risk Score: 80/100 (HIGH)
+[2026-03-27 18:00:38] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 18:00:38] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 18:15:04] Fetching 15 Yahoo tickers...
+[2026-03-27 18:15:10] Fetching Onvista prices (cache)...
+[2026-03-27 18:15:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 18:15:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 18:15:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 18:15:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 18:15:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 18:30:26] Fetching 15 Yahoo tickers...
+[2026-03-27 18:30:33] Fetching Onvista prices (cache)...
+[2026-03-27 18:30:38] Onvista: 6/6 URLs gecacht
+[2026-03-27 18:30:38] ALERT QUEUED: ⚠️ MACRO: WTI ÖL Tagesbewegung +5.6% ($94.23→$99.49)
+📌 Ursache: Öl-Schock
+🔗 Kaus...
+[2026-03-27 18:30:38] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 18:30:38] Risk Score: 80/100 (HIGH)
+[2026-03-27 18:30:38] State Snapshot geschrieben: 3 Positionen, 1 Alerts
+[2026-03-27 18:30:38] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 18:45:03] Fetching 15 Yahoo tickers...
+[2026-03-27 18:45:14] Fetching Onvista prices (cache)...
+[2026-03-27 18:45:19] Onvista: 6/6 URLs gecacht
+[2026-03-27 18:45:19] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 18:45:19] Risk Score: 80/100 (HIGH)
+[2026-03-27 18:45:19] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 18:45:19] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 19:00:53] Fetching 15 Yahoo tickers...
+[2026-03-27 19:01:01] Fetching Onvista prices (cache)...
+[2026-03-27 19:01:06] Onvista: 6/6 URLs gecacht
+[2026-03-27 19:01:06] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 19:01:06] Risk Score: 80/100 (HIGH)
+[2026-03-27 19:01:06] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 19:01:06] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 19:15:03] Fetching 15 Yahoo tickers...
+[2026-03-27 19:15:11] Fetching Onvista prices (cache)...
+[2026-03-27 19:15:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 19:15:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 19:15:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 19:15:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 19:15:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 19:30:20] Fetching 15 Yahoo tickers...
+[2026-03-27 19:30:27] Fetching Onvista prices (cache)...
+[2026-03-27 19:30:31] Onvista: 6/6 URLs gecacht
+[2026-03-27 19:30:31] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 19:30:31] Risk Score: 80/100 (HIGH)
+[2026-03-27 19:30:31] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 19:30:31] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 19:45:03] Fetching 15 Yahoo tickers...
+[2026-03-27 19:45:15] Fetching Onvista prices (cache)...
+[2026-03-27 19:45:20] Onvista: 6/6 URLs gecacht
+[2026-03-27 19:45:20] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 19:45:20] Risk Score: 80/100 (HIGH)
+[2026-03-27 19:45:20] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 19:45:20] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 20:01:59] Fetching 15 Yahoo tickers...
+[2026-03-27 20:02:06] Fetching Onvista prices (cache)...
+[2026-03-27 20:02:11] Onvista: 6/6 URLs gecacht
+[2026-03-27 20:02:11] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 20:02:11] Risk Score: 80/100 (HIGH)
+[2026-03-27 20:02:11] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 20:02:11] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 20:02:11] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 20:15:05] Fetching 15 Yahoo tickers...
+[2026-03-27 20:15:12] Fetching Onvista prices (cache)...
+[2026-03-27 20:15:16] Onvista: 6/6 URLs gecacht
+[2026-03-27 20:15:16] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 20:15:16] Risk Score: 80/100 (HIGH)
+[2026-03-27 20:15:16] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 20:15:16] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 20:15:16] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 20:30:19] Fetching 15 Yahoo tickers...
+[2026-03-27 20:30:26] Fetching Onvista prices (cache)...
+[2026-03-27 20:30:30] Onvista: 6/6 URLs gecacht
+[2026-03-27 20:30:30] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 20:30:30] Risk Score: 80/100 (HIGH)
+[2026-03-27 20:30:30] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 20:30:30] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 20:30:30] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 20:45:03] Fetching 15 Yahoo tickers...
+[2026-03-27 20:45:14] Fetching Onvista prices (cache)...
+[2026-03-27 20:45:19] Onvista: 6/6 URLs gecacht
+[2026-03-27 20:45:19] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 20:45:19] Risk Score: 80/100 (HIGH)
+[2026-03-27 20:45:19] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 20:45:19] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 20:45:19] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 21:00:47] Fetching 15 Yahoo tickers...
+[2026-03-27 21:00:54] Fetching Onvista prices (cache)...
+[2026-03-27 21:00:58] Onvista: 6/6 URLs gecacht
+[2026-03-27 21:00:58] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 21:00:58] Risk Score: 80/100 (HIGH)
+[2026-03-27 21:00:58] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 21:00:58] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 21:00:58] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 21:15:02] Fetching 15 Yahoo tickers...
+[2026-03-27 21:15:09] Fetching Onvista prices (cache)...
+[2026-03-27 21:15:14] Onvista: 6/6 URLs gecacht
+[2026-03-27 21:15:14] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 21:15:14] Risk Score: 80/100 (HIGH)
+[2026-03-27 21:15:14] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 21:15:14] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 21:15:14] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 21:30:19] Fetching 15 Yahoo tickers...
+[2026-03-27 21:30:26] Fetching Onvista prices (cache)...
+[2026-03-27 21:30:31] Onvista: 6/6 URLs gecacht
+[2026-03-27 21:30:31] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 21:30:31] Risk Score: 80/100 (HIGH)
+[2026-03-27 21:30:31] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 21:30:31] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 21:30:31] Overnight Context geschrieben: 27.03.2026
+[2026-03-27 21:45:04] Fetching 15 Yahoo tickers...
+[2026-03-27 21:45:11] Fetching Onvista prices (cache)...
+[2026-03-27 21:45:15] Onvista: 6/6 URLs gecacht
+[2026-03-27 21:45:15] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-03-27 21:45:15] Risk Score: 80/100 (HIGH)
+[2026-03-27 21:45:15] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-03-27 21:45:15] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-03-27 21:45:15] Overnight Context geschrieben: 27.03.2026

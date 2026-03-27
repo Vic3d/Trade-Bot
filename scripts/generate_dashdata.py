@@ -597,5 +597,52 @@ def main():
         print(f"   JSON INVALID ❌: {e}")
 
 
+
+# Portfolio Summary
+def make_portfolio_summary(db, cfg, sector_map):
+    CAPITAL = cfg.get('capital', 25000)
+    open_pos = db.execute("""
+        SELECT ticker, strategy, entry_price, shares, stop_price, target_price,
+               entry_date, conviction, regime_at_entry, sector
+        FROM paper_portfolio WHERE status='OPEN' ORDER BY strategy
+    """).fetchall()
+    invested = sum(r['entry_price'] * r['shares'] for r in open_pos)
+    by_strategy, by_sector, positions_detail = {}, {}, []
+    for p in open_pos:
+        vol = round(p['entry_price'] * p['shares'], 0)
+        strat = p['strategy'] or 'Unknown'
+        sec = sector_map.get(p['ticker'], p['sector'] or 'Other')
+        by_strategy[strat] = round(by_strategy.get(strat, 0) + vol, 0)
+        by_sector[sec] = round(by_sector.get(sec, 0) + vol, 0)
+        crv = 0
+        if p['stop_price'] and p['stop_price'] < p['entry_price'] and p['target_price']:
+            crv = round((p['target_price'] - p['entry_price']) / (p['entry_price'] - p['stop_price']), 1)
+        positions_detail.append({
+            'ticker': p['ticker'], 'strategy': p['strategy'],
+            'entry': round(p['entry_price'], 2),
+            'stop': round(p['stop_price'], 2) if p['stop_price'] else None,
+            'target': round(p['target_price'], 2) if p['target_price'] else None,
+            'volume': int(vol), 'pct_of_capital': round(vol / CAPITAL * 100, 1),
+            'crv': crv, 'conviction': p['conviction'] or 0,
+            'regime': p['regime_at_entry'] or '?', 'sector': sec,
+        })
+    closed_stats = {}
+    for r in db.execute("SELECT strategy, COUNT(*) n, SUM(pnl_eur) pnl, SUM(CASE WHEN pnl_eur>0 THEN 1 ELSE 0 END) wins FROM paper_portfolio WHERE status!='OPEN' AND pnl_eur IS NOT NULL GROUP BY strategy").fetchall():
+        closed_stats[r['strategy']] = {'trades': r['n'], 'pnl': round(r['pnl'] or 0, 2), 'wins': r['wins'], 'wr': round(r['wins']/r['n']*100, 0) if r['n'] else 0}
+    bench = {}
+    bench_path = WORKSPACE / 'data/benchmark.json'
+    if bench_path.exists():
+        bench = json.loads(bench_path.read_text())
+    return {
+        'capital': CAPITAL, 'invested': round(invested, 0), 'free': round(CAPITAL - invested, 0),
+        'free_tradeable': round(max(0, CAPITAL - invested - cfg.get('min_free_cash', 2000)), 0),
+        'invested_pct': round(invested / CAPITAL * 100, 1),
+        'position_count': len(open_pos), 'max_positions': cfg.get('max_positions', 20),
+        'by_strategy': dict(sorted(by_strategy.items(), key=lambda x: -x[1])),
+        'by_sector': dict(sorted(by_sector.items(), key=lambda x: -x[1])),
+        'sector_limit_pct': cfg.get('sector_limits', {}).get('max_sector_pct', 35),
+        'positions': positions_detail, 'closed_by_strategy': closed_stats, 'benchmark': bench,
+    }
+
 if __name__ == '__main__':
     main()

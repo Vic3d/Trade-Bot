@@ -238,3 +238,16 @@ Exit-Signal wäre: konkreter Teil-Deal mit verifizierbaren Maßnahmen — NICHT 
 **Kern-Reasoning:** Ich habe mich auf das Iran-Thema fixiert weil der Scanner hohe Scores meldet. Aber ein guter Scanner ist kein Grund alles auf eine Karte zu setzen. Diversifikation ist Pflicht, auch wenn die beste These "nur" Iran ist.
 
 **Lesson:** Edge in einer These ≠ alles in eine These packen. Die nächsten Trades MÜSSEN in andere Sektoren/Regionen.
+
+## 2026-03-27 — EQNR Stop nachgezogen auf 34,20€
+**Entscheidung:** Trailing Stop von 33,20€ → 34,20€ gesetzt
+**Kontext:** Victor meldet manuell. Entry 33,58€, Stop war 33,20€ (unter Entry = Verlust-Zone). Neuer Stop 34,20€ sichert +0,62€/Aktie Gewinn.
+**Kern-Reasoning:** Kurs muss seit Entry (25.03) gestiegen sein — Stop ins Profit-Territorium gezogen. Schützt Gewinne, lässt Rest laufen (Dirk 7H Trailing-Stop-Regel).
+**Lesson:** Stop regelmäßig nachziehen wenn +5% Gewinn — nie unter Entry lassen wenn möglich.
+
+## 2026-03-27 — S10 Lufthansa Post-War-Recovery angelegt
+**Entscheidung:** Neue Watchlist-Strategie S10 — Lufthansa als antizyklischer Post-War-Trade
+**Kontext:** Victor's These: Airlines leiden doppelt unter Iran-Krieg (Flugrouten + Ölpreis). Bei Kriegsende würde beides wegfallen → starke Erholung. KGV 6 = extrem günstig.
+**Kern-Reasoning:** S10 ist die Rückseite von S1. Wenn S1 geschlossen wird (Kriegsende), rotiert das Kapital in Airlines. Lufthansa hat klaren Hebel: KGV-Re-Rating von 6 → 10-12 = +60-100% Upside.
+**Entry-Trigger:** Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch LHA.DE
+**Kein Kauf jetzt** — Watchlist bis Trigger erfüllt.

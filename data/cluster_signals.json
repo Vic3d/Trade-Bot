@@ -158,6 +158,72 @@
       "conviction": 80,
       "timestamp": "2026-03-26T20:32:29Z",
       "date": "2026-03-26"
+    },
+    {
+      "tickers": [
+        "USO",
+        "XLE"
+      ],
+      "ticker_count": 2,
+      "total_hits": 2,
+      "total_volume": 15247,
+      "max_ratio": 56.05508474576271,
+      "fresh_count": 0,
+      "strength": "STARK",
+      "conviction": 70,
+      "timestamp": "2026-03-27T18:31:14Z",
+      "date": "2026-03-27"
+    },
+    {
+      "tickers": [
+        "OXY",
+        "USO",
+        "XOM"
+      ],
+      "ticker_count": 3,
+      "total_hits": 5,
+      "total_volume": 10781,
+      "max_ratio": 15.75,
+      "fresh_count": 0,
+      "strength": "STARK",
+      "conviction": 80,
+      "timestamp": "2026-03-27T19:02:16Z",
+      "date": "2026-03-27"
+    },
+    {
+      "tickers": [
+        "OXY",
+        "USO",
+        "XLE",
+        "XOM"
+      ],
+      "ticker_count": 4,
+      "total_hits": 7,
+      "total_volume": 20077,
+      "max_ratio": 21.38888888888889,
+      "fresh_count": 0,
+      "strength": "EXTREM",
+      "conviction": 95,
+      "timestamp": "2026-03-27T20:03:43Z",
+      "date": "2026-03-27"
+    },
+    {
+      "tickers": [
+        "CVX",
+        "OXY",
+        "USO",
+        "XLE",
+        "XOM"
+      ],
+      "ticker_count": 5,
+      "total_hits": 9,
+      "total_volume": 39807,
+      "max_ratio": 68.83898305084746,
+      "fresh_count": 0,
+      "strength": "EXTREM",
+      "conviction": 95,
+      "timestamp": "2026-03-27T21:04:11Z",
+      "date": "2026-03-27"
     }
   ]
 }

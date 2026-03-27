@@ -146,6 +146,29 @@ STOCK_KEYWORDS = {
         ],
         "strategy": 4,
     },
+    "LHA.DE": {
+        "name": "Lufthansa AG",
+        "keywords": [
+            "lufthansa", "lha.de", "lufthansa aktie", "lufthansa earnings",
+            "lufthansa ergebnis", "lufthansa quartal", "lufthansa dividende",
+            "lufthansa cargo", "lufthansa strike", "lufthansa streik",
+            "lufthansa pilot", "lufthansa kapitalerhöhung",
+        ],
+        "strategy_keywords": [
+            # Peace/De-escalation triggers (BUY signal for S10)
+            "iran waffenstillstand", "iran ceasefire", "iran peace deal",
+            "iran nuclear deal", "hormuz reopened", "iran de-escalation",
+            "middle east ceasefire", "iran sanctions lifted",
+            "iran airspace", "iran flight routes",
+            # Oil price drop (BUY signal)
+            "brent falls", "oil price drop", "crude oil decline",
+            "brent unter 75", "brent below 75",
+            # Airline sector recovery
+            "airline recovery", "flight demand", "aviation rebound",
+            "kerosene price", "jet fuel price drop",
+        ],
+        "strategy": 10,
+    },
 }
 
 def load_recent_events(minutes=35):

@@ -212,3 +212,5 @@
 | 26.03.2026 14:00 | **AUFTRAG** | Christian Kulesz... AW: Termine Überprüfung Heizungs... | 26.03.2026 07:30 |
 | 26.03.2026 15:00 | **INFO2** | service@leg-wohn... Neuer Auftrag Nr. 1003064753 | 26.03.2026 14:56 |
 | 26.03.2026 16:00 | **AUFTRAG** | Schröder, Nomena... AW: Auftrag - 269792480 | 26.03.2026 15:28 |
+| 27.03.2026 14:00 | **AUFTRAG** | Risadelli, Sandr... WG: Als Anlage erhalten Sie: BuO... | 27.03.2026 10:10 |
+| 27.03.2026 14:00 | **AUFTRAG** | info/gebr-schutz... WG: Neuer Auftrag Nr. 1003064753 | 26.03.2026 18:17 |

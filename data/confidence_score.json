@@ -20,13 +20,13 @@
       "factor": "Brent >$100",
       "points": 1,
       "max": 1,
-      "reason": "Brent $100.10 > $100"
+      "reason": "Brent $106.63 > $100"
     },
     {
       "factor": "EQNR Momentum",
       "points": 1,
       "max": 1,
-      "reason": "EQNR 397.5 > EMA20 349.7"
+      "reason": "EQNR 401.7 > EMA20 354.4"
     },
     {
       "factor": "Tanker-News",
@@ -38,13 +38,13 @@
       "factor": "Brent-WTI Spread",
       "points": 1,
       "max": 1,
-      "reason": "Spread $7.29 > $5"
+      "reason": "Spread $5.80 > $5"
     },
     {
       "factor": "VIX <20",
       "points": 0,
       "max": 1,
-      "reason": "VIX 27.4"
+      "reason": "VIX 31.1"
     }
   ],
   "details": {
@@ -56,10 +56,10 @@
     "brent_wti_spread": 1,
     "vix": 0
   },
-  "brent_usd": 100.1,
-  "wti_usd": 92.81,
-  "eqnr_nok": 397.5,
-  "eqnr_ema20": 349.65,
-  "vix": 27.44,
-  "updated": "2026-03-26T20:32:28Z"
+  "brent_usd": 106.63,
+  "wti_usd": 100.83,
+  "eqnr_nok": 401.7,
+  "eqnr_ema20": 354.4,
+  "vix": 31.05,
+  "updated": "2026-03-27T21:04:10Z"
 }

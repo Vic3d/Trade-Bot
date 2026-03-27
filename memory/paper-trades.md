@@ -96,6 +96,9 @@
 | P090 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P091 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow |
 | P092 | 26.03.2026 | EQNR.OL | LONG | 35.58€ | 33.80€ | 38.43€ | 40.92€ | S1 Öl | ⏳ Offen | 60/100 | OptionsFlow | CALL-Flow CVX Strike$217.5 2026-04-02 (6d) | Vol:1,998 OI:0 FRISCH | Pair:OPTIONS_FLOW_OIL_SHORT | Horizont:24h | Qualität:STARK |
+| P093 | 27.03.2026 | Pan American Silver (PAAS) | LONG | 44.87€ | 37.53€ | 52.10€ | 59.32€ | PS4 Silber | ⏳ Offen | 7/10 | ATR-Stop 2.5x | CRV 3.0:1 Moderate Signal |
+| P094 | 27.03.2026 | Hecla Mining (HL) | LONG | 15.56€ | 12.80€ | 18.08€ | 20.61€ | PS4 Silber | ⏳ Offen | 6/10 | ATR-Stop 2.5x | CRV 3.0:1 Moderate Signal |
+| P095 | 27.03.2026 | Equinor (EQNR.OL) | LONG | 401.70€ | 361.25€ | 467.90€ | 534.10€ | PS1 Öl | ⏳ Offen | 5/10 | ATR-Stop 2.5x | CRV 3.0:1 Weak Signal | RISK_OFF-Regime |
 
 ## Abgeschlossene Paper Trades
 

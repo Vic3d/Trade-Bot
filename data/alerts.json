@@ -215,5 +215,19 @@
     "ticker": "",
     "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 127.93\u20ac | Stop: 127.0\u20ac | 0.7% Abstand [Conviction: 56/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-27T13:31:48.329751+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 126.07\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 56/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-27T18:30:38.721671+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung +5.6% ($94.23\u2192$99.49)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLTR:",
+    "value": ""
   }
 ]
