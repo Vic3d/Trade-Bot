@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "CSCO",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 69.57,
-      "stop": 68.73,
-      "target": 68.73,
-      "opened_at": "2026-03-27 16:20",
-      "status": "OPEN"
-    },
-    {
       "ticker": "UNH",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -393,8 +383,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:20:11.997509Z",
+  "last_sync": "2026-03-27T16:25:08.123813Z",
   "recent_day_trades": [
+    {
+      "ticker": "CSCO",
+      "strategy": "DT1-CTR",
+      "entry_price": 69.57,
+      "exit_price": 69.6,
+      "entry_date": "2026-03-27 16:20",
+      "exit_date": "2026-03-27 16:25",
+      "pnl_pct": -0.04,
+      "status": "LOSS"
+    },
     {
       "ticker": "UNH",
       "strategy": "DT2-CTR",
@@ -583,16 +583,6 @@
       "entry_date": "2026-03-27 14:15",
       "exit_date": "2026-03-27 14:20",
       "pnl_pct": -0.09,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "0700.HK",
-      "strategy": "DT4",
-      "entry_price": 54.78,
-      "exit_price": 54.92,
-      "entry_date": "2026-03-26 01:20",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": -0.26,
       "status": "LOSS"
     }
   ],
