@@ -1,0 +1,5 @@
+{
+  "name": "trademind-dashboard",
+  "version": "2.1.2",
+  "engines": { "node": "20.x" }
+}
