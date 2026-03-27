@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "CSCO",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 69.57,
+      "stop": 68.73,
+      "target": 70.41,
+      "opened_at": "2026-03-27 16:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CSCO",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 69.57,
+      "stop": 68.73,
+      "target": 68.73,
+      "opened_at": "2026-03-27 16:20",
+      "status": "OPEN"
+    },
+    {
       "ticker": "UNH",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -357,7 +377,7 @@
       "strategy": "DT6",
       "trade_type": "day_trade",
       "entry": 56.25,
-      "stop": 56.7,
+      "stop": 56.78,
       "target": 56.27,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -373,7 +393,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:15:32.086437Z",
+  "last_sync": "2026-03-27T16:20:11.997509Z",
   "recent_day_trades": [
     {
       "ticker": "UNH",
