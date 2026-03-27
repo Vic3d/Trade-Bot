@@ -357,7 +357,7 @@
       "strategy": "DT6",
       "trade_type": "day_trade",
       "entry": 56.25,
-      "stop": 56.87,
+      "stop": 56.89,
       "target": 56.27,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -373,7 +373,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:35:07.509376Z",
+  "last_sync": "2026-03-27T16:40:07.859724Z",
   "recent_day_trades": [
     {
       "ticker": "GOLD",
