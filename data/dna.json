@@ -263,16 +263,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "OXY",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 56.88,
-      "stop": 56.66,
-      "target": 56.76,
-      "opened_at": "2026-03-27 17:31",
-      "status": "OPEN"
-    },
-    {
       "ticker": "HAL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -373,8 +363,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T18:31:00.561738Z",
+  "last_sync": "2026-03-27T18:35:07.696116Z",
   "recent_day_trades": [
+    {
+      "ticker": "OXY",
+      "strategy": "DT2",
+      "entry_price": 56.88,
+      "exit_price": 56.64,
+      "entry_date": "2026-03-27 17:31",
+      "exit_date": "2026-03-27 18:35",
+      "pnl_pct": -0.42,
+      "status": "LOSS"
+    },
     {
       "ticker": "DIS",
       "strategy": "DT2-CTR",
@@ -563,16 +563,6 @@
       "entry_date": "2026-03-27 14:40",
       "exit_date": "2026-03-27 14:45",
       "pnl_pct": 0.19,
-      "status": "WIN"
-    },
-    {
-      "ticker": "CSCO",
-      "strategy": "DT2-CTR",
-      "entry_price": 69.16,
-      "exit_price": 69.07,
-      "entry_date": "2026-03-27 14:40",
-      "exit_date": "2026-03-27 14:45",
-      "pnl_pct": 0.14,
       "status": "WIN"
     }
   ],
