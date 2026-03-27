@@ -257,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 34.75,
-      "stop": 34.7,
+      "stop": 34.78,
       "target": 34.72,
       "opened_at": "2026-03-27 17:25",
       "status": "OPEN"
@@ -373,7 +373,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T17:50:07.488909Z",
+  "last_sync": "2026-03-27T17:55:07.405119Z",
   "recent_day_trades": [
     {
       "ticker": "OXY",
