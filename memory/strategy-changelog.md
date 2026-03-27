@@ -447,3 +447,23 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -5.2% (14T) | News neutral (Score +0)
 
+
+
+## 2026-03-27 08:00 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -10.9% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 19)
+**Gründe:** Preise sehr schwach -14.2% (14T) | News neutral (Score +20)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -28.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -8.4% (14T) | News neutral (Score +0)
+

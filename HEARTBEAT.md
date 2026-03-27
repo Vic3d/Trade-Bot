@@ -16,10 +16,11 @@
 ## Offene Einmalige Aufgaben
 
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
+- [ ] TradeMind v2.1.2 Feedback von Victor — Dashboard live testen, Versionsnummer bestätigen, weitere Features freigeben
 
-## AKTUELLE ALERTS (heute 26.03.2026 — 09:00 MEZ)
+## AKTUELLE ALERTS (heute 27.03.2026 — 09:45 MEZ)
 
-- 🔴 **KUBA-TANKER KRITISCH:** Anatoly Kolodkin (Sovcomflot, 730k Barrel) trifft 29.03 in Kuba ein. US/UK tracken. Regime-Change in Vorbereitung. **Victor-Info dringend angefordert.** Status: S9 Watchlist → hochaktuell
+- 🔴 **KUBA-TANKER KRITISCH:** Anatoly Kolodkin (Sovcomflot, 730k Barrel) trifft **29.03 ein** (2 TAGE!). UK Royal Navy + US SOUTHCOM tracken. Regime-Change in Vorbereitung. Kuba in Stromausfall #3, Staatsanwalt bereitet Anklagen vor. **Victor-Info dringend angefordert.** Status: S9 Watchlist → HOCHAKTUELL, Militär-Showdown wahrscheinlich
 - 🟢 **Iran-Trump-Deal 25.03**: 15-Punkte-Plan angekündigt. Victor-Analyse: Deal strukturell unmöglich (Atom+Raketen). CoT Hedge Fonds netto +31.502 long OXY. **S1 These HALTEN.**
 - 🟢 **Portfolio OK**: PLTR +1.5%, A3D42Y +3.5%, A2DWAW +2.4%. VIX 26.4 (erhöht), keine Stops gefährdet.
 - 🟡 **S3 NVDA**: Unter VIX-Druck (25.11 Trades unter $185), aber Hold-Strategie bis 27.05 Earnings bleibt valide. Nachkauf-Kondition VIX < 28 erfüllt.

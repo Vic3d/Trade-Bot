@@ -1,47 +1,47 @@
 {
-  "timestamp": "2026-03-26T20:01:39.785666",
+  "timestamp": "2026-03-27T08:00:52.144767",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
       "status": "STARK",
-      "score": 80,
-      "momentum_avg": 13.7,
+      "score": 68,
+      "momentum_avg": 8.4,
       "news_score": 100,
       "reasons": [
-        "Preise stark +13.7% (14T)",
+        "Preise positiv +8.4% (14T)",
         "News bullish (Score +100)"
       ]
     },
     "PS2": {
       "name": "Tanker-Lag-These",
-      "status": "NEUTRAL",
-      "score": 52,
-      "momentum_avg": 3.1,
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -10.9,
       "news_score": 0,
       "reasons": [
-        "Preise positiv +3.1% (14T)",
+        "Preise sehr schwach -10.9% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS3": {
       "name": "NATO/EU-Rüstung",
       "status": "GESCHWÄCHT",
-      "score": 34,
-      "momentum_avg": -3.2,
-      "news_score": 40,
+      "score": 19,
+      "momentum_avg": -14.2,
+      "news_score": 20,
       "reasons": [
-        "Preise schwach -3.2% (14T)",
-        "News bullish (Score +40)"
+        "Preise sehr schwach -14.2% (14T)",
+        "News neutral (Score +20)"
       ]
     },
     "PS4": {
       "name": "Edelmetalle/Miner",
       "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -6.1,
+      "score": 16,
+      "momentum_avg": -28.0,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -6.1% (14T)",
+        "Preise sehr schwach -28.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -49,10 +49,10 @@
       "name": "Dünger/Agrar-Superzyklus",
       "status": "GESCHWÄCHT",
       "score": 28,
-      "momentum_avg": -5.2,
+      "momentum_avg": -8.4,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -5.2% (14T)",
+        "Preise schwach -8.4% (14T)",
         "News neutral (Score +0)"
       ]
     }
@@ -62,10 +62,10 @@
       "ps_id": "PS2",
       "name": "Tanker-Lag-These",
       "old_status": "STARK",
-      "new_status": "NEUTRAL",
-      "score": 52,
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
       "reasons": [
-        "Preise positiv +3.1% (14T)",
+        "Preise sehr schwach -10.9% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -74,10 +74,10 @@
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 34,
+      "score": 19,
       "reasons": [
-        "Preise schwach -3.2% (14T)",
-        "News bullish (Score +40)"
+        "Preise sehr schwach -14.2% (14T)",
+        "News neutral (Score +20)"
       ]
     },
     {
@@ -85,9 +85,9 @@
       "name": "Edelmetalle/Miner",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 16,
       "reasons": [
-        "Preise schwach -6.1% (14T)",
+        "Preise sehr schwach -28.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -98,7 +98,7 @@
       "new_status": "GESCHWÄCHT",
       "score": 28,
       "reasons": [
-        "Preise schwach -5.2% (14T)",
+        "Preise schwach -8.4% (14T)",
         "News neutral (Score +0)"
       ]
     }

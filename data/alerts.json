@@ -201,5 +201,19 @@
     "ticker": "",
     "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 128.89\u20ac | Stop: 127.0\u20ac | Nur noch 1.5% Abstand! [Conviction: 57/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-27T07:00:33.013529+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 127.89\u20ac | Stop: 127.0\u20ac | Nur noch 0.7% Abstand! [Conviction: 56/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-27T07:15:13.567139+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 127.93\u20ac | Stop: 127.0\u20ac | 0.7% Abstand [Conviction: 56/100]",
+    "value": ""
   }
 ]

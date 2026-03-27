@@ -1,7 +1,7 @@
 {
   "lastChecks": {
-    "trading": 1773172871,
-    "email_dashboard": 1741360352,
+    "trading": 1741946715,
+    "heartbeat": 1741946715,
     "memory": 1741360352
   },
   "lastPrices": {
@@ -14,10 +14,41 @@
     "BAYN_eur": 39.625,
     "EURUSD": 1.1617
   },
-  "notes": {
-    "pltr_status": "130.10€ — Stop 127€ (2.4% weg). Leicht erholt, kein Alarm.",
-    "msft_status": "349.28€ — Stop 338€ (3.2% weg). Unter Einstieg (-0.7%).",
-    "nvda_status": "159.05€ — kein Stop, Hold bis Earnings.",
-    "next_event": "Abend-Report 22:00 — Trailing Stop Review"
-  }
+  "alerts": {
+    "kuba_tanker_eta": "2026-03-29T14:00:00Z",
+    "kuba_days_remaining": 2,
+    "status": "CRITICAL — Military showdown likely"
+  },
+  "portfolio_stops": {
+    "PLTR": {
+      "price": 130.10,
+      "stop": 127.0,
+      "distance_pct": 2.4,
+      "status": "GRENZWERTIG"
+    },
+    "MSFT": {
+      "price": 349.28,
+      "stop": 338.0,
+      "distance_pct": 3.2,
+      "status": "OK"
+    },
+    "NVDA": {
+      "price": 159.05,
+      "stop": "NONE",
+      "status": "⚠️ PROBLEM — Hold-only bis Earnings"
+    },
+    "BAYN": {
+      "price": 39.625,
+      "stop": 38.0,
+      "distance_pct": 4.2,
+      "status": "OK"
+    },
+    "EQNR": {
+      "price": 27.98,
+      "stop": 25.0,
+      "distance_pct": 11.9,
+      "status": "SAFE — Öl-These läuft"
+    }
+  },
+  "notes": "27.03.2026 — Heartbeat Check: Kuba-Tanker Critical, TradeMind v2.1.2 Live, PLTR nah am Stop aber keine Action, Iran-Trump-Deal-Hoffnungen aber Victor-Analyse sagt Unmöglichkeit (HALTEN)"
 }
