@@ -243,22 +243,92 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "META",
+      "strategy": "DT9",
+      "trade_type": "day_trade",
+      "entry": 461.3,
+      "stop": 465.92,
+      "target": 457.61,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "META",
+      "strategy": "DT9-CTR",
+      "trade_type": "day_trade",
+      "entry": 461.3,
+      "stop": 466.84,
+      "target": 466.84,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CSCO",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 69.16,
+      "stop": 68.33,
+      "target": 69.57,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CSCO",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 69.16,
+      "stop": 68.33,
+      "target": 68.33,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "TMO",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 414.06,
+      "stop": 409.09,
+      "target": 416.48,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "TMO",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 414.06,
+      "stop": 409.09,
+      "target": 409.09,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "UNH",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 226.99,
+      "stop": 224.27,
+      "target": 229.83,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "UNH",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 226.99,
+      "stop": 224.27,
+      "target": 224.27,
+      "opened_at": "2026-03-27 14:40",
+      "status": "OPEN"
+    },
+    {
       "ticker": "MSFT",
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 311.59,
       "stop": 307.85,
       "target": 315.33,
-      "opened_at": "2026-03-27 14:35",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 311.59,
-      "stop": 307.85,
-      "target": 307.85,
       "opened_at": "2026-03-27 14:35",
       "status": "OPEN"
     },
@@ -327,7 +397,7 @@
       "strategy": "DT6",
       "trade_type": "day_trade",
       "entry": 56.25,
-      "stop": 56.49,
+      "stop": 56.52,
       "target": 56.27,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -343,8 +413,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T14:35:08.245204Z",
+  "last_sync": "2026-03-27T14:40:08.283573Z",
   "recent_day_trades": [
+    {
+      "ticker": "MSFT",
+      "strategy": "DT1-CTR",
+      "entry_price": 311.59,
+      "exit_price": 311.67,
+      "entry_date": "2026-03-27 14:35",
+      "exit_date": "2026-03-27 14:40",
+      "pnl_pct": -0.03,
+      "status": "LOSS"
+    },
     {
       "ticker": "CRM",
       "strategy": "DT1-CTR",
@@ -534,16 +614,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": 1.51,
       "status": "WIN"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "strategy": "DT2",
-      "entry_price": 20.7,
-      "exit_price": 20.64,
-      "entry_date": "2026-03-26 15:10",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": -0.29,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
