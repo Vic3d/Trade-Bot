@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "DIS",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 80.15,
-      "stop": 79.19,
-      "target": 79.19,
-      "opened_at": "2026-03-27 18:25",
-      "status": "OPEN"
-    },
-    {
       "ticker": "GOOGL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -383,8 +373,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T18:25:14.584846Z",
+  "last_sync": "2026-03-27T18:31:00.561738Z",
   "recent_day_trades": [
+    {
+      "ticker": "DIS",
+      "strategy": "DT2-CTR",
+      "entry_price": 80.15,
+      "exit_price": 80.16,
+      "entry_date": "2026-03-27 18:25",
+      "exit_date": "2026-03-27 18:30",
+      "pnl_pct": -0.01,
+      "status": "LOSS"
+    },
     {
       "ticker": "DIS",
       "strategy": "DT1",
@@ -574,16 +574,6 @@
       "exit_date": "2026-03-27 14:45",
       "pnl_pct": 0.14,
       "status": "WIN"
-    },
-    {
-      "ticker": "TMO",
-      "strategy": "DT2-CTR",
-      "entry_price": 414.06,
-      "exit_price": 414.43,
-      "entry_date": "2026-03-27 14:40",
-      "exit_date": "2026-03-27 14:45",
-      "pnl_pct": -0.09,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
