@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "GOLD",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 34.85,
-      "stop": 34.43,
-      "target": 34.43,
-      "opened_at": "2026-03-27 15:40",
-      "status": "OPEN"
-    },
-    {
       "ticker": "ORCL",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -279,16 +269,6 @@
       "entry": 461.3,
       "stop": 465.92,
       "target": 457.61,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "CSCO",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 69.16,
-      "stop": 69.42,
-      "target": 69.57,
       "opened_at": "2026-03-27 14:40",
       "status": "OPEN"
     },
@@ -367,7 +347,7 @@
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 34.49,
-      "stop": 34.74,
+      "stop": 34.76,
       "target": 34.91,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -393,8 +373,28 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T15:40:07.705610Z",
+  "last_sync": "2026-03-27T15:45:30.429619Z",
   "recent_day_trades": [
+    {
+      "ticker": "CSCO",
+      "strategy": "DT2",
+      "entry_price": 69.16,
+      "exit_price": 69.37,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 15:45",
+      "pnl_pct": 0.3,
+      "status": "WIN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT1-CTR",
+      "entry_price": 34.85,
+      "exit_price": 34.73,
+      "entry_date": "2026-03-27 15:40",
+      "exit_date": "2026-03-27 15:45",
+      "pnl_pct": 0.35,
+      "status": "WIN"
+    },
     {
       "ticker": "GOLD",
       "strategy": "DT1",
@@ -574,26 +574,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": -0.21,
       "status": "LOSS"
-    },
-    {
-      "ticker": "1211.HK",
-      "strategy": "DT4",
-      "entry_price": 11.38,
-      "exit_price": 11.38,
-      "entry_date": "2026-03-26 07:35",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 0.0,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "BAS.DE",
-      "strategy": "DT6",
-      "entry_price": 50.64,
-      "exit_price": 50.74,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 0.2,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
