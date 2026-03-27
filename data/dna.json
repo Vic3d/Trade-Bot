@@ -337,7 +337,7 @@
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 34.08,
-      "stop": 33.67,
+      "stop": 34.33,
       "target": 34.49,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -383,7 +383,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T15:01:04.021180Z",
+  "last_sync": "2026-03-27T15:05:07.396338Z",
   "recent_day_trades": [
     {
       "ticker": "ORCL",
