@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "GOLD",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 34.85,
+      "stop": 34.24,
+      "target": 35.26,
+      "opened_at": "2026-03-27 15:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOLD",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 34.85,
+      "stop": 34.43,
+      "target": 34.43,
+      "opened_at": "2026-03-27 15:40",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ORCL",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -333,16 +353,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "GOLD",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 34.08,
-      "stop": 34.85,
-      "target": 34.49,
-      "opened_at": "2026-03-27 14:15",
-      "status": "OPEN"
-    },
-    {
       "ticker": "GOOGL",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -383,8 +393,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T15:35:08.687643Z",
+  "last_sync": "2026-03-27T15:40:07.705610Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOLD",
+      "strategy": "DT1",
+      "entry_price": 34.08,
+      "exit_price": 34.85,
+      "entry_date": "2026-03-27 14:15",
+      "exit_date": "2026-03-27 15:40",
+      "pnl_pct": 2.25,
+      "status": "WIN"
+    },
     {
       "ticker": "ORCL",
       "strategy": "DT1-CTR",
@@ -574,16 +594,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": 0.2,
       "status": "WIN"
-    },
-    {
-      "ticker": "ASML.AS",
-      "strategy": "DT3",
-      "entry_price": 1173.4,
-      "exit_price": 1165.8,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": -0.65,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
