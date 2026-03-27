@@ -1,14 +1,35 @@
 {
   "framework": null,
   "redirects": [
-    { "source": "/", "destination": "/api/dashboard", "permanent": false },
-    { "source": "/manifest.json", "destination": "/api/manifest", "permanent": false },
-    { "source": "/flow", "destination": "/dashboard/options_flow_tab.html", "permanent": false }
+    {
+      "source": "/",
+      "destination": "/api/dashboard",
+      "permanent": false
+    },
+    {
+      "source": "/manifest.json",
+      "destination": "/api/manifest",
+      "permanent": false
+    },
+    {
+      "source": "/flow",
+      "destination": "/dashboard/options_flow_tab.html",
+      "permanent": false
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "no-store, no-cache" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache"
+        },
+        {
+          "key": "X-Build-Time",
+          "value": "1774608976"
+        }
+      ]
     }
   ]
 }
