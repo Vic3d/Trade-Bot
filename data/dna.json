@@ -243,22 +243,32 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ORCL",
+      "strategy": "DT1",
+      "trade_type": "day_trade",
+      "entry": 121.2,
+      "stop": 119.76,
+      "target": 122.66,
+      "opened_at": "2026-03-27 14:45",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ORCL",
+      "strategy": "DT1-CTR",
+      "trade_type": "day_trade",
+      "entry": 121.2,
+      "stop": 119.75,
+      "target": 119.75,
+      "opened_at": "2026-03-27 14:45",
+      "status": "OPEN"
+    },
+    {
       "ticker": "META",
       "strategy": "DT9",
       "trade_type": "day_trade",
       "entry": 461.3,
       "stop": 465.92,
       "target": 457.61,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "META",
-      "strategy": "DT9-CTR",
-      "trade_type": "day_trade",
-      "entry": 461.3,
-      "stop": 466.84,
-      "target": 466.84,
       "opened_at": "2026-03-27 14:40",
       "status": "OPEN"
     },
@@ -273,16 +283,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "CSCO",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 69.16,
-      "stop": 68.33,
-      "target": 68.33,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
       "ticker": "TMO",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -293,32 +293,12 @@
       "status": "OPEN"
     },
     {
-      "ticker": "TMO",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 414.06,
-      "stop": 409.09,
-      "target": 409.09,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
       "ticker": "UNH",
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 226.99,
       "stop": 224.27,
       "target": 229.83,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "UNH",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 226.99,
-      "stop": 224.27,
-      "target": 224.27,
       "opened_at": "2026-03-27 14:40",
       "status": "OPEN"
     },
@@ -413,8 +393,48 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T14:40:08.283573Z",
+  "last_sync": "2026-03-27T14:45:31.318931Z",
   "recent_day_trades": [
+    {
+      "ticker": "META",
+      "strategy": "DT9-CTR",
+      "entry_price": 461.3,
+      "exit_price": 462.15,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 14:45",
+      "pnl_pct": 0.19,
+      "status": "WIN"
+    },
+    {
+      "ticker": "CSCO",
+      "strategy": "DT2-CTR",
+      "entry_price": 69.16,
+      "exit_price": 69.07,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 14:45",
+      "pnl_pct": 0.14,
+      "status": "WIN"
+    },
+    {
+      "ticker": "TMO",
+      "strategy": "DT2-CTR",
+      "entry_price": 414.06,
+      "exit_price": 414.43,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 14:45",
+      "pnl_pct": -0.09,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "UNH",
+      "strategy": "DT2-CTR",
+      "entry_price": 226.99,
+      "exit_price": 227.97,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 14:45",
+      "pnl_pct": -0.43,
+      "status": "LOSS"
+    },
     {
       "ticker": "MSFT",
       "strategy": "DT1-CTR",
@@ -573,46 +593,6 @@
       "entry_date": "2026-03-26 11:38",
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": 1.74,
-      "status": "WIN"
-    },
-    {
-      "ticker": "CON.DE",
-      "strategy": "DT1",
-      "entry_price": 59.94,
-      "exit_price": 60.18,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 0.4,
-      "status": "WIN"
-    },
-    {
-      "ticker": "GSK.L",
-      "strategy": "DT1",
-      "entry_price": 23.89,
-      "exit_price": 23.67,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": -0.91,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "HEI.DE",
-      "strategy": "DT4",
-      "entry_price": 179.75,
-      "exit_price": 179.75,
-      "entry_date": "2026-03-26 13:33",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 0.0,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "BA.L",
-      "strategy": "DT4",
-      "entry_price": 24.57,
-      "exit_price": 24.2,
-      "entry_date": "2026-03-26 15:10",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 1.51,
       "status": "WIN"
     }
   ],
