@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "UNH",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 224.01,
+      "stop": 221.32,
+      "target": 228.24,
+      "opened_at": "2026-03-27 16:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "UNH",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 224.01,
+      "stop": 221.32,
+      "target": 221.32,
+      "opened_at": "2026-03-27 16:10",
+      "status": "OPEN"
+    },
+    {
       "ticker": "GOLD",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -283,16 +303,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "UNH",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 226.99,
-      "stop": 224.27,
-      "target": 229.83,
-      "opened_at": "2026-03-27 14:40",
-      "status": "OPEN"
-    },
-    {
       "ticker": "MSFT",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -317,7 +327,7 @@
       "strategy": "DT1",
       "trade_type": "day_trade",
       "entry": 146.31,
-      "stop": 144.56,
+      "stop": 147.54,
       "target": 148.07,
       "opened_at": "2026-03-27 14:20",
       "status": "OPEN"
@@ -373,8 +383,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:05:08.530054Z",
+  "last_sync": "2026-03-27T16:10:07.684827Z",
   "recent_day_trades": [
+    {
+      "ticker": "UNH",
+      "strategy": "DT2",
+      "entry_price": 226.99,
+      "exit_price": 224.01,
+      "entry_date": "2026-03-27 14:40",
+      "exit_date": "2026-03-27 16:10",
+      "pnl_pct": -1.31,
+      "status": "LOSS"
+    },
     {
       "ticker": "CSCO",
       "strategy": "DT2",
@@ -564,16 +584,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": 0.37,
       "status": "WIN"
-    },
-    {
-      "ticker": "6758.T",
-      "strategy": "DT4",
-      "entry_price": 17.44,
-      "exit_price": 17.48,
-      "entry_date": "2026-03-26 05:45",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": -0.21,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
