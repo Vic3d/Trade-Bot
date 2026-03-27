@@ -247,18 +247,8 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 56.88,
-      "stop": 56.2,
+      "stop": 56.6,
       "target": 56.76,
-      "opened_at": "2026-03-27 17:31",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "OXY",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 56.88,
-      "stop": 56.2,
-      "target": 56.2,
       "opened_at": "2026-03-27 17:31",
       "status": "OPEN"
     },
@@ -267,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 34.75,
-      "stop": 34.62,
+      "stop": 34.67,
       "target": 34.72,
       "opened_at": "2026-03-27 17:25",
       "status": "OPEN"
@@ -383,8 +373,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T17:31:10.025757Z",
+  "last_sync": "2026-03-27T17:35:09.336701Z",
   "recent_day_trades": [
+    {
+      "ticker": "OXY",
+      "strategy": "DT2-CTR",
+      "entry_price": 56.88,
+      "exit_price": 56.89,
+      "entry_date": "2026-03-27 17:31",
+      "exit_date": "2026-03-27 17:35",
+      "pnl_pct": -0.01,
+      "status": "LOSS"
+    },
     {
       "ticker": "OXY",
       "strategy": "DT6",
@@ -574,16 +574,6 @@
       "exit_date": "2026-03-27 14:25",
       "pnl_pct": 0.21,
       "status": "WIN"
-    },
-    {
-      "ticker": "XOM",
-      "strategy": "DT1-CTR",
-      "entry_price": 146.31,
-      "exit_price": 146.59,
-      "entry_date": "2026-03-27 14:20",
-      "exit_date": "2026-03-27 14:25",
-      "pnl_pct": -0.19,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
