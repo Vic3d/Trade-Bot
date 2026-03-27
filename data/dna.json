@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "XOM",
-      "strategy": "DT6-CTR",
-      "trade_type": "day_trade",
-      "entry": 147.41,
-      "stop": 145.65,
-      "target": 145.65,
-      "opened_at": "2026-03-27 16:45",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CSCO",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -383,8 +373,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:45:32.584682Z",
+  "last_sync": "2026-03-27T16:50:07.339787Z",
   "recent_day_trades": [
+    {
+      "ticker": "XOM",
+      "strategy": "DT6-CTR",
+      "entry_price": 147.41,
+      "exit_price": 147.7,
+      "entry_date": "2026-03-27 16:45",
+      "exit_date": "2026-03-27 16:50",
+      "pnl_pct": -0.19,
+      "status": "LOSS"
+    },
     {
       "ticker": "XOM",
       "strategy": "DT1",
@@ -573,16 +573,6 @@
       "entry_date": "2026-03-27 14:15",
       "exit_date": "2026-03-27 14:20",
       "pnl_pct": -0.09,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "HAL",
-      "strategy": "DT1-CTR",
-      "entry_price": 34.49,
-      "exit_price": 34.7,
-      "entry_date": "2026-03-27 14:15",
-      "exit_date": "2026-03-27 14:20",
-      "pnl_pct": -0.61,
       "status": "LOSS"
     }
   ],
