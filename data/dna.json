@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ORCL",
-      "strategy": "DT1-CTR",
-      "trade_type": "day_trade",
-      "entry": 121.2,
-      "stop": 119.75,
-      "target": 119.75,
-      "opened_at": "2026-03-27 14:45",
-      "status": "OPEN"
-    },
-    {
       "ticker": "META",
       "strategy": "DT9",
       "trade_type": "day_trade",
@@ -377,7 +367,7 @@
       "strategy": "DT6",
       "trade_type": "day_trade",
       "entry": 56.25,
-      "stop": 56.52,
+      "stop": 56.54,
       "target": 56.27,
       "opened_at": "2026-03-27 14:15",
       "status": "OPEN"
@@ -393,8 +383,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T14:45:31.318931Z",
+  "last_sync": "2026-03-27T14:50:07.453423Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT1-CTR",
+      "entry_price": 121.2,
+      "exit_price": 121.45,
+      "entry_date": "2026-03-27 14:45",
+      "exit_date": "2026-03-27 14:50",
+      "pnl_pct": -0.21,
+      "status": "LOSS"
+    },
     {
       "ticker": "META",
       "strategy": "DT9-CTR",
@@ -584,16 +584,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": -0.65,
       "status": "LOSS"
-    },
-    {
-      "ticker": "AAL.L",
-      "strategy": "DT3",
-      "entry_price": 34.67,
-      "exit_price": 35.27,
-      "entry_date": "2026-03-26 11:38",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 1.74,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
