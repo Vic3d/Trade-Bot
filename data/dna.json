@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "UNH",
-      "strategy": "DT2-CTR",
-      "trade_type": "day_trade",
-      "entry": 224.01,
-      "stop": 221.32,
-      "target": 221.32,
-      "opened_at": "2026-03-27 16:10",
-      "status": "OPEN"
-    },
-    {
       "ticker": "GOLD",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -383,8 +373,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T16:10:07.684827Z",
+  "last_sync": "2026-03-27T16:15:32.086437Z",
   "recent_day_trades": [
+    {
+      "ticker": "UNH",
+      "strategy": "DT2-CTR",
+      "entry_price": 224.01,
+      "exit_price": 223.54,
+      "entry_date": "2026-03-27 16:10",
+      "exit_date": "2026-03-27 16:15",
+      "pnl_pct": 0.21,
+      "status": "WIN"
+    },
     {
       "ticker": "UNH",
       "strategy": "DT2",
@@ -574,16 +574,6 @@
       "exit_date": "2026-03-26 20:45",
       "pnl_pct": -0.26,
       "status": "LOSS"
-    },
-    {
-      "ticker": "1605.T",
-      "strategy": "DT4",
-      "entry_price": 25.36,
-      "exit_price": 25.45,
-      "entry_date": "2026-03-26 04:40",
-      "exit_date": "2026-03-26 20:45",
-      "pnl_pct": 0.37,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
