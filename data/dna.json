@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "GOOGL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 238.03,
+      "stop": 235.17,
+      "target": 240.59,
+      "opened_at": "2026-03-27 18:10",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT2-CTR",
+      "trade_type": "day_trade",
+      "entry": 238.03,
+      "stop": 235.18,
+      "target": 235.18,
+      "opened_at": "2026-03-27 18:10",
+      "status": "OPEN"
+    },
+    {
       "ticker": "OXY",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -257,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 34.75,
-      "stop": 34.78,
+      "stop": 34.79,
       "target": 34.72,
       "opened_at": "2026-03-27 17:25",
       "status": "OPEN"
@@ -353,16 +373,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "GOOGL",
-      "strategy": "DT1",
-      "trade_type": "day_trade",
-      "entry": 241.1,
-      "stop": 238.21,
-      "target": 243.99,
-      "opened_at": "2026-03-27 14:15",
-      "status": "OPEN"
-    },
-    {
       "ticker": "MRK",
       "strategy": "DT1",
       "trade_type": "day_trade",
@@ -373,8 +383,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-27T18:05:07.717837Z",
+  "last_sync": "2026-03-27T18:10:08.764182Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT1",
+      "entry_price": 241.1,
+      "exit_price": 238.07,
+      "entry_date": "2026-03-27 14:15",
+      "exit_date": "2026-03-27 18:10",
+      "pnl_pct": -1.26,
+      "status": "LOSS"
+    },
     {
       "ticker": "OXY",
       "strategy": "DT2-CTR",
@@ -564,16 +584,6 @@
       "exit_date": "2026-03-27 14:40",
       "pnl_pct": -0.03,
       "status": "LOSS"
-    },
-    {
-      "ticker": "CRM",
-      "strategy": "DT1-CTR",
-      "entry_price": 156.95,
-      "exit_price": 156.62,
-      "entry_date": "2026-03-27 14:20",
-      "exit_date": "2026-03-27 14:25",
-      "pnl_pct": 0.21,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
