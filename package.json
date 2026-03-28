@@ -1,8 +1,8 @@
 {
   "name": "trademind-dashboard",
-  "version": "2.1.7",
+  "version": "2.2.1",
   "engines": {
     "node": "20.x"
   },
-  "_deploy": 1774644811
+  "_deploy": 1774708349
 }
