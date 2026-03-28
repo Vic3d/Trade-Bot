@@ -4,6 +4,71 @@
 
 ---
 
+## Lars Eriksen — 28.03.2026 — MSCI World Illusion + Regime-Shift Framework
+
+*Quelle: "Erischen Geld und Gold" Podcast, März 2026*
+*Archiv: transcripts/eriksen-msci-world-warnung-2026-03-28.txt*
+
+### Kern-Erkenntnisse
+
+**Index-Kompositions-Analyse (Framework)**
+- Bevor man einen Index als "defensiv" oder "diversifiziert" behandelt: tatsächliche Sektor- und Ländergewichtung prüfen
+- MSCI World Realität: 70% USA, 25% IT, 33% IT+Komm — alles andere als diversifiziert
+- Die 8 Mega-Caps (NVDA, MSFT, AAPL, AMZN, META, Broadcom, Alphabet, Tesla) = 26% des gesamten Index
+- Inflation-Defensiv-Sektoren (Energie 4%, Rohstoffe 3.8%, Versorger 2.8%) = zusammen nur ~11%
+- **Regel:** "Defensive" bedeutet nichts ohne Kompositions-Check. Namen täuschen.
+
+**Regime-Erkennung + Sektor-Rotation (Framework)**
+- Zwei klar unterschiedliche Marktregime: Wachstum/Zinssenkung vs. Stagflation/Zinsanstieg
+- In Stagflation outperformen: Energie, Rohstoffe, Versorger, Gold — genau die Sektoren die im MSCI World fehlen
+- Wachstumswerte (Hyperscaler) sind zinsensitiv — 2022: Nasdaq –33%, S&P –19% NUR durch Zinsanstieg, OHNE Rezession
+- **Regel:** Regime identifizieren BEVOR man Sektor-Allokation entscheidet. In welchem Umfeld sind wir?
+
+**Wenn-Dann Bedingungen (Timing-Methodik)**
+- Eriksen betont explizit: "gerade in diesem Umfeld sind Wenn-Dann Bedingungen Gold"
+- Pläne VOR dem Ereignis in der Schublade haben — nicht reaktiv handeln
+- Beispiel Silber: Kaufsignal auf Wochenbasis definiert BEVOR der Einstieg passiert, dann warten
+- **Regel:** Entry-Bedingungen schriftlich definieren + warten bis sie erfüllt sind. Nie auf aktuelle Preisbewegung reagieren ohne vorher definierten Rahmen.
+
+**Index-Selbstkorrektur ist "ultra träge" — Missverständnis aufgedeckt**
+- Verbreitetes Argument: "ETFs korrigieren sich selbst — wenn Energie besser läuft, steigt ihre Gewichtung"
+- Realität: 20% relative Outperformance von Rohstoffen vs. Tech = nur ~1-2 Prozentpunkte Gewichtsverschiebung pro Jahr
+- Japan-Beispiel: Japan war 1989 auf Höchststand im MSCI World übergewichtet → dauerte fast 20 Jahre bis Normalisierung auf 6%
+- **Regel:** Index-Rebalancing als Schutzstrategie funktioniert NICHT. Wer auf Regime-Shift spekuliert, muss selbst aktiv umschichten.
+
+**Konzentrations-Warnung (historisches Framework)**
+- Japan 1989: 8 der 10 weltweit größten Unternehmen japanisch, CAPE >100, dann –63% in 3 Jahren, –78% nach 20 Jahren (real)
+- Analog: USA heute 70% MSCI World, US-CAPE erhöht, Hyperscaler-Konzentration extrem
+- **Regel:** Wenn ein Land/Sektor einen Index dominiert → erhöhtes Korrekturrisiko einkalkulieren, auch wenn Timing unbekannt
+
+**Psychologie: "Ich möchte niemanden überzeugen"**
+- Eriksen korrigiert, überzeugt aber nicht — informiert nur und lässt entscheiden
+- **Lektion für Albert:** Analyse liefern, Entscheidung bei Victor lassen. Kein Pushen.
+
+### Nicht tun (Red Flags)
+- MSCI World als "defensive Maßnahme" kaufen bei Inflations-/Stagflationsrisiko — ist es nicht
+- Auf Index-Selbstkorrektur warten statt selbst umzuschichten
+- Wachstumswerte als "sicher" behandeln wenn Zinsanstieg droht
+
+### Begründete These: Inflation-/Stagflations-Defensivaufstellung
+
+**Argumente der Quelle:**
+- Irankonflikt kann Zinssenkungszyklus beenden (höhere Energie → höhere Inflation → steigende Zinsen)
+- MSCI World ist anti-defensiv in diesem Szenario (11% Inflation-Hedge, 33% zinsensitive Growth)
+- Wachstumswerte crashen auch ohne Rezession nur durch Zinsen (2022-Beweis)
+- Index-Selbstkorrektur zu langsam für taktisches Hedging
+
+**Alberts unabhängige Analyse:**
+- Übereinstimmung mit eigenen Daten: **Ja, vollständig** — S1-These (Iran/Öl) ist aktiv, VIX 26.4, Portfolio aktuell schwer in Growth (NVDA, MSFT, PLTR = ~60% des Portfolios, alle hochzinsensitiv)
+- Gegenargument: Victor hält keine MSCI World ETFs — aber das Grundprinzip (Growth-Konzentration in Stagflation) trifft direkt auf das Portfolio zu
+- Eigener Schluss: **Sehr überzeugend** — die Logik (Regime → Sektor-Rotation → Index-Träger) ist wasserdicht und historisch belegt
+- Empfehlung: **Watchlist für Defensiv-ETFs (Energie/Rohstoffe/Versorger)** falls S1 weiter eskaliert. Kein sofortiger Handlungsbedarf — aber Wenn-Dann-Plan definieren.
+
+**Alberts Gesamteinschätzung:**
+Das stärkste Methodologie-Framework aus einem Eriksen-Transcript bisher: Regime-Erkennung + Sektor-Kompositions-Analyse als systematischer Prozess. Direkt relevant für S1 (Iran) und S3 (NVDA) — Stagflations-Szenario würde beide belasten.
+
+---
+
 ## Lars Eriksen — 26.03.2026 — Fahnenstangen-Erkennung + Bodenbildungs-Framework (Silber)
 
 *Quelle: Lars Eriksen YouTube, ca. März 2026*

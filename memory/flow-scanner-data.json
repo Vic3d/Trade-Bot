@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-03-28T07:57:33Z",
+  "overall_direction": "NEUTRAL",
+  "overall_emoji": "⚪",
+  "overall_score": 0,
+  "total_net_flow": 0,
+  "sectors": {
+    "energy": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "defense": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "bonds": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "gold": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "volatility": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "tech": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "custom": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    }
+  },
+  "top_signals": [],
+  "congressional_tickers": [
+    "OH",
+    "PA"
+  ],
+  "auto_trades_created": [],
+  "scan_config": {
+    "min_score": 6,
+    "auto_trade_threshold": 8
+  }
+}

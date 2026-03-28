@@ -183,7 +183,9 @@
       "entryMin": 1626,
       "entryMax": 1700,
       "stop": 1520,
-      "note": "Re-Entry Signal A >1.626€ + Volumen nötig"
+      "note": "Re-Entry Signal A >1.626€ + Volumen nötig",
+      "yahoo": "RHM.DE",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "AG",
@@ -195,7 +197,9 @@
       "target1": 20.0,
       "target2": 25.0,
       "strategy": "PS6_Rohstoffe",
-      "signal": "Wochenkerze Hammer/Engulfing + Volumen. AG folgt Gold."
+      "signal": "Wochenkerze Hammer/Engulfing + Volumen. AG folgt Gold.",
+      "yahoo": "AG",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "ASML.AS",
@@ -203,7 +207,9 @@
       "entryMin": 1140,
       "entryMax": 1180,
       "stop": 1050,
-      "note": "EMA50-Zone ~1.160€, CRV 5:1"
+      "note": "EMA50-Zone ~1.160€, CRV 5:1",
+      "yahoo": "ASML.AS",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "BHP.L",
@@ -211,7 +217,9 @@
       "entryMin": 26,
       "entryMax": 29,
       "stop": 24,
-      "note": "Kupfer/Lithium-Setup, 20W-MA ~27.57€"
+      "note": "Kupfer/Lithium-Setup, 20W-MA ~27.57€",
+      "yahoo": "BHP.L",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "RIO.L",
@@ -219,7 +227,9 @@
       "entryMin": 74,
       "entryMax": 78,
       "stop": 69,
-      "note": "Re-Entry nach Rohstoffkrise. Bedingungen: 1) Nikkei stabilisiert (>−1% 3 Tage), 2) Brent-WTI Spread < 8$ (Lieferlage normal), 3) China PMI > 50 (Nachfrage erholt). Entry-Zone 74–78€, Stop 69€, Ziel 90€, CRV ~3:1"
+      "note": "Re-Entry nach Rohstoffkrise. Bedingungen: 1) Nikkei stabilisiert (>−1% 3 Tage), 2) Brent-WTI Spread < 8$ (Lieferlage normal), 3) China PMI > 50 (Nachfrage erholt). Entry-Zone 74–78€, Stop 69€, Ziel 90€, CRV ~3:1",
+      "yahoo": "RIO.L",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "FCX",
@@ -233,7 +243,9 @@
       "target2": 58.0,
       "note": "KI-Rechenzentren + E-Auto Kupfernachfrage. Bodenbildung abwarten. CRV ~3.5:1",
       "strategy": "PS6_Rohstoffe",
-      "signal": "Bodenbildung auf Wochenbasis (2 Wochen Seitwärts ohne neue Tiefs)"
+      "signal": "Bodenbildung auf Wochenbasis (2 Wochen Seitwärts ohne neue Tiefs)",
+      "yahoo": "FCX",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "GOLD",
@@ -247,7 +259,9 @@
       "target2": 50.0,
       "note": "Goldminer, gehebelt auf Goldpreis. Iran + Fed-Cuts + USD-Schwäche. CRV ~3:1",
       "strategy": "PS6_Rohstoffe",
-      "signal": "Wochenkerze Hammer/Bullish Engulfing unter MA20w"
+      "signal": "Wochenkerze Hammer/Bullish Engulfing unter MA20w",
+      "yahoo": "GOLD",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "NEM",
@@ -261,7 +275,9 @@
       "target2": 115.0,
       "note": "Weltgrößter Goldminer, konservativer als Barrick. CRV ~3:1",
       "strategy": "PS6_Rohstoffe",
-      "signal": "Wochenkerze Reversal + Gold > MA20w"
+      "signal": "Wochenkerze Reversal + Gold > MA20w",
+      "yahoo": "NEM",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "BAYN.DE",
@@ -272,7 +288,8 @@
       "target": 46.0,
       "thesis": "Re-Entry nach Stop — Glyphosat-Urteil + Pipeline-Katalysator abwarten",
       "added": "2026-03-22",
-      "note": "Ausgestoppt 22.03 @ 38€. Re-Entry wenn Stabilisierung + Katalysator"
+      "note": "Ausgestoppt 22.03 @ 38€. Re-Entry wenn Stabilisierung + Katalysator",
+      "wpr_monthly_check": true
     },
     {
       "ticker": "LHA.DE",
@@ -287,7 +304,8 @@
         14.0
       ],
       "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
-      "status": "WATCHLIST"
+      "status": "WATCHLIST",
+      "wpr_monthly_check": true
     }
   ],
   "macro": {
@@ -300,7 +318,10 @@
     "brent_ticker": "BZ=F",
     "brent_wti_spread_alert": 8.0,
     "sx7e_ticker": "EXV1.DE",
-    "sx7e_drop_pct": -2.0
+    "sx7e_drop_pct": -2.0,
+    "spy_ticker": "SPY",
+    "fedex_ticker": "FDX",
+    "fedex_drop_pct": -4.0
   },
   "settings": {
     "stop_warn_pct": 3.0,
@@ -605,5 +626,84 @@
       "reason": "Stop ausgelöst, bearischer Markt (Iran-Krise Phase-1-Schock)",
       "watchlist_reentry": true
     }
+  },
+  "flow_scanner": {
+    "sectors": {
+      "energy": {
+        "tickers": [
+          "OXY",
+          "XOM",
+          "XLE",
+          "USO",
+          "CVX"
+        ],
+        "weight": 1.5,
+        "enabled": true
+      },
+      "defense": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "GD",
+          "BA"
+        ],
+        "weight": 1.3,
+        "enabled": true
+      },
+      "bonds": {
+        "tickers": [
+          "TLT",
+          "TBT",
+          "IEF"
+        ],
+        "weight": 1.2,
+        "enabled": true
+      },
+      "gold": {
+        "tickers": [
+          "GLD",
+          "SLV",
+          "GDX"
+        ],
+        "weight": 1.1,
+        "enabled": true
+      },
+      "volatility": {
+        "tickers": [
+          "UVXY",
+          "VXX"
+        ],
+        "weight": 1.4,
+        "enabled": true
+      },
+      "tech": {
+        "tickers": [
+          "QQQ",
+          "NVDA",
+          "PLTR"
+        ],
+        "weight": 1.0,
+        "enabled": true
+      },
+      "custom": {
+        "tickers": [],
+        "weight": 1.0,
+        "enabled": true
+      }
+    },
+    "keywords": [
+      "iran",
+      "trump",
+      "fed",
+      "tariffs",
+      "war",
+      "ukraine",
+      "ceasefire",
+      "sanctions"
+    ],
+    "min_score": 6,
+    "auto_trade_threshold": 8,
+    "congressional_check": true
   }
 }

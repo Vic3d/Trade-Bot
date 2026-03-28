@@ -251,3 +251,34 @@ Exit-Signal wäre: konkreter Teil-Deal mit verifizierbaren Maßnahmen — NICHT 
 **Kern-Reasoning:** S10 ist die Rückseite von S1. Wenn S1 geschlossen wird (Kriegsende), rotiert das Kapital in Airlines. Lufthansa hat klaren Hebel: KGV-Re-Rating von 6 → 10-12 = +60-100% Upside.
 **Entry-Trigger:** Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch LHA.DE
 **Kein Kauf jetzt** — Watchlist bis Trigger erfüllt.
+
+
+---
+
+## LEARNING LOOP — Geschlossene Kette
+
+Jeder Trade hat drei Pflicht-Einträge:
+1. **ERÖFFNUNG** → Warum? (Signal + Score + Reasoning)
+2. **ABSCHLUSS** → Was ist passiert? (Stop/Target/Manuell)
+3. **LEKTION** → Was lernen wir daraus?
+
+Kein Trade ohne Eröffnungs-Log. Kein Exit ohne Lektion.
+Format: AUTO-Trades von autonomous_loop.py | Manuelle Trades von Albert/Victor direkt
+
+---
+
+## 2026-03-28 — Regime-Framework eingeführt (Eriksen-Learning)
+
+**Entscheidung:** Übergreifendes Regime-Framework als Pflicht-Step vor jeder Allokations-Entscheidung eingeführt. Konkrete Wenn-Dann-Bedingungen für Stagflations-Regime-Wechsel definiert.
+
+**Kontext:** Victor schickte Eriksen-Podcast-Transcript. Kernthese: MSCI World ist anti-defensiv in Stagflation (11% Inflation-Hedges, 33% Tech). Index-Selbstkorrektur zu langsam (~1-2% Verschiebung/Jahr). 2022 Beweis: Nasdaq –33% allein durch Zinsen, ohne Rezession. Victor: "So was müssen wir festhalten damit wir unsere Handelsparameter besser festlegen können."
+
+**Kern-Reasoning:**
+- Aktuelles Portfolio ~60% Growth (NVDA, MSFT, PLTR) — maximal zinssensitiv
+- S1 (Iran) hat Potenzial Zinssenkungszyklus zu beenden → Stagflation-Trigger
+- Ohne vorher definierten Wenn-Dann-Plan → reaktives Handeln → Fehler
+- Lösung: Regime-Indikatoren (1J-Swap, Fed-Statement, WTI-Niveau) überwachen + klare Schwellenwerte
+
+**Lesson:** Trading-Parameter entstehen nicht im Moment der Panik — sie werden vorher festgeschrieben. Wenn-Dann-Pläne in der Schublade = Handlungsfähigkeit wenn es darauf ankommt.
+
+**Verweis:** `strategien.md` → Sektion "REGIME-FRAMEWORK" | `transcript-insights.md` → Eriksen 28.03.2026

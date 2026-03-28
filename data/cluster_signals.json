@@ -224,6 +224,21 @@
       "conviction": 95,
       "timestamp": "2026-03-27T21:04:11Z",
       "date": "2026-03-27"
+    },
+    {
+      "tickers": [
+        "OXY",
+        "XOM"
+      ],
+      "ticker_count": 2,
+      "total_hits": 3,
+      "total_volume": 3301,
+      "max_ratio": 4.095833333333333,
+      "fresh_count": 0,
+      "strength": "MILD",
+      "conviction": 70,
+      "timestamp": "2026-03-28T07:45:22Z",
+      "date": "2026-03-28"
     }
   ]
 }

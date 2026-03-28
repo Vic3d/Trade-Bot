@@ -551,6 +551,41 @@ def check_watchlist(config: dict, prices: dict, fx: dict, state: dict,
                     alerts.append(f"🕯️ UMKEHRKERZE {direction}: {ticker} — {pattern} @ ${price_raw:.2f}! Entry-Bestätigung?")
                     sent_today.add(ckey)
 
+        # WPR Monatssignal (Eriksen 13.03.2026: Akkumulierungs-Indikator)
+        # Nur einmal täglich, nur für Watchlist-Items mit wpr_monthly_check: true
+        if watch.get('wpr_monthly_check') and yahoo_t:
+            wkey = f"WL_{key}_WPR_MONTHLY"
+            if wkey not in sent_today:
+                wpr_data = calc_wpr_monthly(yahoo_t)
+                if wpr_data:
+                    wpr = wpr_data['wpr']
+                    wpr_prev = wpr_data.get('wpr_prev')
+                    # Signal 1: WPR steigt aus überverkaufter Zone heraus (>-80 nach <-80)
+                    if wpr_prev and wpr_prev < -80 and wpr > -80:
+                        alerts.append(
+                            f"📊 WPR-MONATSSIGNAL 🟡 STUFE 1 — {ticker}\n"
+                            f"WPR Monat: {wpr_prev:.0f} → {wpr:.0f} (steigt aus <-80 Zone)\n"
+                            f"→ Mögliche Bodenbildung / Smart Money Akkumulation (Eriksen-Methodik)\n"
+                            f"→ Noch kein Kaufsignal — Wochenschlusskurs über definiertem Level abwarten"
+                        )
+                        sent_today.add(wkey)
+                    # Signal 2: WPR steigt über -50 (Momentum bestätigt)
+                    elif wpr_prev and wpr_prev < -50 and wpr > -50:
+                        alerts.append(
+                            f"📊 WPR-MONATSSIGNAL 🟢 STUFE 2 — {ticker}\n"
+                            f"WPR Monat: {wpr_prev:.0f} → {wpr:.0f} (über -50 — Momentum bestätigt)\n"
+                            f"→ Prozyklisches Kaufsignal. Einstieg wenn Kurs über fallenden GD (Wochenchart).\n"
+                            f"14M-Range: ${wpr_data['ll_14m']:.2f} – ${wpr_data['hh_14m']:.2f} | Akt. ${wpr_data['price']:.2f}"
+                        )
+                        sent_today.add(wkey)
+                    # Info: tief in überverkaufter Zone (Monitoring)
+                    elif wpr < -85:
+                        alerts.append(
+                            f"📊 WPR-MONITORING — {ticker}: WPR Monat {wpr:.0f} (tief überverkauft)\n"
+                            f"→ Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt."
+                        )
+                        sent_today.add(wkey)
+
     state['alerts_sent_today'] = sent_today
     return alerts
 
@@ -845,8 +880,120 @@ def check_macro(config: dict, prices: dict, state: dict) -> list:
                 alerts.append(msg)
                 sent_today.add(xkey)
 
+    # ── S&P 500 / 200-MA Check (Eriksen 28.03.2026: Regime-Framework) ──
+    # Signal: S&P über/unter 200-MA = Risk-On/Off Regime-Indikator
+    spy_t = macro.get('spy_ticker', 'SPY')
+    spy_ema = get_ema_data(spy_t)
+    if spy_ema and spy_ema.get('ema200') and spy_ema.get('price'):
+        spy_price = spy_ema['price']
+        spy_ma200 = spy_ema['ema200']
+        prev_spy_above = state.get('spy_above_ma200', None)
+        curr_spy_above = spy_price > spy_ma200
+        pct_from_ma200 = (spy_price - spy_ma200) / spy_ma200 * 100
+
+        # Beim ersten Run nur State setzen, kein Alert
+        if prev_spy_above is None:
+            state['spy_above_ma200'] = curr_spy_above
+        elif prev_spy_above != curr_spy_above:
+            # Regime-Wechsel: S&P 500 kreuzt 200-MA
+            mkey = 'MACRO_SPY_MA200_CROSS'
+            if mkey not in sent_today:
+                direction = "📈 ÜBER" if curr_spy_above else "📉 UNTER"
+                emoji = "🟢" if curr_spy_above else "🔴"
+                msg = (
+                    f"{emoji} S&P 500 (SPY) **KREUZT 200-TAGE-MA** {direction}\n"
+                    f"SPY ${spy_price:.2f} | MA200 ${spy_ma200:.2f} ({pct_from_ma200:+.1f}%)\n"
+                    f"{'→ Risk-ON: Regime-Wechsel bullisch. Aktives Positionieren möglich.' if curr_spy_above else '→ Risk-OFF: Strukturelle Schwäche. Keine neuen aggressiven Longs. (Eriksen-Regel)'}"
+                )
+                alerts.append(msg)
+                sent_today.add(mkey)
+            state['spy_above_ma200'] = curr_spy_above
+        else:
+            state['spy_above_ma200'] = curr_spy_above
+
+        # Tägliche Erinnerung wenn S&P unter 200-MA (einmal/Tag)
+        if not curr_spy_above:
+            dkey = 'MACRO_SPY_UNDER_MA200_DAILY'
+            if dkey not in sent_today:
+                msg = (f"⚠️ S&P 500 UNTER 200-MA | SPY ${spy_price:.2f} vs MA200 ${spy_ma200:.2f} "
+                       f"({pct_from_ma200:.1f}%) — Risk-OFF aktiv. Kein aggressiver Aufbau.")
+                alerts.append(msg)
+                sent_today.add(dkey)
+
+    # ── FedEx (FDX) als Realwirtschafts-Frühindikator (Eriksen 22.03.2026) ──
+    # Logistikkonzerne sehen Wirtschaftsdaten 4-6 Wochen früher als offizielle Statistiken.
+    # FDX Tageseinbruch >4% = potenzielles Phase-2-Signal (Wachstumsschock kommt)
+    fdx_t = macro.get('fedex_ticker', 'FDX')
+    if fdx_t in prices:
+        fdx       = prices[fdx_t]
+        fdx_chg   = fdx.get('change_pct', 0)
+        fdx_price = fdx.get('price', 0)
+        threshold_fdx = macro.get('fedex_drop_pct', -4.0)
+        if fdx_chg <= threshold_fdx:
+            fkey = 'MACRO_FEDEX_DROP'
+            if fkey not in sent_today:
+                msg = (
+                    f"🚨 FEDEX (FDX) EINBRUCH: {fdx_chg:+.1f}% (${fdx_price:.2f})\n"
+                    f"→ Frühindikator: Logistiker sehen Wirtschaft 4-6 Wochen früher.\n"
+                    f"→ FDX >-4% Tageseinbruch = mögliches **Phase-2-Signal** (Eriksen-Framework).\n"
+                    f"→ Prüfen: Guidance gesenkt? Volumen-Prognose runter? → Rezession 1-2 Quartale voraus."
+                )
+                alerts.append(msg)
+                sent_today.add(fkey)
+
     state['alerts_sent_today'] = sent_today
     return alerts
+
+
+# ─── WPR Monthly Signal (Williams Percentage Range, Monatsbasis) ────
+# Eriksen 13.03.2026: WPR auf Monatsbasis = seltenes Akkumulierungs-Signal
+# Zeigt wenn Smart Money still kauft, auch wenn Kurs noch fällt.
+
+def calc_wpr_monthly(ticker: str) -> dict | None:
+    """
+    Berechnet Williams Percentage Range (WPR) auf Monatsbasis.
+    WPR = (Highest High - Close) / (Highest High - Lowest Low) * -100
+    Skala: 0 (überkauft) bis -100 (überverkauft)
+    Signal: WPR steigt aus Zone <-80 heraus = Akkumulation / Bodenbildung
+    """
+    import urllib.parse
+    end   = int(__import__('time').time())
+    start = end - (365 * 24 * 3600 * 2)  # 2 Jahre für monatliche Daten
+    url   = (f"https://query2.finance.yahoo.com/v8/finance/chart/"
+             f"{urllib.parse.quote(ticker)}?interval=1mo&period1={start}&period2={end}")
+    req   = __import__('urllib.request', fromlist=['Request', 'urlopen'])
+    try:
+        import json as _json
+        import urllib.request as _ur
+        r = _ur.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        d = _json.loads(_ur.urlopen(r, timeout=10).read())
+        result = d['chart']['result'][0]
+        q = result['indicators']['quote'][0]
+        highs  = [h for h in q.get('high', [])  if h is not None]
+        lows   = [l for l in q.get('low', [])   if l is not None]
+        closes = [c for c in q.get('close', []) if c is not None]
+        if len(closes) < 3:
+            return None
+        # Letzten 14 Monate für WPR-Berechnung
+        period = min(14, len(closes))
+        hh = max(highs[-period:])
+        ll = min(lows[-period:])
+        close = closes[-1]
+        prev_close = closes[-2]
+        if hh == ll:
+            return None
+        wpr_curr = (hh - close) / (hh - ll) * -100
+        wpr_prev = (max(highs[-period-1:-1]) - prev_close) / (max(highs[-period-1:-1]) - min(lows[-period-1:-1])) * -100 if len(closes) > period else None
+        return {
+            'ticker':   ticker,
+            'wpr':      round(wpr_curr, 1),
+            'wpr_prev': round(wpr_prev, 1) if wpr_prev else None,
+            'price':    round(close, 2),
+            'hh_14m':   round(hh, 2),
+            'll_14m':   round(ll, 2),
+        }
+    except Exception as e:
+        return None
 
 
 # ─── EMA Cache (EMA10, EMA20, EMA50, EMA200) ────────────────────────
@@ -1401,6 +1548,7 @@ def main():
     yahoo_tickers.add(config.get('macro', {}).get('brent_ticker', 'BZ=F'))    # TRA-177: Brent Crude
     yahoo_tickers.add(config.get('macro', {}).get('sx7e_ticker', 'EXV1.DE'))  # TRA-178: Euro Stoxx Banks
     yahoo_tickers.add('QQQ')                                                   # TRA-179: Nasdaq RS
+    yahoo_tickers.add(config.get('macro', {}).get('fedex_ticker', 'FDX'))     # Eriksen: Realwirtschafts-Frühindikator
 
     for pos in config.get('positions', {}).values():
         if pos.get('yahoo'):

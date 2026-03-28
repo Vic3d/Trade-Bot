@@ -2539,3 +2539,41 @@ Finanzbär macht **saubere Work:** Angebots-/Nachfragematrix ist nicht bauchig, 
 **Problem:** Keine Exit-Signale genannt (wann raus?), geopolitik-Risiken (China Dominanz, Zimbabwe-Exporte) sind erkannt aber nicht tief gewichtet, Battery Storage könnte schneller wachsen als EVs (nicht genug erwähnt).
 
 **Beste Takeaway für Portfolio:** Nicht blind All-in in irgendeinen Lithium-Titel gehen. Aber die Mega-Thesis (Supply-Lag 2027+, EV-Megatrend, Price-Expansion) ist **überzeugend genug für Watchlist + selective Entry** in defensiven Produern. Developer sind zu früh, zu volatil (außer voll finanziert wie LAC).
+---
+
+## Woche 2026-13 — Transcript-Analyse: Lars Eriksen (28.03.2026)
+*Quelle: eriksen-msci-world-warnung-2026-03-28.txt | "Erischen Geld und Gold" Podcast*
+
+### Thema: MSCI World Illusion + Regime-Shift Framework
+
+**Top-Erkenntnisse:**
+
+**1. Index-Kompositions-Analyse als Pflicht-Step**
+Vor jeder "defensiven" ETF-Entscheidung: tatsächliche Sektor-Gewichtung prüfen.
+MSCI World: 70% USA, 33% IT+Komm, nur 11% Inflation-Defensiv (Energie 4%, Rohstoffe 3.8%, Versorger 2.8%)
+→ Für TradeMind: Feature "Index-Kompositions-Check" — zeigt Regime-Sensitivität eines ETFs
+
+**2. Wenn-Dann-Bedingungen (Eriksens Kern-Methodik)**
+"In diesem Umfeld sind Wenn-Dann-Bedingungen Gold"
+Pläne VOR dem Ereignis definieren, nicht reaktiv. Entry-Level, Bedingungen, Exit vorher schriftlich festhalten.
+→ Direkt in TradeMind-Strategy-System integrierbar: Entry-Conditions als Pflichtfeld bei jedem Setup
+
+**3. Index-Selbstkorrektur ist ein Mythos**
+20% Outperformance Rohstoffe vs. Tech = nur 1-2% Gewichtsverschiebung/Jahr im Index
+Japan 1989: ~20 Jahre bis Normalisierung
+→ Anleger die auf "der Index korrigiert sich selbst" warten verlieren Jahrzehnte
+
+**4. Regime-Erkennung als Pre-Condition für Allokation**
+Stagflation → Energie, Rohstoffe, Versorger, Gold outperformen. Wachstum → Hyperscaler.
+2022 Beweis: Nasdaq –33% NUR durch Zinsen, ohne Rezession.
+→ TradeMind-Feature: "Regime-Indicator" (Inflation-Regime vs. Growth-Regime) → beeinflusst Sektor-Allokation
+
+**Portfolio-Relevanz heute:**
+Victor's Portfolio: ~60% in Growth (NVDA, MSFT, PLTR) — alle hochzinsensitiv
+Falls S1 (Iran) → Ende Zinssenkungszyklus → dieses Portfolio unter maximalen Druck
+Wenn-Dann-Plan: Falls Iran-Eskalation + Inflation >3.5% → Position in Defensiv-ETF (Energie/Rohstoffe) prüfen
+
+**Nicht tun:**
+- MSCI World als "Sicherheitsnetz" kaufen in Stagflation
+- Auf Index-Rebalancing warten statt selbst handeln
+- Wachstumswerte kaufen wenn Zinsen steigen

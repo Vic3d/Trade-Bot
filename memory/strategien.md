@@ -1,5 +1,50 @@
 # Strategien — Trade Thesis Playbook
-**Angelegt:** 2026-03-08 | **Zuletzt aktualisiert:** 2026-03-26
+**Angelegt:** 2026-03-08 | **Zuletzt aktualisiert:** 2026-03-28
+
+---
+
+---
+
+## 🧭 REGIME-FRAMEWORK (Eriksen, 28.03.2026)
+
+> *"Regime identifizieren BEVOR Allokation entschieden wird."*
+> Quelle: Lars Eriksen Podcast, analysiert 28.03.2026
+
+### Die zwei Regime und ihre Gewinner
+
+| Regime | Erkennungszeichen | Gewinner-Sektoren | Verlierer-Sektoren |
+|--------|------------------|-------------------|-------------------|
+| **Wachstum / Zinssenkung** | Inflation <2,5%, Fed senkt, VIX <20 | KI/Tech (NVDA, MSFT, PLTR), Wachstum | Rohstoffe, Versorger |
+| **Stagflation / Zinsanstieg** | Inflation >3%, Fed pausiert/erhöht, Ölpreis hoch | Energie, Rohstoffe, Versorger, Gold/Silber | KI/Tech, Wachstumswerte |
+
+### Aktuelle Regime-Einschätzung
+- **1-Jahres-Inflationsswap:** >3% → Fed blockiert (Eriksen-Indikator, 20.03.2026)
+- **VIX:** 26.4 → erhöht, kein Risk-On
+- **Öl:** $84+ durch Iran-Konflikt
+- **→ Aktuell: Übergang. Noch kein volles Stagflations-Regime, aber Risiko steigt.**
+
+### Wenn-Dann: Regime-Wechsel zu Stagflation
+
+**Trigger (mindestens 2 von 3 müssen erfüllt sein):**
+1. Inflation (CPI oder 1J-Swap) >3,5% zwei Monate in Folge
+2. Fed pausiert Zinssenkungen öffentlich (Statement oder 2+ hawkishe Mitglieder)
+3. WTI >$95 stabil für >3 Wochen
+
+**Wenn Trigger erfüllt → Handlungsplan:**
+- [ ] Growth-Exposure reduzieren: NVDA/MSFT/PLTR auf max. 40% Portfolio-Anteil
+- [ ] Defensiv-ETF einbuchen: Energie/Rohstoff-ETF (z.B. iShares S&P 500 Energy Sector oder Lyxor Commodities)
+- [ ] EQNR + DR0 übergewichten falls S1-These aktiv
+- [ ] Silber (ISPA.DE / First Majestic AG) Entry prüfen falls noch nicht drin
+
+**Anti-Pattern (VERBOTEN):**
+- ❌ MSCI World als "defensiven Hedge" kaufen — ist es nicht (11% Inflation-Schutz, 33% Tech)
+- ❌ Auf Index-Rebalancing warten — zu langsam (1-2% Verschiebung/Jahr)
+- ❌ In Panik kaufen ohne vorher definierten Wenn-Dann-Plan
+
+### Historischer Beweis: Zinsen allein reichen
+- 2022: Nasdaq –33%, S&P –19% — **ohne Rezession, nur Zinsen**
+- Japan 1989-2009: MSCI World Japan 45% → 6% — dauerte 20 Jahre
+- Konsequenz: Regime-Wechsel rechtzeitig erkennen, nicht warten bis die Zahlen schreien
 
 ---
 

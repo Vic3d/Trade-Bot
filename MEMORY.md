@@ -248,7 +248,7 @@
 - First Majestic Silver (AG): Entry-Zone $26–29 aktiv, Stop ~20,50€, Ziel 25,86€/32,76€, CRV 4:1
 - ASML Holding (ASML): Warten auf Rücklauf ~1.160€ (EMA50), CRV 5:1
 
-## Trading-Lektionen (Stand 21.03.2026)
+## Trading-Lektionen (Stand 28.03.2026)
 - **Stop IMMER real in TR setzen** — mentale Stops versagen wenn Markt schnell dreht (RHM-Lektion 11.03.)
 - **Trailing Stop nach +5% Gewinn** — Stop auf Breakeven/EMA nachziehen (Dirk 7H Regel). EQNR-Beispiel: +5,3% Gewinn → Stop von 25€ auf 27€ gezogen (12.03.). Schützt Gewinne, lässt Rest laufen.
 - **RSI 75+ + Wochenende = kritisches Risiko** — EQNR am 13.03.: RSI 79, +12,4% über 5 Tage → sehr hohe Wahrscheinlichkeit für Profit-taking über Wochenende. NVDA + A2QQ9R ohne Stops am 13.03. waren exposiert. Position mit Stop überwachen, NIEMALS ohne Schutz über 2-3 Tage gehen.
@@ -263,6 +263,10 @@
 - **Versprechen atomar absichern** — Sub-Agent/Cron sofort anlegen, nie nur im Chat zusagen
 - **Kein Averaging Down unter Stop** — Dirks Regel, konsequent einhalten
 - **Verlustreiche Woche ≠ Revenge Trade** — nur echte Setups handeln
+- **Index-Kompositions-Analyse vor ETF-Kauf** (Eriksen, 28.03.2026) — MSCI World: 70% USA, 33% IT+Komm, nur ~11% Inflation-Defensiv (Energie 4%, Rohstoffe 3.8%, Versorger 2.8%). "Defensive ETF"-Narrativ ohne Kompositions-Check ist gefährlich.
+- **Regime-Erkennung vor Sektor-Allokation** (Eriksen, 28.03.2026) — Stagflation → Energie/Rohstoffe/Versorger/Gold. Wachstum → Hyperscaler. 2022: Nasdaq –33% NUR durch Zinsen, ohne Rezession. Regime identifizieren BEVOR Allokation entschieden wird.
+- **Index-Selbstkorrektur ist "ultra träge"** (Eriksen, 28.03.2026) — 20% Outperformance Rohstoffe vs. Tech = nur 1-2% Gewichtsverschiebung/Jahr im MSCI World. Japan 1989–2009: 20 Jahre bis Normalisierung. Nicht auf Index-Rebalancing als Schutz verlassen.
+- **Wenn-Dann-Bedingungen = Pflicht in Stagflations-Umfeld** (Eriksen, 28.03.2026) — Einstiegspläne schriftlich VOR dem Ereignis definieren, nicht reaktiv. Gilt besonders bei geopolitischer Unsicherheit.
 - **Trade Journal + Accuracy Tracking** (ab 15.03.2026) — jede Prognose/Empfehlung in `albert-accuracy.md` eintragen SOFORT, mit Horizont + Ergebnis später. Statistik: 33% Win-Rate (3 geschlossen, 11 offen, Stand 15.03.). Trefferquote monitoren, nicht verstecken.
 
 ## Watchlist-Setups (aktiv seit 13.03.2026)
