@@ -1,0 +1,125 @@
+{
+  "_info": "Trading Universe — Albert scannt diese Liste wöchentlich komplett durch. Kein manuelles Pflegen. Algo filtert auf Setups.",
+  "_count": 420,
+  "_updated": "2026-03-28",
+
+  "sectors": {
+
+    "energy": {
+      "label": "⚡ Energie",
+      "tickers": [
+        "XOM","CVX","COP","EOG","PXD","MPC","PSX","VLO","HES","DVN",
+        "OXY","HAL","SLB","BKR","NOV","TRGP","KMI","WMB","OKE","ET",
+        "EQNR","TTE.PA","BP","SHEL","ENI.MI","REPSOL.MC",
+        "DINO","FRO","DHT","STNG","TNK","INSW","ASC","NAT"
+      ]
+    },
+
+    "materials_metals": {
+      "label": "🪨 Rohstoffe & Metalle",
+      "tickers": [
+        "FCX","SCCO","TECK","AA","ALB","MP","VALE","RIO","BHP","GLEN.L",
+        "NEM","GOLD","AEM","WPM","KGC","HL","PAAS","AG","CDE","EXK",
+        "MOS","NTR","CF","IPI","ICL",
+        "CLF","STLD","NUE","X","PKX","MT",
+        "LIN","APD","DD","DOW","LYB","EMN"
+      ]
+    },
+
+    "industrials_defense": {
+      "label": "🛡️ Industrie & Rüstung",
+      "tickers": [
+        "RTX","LMT","NOC","GD","HII","KTOS","PLTR","ACHR","JOBY",
+        "RHM.DE","LDOS","SAIC","BAH","CACI","MANT",
+        "CAT","DE","EMR","ETN","PH","ROK","XYL","GNRC",
+        "UPS","FDX","EXPD","CHRW","XPO","JBHT",
+        "BA","AIR.PA","HO.PA","SAF.PA","MTU.DE","ROLLS.L"
+      ]
+    },
+
+    "technology": {
+      "label": "💻 Technologie",
+      "tickers": [
+        "NVDA","MSFT","AAPL","GOOGL","META","AMZN","AMD","INTC","QCOM","AVGO",
+        "ASML.AS","AMAT","LRCX","KLAC","MU","MRVL","ON","TXN","ADI","MCHP",
+        "SAP.DE","CRM","NOW","SNOW","DDOG","ZS","NET","CRWD","S","PANW",
+        "ORCL","IBM","HPE","DELL","WDC","STX",
+        "TSM","005930.KS","6758.T","SONY","700.HK","9988.HK"
+      ]
+    },
+
+    "healthcare": {
+      "label": "🏥 Healthcare & Biotech",
+      "tickers": [
+        "LLY","NVO","NOVO-B.CO","ABBV","MRK","PFE","BMY","AMGN","GILD","BIIB",
+        "REGN","VRTX","MRNA","BNTX","INCY","JAZZ","ALNY","RARE",
+        "UNH","CVS","CI","HUM","ELV","MOH",
+        "BAYN.DE","SAN.PA","ROG.SW","NESN.SW","AZN","GSK.L","HIK.L",
+        "TMO","DHR","A","BIO","IDXX","MTD","WAT"
+      ]
+    },
+
+    "financials": {
+      "label": "🏦 Finanzen",
+      "tickers": [
+        "JPM","BAC","WFC","GS","MS","C","USB","PNC","TFC","CFG",
+        "DB.DE","BNP.PA","SAN.MC","BBVA.MC","UCG.MI","ING","AXA.PA","CS.PA",
+        "BLK","SCHW","MS","HOOD","COIN","SQ","PYPL",
+        "ICE","CME","NDAQ","CBOE","MKTX",
+        "BRK-B","AIG","PRU","MET","AFL","TRV","CB"
+      ]
+    },
+
+    "consumer": {
+      "label": "🛒 Konsum",
+      "tickers": [
+        "AMZN","TGT","WMT","COST","HD","LOW","EBAY","ETSY","CHWY",
+        "NKE","UAA","PVH","RL","TPR","CPRI",
+        "MCD","SBUX","YUM","CMG","DPZ","QSR","DNUT",
+        "KO","PEP","MDLZ","GIS","K","CAG","SJM","CPB",
+        "PG","CL","KMB","CHD","CLX","EL","ULTA","COTY",
+        "LVMH.PA","KER.PA","RMS.PA","MC.PA","EVO.ST"
+      ]
+    },
+
+    "real_estate_utilities": {
+      "label": "🏗️ Immobilien & Versorger",
+      "tickers": [
+        "NEE","DUK","SO","AEP","EXC","PCG","ES","ED","EIX","PPL",
+        "AMT","PLD","EQIX","CCI","SBAC","DLR","IRM","O","NNN","VICI",
+        "AWK","WM","RSG","CWST","WCN"
+      ]
+    },
+
+    "emerging_markets": {
+      "label": "🌍 Emerging Markets",
+      "tickers": [
+        "VALE","PBR","ITUB","BBD","ABV","SID",
+        "BABA","JD","PDD","BIDU","NIO","LI","XPEV","BYD.HK",
+        "INFY","WIT","HDB","ICICI","RELIANCE.NS",
+        "ASEAN_IDX","VNM","EWZ","EWW","EWY","EWT","INDA","PIN",
+        "7203.T","6758.T","9984.T","6861.T","TM","HMC","SONY"
+      ]
+    },
+
+    "commodities_agri": {
+      "label": "🌾 Agrar & Soft Commodities",
+      "tickers": [
+        "MOS","NTR","CF","IPI","CTVA","FMC","BG","ADM","MDP","INGR",
+        "TSN","HRL","CAG","SJM","POST","LANC",
+        "JO","CORN","WEAT","SOYB"
+      ]
+    }
+  },
+
+  "etfs_for_regime_check": {
+    "label": "📊 ETFs für Sektor-Rotation Check",
+    "tickers": [
+      "XLE","XLB","XLI","XLK","XLV","XLF","XLP","XLU","XLY","XLRE",
+      "IWM","QQQ","SPY","DIA","MDY",
+      "EEM","EFA","VGK","EWJ","FXI",
+      "GLD","SLV","USO","UNG","PDBC",
+      "TLT","HYG","LQD","EMB"
+    ]
+  }
+}
