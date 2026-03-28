@@ -344,9 +344,31 @@ def main():
 
     output = '\n'.join(lines)
 
-    # In Datei speichern
+    # In Datei speichern (Markdown für Cron-Report)
     OUTPUT_FILE.write_text(output, encoding='utf-8')
+
+    # Auch als JSON für Dashboard
+    json_out = WORKSPACE / 'data' / 'scan-latest.json'
+    scan_json = {
+        '_generated': now.isoformat(),
+        'kw': kw,
+        'date': date_s,
+        'regime': regime,
+        'vix': vix,
+        'wti': wti,
+        'fetched': fetched,
+        'setups_found': len(scored),
+        'top': scored[:20],
+        'etf_rotation': [
+            {'ticker': t, **market_data[t]}
+            for t in universe.get('etfs_for_regime_check', {}).get('tickers', [])
+            if t in market_data and t.startswith('X')
+        ]
+    }
+    json_out.write_text(json.dumps(scan_json, default=str), encoding='utf-8')
+
     print(f'\n✅ Scan gespeichert: {OUTPUT_FILE}')
+    print(f'   JSON: {json_out}')
     print(f'   {len(scored)} Setups gefunden, Top 15 ausgegeben')
 
     return output
