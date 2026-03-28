@@ -10,7 +10,8 @@ from datetime import datetime
 
 WORKSPACE = Path(__file__).parent.parent
 DB_PATH = WORKSPACE / 'data' / 'trading.db'
-OUTPUT = WORKSPACE / 'api' / 'dashdata.js'
+OUTPUT_JSON = WORKSPACE / 'data' / 'dashdata.json'   # Live-Datei → von api/dashdata.js gelesen
+OUTPUT      = WORKSPACE / 'api'  / 'dashdata.js'     # Legacy (nicht mehr für Daten genutzt)
 
 
 def safe_read_json(path, default=None):
@@ -562,23 +563,15 @@ def main():
 
     # --- Serialize ---
     print("Serializing to JSON...")
-    json_str = json.dumps(D, default=str, ensure_ascii=False)
+    json_str = json.dumps(D, default=str, ensure_ascii=False, indent=None)
 
-    # --- Write dashdata.js ---
-    out = (
-        'const D=' + json_str + ';\n'
-        'module.exports=(req,res)=>{'
-        'res.setHeader("Content-Type","application/json; charset=utf-8");'
-        'res.setHeader("Cache-Control","no-store, no-cache");'
-        'res.setHeader("Access-Control-Allow-Origin","*");'
-        'res.end(JSON.stringify(D))};\n'
-    )
-
-    OUTPUT.write_text(out, encoding='utf-8')
+    # --- Write data/dashdata.json (NEW: live data file, read by api/dashdata.js at runtime) ---
+    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_JSON.write_text(json_str, encoding='utf-8')
 
     # --- Summary ---
-    size_kb = OUTPUT.stat().st_size / 1024
-    print(f"\n✅ Written to {OUTPUT} ({size_kb:.1f} KB)")
+    size_kb = OUTPUT_JSON.stat().st_size / 1024
+    print(f"\n✅ Written to {OUTPUT_JSON} ({size_kb:.1f} KB) — wird von api/dashdata.js live gelesen")
     print(f"   Open positions: {len(open_pos)}")
     print(f"   Watchlist: {len(cfg.get('watchlist', []))}")
     print(f"   Earnings: {len(cfg.get('earnings', []))}, Macro events: {len(cfg.get('macro_events', []))}")

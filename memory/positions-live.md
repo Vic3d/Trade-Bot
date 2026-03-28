@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-03-28 11:09 CET (Auto-Sync)
+**Zuletzt aktualisiert:** 2026-03-28 11:20 CET (Auto-Sync)
 
 ---
 

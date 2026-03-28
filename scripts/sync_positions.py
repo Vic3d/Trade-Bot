@@ -256,23 +256,38 @@ def main():
         )
         POSITIONS_MD.write_text(text, encoding='utf-8')
 
-        # ── Dashboard neu generieren ──────────────────────────────────────────
-        print()
-        print("📊 Dashboard neu generieren (generate_dashdata.py)...")
-        gen_script = Path(__file__).parent / 'generate_dashdata.py'
-        if gen_script.exists():
-            import subprocess
-            result = subprocess.run(
-                ['python3', str(gen_script)],
-                capture_output=True, text=True, timeout=30,
-                cwd=str(WORKSPACE)
-            )
-            if result.returncode == 0:
-                print("  ✅ dashdata.js aktualisiert")
-            else:
-                print(f"  ⚠️  generate_dashdata.py Fehler: {result.stderr[:300]}")
+        # ── data/dashdata.json Positions-Patch (live update, kein Rebuild nötig) ──
+        dashdata_path = WORKSPACE / 'data' / 'dashdata.json'
+        if dashdata_path.exists():
+            try:
+                dashdata = json.loads(dashdata_path.read_text(encoding='utf-8'))
+                # Positions im JSON direkt aktualisieren
+                open_arr = []
+                for p in positions:
+                    # p ist dict mit keys: ticker, name, entry, stop, notes
+                    open_arr.append({
+                        'ticker': p['ticker'],
+                        'name':   p['name'],
+                        'entry':  p['entry'],
+                        'stop':   p.get('stop'),
+                        'notes':  p.get('notes') or '',
+                        'size':   0,        # Echte Größe nicht bekannt, wird bei Rebuild gefüllt
+                        'conviction': 50,
+                    })
+                if 'positions' not in dashdata:
+                    dashdata['positions'] = {}
+                dashdata['positions']['open'] = open_arr
+                dashdata['_synced'] = datetime.now().isoformat()
+                dashdata_path.write_text(
+                    json.dumps(dashdata, ensure_ascii=False),
+                    encoding='utf-8'
+                )
+                print("  ✅ data/dashdata.json Positions live aktualisiert (kein Redeploy nötig)")
+            except Exception as e:
+                print(f"  ⚠️  dashdata.json Patch fehlgeschlagen: {e}")
+                print("  → Führe generate_dashdata.py manuell aus")
         else:
-            print("  ⚠️  generate_dashdata.py nicht gefunden — Dashboard nicht aktualisiert")
+            print("  ⚠️  data/dashdata.json nicht gefunden — einmal generate_dashdata.py ausführen")
 
         print(f"\n✅ Sync abgeschlossen — {ts}")
     else:
