@@ -3,6 +3,24 @@
 
 ---
 
+## ⚠️ PFLICHT vor jeder neuen Paper-Position
+
+Kein Kauf ohne vollständigen Deep Dive nach `memory/deepdive-protokoll.md`.
+
+**Mindest-Kriterien:**
+- KGV ≤ 12x für laufendes Jahr
+- EPS stabil oder steigend (kein Earnings-Trough-Kauf)
+- Schulden-Trend nicht 3+ Jahre steigend
+- Kein aktiver Analyst-Downgrade (≤30 Tage)
+- Frischer Katalysator (≤30 Tage)
+- Aktie läuft nicht gegen eigenen Sektor
+- CRV ≥ 2:1
+
+**Vorbild:** Lufthansa (KGV 6, wachsende Dividende, Iran-Katalysator, antizyklisch)
+**Warnung:** MOS (KGV 16 im Trough, steigende Schulden, kein Katalysator 2026)
+
+---
+
 ---
 
 ## 🧭 REGIME-FRAMEWORK (Eriksen, 28.03.2026)

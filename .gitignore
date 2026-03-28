@@ -29,3 +29,4 @@ wtv-prototype/
 memory/newswire.db
 memory/*.db
 /lernbot/
+.vercel

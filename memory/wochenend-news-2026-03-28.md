@@ -1,56 +1,63 @@
-# Wochenend-News — 2026-03-28 (Samstag 10:00)
+# Wochenend-News-Sammlung — Sa, 28.03.2026 · 19:00 CET
 
-## 🚨 BREAKING: Massive Eskalation Iran-Israel (NICHT de-eskaliert!)
-
-**FAKTEN (live 09:00 UTC):**
-- **Israel:** 50+ Flugzeuge auf Iran-Ziele (Arak, Yazd), Kernforschungseinrichtungen zerstört
-- **Space Propulsion Institute Tabriz:** Zerstört (Kriegsproduktion)
-- **Houthis:** Ballistische Raketen auf Israel + Kuwait Civil Airport (Radar beschädigt)
-- **Kuwait:** Drohnen-Anschläge auf Häfen
-- **Oman (Salalah):** 2x Drohnen-Treffer
-- **UAE:** 5 Verletzte durch abgeschossene iranische Raketen
-
-**Hormuz-Risiko:** Sehr hoch. Pakistan organisiert HEUTE Krisengespräche (Türkei, Saudi-Arabien, Ägypten).
+**Erfasst:** 2026-03-28T19:00:31.091350
 
 ---
 
-## 📊 Portfolio-Impact
+## 🌍 GEOPOLITIK-RADAR
 
-| Ticker | Position | Impact | Status |
-|--------|----------|--------|--------|
-| **EQNR** (Equinor) | AKTIV | **🔥 MASSIV BULLISCH** | Ölpreis explodiert — Trump-These bestätigt: Krieg nicht vorbei, Hormuz-Risiko real |
-| **PLTR** (Palantir) | AKTIV -5.9% | Neutral | Defense-Play, könnte profitieren (Luftfahrt) |
-| **Oil Services ETF** | AKTIV +4% | Bullisch | Rückenwind hält an |
-| **Biotech ETF** | AKTIV +0.2% | Neutral | Unabhängig von Geopolitik |
+### 🚨 **IRAN-ESKALATION (Tier 1)**
+- **Status:** BALLISTISCHE RAKETEN-ANSCHLÄGE auf Israel + VAE
+- **Heute (Sa 28.03):** IRGC-Anschläge auf Eilat + Süd-Israel, Air Defenses in Doha/Abu Dhabi
+- **Hormuz-Blockade:** Zelensky-Aussage bestätigt — „Blockade des Strait of Hormuz direkt Ölmarkt"
+- **Portfolio-Impact:** 🔥 **EQNR kritisch** — Ölpreis mit Aufwärts-Potenzial. Goldman Sachs hebt KZ auf 280 NOK (vorher 270). Rückenwind.
 
----
+### 🇺🇦 **UKRAINE (Tier 1)**
+- Massive Drohnen-Kampagne: 273 Drohnen in einer Nacht
+- Strikes auf Yaroslavl-Raffinerie + Chemiewerke (Chapaevsk)
+- Portfolio-Impact: PLTR stabil, keine neuen Signale.
 
-## 📈 EQNR — KLARE KAUFSIGNAL-LAGE
+### 🇮🇱 **ISRAEL-LIBANON (Tier 1)**
+- Luftschläge auf Südlibanon (Kafr Tebnit, Harouf)
+- Raketen-Einschläge ohne Schäden (abgefangen)
+- Portfolio-Impact: Öl-Volatilität bleibt, keine direkten Tech-Effekte.
 
-Goldman Sachs: Kursziel auf 280 NOK erhöht (270 alt). Ölpreis-Rückenwind bestätigt.
-- **Ölpreis-Szenarien Woche:** $95-115 bbl (vs. 75 Baseline)
-- **EQNR Entry-Zone:** 33–37€ | Stop: 34,20€ bleibt valide
-- **Nächstes Ziel:** 45€+ (Hormuz-Blockade-Szenario)
-
-**Watchlist Re-Entry:** Rheinmetall (RHM) >1626€ — Rüstung profitiert auch.
-
----
-
-## 🗓️ Nächste Woche — Kritische Events
-
-- **Di/Mi:** Fed-Entscheidung (Powell hält Zinsen stabil) — kein Druck von Geldpolitik
-- **Donnerstag/Freitag:** US-Arbeitsmarktdaten (NFP) — Hornuz-Situation könnte Energiekosten drücken
-- **Laufend:** Hormuz-Status, Ölpreisvolatilität
+### 🇨🇳 **CHINA (Tier 2)**
+- Diplomatie-Kanal offen (Araghchi ↔ Wang Yi)
+- Trump-Xi-Treffen neu terminiert: **14.–15. Mai Beijing**
+- Portfolio-Impact: Chip-Sanktionen nicht akut, aber geopolitische Spannung bleibt.
 
 ---
 
-## 🎯 Aktionsplan bis Wochenende
+## 📰 NEWS-CLUSTER
 
-1. **EQNR-Preis monitoren** — Nächste 48h entscheidend
-2. **Hornuz-Blockade-News** prüfen — Deutsch/Englisch
-3. **RHM Watchlist** — bei >1626€ Nachkauf prüfen
-4. **PLTR-Volatilität** — Stop 127€ halten, kein Panic-Verkauf
+**Ölmarkt:** Straße von Hormuz-Schliessung droht → Ölpreise steigen
+**Equinor (EQNR):** Goldman Sachs hebt KZ → Rückenwind bestätigt
+**Nasdaq/Fed:** Zinsen stabil, 24.000 Punkte-Test
+**Palantir (PLTR):** Keine neuen Katalysatoren
 
 ---
 
-**Update:** 2026-03-28 10:00 CET | Datenquelle: liveuamap, Google News, Goldman Sachs
+## ⚡ RISIKOEREIGNISSE NÄCHSTE WOCHE (29.03 — 04.04)
+
+- **Mi 02.04:** Fed Powell Rede (evtl. Zins-Signale)
+- **Fr 04.04:** US Jobless Claims (NFP-Preview)
+- **Laufend:** Iran-Israel Eskalation (Hormuz-Risiko → EQNR Volatilität)
+
+---
+
+## ⚠️ DE-ESKALATIONS-CHECK
+
+**STATUS: KEINE DE-ESKALATION — ESKALATION AKTIV**
+- ❌ Kein Waffenstillstand Iran/Israel in Sicht
+- ❌ Hormuz-Blockade droht weiter (Zelensky bestätigt)
+- ✅ Ölpreis-Trend: **STARK OBEN** (5%+ Chance aufwärts)
+
+**EQNR-ALERT:** 🔥 **Bullenfall aktiv**
+- Ölpreis steigt (Hormuz-Risiko)
+- Goldman Sachs KZ-Erhöhung bestätigt bullish Szenario
+- EQNR 33.58€ Entry bleibt valide bei Iran-These (Trump nicht glaubwürdig)
+
+---
+
+**Nächster Check:** Mo 31.03 · 10:00 CET
