@@ -32,5 +32,35 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/daytrades",
+      "destination": "/api/data?_route=daytrades"
+    },
+    {
+      "source": "/api/dna",
+      "destination": "/api/data?_route=dna"
+    },
+    {
+      "source": "/api/risk",
+      "destination": "/api/data?_route=risk"
+    },
+    {
+      "source": "/api/signals",
+      "destination": "/api/data?_route=signals"
+    },
+    {
+      "source": "/api/trade-log",
+      "destination": "/api/data?_route=tradelog"
+    },
+    {
+      "source": "/api/news",
+      "destination": "/api/data?_route=news"
+    },
+    {
+      "source": "/api/prices",
+      "destination": "/api/data?_route=prices"
+    }
   ]
 }
