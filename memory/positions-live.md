@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-03-27 22:45 CET (Auto-Sync vom Monitor)
+**Zuletzt aktualisiert:** 2026-03-28 11:09 CET (Auto-Sync)
 
 ---
 
@@ -40,11 +40,28 @@
 
 ---
 
-## ⚡ Sync-Regeln (PFLICHT)
+## ⚡ Sync-Regeln (PFLICHT) — Single Source of Truth Architektur
 
-Wenn Victor eine Stop-Änderung oder einen Trade mitteilt:
-1. `trading_config.json` updaten (positions Array) — Monitor liest von hier
-2. Diese Datei wird beim nächsten Monitor-Run (alle 15 Min) automatisch aktualisiert
-3. Bei dringenden Änderungen: Albert updated beide Dateien sofort manuell
-4. `state-snapshot.md` = Monitor-Output mit live Preisen, kann 15 Min veraltet sein
-5. `projekt-trading.md` = nur Strategie-Doku — NICHT für live Daten
+```
+positions-live.md  ← DU und ALBERT schreiben NUR HIER
+       ↓ (automatisch beim Monitor-Start + manuell via sync_positions.py)
+trading_config.json  ← Monitor liest hier (immer frisch)
+trading.db           ← DB wird synchronisiert (Stops, Status)
+portfolio.py         ← Alle Reports/Scripts lesen über diese Klasse
+```
+
+**Wenn Victor einen Trade oder Stop meldet:**
+1. Albert updated SOFORT diese Datei (positions-live.md) — und NUR diese
+2. `python3 scripts/sync_positions.py` propagiert in alle anderen Dateien
+3. Der Monitor macht das automatisch alle 15 Min
+
+**Was NICHT mehr getan wird:**
+- ❌ Stops direkt in trading_config.json schreiben
+- ❌ Stops direkt in trading.db schreiben  
+- ❌ Positionsdaten in strategien.md, MEMORY.md oder HEARTBEAT.md tracken
+- ❌ Werte aus mehreren Dateien "zusammensuchen"
+
+**Lesezugriff für Scripts:**
+- Reports (evening_report.py etc.) → `from portfolio import Portfolio`
+- Monitor (trading_monitor.py) → sync läuft beim Start, dann trading_config.json
+- Alle anderen → `from portfolio import Portfolio` oder `sync_positions.py` aufrufen

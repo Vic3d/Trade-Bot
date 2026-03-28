@@ -23,6 +23,24 @@
 - **Öl:** $84+ durch Iran-Konflikt
 - **→ Aktuell: Übergang. Noch kein volles Stagflations-Regime, aber Risiko steigt.**
 
+### Iran-Krisen-Checkliste (Dirk 7H, 28.03.2026)
+
+**RISIKO-Szenarien (Krise dauert — S1 EQNR profitiert):**
+- ☑ 1. Verhandlungsstillstand bei Maximalzielen (USA/Israel vs. Iran) — AKTIV
+- ☑ 2. Hormus de facto blockiert / selektiv geöffnet — AKTIV
+- ☐ 3. Regionale Ausweitung (Hisbolla, Libyen, Stellvertreter) — noch nicht
+- ☐ 4. Infrastruktur zerstört → selbst Waffenstillstand reicht nicht sofort — Risiko steigt
+
+**CHANCE-Szenarien (Krise endet — S1 EQNR Exit-Trigger):**
+- ☐ 5. Wirtschaftlicher Druck zu groß für alle → Einigung erzwungen
+- ☐ 6. Indirekte Vermittlung → begrenzter Waffenstillstand
+- ☐ 7. Hormus normalisiert sich schneller als Konflikt endet
+- ☐ 8. Notreserven/Subventionen nehmen Iran das Druckmittel weg
+
+**S1 Exit-Signal:** Wenn ≥2 CHANCE-Szenarien aktiv + Öl <$95 + S&P über MA200 → Exit EQNR prüfen.
+
+---
+
 ### Wenn-Dann: Regime-Wechsel zu Stagflation
 
 **Trigger (mindestens 2 von 3 müssen erfüllt sein):**
@@ -45,6 +63,107 @@
 - 2022: Nasdaq –33%, S&P –19% — **ohne Rezession, nur Zinsen**
 - Japan 1989-2009: MSCI World Japan 45% → 6% — dauerte 20 Jahre
 - Konsequenz: Regime-Wechsel rechtzeitig erkennen, nicht warten bis die Zahlen schreien
+
+---
+
+## 🔄 RE-ENTRY FRAMEWORK — Wann Growth wieder kaufen (Dirk 7H, 28.03.2026)
+
+> *"Du wirst nie das Tief erwischen. Das ist OK. Warte bis der Markt bestätigt, dann kaufe."*
+
+### DREI-SCHRITT-BESTÄTIGUNG (Pflicht vor jedem neuen Growth-Long)
+
+**Alle 3 Schritte müssen erfüllt sein — kein Abkürzen:**
+
+1. **Struktureller Ausbruch** — S&P 500 schließt nachhaltig über letztem Zwischenhoch (aktuell ~6.670 Pkt) UND über MA200
+2. **Pullback** — Gesunder Rücksetzer auf die gebrochene Zone (nicht wieder darunter)
+3. **Neues Hoch** — S&P macht neues Hoch über dem Ausbruchslevel → Bestätigung dass Bullen zurück
+
+**Erst nach Schritt 3: Growth-Positionen (NVDA, PLTR, MSFT) wieder ausbauen.**
+
+**Aktuell (28.03.2026):** Schritt 1 nicht erfüllt. SPY $634 < MA200 $646. Growth-Longs verboten.
+
+### UNIVERSELLE KRISEN-CHECKLISTE (für jede Geopolitik-Krise — nicht nur Iran)
+
+**Gilt für:** Iran, Ukraine, Taiwan, Handelskriege, Fed-Panik, Rezessions-Angst, etc.
+
+**Schritt 1 — Szenarien aufschreiben** (vor jeder Bewertung)
+- Welche Szenarien verlängern die Krise? (→ Defensive halten)
+- Welche Szenarien beenden sie schneller? (→ Growth Re-Entry vorbereiten)
+
+**Schritt 2 — Auf fundamentalen Impact warten** (nicht auf Gerüchte reagieren)
+- Echte Einigungen, echte Daten — kein Twitter/Truth Social Rauschen
+- Frage: "Ist das eine echte Veränderung oder nur Rhetorik?"
+
+**Schritt 3 — Marktreaktion prüfen** (bevor man handelt)
+- Gute News → steigen die richtigen Kurse? (z.B. bei Ceasefire: Öl runter, Tech rauf)
+- Schlechte News → fallen die richtigen Kurse?
+- Wenn Reaktion NICHT stimmt → Signal ist nicht am Markt angekommen → noch warten
+
+**Schritt 4 — Dann handeln** (mit Positions-Sizing, nicht alles auf einmal)
+- Risk-Modus → Portfolio verkleinern ODER Puts als Absicherung
+- Entspannung bestätigt → schrittweise Positionen aufbauen (Tranchenlogik)
+
+**Anti-Patterns (VERBOTEN):**
+- ❌ Auf ein Szenario festlegen und darauf wetten
+- ❌ "Das muss jetzt drehen" — Tief kaufen ohne Bestätigung
+- ❌ Auf Gerüchte/Social-Media reagieren (Schritt 2 noch nicht erfüllt)
+- ❌ Alles auf einmal kaufen statt in Tranchen
+
+---
+
+## 🤖 AUTONOMES TRADING — Pflichtregeln (Albert, 28.03.2026)
+
+> Diese Regeln sind PFLICHT für alle autonomen Trades. Kein Trade ohne Regime-Check.
+
+### Vor jedem neuen Trade (PFLICHT-Checkliste)
+
+1. **Regime prüfen** (`memory/market-regime.json`)
+   - TREND_UP + VIX <22 + S&P über MA200 → Growth-Longs erlaubt
+   - TREND_DOWN / RANGE / CRASH → Nur defensive Sektoren (Energie, Rohstoffe, Gold)
+   - CRASH (VIX >35 + S&P unter MA200) → Keine neuen Longs. Nur Stops überwachen.
+
+2. **Aktive Strategie prüfen** (`memory/strategien.md`)
+   - Welche Strategien sind 🟢? → Diese Sektoren bevorzugen
+   - Welche sind 🔴? → Diese Sektoren meiden
+   - Wenn S1 (Iran/Öl) 🟢🔥 → Energie-Positionen bevorzugen, Tech-Longs begrenzen
+
+3. **S&P MA200 Gate** — Harter Block für Growth-Longs
+   - S&P unter MA200 → KEIN neuer Long in NVDA, PLTR, MSFT, QQQ, Tech-ETFs
+   - Ausnahme: Nur wenn Drei-Schritt-Bestätigung erfüllt (siehe Re-Entry Framework oben)
+
+4. **Krisen-Checkliste anwenden**
+   - Laufende Krisen (Iran etc.) → Szenarien-Status prüfen
+   - ≥2 Risiko-Szenarien aktiv → Defensive übergewichten
+   - ≥2 Chance-Szenarien aktiv + Öl/VIX normalisiert → Schrittweiser Re-Entry Growth
+
+5. **Position Sizing nach Regime** (aus albert_strategy.py)
+   - VIX <22: max 2% Risiko/Trade, max 4 Positionen
+   - VIX 22-27: max 1,5% Risiko/Trade, max 3 Positionen
+   - VIX >27: max 1% Risiko/Trade, max 2 Positionen
+   - VIX >35: max 0,5% Risiko/Trade, max 1 Position
+
+### Sektor-Prioritäten nach Regime
+
+| Regime | Priorität 1 | Priorität 2 | Verboten |
+|--------|-------------|-------------|---------|
+| Wachstum (VIX <20, S&P über MA200) | KI/Tech (NVDA, PLTR) | Rohstoffe | Keine |
+| Übergang (aktuell 28.03) | Energie (EQNR, OXY) | Gold/Silber | Aggressive Tech-Longs |
+| Stagflation | Energie, Rohstoffe, Gold | Versorger | KI/Tech |
+| Crash | Cash, Gold | Shorts (hedge) | Alle Longs |
+
+### Was Albert autonom darf / nicht darf
+
+**Erlaubt (autonom):**
+- Stop-Loss ausführen wenn Kurs darunter fällt
+- Trailing Stop nachziehen wenn +5% Gewinn
+- Paper Trade öffnen wenn Score ≥8 + Regime passt + S&P-Gate OK
+- Kleinere Position schließen wenn Thesis-Negativ-Trigger gefeuert hat
+
+**Nicht erlaubt (Victor fragen):**
+- Neue Real-Money-Position >1.000€
+- Strategie-Statuswechsel ohne Notification
+- Exit einer Position bei Kursgewinn >15% (Ziel-Bereich prüfen)
+- Hedges aufbauen (Puts, inverse ETFs) ohne Freigabe
 
 ---
 

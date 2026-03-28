@@ -1518,6 +1518,20 @@ def write_overnight_context(export: dict, all_alerts: list, strategy_statuses: d
 # ─── Main ────────────────────────────────────────────────────────────
 
 def main():
+    # ── Single Source of Truth Sync (positions-live.md → config + DB) ──
+    try:
+        import subprocess
+        sync_script = Path(__file__).parent / 'sync_positions.py'
+        if sync_script.exists():
+            result = subprocess.run(
+                ['python3', str(sync_script)],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode != 0:
+                print(f"⚠️  Positions-Sync Fehler: {result.stderr[:200]}")
+    except Exception as e:
+        print(f"⚠️  Positions-Sync konnte nicht ausgeführt werden: {e}")
+
     config = load_json(CONFIG_PATH)
     if not config:
         log("FEHLER: trading_config.json nicht gefunden oder leer!")

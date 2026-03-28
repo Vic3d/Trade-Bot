@@ -1,4 +1,4 @@
-# DT Backtesting Report — 2026-03-22 12:04
+# DT Backtesting Report — 2026-03-28 10:30
 
 > Ticker: 16 | Hold: 5 Tage | Zeitraum: 2 Jahre
 
@@ -7,37 +7,37 @@
 ## DT1 — MODERAT ⚠️
 | Metrik | Wert |
 |--------|------|
-| Signale gefunden | 149 |
-| Auswertbare Trades | 149 |
-| Win-Rate | 57.7% |
+| Signale gefunden | 150 |
+| Auswertbare Trades | 150 |
+| Win-Rate | 57.3% |
 | Avg Win | +4.31% |
-| Avg Loss | -2.95% |
-| Win/Loss-Ratio | 1.46 |
-| Expectancy | 1.24% |
+| Avg Loss | -2.91% |
+| Win/Loss-Ratio | 1.48 |
+| Expectancy | 1.23% |
 | Conviction-Seed | 3/5 |
 
 ## DT2 — MODERAT ⚠️
 | Metrik | Wert |
 |--------|------|
-| Signale gefunden | 145 |
-| Auswertbare Trades | 145 |
-| Win-Rate | 55.9% |
-| Avg Win | +4.01% |
-| Avg Loss | -2.82% |
-| Win/Loss-Ratio | 1.42 |
-| Expectancy | 0.99% |
+| Signale gefunden | 147 |
+| Auswertbare Trades | 147 |
+| Win-Rate | 56.5% |
+| Avg Win | +3.93% |
+| Avg Loss | -2.8% |
+| Win/Loss-Ratio | 1.41 |
+| Expectancy | 1.0% |
 | Conviction-Seed | 3/5 |
 
 ## DT3 — MODERAT ⚠️
 | Metrik | Wert |
 |--------|------|
-| Signale gefunden | 2136 |
-| Auswertbare Trades | 2136 |
+| Signale gefunden | 2140 |
+| Auswertbare Trades | 2140 |
 | Win-Rate | 54.6% |
 | Avg Win | +4.74% |
 | Avg Loss | -3.94% |
 | Win/Loss-Ratio | 1.2 |
-| Expectancy | 0.81% |
+| Expectancy | 0.8% |
 | Conviction-Seed | 3/5 |
 
 ## DT6 — SCHWACH ❌
@@ -55,24 +55,24 @@
 ## DT7 — MODERAT ⚠️
 | Metrik | Wert |
 |--------|------|
-| Signale gefunden | 1469 |
-| Auswertbare Trades | 1469 |
-| Win-Rate | 54.5% |
-| Avg Win | +3.78% |
-| Avg Loss | -3.35% |
-| Win/Loss-Ratio | 1.13 |
-| Expectancy | 0.54% |
+| Signale gefunden | 1477 |
+| Auswertbare Trades | 1477 |
+| Win-Rate | 54.2% |
+| Avg Win | +3.79% |
+| Avg Loss | -3.38% |
+| Win/Loss-Ratio | 1.12 |
+| Expectancy | 0.5% |
 | Conviction-Seed | 2/5 |
 
 ## DT8 — SCHWACH ❌
 | Metrik | Wert |
 |--------|------|
-| Signale gefunden | 85 |
-| Auswertbare Trades | 85 |
-| Win-Rate | 57.6% |
+| Signale gefunden | 84 |
+| Auswertbare Trades | 84 |
+| Win-Rate | 58.3% |
 | Avg Win | +2.16% |
-| Avg Loss | -2.53% |
-| Win/Loss-Ratio | 0.85 |
-| Expectancy | 0.17% |
+| Avg Loss | -2.47% |
+| Win/Loss-Ratio | 0.88 |
+| Expectancy | 0.23% |
 | Conviction-Seed | 2/5 |
 

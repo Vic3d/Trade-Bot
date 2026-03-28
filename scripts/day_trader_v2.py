@@ -757,16 +757,31 @@ def main():
             active_dt_strategies = base_strategies
     else:
         active_dt_strategies = base_strategies
+    # ── Regime-Filter (Strategien.md Pflichtregeln, 28.03.2026) ──────────────
+    # In TREND_DOWN: Nur RSI-Reversion + Short-Strategien (höhere Winrate in Bärenmärkten)
+    # In CRASH:      Kein Day Trading. Nur Stop-Überwachung.
+    # In RANGE:      Alle Strategien, bevorzugt Mean-Reversion.
+    # In TREND_UP:   Alle Strategien, bevorzugt Momentum.
+    REGIME_ALLOWED_STRATEGIES = {
+        'TREND_UP':   ['DT1','DT2','DT3','DT4','DT5','DT6','DT7','DT8','DT9'],
+        'RANGE':      ['DT2','DT5','DT6','DT7','DT8'],   # Reversion bevorzugt
+        'TREND_DOWN': ['DT2','DT5','DT7','DT8'],          # NUR Reversion + defensive
+        'CRASH':      [],                                  # Kein neues Day Trading
+        'UNKNOWN':    ['DT2','DT5','DT7','DT8'],          # Defensiv als Default
+    }
+    regime_allowed = REGIME_ALLOWED_STRATEGIES.get('RANGE')  # Default
+
     if regime_path.exists():
         try:
             regime_data = json.loads(regime_path.read_text())
             current_regime = regime_data.get('regime', 'RANGE')
-            # PAPER TRADING: Aktive Strategien sammeln Daten
-            # Regime wird nur geloggt, nicht gefiltert.
-            # active_dt_strategies bleibt auf DT1-DT9 (Default)
-            print(f"  🧭 Markt-Regime: {current_regime} (INFO ONLY — alle DT aktiv für Paper Learning)")
+            regime_allowed = REGIME_ALLOWED_STRATEGIES.get(current_regime, REGIME_ALLOWED_STRATEGIES['UNKNOWN'])
+            print(f"  🧭 Markt-Regime: {current_regime} → Erlaubte Strategien: {regime_allowed or 'KEINE (CRASH)'}")
             if current_regime == 'CRASH':
-                print("  ⚠️ CRASH-Regime erkannt — Paper Trading läuft trotzdem (Learning Mode)")
+                print("  🛑 CRASH-Regime — kein neues Day Trading. Nur Stop-Monitoring.")
+                return  # Keine neuen Trades bei CRASH
+            if current_regime == 'TREND_DOWN':
+                print("  ⚠️ TREND_DOWN — Momentum-Longs deaktiviert. Nur RSI-Reversion.")
         except Exception:
             pass
 
@@ -838,7 +853,12 @@ def main():
 
         if not signals: continue
 
-        # Regime-Filter: nur Strategien die zum Marktmodus passen (Issue #4)
+        # Regime-Filter (Strategien.md, 28.03.2026): nur regime-konforme Strategien
+        signals = [s for s in signals if s.get('strategy','').split('-')[0] in regime_allowed]
+        if not signals:
+            continue  # Stilles Skip — kein Spam wenn Regime filtert
+
+        # Legacy-Filter: active_dt_strategies (bleibt als Sekundärfilter)
         signals = [s for s in signals if s.get('strategy','').split('-')[0] in active_dt_strategies]
         if not signals: continue
 
@@ -900,23 +920,9 @@ def main():
                    f"{best['reason']} [regime={current_regime}, size={size_factor}x, atr_pos={atr_pos_size:.0f}€]",
                    pos_size_override=atr_pos_size)
 
-        # ── Verbesserung 4: Contrarian Shadow Trade ──
-        if trade_id is not None:
-            shadow_direction = 'SHORT' if best['direction'] == 'LONG' else 'LONG'
-            shadow_stop   = round(p_eur * (1.012 if shadow_direction == 'LONG' else 0.988), 2)
-            shadow_target = round(p_eur * (0.988 if shadow_direction == 'SHORT' else 1.012), 2)
-            shadow_shares = max(1, math.floor((POS_SIZE / 2) / p_eur))
-            conn_shadow = get_db()
-            conn_shadow.execute("""INSERT INTO trades (ticker, strategy, direction, entry_price, entry_date,
-                stop, target, shares, status, trade_type, thesis, fees_eur, style)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'OPEN', 'day_trade', ?, 0, 'contrarian')""",
-                (ticker, f"{best['strategy']}-CTR", shadow_direction, round(p_eur, 2),
-                 datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M'),
-                 shadow_stop, shadow_target, shadow_shares,
-                 f"SHADOW CONTRARIAN: Gegenteil von {best['strategy']} {best['direction']}"))
-            conn_shadow.commit()
-            conn_shadow.close()
-            print(f"  🎲 SHADOW {shadow_direction} {ticker} × {shadow_shares} (contrarian)")
+        # Shadow Contrarian DEAKTIVIERT (28.03.2026)
+        # Grund: Verwässert Winrate-Statistik, kein realer Handelswert.
+        # War nützlich für initiales Learning — ab jetzt echter Regime-Filter wichtiger.
 
         state.setdefault('signals_today', []).append(ticker)
         open_count += 1

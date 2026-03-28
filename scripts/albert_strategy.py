@@ -245,6 +245,38 @@ def get_regime():
         return {'regime': 'UNKNOWN'}
 
 
+def is_growth_long_allowed(regime: dict, ticker: str) -> tuple[bool, str]:
+    """
+    S&P MA200 Gate — Strategien.md Pflichtprüfung (28.03.2026).
+    Kein neuer Growth-Long solange S&P unter MA200 + VIX > 25.
+
+    Returns (allowed: bool, reason: str)
+    """
+    GROWTH_TICKERS = {'NVDA', 'PLTR', 'MSFT', 'QQQ', 'AAPL', 'GOOGL', 'META', 'AMZN', 'AMD'}
+    t_upper = ticker.upper().replace('.O', '').replace('.US', '')
+
+    if t_upper not in GROWTH_TICKERS:
+        return True, "non-growth ticker"
+
+    regime_name = regime.get('regime', 'UNKNOWN')
+    sp500_vs_ma200 = regime.get('factors', {}).get('sp500_vs_ma200')
+    vix = regime.get('factors', {}).get('vix', 25)
+
+    # Hard block: S&P unter MA200
+    if sp500_vs_ma200 is not None and sp500_vs_ma200 < 0:
+        return False, f"S&P unter MA200 ({sp500_vs_ma200:+.1f}%) — Kabelkahr-Regel aktiv. Erst Drei-Schritt-Bestätigung abwarten."
+
+    # Hard block: CRASH oder TREND_DOWN Regime
+    if regime_name in ('CRASH', 'TREND_DOWN'):
+        return False, f"Regime {regime_name} — Growth-Longs verboten laut Strategien.md."
+
+    # Soft warning: erhöhter VIX
+    if vix and vix > 27:
+        return False, f"VIX {vix:.1f} > 27 — kein neuer Growth-Long (Strategien.md Regel: VIX >27 max 1%, max 2 Pos)."
+
+    return True, "ok"
+
+
 def calculate_position(portfolio_value, vix_zone, price_eur, atr_eur):
     """Calculate position size based on ATR and VIX zone."""
     risk_pct = MAX_RISK_PCT[vix_zone]
@@ -434,7 +466,16 @@ def cmd_trade(ticker=None, thesis=None, setup_type=SETUP_B, second_order=None, t
     if existing:
         print(f"❌ Bereits in Position: {ticker}")
         return
-    
+
+    # ── STRATEGIEN.MD GATE: S&P MA200 + Regime-Check ──────────────────
+    regime = get_regime()
+    allowed, gate_reason = is_growth_long_allowed(regime, ticker)
+    if not allowed:
+        print(f"🚫 STRATEGIEN.MD BLOCK — {ticker}: {gate_reason}")
+        print(f"   → Drei-Schritt-Bestätigung abwarten (Ausbruch >6.670 → Pullback → neues Hoch)")
+        return
+    # ──────────────────────────────────────────────────────────────────
+
     # Fetch price + ATR
     price, currency = get_price_yahoo(ticker)
     if not price:

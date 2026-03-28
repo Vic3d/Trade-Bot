@@ -4,6 +4,90 @@
 
 ---
 
+## Dirk 7H (René Berheit / Tradermacher) — 28.03.2026 — Iran-Krise Szenarien + Risk Management Framework
+
+*Quelle: "Tradermacher" YouTube/Podcast, März 2026 Wochenend-Video*
+*Archiv: transcripts/dirk7h-iranszenarios-risikomanagement-2026-03-28.txt*
+
+### Kern-Erkenntnisse
+
+**Szenario-Framework statt Glaskugel (Dirks Kern-Methodik)**
+- Profis legen sich NICHT auf ein Szenario fest — sie bereiten sich auf ALLE vor
+- Methodik: 8 Szenarien aufschreiben, Kästchen daneben, auf News warten
+- Erst wenn News eintrifft: War es fundamental impact? Reagieren Kurse wie sie sollen?
+- DANN handeln — nicht vorher
+- **Regel:** Checkliste abarbeiten, nicht prognostizieren. Helden entstehen durch Glück, nicht Methode.
+
+**Die 8 Szenarien (Iran-Krise Framework — universell anwendbar)**
+
+*Szenarien für längere Krise (Risiko-Szenarien):*
+1. Verhandlungsstillstand bei Maximalzielen beider Seiten → Hormus bleibt gesperrt
+2. Hormus de facto blockiert, selektiv geöffnet → wirtschaftlicher Schaden bleibt
+3. Regionale Ausweitung (Hisbolla, Libyen etc.) → Stellvertreterkonflikt
+4. Infrastruktur zerstört → selbst bei Waffenstillstand keine sofortige Normalisierung
+
+*Szenarien für kürzere Krise (Chancen-Szenarien):*
+5. Wirtschaftlicher Druck auf ALLE zu groß → Einigung erzwungen
+6. Indirekte Vermittlung → begrenzter Waffenstillstand ohne Gesamtlösung
+7. Hormus normalisiert sich SCHNELLER als militärischer Konflikt (wirtschaftl. Druck überwiegt)
+8. Notreserven/Subventionen nehmen Iran das Druckmittel weg → zurück an Verhandlungstisch
+
+**Profi = Risikomanager, nicht Wahrsager**
+- "Als Trader und Investor bist du Manager. In erster Linie managest du dein Risiko."
+- Gewinne laufen lassen, Verluste begrenzen → IMMER gültig, unabhängig vom Szenario
+- Momentan: **Verluste begrenzen Modus** (S&P unter GDs = Risk-Modus)
+- **Regel:** Wer sich auf ein Szenario festlegt verliert entweder durch falsches Szenario ODER verpasst den Dip.
+
+**Checkliste-Methodik (3-Schritt-Prozess bei News)**
+1. Fundamental Impact abwarten (echte Einigungen, nicht Gerüchte)
+2. Prüfen: Reagieren die Kurse korrekt? Gute News → Kurse rauf, schlechte → runter?
+3. Wenn ja → entsprechend positionieren (Risiko rein oder raus)
+- **Regel:** Erst handeln wenn BEIDE Bedingungen erfüllt: fundamentaler Impact + Marktreaktion bestätigt
+
+**Kabelkahr-Strategie (Cable Car — systematisches Risk Management)**
+- Long Bias, aber Drawdowns aktiv vermeiden
+- Wartet bis Kurse wieder anfangen zu steigen (nicht das Tief erwischen)
+- Verbindet die Hochs — Drawdowns werden ausgelassen
+- In Krisen: ausgestiegen, bis Kurse wieder fundamentale Kriterien erfüllen
+- **Konsequenz:** Man erwischt nie das perfekte Tief, aber vermeidet große Verluste
+
+**Technische Levels als Regime-Trigger**
+- S&P 500: Letztes Zwischenhoch ~6.670, GDs ~6.770
+- Solange darunter: Risk-Modus (Portfolio verkleinern oder Hedges)
+- Ausbruch über GDs = Drei-Schritt-Bestätigung: Ausbruch → Pullback → neues Hoch
+- Öl: Mindestens unter $95, zurück unter GDs → erst dann Entspannungssignal
+- **Regel:** Kein aggressives Long-Positionieren solange S&P unter GDs und Öl >$90
+
+**Hedge = Versicherung, nicht Spekulation**
+- Hedge kostet Prämie (wie Autoversicherung) — das ist OK
+- Nicht: "Ich spekuliere auf fallende Kurse"
+- Sondern: "Ich sichere meinen Worst Case ab"
+- Optionen/Optionsscheine als Hedge-Instrument explizit genannt
+- **Regel:** In Risk-Modus entweder Portfolio reduzieren ODER Hedges aufbauen — beides valid
+
+### Alberts unabhängige Analyse
+
+**Übereinstimmung mit eigenen Daten:**
+- SPY $634 unter MA200 $646 (–1,9%) → Dirks Risk-Modus bestätigt ✅
+- VIX 26.4 → erhöht, kein Risk-On ✅
+- Öl (WTI) weiter erhöht → Hormus-Situation noch ungelöst ✅
+- S&P letzte Zwischenhochs ~6.670 → noch nicht erreicht ✅
+
+**Direkte Portfolio-Relevanz:**
+- NVDA, MSFT, PLTR → alle unter S&P GD-Druck → Dirks Risk-Modus aktiv
+- EQNR → profitiert von Szenario 1-4 (Krise dauert) → S1-These hält
+- Öl-Entspannung-Trigger für EQNR-Exit: Öl unter $95 + S&P über GDs + Hormus-Meldung
+
+**Was fehlt noch in unserem System:**
+1. Checkliste der 8 Iran-Szenarien mit Haken — noch nicht formalisiert
+2. Hedge-Plan bei S&P weiter unter GDs — noch nicht definiert
+3. Drei-Schritt-Bestätigung als Regel für Re-Entry ins Growth — noch nicht im System
+
+**Alberts Gesamteinschätzung:**
+Stärkste Risikomanagement-Methodik aus Dirk 7H bisher. Szenario-Checkliste + News-Reaktion + Marktreaktion-Check ist ein vollständiges System. Ergänzt Eriksens Regime-Framework perfekt: Eriksen = WARUM (Makro-Mechanismus), Dirk = WIE (Prozess zum Reagieren).
+
+---
+
 ## Lars Eriksen — 28.03.2026 — MSCI World Illusion + Regime-Shift Framework
 
 *Quelle: "Erischen Geld und Gold" Podcast, März 2026*

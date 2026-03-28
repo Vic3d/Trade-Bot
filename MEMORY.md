@@ -267,6 +267,11 @@
 - **Regime-Erkennung vor Sektor-Allokation** (Eriksen, 28.03.2026) — Stagflation → Energie/Rohstoffe/Versorger/Gold. Wachstum → Hyperscaler. 2022: Nasdaq –33% NUR durch Zinsen, ohne Rezession. Regime identifizieren BEVOR Allokation entschieden wird.
 - **Index-Selbstkorrektur ist "ultra träge"** (Eriksen, 28.03.2026) — 20% Outperformance Rohstoffe vs. Tech = nur 1-2% Gewichtsverschiebung/Jahr im MSCI World. Japan 1989–2009: 20 Jahre bis Normalisierung. Nicht auf Index-Rebalancing als Schutz verlassen.
 - **Wenn-Dann-Bedingungen = Pflicht in Stagflations-Umfeld** (Eriksen, 28.03.2026) — Einstiegspläne schriftlich VOR dem Ereignis definieren, nicht reaktiv. Gilt besonders bei geopolitischer Unsicherheit.
+- **Szenario-Checkliste statt Prognose** (Dirk 7H, 28.03.2026) — Profis prognostizieren nicht, sie bereiten sich auf alle Szenarien vor. Checkliste: News abwarten → Marktreaktion prüfen → dann handeln. Wer sich festlegt verliert entweder durch falsches Szenario ODER verpasst den Dip.
+- **3-Schritt Handlungs-Trigger** (Dirk 7H, 28.03.2026) — 1) Fundamentaler Impact (echte Einigung, nicht Gerücht) 2) Marktreaktion korrekt? 3) Erst DANN positionieren. Reihenfolge einhalten.
+- **Kabelkahr-Prinzip** (Dirk 7H, 28.03.2026) — Drawdowns aktiv vermeiden, Hochs verbinden. Tief erwischst du nie — das ist OK. Kein Re-Entry in Growth solange S&P unter MA200 und VIX >25.
+- **Risk-Modus Indikatoren** (Dirk 7H, 28.03.2026) — S&P unter letzten Zwischenhochs (~6.670) und unter GDs (~6.770) = Risk-Modus. Öl >$95 = Entspannung noch nicht da. Erst bei Drei-Schritt-Bestätigung (Ausbruch → Pullback → neues Hoch) wieder aggressiv long.
+- **Hedge = Versicherung** (Dirk 7H, 28.03.2026) — In Risk-Modus: Portfolio verkleinern ODER Puts/Optionsscheine als Absicherung. Prämie ist OK (wie Autoversicherung). Nicht: Spekulation auf fallende Kurse.
 - **Trade Journal + Accuracy Tracking** (ab 15.03.2026) — jede Prognose/Empfehlung in `albert-accuracy.md` eintragen SOFORT, mit Horizont + Ergebnis später. Statistik: 33% Win-Rate (3 geschlossen, 11 offen, Stand 15.03.). Trefferquote monitoren, nicht verstecken.
 
 ## Watchlist-Setups (aktiv seit 13.03.2026)

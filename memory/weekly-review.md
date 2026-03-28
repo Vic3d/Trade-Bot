@@ -295,3 +295,36 @@ Alle Hauptthesen intakt:
 - Kein Momentum-Chasing diese Woche
 
 **Standing Rule:** Mindestens 24h Wartezeit vor Exit nach Entry — Volatilität ist Feature, nicht Bug.
+
+## Woche 2026-03-28
+
+### ✅ Was hat funktioniert
+
+1. **Statistische Rigorosität** — DT3/DT4 Deaktivierung war korrekt. 102 Trades + p=0.93 = keine Diskussion. Wir haben gelernt zu sagen "das funktioniert nicht" statt zu optimieren.
+
+2. **EQNR Thesis bestätigt** — Trump-Deal-Euphorie vs. physische Realität (Tanker, CoT, Accumulation). Stop-Nachzug auf 34,20€ schützt Gewinne. +3,3% auf dem richtigen Weg.
+
+3. **Regime-Framework** — Eriksen-Learning konkretisiert. Wenn-Dann-Bedingungen für Stagflation-Wechsel jetzt vorher definiert, nicht unter Druck.
+
+### ❌ Was nicht funktioniert
+
+1. **Portfolio-Klumpenrisiko** — 91% Energy, 99% US. Fixation auf Iran-Theme. 6 Wetten auf Oilers + Tanker + CoT-Longs = eine Idee.
+
+2. **DT4 Trade-Frequenz** — 102 Trades, -826€ P&L. Hohe Frequenz + kleiner Edge = Kosten schlagen Gewinne tot. Erkannt, korrigiert.
+
+### 🧠 Konkrete Learnings
+
+1. **Statistics > Narratives** — p-Werte, Sharpe Ratios, Monte Carlo sind nicht fancy — sie retten Kapital. Mit DT4 hätten wir noch 50+ sinnlose Trades machen können.
+
+2. **Edge ≠ Allokkation** — Guter Iran-Scanner ist gut. 91% Portfolio in Iran ist dumm. Nächste Trades: andere Sektoren + Regionen (Geopolitik, Agrar, Rentals).
+
+3. **Stop als Commitment** — EQNR 34,20€ ist nicht "Rücksicherung", sondern Regel. Kein manuelles Nachdenken, kein "aber Trump könnte...", Stop = Stop.
+
+### 📋 Plan nächste Woche
+
+- **Sektor-Diversifikation**: Mindestens 2 Trades außerhalb Energy (Agrar S5, NATO-Rüstung S3 → Test/Fix)
+- **S10 Lufthansa Watchlist**: Entry-Bedingungen (Waffenstillstand + Brent <75$) überwachen
+- **Risk-Limits formalisieren**: Max 40% Sektor, Max 60% Region in Code fest schreiben
+- **Regime-Monitor**: 1J-Swap + Fed-Statements täglich checken — bei Zu-Stagflation: Portfolio-Umschichtung 60% Growth → 40% Defensiv
+
+**Paper-Performance:** 25.235€ (+0,94%) trotz -1.140€ DT4-Verluste. Win-Rate 36%, Expectancy negativ → aber Learning-Velocity ist positiv.
