@@ -18,7 +18,7 @@
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
 - [ ] TradeMind v2.1.2 Feedback von Victor — Dashboard live testen, Versionsnummer bestätigen, weitere Features freigeben
 
-## AKTUELLE ALERTS (heute 27.03.2026 — 09:45 MEZ)
+## AKTUELLE ALERTS (heute 28.03.2026 — 12:01 MEZ)
 
 - 🔴 **KUBA-TANKER KRITISCH:** Anatoly Kolodkin (Sovcomflot, 730k Barrel) trifft **29.03 ein** (2 TAGE!). UK Royal Navy + US SOUTHCOM tracken. Regime-Change in Vorbereitung. Kuba in Stromausfall #3, Staatsanwalt bereitet Anklagen vor. **Victor-Info dringend angefordert.** Status: S9 Watchlist → HOCHAKTUELL, Militär-Showdown wahrscheinlich
 - 🟢 **Iran-Trump-Deal 25.03**: 15-Punkte-Plan angekündigt. Victor-Analyse: Deal strukturell unmöglich (Atom+Raketen). CoT Hedge Fonds netto +31.502 long OXY. **S1 These HALTEN.**

@@ -306,6 +306,74 @@
       "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
       "status": "WATCHLIST",
       "wpr_monthly_check": true
+    },
+    {
+      "ticker": "MOS",
+      "name": "Mosaic Company",
+      "yahoo": "MOS",
+      "currency": "USD",
+      "sector": "Agrar/Dünger",
+      "region": "USA",
+      "entryMin": 24.0,
+      "entryMax": 26.0,
+      "stop": 21.0,
+      "targets": [
+        34.0
+      ],
+      "note": "Agrar-Superzyklus: Nahrungsmittelinflation + sinkende Gaspreise = Margenerholung. Entry bei 24-26 USD.",
+      "wpr": true,
+      "thesis": "S_AGRAR"
+    },
+    {
+      "ticker": "VALE",
+      "name": "Vale S.A.",
+      "yahoo": "VALE",
+      "currency": "USD",
+      "sector": "Eisenerz/Nickel",
+      "region": "Brasilien/EM",
+      "entryMin": 9.0,
+      "entryMax": 10.0,
+      "stop": 8.2,
+      "targets": [
+        13.0
+      ],
+      "note": "EV-Nickel-Bedarf + 8% Dividendenrendite + US-Nearshoring Alternative zu China.",
+      "wpr": true,
+      "thesis": "S_EM"
+    },
+    {
+      "ticker": "SAP.DE",
+      "name": "SAP SE",
+      "yahoo": "SAP.DE",
+      "currency": "EUR",
+      "sector": "Enterprise Software",
+      "region": "Europa",
+      "entryMin": 180.0,
+      "entryMax": 190.0,
+      "stop": 168.0,
+      "targets": [
+        220.0
+      ],
+      "note": "Europäischer Tech-Defensiv: Cloud-Transition, Recurring Revenue. Nur bei VIX <25.",
+      "wpr": true,
+      "thesis": "S_EU_TECH"
+    },
+    {
+      "ticker": "NOVO-B.CO",
+      "name": "Novo Nordisk",
+      "yahoo": "NOVO-B.CO",
+      "currency": "DKK",
+      "sector": "Healthcare/Pharma",
+      "region": "Europa/Dänemark",
+      "entryMin": 560.0,
+      "entryMax": 580.0,
+      "stop": 510.0,
+      "targets": [
+        700.0
+      ],
+      "note": "Ozempic/Wegovy: struktureller Megatrend. Defensiv in jedem Regime. DKK ~ EUR-Hedge.",
+      "wpr": true,
+      "thesis": "S_HEALTHCARE"
     }
   ],
   "macro": {
