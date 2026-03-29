@@ -111,10 +111,31 @@ SCORE_WEIGHTS   = {"CRITICAL": 10, "HIGH": 4, "MEDIUM": 1}
 ALERT_THRESHOLD = 12   # Gesamtscore ab dem Discord-Alert ausgelöst wird
 NOTIFY_THRESHOLD = 6   # Log-Eintrag, kein Alert
 
-# Alert-Tier Grenzen
+# Alert-Tier Grenzen (absolute Scores)
 TIER_HIGH   = 50
 TIER_MEDIUM = 30
 TIER_LOW    = 12
+
+# ─── Delta-Logik (Victor, 29.03.2026) ────────────────────────────────
+# Kein Alert wenn der Krieg einfach "weiterläuft" (Baseline).
+# Nur Alert bei echter Bewegung: deutliche Eskalation ODER Friedenssignale.
+#
+# DELTA_THRESHOLD: Mindest-Anstieg ggü. 7-Tage-Durchschnitt für ESKALATIONS-Alert
+# PEACE_KEYWORDS:  Wenn eines davon auftaucht → sofort "PEACE SIGNAL" Alert
+#
+DELTA_THRESHOLD   = 20   # Score muss +20 über 7-Tage-Avg steigen für Eskalations-Alert
+SCORE_HISTORY_KEY = "score_history"  # Im State gespeichert (rolling 7 Tage)
+SCORE_HISTORY_MAX = 28  # 4x täglich * 7 Tage = 28 Messpunkte
+
+PEACE_KEYWORDS = [
+    "ceasefire", "waffenstillstand", "peace deal", "friedensvertrag",
+    "negotiations begin", "verhandlungen", "withdrawal", "abzug",
+    "troops withdraw", "deescalat", "de-escalat",
+    "diplomatic solution", "agreement signed", "accord",
+    "end of hostilities", "halt der kämpfe",
+    "iran deal", "nuclear agreement", "trump deal signed",
+    "war ends", "krieg beendet", "armistice",
+]
 
 # ─── Hilfsfunktionen ──────────────────────────────────────────────────────────
 
@@ -145,12 +166,33 @@ def load_state():
         with open(STATE_FILE) as f:
             return json.load(f)
     except Exception:
-        return {"seen": {}, "last_run": None}
+        return {"seen": {}, "last_run": None, SCORE_HISTORY_KEY: []}
 
 def save_state(state):
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2)
+
+def update_score_history(state: dict, total_score: int) -> tuple[float, int]:
+    """
+    Fügt aktuellen Score zur Rolling-History hinzu.
+    Returns: (avg_7d, delta)  — delta = total_score - avg_7d
+    """
+    history = state.get(SCORE_HISTORY_KEY, [])
+    history.append({"score": total_score, "ts": datetime.now(timezone.utc).isoformat()})
+    # Nur letzte N Messpunkte behalten
+    if len(history) > SCORE_HISTORY_MAX:
+        history = history[-SCORE_HISTORY_MAX:]
+    state[SCORE_HISTORY_KEY] = history
+    avg = sum(h["score"] for h in history[:-1]) / len(history[:-1]) if len(history) > 1 else 0
+    delta = total_score - avg
+    return round(avg, 1), round(delta, 1)
+
+def check_peace_signal(all_texts: list[str]) -> str | None:
+    """Prüft ob Friedens-Keywords in den Texten vorkommen."""
+    combined = " ".join(all_texts).lower()
+    found = [kw for kw in PEACE_KEYWORDS if kw in combined]
+    return found if found else None
 
 def compute_alert_tier(total_score):
     if total_score >= TIER_HIGH:
@@ -421,6 +463,13 @@ def run_scanner(tier=1, force=False):
     # Nur Regionen mit score > 0 berücksichtigen
     affected_strategies, affected_tickers = compute_portfolio_impact(alert_items)
 
+    # ── Score-History + Delta berechnen ──
+    avg_7d, delta = update_score_history(state, total_score)
+
+    # ── Peace-Signal prüfen ──
+    all_texts = [f["text"] for f in findings]
+    peace_keywords = check_peace_signal(all_texts)
+
     # ── State speichern ──
     if len(seen) > 5000:
         seen_list = list(seen.items())
@@ -432,13 +481,33 @@ def run_scanner(tier=1, force=False):
     # ── Log schreiben ──
     log_findings(findings, ts)
 
-    # ── Discord-Alert ──
+    # ── Discord-Alert — NUR bei echter Bewegung ──
+    # Regel (Victor, 29.03.2026): Kein Alert wenn Krieg "einfach weiterläuft"
+    # Feuert nur bei:
+    #   A) Peace-Signal: Waffenstillstand / Deal / Rückzug
+    #   B) Eskalations-Delta: Score +20 über 7-Tage-Durchschnitt
+    should_alert = False
+    alert_reason = ""
+
+    if peace_keywords:
+        should_alert = True
+        alert_reason = f"🕊️ PEACE SIGNAL — Keywords: {', '.join(peace_keywords[:3])}"
+    elif alert_tier != "NONE" and delta >= DELTA_THRESHOLD:
+        should_alert = True
+        alert_reason = f"📈 ESKALATION +{delta:.0f} über 7d-Avg ({avg_7d:.0f})"
+    elif alert_tier == "NONE":
+        should_alert = False  # Kein Score = kein Alert
+    # else: Score existiert aber kein Delta → Baseline → kein Alert
+
     discord_message = None
-    if alert_tier != "NONE":
+    if should_alert:
         discord_message = build_discord_alert(
             alert_items, total_score, alert_tier,
             affected_strategies, affected_tickers, deep_dive_terms
         )
+        # Alert-Grund anhängen
+        discord_message += f"\n\n🔍 **Warum dieser Alert:** {alert_reason}"
+        discord_message += f"\n📊 Score: {total_score} | 7d-Avg: {avg_7d} | Delta: {delta:+.0f}"
 
     # ── Dashboard-Run-Eintrag ──
     top_items_for_dashboard = []
