@@ -1,30 +1,60 @@
-# Newswire Analysis — Geopolitical Scanner Runs
+## 2026-03-29 | Geopolitical Scanner — CRITICAL Alert (Score 50)
 
-## 2026-03-29 12:30 CET — HIGH ALERT (Score 514)
+**Time:** 17:30 UTC | **Tier:** HIGH
 
-**Alert Tier:** HIGH | **Score:** 50+ | **Level:** CRITICAL
+### PRIMARY ALERT
+🚨 **GEO-ALERT HIGH** | Composite Score 489
+- **🇹🇷 Turkey** (Score 71)
+- **🇵🇰 Pakistan** (Score 71)  
+- **🇮🇷 Iran/Hormuz** (Score 69)
+- **🇮🇱 Israel/Palestine** (Score 50) — CRITICAL escalation
 
-### Key Alerts
+### KEY DEVELOPMENTS
 
-- 🔴 **Iran/Hormuz** (Score 79): Ballistic missile launches confirmed toward Israel. Multiple airstrikes on military infrastructure including underground "Missile City" in Yazd. Attacks on Electronic Industries Complex in Shiraz. Airport shelling near Mashhad. US/Israel attacks on Iranian universities reported. IRGC threatening retaliation against 2 Israeli or US universities in region; evacuation radius 1km.
+**Israel-Iran Escalation:**
+- Israeli airstrikes on Iranian missile sites + infrastructure (140+ sorties in 24h)
+- Iranian ballistic missiles fired at southern Israel (Beersheba hit)
+- IRGC targeting ultimatum: 2 Israeli/US universities in retaliation
+- US-Israeli joint operations ongoing (Month 2)
 
-- 🔴 **Türkei** (Score 71): Operations ongoing.
+**Lebanon Front:**
+- 1,238+ killed from Israeli airstrikes; 3,543 injured
+- Hezbollah drones targeting Israeli army positions
+- Continued P&P shelling in south
 
-- 🔴 **Pakistan** (Score 71-57): Taliban retaliation expected for reported attacks. No immediate casualties reported.
+**Pakistan-Taliban:**
+- New Taliban retaliation cycle triggered
+- Regional destabilization signals
 
-- 🔴 **Israel/Palestine** (Score 50): Sirens in central Israel and Eilat in response to Iranian launches. Israeli airstrikes on Lebanon (Kafr Tebnit, Mefdon, Bint Jbeil Hospital). Hezbollah targets Israeli Merkava tank near Beit Leef. Israeli airstrike kills Al-Manar reporter Ali Shoeib and Al-Mayadeen correspondent. 9 dead in raids on Al-Haniyah and Jouya.
+### PORTFOLIO IMPACT
+Affected strategies: **S1, S3, S9**  
+Watch tickers: **CCL, DR0.DE, EQNR, GLEN.L, MSFT, NVDA, S.TO**
 
-- 🔴 **Lebanon** (Score ongoing): Phosphorus bombing on Al-Mansouri. Civil Defense Center hit in Deir Kifa. Multiple airstrikes in southern governorates.
-
-### Portfolio Impact (Tier 1 Watch)
-
-**Affected Tickers:** CCL, DR0.DE, EQNR, GLEN.L, MSFT, NVDA, S.TO  
-**Active Strategies:** S1, S3, S9
+### CONTEXT
+Escalation across three hotspots simultaneously—Iran direct strikes, Lebanon sustained ops, Pakistan volatility. This represents a widening of the February conflict scope. Ballistic missile use + infrastructure targeting = market-moving risk.
 
 ---
 
-**Next Action:** Monitor for escalation. Watch for CRITICAL developments in Iran sanctions/negotiations or direct US military involvement.
-
-## [2026-03-29 11:00 UTC]
+## [2026-03-29 18:00 UTC]
 KEIN_SIGNAL
+---
+
+## [2026-03-29 18:30 UTC]
+KEIN_SIGNAL (Scripts not yet configured)
+---
+
+## [2026-03-29 19:00 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-29 19:30 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-29 20:00 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-29 20:30 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
 ---

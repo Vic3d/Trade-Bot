@@ -328,3 +328,33 @@ Alle Hauptthesen intakt:
 - **Regime-Monitor**: 1J-Swap + Fed-Statements täglich checken — bei Zu-Stagflation: Portfolio-Umschichtung 60% Growth → 40% Defensiv
 
 **Paper-Performance:** 25.235€ (+0,94%) trotz -1.140€ DT4-Verluste. Win-Rate 36%, Expectancy negativ → aber Learning-Velocity ist positiv.
+## Woche 2026-03-29 — Sunday Review
+
+### Performance dieser Woche
+- **Portfolio-Wert:** 25.235€ (Startkapital 25.000€)
+- **Realisierte P&L:** -105€ (0-4% Drawdown — gesund)
+- **Offene Positionen:** 3 (PLTR -5.9%, Oil Services ETF +4.0%, Biotech ETF ~flat)
+- **Win-Rate (gesamt):** 36% über 14 geschlossene Positionen
+
+### Was lief gut
+✅ Oil Services ETF-Position läuft + (Geopolitik-Tailwind)
+✅ Biotech ETF stabil bei Entry-Preis (Earnings-Thesis intakt)
+✅ Stop-Disziplin hält — keine überraschenden Blowups
+
+### Was nicht lief
+❌ PLTR -5.9% — Euphorie-Entry ohne Katalysator, zu schnell eingezogen
+❌ Paper-Win-Rate 36% zeigt noch zu viel Rauschen im Screening
+
+### Lektionen
+- Keine Entry auf Euphorie — warten auf konkrete technische Levels
+- KGV-Filter (≤12x) funktioniert, aber Timing bleibt kritisch
+- Geopolitik-Positionen (Oil) schlagen fundamentale Aktien in volatilen Phasen
+
+### Geopolitik (KW 13)
+**🔴 IRAN-ISRAEL ESKALATION AKTIV**
+- Israelische Luftschläge: 140+ in 24h auf iranische Raketensysteme
+- Iranische Drohnen/Raketen gegen Israel geflogen
+- Pentagon bereitet Bodenoperationen vor (weeks, not days)
+- **Portfolio-Impact:** Oil-Positionen profitieren, Tech-Positionen bei volatilen Schocks gefährdet
+
+**Ukraine:** Routine-Kämpfe, keine Lageänderung.

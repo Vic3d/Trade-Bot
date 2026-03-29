@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-03-29 09:26 CET (NVO + LLY Paper Watchlist hinzugefügt)
+**Zuletzt aktualisiert:** 2026-03-29 13:56 CET (STLD T1 Watchlist hinzugefügt)
 
 ---
 
@@ -26,8 +26,22 @@
 
 | Name (Ticker) | Typ | Kurs (Stand 29.03.) | Trigger Tranche 1 | Stop | Ziel 1 | Ziel 2 | Status |
 |---|---|---|---|---|---|---|---|
+| Steel Dynamics (STLD) | ZYKLIKER / Tariff-Play | ~148€ ($171) | **T1: Morgen 30.03. bei US-Börsenstart (~15:30 MEZ) prüfen** — Entry wenn Kurs hält | ~142€ ($155) | ~170€ ($185) | ~191€ ($208) | 🟡 T1 MORGEN |
 | Novo Nordisk (NVO / NOVO-B.CO) | VALUE / Turnaround | ~33€ ($36) | Q1'26 Earnings EPS-Rückgang ≤15% ODER pos. Pipeline-News | ~25€ ($27) | ~48€ ($52) | ~65€ ($70) | 🟡 WARTEN |
 | Eli Lilly (LLY) | GROWTH / Konkurrenz-Monitor | ~812€ ($878) | Rückfall auf ~$720 (PE ~31x auf $22.95 EPS) | ~$650 | ~$950 | ~$1.100 | 🔵 MONITOR |
+
+### STLD — Steel Dynamics Inc. — Tariff-Play
+- **WKN:** 903772 | **ISIN:** US8581191009 | **Ticker TR:** STLD (USD)
+- **These:** Trump "Liberation Day" 02.04. + 25% Section-232-Stahlzölle bereits aktiv → US-Stahl-Produzenten profitieren von Pricing Power. Politischer Druck (36% Approval, Midterms Nov.) macht starke Zölle wahrscheinlicher.
+- **Tranche 1 (25%):** Morgen 30.03. zum US-Börsenstart (~15:30 MEZ) — Kurs beobachten, bei Stabilität kaufen
+- **Stop:** ~$155 / ~€142 (9.4% Risiko, REAL in TR setzen)
+- **Ziel 1:** ~$185 / ~€170 (CRV ~1.4:1)
+- **Ziel 2:** ~$208 / ~€191 (CRV ~2.2:1)
+- **Exit-Signal sofort:** Meldung Tariff-Rollback für Stahl aus dem Weißen Haus
+- **T2:** Nach April-2-Ankündigung wenn stark → nachkaufen
+- **T3:** Nach Q1 2026 Earnings (mid-April) Bestätigung
+- **Hauptrisiko:** "Narrower than threatened" Zölle + Tariff-Rollback-Deal mit EU/Japan
+- **Leichen im Keller:** Schulden $3.4B (Sinton Alu-Werk $2.2B Investition) — manageable, ~7x EBITDA-Deckung
 
 ### NVO — Tranchenplan (4× 25%)
 | Tranche | Trigger | Entry-Kurs ca. |
@@ -37,7 +51,12 @@
 | T3 (25%) | Wochenschluss >$45 mit Volumen (MA-Rückeroberung) | ~$45 |
 | T4 (25%) | EPS-Wachstum 2027 bestätigt | ~$50+ |
 
-**Invalidierung NVO gesamt:** EPS 2026 fällt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | NVO unter $27
+**Invalidierung NVO gesamt:** EPS 2026 fällt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | NVO unter $27 | MFN-Pricing wird Gesetz (struktureller Margenkollaps)
+
+**🔴 NACHTRÄGLICH IDENTIFIZIERTES RISIKO (29.03.2026):**
+- **Nov. 2025:** Trump hat bereits Deal mit NVO + LLY gemacht → GLP-1-Preissenkung + Medicare-Abdeckung. Das erklärt den 2026-Umsatzrückgang — nicht nur Pipeline-Probleme, sondern **politischer Preisdruck bereits aktiv.**
+- **Feb. 2026:** Trump verfolgt aktiv MFN-Pricing ("Most Favored Nation") — US zahlt dann denselben Preis wie Europa (~30–50% des bisherigen US-Preises) → weiterer Margendruck möglich
+- **Konsequenz:** Der 2026-Rückgang könnte strukturell sein, nicht temporär. T1-Entry erst nach Klärung ob MFN-Pricing Gesetz wird oder nur EO bleibt (rechtlich angreifbar laut The Hill)
 
 ### LLY — Korrelations-Beobachtung
 - **Kein aktiver Trade** — zu teuer bei PE 38x

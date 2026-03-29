@@ -128,7 +128,25 @@ Pflicht-Fragen:
 - **Makro-Abhängigkeit:** Welcher externe Schock würde das Geschäftsmodell zerstören?
 - Aktiv nach dem suchen was die These WIDERLEGT
 - Warum könnte die Aktie weiter fallen?
-- **Erst wenn alle Fragen beantwortet sind → weiter zu Schritt 5**
+
+#### 🔴 PFLICHTBLOCK: Regulatorisches & Politisches Risiko (Schritt 4b)
+**Eingeführt 29.03.2026 nach NVO-Fehler: Trump-Preisdeal mit Novo Nordisk (Nov. 2025) wurde im Deep Dive übersehen.**
+
+Bei JEDEM Deep Dive explizit recherchieren:
+- **Preisregulierung:** Gibt es aktuelle oder geplante Preiskontrollen (z.B. IRA, MFN-Pricing, Trump-Deals)?
+- **Staatliche Eingriffe:** Hat der Staat (US, EU, CN) bereits in die Preissetzung eingegriffen?
+- **Politische Exponierung:** Ist das Unternehmen / Produkt politisch sichtbar? (Pharma = immer Ja, Öl = oft, Rüstung = je nach Regierung)
+- **Zoll-Exposition:** Exportiert das Unternehmen in Länder mit aktiven Zollkonflikten?
+- **Midterm/Wahlzyklus-Risiko:** Ist das Produkt ein politisches Ziel vor Wahlen?
+
+Suchbegriffe: `[Firmenname] executive order`, `[Produkt] price regulation`, `[Firma] government deal`, `[Sektor] tariff impact`
+
+**Beispiele:**
+- NVO/LLY: Trump erzwang Preissenkungen für GLP-1 (Nov. 2025) + MFN-Pricing (Feb. 2026)
+- STLD: 25% Stahl-Zölle sind positiv — aber Tariff-Rollback als Verhandlungschip möglich
+- Pharma generell: Immer auf MFN-Pricing, IRA-Preisverhandlungen, Medicare-Deals prüfen
+
+- **Erst wenn ALLE Fragen inkl. 4b beantwortet sind → weiter zu Schritt 5**
 
 ### Schritt 5 — Industrie & Makro-Kontext
 - Was treibt den Sektor strukturell? (Angebot/Nachfrage)
@@ -240,3 +258,46 @@ Bevor ich eine Einschätzung sende, alle 8 Punkte abhaken:
 ---
 
 *Dieses Protokoll gilt für alle Aktien-Deep-Dives, egal wie offensichtlich das Setup aussieht.*
+
+---
+
+## News-Verifikations-Protokoll (NEU ab 29.03.2026)
+
+**Auslöser:** Jede News die direkt eine These stärkt oder schwächt — besonders wenn sie dramatisch klingt oder nur von einer Quelle kommt.
+
+**Eingeführt nach Vance-Fehler 29.03.2026:** n-tv schrieb "Wir werden bald abziehen" (bullish für Exit), i24NEWS schrieb "Continue for longer period" (bearish für Exit), Pentagon plante Bodenoperationen (Reality). Gleiche Lage — drei verschiedene Narrative.
+
+### Pflicht-Checkliste bei marktrelevanten News:
+
+**Schritt 1 — Quelle identifizieren:**
+- Wer berichtet? Welches Publikum bedient diese Quelle?
+- Ist das ein Originalzitat oder eine Zusammenfassung/Übersetzung?
+- Deutschsprachige Medien bei US-Politik: **immer Original-Englisch suchen**
+
+**Schritt 2 — Gegenperspektive suchen (PFLICHT bei Portfolio-Impact):**
+- Westliche Quelle (Reuters/AP/Politico) → auch Al Jazeera / arabische Medien prüfen
+- Deutsche/europäische Quelle → englischsprachiges Original suchen
+- Pro-Regierung-Quelle → kritische Gegenpresse lesen
+- Mindestens **2 unabhängige Quellen** vor jeder Bewertung
+
+**Schritt 3 — Originalkontext prüfen:**
+- Vollständiges Zitat suchen, nicht nur den Ausschnitt
+- Wann wurde es gesagt? (Rede vs. Pressekonferenz vs. Social Media vs. Interview)
+- Für welches Publikum? (Inland vs. Ausland, Basis vs. Diplomaten)
+- Steht Handlung dahinter? (Was tut das Pentagon/Unternehmen tatsächlich?)
+
+**Schritt 4 — Cui Bono Check:**
+- Wem nützt diese Narrative?
+- Ist der Sprecher im Wahlkampf-Modus? (Vance 2028 = ja)
+- Widerspruch zwischen Worten und Handlungen?
+
+### Ampel-Regel für Portfolio-Entscheidungen:
+- 🔴 **1 Quelle, keine Bestätigung** → KEIN Trade, KEIN Positions-Exit
+- 🟡 **2 Quellen, widersprüchlich** → Conviction senken, beobachten
+- 🟢 **3+ Quellen, konsistent** → These bestätigt oder widerlegt, handeln
+
+### Lehrbeispiel: Vance/Iran 29.03.2026
+- n-tv: "Wir werden bald abziehen" → 🔴 1 deutsche Quelle, sensationalistisch
+- i24NEWS: "Longer period" → 🔴 Widerspruch zum n-tv-Artikel
+- Al Jazeera: "Pentagon plant Wochen Bodenoperationen" → ✅ bestätigt durch NYT
+- **Richtige Bewertung:** Eskalation, kein Abzug — S1-These weiter 🟢

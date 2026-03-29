@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-29T10:30:26.140597+00:00",
+  "last_updated": "2026-03-29T17:30:29.461904+00:00",
   "runs": [
     {
       "ts": "2026-03-26T08:36:39.326715+00:00",
@@ -711,6 +711,69 @@
       ],
       "strategy_scores": {
         "S1": 79,
+        "S3": 33,
+        "S9": 23
+      }
+    },
+    {
+      "ts": "2026-03-29T17:30:22.700115+00:00",
+      "total_score": 489,
+      "alert_tier": "HIGH",
+      "alert_items": 12,
+      "affected_strategies": [
+        "S1",
+        "S3",
+        "S9"
+      ],
+      "affected_tickers": [
+        "CCL",
+        "DR0.DE",
+        "EQNR",
+        "GLEN.L",
+        "MSFT",
+        "NVDA",
+        "S.TO"
+      ],
+      "top_items": [
+        {
+          "region": "turkey",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 71,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "pakistan",
+          "text": "He said no casualties were reported and added that the Taliban would retaliate for the attack.\" src=\"https://pakistan.liveuamap.com/pics/2026/03/15/22829091_1.jpg\" /></label></div></div><div data-reso",
+          "score": 71,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "iran",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 69,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "pakistan",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 57,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "israelpalestine",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 50,
+          "tier": "CRITICAL"
+        }
+      ],
+      "deep_dive_recommended": true,
+      "deep_dive_terms": [
+        "pakistan",
+        "airstrike",
+        "iran"
+      ],
+      "strategy_scores": {
+        "S1": 69,
         "S3": 33,
         "S9": 23
       }

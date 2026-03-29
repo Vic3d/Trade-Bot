@@ -333,6 +333,41 @@ Europa rüstet auf — NATO-Druck, Ukraine-Krieg, jetzt Iran-Konflikt. Rüstungs
 
 ---
 
+### 🌍 S1-Kontext-Update: Pakistan-Taliban-Krieg (29.03.2026)
+
+**Quelle:** Deep Dive durchgeführt 29.03.2026 | Liveuamap Pakistan, Google News (NYT, WaPo, HRW, Caspian Post, SCMP)
+
+**Was passiert:**
+- Pakistan führt Luftangriffe auf Afghanistan — u.a. auf Kabul (143 Tote in Klinik, UN verurteilt)
+- Taliban attackiert pakistanisches Territorium
+- Eid-Waffenstillstand aktiv (~29.–31.03.) — danach offen
+- Pakistan-FM trifft 30.03. Türkei/Saudi/Ägypten zur Deeskalation
+
+**Handelsrouten-Implikation für S1:**
+- Southern Corridor (Afghanistan → Pakistan → Karachi → Indischer Ozean) ist blockiert
+- Dieser Korridor war Zentralasiens geplante Alternative zu Iran UND Russland
+- Jetzt beide Süd-Routen gleichzeitig gestört: Iran (Krieg) + Pakistan/Afghan (Krieg)
+- Zentralasiatisches Öl (Kasachstan ~50M t/Jahr) kommt schwerer auf den Markt
+- Middle Corridor (Kaspisches Meer → Türkei) überlastet → Frachtraten steigen
+
+**Quellen-Belege:**
+- Caspian Post (12.03.): "War in Iran and Afghanistan Threatens Central Asia's Gateway to Global Markets"
+- Daily Sabah (15.03.): "No way out? Central Asia faces risks of Pak-Afghan war"
+- SCMP (28.02.): "Trains through the Taliban: Central Asia's plan to bypass Russia and Iran"
+
+**Wirkung auf S1:** 🟢 BESTÄTIGEND — zusätzlicher struktureller Angebotsengpass
+- Kasachstanisches Öl (leichtes bis mittleres, alternative zu Golf-Öl) kommt weniger nach Europa
+- EQNR (Nordsee-Leichtöl) als noch wertvollerer EU-Ersatz bestätigt
+- Überraschende Nuance: Iran mediiert aktiv Pakistan-USA — Signalisiert Iran will stabileren Kontext im Osten. Das könnte mittelfristig leicht bärisch für Iran-Prämie sein, ändert aber nichts an Hormuz-Thesis kurzfristig
+
+**Gegenthese (Ehrlichkeit):**
+- Eid-Pause könnte in längeren Waffenstillstand münden → Southern Corridor öffnet wieder
+- Pakistan-Taliban-Konflikt ist primär ein Anti-Terror-Krieg, kein Handelskrieg → könnte schneller enden als Iran-Konflikt
+
+**Netto-Einschätzung:** S1-These durch Pakistan-Kontext **bestätigt und gestärkt**. Kein Handlungsbedarf heute, aber EQNR-Position bleibt valide. | 🟢 S1 STÄRKER |
+
+---
+
 ## STRATEGIE 3: KI-Infrastruktur-Boom → Halbleiter
 
 **Status: 🟢 ERHOLT** *(Stand: 09.03.2026, 22:00 Uhr — VIX 25,50)*

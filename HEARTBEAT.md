@@ -18,15 +18,32 @@
 - [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
 - [ ] TradeMind v2.1.2 Feedback von Victor — Dashboard live testen, Versionsnummer bestätigen, weitere Features freigeben
 
-## AKTUELLE ALERTS (heute 28.03.2026 — 12:01 MEZ)
+## AKTUELLE ALERTS (29.03.2026 — 19:00 MEZ)
 
-- 🔴 **KUBA-TANKER KRITISCH:** Anatoly Kolodkin (Sovcomflot, 730k Barrel) trifft **29.03 ein** (2 TAGE!). UK Royal Navy + US SOUTHCOM tracken. Regime-Change in Vorbereitung. Kuba in Stromausfall #3, Staatsanwalt bereitet Anklagen vor. **Victor-Info dringend angefordert.** Status: S9 Watchlist → HOCHAKTUELL, Militär-Showdown wahrscheinlich
-- 🟢 **Iran-Trump-Deal 25.03**: 15-Punkte-Plan angekündigt. Victor-Analyse: Deal strukturell unmöglich (Atom+Raketen). CoT Hedge Fonds netto +31.502 long OXY. **S1 These HALTEN.**
-- 🟢 **Portfolio OK**: PLTR +1.5%, A3D42Y +3.5%, A2DWAW +2.4%. VIX 26.4 (erhöht), keine Stops gefährdet.
-- 🟡 **S3 NVDA**: Unter VIX-Druck (25.11 Trades unter $185), aber Hold-Strategie bis 27.05 Earnings bleibt valide. Nachkauf-Kondition VIX < 28 erfüllt.
-- 🟡 **S5 Rio Tinto**: Über Entry A (6.700 GBp), Oyu-Tolgoi Renegotiation noch ungeklärt. Monitoring läuft.
-- 📡 **News-System**: Position-Matcher live. Newswire analysiert 4x täglich.
-- 📋 **Josh Backoffice**: DevTools Network-Capture für B&O geplant
+**TRADING SESSION AKTIV — MASSIVE BUILDS HEUTE:**
+- ✅ VIX Hard Block (BEAR-Regime bei VIX 31.1) — Tech geblockt, PS_* + Öl/Gold erlaubt
+- ✅ Paper Trade Engine integriert in 15-Min Monitor — Watchlist-Scan automatisch
+- ✅ News Dedup + Sentiment Magnitude — wired in newswire_analyst.py
+- ✅ Autonomous Scanner live — 3 Tiers, 80+ Ticker, täglich 09:15 Scan
+- ✅ STLD T1 Paper Trade eröffnet (ID 34) + NUE Tier A + CLF/DHT Tier C Paper Trades
+- ✅ Preisdaten-Sync: alle Watchlist-Ticker in trading.db → Conviction Scorer hat echte Daten
+
+🔴 **KUBA-TANKER:** Anatoly Kolodkin erwartet 29.03 (HEUTE). Keine Victor-Update seit gestern. UK Royal Navy + US SOUTHCOM tracking. Status: **S9 offen**
+- 💡 DHT (Tanker) ist gerade +32% — Kuba-Effekt?
+
+🟢 **Iran-These (S1):** HALTEN — Houthis attackieren, Pentagon plant Operationen, Trump deadlines extend. Geopolitik-Prämie intakt.
+
+🟢 **Portfolio Live (Stand ~18:00 MEZ):**
+  - PLTR €124.29 (Entry €132.11) | −5.9% | Stop €127 (−2.2% Distanz, VIX 31 eng!)
+  - A3D42Y €29.02 (Entry €27.90) | +4.0% | Stop €24
+  - A2DWAW €7.01 (Entry €7.00) | +0.2% | Stop €6.30
+  - Paper: STLD (ID 34, $171 Entry), NUE, CLF, DHT neu
+
+📋 **30.03 Morgen — STLD Real Trade:**
+  - Entry Zone $162–171, STLD momentan $170.97
+  - US-Börsenstart 15:30 MEZ → Manual Entry prüfen
+  - Stop $155 SOFORT in Trade Republic setzen (WKN 903772)
+  - Liberation Day 02.04 — Trump will politischen Win
 
 ## Regeln
 
