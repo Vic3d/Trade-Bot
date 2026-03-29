@@ -1675,7 +1675,99 @@ def main():
             export['positions'][key]['conviction'] = conv.get('score')
     save_json(PRICES_PATH, export)
 
-    # ── TradeMind v2: Regime + Risk in Export einbauen ──
+    # ── Paper Trade Engine: VIX sync + Watchlist Auto-Execution ──────
+    try:
+        sys.path.insert(0, str(WORKSPACE / 'scripts' / 'execution'))
+        from paper_trade_engine import execute_paper_entry, refresh_vix_in_db
+        from conviction_scorer import check_entry_allowed
+
+        # 1. VIX aus bereits gecachtem Yahoo-Batch in macro_daily schreiben
+        vix_t = config.get('macro', {}).get('vix_ticker', '^VIX')
+        live_vix = prices.get(vix_t, {}).get('price') if prices else None
+        if live_vix:
+            import sqlite3
+            _db = sqlite3.connect(str(WORKSPACE / 'data' / 'trading.db'))
+            _today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+            _db.execute("INSERT OR REPLACE INTO macro_daily (date, indicator, value) VALUES (?, 'VIX', ?)",
+                        (_today, round(live_vix, 2)))
+            # Regime-Update
+            if live_vix >= 35: _regime_str = 'CRISIS'
+            elif live_vix >= 30: _regime_str = 'BEAR'
+            elif live_vix >= 25: _regime_str = 'CORRECTION'
+            elif live_vix >= 20: _regime_str = 'NEUTRAL'
+            elif live_vix >= 15: _regime_str = 'BULL_VOLATILE'
+            else: _regime_str = 'BULL_CALM'
+            _db.execute("INSERT OR REPLACE INTO regime_history (date, regime, vix) VALUES (?, ?, ?)",
+                        (_today, _regime_str, round(live_vix, 2)))
+            _db.commit()
+            _db.close()
+            log(f"Paper Engine: VIX={live_vix:.1f} → Regime={_regime_str}")
+
+        # 2. Entry-Guard prüfen (VIX Hard Block) — wenn alle geblockt: skip Scan
+        _entry_allowed, _block_reason = check_entry_allowed()
+
+        # 3. Watchlist-Scan: Preis aus bereits gecachtem Batch nutzen
+        paper_alerts = []
+        for watch in config.get('watchlist', []):
+            key = watch.get('ticker', '')
+            strategy = watch.get('strategy', 'S1')
+            stop = watch.get('stop_eur') or watch.get('stop')
+            target = watch.get('target1_eur') or watch.get('target1')
+            thesis = watch.get('thesis', '')
+            entry_low = watch.get('entry_low_eur') or watch.get('entry_low')
+            entry_high = watch.get('entry_high_eur') or watch.get('entry_high')
+
+            if not all([key, stop, target, entry_low]):
+                continue
+
+            # Preis aus gecachtem Batch
+            price_eur, _ = get_price_eur(watch, prices, fx, onvista_cache, key)
+            if price_eur is None:
+                continue
+
+            # Entry-Zone Check
+            in_zone = entry_low <= price_eur <= (entry_high or entry_low * 1.03)
+            if not in_zone:
+                continue
+
+            # Strategie-spezifischer Guard
+            _strat_allowed, _strat_reason = check_entry_allowed(strategy)
+            if not _strat_allowed:
+                log(f"Paper Engine: {key} in Entry-Zone aber geblockt — {_strat_reason[:60]}")
+                continue
+
+            # Paper Trade ausführen
+            result = execute_paper_entry(
+                ticker=key,
+                strategy=strategy,
+                entry_price=price_eur,
+                stop_price=float(stop),
+                target_price=float(target),
+                thesis=thesis,
+                source='trading_monitor_15m',
+            )
+
+            if result['success']:
+                msg = (
+                    f"🤖 **PAPER TRADE AUTO** — {key}\n"
+                    f"Entry: {price_eur:.2f}€ | Stop: {stop}€ | CRV: {result.get('crv', '?')}:1\n"
+                    f"Conviction: {result.get('conviction_score', 0):.0f}/100 | Regime: {_regime_str}\n"
+                    f"{thesis[:80] if thesis else ''}"
+                )
+                paper_alerts.append(msg)
+                log(f"Paper Engine: {key} AUTO-ENTRY bei {price_eur:.2f}€ (Conviction {result.get('conviction_score', 0):.0f})")
+            elif result.get('blocked_by') not in ('duplicate', 'max_positions', 'cash'):
+                # Nur interessante Ablehnungen loggen (nicht Duplikate)
+                log(f"Paper Engine: {key} abgelehnt — {result.get('blocked_by')} | {result.get('message', '')[:60]}")
+
+        for alert in paper_alerts:
+            send_alert(alert, alert_type='PAPER_TRADE')
+        all_alerts += paper_alerts
+
+    except Exception as e:
+        log(f"Paper Trade Engine Fehler: {e}")
+
+    # ── TradeMind v2: Regime + Risk in Export einbauen ──────────────
     if TRADEMIND_V2:
         try:
             regime = _detect_regime()
