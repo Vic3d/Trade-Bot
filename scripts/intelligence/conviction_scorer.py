@@ -307,6 +307,23 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
     vix = _get_current_vix(conn)
     regime = _get_current_regime(conn)
     
+    # Market Guards (Earnings, Thesis, Sektor) — importiert aus market_guards
+    earnings_ok   = True
+    earnings_note = ''
+    thesis_mod    = 0
+    sector_score  = 50
+    try:
+        import sys
+        _mg_path = str(Path(__file__).parent)
+        if _mg_path not in sys.path:
+            sys.path.insert(0, _mg_path)
+        from market_guards import check_earnings_safe, thesis_conviction_modifier, score_sector_momentum
+        earnings_ok, earnings_note = check_earnings_safe(ticker)
+        thesis_mod   = thesis_conviction_modifier(ticker)
+        sector_score = score_sector_momentum(ticker)
+    except Exception:
+        pass
+
     # Alle 8 Faktoren berechnen
     factors = {
         'regime_alignment': _score_regime_alignment(conn, strategy),
@@ -316,7 +333,7 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
         'signal_confluence': _score_signal_confluence(conn, ticker),
         'backtest_perf': _score_backtest_performance(strategy),
         'correlation': _score_correlation(conn, ticker),
-        'sector_rotation': _score_sector_rotation(conn, ticker),
+        'sector_rotation': sector_score,   # ← Echter Sektor-ETF statt Einzel-Ticker
     }
     
     # Gewichteter Score
@@ -324,6 +341,15 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
     score = sum(factors[k] * weights[k] for k in factors) / total_weight
     score = round(score, 1)
     
+    # Thesis-Modifier anwenden (Kill-Trigger -20, Entry-Signal +10)
+    score = max(0, min(100, score + thesis_mod))
+
+    # Earnings Hard Block: Entry verboten wenn Earnings in ≤5 Tagen
+    earnings_blocked = False
+    if not earnings_ok:
+        score = min(score, 15)  # Effektiv blockiert
+        earnings_blocked = True
+
     # VIX Hard Cap: BEAR → max 35, CRISIS → max 20
     vix_blocked = False
     if regime == 'CRISIS' or (vix is not None and vix >= 35):
