@@ -178,6 +178,81 @@
   },
   "watchlist": [
     {
+      "ticker": "STLD",
+      "name": "Steel Dynamics Inc.",
+      "yahoo": "STLD",
+      "currency": "USD",
+      "sector": "Stahl/Metalle",
+      "region": "USA",
+      "entryMin": 162.0,
+      "entryMax": 171.0,
+      "stop": 155.0,
+      "targets": [
+        185.0,
+        208.0,
+        230.0
+      ],
+      "note": "Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. T1 Entry 30.03. bei US-Börsenstart 15:30 MEZ prüfen. Stop $155 SOFORT real in TR setzen. WKN: 903772",
+      "strategy": "PS_STLD",
+      "thesis": "Trump politisch unter Druck (36% Approval) → braucht Liberation Day Win → höhere Wahrscheinlichkeit starker Zölle. Section 232 Stahl-Zölle (25%) bereits aktiv. EAF-Technologie + Sinton Alu-Werk = struktureller Vorteil.",
+      "entry_trigger": "US-Börsenstart 30.03. beobachten. T2 nach April-2-Ankündigung. T3 nach Q1 Earnings mid-April.",
+      "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD unter $155",
+      "wkn": "903772",
+      "isin": "US8581191009",
+      "added": "2026-03-29",
+      "tranche_plan": {
+        "T1": {
+          "pct": 25,
+          "trigger": "30.03. US-Börsenstart, Kurs stabil",
+          "price": 171
+        },
+        "T2": {
+          "pct": 25,
+          "trigger": "Nach April-2-Ankündigung, Reaktion stark",
+          "price": null
+        },
+        "T3": {
+          "pct": 25,
+          "trigger": "Q1 Earnings mid-April bestätigen Margin-Verbesserung",
+          "price": null
+        },
+        "T4": {
+          "pct": 25,
+          "trigger": "Zyklus-Erholung HRC-Preise >$900/t",
+          "price": null
+        }
+      },
+      "risks": [
+        "Tariff-Rollback als bilateraler Verhandlungschip (Biden-Muster)",
+        "Schulden $3.4B (Sinton-Investition) – manageable aber zinsempfindlich",
+        "China Stahl-Dumping via Drittländer (Umgehung)",
+        "Zyklisches Trough: EV/EBITDA 11x trough, 6.2x normalized – kein Schnäppchen auf Trough-Basis"
+      ],
+      "eps_scenarios": {
+        "conservative": {
+          "hrc_increase": "+$150/t",
+          "eps": 9.7
+        },
+        "bull": {
+          "hrc_increase": "+$400/t",
+          "eps": 12.55
+        },
+        "peak_cycle": {
+          "hrc_increase": "+$700/t",
+          "eps": 15.97
+        }
+      },
+      "fy2025_data": {
+        "revenue": "18.177B",
+        "ebitda": "2.027B",
+        "ebitda_margin": "11.2%",
+        "eps": 7.99,
+        "shares_m": 148
+      },
+      "competitor": "Nucor (NUE) – NUE geparkt, STLD bevorzugt wegen klarerer EBITDA-Recovery und EAF-Aluminium",
+      "wpr_monthly_check": true
+    },
+    {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
       "entryMin": 1626,
@@ -360,20 +435,56 @@
     },
     {
       "ticker": "NOVO-B.CO",
-      "name": "Novo Nordisk",
+      "name": "Novo Nordisk A/S",
       "yahoo": "NOVO-B.CO",
       "currency": "DKK",
       "sector": "Healthcare/Pharma",
       "region": "Europa/Dänemark",
-      "entryMin": 560.0,
-      "entryMax": 580.0,
-      "stop": 510.0,
+      "entryMin": 240.0,
+      "entryMax": 260.0,
+      "stop": 185.0,
       "targets": [
-        700.0
+        356.0,
+        477.0
       ],
-      "note": "Ozempic/Wegovy: struktureller Megatrend. Defensiv in jedem Regime. DKK ~ EUR-Hedge.",
-      "wpr": true,
-      "thesis": "S_HEALTHCARE"
+      "note": "⚠️ WARTEN – T1 erst nach Q1 2026 Earnings (April). Trump-Preisdeal Nov.2025 + MFN-Pricing aktiv. EPS-Rückgang ≤15% = Entry-Bedingung. WKN: A0NENA",
+      "strategy": "PS_NVO",
+      "thesis": "PE 10x bei PE-Historisch 30x+ = massiver Bewertungsabschlag. CagriSema-Enttäuschung + Trump-Preisdeal bereits eingepreist. GLP-1 Megatrend strukturell intakt. T1 wenn EPS-Rückgang quantifiziert.",
+      "entry_trigger": "Q1 2026 Earnings (April): EPS-Rückgang ≤15% YoY. ODER positive Pipeline-News (Amycretin/Petrelintide Phase 2+).",
+      "kill_trigger": "EPS 2026 fällt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | MFN-Pricing wird Gesetz | NVO unter 185 DKK",
+      "risks": [
+        "🔴 KRITISCH: Trump-Preisdeal Nov.2025 bereits aktiv – GLP-1 Preissenkungen laufen",
+        "🔴 MFN-Pricing (Feb.2026) – US würde europ. Preise zahlen (~50% günstiger) – strukturell",
+        "LLY Zepbound gewinnt Marktanteile (Retatrutide in Phase 3)",
+        "2026 Revenue-Rückgang guided – Frage ob temporär oder strukturell",
+        "Pharma-Zölle (15% Universal Surcharge) auf Dänemark-Exporte möglich"
+      ],
+      "competitor_check": "Eli Lilly (LLY) PE 38x, EPS +96% 2025. Zu teuer für Entry. Alert bei LLY <$720.",
+      "tranche_plan": {
+        "T1": {
+          "pct": 25,
+          "trigger": "Q1 Earnings EPS-Rückgang ≤15%",
+          "price_usd": "36-38"
+        },
+        "T2": {
+          "pct": 25,
+          "trigger": "Pipeline-News positiv (Amycretin/Petrelintide)",
+          "price_usd": "38-42"
+        },
+        "T3": {
+          "pct": 25,
+          "trigger": "Wochenschluss >$45 + Volumen",
+          "price_usd": "45"
+        },
+        "T4": {
+          "pct": 25,
+          "trigger": "EPS-Wachstum 2027 bestätigt",
+          "price_usd": "50+"
+        }
+      },
+      "wkn": "A0NENA",
+      "added": "2026-03-29",
+      "wpr_monthly_check": true
     }
   ],
   "macro": {
@@ -498,6 +609,28 @@
       "current_position": "LHA.DE @ 7.35€ (PS10 → umgewandelt in PS11)",
       "created": "2026-03-27",
       "linked_strategy": "S1 (invers — wenn S1 endet, PS11 profitiert)"
+    },
+    {
+      "id": "PS_STLD",
+      "color": "#ef4444",
+      "name": "Stahl-Tariff-Play (Liberation Day)",
+      "status": "🟡",
+      "conviction": "Mittel-Hoch",
+      "tickers": [
+        "STLD"
+      ],
+      "desc": "Trump Liberation Day 2. April + 25% Section-232-Stahlzölle → US-Stahlproduzenten profitieren von Pricing Power.<br><br><strong>Kernthese:</strong> Trump bei 36% Approval → braucht politischen Win → starke Zölle wahrscheinlicher (60%). Section 232 bereits aktiv.<br><strong>EPS-Szenarien:</strong> Conservative +$150/t HRC = $9.70 EPS | Bull = $12.55 | Peak = $15.97<br><strong>Ausstieg:</strong> Tariff-Rollback-Meldung ODER STLD unter $155."
+    },
+    {
+      "id": "PS_NVO",
+      "color": "#8b5cf6",
+      "name": "Novo Nordisk Value/Turnaround",
+      "status": "⏸️",
+      "conviction": "Mittel (warten)",
+      "tickers": [
+        "NOVO-B.CO"
+      ],
+      "desc": "PE 10x nach -60% vom ATH = massiver Bewertungsabschlag. GLP-1 Megatrend strukturell intakt.<br><br><strong>⚠️ WARTEN bis Q1 Earnings April:</strong> Trump-Preisdeal (Nov.2025) + MFN-Pricing (Feb.2026) aktiv. Rückgang könnte strukturell sein.<br><strong>T1-Trigger:</strong> Q1 Earnings mit EPS-Rückgang ≤15%.<br><strong>Kill:</strong> MFN-Pricing Gesetz ODER EPS -30%+."
     }
   ],
   "earnings": [

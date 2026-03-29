@@ -1817,5 +1817,88 @@
     },
     "sector": "EU Industrials / Tech",
     "horizon": "mittelfristig (3-12 Monate)"
+  },
+  "PS_STLD": {
+    "name": "Stahl-Tariff-Play (Liberation Day)",
+    "type": "paper",
+    "thesis": "Trump Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. Politischer Druck (36% Approval, Midterms Nov.) macht starke Zölle wahrscheinlicher als schwächere.",
+    "sector": "materials",
+    "entry_trigger": "T1: 30.03. US-Börsenstart 15:30 MEZ bei stabilem Kurs. T2: nach April-2-Ankündigung. T3: nach Q1 Earnings mid-April.",
+    "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD dauerhaft unter $155",
+    "status": "active",
+    "health": "yellow",
+    "horizon_weeks": 8,
+    "tickers": [
+      "STLD"
+    ],
+    "keywords_bullish": [
+      "steel tariff",
+      "section 232",
+      "liberation day",
+      "US steel",
+      "steel production",
+      "HRC price",
+      "domestic steel",
+      "tariff announcement"
+    ],
+    "keywords_bearish": [
+      "tariff rollback",
+      "steel exemption",
+      "trade deal steel",
+      "import quota",
+      "tariff waiver"
+    ],
+    "risks": "Schulden $3.4B (Sinton-Investition). Tariff-Rollback-Risiko ~10%. Zyklisches Trough. China-Dumping via Drittländer.",
+    "eps_scenarios": {
+      "conservative": 9.7,
+      "bull": 12.55,
+      "peak": 15.97
+    },
+    "fy2025": {
+      "revenue_b": 18.177,
+      "ebitda_b": 2.027,
+      "eps": 7.99
+    }
+  },
+  "PS_NVO": {
+    "name": "Novo Nordisk Value/Turnaround",
+    "type": "paper",
+    "thesis": "PE 10x bei historisch 30x+ = massiver Abschlag. GLP-1 Megatrend intakt. CagriSema-Enttäuschung und Trump-Preisdeal bereits eingepreist. Warten auf Quantifizierung des Rückgangs.",
+    "sector": "healthcare",
+    "entry_trigger": "Q1 2026 Earnings (April): EPS-Rückgang ≤15% YoY. ODER positive Pipeline-News Amycretin/Petrelintide Phase 2+.",
+    "kill_trigger": "EPS 2026 fällt >30% | LLY Retatrutide >30% Phase 3 | MFN-Pricing wird Gesetz | NVO unter $27",
+    "status": "watching",
+    "health": "yellow",
+    "horizon_weeks": 24,
+    "tickers": [
+      "NOVO-B.CO"
+    ],
+    "keywords_bullish": [
+      "novo nordisk earnings",
+      "cagrisema",
+      "amycretin",
+      "GLP-1 demand",
+      "ozempic sales",
+      "wegovy approval",
+      "novo pipeline"
+    ],
+    "keywords_bearish": [
+      "MFN pricing",
+      "drug price",
+      "most favored nation",
+      "medicare drug",
+      "novo nordisk price cut",
+      "lilly retatrutide",
+      "GLP-1 competition"
+    ],
+    "critical_risks": [
+      "Trump-Preisdeal Nov.2025 bereits aktiv – GLP-1 Preissenkungen laufen",
+      "MFN-Pricing aktiv verfolgt (Feb.2026) – strukturelles Risiko",
+      "LLY Zepbound gewinnt Marktanteile"
+    ],
+    "competitor_monitor": {
+      "ticker": "LLY",
+      "alert_threshold_usd": 720
+    }
   }
 }
