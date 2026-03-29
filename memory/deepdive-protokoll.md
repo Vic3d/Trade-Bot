@@ -87,7 +87,7 @@ Profis benutzen keine fixe KGV-Grenze. Stattdessen: **sektorgerechte Metrik + Ve
 
 ---
 
-## Pflicht-Reihenfolge (alle 6 Schritte, immer)
+## Pflicht-Reihenfolge (alle 6 Schritte + Konkurrenz-Check, immer)
 
 ### Schritt 1 — Technisches Bild (Fakten, keine Bewertung)
 - Kurs, 52W-High/Low, Abstand in %
@@ -136,6 +136,32 @@ Pflicht-Fragen:
 - Welche Makro-Faktoren sind relevant? (Zölle, Geopolitik, FX)
 - Ist das ein neuer Katalysator oder alte Nachricht?
 - **Kriterium "frischer Katalysator": muss in den letzten 30 Tagen aufgetreten sein**
+
+### Schritt 5b — KONKURRENZ-CHECK (NEU ab 29.03.2026, PFLICHT)
+
+**Warum:** Eine Aktie kann günstig aussehen, weil der Konkurrent sie gerade überrollt.
+Erkannt am Beispiel NVO/LLY: NVO PE 10x schien günstig — erst der LLY-Check zeigte,
+dass Eli Lilly mit PE 38x aber +96% EPS-Wachstum den Markt dominiert. Das ändert die These.
+
+**Wer ist der Haupt-Konkurrent?**
+- Bei Pharma/Biotech: Wer ist der stärkste Player in der gleichen Indikation?
+- Bei Energie: Wer ist der günstigste Produzent im gleichen Markt?
+- Bei Stahl/Rohstoffe: Wer hat die niedrigsten Cash-Kosten?
+- Bei Tech: Wer hat das bessere Produkt / mehr Marktanteil?
+
+**Was prüfen:**
+1. Kurs + 52W-Performance des Konkurrenten
+2. PE/EV-EBITDA Vergleich: Wer ist günstiger? Warum?
+3. EPS-Trend: Wächst der Konkurrent schneller?
+4. Marktanteil: Gewinnt oder verliert unser Kandidat vs. Konkurrent?
+5. **Fazit:** Ist die Schwäche unseres Kandidaten strukturell (Konkurrent gewinnt dauerhaft)
+   oder zyklisch (temporärer Rückstand, wird aufgeholt)?
+
+**Wenn Konkurrent strukturell gewinnt:** Thesis schwächer → Konfidenz runter → Tranchenstrategie statt Vollkauf
+**Wenn Konkurrent auch schwach ist:** Sektorproblem, kein Einzelproblem → beide meiden oder beide Chance
+**Wenn Konkurrent überbewertet:** Kandidat relativ attraktiv → These gestärkt
+
+---
 
 ### Schritt 6 — Synthese & Einschätzung
 - Erst JETZT: These formulieren

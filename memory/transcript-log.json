@@ -78,7 +78,12 @@
   },
   "d9b4556c": {
     "filename": "finanzb\u00e4r-lithium-2026-03-27.txt",
-    "processed_at": "2026-03-28T20:00:48.455813+00:00",
-    "had_insights": false
+    "processed_at": "2026-03-29T07:01:21.461311+00:00",
+    "had_insights": true
+  },
+  "d9b4556c828db18f1dd78fd994a41f3e": {
+    "filename": "finanzb\u00e4r-lithium-2026-03-27.txt",
+    "processed_at": "2026-03-29T11:02:02.195187+00:00",
+    "had_insights": true
   }
 }

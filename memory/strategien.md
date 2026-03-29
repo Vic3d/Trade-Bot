@@ -1056,3 +1056,38 @@ Regelmäßige Suche nach Aktien die unter TEMPORÄREN makroökonomischen Faktore
 - HLAG.DE und CCL für PS12 vormerken
 - Entry-Bedingung für alle: Brent 3-Tages-Rückgang >5% ODER Iran-Deal-Signal
 - Wöchentlich aktualisieren (Freitag Abend-Report integriert)
+
+---
+
+## 🅿️ PARKING-LISTE — KW13 Scan (29.03.2026)
+
+Kandidaten die analysiert wurden, aktuell kein Trade, aber bei Änderung reaktivieren.
+
+### 👁️ WATCHLIST — Bodenbildung beobachten
+
+#### NVO / NOVO-B.CO — Novo Nordisk A/S
+- **Status:** WATCHLIST 👁️ | Deep Dive: 29.03.2026
+- **Kurs:** $36.04 | 52W: $35.85–$81.44 | Drawdown vom Peak: -74%
+- **Warum interessant:** PE 10.34x (historisch günstig für Pharma), EPS 14 Jahre gewachsen, EBITDA $22.7B, Gross Margin 81%, EV/EBITDA ~7.8x
+- **Warum noch kein Kauf:** 2026 Umsatzrückgang von Management selbst geführt, Eli Lilly gewinnt GLP-1-Marktanteile, CagriSema-Trial enttäuschend, Kein Boden bestätigt
+- **Konkurrent-Check:** Eli Lilly (LLY) PE 38x, EPS +96% in 2025 → Lilly gewinnt strukturell Marktanteile
+- **Entry-Trigger (Tranche 1):** Q1 2026 Earnings zeigen EPS-Rückgang ≤15% ODER positives Pipeline-Update (Amycretin/Petrelintide)
+- **Tranchen:** 4× 25% | Entry ~$36–38 | Stop $27 | Ziel 1: $52 (CRV 2:1) | Ziel 2: $70 (CRV 3.8:1)
+- **Invalidierung:** EPS 2026 fällt >30% | LLY Retatrutide zeigt >30% Gewichtsverlust | NVO unter $27
+
+#### STLD — Steel Dynamics, Inc.
+- **Status:** WATCHLIST 👁️ | Deep Dive: 29.03.2026
+- **Kurs:** $170.97 | 52W: $103–$208 | 1M: -11%
+- **Warum interessant:** Trump Stahlzölle 25% als Katalysator, EBITDA-Recovery Q3'25 (+78% vs Q4'24), RSI 37 überverkauft
+- **Warum noch kein Kauf:** PE 24x noch zu teuer auf TTM-Basis, Tariff-Rally bereits +66% vom Tief gelaufen
+- **Entry-Trigger:** Q4'25 Earnings bestätigen EBITDA-Trend ODER Pullback auf $155
+- **Stop:** $130 | Ziel 1: $185 | Ziel 2: $208
+
+### 🅿️ GEPARKT — kein Trade 2026, Alert bei Änderung
+
+| Kandidat | Grund | Reaktivierung wenn... |
+|---|---|---|
+| CORN (Teucrium Corn Fund) | An 52W-Hoch, kein Katalysator | Rückfall auf $16.50 + Wetter/Erntemiss |
+| NUE (Nucor Corp) | STLD > NUE gleiche These | NUE Q4 zeigt Recovery stärker als STLD |
+| KMI (Kinder Morgan) | PE 25x, +26% bereits gelaufen, AT 52W-Hoch | Rückfall auf $27–28 + Dividende stabil |
+

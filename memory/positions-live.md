@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-03-28 11:20 CET (Auto-Sync)
+**Zuletzt aktualisiert:** 2026-03-29 09:26 CET (NVO + LLY Paper Watchlist hinzugefügt)
 
 ---
 
@@ -16,6 +16,34 @@
 | VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 29.02€ | +4.0% |  |
 | iShares Biotech ETF (A2DWAW) | 7.00€ | 6.30€ | 7.01€ | +0.2% |  |
 | Equinor ASA (EQNR) | 33.58€ | 34.20€ | — | — | Iran-These: Trump nicht glaubwürdig, Krieg nicht vorbei. US ADR Accumulation +65% Vol-Trend. |
+
+---
+
+## 👁️ Paper Watchlist — Tranchensetups (noch kein Kauf, Trigger ausstehend)
+
+> Diese Positionen sind vorbereitet. Sobald Trigger feuert → Tranche 1 ausführen, hier updaten.
+> Korrelation NVO ↔ LLY täglich beobachten: wenn LLY steigt aber NVO fällt = Marktanteilsverlust bestätigt → NVO-Konfidenz runter.
+
+| Name (Ticker) | Typ | Kurs (Stand 29.03.) | Trigger Tranche 1 | Stop | Ziel 1 | Ziel 2 | Status |
+|---|---|---|---|---|---|---|---|
+| Novo Nordisk (NVO / NOVO-B.CO) | VALUE / Turnaround | ~33€ ($36) | Q1'26 Earnings EPS-Rückgang ≤15% ODER pos. Pipeline-News | ~25€ ($27) | ~48€ ($52) | ~65€ ($70) | 🟡 WARTEN |
+| Eli Lilly (LLY) | GROWTH / Konkurrenz-Monitor | ~812€ ($878) | Rückfall auf ~$720 (PE ~31x auf $22.95 EPS) | ~$650 | ~$950 | ~$1.100 | 🔵 MONITOR |
+
+### NVO — Tranchenplan (4× 25%)
+| Tranche | Trigger | Entry-Kurs ca. |
+|---|---|---|
+| T1 (25%) | Q1'26 Earnings: EPS-Rückgang ≤15% YoY | ~$36–38 |
+| T2 (25%) | Positive Pipeline-News (Amycretin/Petrelintide Phase 2+) | ~$38–42 |
+| T3 (25%) | Wochenschluss >$45 mit Volumen (MA-Rückeroberung) | ~$45 |
+| T4 (25%) | EPS-Wachstum 2027 bestätigt | ~$50+ |
+
+**Invalidierung NVO gesamt:** EPS 2026 fällt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | NVO unter $27
+
+### LLY — Korrelations-Beobachtung
+- **Kein aktiver Trade** — zu teuer bei PE 38x
+- **Zweck:** Wenn LLY steigt während NVO fällt → Marktanteilsverlust strukturell → NVO-These schwächer
+- **Zweck:** Wenn beide fallen → Sektor-Repricing (IRA/Preisdruck) → NVO-These neutral bleibt
+- **Trade-Schwelle:** LLY unter $720 + EPS-Wachstum ≥30% → neuer Deep Dive
 
 ---
 

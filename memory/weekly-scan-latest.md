@@ -1,6 +1,6 @@
-# 🌍 Wöchentlicher Sektor-Scan — KW13 (28.03.2026)
+# 🌍 Wöchentlicher Sektor-Scan — KW13 (29.03.2026)
 **Regime:** TREND_DOWN | **VIX:** ? | **WTI:** ?
-**Gescannt:** 179 Ticker | **Setups gefunden:** 128 | **Top 15 gezeigt**
+**Gescannt:** 178 Ticker | **Setups gefunden:** 128 | **Top 15 gezeigt**
 
 ## 📊 Sektor-Rotation (Wochenperformance)
   🟢 `XLE`: +39.1%
@@ -76,4 +76,4 @@
   _RSI 53 (neutral) | Über MA50+MA200 (Uptrend) | Nahe 52W-High (Breakout)_
 
 ---
-*Generiert: 2026-03-28 19:57 UTC | Erlaubte Sektoren: energy, materials_metals, industrials_defense, healthcare, commodities_agri*
+*Generiert: 2026-03-29 06:00 UTC | Erlaubte Sektoren: energy, materials_metals, industrials_defense, healthcare, commodities_agri*
