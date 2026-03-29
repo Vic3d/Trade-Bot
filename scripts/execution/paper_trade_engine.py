@@ -359,12 +359,17 @@ def scan_and_execute_watchlist():
     for item in watchlist:
         ticker = item.get('ticker', '')
         strategy = item.get('strategy', 'S1')
-        entry_low = item.get('entry_low', 0)
-        entry_high = item.get('entry_high', 0)
-        stop = item.get('stop', 0)
-        target = item.get('target1', 0)
-        thesis = item.get('thesis', '')
-        
+        # Unterstütze verschiedene Key-Konventionen aus trading_config.json
+        entry_low  = (item.get('entry_low_eur') or item.get('entry_low')
+                      or item.get('entryMin') or 0)
+        entry_high = (item.get('entry_high_eur') or item.get('entry_high')
+                      or item.get('entryMax') or 0)
+        stop    = (item.get('stop_eur') or item.get('stop') or 0)
+        targets = item.get('targets', [])
+        target  = (item.get('target1_eur') or item.get('target1')
+                   or (targets[0] if targets else 0))
+        thesis  = item.get('thesis', '')
+
         if not ticker or not entry_low or not stop or not target:
             continue
         

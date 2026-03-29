@@ -254,16 +254,23 @@ def check_entry_allowed(strategy: str = None, conn=None) -> tuple[bool, str]:
     
     HEDGE_STRATEGIES = {'S4', 'PS4', 'PS1'}  # Defensive Strategien erlaubt in jedem Regime
     
+    # PS_* = Thesis-basierte Strategien (6-Schritt Deep Dive validiert)
+    # Erkennbar an Prefix PS_ mit Suffix (PS_STLD, PS_NVO etc.)
+    is_thesis_strategy = (strategy and (
+        strategy.upper().startswith('PS_') or  # Thesis-Play: PS_STLD, PS_NVO, ...
+        strategy.upper() in {'S1', 'S2', 'S5', 'S6', 'S7'}  # Makro-Thesen
+    ))
+    
     if regime == 'CRISIS' or (vix is not None and vix >= 35):
-        if strategy and strategy.upper() not in HEDGE_STRATEGIES:
-            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — nur Hedges/Gold (S4, PS4) erlaubt"
-        return True, f"⚠️ CRISIS-Regime: nur Hedge-Position ({strategy})"
+        if strategy and strategy.upper() not in HEDGE_STRATEGIES and not is_thesis_strategy:
+            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — nur Hedges/Gold (S4, PS4) + Thesis-Plays erlaubt"
+        return True, f"⚠️ CRISIS-Regime: Thesis-Play ({strategy}) mit max. 50% Positionsgröße"
     
     if regime == 'BEAR' or (vix is not None and vix >= 30):
-        allowed_in_bear = HEDGE_STRATEGIES | {'S1'}  # S1 (Öl/Geo) erlaubt in Bear
-        if strategy and strategy.upper() not in allowed_in_bear:
-            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — kein Tech/Zykliker Entry. Erlaubt: S1, S4, PS1, PS4"
-        return True, f"⚠️ BEAR-Regime: eingeschränkter Entry ({strategy}), Stop-Buffer +50% empfohlen"
+        allowed_in_bear = HEDGE_STRATEGIES | {'S1'}
+        if strategy and strategy.upper() not in allowed_in_bear and not is_thesis_strategy:
+            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — kein generischer Tech/Zykliker. Erlaubt: Thesis-Plays (PS_*), S1, S4, PS1, PS4"
+        return True, f"⚠️ BEAR-Regime: {strategy} erlaubt (Thesis/Öl/Hedge), Stop-Buffer +50% empfohlen"
     
     vix_str = f"{vix:.1f}" if vix else "n/a"
     return True, f"✅ Regime {regime} (VIX={vix_str}) — Entry erlaubt"
