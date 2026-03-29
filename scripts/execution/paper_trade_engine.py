@@ -32,7 +32,9 @@ WORKSPACE = Path('/data/.openclaw/workspace')
 PAPER_CFG = WORKSPACE / 'data' / 'paper_config.json'
 ALERT_QUEUE = WORKSPACE / 'memory' / 'alert-queue.json'
 
-ENTRY_THRESHOLD = 52      # Conviction Score mind. für Auto-Entry
+ENTRY_THRESHOLD_DEFAULT = 52   # Generische Strategien
+ENTRY_THRESHOLD_THESIS  = 35   # PS_* Thesis-Plays (Deep Dive validiert)
+ENTRY_THRESHOLD = 52           # Rückwärtskompatibilität
 MAX_POSITIONS = 15        # Maximale offene Paper-Positionen
 DEFAULT_POSITION_EUR = 2000  # € pro Position wenn keine Config
 FEE_PER_TRADE = 1.0      # Trade Republic Gebühr
@@ -93,6 +95,70 @@ def yahoo_price(ticker: str) -> float | None:
         return data['chart']['result'][0]['meta'].get('regularMarketPrice')
     except Exception:
         return None
+
+
+# ─── Preisdaten für Watchlist-Ticker in trading.db laden ────────────
+
+def sync_prices_for_tickers(tickers: list):
+    """
+    Holt aktuelle Kurse + Volumen für alle übergebenen Ticker von Yahoo
+    und schreibt sie in trading.db:prices.
+    Stellt sicher dass Conviction Scorer echte Daten hat.
+    """
+    import time as _time
+    conn = get_db()
+    today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+    inserted = 0
+
+    for ticker in tickers:
+        url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=30d'
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        try:
+            with urllib.request.urlopen(req, timeout=8) as r:
+                data = json.load(r)
+            result = data['chart']['result'][0]
+            timestamps = result.get('timestamp', [])
+            quote = result['indicators']['quote'][0]
+            closes  = quote.get('close', [])
+            volumes = quote.get('volume', [])
+            opens   = quote.get('open', [])
+            highs   = quote.get('high', [])
+            lows    = quote.get('low', [])
+
+            for i, ts in enumerate(timestamps):
+                date_str = datetime.fromtimestamp(ts, tz=timezone.utc).strftime('%Y-%m-%d')
+                c = closes[i] if i < len(closes) else None
+                v = volumes[i] if i < len(volumes) else None
+                o = opens[i]   if i < len(opens)   else None
+                h = highs[i]   if i < len(highs)   else None
+                l = lows[i]    if i < len(lows)    else None
+                if c is None:
+                    continue
+                conn.execute("""
+                    INSERT OR REPLACE INTO prices (ticker, date, open, high, low, close, volume)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (ticker, date_str, o, h, l, c, v))
+                inserted += 1
+
+            conn.commit()
+            _time.sleep(0.3)
+        except Exception as e:
+            pass  # Ticker nicht verfügbar — weiter
+
+    conn.close()
+    return inserted
+
+
+def sync_watchlist_prices():
+    """Synct Preise für alle Watchlist-Ticker aus trading_config.json."""
+    try:
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
+        tickers = [w.get('yahoo') or w.get('ticker') for w in cfg.get('watchlist', []) if w.get('ticker')]
+        tickers = list(set(t for t in tickers if t))
+        inserted = sync_prices_for_tickers(tickers)
+        return inserted
+    except Exception as e:
+        return 0
 
 
 # ─── VIX & Regime aktualisieren ──────────────────────────────────────
@@ -199,15 +265,19 @@ def execute_paper_entry(
         reason = f'Regime check unavailable: {e}'
     
     # ── Guard 2: Conviction Score ────────────────────────────────────
+    # PS_* = Thesis-Strategien (manuell Deep-Dive validiert) → niedrigere Schwelle
+    is_thesis = strategy.upper().startswith('PS_')
+    threshold = ENTRY_THRESHOLD_THESIS if is_thesis else ENTRY_THRESHOLD_DEFAULT
+
     try:
         conviction = calculate_conviction(ticker, strategy, entry_price, stop_price, target_price)
         conv_score = conviction['score']
-        
-        if conv_score < ENTRY_THRESHOLD:
+
+        if conv_score < threshold:
             return {
                 'success': False,
                 'trade_id': None,
-                'message': f'❌ Conviction zu niedrig: {conv_score:.0f} < {ENTRY_THRESHOLD} (Threshold)',
+                'message': f'❌ Conviction zu niedrig: {conv_score:.0f} < {threshold} ({"Thesis" if is_thesis else "Standard"}-Threshold)',
                 'blocked_by': 'conviction',
                 'conviction_score': conv_score,
             }
@@ -353,7 +423,10 @@ def scan_and_execute_watchlist():
     watchlist = cfg.get('watchlist', [])
     if not watchlist:
         return [{'info': 'Watchlist leer'}]
-    
+
+    # Preisdaten aktualisieren bevor Conviction berechnet wird
+    sync_watchlist_prices()
+
     results = []
     
     for item in watchlist:
