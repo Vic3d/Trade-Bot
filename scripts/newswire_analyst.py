@@ -238,6 +238,17 @@ def write_analysis(analysis: str, events_by_stock: dict):
 
 def run():
     """Hauptlogik: DB lesen → per-Aktie matchen → Output für Cron-Analyse."""
+    # Phase 3: News-Pipeline mit Dedup vor jedem Analyst-Run ausführen
+    # Schreibt frische News in trading.db:news_events (für Conviction Scorer)
+    try:
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'core'))
+        from news_pipeline import run_full_pipeline
+        pipeline_result = run_full_pipeline()
+        print(f"[pipeline] +{pipeline_result['inserted']} neue Events, {pipeline_result['skipped_similar']} Duplikate gefiltert")
+    except Exception as e:
+        print(f"[pipeline] Warnung: {e}")
+
     events = load_recent_events(minutes=35)
 
     if not events:

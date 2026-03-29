@@ -214,16 +214,78 @@ def _score_sector_rotation(conn, ticker, days=20):
     return max(0, min(100, int(change_pct * 5 + 50)))
 
 
+def _get_current_vix(conn) -> float | None:
+    """Holt den aktuellsten VIX-Wert aus macro_daily."""
+    row = conn.execute(
+        "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+    ).fetchone()
+    return row['value'] if row else None
+
+
+def _get_current_regime(conn) -> str:
+    """Holt das aktuelle Markt-Regime aus regime_history."""
+    row = conn.execute(
+        "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+    ).fetchone()
+    return row['regime'] if row else 'UNKNOWN'
+
+
+def check_entry_allowed(strategy: str = None, conn=None) -> tuple[bool, str]:
+    """
+    VIX Hard Block: Prüft ob ein Entry überhaupt erlaubt ist.
+    
+    Returns: (allowed: bool, reason: str)
+    
+    Regeln:
+    - CRISIS (VIX ≥ 35): Kein Entry außer S4/PS4 (Hedges/Gold)
+    - BEAR   (VIX 30-35): Kein Entry außer S4/PS1/PS4
+    - CORRECTION (VIX 25-30): Entry erlaubt aber Position Factor 0.6×
+    - NEUTRAL/BULL: Kein Hard Block
+    """
+    close_conn = conn is None
+    if conn is None:
+        conn = get_db()
+    
+    vix = _get_current_vix(conn)
+    regime = _get_current_regime(conn)
+    
+    if close_conn:
+        conn.close()
+    
+    HEDGE_STRATEGIES = {'S4', 'PS4', 'PS1'}  # Defensive Strategien erlaubt in jedem Regime
+    
+    if regime == 'CRISIS' or (vix is not None and vix >= 35):
+        if strategy and strategy.upper() not in HEDGE_STRATEGIES:
+            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — nur Hedges/Gold (S4, PS4) erlaubt"
+        return True, f"⚠️ CRISIS-Regime: nur Hedge-Position ({strategy})"
+    
+    if regime == 'BEAR' or (vix is not None and vix >= 30):
+        allowed_in_bear = HEDGE_STRATEGIES | {'S1'}  # S1 (Öl/Geo) erlaubt in Bear
+        if strategy and strategy.upper() not in allowed_in_bear:
+            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — kein Tech/Zykliker Entry. Erlaubt: S1, S4, PS1, PS4"
+        return True, f"⚠️ BEAR-Regime: eingeschränkter Entry ({strategy}), Stop-Buffer +50% empfohlen"
+    
+    vix_str = f"{vix:.1f}" if vix else "n/a"
+    return True, f"✅ Regime {regime} (VIX={vix_str}) — Entry erlaubt"
+
+
 def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=None, weights=None):
     """
     Berechnet den Conviction Score (0-100) für ein Trade-Setup.
     
-    Returns: dict mit score, breakdown, recommendation
+    Bei BEAR/CRISIS-Regime: Score wird auf max. 35 gekappt (Hard Block).
+    
+    Returns: dict mit score, breakdown, recommendation, vix_block
     """
     if weights is None:
         weights = DEFAULT_WEIGHTS
     
     conn = get_db()
+    
+    # VIX Hard Block prüfen (vor Faktor-Berechnung)
+    entry_allowed, block_reason = check_entry_allowed(strategy, conn)
+    vix = _get_current_vix(conn)
+    regime = _get_current_regime(conn)
     
     # Alle 8 Faktoren berechnen
     factors = {
@@ -242,8 +304,24 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
     score = sum(factors[k] * weights[k] for k in factors) / total_weight
     score = round(score, 1)
     
+    # VIX Hard Cap: BEAR → max 35, CRISIS → max 20
+    vix_blocked = False
+    if regime == 'CRISIS' or (vix is not None and vix >= 35):
+        if not entry_allowed:
+            score = min(score, 20)
+            vix_blocked = True
+    elif regime == 'BEAR' or (vix is not None and vix >= 30):
+        if not entry_allowed:
+            score = min(score, 35)
+            vix_blocked = True
+        else:
+            # Auch erlaubte Strategien bei BEAR: Score-Penalty
+            score = min(score, 55)
+    
     # Recommendation
-    if score >= 80:
+    if vix_blocked:
+        rec = 'STRONG_AVOID'
+    elif score >= 80:
         rec = 'STRONG_BUY'
     elif score >= 65:
         rec = 'BUY'
@@ -268,6 +346,11 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
         'weights': weights,
         'weakest': [{'factor': k, 'score': v} for k, v in weakest],
         'strongest': [{'factor': k, 'score': v} for k, v in strongest],
+        'vix_block': vix_blocked,
+        'vix_block_reason': block_reason if vix_blocked else None,
+        'regime': regime,
+        'vix': vix,
+        'entry_allowed': entry_allowed,
     }
 
 

@@ -87,19 +87,71 @@ def extract_tickers(text):
 
 
 def simple_sentiment(headline):
-    """Einfacher regelbasierter Sentiment-Score (-1 bis +1)."""
+    """
+    Sentiment-Score mit Magnitude-Gewichtung (-1 bis +1).
+    
+    3 Stärke-Level:
+      Strong (±0.5): vows, strikes, threatens, seizes, collapses, bans
+      Medium (±0.3): rises, gains, beats, falls, warns, cuts
+      Weak   (±0.1): hints, suggests, considers, slightly
+    
+    Magnitude verhindert False Positives: "Ölpreis steigt leicht" ≠ "Iran schließt Hormuz"
+    """
     hl = headline.lower()
     
-    bullish = ['surge', 'soar', 'rally', 'gain', 'rise', 'boost', 'record', 'beat',
-               'steigt', 'anstieg', 'rallye', 'gewinn', 'rekord']
-    bearish = ['crash', 'plunge', 'drop', 'fall', 'decline', 'fear', 'war', 'crisis',
-               'fällt', 'absturz', 'krise', 'krieg', 'einbruch', 'verlust']
+    # Strong bullish (0.5 Punkte) — klare, unmittelbare positive Wirkung
+    strong_bullish = [
+        'vows to', 'sanctions lifted', 'ceasefire', 'deal signed', 'acquisition',
+        'beats estimates', 'record earnings', 'buyback', 'dividend increase',
+        'nato expands', 'breakthrough', 'major contract', 'massive deal',
+        'surge', 'soar', 'skyrocket', 'explode higher', 'rally hard',
+        'hormuz opens', 'oil flows', 'production restored',
+    ]
+    # Medium bullish (0.3 Punkte)
+    medium_bullish = [
+        'rise', 'gain', 'rally', 'beat', 'boost', 'increase', 'grow',
+        'positive', 'upgrade', 'strong', 'above forecast', 'exceeds',
+        'steigt', 'anstieg', 'rallye', 'gewinn', 'rekord', 'zuwachs',
+    ]
+    # Weak bullish (0.1 Punkte)
+    weak_bullish = [
+        'hints', 'considers', 'slightly higher', 'modest gain', 'edges up',
+        'leicht gestiegen', 'wenig verändert',
+    ]
     
-    score = 0
-    for word in bullish:
-        if word in hl: score += 0.3
-    for word in bearish:
-        if word in hl: score -= 0.3
+    # Strong bearish (-0.5 Punkte)
+    strong_bearish = [
+        'crash', 'collapse', 'plunge', 'seize', 'seized', 'sanctions imposed',
+        'war declared', 'blockade', 'hormuz closed', 'hormuz blocked',
+        'missile strike', 'invasion', 'explosion', 'attack kills', 'shutdown',
+        'absturz', 'zusammenbruch', 'blockade', 'sanktionen verhängt', 'krieg erklärt',
+        'bankruptcy', 'defaults', 'fraud', 'scandal', 'arrested',
+    ]
+    # Medium bearish (-0.3 Punkte)
+    medium_bearish = [
+        'drop', 'fall', 'decline', 'miss', 'below', 'cut', 'reduce', 'warn',
+        'fear', 'crisis', 'risk', 'concern', 'tension', 'uncertainty',
+        'fällt', 'rückgang', 'krise', 'sorgen', 'abschwung', 'verlust', 'einbruch',
+    ]
+    # Weak bearish (-0.1 Punkte)
+    weak_bearish = [
+        'slightly lower', 'edges down', 'modest loss', 'cautious',
+        'leicht gefallen', 'kaum verändert',
+    ]
+    
+    score = 0.0
+    for phrase in strong_bullish:
+        if phrase in hl: score += 0.5
+    for phrase in medium_bullish:
+        if phrase in hl: score += 0.3
+    for phrase in weak_bullish:
+        if phrase in hl: score += 0.1
+    for phrase in strong_bearish:
+        if phrase in hl: score -= 0.5
+    for phrase in medium_bearish:
+        if phrase in hl: score -= 0.3
+    for phrase in weak_bearish:
+        if phrase in hl: score -= 0.1
     
     return max(-1.0, min(1.0, round(score, 2)))
 
