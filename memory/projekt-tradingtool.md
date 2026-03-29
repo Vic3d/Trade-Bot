@@ -363,11 +363,23 @@ Nachher: Was lief gut? Was falsch?
 - Strategy DNA Grundgerüst
 
 ### Phase 4 — Autonomous KI (Oktober–Dezember 2026)
-- Paper Trading Modus
-- KI handelt nach Regeln, Mental Stop Engine
-- Market Regime Detection
-- Erst nach 2-3 Monate Paper → Live mit kleinem Budget
-- Vollständiger Audit-Log
+**ZIEL (Victor, 29.03.2026 explizit gesagt):**
+> "Ich möchte irgendwann in einem Jahr oder so die Trade Republic API integrieren
+> und sagen: Hier hast du Geld und jetzt mach daraus mehr."
+
+Das ist der Nordstern. Alles davor ist Training dafür.
+
+- Paper Trading = Lernumgebung (läuft bereits ab 29.03.2026)
+  - 3 Tiers: Konservativ (Thesis), Moderat (Technisch), Aggressiv (Pokern)
+  - Albert setzt selbst Stops, entscheidet selbst Exits — keine passive Stop-Warteliste
+  - Ziel Win-Rate: 60%+ über alle Tiers
+- Market Regime Detection (VIX Hard Block live ab 29.03.2026)
+- Aktiver Daily Position Review: nicht warten auf Stop → aktiv bewerten ob These noch gilt
+- Trade Republic API Integration (~Q1 2027): Orders direkt platzieren
+  - Entry, Exit, Stop — alles autonom
+  - Victor bestätigt initial mit 1-Click Approval
+  - Nach 3 Monaten 60%+ Win-Rate: fully autonomous mit Budget-Limit
+- Vollständiger Audit-Log: jede Entscheidung erklärbar
 
 ### Phase 5 — Produkt Launch (2027)
 - Multi-User Architektur
