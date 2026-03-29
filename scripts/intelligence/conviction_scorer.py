@@ -41,16 +41,18 @@ DEFAULT_WEIGHTS = {
 # PS_* = Thesis-Plays (6-Schritt Deep Dive validiert) — in allen Regimes gut
 REGIME_STRATEGY_FIT = {
     'BULL_CALM':     {'S3': 1.0, 'S5': 0.9, 'S6': 0.9, 'PS2': 0.8, 'PS5': 0.8,
-                      'PS_STLD': 0.8, 'PS_NVO': 0.7},
+                      'PS_STLD': 0.8, 'PS_NVO': 0.7, 'PS_LHA': 0.9},
     'BULL_VOLATILE': {'S1': 0.9, 'S2': 0.9, 'S3': 0.8, 'PS1': 0.8, 'PS3': 0.8,
-                      'PS_STLD': 0.9, 'PS_NVO': 0.8},
+                      'PS_STLD': 0.9, 'PS_NVO': 0.8, 'PS_LHA': 0.7},
     'NEUTRAL':       {'S1': 0.7, 'S4': 0.8, 'PS1': 0.7, 'PS4': 0.7,
-                      'PS_STLD': 0.75, 'PS_NVO': 0.7},
+                      'PS_STLD': 0.75, 'PS_NVO': 0.7, 'PS_LHA': 0.6},
     'CORRECTION':    {'S1': 0.9, 'S4': 1.0, 'PS1': 0.9, 'PS3': 0.8, 'PS4': 0.9,
-                      'PS_STLD': 0.85, 'PS_NVO': 0.7},
+                      'PS_STLD': 0.85, 'PS_NVO': 0.7, 'PS_LHA': 0.5},
     'BEAR':          {'S4': 1.0, 'PS4': 1.0, 'S1': 0.8, 'PS1': 0.8,
-                      'PS_STLD': 0.7, 'PS_NVO': 0.6},
-    'CRISIS':        {'S4': 1.0, 'PS4': 1.0, 'PS_STLD': 0.5, 'PS_NVO': 0.4},
+                      'PS_STLD': 0.7, 'PS_NVO': 0.6,
+                      'PS_LHA': 0.4},   # BEAR = Krise läuft noch → LHA leidet noch
+    'CRISIS':        {'S4': 1.0, 'PS4': 1.0, 'PS_STLD': 0.5, 'PS_NVO': 0.4,
+                      'PS_LHA': 0.2},   # CRISIS = schlechtestes Umfeld für LHA
 }
 
 # Paper Trading: niedrigere Schwellen, weil Lernsystem

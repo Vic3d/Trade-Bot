@@ -370,7 +370,7 @@
       "ticker": "LHA.DE",
       "name": "Lufthansa AG",
       "yahoo": "LHA.DE",
-      "strategy": "S10",
+      "strategy": "PS_LHA",
       "entryMin": 7.0,
       "entryMax": 8.5,
       "stop": 5.8,
@@ -380,7 +380,11 @@
       ],
       "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
       "status": "WATCHLIST",
-      "wpr_monthly_check": true
+      "wpr_monthly_check": true,
+      "thesis": "Iran-Peace-Dividend: Kriegsende → Kerosinkosten sinken + Iran-Überflugrechte offen → Routen 2-3h kürzer → struktureller Kostenvorteil LHA. Inverse zu S1. KGV 6x = antizyklisch günstig.",
+      "kill_trigger": "Iran-Konflikt eskaliert weiter ODER Brent > 110$ dauerhaft ODER LHA unter 5.80€",
+      "entry_trigger": "Waffenstillstand-Signal Iran + Brent < 75$ + EMA20-Ausbruch über 8.50€",
+      "sector": "Aviation"
     },
     {
       "ticker": "MOS",
