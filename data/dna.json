@@ -277,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 238.51,
-      "stop": 238.36,
+      "stop": 238.66,
       "target": 239.55,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -287,7 +287,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 120.95,
-      "stop": 121.81,
+      "stop": 122.09,
       "target": 121.41,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -297,7 +297,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 35.15,
-      "stop": 35.2,
+      "stop": 35.24,
       "target": 35.3,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -327,7 +327,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 122.91,
-      "stop": 123.45,
+      "stop": 123.74,
       "target": 123.88,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -337,13 +337,13 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 310.5,
-      "stop": 316.63,
+      "stop": 317.03,
       "target": 312.33,
       "opened_at": "2026-03-30 13:01",
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T15:02:46.621273Z",
+  "last_sync": "2026-03-30T15:05:08.032927Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
