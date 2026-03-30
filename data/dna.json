@@ -277,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 238.51,
-      "stop": 238.66,
+      "stop": 238.74,
       "target": 239.55,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -303,7 +303,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T15:31:22.240451Z",
+  "last_sync": "2026-03-30T15:35:07.858939Z",
   "recent_day_trades": [
     {
       "ticker": "MSFT",
