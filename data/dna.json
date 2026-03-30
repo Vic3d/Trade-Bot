@@ -293,16 +293,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "PLTR",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 123.5,
-      "stop": 122.02,
-      "target": 123.9,
-      "opened_at": "2026-03-30 16:10",
-      "status": "OPEN"
-    },
-    {
       "ticker": "HAL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -343,8 +333,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T17:10:07.487327Z",
+  "last_sync": "2026-03-30T17:15:38.936325Z",
   "recent_day_trades": [
+    {
+      "ticker": "PLTR",
+      "strategy": "DT2",
+      "entry_price": 123.5,
+      "exit_price": 121.71,
+      "entry_date": "2026-03-30 16:10",
+      "exit_date": "2026-03-30 17:15",
+      "pnl_pct": -1.45,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOOGL",
       "strategy": "DT2",
@@ -533,16 +533,6 @@
       "entry_date": "2026-03-27 16:45",
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": 0.72,
-      "status": "WIN"
-    },
-    {
-      "ticker": "HAL",
-      "strategy": "DT2",
-      "entry_price": 34.75,
-      "exit_price": 35.1,
-      "entry_date": "2026-03-27 17:25",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 1.0,
       "status": "WIN"
     }
   ],
