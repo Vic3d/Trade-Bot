@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "CRM",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 160.15,
+      "stop": 158.24,
+      "target": 160.32,
+      "opened_at": "2026-03-30 18:50",
+      "status": "OPEN"
+    },
+    {
       "ticker": "DIS",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -293,16 +303,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "CRM",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 161.29,
-      "stop": 160.42,
-      "target": 160.3,
-      "opened_at": "2026-03-30 17:20",
-      "status": "OPEN"
-    },
-    {
       "ticker": "META",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -343,8 +343,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T18:45:37.542701Z",
+  "last_sync": "2026-03-30T18:50:07.436823Z",
   "recent_day_trades": [
+    {
+      "ticker": "CRM",
+      "strategy": "DT2",
+      "entry_price": 161.29,
+      "exit_price": 160.15,
+      "entry_date": "2026-03-30 17:20",
+      "exit_date": "2026-03-30 18:50",
+      "pnl_pct": -0.7,
+      "status": "LOSS"
+    },
     {
       "ticker": "DIS",
       "strategy": "DT2",
@@ -534,16 +544,6 @@
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": -0.58,
       "status": "LOSS"
-    },
-    {
-      "ticker": "META",
-      "strategy": "DT9",
-      "entry_price": 461.3,
-      "exit_price": 456.47,
-      "entry_date": "2026-03-27 14:40",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 1.06,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
