@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "CSCO",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 67.64,
+      "stop": 66.83,
+      "target": 68.62,
+      "opened_at": "2026-03-30 17:25",
+      "status": "OPEN"
+    },
+    {
       "ticker": "GOLD",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -267,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 161.29,
-      "stop": 159.36,
+      "stop": 160.42,
       "target": 160.3,
       "opened_at": "2026-03-30 17:20",
       "status": "OPEN"
@@ -321,20 +331,20 @@
       "target": 424.17,
       "opened_at": "2026-03-30 15:02",
       "status": "OPEN"
-    },
+    }
+  ],
+  "last_sync": "2026-03-30T17:25:08.779064Z",
+  "recent_day_trades": [
     {
       "ticker": "CSCO",
       "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 68.48,
-      "stop": 67.66,
-      "target": 69.04,
-      "opened_at": "2026-03-30 14:40",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-30T17:20:12.073649Z",
-  "recent_day_trades": [
+      "entry_price": 68.48,
+      "exit_price": 67.64,
+      "entry_date": "2026-03-30 14:40",
+      "exit_date": "2026-03-30 17:25",
+      "pnl_pct": -1.23,
+      "status": "LOSS"
+    },
     {
       "ticker": "GOLD",
       "strategy": "DT5",
@@ -524,16 +534,6 @@
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": -0.74,
       "status": "LOSS"
-    },
-    {
-      "ticker": "ORCL",
-      "strategy": "DT1",
-      "entry_price": 121.2,
-      "exit_price": 121.26,
-      "entry_date": "2026-03-27 14:45",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 0.05,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
