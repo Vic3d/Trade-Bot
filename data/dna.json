@@ -257,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 227.17,
-      "stop": 226.63,
+      "stop": 226.81,
       "target": 226.14,
       "opened_at": "2026-03-30 17:31",
       "status": "OPEN"
@@ -343,7 +343,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T18:40:08.861893Z",
+  "last_sync": "2026-03-30T18:45:37.542701Z",
   "recent_day_trades": [
     {
       "ticker": "DIS",
