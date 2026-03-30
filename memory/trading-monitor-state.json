@@ -1,19 +1,22 @@
 {
-  "date": "2026-03-27",
+  "date": "2026-03-30",
   "alerts_sent_today": [
-    "PLTR_STOP_WARN",
-    "MACRO_WTI_DAILY",
+    "MACRO_NIKKEI_DROP",
+    "PLTR_STOP_HIT",
     "PLTR_STOP_CRIT",
-    "PLTR_STOP_HIT"
+    "WL_NOVO-B.CO_WPR_MONTHLY",
+    "PLTR_STOP_WARN",
+    "MACRO_SPY_UNDER_MA200_DAILY"
   ],
-  "run_count": 60,
+  "run_count": 20,
   "trail_sent": {
     "EQNR_TRAIL_5": "2026-03-19",
     "EQNR_TRAIL_10": "2026-03-19",
     "A3D42Y_TRAIL_5": "2026-03-26"
   },
-  "wti_open": 94.23,
-  "prev_wti": 101.18,
-  "vix_open": 27.44,
-  "last_run": "2026-03-27T21:45:15.784391+00:00"
+  "wti_open": 100.95,
+  "prev_wti": 101.93,
+  "vix_open": 31.05,
+  "spy_above_ma200": false,
+  "last_run": "2026-03-30T10:45:23.847767+00:00"
 }

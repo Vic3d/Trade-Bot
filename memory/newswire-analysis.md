@@ -1,60 +1,31 @@
-## 2026-03-29 | Geopolitical Scanner — CRITICAL Alert (Score 50)
+## 30.03.2026 12:31 — Geopolitical Scanner Tier-1
 
-**Time:** 17:30 UTC | **Tier:** HIGH
+**Alert Status:** HIGH (Score 364 — Gesamtrisiko 7d-Avg: 616 | Delta: -252)
 
-### PRIMARY ALERT
-🚨 **GEO-ALERT HIGH** | Composite Score 489
-- **🇹🇷 Turkey** (Score 71)
-- **🇵🇰 Pakistan** (Score 71)  
-- **🇮🇷 Iran/Hormuz** (Score 69)
-- **🇮🇱 Israel/Palestine** (Score 50) — CRITICAL escalation
+### 🔴 Kritische Zonen:
+1. **🇹🇷 Türkei** — Score 71 — Militärische Aktivitäten
+2. **🇮🇷 Iran/Hormuz Strait** — Score 61 — Shipping Disruption (LNG Qatar → Taiwan)
+3. **🇵🇰 Pakistan** — Score 58 — Taliban Retaliation Risk
+4. **🇹🇼 Taiwan** — Score 33 — Military Exercise Response
 
-### KEY DEVELOPMENTS
+### 🚨 Breaking: Taiwan LNG Crisis
+- Taiwan hat nur **11 Tage LNG-Reserven** (kritisch niedrig!)
+- Iran blockiert Hormuz-Passage → Unterbruch Qatar-Lieferungen
+- Risiko: **Energierationierung & Chip-Production Impact**
+- China signalisiert "stabile Energieversorgung" nach "friedlicher Wiedervereinigung"
 
-**Israel-Iran Escalation:**
-- Israeli airstrikes on Iranian missile sites + infrastructure (140+ sorties in 24h)
-- Iranian ballistic missiles fired at southern Israel (Beersheba hit)
-- IRGC targeting ultimatum: 2 Israeli/US universities in retaliation
-- US-Israeli joint operations ongoing (Month 2)
+### 📍 Taiwan Lage (letzter Check 30.03):
+- F-16V Crash (27.01): Pilot Capt. Hsin Po-yi SAR-Status unklar
+- PLA-Sorties: Regelmäßig 20–130 pro Tag über Median-Line
+- Keine Major-Eskalation, aber konstante Druck-Strategie
 
-**Lebanon Front:**
-- 1,238+ killed from Israeli airstrikes; 3,543 injured
-- Hezbollah drones targeting Israeli army positions
-- Continued P&P shelling in south
-
-**Pakistan-Taliban:**
-- New Taliban retaliation cycle triggered
-- Regional destabilization signals
-
-### PORTFOLIO IMPACT
-Affected strategies: **S1, S3, S9**  
-Watch tickers: **CCL, DR0.DE, EQNR, GLEN.L, MSFT, NVDA, S.TO**
-
-### CONTEXT
-Escalation across three hotspots simultaneously—Iran direct strikes, Lebanon sustained ops, Pakistan volatility. This represents a widening of the February conflict scope. Ballistic missile use + infrastructure targeting = market-moving risk.
+### ⚡ Empfehlung:
+**Deep Dive [Pakistan + Taliban]** und **Deep Dive [Iran Hormuz]** für Vertiefung.
 
 ---
 
-## [2026-03-29 18:00 UTC]
-KEIN_SIGNAL
----
-
-## [2026-03-29 18:30 UTC]
-KEIN_SIGNAL (Scripts not yet configured)
----
-
-## [2026-03-29 19:00 UTC]
-KEIN_SIGNAL
----
-
-## [2026-03-29 19:30 UTC]
-KEIN_SIGNAL
----
-
-## [2026-03-29 20:00 UTC]
-KEIN_SIGNAL
----
-
-## [2026-03-29 20:30 UTC]
-Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
----
+## [2026-03-30 11:00 UTC]
+Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
+- [POSITION] EQNR: Hormuz-Strait-Artikel (existierende These)
+- [WATCHLIST] RHM.DE: Rheinmetall Boom-Artikel (existierende These)
+- [WATCHLIST] ASML.AS: SK Hynix Bestellung (existierende These)

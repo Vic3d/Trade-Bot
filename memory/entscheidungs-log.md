@@ -282,3 +282,59 @@ Format: AUTO-Trades von autonomous_loop.py | Manuelle Trades von Albert/Victor d
 **Lesson:** Trading-Parameter entstehen nicht im Moment der Panik — sie werden vorher festgeschrieben. Wenn-Dann-Pläne in der Schublade = Handlungsfähigkeit wenn es darauf ankommt.
 
 **Verweis:** `strategien.md` → Sektion "REGIME-FRAMEWORK" | `transcript-insights.md` → Eriksen 28.03.2026
+
+## 2026-03-30 07:31 — AUTO: WATCHLIST TSM
+**Entscheidung:** WATCHLIST für TSM (Score: 47/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -16.3% unter 52W-High | Sicherer Abstand vom 52W-Low | Starkes bullisches News-Signal
+
+## 2026-03-30 07:31 — AUTO: WATCHLIST ASML.AS
+**Entscheidung:** WATCHLIST für ASML.AS (Score: 47/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -12.7% unter 52W-High | Sicherer Abstand vom 52W-Low | Starkes bullisches News-Signal
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET AMAT
+**Entscheidung:** TRADE ERÖFFNET für AMAT (Score: 62/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -14.8% unter 52W-High | Sicherer Abstand vom 52W-Low | Momentum stabilisiert
+**Trade:** Entry 337.17€ | Stop 296.71€ | Ziel 446.52€ | 5.93 Stück
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET LRCX
+**Entscheidung:** TRADE ERÖFFNET für LRCX (Score: 62/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -17.6% unter 52W-High | Sicherer Abstand vom 52W-Low | Momentum stabilisiert
+**Trade:** Entry 211.41€ | Stop 186.04€ | Ziel 282.86€ | 9.46 Stück
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET KLAC
+**Entscheidung:** TRADE ERÖFFNET für KLAC (Score: 62/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -14.8% unter 52W-High | Sicherer Abstand vom 52W-Low | Momentum stabilisiert
+**Trade:** Entry 1443.21€ | Stop 1270.02€ | Ziel 1808.93€ | 1.39 Stück
+
+## 2026-03-30 07:31 — AUTO: WATCHLIST WEAT
+**Entscheidung:** WATCHLIST für WEAT (Score: 51/100)
+**Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
+**Kern-Reasoning:** Momentum stabilisiert | Starkes bullisches News-Signal | CRV 2.6:1 attraktiv
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET MOS
+**Entscheidung:** TRADE ERÖFFNET für MOS (Score: 53/100)
+**Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
+**Kern-Reasoning:** Tief -34.6% unter 52W-High | Noch fallend | Starkes bullisches News-Signal
+**Trade:** Entry 25.00€ | Stop 22.00€ | Ziel 35.28€ | 80.00 Stück
+
+## 2026-03-30 07:31 — AUTO: WATCHLIST NTR
+**Entscheidung:** WATCHLIST für NTR (Score: 39/100)
+**Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
+**Kern-Reasoning:** Moderat -11.4% unter 52W-High | Sicherer Abstand vom 52W-Low | Noch fallend
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET CF
+**Entscheidung:** TRADE ERÖFFNET für CF (Score: 52/100)
+**Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
+**Kern-Reasoning:** Sicherer Abstand vom 52W-Low | Momentum stabilisiert | Starkes bullisches News-Signal
+**Trade:** Entry 136.45€ | Stop 120.08€ | Ziel 179.02€ | 14.66 Stück
+
+## 2026-03-30 07:31 — AUTO: TRADE ERÖFFNET ADM
+**Entscheidung:** TRADE ERÖFFNET für ADM (Score: 52/100)
+**Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
+**Kern-Reasoning:** Sicherer Abstand vom 52W-Low | Momentum stabilisiert | Starkes bullisches News-Signal
+**Trade:** Entry 72.23€ | Stop 64.37€ | Ziel 88.12€ | 27.69 Stück

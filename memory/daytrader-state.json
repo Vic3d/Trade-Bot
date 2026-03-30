@@ -1,31 +1,8 @@
 {
-  "daily_pnl": -97.02449999999885,
-  "daily_trades": 44,
-  "last_date": "2026-03-27",
-  "signals_today": [
-    "GOLD",
-    "GOOGL",
-    "HAL",
-    "OXY",
-    "MRK",
-    "CRM",
-    "XOM",
-    "DIS",
-    "MSFT",
-    "META",
-    "CSCO",
-    "TMO",
-    "UNH",
-    "ORCL",
-    "GOLD",
-    "UNH",
-    "CSCO",
-    "XOM",
-    "HAL",
-    "OXY",
-    "GOOGL",
-    "DIS"
-  ],
-  "scanned": 185,
-  "signals_found": 235
+  "daily_pnl": 0,
+  "daily_trades": 0,
+  "last_date": "2026-03-30",
+  "signals_today": [],
+  "scanned": 0,
+  "signals_found": 0
 }

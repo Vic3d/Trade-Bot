@@ -85,5 +85,16 @@
     "filename": "finanzb\u00e4r-lithium-2026-03-27.txt",
     "processed_at": "2026-03-29T11:02:02.195187+00:00",
     "had_insights": true
+  },
+  "erichsen_2026-03-30.txt": {
+    "processed": true,
+    "timestamp": "2026-03-30T13:00:00Z",
+    "insights": true,
+    "categories": [
+      "Methodik: Stop-Loss",
+      "Methodik: Erwartungserosion",
+      "Methodik: Mittelfrist-Dominanz",
+      "Framework: Buy-in-Weakness"
+    ]
   }
 }

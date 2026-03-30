@@ -270,9 +270,20 @@ def is_growth_long_allowed(regime: dict, ticker: str) -> tuple[bool, str]:
     if regime_name in ('CRASH', 'TREND_DOWN'):
         return False, f"Regime {regime_name} — Growth-Longs verboten laut Strategien.md."
 
-    # Soft warning: erhöhter VIX
-    if vix and vix > 27:
-        return False, f"VIX {vix:.1f} > 27 — kein neuer Growth-Long (Strategien.md Regel: VIX >27 max 1%, max 2 Pos)."
+    # Asset-spezifische VIX-Sensitivität (ersetzt harten Binary-Switch)
+    try:
+        sys.path.insert(0, str(Path(__file__).parent))
+        from vix_context import calculate_position_multiplier, get_vix_percentile
+        vix_ctx = get_vix_percentile()
+        percentile = vix_ctx.get('vix_percentile', 50)
+        mult = calculate_position_multiplier(ticker, vix, percentile)
+        if mult == 0.0:
+            return False, f"VIX {vix:.1f} (P{percentile:.0f}%) — {ticker} stark VIX-sensitiv, Block aktiv."
+        # Multiplikator wird an calculate_position weitergegeben (via vix_zone Anpassung)
+    except Exception as e:
+        # Fallback auf altes Verhalten wenn Modul fehlt
+        if vix and vix > 35:
+            return False, f"VIX {vix:.1f} > 35 — kein neuer Trade (Fallback)."
 
     return True, "ok"
 

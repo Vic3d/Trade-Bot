@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "description": "Multi-hop Relevanz-Regeln für Nacht-Collector. Ebene 1 = direkt, Ebene 2 = Strategie-Keywords, Ebene 3 = Meta (immer prüfen).",
+
+  "tier1_tickers": ["PLTR", "A3D42Y", "A2DWAW", "EQNR", "LHA", "STLD", "NUE", "CLF", "DHT", "FRO", "AG", "PAAS", "WPM", "ISPA", "DR0", "RHM", "BAYN", "RIO", "BHP"],
+
+  "tier2_strategy_keywords": {
+    "S1_Iran_Oil": ["Iran", "Hormuz", "Houthi", "Houthis", "OPEC", "Brent", "WTI", "crude", "tanker", "Öl", "oil", "Gulf", "Persian Gulf", "Saudi", "Aramco", "Khamenei", "IRGC", "Teheran", "Tehran", "Strait", "Bandar Abbas"],
+    "S2_Rüstung": ["NATO", "Rüstung", "defense", "military", "Rheinmetall", "weapons", "ammunition", "Bundeswehr", "Ukraine", "Rüstungsbudget", "Aufrüstung"],
+    "S3_KI": ["Nvidia", "NVDA", "semiconductor", "chip", "AI", "KI", "Palantir", "data center", "GPU", "TSMC", "export controls"],
+    "S4_Silber": ["silver", "Silber", "gold", "Gold", "precious metals", "Edelmetall", "safe haven", "inflation"],
+    "S5_Rohstoffe": ["copper", "Kupfer", "lithium", "Rio Tinto", "BHP", "Freeport", "mining", "cobalt"],
+    "S8_Tanker_Lag": ["tanker", "Tanker", "shipping", "freight", "Baltic", "Suez", "maritime", "VLCC", "crude carrier", "oil shipment"],
+    "S9_Kuba": ["Cuba", "Kuba", "Havana", "Matanzas", "Sovcomflot", "Karibik", "Caribbean", "Anatoly", "Kolodkin", "SOUTHCOM", "embargo"],
+    "S10_Lufthansa": ["Lufthansa", "LHA", "airline", "Kerosin", "aviation", "jet fuel", "Ryanair", "IAG"],
+    "S11_Edelmetall_Minen": ["First Majestic", "Pan American", "Wheaton", "Hecla", "silver miner", "gold miner"]
+  },
+
+  "tier3_meta_always_flag": [
+    "Trump", "Biden", "White House", "Weißes Haus",
+    "sanctions", "Sanktionen", "embargo",
+    "Russia", "Russland", "Putin", "Kremlin", "Kreml",
+    "China", "Xi Jinping", "PLA", "Taiwan",
+    "missile", "Rakete", "strike", "Angriff", "airstrike",
+    "Navy", "CENTCOM", "SOUTHCOM", "Pentagon", "Hegseth",
+    "tanker", "Tanker",
+    "oil price", "Ölpreis",
+    "Fed", "Federal Reserve", "interest rate", "Zinsen", "CPI", "inflation",
+    "OPEC", "Brent", "WTI",
+    "geopolitical", "geopolitisch", "escalation", "Eskalation",
+    "war", "Krieg", "ceasefire", "Waffenstillstand",
+    "explosion", "Explosion", "attack", "Anschlag"
+  ],
+
+  "min_score_for_night_log": 20,
+  "min_score_for_alert": 9999,
+  "_comment_alert": "min_score_for_alert auf 9999 gesetzt = NIE nachts pushen, nur sammeln"
+}

@@ -229,5 +229,47 @@
     "ticker": "",
     "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung +5.6% ($94.23\u2192$99.49)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLTR:",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:00:47.611560+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 124.21\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 15/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:00:47.612970+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -99 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:00:47.613612+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: NIKKEI 225 -3.2%\n\ud83d\udccc Ursache: Geopolitische Eskalation\n\ud83d\udd17 Kausalkette: Geopolitische Krise \u2192 \u00d6l-Risikopr\u00e4mie steigt, Safe-Haven-Nachfrage, R\u00fcstung profitiert\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc8 EQNR: star",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:00:47.614714+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f S&P 500 UNTER 200-MA | SPY $634.09 vs MA200 $646.73 (-2.0%) \u2014 Risk-OFF aktiv. Kein aggressiver Aufbau.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:15:30.197934+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 124.17\u20ac | Stop: 127.0\u20ac | Nur noch -2.3% Abstand! [Conviction: 15/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-30T06:31:26.735429+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 124.19\u20ac | Stop: 127.0\u20ac | -2.3% Abstand [Conviction: 15/100]",
+    "value": ""
   }
 ]

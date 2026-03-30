@@ -1,37 +1,37 @@
 {
-  "timestamp": "2026-03-27T20:01:36.982795",
+  "timestamp": "2026-03-30T08:01:12.325692",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
       "status": "STARK",
-      "score": 68,
-      "momentum_avg": 8.4,
+      "score": 80,
+      "momentum_avg": 10.1,
       "news_score": 100,
       "reasons": [
-        "Preise positiv +8.4% (14T)",
+        "Preise stark +10.1% (14T)",
         "News bullish (Score +100)"
       ]
     },
     "PS2": {
       "name": "Tanker-Lag-These",
       "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -10.9,
+      "score": 28,
+      "momentum_avg": -7.7,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -10.9% (14T)",
+        "Preise schwach -7.7% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS3": {
       "name": "NATO/EU-Rüstung",
       "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -14.2,
-      "news_score": 0,
+      "score": 19,
+      "momentum_avg": -15.1,
+      "news_score": 20,
       "reasons": [
-        "Preise sehr schwach -14.2% (14T)",
-        "News neutral (Score +0)"
+        "Preise sehr schwach -15.1% (14T)",
+        "News neutral (Score +20)"
       ]
     },
     "PS4": {
@@ -49,21 +49,21 @@
       "name": "Dünger/Agrar-Superzyklus",
       "status": "GESCHWÄCHT",
       "score": 28,
-      "momentum_avg": -8.4,
+      "momentum_avg": -6.6,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -8.4% (14T)",
+        "Preise schwach -6.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS10": {
       "name": "Lufthansa — Peace Dividend",
-      "status": "NEUTRAL",
-      "score": 40,
-      "momentum_avg": 0,
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -11.0,
       "news_score": 0,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -11.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -71,10 +71,10 @@
       "name": "Defense-EU-Small",
       "status": "GESCHWÄCHT",
       "score": 28,
-      "momentum_avg": -9.2,
+      "momentum_avg": -9.6,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -9.2% (14T)",
+        "Preise schwach -9.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -91,34 +91,78 @@
     },
     "PS13": {
       "name": "Copper-Green-Transition",
-      "status": "NEUTRAL",
-      "score": 40,
-      "momentum_avg": 0,
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -17.8,
       "news_score": 0,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -17.8% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS14": {
       "name": "Shipping-Normalization",
-      "status": "NEUTRAL",
-      "score": 40,
-      "momentum_avg": 0,
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -10.7,
       "news_score": 0,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -10.7% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS15": {
       "name": "Biotech-Rate-Reversal",
-      "status": "NEUTRAL",
-      "score": 40,
-      "momentum_avg": 0,
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -4.5,
       "news_score": 0,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise schwach -4.5% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS16": {
+      "name": "Nuclear Renaissance — AI Power Demand",
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -11.8,
+      "news_score": 0,
+      "reasons": [
+        "Preise sehr schwach -11.8% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS17": {
+      "name": "EU Domestic Champions — Trade War Profiteure",
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -9.4,
+      "news_score": 0,
+      "reasons": [
+        "Preise schwach -9.4% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS_STLD": {
+      "name": "Stahl-Tariff-Play (Liberation Day)",
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -13.4,
+      "news_score": 0,
+      "reasons": [
+        "Preise sehr schwach -13.4% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS_NVO": {
+      "name": "Novo Nordisk Value/Turnaround",
+      "status": "GESCHWÄCHT",
+      "score": 28,
+      "momentum_avg": -3.7,
+      "news_score": 0,
+      "reasons": [
+        "Preise schwach -3.7% (14T)",
         "News neutral (Score +0)"
       ]
     }
@@ -129,9 +173,9 @@
       "name": "Tanker-Lag-These",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "score": 28,
       "reasons": [
-        "Preise sehr schwach -10.9% (14T)",
+        "Preise schwach -7.7% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -140,10 +184,10 @@
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "score": 19,
       "reasons": [
-        "Preise sehr schwach -14.2% (14T)",
-        "News neutral (Score +0)"
+        "Preise sehr schwach -15.1% (14T)",
+        "News neutral (Score +20)"
       ]
     },
     {
@@ -164,7 +208,7 @@
       "new_status": "GESCHWÄCHT",
       "score": 28,
       "reasons": [
-        "Preise schwach -8.4% (14T)",
+        "Preise schwach -6.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -172,10 +216,10 @@
       "ps_id": "PS10",
       "name": "Lufthansa — Peace Dividend",
       "old_status": "STARK",
-      "new_status": "NEUTRAL",
-      "score": 40,
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -11.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -186,7 +230,7 @@
       "new_status": "GESCHWÄCHT",
       "score": 28,
       "reasons": [
-        "Preise schwach -9.2% (14T)",
+        "Preise schwach -9.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -205,10 +249,10 @@
       "ps_id": "PS13",
       "name": "Copper-Green-Transition",
       "old_status": "STARK",
-      "new_status": "NEUTRAL",
-      "score": 40,
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -17.8% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -216,10 +260,10 @@
       "ps_id": "PS14",
       "name": "Shipping-Normalization",
       "old_status": "STARK",
-      "new_status": "NEUTRAL",
-      "score": 40,
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise sehr schwach -10.7% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -227,10 +271,54 @@
       "ps_id": "PS15",
       "name": "Biotech-Rate-Reversal",
       "old_status": "STARK",
-      "new_status": "NEUTRAL",
-      "score": 40,
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
       "reasons": [
-        "Preise seitwärts +0.0% (14T)",
+        "Preise schwach -4.5% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS16",
+      "name": "Nuclear Renaissance — AI Power Demand",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
+      "reasons": [
+        "Preise sehr schwach -11.8% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS17",
+      "name": "EU Domestic Champions — Trade War Profiteure",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
+      "reasons": [
+        "Preise schwach -9.4% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS_STLD",
+      "name": "Stahl-Tariff-Play (Liberation Day)",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
+      "reasons": [
+        "Preise sehr schwach -13.4% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS_NVO",
+      "name": "Novo Nordisk Value/Turnaround",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 28,
+      "reasons": [
+        "Preise schwach -3.7% (14T)",
         "News neutral (Score +0)"
       ]
     }

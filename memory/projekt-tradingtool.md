@@ -3290,3 +3290,94 @@ Producer → Developer → Explorer
 
 **Alberts Translation:** 
 Rohstoff-Aktien sind Geduld-Spiele. Timing ist nicht, These ist. Wenn du an die 2028-2032 Supply-Lücke glaubst, kaufst du nicht am Hoch (2022) und nicht am Low (2025), sondern in Tranchen über 5J. Emotionale Stabilität ist der Edge.
+---
+
+## 2026-03-30 — Magnitude-Estimator-System gebaut
+
+**Was wurde gebaut:**
+- `data/historical_events_seed.json` — 49 historische Events (Öl, Tech, Metals, Defense)
+- DB-Tabellen: `impact_magnitude_history` + `magnitude_estimates` in trading.db
+- `scripts/historical_data_seeder.py` — lädt echte Yahoo Finance Kursdaten für alle Events
+- `scripts/magnitude_estimator.py` — schätzt erwartete % Moves via 3-Stufen-Lookup
+- Integration: overnight_collector.py speichert magnitude_estimate per Event
+- Integration: morning_brief_generator.py zeigt "↳ Brent +3.2% erwartet (n=8, Konf. 72%)"
+
+**Seeding-Ergebnis (alle 49/49 erfolgreich):**
+- Größte Moves: OPEC Preiskrieg -24%, DeepSeek -17%, Nvidia Earnings +16%, Abqaiq +15%
+- Interssant: Iran direkter Angriff auf Israel (Apr 2024) brachte nur -0.4% Brent (bereits eingepreist)
+- Trump Liberation Day (Apr 2025): QQQ +0.7% am Tag selbst, aber -12% nach 1 Woche
+- OPEC Förderkürzungen haben gemischte Wirkung: Surprise Cut +6.5%, reguläre Cut -0.1%
+
+**Lookup-Hierarchie:** exact → fuzzy keyword → direction-fallback → leer
+**Konfidenz:** 55% (n=1) bis max 95% (viele Events), Fallback -25% Abschlag
+
+**Nächste Schritte:** Feedback-Loop schreibt nach 24h echte Moves zurück → confidence steigt automatisch
+
+---
+
+## 2026-03-30 — Lars Eriksen: Stop-Loss in volatiler Umgebung + Erwartungserosion (Woche 13/26)
+
+**Quelle:** Lars Erichsen / Rendite Spezialisten — Ausgabe 13/26 + Zukunfts-Depot | 30.03.2026
+
+### Methodik-Erkenntnisse (3 hochwertig)
+
+**1. Stop-Loss Management in hochvolatiler politischer Umgebung**
+- **Problem:** Enge Stops (1-2%) werden systematisch durch kurzfristiges Rauschen ausgestoppt (Tweets, Posts, Ultimaten)
+- **Nicht das Setup ist schlecht:** Die technischen Muster sind valide, aber intraday-Volatilität zerstört sie
+- **Lösung (Rangliste):**
+  - a) Positionsgrößen reduzieren → Verlust von Stop-Hit nicht existenzbedrohend
+  - b) Stops weiter fassen (3-5% statt 1-2%)
+  - c) Zeitbasierte Exits statt Kurs-basierte → Haltezeit >1W, politisches Rauschen als Normalzustand, nicht als Signal
+- **Praktische Anwendung für Albert:** VIX >25 = tighter Stops unsicher. Either 0.5x Positionsgröße ODER 5%+ wider Stop.
+
+**2. Erwartungserosion als Marktmuster**
+- **Muster:** Wiederholte gleiche Nachrichten wirken progressiv negativer
+  - Beispiel: Ultimatum-Verlängerung am Montag = Hoffnungssignal → Markt reagiert +
+  - Dieselbe Nachricht Freitag (2. Verlängerung) = Hilflosigkeit/Eskalation = Markt reagiert −
+- **Kern-Logik:** Der Markt preist "wiederholte Maßnahme = Uneffektivität" ein
+- **Nicht verwechseln mit:** News-Fade (Same news = weniger Überraschung). Hier: News ist ANDERS einzustufen (2. ≠ 1. Verlängerung)
+- **Für Technicals:** VIX-Hochs intraday an Plätzen, die in Aufwärtstrends nicht vorkommen → Struktur hat sich geändert
+
+**3. Mittelfrist schlägt Kurzfrist in politisierten Märkten**
+- **Neue These (Erichsen 2026):** "Politische Börsen haben keine kurzen Beine mehr"
+  - Gemeint: Die klassische Weisheit "Politik ist transient, Märkte nerven sich dran, buy the dip" funktioniert nicht mehr
+  - Grund: Near-/Re-Shoring ist STRUKTURELL, nicht temporär → Geopolitik ist jetzt FUNDAMENTAL
+- **Konsequenz:** Fundamentaldaten setzen sich mittelfristig (3-5 Jahre) durch, nicht kurzfristig
+- **Praktisch:** Nicht zu schnell auf Intraday-Moves reagieren; wenn die 3-5J-These noch gültig, ist kurzfristige Schwäche Käuflichkeit
+
+**Kontext (nur für Rahmen, nicht als Prognose):**
+- S&P 500: 5 Wochen Verluste hintereinander
+- Nasdaq: 10 von 11 Wochen im Minus (historisch selten)
+- VIX >30 (Freitag 28.03)
+- Fed: Zinssenkungen vor 2027 unrealistisch bei Ölpreisdruck
+- Powell-Nachfolger (Mai): Markt preist Überraschung nicht ein
+
+### Framework: Kauf in Schwäche (3-5 Jahre Horizont)
+
+**Kernprinzip (Erichsen):**
+> "Kein einfacherer Weg zur Outperformance als gute Aktien in schlechten Zeiten zu kaufen."
+
+**Kauf-Logik:**
+- Keine Notwendigkeit unter Druck zu kaufen (höhere WS tieferer Notierungen) → größere Geduld = höhere Renditechance
+- Tiefen sind Kaufgelegenheiten, nicht Bedrohungen
+- Zeithorizont ist KEY: 3-5 Jahre (nicht 4-6 Wochen)
+
+**Unterstützungszonen (Beispiele, nicht Kursziele):**
+- Nasdaq-100 ETF: aktuell 46,49 EUR → Kaufzone ca. 38 EUR
+- Brookfield: aktuell 34 EUR → Kaufzone 30-34 EUR
+- Amazon: aktuell 173 EUR → Kaufzone ca. 148 EUR
+- TotalEnergies (TTE.PA): aktuell 77,86 EUR → Kaufzone ca. 70 EUR
+- (Weitere Einzelpositionen zu spezifisch für Portfolio-relevanz ohne Victor-Kontext)
+
+### Alberts Gesamteinschätzung
+
+✅ **3 hochwertige Erkenntnisse extrahiert:** Stop-Loss-Anpassung in Volatilität ist sofort umsetzbar, Erwartungserosion ist neuer Pattern für Technicals, Mittelfrist-Dominanz passt zu langfristigen Thesen.
+
+✅ **Praktische Integration:** 
+- VIX-Schwellenwert (>25) → breitere Stops als Default testen
+- Wiederholte Nachrichten → separate Gewichtung in Newswire-Scanner
+- Buy-in-Weakness Framework → unterstützt bestehende Strategy S (Akkumulation in Weakness)
+
+⚠️ **Nicht-umsetzbar:** Spezifische Buyzone-Nummern sind Snapshot, keine Handelssignale. Datum-gebunden (28-30.03.2026).
+
+**Passt zu Strategy S (Mittelfrist-Akkumulation):** JA — Erichsen bestätigt mittelfristige Fokus, warnt vor kurzfristigen Stops.

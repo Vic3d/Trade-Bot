@@ -84,15 +84,15 @@
         "max": 2000
       },
       "entry_criteria": [
-        "\u00dcber EMA20 + EMA50",
-        "RSI 50-70 (Momentum, nicht \u00fcberkauft)",
-        "A/D > 1.5x (K\u00e4ufer-Volumen)",
+        "Über EMA20 + EMA50",
+        "RSI 50-70 (Momentum, nicht überkauft)",
+        "A/D > 1.5x (Käufer-Volumen)",
         "Katalysator: Breakout, Sektor-Rotation, News"
       ],
       "exit_rules": [
-        "Ziel +5-10% erreicht \u2192 schlie\u00dfen",
-        "Nach 7 Tagen ohne +5% \u2192 schlie\u00dfen",
-        "Stop getroffen \u2192 schlie\u00dfen"
+        "Ziel +5-10% erreicht → schließen",
+        "Nach 7 Tagen ohne +5% → schließen",
+        "Stop getroffen → schließen"
       ]
     },
     "PT": {
@@ -115,21 +115,21 @@
         "max": 3000
       },
       "entry_criteria": [
-        "Screener \ud83d\udfe2 KAUFBAR (alle 5 Stufen)",
-        "Makro-These aktiv und best\u00e4tigt",
+        "Screener 🟢 KAUFBAR (alle 5 Stufen)",
+        "Makro-These aktiv und bestätigt",
         "Sektor im Top-5 Momentum-Ranking",
         "Keine Earnings in 3 Tagen"
       ],
       "exit_rules": [
-        "Trailing Stop (5% \u2192 BE, 10% \u2192 +5%, 15% \u2192 +10%)",
-        "These invalidiert \u2192 sofort schlie\u00dfen",
-        "Screener wechselt auf \ud83d\udd34 \u2192 schlie\u00dfen",
+        "Trailing Stop (5% → BE, 10% → +5%, 15% → +10%)",
+        "These invalidiert → sofort schließen",
+        "Screener wechselt auf 🔴 → schließen",
         "Max 30 Tage Haltezeit"
       ]
     }
   },
-  "max_positions": 20,
-  "min_free_cash": 2000,
+  "max_positions": 50,
+  "min_free_cash": 1000,
   "sector_map": {
     "OXY": "Energy",
     "EQNR": "Energy",
@@ -177,10 +177,24 @@
     "IBB": "Biotech",
     "BAYN.DE": "Biotech",
     "ASML.AS": "Semis",
-    "LHA.DE": "Aviation"
+    "LHA.DE": "Aviation",
+    "AIR.PA": "Aviation",
+    "BA.L": "Defense",
+    "BWXT": "Defense",
+    "CCJ": "Materials",
+    "EQNR.OL": "Energy",
+    "HAG.DE": "Defense",
+    "MOS": "Materials",
+    "NOVO-B.CO": "Biotech",
+    "SAP": "Tech",
+    "SIE.DE": "Tech",
+    "STLD": "Steel",
+    "UEC": "Materials"
   },
   "sector_limits": {
     "max_sector_pct": 35,
     "max_same_strategy": 3
-  }
+  },
+  "ignore_vix_position_limit": true,
+  "max_new_positions_per_run": 10
 }

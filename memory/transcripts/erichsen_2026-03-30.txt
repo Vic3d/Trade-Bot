@@ -1,0 +1,45 @@
+QUELLE: Lars Erichsen / Rendite Spezialisten — Ausgabe 13/26 + Zukunfts-Depot Update 30.03.2026
+
+=== AUSGABE 13/26 — "Politische Beine nicht mehr kurz" ===
+
+METHODIK/FRAMEWORK: Stop-Loss in hochvolatiler politischer Umgebung
+- Enge Stops (1-2%) werden systematisch ausgestoppt durch politisches Rauschen
+- Nicht weil Setups schlechter, sondern weil ein einzelner Tweet/Post Intraday-Bewegungen erzeugt die technische Muster außer Kraft setzen
+- Praktische Konsequenz: Positionsgrößen anpassen, Stops weiter fassen ODER zeitbasiert statt kursbasiert setzen
+- Halteperioden so wählen dass politisches Rauschen als temporäre Volatilität behandelt wird, nicht als Informationssignal
+
+METHODIK: Marktstruktur politisch dominierter Märkte
+- Near- und Re-Shoring hat strukturelle Marktkonsequenzen (nicht temporär)
+- "Politische Börsen haben keine kurzen Beine mehr" = neue These
+- Fundamentaldaten/Cashflows setzen sich MITTELFRISTIG durch, nicht mehr kurzfristig
+- VIX-Hochpunkte intraday wiederholt in Bereichen, die in Aufwärtstrends nicht normal wären
+
+FRAMEWORK: Erwartungserosion als Marktmuster
+- Dieselbe Nachricht (Ultimatum-Verlängerung) = gegensätzliche Reaktionen Montag vs. Freitag
+- Erste Verlängerung: Hoffnungssignal. Zweite Verlängerung: Hilflosigkeit
+- Muster: Markt preist wiederholte politische Aktionen progressiv negativer ein
+
+MARKT-KONTEXT (für Kontext, nicht als Prognose):
+- S&P 500: 5. Verlustwoche in Folge
+- Nasdaq: 10 von 11 Wochen im Minus (historisch selten)
+- VIX > 30 am Freitag
+- Fed: Zinssenkungen vor 2027 unrealistisch bei Ölpreisdruck
+- Powell-Nachfolger (Mai): noch nicht eingepreist
+
+=== ZUKUNFTS-DEPOT UPDATE — Potenzielle Kaufzonen ===
+
+METHODIK: Kauf in Schwäche — Framework
+- Keine Notwendigkeit unter Druck neue Positionen zu kaufen (erhöhte Wahrscheinlichkeit tieferer Notierungen)
+- Tiefen Kaufmarken sind echte Kaufgelegenheiten, keine Bedrohungsszenarien
+- Zeithorizont: 3-5 Jahre, nicht 4-6 Wochen
+- "Kein einfacherer Weg zur Outperformance als gute Aktien in schlechten Zeiten kaufen"
+
+POTENZIELLE KAUFZONEN (Unterstützungszonen, keine Kursziele):
+- Nasdaq-100 ETF: aktuell 46,49 EUR → Zone ca. 38 EUR
+- Brookfield: 34 EUR → Zone 30-34 EUR  
+- Amazon: 173 EUR → Zone ca. 148 EUR
+- TotalEnergies (TTE.PA): 77,86 EUR → Zone ca. 70 EUR
+- Wheaton: 108,85 EUR → Zone ca. 97 EUR
+- Prysmian: 93 EUR → Zone 73-78 EUR
+- DHL: 43,98 EUR → bereits auf Kauf-Niveau
+- EQT: 25,26 EUR → Zone ca. 22,30 EUR
