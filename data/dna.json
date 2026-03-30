@@ -243,6 +243,76 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "GOLD",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 34.13,
+      "stop": 33.87,
+      "target": 34.65,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 238.51,
+      "stop": 235.65,
+      "target": 239.55,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "ORCL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 120.95,
+      "stop": 119.5,
+      "target": 121.41,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 35.15,
+      "stop": 34.73,
+      "target": 35.3,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CSCO",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 68.48,
+      "stop": 67.66,
+      "target": 69.04,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "MRK",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 103.94,
+      "stop": 102.69,
+      "target": 105.14,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "PLTR",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 122.91,
+      "stop": 121.43,
+      "target": 123.88,
+      "opened_at": "2026-03-30 14:40",
+      "status": "OPEN"
+    },
+    {
       "ticker": "MSFT",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -253,7 +323,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T14:35:10.041594Z",
+  "last_sync": "2026-03-30T14:40:08.705563Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
