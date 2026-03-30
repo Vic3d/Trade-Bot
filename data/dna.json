@@ -247,7 +247,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 467.03,
-      "stop": 461.42,
+      "stop": 464.7,
       "target": 466.86,
       "opened_at": "2026-03-30 19:17",
       "status": "OPEN"
@@ -323,7 +323,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T19:17:35.177884Z",
+  "last_sync": "2026-03-30T19:20:05.746034Z",
   "recent_day_trades": [
     {
       "ticker": "META",
