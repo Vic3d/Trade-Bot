@@ -1,5 +1,21 @@
 # Paper Exit Log
 
+## 2026-03-30 — 15:03 CET
+
+**5 Stops getroffen:**
+
+| Ticker | Entry → Exit | P&L | Status |
+|--------|-------------|-----|--------|
+| PAAS | 44.98€ → 45.39€ | +17.28€ | STOP 🔴 |
+| HL | 15.60€ → 15.47€ | -18.16€ | STOP 🔴 |
+| SCCO | 141.00€ → 141.82€ | +4.85€ | STOP 🔴 |
+| XBI | 103.94€ → 104.52€ | +4.55€ | STOP 🔴 |
+| STLD | 148.59€ → 152.02€ | +22.08€ | STOP 🔴 |
+
+**Zusammenfassung:** 5 geschlossen (+30.60€ netto), 0 Trailing-Updates, 3 Positionen noch offen.
+
+---
+
 ## 2026-03-30 — 11:01 CET
 
 **2 Stops getroffen + 1 Trailing-Update:**

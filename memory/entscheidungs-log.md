@@ -338,3 +338,12 @@ Format: AUTO-Trades von autonomous_loop.py | Manuelle Trades von Albert/Victor d
 **Auslöser:** USGS Science to Keep Us Safe: Floods and Drought - USGS (.gov)
 **Kern-Reasoning:** Sicherer Abstand vom 52W-Low | Momentum stabilisiert | Starkes bullisches News-Signal
 **Trade:** Entry 72.23€ | Stop 64.37€ | Ziel 88.12€ | 27.69 Stück
+
+## 2026-03-30 — STLD Real Trade Entry
+
+**Entscheidung:** Steel Dynamics (STLD, WKN 903772) real gekauft bei €151 (~$173)
+**Kontext:** Liberation Day 02.04.2026 als politischer Tailwind; US-Stahl-Tariff-These; Einstieg über geplanter Zone ($162-171) da Markt bereits reagiert
+**Kern-Reasoning:** Tariff-Schutz für US-Domestik-Stahl; Aluminium-Frontloading als Bestätigung; STLD fundamental stark (EV/EBITDA ~7x)
+**Stop:** $155 / ~€135 (sofort in TR setzen)
+**Risiko:** Supreme Court Präzedenz (Tarife bereits einmal gekippt Feb 2026); CRV leicht schlechter als geplant wegen höherem Entry
+**Lesson:** Einstieg über geplanter Zone erhöht Risiko — nächstes Mal Limit-Order strikter einhalten

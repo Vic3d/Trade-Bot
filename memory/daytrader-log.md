@@ -254,3 +254,114 @@
 [2026-03-27 21:45] CLOSE GOOGL WIN: P&L +5.8€ (+0.1%) via EOD | hold=0d market=US time=evening
 [2026-03-27 21:45] CLOSE DIS WIN: P&L +9.6€ (+0.1%) via EOD | hold=0d market=US time=evening
 [2026-03-27 21:45] EOD Close: 12 Trades geschlossen, 0 Overnight gehalten, Daily P&L: -97€
+[2026-03-30 15:01] Neue Trades: 3 | Offen: 3
+[2026-03-30 15:31] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 239.64 (nicht geschlossen)
+[2026-03-30 15:31] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 312.57 (nicht geschlossen)
+[2026-03-30 15:31] 🎯 TARGET MRK: Ziel erreicht, Stop auf 104.73 (nicht geschlossen)
+[2026-03-30 15:40] CLOSE GOOGL WIN: P&L +21.4€ (+0.3%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 15:40] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 313.13 (nicht geschlossen)
+[2026-03-30 15:40] 🎯 TARGET MRK: Ziel erreicht, Stop auf 105.05 (nicht geschlossen)
+[2026-03-30 15:45] 🎯 TARGET MRK: Ziel erreicht, Stop auf 105.06 (nicht geschlossen)
+[2026-03-30 15:50] 🎯 TARGET MRK: Ziel erreicht, Stop auf 105.39 (nicht geschlossen)
+[2026-03-30 15:55] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 313.18 (nicht geschlossen)
+[2026-03-30 16:05] CLOSE MRK WIN: P&L +77.8€ (+1.0%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 16:10] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 313.50 (nicht geschlossen)
+[2026-03-30 16:25] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 314.61 (nicht geschlossen)
+[2026-03-30 16:33] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 315.17 (nicht geschlossen)
+[2026-03-30 16:35] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 315.68 (nicht geschlossen)
+[2026-03-30 16:40] Neue Trades: 7 | Offen: 8
+[2026-03-30 16:45] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 315.90 (nicht geschlossen)
+[2026-03-30 16:45] Neue Trades: 1 | Offen: 9
+[2026-03-30 16:55] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 316.63 (nicht geschlossen)
+[2026-03-30 17:02] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 238.36 (nicht geschlossen)
+[2026-03-30 17:02] 🎯 TARGET ORCL: Ziel erreicht, Stop auf 121.81 (nicht geschlossen)
+[2026-03-30 17:02] 🎯 TARGET HAL: Ziel erreicht, Stop auf 35.20 (nicht geschlossen)
+[2026-03-30 17:02] 🎯 TARGET PLTR: Ziel erreicht, Stop auf 123.45 (nicht geschlossen)
+[2026-03-30 17:02] Neue Trades: 1 | Offen: 10
+[2026-03-30 17:05] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 317.03 (nicht geschlossen)
+[2026-03-30 17:05] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 238.66 (nicht geschlossen)
+[2026-03-30 17:05] 🎯 TARGET ORCL: Ziel erreicht, Stop auf 122.09 (nicht geschlossen)
+[2026-03-30 17:05] 🎯 TARGET HAL: Ziel erreicht, Stop auf 35.24 (nicht geschlossen)
+[2026-03-30 17:05] 🎯 TARGET PLTR: Ziel erreicht, Stop auf 123.74 (nicht geschlossen)
+[2026-03-30 17:10] CLOSE ORCL WIN: P&L +73.3€ (+0.9%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 17:10] 🎯 TARGET XOM: Ziel erreicht, Stop auf 151.56 (nicht geschlossen)
+[2026-03-30 17:15] CLOSE MSFT WIN: P&L +160.8€ (+2.1%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 17:15] CLOSE HAL WIN: P&L +7.6€ (+0.1%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 17:15] CLOSE PLTR WIN: P&L +47.5€ (+0.6%) via Stop | hold=0d market=US time=afternoon
+[2026-03-30 17:15] 🎯 TARGET XOM: Ziel erreicht, Stop auf 151.73 (nicht geschlossen)
+[2026-03-30 17:35] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 238.74 (nicht geschlossen)
+[2026-03-30 17:45] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 238.96 (nicht geschlossen)
+[2026-03-30 17:50] 🎯 TARGET GOOGL: Ziel erreicht, Stop auf 239.24 (nicht geschlossen)
+[2026-03-30 18:01] Neue Trades: 1 | Offen: 7
+[2026-03-30 18:05] CLOSE MRK LOSS: P&L -101.4€ (-1.3%) via Stop | hold=0d market=US time=evening
+[2026-03-30 18:05] 🎯 TARGET MSFT: Ziel erreicht, Stop auf 315.53 (nicht geschlossen)
+[2026-03-30 18:05] Neue Trades: 1 | Offen: 7
+[2026-03-30 18:10] Neue Trades: 1 | Offen: 8
+[2026-03-30 18:25] CLOSE XOM WIN: P&L +32.5€ (+0.4%) via Stop | hold=0d market=US time=evening
+[2026-03-30 18:25] Neue Trades: 1 | Offen: 8
+[2026-03-30 18:31] Neue Trades: 1 | Offen: 9
+[2026-03-30 18:45] CLOSE MSFT LOSS: P&L -57.2€ (-0.7%) via Stop | hold=0d market=US time=evening
+[2026-03-30 18:45] Neue Trades: 2 | Offen: 10
+[2026-03-30 18:50] CLOSE GOOGL WIN: P&L +21.8€ (+0.3%) via Stop | hold=0d market=US time=evening
+[2026-03-30 18:50] 🎯 TARGET OXY: Ziel erreicht, Stop auf 57.95 (nicht geschlossen)
+[2026-03-30 18:50] 🎯 TARGET DIS: Ziel erreicht, Stop auf 82.21 (nicht geschlossen)
+[2026-03-30 18:55] 🎯 TARGET OXY: Ziel erreicht, Stop auf 57.98 (nicht geschlossen)
+[2026-03-30 18:55] Neue Trades: 1 | Offen: 10
+[2026-03-30 19:01] 🎯 TARGET META: Ziel erreicht, Stop auf 466.52 (nicht geschlossen)
+[2026-03-30 19:10] 🎯 TARGET OXY: Ziel erreicht, Stop auf 58.03 (nicht geschlossen)
+[2026-03-30 19:10] 🎯 TARGET DIS: Ziel erreicht, Stop auf 82.24 (nicht geschlossen)
+[2026-03-30 19:15] CLOSE PLTR LOSS: P&L -114.7€ (-1.5%) via Stop | hold=0d market=US time=evening
+[2026-03-30 19:20] CLOSE GOLD LOSS: P&L -71.1€ (-0.9%) via Stop | hold=0d market=US time=evening
+[2026-03-30 19:20] CLOSE HAL LOSS: P&L -98.0€ (-1.2%) via Stop | hold=0d market=US time=evening
+[2026-03-30 19:20] CLOSE OXY LOSS: P&L -34.4€ (-0.4%) via Stop | hold=0d market=US time=evening
+[2026-03-30 19:20] 🎯 TARGET META: Ziel erreicht, Stop auf 466.79 (nicht geschlossen)
+[2026-03-30 19:20] Neue Trades: 3 | Offen: 9
+[2026-03-30 19:25] CLOSE CSCO LOSS: P&L -97.7€ (-1.2%) via Stop | hold=0d market=US time=evening
+[2026-03-30 19:25] 🎯 TARGET CRM: Ziel erreicht, Stop auf 160.42 (nicht geschlossen)
+[2026-03-30 19:25] Neue Trades: 1 | Offen: 9
+[2026-03-30 19:31] Neue Trades: 1 | Offen: 10
+[2026-03-30 19:35] 🎯 TARGET UNH: Ziel erreicht, Stop auf 225.60 (nicht geschlossen)
+[2026-03-30 19:40] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.02 (nicht geschlossen)
+[2026-03-30 19:45] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.18 (nicht geschlossen)
+[2026-03-30 20:05] CLOSE DIS LOSS: P&L -50.2€ (-0.6%) via Stop | hold=0d market=US time=evening
+[2026-03-30 20:05] Neue Trades: 1 | Offen: 10
+[2026-03-30 20:10] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.32 (nicht geschlossen)
+[2026-03-30 20:15] 🎯 TARGET META: Ziel erreicht, Stop auf 466.83 (nicht geschlossen)
+[2026-03-30 20:20] 🎯 TARGET META: Ziel erreicht, Stop auf 467.35 (nicht geschlossen)
+[2026-03-30 20:20] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.46 (nicht geschlossen)
+[2026-03-30 20:35] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.52 (nicht geschlossen)
+[2026-03-30 20:40] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.63 (nicht geschlossen)
+[2026-03-30 20:45] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.81 (nicht geschlossen)
+[2026-03-30 20:50] CLOSE CRM LOSS: P&L -55.7€ (-0.7%) via Stop | hold=0d market=US time=evening
+[2026-03-30 20:50] Neue Trades: 1 | Offen: 10
+[2026-03-30 20:55] CLOSE ORCL LOSS: P&L -97.5€ (-1.2%) via Stop | hold=0d market=US time=evening
+[2026-03-30 20:55] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.95 (nicht geschlossen)
+[2026-03-30 21:02] 🎯 TARGET UNH: Ziel erreicht, Stop auf 227.33 (nicht geschlossen)
+[2026-03-30 21:17] CLOSE META LOSS: P&L -4.5€ (-0.1%) via Stop | hold=0d market=US time=evening
+[2026-03-30 21:17] CLOSE UNH WIN: P&L +5.4€ (+0.1%) via Stop | hold=0d market=US time=evening
+[2026-03-30 21:17] Neue Trades: 1 | Offen: 8
+[2026-03-30 21:20] 🎯 TARGET META: Ziel erreicht, Stop auf 464.70 (nicht geschlossen)
+[2026-03-30 21:25] 🎯 TARGET CRM: Ziel erreicht, Stop auf 159.57 (nicht geschlossen)
+[2026-03-30 21:25] Neue Trades: 1 | Offen: 9
+[2026-03-30 21:31] CLOSE XOM LOSS: P&L -112.6€ (-1.4%) via Stop | hold=0d market=US time=evening
+[2026-03-30 21:31] 🎯 TARGET UNH: Ziel erreicht, Stop auf 225.92 (nicht geschlossen)
+[2026-03-30 21:40] 🎯 TARGET UNH: Ziel erreicht, Stop auf 226.46 (nicht geschlossen)
+[2026-03-30 21:45] CLOSE TMO WIN: P&L +1.5€ (+0.0%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] OVERNIGHT HOLD: GOLD +2.1%
+[2026-03-30 21:45] CLOSE OXY LOSS: P&L -30.6€ (-0.4%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] CLOSE CSCO LOSS: P&L -63.5€ (-0.8%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] CLOSE DIS WIN: P&L +3.9€ (+0.0%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] CLOSE CRM WIN: P&L +22.3€ (+0.3%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] CLOSE META LOSS: P&L -5.5€ (-0.1%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] CLOSE UNH WIN: P&L +44.4€ (+0.6%) via EOD | hold=0d market=US time=evening
+[2026-03-30 21:45] EOD Close: 7 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-30 21:50] OVERNIGHT HOLD: GOLD +2.2%
+[2026-03-30 21:50] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-30 21:55] OVERNIGHT HOLD: GOLD +2.2%
+[2026-03-30 21:55] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-30 22:45] OVERNIGHT HOLD: GOLD +2.1%
+[2026-03-30 22:45] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-30 22:50] OVERNIGHT HOLD: GOLD +2.1%
+[2026-03-30 22:50] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-30 22:55] OVERNIGHT HOLD: GOLD +2.1%
+[2026-03-30 22:55] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€

@@ -1,6 +1,6 @@
 # Projekt: Trading Tool (Arbeitstitel: "TradeMind")
 
-**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-27
+**Angelegt:** 2026-03-07 | **Zuletzt aktualisiert:** 2026-03-30
 **Status:** 🌱 Phase 1 — Lernphase (aktiv) | 📋 Professionalisierungs-Bauplan erstellt
 **Beteiligte:** Victor (Lead), Albert (Proto-Tool + Dokumentation)
 **Ziel:** Beste Retail-Trading-App der Welt. Start als persönliches Tool, Vermarktung ~2027.
@@ -3381,3 +3381,115 @@ Rohstoff-Aktien sind Geduld-Spiele. Timing ist nicht, These ist. Wenn du an die 
 ⚠️ **Nicht-umsetzbar:** Spezifische Buyzone-Nummern sind Snapshot, keine Handelssignale. Datum-gebunden (28-30.03.2026).
 
 **Passt zu Strategy S (Mittelfrist-Akkumulation):** JA — Erichsen bestätigt mittelfristige Fokus, warnt vor kurzfristigen Stops.
+
+
+---
+## Transcript-Analyse: Lars Eriksen / Rendite Spezialisten (2026-03-30)
+*Quelle: erichsen_2026-03-30.txt*
+
+## 30.03.2026 — Lars Eriksen: Politische Volatilität & Erwartungserosion
+
+### Methodik-Erkenntnisse
+
+**Stop-Loss Handling in politischer Volatilität**
+- Enge Stops (1-2%) werden durch politisches Intraday-Rauschen systematisch ausgestoppt, auch wenn technische Setups intakt sind
+- Nicht das Setup ist schlechter, sondern die Volatilität ist künstlich erhöht durch politische Events/Posts
+- Praktische Regel: Positionsgrößen reduzieren ODER Stops weiter fassen ODER auf zeitbasierte Stops wechseln statt kursbasiert
+- Halteperioden so konstruieren, dass politisches Rauschen als temporär, nicht als Informationssignal behandelt wird
+
+**Erwartungserosion als Marktmuster**
+- Wiederholte ähnliche Nachrichten (z.B. Ultimatum-Verlängerungen) werden mit jeder Iteration progressiv negativer eingepreist
+- Erste Verlängerung: Hoffnungssignal → Markt steigt
+- Zweite/dritte Verlängerung: Hilflosigkeit/Unglaubwürdigkeit → Markt fällt
+- Implikation: Markt reagiert nicht linear auf News, sondern auf Abweichung von Erwartung + Signalverschlechterung
+- Handlungsregel: Bei wiederholten Patterns früher exits bauen, nicht auf "nächste Verlängerung" hoffen
+
+**Marktstruktur-Shift (Geopolitik/Reshoring)**
+- Politische Märkte haben fundamentale, mittelfristige Strukturverschiebungen, nicht nur Rauschen
+- Fundamental-Daten setzen sich jetzt mittelfristig durch statt kurzfristig
+- "Politische Börsen haben nicht mehr kurze Beine" = alte Korrekturlogik funktioniert nicht mehr
+- Implication: Trendfolge über längere Zeiträume wird wichtiger, nicht Dips kaufen
+
+**Kaufschwäche-Psychologie (3-5J Horizont)**
+- Tiefen sind echte Kaufgelegenheiten, keine Bedrohungsszenarien (psychologisches Reframing)
+- Kein Druck, unter schwachen Bedingungen zu kaufen — höhere Wahrscheinlichkeit noch tieferer Notierungen
+- Beste Outperformance kommt durch "gute Aktien in schlechten Zeiten kaufen" + lange Halteperiode
+
+### Red Flags / Was NICHT tun
+- Enge Stops in hochvolatilen politischen Umgebungen setzen (führt zu Whipsaws)
+- Kurzfristige Ölpreis-/Geopolitik-Rauschen als Trade-Signal nutzen
+- Wiederholte politische Nachrichten als "immer noch positiv" einschätzen (Erwartungserosion beachten!)
+
+### Passt zu Strategie S?
+Ja. Halt-Perioden müssen länger sein, Stops weiter, psychologische Schwächen (Verlustaversion bei Markttiefs) sind adressiert.
+
+---
+
+## 30.03.2026 — Lars Eriksen: Aktiver Handel in politisch dominierter Börse (Transkript 2)
+*Quelle: erichsen_2026-03-30b.txt — Video-Einleitung*
+
+### Methodik-Erkenntnisse
+
+**Headline Trading für Retail — kategorial ungeeignet**
+- Headline-Trading funktioniert NUR im Daytrading (ein- und aussteigen noch im selben Intraday-Fenster)
+- For Swing/Position-Trader: absolut ungeeignet
+- Beispiel: Trump sagt "Iran akzeptiert Punkt X" → Indizes steigen kurzfristig → Iran dementiert → Indizes fallen → Trader verwirrt
+- Praktische Konsequenz: nur Signale verwenden die auf WOCHENBASIS klar sind, nicht auf Minutenbasis
+
+**"No Position is a Position"** — Cashquote als aktive Taktik
+- 65% Cash = bewusste Entscheidung, kein Zeichen von Schwäche
+- Position reduzieren wenn Frühindikatoren warnen (z.B. Banken-Topbildung), nicht aggressiv nachkaufen
+- Stops nachziehen → Ausgestoppt werden = AKZEPTIERT. Nicht sofort erneut einsteigen, sondern auf neues Signal warten
+- Psychologie: "No Position" schützt vor emotionalen Reaktionen auf Intraday-Rauschen
+
+**Bankenindex (XLF/BKX) als Frühwarner-System**
+- Wenn Banken-Sektor Topbildung zeigt → Markt-Struktur verschiebt sich
+- Erichsen: "Jahrelang: bei Banken-Kauf sorge, kein Crash. Diese Korrelation funktioniert wahnsinnig häufig"
+- In Transcript: Ende Jan/Anfang Feb 2026 = Banken-Warnsignal → danach Positionen reduzieren statt kaufen
+- Handlungsregel: Bankensektor + enge Kreditspread-Muster = Makro-Shift-Detektor
+
+**Signalqualität: Wochenbasis > Tagesbasis**
+- Wochenschlusskurse sind relevante Signale, Tagesbasis ist Rauschen
+- Spezifisches Beispiel: S&P 500 auf Wochenbasis = klares Verkaufssignal (5. Woche Verlust hintereinander)
+- Nasdaq: 10 von 11 Wochen im Minus = bestätigtes Schwäche-Signal (nicht 1-Tages-Pop)
+- Entscheidungsregel: nur Wochenschluss-Level für Position-Decisions verwenden, Intraday ignorieren
+
+**Rebound-Phasen als Reduzierungs-Chancen**
+- In Korrektur-Phase: 3-5% Rally = TYPISCHES SIGNAL für "noch tiefer gehen", nicht für "wieder kaufen"
+- Grund: Short-Seller in nachgezogenen Stops rutschen raus = squeeze führt zu heftigem Rebound
+- Taktik: Erholung nutzen um Positionen zu verkaufen oder Shorts zu bauen, NICHT um Long-Positionen zu starten
+- "Wenn wir über 65-66 (S&P 500) gehen, nehme ich neutralen Standpunkt ein" = erst dann neue Longs erwägen
+
+**Hyperscaler in Erholung vermeiden**
+- Massive Capex-Ausgaben + Inflationssorgen = Risiko-Malus bleibt auch in Erholung
+- These: Hyperscaler werden NOT die Outperformer in nächstem Zyklus
+- Bevorzugte Zonen: Value-Sektor, Banken, Energie (haben Headwind ausgepreist)
+- Beispiel: Microsoft Chart zeigt "charttechnische Schwäche par excellence" — auch für langfristige Anleger warten sinnvoll
+
+**Ölpreis als Inflations-/Stagflations-Gateway**
+- Wenn Energiepreise/Düngemittel/Nahrungsmittel eingepreist werden → Powell/Trump können nicht mehr "beruhigen"
+- VIX > 30 am Freitag + Ölpreis-Signal = kompound-Gefahr
+- Zeithorizont: "Frage von Tagen" bis höhere Energiepreise in Märkte eingepreist
+- Implikation: langfristige Volatilität, nicht One-Day-Pop
+
+### Psychologie des aktiven Traders
+
+- "I put my money where my mouth is" — glaubwürdigkeit durch Eigen-Portfolio
+- Ehrlich zu Unsicherheit: "Ich handle mit Wahrscheinlichkeiten, nicht mit Sicherheit"
+- Geht nicht darum "möglichst tiefe Kursziele auszurufen", sondern Signale richtig zu lesen
+- SCHWÄCHE in Kurs als Chance reframen, nicht als Bedrohung — mental shift
+
+### Red Flags / Was NICHT tun
+- Headline-News als Handelssignal nutzen (Intraday Rauschen)
+- In Erholung-Rallyes aggressive neue Longs bauen
+- Auf "Trump sagt" oder "Iran akzeptiert" sofort Position-Size expandieren
+- Microsofts Kursziel basierend auf Kurs-Pop prognose machen (Charts sprechen klarer)
+- Tagesschlüsse für Entscheidungen nutzen — warte auf Wochenschluss
+
+### Passt zu Strategie S / System-Integration?
+**JA, mit Anpassungen:**
+1. Bankensektor-Monitoring als Frühwarner einbauen
+2. "Rebound ≠ Buy" Regel codieren (in >3% rallyes = reduce, nicht buy)
+3. Headline-Filter: Single-News-Trades blockieren
+4. Psychologie-Training: "kein Druck zu handeln" = höhere Cash-Toleranz
+5. Wochenschluss als Signal-Cutoff verwenden

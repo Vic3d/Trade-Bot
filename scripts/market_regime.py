@@ -102,6 +102,48 @@ def calc_adx(highs, lows, closes, period=14):
 
 # ── Marktphasen-Klassifikation ──────────────────────────────
 
+def bank_health_check():
+    """
+    Bankensektor als Frühwarnindikator (Eriksen-Methode).
+    Wenn Banken toppen während Markt noch steigt → erstes Warnsignal.
+    
+    Gibt zurück:
+      'HEALTHY'   — XLF über MA20 + MA50, kein Topbildung
+      'WARNING'   — XLF unter MA20 ODER Topbildung (MA20 < MA50)
+      'WEAK'      — XLF deutlich unter MA50, Abwärtstrend
+    """
+    closes, highs, lows = yahoo_history('XLF', 60)
+    if not closes or len(closes) < 20:
+        return 'UNKNOWN', {}
+
+    ma20 = calc_ma(closes, 20)
+    ma50 = calc_ma(closes, 50)
+    current = closes[-1]
+    
+    # Trend der letzten 10 Tage (steigend oder fallend?)
+    trend_10d = closes[-1] - closes[-10] if len(closes) >= 10 else 0
+    pct_10d   = (trend_10d / closes[-10] * 100) if len(closes) >= 10 else 0
+
+    # Topbildung: MA20 dreht unter MA50 (bearishes Kreuz)
+    top_formation = (ma20 is not None and ma50 is not None and ma20 < ma50)
+    
+    if ma50 and current < ma50 and top_formation and pct_10d < -2:
+        status = 'WEAK'
+    elif (ma20 and current < ma20) or top_formation:
+        status = 'WARNING'
+    else:
+        status = 'HEALTHY'
+
+    details = {
+        'xlf_price':      round(current, 2),
+        'xlf_ma20':       round(ma20, 2) if ma20 else None,
+        'xlf_ma50':       round(ma50, 2) if ma50 else None,
+        'xlf_10d_pct':    round(pct_10d, 1),
+        'top_formation':  top_formation,
+    }
+    return status, details
+
+
 def classify_regime():
     print("🧭 MARKTPHASEN-KLASSIFIKATION")
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -110,6 +152,9 @@ def classify_regime():
     closes, highs, lows = yahoo_history('SPY', 250)
     vix  = yahoo_price('^VIX')
     spy  = yahoo_price('SPY')
+    
+    # Bankensektor Frühindikator
+    bank_status, bank_details = bank_health_check()
 
     # Makro-Daten aus learning_system falls verfügbar
     macro_path = WS / 'memory/market-regime.json'
@@ -127,33 +172,35 @@ def classify_regime():
     print(f"  SPY: ${current_price:.1f} | MA20: ${ma20:.1f}" + (f" | MA200: ${ma200:.1f}" if ma200 else ""))
     print(f"  ADX: {adx:.1f}" if adx else "  ADX: N/A")
     print(f"  VIX: {vix:.1f}" if vix else "  VIX: N/A")
+    bank_icon = {'HEALTHY': '🟢', 'WARNING': '🟡', 'WEAK': '🔴'}.get(bank_status, '⚪')
+    print(f"  Banken (XLF): {bank_icon} {bank_status} | ${bank_details.get('xlf_price','?')} | 10d: {bank_details.get('xlf_10d_pct','?')}%"
+          + (" | ⚠️ Topbildung!" if bank_details.get('top_formation') else ""))
 
     # ── Regime-Entscheidung ──
     regime = 'RANGE'  # Default
     reason = []
 
-    # CRASH: VIX > 35 + S&P unter 200-MA
+    # ── Regime-Entscheidung (ADX + VIX) ──
     if vix and vix > 35 and ma200 and current_price < ma200:
         regime = 'CRASH'
         reason.append(f"VIX {vix:.1f} > 35 + SPY unter 200-MA")
-
-    # TREND_DOWN: ADX > 25 + Kurs unter MA20
     elif adx and adx > 25 and current_price < ma20:
         regime = 'TREND_DOWN'
         reason.append(f"ADX {adx:.1f} > 25 + SPY unter MA20")
-
-    # TREND_UP: ADX > 25 + Kurs über MA20
     elif adx and adx > 25 and current_price > ma20:
         regime = 'TREND_UP'
         reason.append(f"ADX {adx:.1f} > 25 + SPY über MA20")
-
-    # RANGE: ADX < 20
     elif adx and adx < 20:
         regime = 'RANGE'
         reason.append(f"ADX {adx:.1f} < 20 (kein Trend)")
-
     else:
         reason.append(f"ADX {adx:.1f if adx else 'N/A'} — kein klares Signal")
+
+    # ── Bankensektor-Warnung separat anhängen (kein Regime-Override) ──
+    if bank_status == 'WEAK':
+        reason.append(f"⚠️ Banken SCHWACH (XLF Topbildung, 10d: {bank_details.get('xlf_10d_pct')}%)")
+    elif bank_status == 'WARNING':
+        reason.append(f"⚠️ Banken WARNUNG (XLF unter MA20)")
 
     # Aktive DT-Strategien für dieses Regime
     active_dt = REGIME_STRATEGIES.get(regime, [])
@@ -182,6 +229,10 @@ def classify_regime():
             "ma200": round(ma200, 2) if ma200 else None,
             "adx":   round(adx, 1) if adx else None,
             "vix":   round(vix, 1) if vix else None,
+        },
+        "bank_health": {
+            "status": bank_status,
+            **bank_details,
         },
         "updated": timestamp,
     }

@@ -16,11 +16,11 @@ from datetime import datetime, timedelta
 from trademind.core.vix import get_vix
 
 CIRCUIT_BREAKERS = {
-    "daily_loss_limit":   -500,
-    "weekly_loss_limit":  -1500,
-    "max_drawdown":       -3000,
-    "consecutive_losses": 5,
-    "vix_panic":          45,
+    "daily_loss_limit":   -2500,    # Paper Trading: großzügig, wir wollen Daten sammeln
+    "weekly_loss_limit":  -5000,    # 20% von 25k — erst dann wirklich kritisch
+    "max_drawdown":       -8000,    # 32% vom Peak
+    "consecutive_losses": 10,       # Paper: mehr Toleranz für Lernzwecke
+    "vix_panic":          60,       # Nur bei echtem Crash-Szenario
 }
 
 CLOSED_STATUSES = ("CLOSED", "WIN", "LOSS", "STOPPED")

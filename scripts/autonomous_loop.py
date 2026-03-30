@@ -102,6 +102,17 @@ def get_portfolio_state():
         sectors[sec or 'Other'] = sectors.get(sec or 'Other', 0) + 1
     return cash, n_open, sectors, [t for t, _ in positions]
 
+def sync_cash_if_needed(db):
+    """Synct paper_fund.current_cash wenn Desync > 50€"""
+    open_pos = db.execute("SELECT SUM(entry_price * shares) FROM paper_portfolio WHERE status='OPEN'").fetchone()[0] or 0
+    pnl = db.execute("SELECT COALESCE(SUM(pnl_eur),0) FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_eur IS NOT NULL").fetchone()[0] or 0
+    correct = 25000.0 + pnl - open_pos
+    current = float(db.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()[0] or 25000)
+    if abs(correct - current) > 50:
+        db.execute("UPDATE paper_fund SET value=? WHERE key='current_cash'", (correct,))
+        db.commit()
+        print(f"  🔧 Cash-Sync: {current:.0f}€ → {correct:.0f}€")
+
 def already_in_portfolio(ticker):
     conn = sqlite3.connect(DB)
     c = conn.cursor()
@@ -128,7 +139,7 @@ def open_trade(ticker, strategy, sector, cur_price, atr, reasons, direction, hea
          status, fees, notes, style, conviction, sector)
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
-        ticker, strategy, cur_price, datetime.datetime.now().isoformat(),
+        ticker, strategy, cur_price, datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
         shares, stop, target, 'OPEN', fees,
         f"AUTO: {headline[:100]}",
         'swing', 65, sector
@@ -163,6 +174,11 @@ def run_autonomous_loop(radar_signals=None):
     print(f"\n{'='*65}")
     print(f"🤖 AUTONOMOUS LOOP — {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*65}")
+
+    # Cash-Sanity-Check
+    _sync_conn = sqlite3.connect(DB)
+    sync_cash_if_needed(_sync_conn)
+    _sync_conn.close()
 
     cash, n_open, sectors, held_tickers = get_portfolio_state()
     slots_free = MAX_POSITIONS - n_open
@@ -203,6 +219,18 @@ def run_autonomous_loop(radar_signals=None):
             if already_in_portfolio(ticker):
                 continue
 
+            # 24h-Cooldown: Ticker erst wieder handeln wenn letzte Schließung > 24h zurück
+            _conn_cd = sqlite3.connect(DB)
+            recent_close = _conn_cd.execute("""
+                SELECT COUNT(*) FROM paper_portfolio 
+                WHERE ticker=? AND status IN ('CLOSED','WIN','LOSS')
+                AND close_date > datetime('now', '-24 hours')
+            """, (ticker,)).fetchone()[0]
+            _conn_cd.close()
+            if recent_close > 0:
+                print(f"  ⏳ {ticker}: Cooldown aktiv (in letzten 24h geschlossen)")
+                continue
+
             # Sektor-Limit prüfen
             sector = sig['sector']
             if sectors.get(sector, 0) >= MAX_PER_SECTOR:
@@ -221,6 +249,41 @@ def run_autonomous_loop(radar_signals=None):
 
             if score >= ENTRY_THRESHOLD and slots_free > 0 and "BULLISCH" in sig['direction']:
                 strategy = f"AR-{sector[:4].upper()}"  # AR = Autonomous Radar
+
+                # ─── ENTRY GATE CHECK ─────────────────────────────────
+                try:
+                    import sys as _sys, os as _os
+                    _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+                    from entry_gate import EntryGate
+                    _gate = EntryGate(DB)
+                    # Versuche regime aus DB zu laden
+                    _regime = ''
+                    try:
+                        _conn_r = sqlite3.connect(DB)
+                        _rrow = _conn_r.execute(
+                            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+                        ).fetchone()
+                        _regime = _rrow[0] if _rrow else ''
+                        _conn_r.close()
+                    except Exception:
+                        pass
+                    _gate_result = _gate.check(
+                        ticker, strategy,
+                        news_headline=sig.get('headline', ''),
+                        news_source=sig.get('source', ''),
+                        regime=_regime,
+                        vix=0
+                    )
+                    if not _gate_result['allowed']:
+                        print(f"  🚫 [ENTRY GATE BLOCKED] {ticker}/{strategy}: {_gate_result['reason']}")
+                        continue
+                    if _gate_result.get('warnings'):
+                        for _w in _gate_result['warnings']:
+                            print(f"  ⚠️  [GATE WARNING] {_w}")
+                except ImportError:
+                    pass  # graceful fallback
+                # ─── END ENTRY GATE ───────────────────────────────────
+
                 stop, target, shares = open_trade(
                     ticker, strategy, sector, cur, atr, reasons,
                     sig['direction'], sig['headline']
@@ -242,6 +305,17 @@ def run_autonomous_loop(radar_signals=None):
     print(f"ERGEBNIS: {len(trades_opened)} neue Trades | {len(watchlist_added)} auf Watchlist")
     if trades_opened:
         print(f"Trades: {', '.join(trades_opened)}")
+
+    # ─── POST-TRADE ANALYZER ─────────────────────────────────────
+    try:
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+        from post_trade_analyzer import analyze_new_closed_trades
+        analyze_new_closed_trades(DB)
+    except Exception as _e:
+        print(f"[POSTMORTEM] {_e}")
+    # ─── END POST-TRADE ANALYZER ─────────────────────────────────
+
     return trades_opened
 
 if __name__ == '__main__':
@@ -264,7 +338,7 @@ def close_trade_with_lesson(trade_id, ticker, entry, close_price, reason_close, 
     c.execute("""UPDATE paper_portfolio
         SET status='CLOSED', close_price=?, close_date=?, pnl_eur=?, pnl_pct=?
         WHERE id=?
-    """, (close_price, datetime.datetime.now().isoformat(), pnl, pnl_pct, trade_id))
+    """, (close_price, datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'), pnl, pnl_pct, trade_id))
 
     # Cash zurückbuchen
     c.execute("UPDATE paper_fund SET value = value + ? WHERE key='current_cash'",

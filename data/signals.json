@@ -84,9 +84,9 @@
       "options_days": 0,
       "options_fresh": true,
       "created_at": "2026-03-24T08:10:02Z",
-      "actual_change_pct": 7.93,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 13.32,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -312,9 +312,9 @@
       "options_days": 23,
       "options_fresh": true,
       "created_at": "2026-03-24T08:10:02Z",
-      "actual_change_pct": 7.93,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 13.32,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_MEDIUM",
@@ -440,9 +440,9 @@
       "options_days": 23,
       "options_fresh": true,
       "created_at": "2026-03-24T08:10:03Z",
-      "actual_change_pct": 7.93,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 13.32,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_MEDIUM",
@@ -593,7 +593,7 @@
       "lag_price_at_signal": 35.6119,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "NEUTRAL",
+      "outcome": "WIN",
       "paper_trade_id": "P046",
       "issue_id": null,
       "issue_key": null,
@@ -605,9 +605,9 @@
       "options_days": 21,
       "options_fresh": true,
       "created_at": "2026-03-26T14:31:33Z",
-      "actual_change_pct": 0.54,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 5.56,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -1471,7 +1471,7 @@
       "lag_price_at_signal": 35.5915,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "NEUTRAL",
+      "outcome": "WIN",
       "paper_trade_id": "P081",
       "issue_id": null,
       "issue_key": null,
@@ -1483,9 +1483,9 @@
       "options_days": 0,
       "options_fresh": true,
       "created_at": "2026-03-26T16:03:47Z",
-      "actual_change_pct": 0.6,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 5.62,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -1552,7 +1552,7 @@
       "lag_price_at_signal": 35.617,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "NEUTRAL",
+      "outcome": "WIN",
       "paper_trade_id": "P084",
       "issue_id": null,
       "issue_key": null,
@@ -1564,9 +1564,9 @@
       "options_days": 6,
       "options_fresh": true,
       "created_at": "2026-03-26T17:32:00Z",
-      "actual_change_pct": 0.53,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 5.55,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -1633,7 +1633,7 @@
       "lag_price_at_signal": 35.5689,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "NEUTRAL",
+      "outcome": "WIN",
       "paper_trade_id": "P087",
       "issue_id": null,
       "issue_key": null,
@@ -1645,9 +1645,9 @@
       "options_days": 5,
       "options_fresh": true,
       "created_at": "2026-03-26T19:32:31Z",
-      "actual_change_pct": 0.66,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 5.69,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -1686,7 +1686,7 @@
       "lag_price_at_signal": 35.5835,
       "lag_hours": 24,
       "direction": "same",
-      "outcome": "NEUTRAL",
+      "outcome": "WIN",
       "paper_trade_id": "P089",
       "issue_id": null,
       "issue_key": null,
@@ -1698,9 +1698,9 @@
       "options_days": 6,
       "options_fresh": true,
       "created_at": "2026-03-26T20:32:29Z",
-      "actual_change_pct": 0.62,
-      "lag_price_after": 35.805,
-      "resolved_at": "2026-03-27T21:01:24Z"
+      "actual_change_pct": 5.65,
+      "lag_price_after": 37.593,
+      "resolved_at": "2026-03-30T20:01:39Z"
     },
     {
       "pair_id": "OPTIONS_FLOW_OIL_SHORT",
@@ -1785,5 +1785,5 @@
     "pending": 1,
     "accuracy_pct": 50.0
   },
-  "updated": "2026-03-28T07:45:22Z"
+  "updated": "2026-03-30T20:01:39Z"
 }

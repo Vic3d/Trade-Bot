@@ -1,17 +1,25 @@
 {
   "regime": "TREND_DOWN",
-  "prev_regime": "TREND_DOWN",
-  "changed": false,
-  "reason": "ADX 49.2 > 25 + SPY unter MA20",
+  "prev_regime": "RANGE",
+  "changed": true,
+  "reason": "ADX 50.7 > 25 + SPY unter MA20 | \u26a0\ufe0f Banken WARNUNG (XLF unter MA20)",
   "active_dt": [
     "DT4"
   ],
   "indicators": {
-    "spy": 634.09,
-    "ma20": 665.99,
+    "spy": 633.67,
+    "ma20": 663.36,
     "ma200": null,
-    "adx": 49.2,
-    "vix": 31.1
+    "adx": 50.7,
+    "vix": 30.8
   },
-  "updated": "2026-03-30 07:45"
+  "bank_health": {
+    "status": "WARNING",
+    "xlf_price": 48.42,
+    "xlf_ma20": 49.57,
+    "xlf_ma50": null,
+    "xlf_10d_pct": -2.3,
+    "top_formation": false
+  },
+  "updated": "2026-03-30 19:53"
 }

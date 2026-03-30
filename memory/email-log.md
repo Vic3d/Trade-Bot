@@ -214,3 +214,21 @@
 | 26.03.2026 16:00 | **AUFTRAG** | Schröder, Nomena... AW: Auftrag - 269792480 | 26.03.2026 15:28 |
 | 27.03.2026 14:00 | **AUFTRAG** | Risadelli, Sandr... WG: Als Anlage erhalten Sie: BuO... | 27.03.2026 10:10 |
 | 27.03.2026 14:00 | **AUFTRAG** | info/gebr-schutz... WG: Neuer Auftrag Nr. 1003064753 | 26.03.2026 18:17 |
+| 30.03.2026 14:00 | **INFO2** | bochum@pertec.de freier HLS Monteur mit A-Schweiß... | 30.03.2026 10:57 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 12:53 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 12:33 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 12:33 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 11:33 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 11:33 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 11:33 |
+| 30.03.2026 14:00 | **AUFTRAG** | Risadelli, Sandr... AW: Als Anlage erhalten Sie: BuO... | 30.03.2026 08:44 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 28.03.2026 15:57 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 28.03.2026 11:07 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 28.03.2026 08:42 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 28.03.2026 08:37 |
+| 30.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 28.03.2026 00:40 |
+| 30.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 15:53 |
+| 30.03.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 15:43 |
+| 30.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 16:53 |
+| 30.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 16:48 |
+| 30.03.2026 17:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 16:03 |

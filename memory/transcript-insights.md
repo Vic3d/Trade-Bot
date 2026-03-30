@@ -617,3 +617,72 @@ Das perfekte System gibt es nicht — aber einen disziplinierten Umgang mit dem 
 - Langfrist-Positionen (NVDA, MSFT, PLTR) → Eriksen-Logik: nicht panikverkaufen, These prüfen nicht Kurs
 - Kurzfrist-Trades (EQNR, Paper Trades) → aktiver Stop ist korrekt, Eriksen würde zustimmen
 - Gold/Rohstoffe als Portfoliobaustein: bei nächstem Crisi-Crash als antizyklischen Buy prüfen
+## Eriksen Transkript 2 — 2026-03-30b
+
+**Quelle:** Lars Eriksen (Video, Renditespezialisten)
+**Archiviert:** memory/transcripts/erichsen_2026-03-30b.txt
+
+---
+
+### METHODIK-EXTRAKT
+
+#### 1. Headline Trading — Warum es nicht funktioniert
+- **Regel:** Headline Trading funktioniert NUR im Daytrading, NICHT für Swing/Position Trader
+- **Begründung:** News können sich innerhalb von Stunden widersprechen (Bestätigung → Dementi)
+- **Konsequenz:** Keine aktiven Positionen auf Basis von Trump-Tweets / Eilmeldungen aufbauen
+- **Albert-Regel:** ❌ Kein Trade auf Basis einer einzigen Schlagzeile (auch wenn sie bullisch wirkt)
+
+#### 2. Cash als aktive Position
+- **Prinzip:** "No position IS a position" — Cash ist eine legitime Portfolioentscheidung
+- **Mechanismus:** Wenn Stops nachgezogen werden und Positionen ausgestoppt werden → NICHT aggressiv nachkaufen
+- **Ziel:** Passiv hohe Cashquote aufbauen durch Disziplin, nicht durch aktives Verkaufen
+- **Albert-Regel:** Nach Stop-Verlust: Pause, nicht sofort nachladen. Erst auf nächstes Signal warten.
+
+#### 3. Banken als Leading Indicator (Frühwarnsignal)
+- **Regel:** "Wenn es den Banken gut geht, gibt es keinen großen Crash"
+- **Anwendung:** Topbildung im Bankensektor = erstes Warnsignal für breiteren Markt
+- **Timing:** Jan/Feb Topbildung Banken → Positionsreduktion begonnen, BEVOR Iran-Krieg eskalierte
+- **Albert-Regel:** Bankensektor-Chart als Frühwarnindikator in Strategie-Check integrieren (BKX, XLF)
+
+#### 4. Rebound-Taktik im Bärenmarkt
+- **Regel:** In Erholung VERKAUFEN, nicht kaufen — Rebounds sind Shortgelegenheiten
+- **Warum heftige Rebounds:** Short Squeeze drückt Markt nach oben, wenn Shortseller in Stops rutschen
+- **Threshold:** Rebounds unter 1.5-3% = noch kein Signal. Erst bei deutlichem Anstieg (täuscht nicht)
+- **Wochenschluss entscheidend:** Intraday-Rebounds irrelevant. Wochenschlusskurs = einziges Signal
+- **Albert-Regel:** In Korrekturen: Rallyes ≥ 3% intraday → nicht kaufen, ggf. reduzieren
+
+#### 5. Short-Aufbau: Timing ist alles
+- **Regel:** Nie auf dem aktuellen (geschwächten) Niveau shorten — warten auf Rebound
+- **Logik:** Shorts auf Tiefs = maximales Squeeze-Risiko
+- **Timing:** Rebound abwarten, DANN Short Position aufbauen
+- **Albert-Regel:** Short-Einstieg nur nach vorangegangenem Rebound, nicht in freiem Fall
+
+#### 6. Aktiv vs. Langfristig — zwei völlig verschiedene Regelwerke
+- **Klar:** Alles hier gilt NUR für aktive Anleger (Swing/Position Trader)
+- **Langfristige Anleger:** Dürfen Schwäche kaufen, Stops sind weniger relevant
+- **Fehler:** Langfristige Regeln auf aktive Trades anwenden (oder umgekehrt)
+- **Albert-Regel:** Immer klären: Ist das ein aktiver Trade oder eine langfristige Position? Regeln sind verschieden.
+
+#### 7. Wochenschlusskurs als primäres Signal
+- **Regel:** Wochenbasis schlägt Tagesbasis schlägt Intraday
+- **Anwendung:** Verkaufssignal auf Wochenbasis = schwerer zu ignorieren als Tagessignal
+- **Albert-Regel:** Signale auf Wochenbasis > Tagessignale. Immer Wochenchart prüfen.
+
+#### 8. Hyperscaler / Mag7 Vorsicht in Recovery
+- **These:** In der nächsten Erholung werden Hyperscaler (NVDA, MSFT, META, GOOGL) nicht outperformen
+- **Grund:** Massive Capex-Ausgaben als Risikomalus — Markt preist das mit ein
+- **Konsequenz:** Recovery-Plays lieber in anderen Sektoren suchen (Banks, Energy, Value)
+- **Albert-Regel:** Bei nächstem Kaufsignal: weg von Hyperscalern, hin zu Value/Banken/Energie
+
+#### 9. Psychologie: Schwäche wünschen
+- **Mindset:** "Wünsch dir noch 2-4 Wochen schwächere Kurse — du bekommst dann exzellente Kaufgelegenheiten"
+- **Konsequenz:** Marktkorrektur als Vorbereitung, nicht als Bedrohung sehen
+- **Albert-Regel:** Korrekturen sind Setup-Phase. Watchlist aufbauen, nicht in Panik verkaufen.
+
+---
+
+### NICHT SPEICHERN (Marktmeinungen)
+- S&P 500 Kursziele (5700/5900/6100)
+- Aktuelle Shortpositions von Eriksen
+- Welche Bankenaktien er empfiehlt
+- Sein aktuelles Depot (65% Cash)
