@@ -257,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 150.91,
-      "stop": 151.56,
+      "stop": 151.73,
       "target": 152.13,
       "opened_at": "2026-03-30 14:45",
       "status": "OPEN"
@@ -283,16 +283,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "HAL",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 35.15,
-      "stop": 35.24,
-      "target": 35.3,
-      "opened_at": "2026-03-30 14:40",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CSCO",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -311,30 +301,40 @@
       "target": 105.14,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
+    }
+  ],
+  "last_sync": "2026-03-30T15:15:40.353315Z",
+  "recent_day_trades": [
+    {
+      "ticker": "MSFT",
+      "strategy": "DT2",
+      "entry_price": 310.5,
+      "exit_price": 316.93,
+      "entry_date": "2026-03-30 13:01",
+      "exit_date": "2026-03-30 15:15",
+      "pnl_pct": 2.07,
+      "status": "WIN"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT2",
+      "entry_price": 35.15,
+      "exit_price": 35.18,
+      "entry_date": "2026-03-30 14:40",
+      "exit_date": "2026-03-30 15:15",
+      "pnl_pct": 0.1,
+      "status": "WIN"
     },
     {
       "ticker": "PLTR",
       "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 122.91,
-      "stop": 123.74,
-      "target": 123.88,
-      "opened_at": "2026-03-30 14:40",
-      "status": "OPEN"
+      "entry_price": 122.91,
+      "exit_price": 123.64,
+      "entry_date": "2026-03-30 14:40",
+      "exit_date": "2026-03-30 15:15",
+      "pnl_pct": 0.59,
+      "status": "WIN"
     },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 310.5,
-      "stop": 317.03,
-      "target": 312.33,
-      "opened_at": "2026-03-30 13:01",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-30T15:10:08.434671Z",
-  "recent_day_trades": [
     {
       "ticker": "ORCL",
       "strategy": "DT2",
@@ -503,36 +503,6 @@
       "entry_date": "2026-03-27 18:25",
       "exit_date": "2026-03-27 18:30",
       "pnl_pct": -0.01,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "DIS",
-      "strategy": "DT1",
-      "entry_price": 81.08,
-      "exit_price": 80.1,
-      "entry_date": "2026-03-27 14:20",
-      "exit_date": "2026-03-27 18:25",
-      "pnl_pct": -1.21,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "GOOGL",
-      "strategy": "DT2-CTR",
-      "entry_price": 238.03,
-      "exit_price": 238.41,
-      "entry_date": "2026-03-27 18:10",
-      "exit_date": "2026-03-27 18:15",
-      "pnl_pct": -0.16,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "GOOGL",
-      "strategy": "DT1",
-      "entry_price": 241.1,
-      "exit_price": 238.07,
-      "entry_date": "2026-03-27 14:15",
-      "exit_date": "2026-03-27 18:10",
-      "pnl_pct": -1.26,
       "status": "LOSS"
     }
   ],
