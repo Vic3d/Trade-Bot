@@ -247,7 +247,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 226.77,
-      "stop": 225.92,
+      "stop": 226.46,
       "target": 226.56,
       "opened_at": "2026-03-30 19:25",
       "status": "OPEN"
@@ -323,7 +323,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T19:35:07.137924Z",
+  "last_sync": "2026-03-30T19:40:06.197203Z",
   "recent_day_trades": [
     {
       "ticker": "XOM",
