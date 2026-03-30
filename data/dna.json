@@ -267,7 +267,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 227.17,
-      "stop": 226.81,
+      "stop": 226.95,
       "target": 226.14,
       "opened_at": "2026-03-30 17:31",
       "status": "OPEN"
@@ -313,16 +313,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "ORCL",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 121.6,
-      "stop": 120.14,
-      "target": 121.82,
-      "opened_at": "2026-03-30 16:31",
-      "status": "OPEN"
-    },
-    {
       "ticker": "XOM",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -343,8 +333,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T18:50:07.436823Z",
+  "last_sync": "2026-03-30T18:55:06.110013Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT2",
+      "entry_price": 121.6,
+      "exit_price": 120.1,
+      "entry_date": "2026-03-30 16:31",
+      "exit_date": "2026-03-30 18:55",
+      "pnl_pct": -1.23,
+      "status": "LOSS"
+    },
     {
       "ticker": "CRM",
       "strategy": "DT2",
@@ -533,16 +533,6 @@
       "entry_date": "2026-03-27 14:20",
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": -0.8,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT1",
-      "entry_price": 311.59,
-      "exit_price": 309.78,
-      "entry_date": "2026-03-27 14:35",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": -0.58,
       "status": "LOSS"
     }
   ],
