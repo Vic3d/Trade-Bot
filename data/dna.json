@@ -251,20 +251,20 @@
       "target": 312.33,
       "opened_at": "2026-03-30 13:01",
       "status": "OPEN"
-    },
+    }
+  ],
+  "last_sync": "2026-03-30T14:05:08.382292Z",
+  "recent_day_trades": [
     {
       "ticker": "MRK",
       "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 104.12,
-      "stop": 105.39,
-      "target": 104.59,
-      "opened_at": "2026-03-30 13:01",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-30T14:01:35.115731Z",
-  "recent_day_trades": [
+      "entry_price": 104.12,
+      "exit_price": 105.14,
+      "entry_date": "2026-03-30 13:01",
+      "exit_date": "2026-03-30 14:05",
+      "pnl_pct": 0.98,
+      "status": "WIN"
+    },
     {
       "ticker": "GOOGL",
       "strategy": "DT2",
@@ -454,16 +454,6 @@
       "exit_date": "2026-03-27 17:35",
       "pnl_pct": -0.01,
       "status": "LOSS"
-    },
-    {
-      "ticker": "OXY",
-      "strategy": "DT6",
-      "entry_price": 56.25,
-      "exit_price": 56.88,
-      "entry_date": "2026-03-27 14:15",
-      "exit_date": "2026-03-27 17:31",
-      "pnl_pct": 1.12,
-      "status": "WIN"
     }
   ],
   "closed_trades": [
