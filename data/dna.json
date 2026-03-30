@@ -257,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 150.91,
-      "stop": 149.09,
+      "stop": 151.56,
       "target": 152.13,
       "opened_at": "2026-03-30 14:45",
       "status": "OPEN"
@@ -279,16 +279,6 @@
       "entry": 238.51,
       "stop": 238.66,
       "target": 239.55,
-      "opened_at": "2026-03-30 14:40",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "ORCL",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 120.95,
-      "stop": 122.09,
-      "target": 121.41,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
     },
@@ -343,8 +333,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T15:05:08.032927Z",
+  "last_sync": "2026-03-30T15:10:08.434671Z",
   "recent_day_trades": [
+    {
+      "ticker": "ORCL",
+      "strategy": "DT2",
+      "entry_price": 120.95,
+      "exit_price": 122.06,
+      "entry_date": "2026-03-30 14:40",
+      "exit_date": "2026-03-30 15:10",
+      "pnl_pct": 0.92,
+      "status": "WIN"
+    },
     {
       "ticker": "MRK",
       "strategy": "DT2",
@@ -533,16 +533,6 @@
       "entry_date": "2026-03-27 14:15",
       "exit_date": "2026-03-27 18:10",
       "pnl_pct": -1.26,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "OXY",
-      "strategy": "DT2-CTR",
-      "entry_price": 56.88,
-      "exit_price": 56.89,
-      "entry_date": "2026-03-27 17:31",
-      "exit_date": "2026-03-27 17:35",
-      "pnl_pct": -0.01,
       "status": "LOSS"
     }
   ],
