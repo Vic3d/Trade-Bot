@@ -247,7 +247,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 226.77,
-      "stop": 224.05,
+      "stop": 225.92,
       "target": 226.56,
       "opened_at": "2026-03-30 19:25",
       "status": "OPEN"
@@ -313,16 +313,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "XOM",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 151.52,
-      "stop": 149.71,
-      "target": 152.2,
-      "opened_at": "2026-03-30 16:25",
-      "status": "OPEN"
-    },
-    {
       "ticker": "TMO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -333,8 +323,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T19:25:06.756270Z",
+  "last_sync": "2026-03-30T19:31:11.217717Z",
   "recent_day_trades": [
+    {
+      "ticker": "XOM",
+      "strategy": "DT2",
+      "entry_price": 151.52,
+      "exit_price": 149.35,
+      "entry_date": "2026-03-30 16:25",
+      "exit_date": "2026-03-30 19:31",
+      "pnl_pct": -1.43,
+      "status": "LOSS"
+    },
     {
       "ticker": "META",
       "strategy": "DT2",
@@ -523,16 +523,6 @@
       "entry_date": "2026-03-30 13:01",
       "exit_date": "2026-03-30 14:05",
       "pnl_pct": 0.98,
-      "status": "WIN"
-    },
-    {
-      "ticker": "GOOGL",
-      "strategy": "DT2",
-      "entry_price": 238.76,
-      "exit_price": 239.41,
-      "entry_date": "2026-03-30 13:01",
-      "exit_date": "2026-03-30 13:40",
-      "pnl_pct": 0.27,
       "status": "WIN"
     }
   ],
