@@ -247,7 +247,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 227.17,
-      "stop": 225.6,
+      "stop": 226.02,
       "target": 226.14,
       "opened_at": "2026-03-30 17:31",
       "status": "OPEN"
@@ -343,7 +343,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T17:35:06.813318Z",
+  "last_sync": "2026-03-30T17:40:06.588825Z",
   "recent_day_trades": [
     {
       "ticker": "CSCO",
