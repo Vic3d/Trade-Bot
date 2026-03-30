@@ -241,9 +241,39 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 238.76,
+      "stop": 235.9,
+      "target": 240.56,
+      "opened_at": "2026-03-30 13:01",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "MSFT",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 310.5,
+      "stop": 306.78,
+      "target": 312.33,
+      "opened_at": "2026-03-30 13:01",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "MRK",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 104.12,
+      "stop": 102.86,
+      "target": 104.59,
+      "opened_at": "2026-03-30 13:01",
+      "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T12:55:04.493091Z",
+  "last_sync": "2026-03-30T13:01:32.149783Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
