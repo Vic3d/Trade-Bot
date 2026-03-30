@@ -243,23 +243,43 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "META",
-      "strategy": "DT2",
+      "ticker": "GOLD",
+      "strategy": "DT5",
       "trade_type": "day_trade",
-      "entry": 467.25,
-      "stop": 466.52,
-      "target": 466.16,
-      "opened_at": "2026-03-30 16:55",
+      "entry": 33.83,
+      "stop": 34.01,
+      "target": 33.46,
+      "opened_at": "2026-03-30 17:20",
       "status": "OPEN"
     },
     {
       "ticker": "OXY",
       "strategy": "DT2",
       "trade_type": "day_trade",
-      "entry": 58.22,
-      "stop": 58.03,
+      "entry": 57.97,
+      "stop": 57.27,
       "target": 58.11,
-      "opened_at": "2026-03-30 16:45",
+      "opened_at": "2026-03-30 17:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "CRM",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 161.29,
+      "stop": 159.36,
+      "target": 160.3,
+      "opened_at": "2026-03-30 17:20",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "META",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 467.25,
+      "stop": 466.79,
+      "target": 466.16,
+      "opened_at": "2026-03-30 16:55",
       "status": "OPEN"
     },
     {
@@ -293,16 +313,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "HAL",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 35.1,
-      "stop": 34.67,
-      "target": 35.29,
-      "opened_at": "2026-03-30 16:05",
-      "status": "OPEN"
-    },
-    {
       "ticker": "TMO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -310,16 +320,6 @@
       "stop": 417.82,
       "target": 424.17,
       "opened_at": "2026-03-30 15:02",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "GOLD",
-      "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 34.13,
-      "stop": 33.87,
-      "target": 34.65,
-      "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
     },
     {
@@ -333,8 +333,38 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T17:15:38.936325Z",
+  "last_sync": "2026-03-30T17:20:12.073649Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOLD",
+      "strategy": "DT5",
+      "entry_price": 34.13,
+      "exit_price": 33.83,
+      "entry_date": "2026-03-30 14:40",
+      "exit_date": "2026-03-30 17:20",
+      "pnl_pct": -0.89,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "HAL",
+      "strategy": "DT2",
+      "entry_price": 35.1,
+      "exit_price": 34.67,
+      "entry_date": "2026-03-30 16:05",
+      "exit_date": "2026-03-30 17:20",
+      "pnl_pct": -1.23,
+      "status": "LOSS"
+    },
+    {
+      "ticker": "OXY",
+      "strategy": "DT2",
+      "entry_price": 58.22,
+      "exit_price": 57.97,
+      "entry_date": "2026-03-30 16:45",
+      "exit_date": "2026-03-30 17:20",
+      "pnl_pct": -0.43,
+      "status": "LOSS"
+    },
     {
       "ticker": "PLTR",
       "strategy": "DT2",
@@ -503,36 +533,6 @@
       "entry_date": "2026-03-27 14:45",
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": 0.05,
-      "status": "WIN"
-    },
-    {
-      "ticker": "UNH",
-      "strategy": "DT2",
-      "entry_price": 224.01,
-      "exit_price": 224.9,
-      "entry_date": "2026-03-27 16:10",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 0.4,
-      "status": "WIN"
-    },
-    {
-      "ticker": "CSCO",
-      "strategy": "DT1",
-      "entry_price": 69.57,
-      "exit_price": 69.39,
-      "entry_date": "2026-03-27 16:20",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": -0.25,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "XOM",
-      "strategy": "DT6",
-      "entry_price": 147.41,
-      "exit_price": 148.47,
-      "entry_date": "2026-03-27 16:45",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 0.72,
       "status": "WIN"
     }
   ],
