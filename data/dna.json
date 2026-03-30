@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "TMO",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 419.94,
+      "stop": 417.82,
+      "target": 424.17,
+      "opened_at": "2026-03-30 15:02",
+      "status": "OPEN"
+    },
+    {
       "ticker": "XOM",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -267,7 +277,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 238.51,
-      "stop": 235.65,
+      "stop": 238.36,
       "target": 239.55,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -277,7 +287,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 120.95,
-      "stop": 119.5,
+      "stop": 121.81,
       "target": 121.41,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -287,7 +297,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 35.15,
-      "stop": 34.73,
+      "stop": 35.2,
       "target": 35.3,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -317,7 +327,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 122.91,
-      "stop": 121.43,
+      "stop": 123.45,
       "target": 123.88,
       "opened_at": "2026-03-30 14:40",
       "status": "OPEN"
@@ -333,7 +343,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T14:55:08.043432Z",
+  "last_sync": "2026-03-30T15:02:46.621273Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
