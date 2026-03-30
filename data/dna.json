@@ -327,13 +327,13 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 310.5,
-      "stop": 315.9,
+      "stop": 316.63,
       "target": 312.33,
       "opened_at": "2026-03-30 13:01",
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T14:50:07.495086Z",
+  "last_sync": "2026-03-30T14:55:08.043432Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
