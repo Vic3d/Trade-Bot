@@ -257,7 +257,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 58.22,
-      "stop": 57.98,
+      "stop": 58.03,
       "target": 58.11,
       "opened_at": "2026-03-30 16:45",
       "status": "OPEN"
@@ -267,7 +267,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 82.69,
-      "stop": 82.21,
+      "stop": 82.24,
       "target": 82.4,
       "opened_at": "2026-03-30 16:45",
       "status": "OPEN"
@@ -343,7 +343,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T17:05:08.626725Z",
+  "last_sync": "2026-03-30T17:10:07.487327Z",
   "recent_day_trades": [
     {
       "ticker": "GOOGL",
