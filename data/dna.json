@@ -243,21 +243,11 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "GOOGL",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 238.76,
-      "stop": 239.64,
-      "target": 240.56,
-      "opened_at": "2026-03-30 13:01",
-      "status": "OPEN"
-    },
-    {
       "ticker": "MSFT",
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 310.5,
-      "stop": 312.57,
+      "stop": 313.13,
       "target": 312.33,
       "opened_at": "2026-03-30 13:01",
       "status": "OPEN"
@@ -267,14 +257,24 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 104.12,
-      "stop": 104.73,
+      "stop": 105.05,
       "target": 104.59,
       "opened_at": "2026-03-30 13:01",
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T13:35:07.671055Z",
+  "last_sync": "2026-03-30T13:40:26.997117Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOOGL",
+      "strategy": "DT2",
+      "entry_price": 238.76,
+      "exit_price": 239.41,
+      "entry_date": "2026-03-30 13:01",
+      "exit_date": "2026-03-30 13:40",
+      "pnl_pct": 0.27,
+      "status": "WIN"
+    },
     {
       "ticker": "MRK",
       "strategy": "DT1",
@@ -464,16 +464,6 @@
       "exit_date": "2026-03-27 17:31",
       "pnl_pct": 1.12,
       "status": "WIN"
-    },
-    {
-      "ticker": "HAL",
-      "strategy": "DT2-CTR",
-      "entry_price": 34.75,
-      "exit_price": 34.8,
-      "entry_date": "2026-03-27 17:25",
-      "exit_date": "2026-03-27 17:31",
-      "pnl_pct": -0.14,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
