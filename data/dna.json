@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "UNH",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 226.77,
+      "stop": 224.05,
+      "target": 226.56,
+      "opened_at": "2026-03-30 19:25",
+      "status": "OPEN"
+    },
+    {
       "ticker": "META",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -257,7 +267,7 @@
       "strategy": "DT2",
       "trade_type": "day_trade",
       "entry": 160.15,
-      "stop": 158.24,
+      "stop": 159.57,
       "target": 160.32,
       "opened_at": "2026-03-30 18:50",
       "status": "OPEN"
@@ -323,7 +333,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T19:20:05.746034Z",
+  "last_sync": "2026-03-30T19:25:06.756270Z",
   "recent_day_trades": [
     {
       "ticker": "META",
