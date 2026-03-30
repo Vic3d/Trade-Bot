@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "OXY",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 58.22,
+      "stop": 57.53,
+      "target": 58.11,
+      "opened_at": "2026-03-30 16:45",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "DIS",
+      "strategy": "DT2",
+      "trade_type": "day_trade",
+      "entry": 82.69,
+      "stop": 81.69,
+      "target": 82.4,
+      "opened_at": "2026-03-30 16:45",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ORCL",
       "strategy": "DT2",
       "trade_type": "day_trade",
@@ -280,16 +300,6 @@
       "stop": 34.67,
       "target": 35.29,
       "opened_at": "2026-03-30 16:05",
-      "status": "OPEN"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT2",
-      "trade_type": "day_trade",
-      "entry": 317.4,
-      "stop": 315.53,
-      "target": 316.42,
-      "opened_at": "2026-03-30 16:01",
       "status": "OPEN"
     },
     {
@@ -333,8 +343,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-30T16:40:07.893568Z",
+  "last_sync": "2026-03-30T16:45:43.350689Z",
   "recent_day_trades": [
+    {
+      "ticker": "MSFT",
+      "strategy": "DT2",
+      "entry_price": 317.4,
+      "exit_price": 315.11,
+      "entry_date": "2026-03-30 16:01",
+      "exit_date": "2026-03-30 16:45",
+      "pnl_pct": -0.72,
+      "status": "LOSS"
+    },
     {
       "ticker": "XOM",
       "strategy": "DT2",
@@ -523,16 +543,6 @@
       "entry_date": "2026-03-27 18:10",
       "exit_date": "2026-03-27 20:45",
       "pnl_pct": 0.07,
-      "status": "WIN"
-    },
-    {
-      "ticker": "DIS",
-      "strategy": "DT2",
-      "entry_price": 80.15,
-      "exit_price": 80.25,
-      "entry_date": "2026-03-27 18:25",
-      "exit_date": "2026-03-27 20:45",
-      "pnl_pct": 0.12,
       "status": "WIN"
     }
   ],
