@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ORCL",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 122.71,
+      "stop": 123.39,
+      "target": 121.35,
+      "opened_at": "2026-03-31 14:55",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "XOM",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 150.99,
+      "stop": 150.22,
+      "target": 152.54,
+      "opened_at": "2026-03-31 14:55",
+      "status": "OPEN"
+    },
+    {
       "ticker": "CSCO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -273,7 +293,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T14:50:07.683162Z",
+  "last_sync": "2026-03-31T14:55:07.741328Z",
   "recent_day_trades": [
     {
       "ticker": "GOLD",
