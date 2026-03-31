@@ -241,9 +241,29 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
+    },
+    {
+      "ticker": "MSFT",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 316.05,
+      "stop": 317.51,
+      "target": 313.14,
+      "opened_at": "2026-03-31 14:32",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "DIS",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 81.98,
+      "stop": 82.33,
+      "target": 81.29,
+      "opened_at": "2026-03-31 14:32",
+      "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T14:25:06.097223Z",
+  "last_sync": "2026-03-31T14:32:16.803706Z",
   "recent_day_trades": [
     {
       "ticker": "GOLD",
