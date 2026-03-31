@@ -241,20 +241,20 @@
       "target": 58.22,
       "trade_type": "paper",
       "entry_date": "2026-03-17"
-    },
+    }
+  ],
+  "last_sync": "2026-03-31T13:35:06.328728Z",
+  "recent_day_trades": [
     {
       "ticker": "GOLD",
       "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 33.83,
-      "stop": 34.01,
-      "target": 33.46,
-      "opened_at": "2026-03-30 17:20",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-31T13:31:04.333378Z",
-  "recent_day_trades": [
+      "entry_price": 33.83,
+      "exit_price": 34.43,
+      "entry_date": "2026-03-30 17:20",
+      "exit_date": "2026-03-31 13:35",
+      "pnl_pct": -1.73,
+      "status": "LOSS"
+    },
     {
       "ticker": "TMO",
       "strategy": "DT5",
@@ -444,16 +444,6 @@
       "exit_date": "2026-03-30 16:50",
       "pnl_pct": 0.28,
       "status": "WIN"
-    },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT2",
-      "entry_price": 317.4,
-      "exit_price": 315.11,
-      "entry_date": "2026-03-30 16:01",
-      "exit_date": "2026-03-30 16:45",
-      "pnl_pct": -0.72,
-      "status": "LOSS"
     }
   ],
   "closed_trades": [
