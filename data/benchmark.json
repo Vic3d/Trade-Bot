@@ -1,20 +1,20 @@
 {
-  "date": "2026-03-30",
+  "date": "2026-03-31",
   "paper_fund": {
-    "pnl_eur": -2008.23,
-    "return_pct": -8.03,
-    "trades": 26,
-    "win_rate": 23.1
+    "pnl_eur": -2093.61,
+    "return_pct": -8.37,
+    "trades": 29,
+    "win_rate": 20.7
   },
   "benchmarks": {
     "SPY_buyhold": {
-      "return_pct": -4.74,
-      "pnl_eur": -1030.52,
-      "vs_paper": -3.29
+      "return_pct": -4.26,
+      "pnl_eur": -928.28,
+      "vs_paper": -4.12
     },
     "60_40": {
-      "return_pct": -4.4,
-      "vs_paper": -3.64
+      "return_pct": -3.58,
+      "vs_paper": -4.8
     }
   }
 }

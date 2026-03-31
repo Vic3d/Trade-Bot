@@ -1,37 +1,37 @@
 {
-  "timestamp": "2026-03-30T08:01:12.325692",
+  "timestamp": "2026-03-31T08:01:36.899494",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
       "status": "STARK",
       "score": 80,
-      "momentum_avg": 10.1,
+      "momentum_avg": 11.3,
       "news_score": 100,
       "reasons": [
-        "Preise stark +10.1% (14T)",
+        "Preise stark +11.3% (14T)",
         "News bullish (Score +100)"
       ]
     },
     "PS2": {
       "name": "Tanker-Lag-These",
       "status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 34,
       "momentum_avg": -7.7,
-      "news_score": 0,
+      "news_score": 40,
       "reasons": [
         "Preise schwach -7.7% (14T)",
-        "News neutral (Score +0)"
+        "News bullish (Score +40)"
       ]
     },
     "PS3": {
       "name": "NATO/EU-Rüstung",
       "status": "GESCHWÄCHT",
-      "score": 19,
+      "score": 16,
       "momentum_avg": -15.1,
-      "news_score": 20,
+      "news_score": 0,
       "reasons": [
         "Preise sehr schwach -15.1% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     "PS4": {
@@ -60,21 +60,21 @@
       "name": "Lufthansa — Peace Dividend",
       "status": "GESCHWÄCHT",
       "score": 16,
-      "momentum_avg": -11.0,
+      "momentum_avg": -12.6,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -11.0% (14T)",
+        "Preise sehr schwach -12.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS11": {
       "name": "Defense-EU-Small",
       "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -9.6,
+      "score": 16,
+      "momentum_avg": -12.2,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -9.6% (14T)",
+        "Preise sehr schwach -12.2% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -157,12 +157,23 @@
     },
     "PS_NVO": {
       "name": "Novo Nordisk Value/Turnaround",
-      "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -3.7,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": -1.5,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -3.7% (14T)",
+        "Preise seitwärts -1.5% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS_CCJ": {
+      "name": "Cameco — Uranium Nuclear Renaissance",
+      "status": "GESCHWÄCHT",
+      "score": 16,
+      "momentum_avg": -11.8,
+      "news_score": 0,
+      "reasons": [
+        "Preise sehr schwach -11.8% (14T)",
         "News neutral (Score +0)"
       ]
     }
@@ -173,10 +184,10 @@
       "name": "Tanker-Lag-These",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 34,
       "reasons": [
         "Preise schwach -7.7% (14T)",
-        "News neutral (Score +0)"
+        "News bullish (Score +40)"
       ]
     },
     {
@@ -184,10 +195,10 @@
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 19,
+      "score": 16,
       "reasons": [
         "Preise sehr schwach -15.1% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     {
@@ -219,7 +230,7 @@
       "new_status": "GESCHWÄCHT",
       "score": 16,
       "reasons": [
-        "Preise sehr schwach -11.0% (14T)",
+        "Preise sehr schwach -12.6% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -228,9 +239,9 @@
       "name": "Defense-EU-Small",
       "old_status": "STARK",
       "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "score": 16,
       "reasons": [
-        "Preise schwach -9.6% (14T)",
+        "Preise sehr schwach -12.2% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -315,10 +326,21 @@
       "ps_id": "PS_NVO",
       "name": "Novo Nordisk Value/Turnaround",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise schwach -3.7% (14T)",
+        "Preise seitwärts -1.5% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS_CCJ",
+      "name": "Cameco — Uranium Nuclear Renaissance",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 16,
+      "reasons": [
+        "Preise sehr schwach -11.8% (14T)",
         "News neutral (Score +0)"
       ]
     }

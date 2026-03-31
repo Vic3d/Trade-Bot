@@ -1,91 +1,113 @@
-## [2026-03-30 22:30 UTC]
-Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
 
-**⚪ [POSITION] iShares Biotech ETF (A2DWAW):** Biotech-Aufholpotenzial — FDA-Approvals als Katalysator
-- Headline: Upheaval at FDA pushes some biotech firms to move early trials out of US
-- Source: Reuters | Pub: Wed, 14 May 2025
+## 2026-03-31 10:31 UTC — Geopolitical Scanner
+- **[CRITICAL]** `🇹🇷 Türkei` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇮🇷 Iran/Hormuz` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇵🇰 Pakistan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇮🇱 Israel/Palästina` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇹🇼 Taiwan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S3, S9
+- **[CRITICAL]** `🇮🇶 Irak/Öl` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇱🇾 Libyen/Öl` — أخبار اليوم  العربية"> العربية</a></li></ul><div class="rg-list"><h2>Regions</h2><a href="https://liveuamap.com" title="...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇻🇪 Venezuela` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+- **[CRITICAL]** `🇱🇾 Libyen/Öl` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[HIGH]** `🌊 Karibik/Kuba` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+## 31.03.2026 — 12:31 Geopolitical Scanner Run
 
-**⚪ [WATCHLIST] Lufthansa AG (LHA.DE):** KEIN KAUF JETZT. Entry nur bei: Iran-Waffenstillstand + Brent < 75$ + EMA-Ausbruch
-- Headline: Trump 'pretty sure' of Iran deal, but can Pakistan-led efforts end the war?
-- Source: Al Jazeera | Pub: Mon, 30 Mar 2026
+**Alert Level:** HIGH (Score 394)
+**Alert Tier:** HIGH (Score 50+)
+**Regions Triggered:** 🇹🇷 Türkei (71), 🇮🇷 Iran/Hormuz (62), 🇵🇰 Pakistan (58), 🇮🇱 Israel/Palästina (43), 🇹🇼 Taiwan (33)
 
----
+**Key Findings:**
+- 🚨 CRITICAL Keywords: invasion, Hormuz
+- Türkei: Continued military activities
+- Iran/Hormuz: Shipping disruptions (Qatar LNG supplies)
+- Taiwan: F-16 crash (Jan 6), PLA drills "Justice Mission 2025", Chinese military exercises ramping up
+- Israel/Palästina: Ongoing tensions
 
-## 2026-03-30 | 19:31 CET | Geopolitical Scanner Run
+**Strategien mit Exposure:** S1, S3, S8, S9
+**Tickers:** CCL, DR0.DE, EQNR, GLEN.L, MSFT, NVDA, S.TO
 
-**Alert Level:** HIGH (Score 462)
-**Regions Triggered:** Iran (77), Türkei (71), Pakistan (58), Israel/Levant (47), Pakistan Border (35)
-**Primary Events:**
-- Iran: Air defense activations east of Tehran; strikes on Mehrabad Airport, Tabriz Airport, Isfahan Univ of Technology
-- Israel/Hezbollah: Massive airstrike coordination on Iranian regime sites; 120+ bombs dropped by IAF; Haifa refinery fires
-- Lebanon: Israeli raids on Beirut suburbs, southern towns; UNIFIL peacekeeper killed
-- Pakistan/Afghanistan: Pakistani airstrikes on Kabul, Kandahar; Afghan retaliation strikes on Kohat; Taliban mobilizing
-- Hormuz: UAE air defenses engaged 11 ballistic missiles + 27 UAVs from Iran
+**Status:** Taiwan's LNG reserves at ~11 days (critical threshold reached). Geopolitical pressure on energy supply chains remains elevated.
 
-**Trading Impact (S1/S3/S9):**
-- Energy: Brent likely moving; Haifa refinery damage signals sustained regional conflict
-- Shipping: Strait of Hormuz stress → reroutes via JEBEL ALI / Indian Ocean
-- Defense: MSFT (JEDI), NVDA (geopolitical chip demand) potentially bid up on re-risk
-- Oil/Gas: EQNR (Norway), GLEN.L (Glencore) exposure to Middle East premium
-
-**Analyst Note:** This is classic "shooting war with financial repercussions" — not a ceasefire signal. Sustained operations suggest weeks-long campaign, not one-off strikes.
-
----
-
-## [2026-03-30 21:00 UTC]
-Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
-
-**⚪ [POSITION] VanEck Oil Services ETF (A3D42Y):** Öl-Services profitieren von hohem Ölpreis + Explorationsausgaben
-- Headline: 4 Oilfield Services Stocks Set to Gain From Strong Industry Tailwinds (TradingView, 26 Mar 2026)
-- Keywords: oilfield
-
-**⚪ [POSITION] VanEck Oil Services ETF (A3D42Y):** Öl-Services profitieren von hohem Ölpreis + Explorationsausgaben
-- Headline: Emirates Oilfield Testing & Marine Services 2026 (Farmonaut, 04 Mar 2026)
-- Keywords: oilfield
-
-**⚪ [WATCHLIST] ASML Holding (ASML.AS):** EMA50-Rücklauf ~1.160€ als Entry — Chip-Monopol
-- Headline: ASML Lands Massive EUV Deal Clearing Path to Double Revenue by 2030 (24/7 Wall St., 24 Mar 2026)
-- Keywords: asml
+**Previous Run:** 31.03.2026 — 07:30 (Score 641)
 
 ---
 
-## [2026-03-30 20:00 UTC]
+## 31.03.2026 — 07:30 Geopolitical Scanner Run
+
+**Alert Level:** HIGH (Score 641)
+**Alert Tier:** HIGH (Score 50+)
+**Regions Triggered:** Pakistan (72), Türkiye (71), Iran/Hormuz (63), Israel/Palästina (47)
+
+**Discord Message Generated:**
+```
+🚨 **GEO-ALERT HIGH** | Score 641
+• 🔴 **🇵🇰 Pakistan** (Score 72)
+• 🔴 **🇹🇷 Türkei** (Score 71)
+• 🔴 **🇮🇷 Iran/Hormuz** (Score 63)
+• 🔴 **🇵🇰 Pakistan** (Score 58)
+• 🔴 **🇮🇱 Israel/Palästina** (Score 47): Airstrikes on Iran, explosions in Isfahan, missile launches
+Strategien: S1, S2, S3, S9 | Tickers: CCL, DR0.DE, EQNR, GLEN.L, MSFT, NVDA, RHM.DE, S.TO
+```
+
+**Key Signals:**
+- Multiple simultaneous airstrikes (Israel/Iran)
+- Missile activity confirmed
+- Lebanon/Hezbollah escalation
+- Pakistan border tensions with Taliban
+- 7d-Avg: 480.7 | Delta: +160 (spike)
+
+**Action:** Full Deep Dive required — request: "Deep Dive airstrike"
+
+## [2026-03-31 06:00 UTC]
 Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
-
-**⚪ [WATCHLIST] First Majestic Silver (AG):** Silberpreis-Rebound — Entry nur nach Reversal-Kerze
-- Headline: What will happen to gold and silver prices this March? Here's what experts expect. (CBS News, 02 Mar 2026)
-- Keywords: silver price
-
 ---
 
-## [2026-03-30 18:30 UTC]
+## [2026-03-31 06:30 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
+---
+
+## [2026-03-31 07:00 UTC]
 Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
 ---
 
-## [2026-03-30 21:30 UTC]
-Neu: 5 | 🔴 0 | 🟡 1 | ⚪ 4
-
-**🟡 [POSITION] Palantir (PLTR):** US-Regierungsaufträge + KI-Defense profitiert von Militärausgaben
-- Headline: Palantir: Analyzing The Impact Of Middle East Escalation On Defense Software Demand
-- Source: seekingalpha.com | Pub: Wed, 04 Mar 2026
-
-**⚪ [POSITION] Equinor ASA (EQNR):** Ölpreis steigt durch Iran-Krise / Hormuz — Equinor als europäischer Öl-Profiteur
-- Headline: How the US could try to seize Iran's Kharg Island
-- Source: BBC | Pub: Mon, 30 Mar 2026
-
-**⚪ [POSITION] VanEck Oil Services ETF (A3D42Y):** Öl-Services profitieren von hohem Ölpreis + Explorationsausgaben
-- Headline: Seismic Services Market: Capitalizing on Exploration Opportunities 2033
-- Source: vocal.media | Pub: Tue, 14 Oct 2025
-
-**⚪ [WATCHLIST] Rheinmetall AG (RHM.DE):** Re-Entry bei >1.626€ + Volumen — Rüstungsausgaben Europa
-- Headline: Germany Reveals Rheinmetall Ragnarök 120mm Truck-Mounted Mortar for Fast Shoot-and-Scoot NATO Fires
-- Source: Army Recognition | Pub: Tue, 17 Mar 2026
-
-**⚪ [WATCHLIST] ASML Holding (ASML.AS):** EMA50-Rücklauf ~1.160€ als Entry — Chip-Monopol
-- Headline: SK hynix places record $8 billion order for ASML EUV lithography machines
-- Source: tomshardware.com | Pub: Tue, 24 Mar 2026
+## [2026-03-31 07:30 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
 ---
 
-## [2026-03-30 20:00 UTC]
+## [2026-03-31 08:00 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
+---
+
+## [2026-03-31 08:30 UTC]
+KEIN_SIGNAL (INFO: 2)
+---
+
+## [2026-03-31 09:00 UTC]
 KEIN_SIGNAL
+---
+
+## [2026-03-31 09:31 UTC]
+KEIN_SIGNAL
+---
+
+## [2026-03-31 10:00 UTC]
+Neu: 1 | 🔴 0 | 🟡 0 | ⚪ 1
+---
+
+## [2026-03-31 10:30 UTC]
+Neu: 2 | 🔴 0 | 🟡 0 | ⚪ 2
+---
+
+## [2026-03-31 11:00 UTC]
+Neu: 3 | 🔴 0 | 🟡 0 | ⚪ 3
 ---

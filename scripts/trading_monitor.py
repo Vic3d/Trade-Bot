@@ -1532,6 +1532,27 @@ def main():
     except Exception as e:
         print(f"⚠️  Positions-Sync konnte nicht ausgeführt werden: {e}")
 
+    # ── CEO-Direktive laden ──────────────────────────────────────────────────
+    _ceo_directive_path = WORKSPACE / 'data/ceo_directive.json'
+    ceo_directive = None
+    try:
+        if _ceo_directive_path.exists():
+            _d = json.loads(_ceo_directive_path.read_text())
+            _ts = datetime.fromisoformat(_d['timestamp'])
+            if (datetime.now(timezone.utc).replace(tzinfo=None) - _ts).total_seconds() < 86400:
+                ceo_directive = _d
+    except Exception:
+        ceo_directive = None
+
+    # CEO-Modus und Regeln extrahieren
+    ceo_mode = ceo_directive.get('mode', 'NORMAL') if ceo_directive else 'NORMAL'
+    ceo_max_new = ceo_directive['trading_rules'].get('max_new_positions_today', 5) if ceo_directive else 5
+    ceo_blocked = ceo_directive['trading_rules'].get('blocked_strategies', []) if ceo_directive else []
+    ceo_health = ceo_directive.get('system_health', {}).get('score', 100) if ceo_directive else 100
+
+    if ceo_directive:
+        log(f"CEO-Direktive geladen: Modus={ceo_mode}, Max-Neu={ceo_max_new}, Health={ceo_health}/100")
+
     config = load_json(CONFIG_PATH)
     if not config:
         log("FEHLER: trading_config.json nicht gefunden oder leer!")

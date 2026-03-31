@@ -347,3 +347,67 @@ Format: AUTO-Trades von autonomous_loop.py | Manuelle Trades von Albert/Victor d
 **Stop:** $155 / ~€135 (sofort in TR setzen)
 **Risiko:** Supreme Court Präzedenz (Tarife bereits einmal gekippt Feb 2026); CRV leicht schlechter als geplant wegen höherem Entry
 **Lesson:** Einstieg über geplanter Zone erhöht Risiko — nächstes Mal Limit-Order strikter einhalten
+
+## 2026-03-31 01:15 — AUTO: WATCHLIST TSM
+**Entscheidung:** WATCHLIST für TSM (Score: 39/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -18.9% unter 52W-High | Sicherer Abstand vom 52W-Low | Noch fallend
+
+## 2026-03-31 01:15 — AUTO: WATCHLIST ASML.AS
+**Entscheidung:** WATCHLIST für ASML.AS (Score: 47/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -15.3% unter 52W-High | Sicherer Abstand vom 52W-Low | Starkes bullisches News-Signal
+
+## 2026-03-31 01:15 — AUTO: WATCHLIST WEAT
+**Entscheidung:** WATCHLIST für WEAT (Score: 51/100)
+**Auslöser:** Understanding Droughts - National Geographic Society
+**Kern-Reasoning:** Momentum stabilisiert | Starkes bullisches News-Signal | CRV 2.6:1 attraktiv
+
+## 2026-03-31 01:15 — AUTO: WATCHLIST NTR
+**Entscheidung:** WATCHLIST für NTR (Score: 39/100)
+**Auslöser:** Understanding Droughts - National Geographic Society
+**Kern-Reasoning:** Moderat -10.3% unter 52W-High | Sicherer Abstand vom 52W-Low | Noch fallend
+
+## 2026-03-31 07:31 — AUTO: WATCHLIST WEAT
+**Entscheidung:** WATCHLIST für WEAT (Score: 51/100)
+**Auslöser:** Understanding Droughts - National Geographic Society
+**Kern-Reasoning:** Momentum stabilisiert | Starkes bullisches News-Signal | CRV 2.6:1 attraktiv
+
+## 2026-03-31 07:31 — AUTO: WATCHLIST NTR
+**Entscheidung:** WATCHLIST für NTR (Score: 39/100)
+**Auslöser:** Understanding Droughts - National Geographic Society
+**Kern-Reasoning:** Moderat -10.3% unter 52W-High | Sicherer Abstand vom 52W-Low | Noch fallend
+
+## 2026-03-31 07:31 — AUTO: WATCHLIST TSM
+**Entscheidung:** WATCHLIST für TSM (Score: 39/100)
+**Auslöser:** Could a Samsung union strike vote this week exacerbate the global chip shortage? - 富途牛牛
+**Kern-Reasoning:** Moderat -18.9% unter 52W-High | Sicherer Abstand vom 52W-Low | Noch fallend
+
+## 2026-03-31 — Albert CEO: Paper Lab Restrukturierung
+
+**Entscheidung:** 3 Strategien pausiert, Conviction-Score rekalibriert, Sektor-Rotation eingebaut.
+
+**Was ich im Befund sah:**
+- Alle 6 Verlust-Trades mit Conviction ≥8 hatten `Regime: None` — das System tradet ohne Marktkontext
+- AR-HALB/AR-AGRA: Entries durch Garbage-News (富途牛牛, USGS-Dürre-Bericht) getriggert — F4-Score hat schlechte Quellen nicht bestraft
+- High-Conviction 20% WR vs. Low-Conviction 46% WR = Score ist invertiert → zu viele False Positives bei starken News-Signalen ohne technischen Unterbau
+
+**Was ich geändert habe (autonome Entscheidungen):**
+
+1. **AR-HALB + AR-AGRA pausiert (locked=True, health=paused)** — 0% WR, beide verloren auf irrelevante News hin. Halbleiter und Agrar sind strukturell schwierig bei aktuellem Bear-Regime. Kein Cent mehr in diese Sektoren bis explizite Reaktivierung.
+
+2. **DT4 pausiert** — News-Catalyst Strategie hat 20% recent WR. Das ist schlechter als Münzwurf. Bis zur Strategie-Überarbeitung gesperrt.
+
+3. **Entry Signal Engine F4-Fix:**
+   - RSI Bounce: +3→+2 (war zu aggressiv, triggert oft auf News-Momentum nicht echten technischen Bounce)
+   - Geopolitik-Boost: jetzt gedeckelt bei +2 (war unbegrenzt durch CEO-Direktive)
+   - Regime=None Penalty: −1 wenn kein Marktregime bekannt → verhindert Blind-Entries
+
+4. **Sektor-Rotation eingebaut:**
+   - `sector_rotation_logic.py` läuft täglich, schreibt `sector_rotation_state.json`
+   - `autonomous_loop.py` liest Multiplier: Halbleiter×0.0, Agrar×0.0, Metals×1.5
+   - Formel: `final_score = conviction × rotation_multiplier.get(sector, 1.0)`
+
+**Kern-Reasoning:** Das Paper Lab hat gezeigt dass der Scorer schlecht kalibriert ist. High-Conviction-Entries verlieren weil sie auf News-Momentum ohne Regime-Kontext basieren. Die Korrekturen machen das System selektiver — weniger Trades, aber höhere Qualität.
+
+**Lesson:** Regime=None ist ein rotes Flag, kein neutrales. News ohne technischen Kontext = Rauschen, kein Signal.

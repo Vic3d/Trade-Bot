@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-03-31T09:17:24",
+  "mode": "DEFENSIVE",
+  "mode_reason": "VIX 30.6 > 28 + Geo-Score 80 > 50",
+  "vix": 30.6,
+  "regime": "TREND_DOWN",
+  "geo_alert_level": "HIGH",
+  "geo_score": 80,
+  "trading_rules": {
+    "max_new_positions_today": 2,
+    "max_position_size_eur": 1500,
+    "stop_tightening_factor": 1.3,
+    "vix_conviction_adjustment": -2,
+    "allowed_strategies": [
+      "PS1",
+      "PS12",
+      "PS_NVO",
+      "PT",
+      "S1",
+      "S2",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "new"
+    ],
+    "blocked_strategies": [
+      "AR-AGRA",
+      "AR-HALB",
+      "DT1",
+      "DT2",
+      "DT3",
+      "DT4",
+      "DT5",
+      "DT6",
+      "DT7",
+      "DT8",
+      "DT9",
+      "PS10",
+      "PS11",
+      "PS13",
+      "PS14",
+      "PS15",
+      "PS16",
+      "PS17",
+      "PS2",
+      "PS3",
+      "PS4",
+      "PS5",
+      "PS_CCJ",
+      "PS_STLD",
+      "S10-TEST",
+      "S3"
+    ]
+  },
+  "paper_lab": {
+    "mode": "EXPERIMENTAL",
+    "description": "Paper Lab testet alles — auch schwache Setups und hohes Risiko",
+    "max_new_positions_per_run": 15,
+    "min_conviction_score": 1,
+    "ignore_vix_limit": true,
+    "ignore_regime": true,
+    "blocked_strategies": [],
+    "max_position_size_eur": 3000,
+    "stop_factor": 1.0,
+    "risk_mode": "HIGH",
+    "experimental_strategies": true
+  },
+  "system_health": {
+    "score": 70,
+    "errors": [],
+    "warnings": [
+      "P1.3 Trade Journal: nur 3 Einträge — mehr Daten nötig",
+      "Drawdown 12.9% — erhöht"
+    ]
+  },
+  "learning_status": {
+    "overall_win_rate": 0.429,
+    "win_rate_7d": 0.389,
+    "win_rate_30d": 0.391,
+    "best_strategy": "PM",
+    "worst_strategy": "AR-AGRA",
+    "total_closed_trades": 42,
+    "open_positions": 14,
+    "portfolio_drawdown": 0.129,
+    "p1_features_active": false,
+    "data_quality_score": 65
+  },
+  "top_opportunities": [
+    {
+      "strategy": "S1",
+      "name": "Iran-Konflikt → Öl & Silber",
+      "tickers": [
+        "EQNR"
+      ],
+      "health": "green_hot",
+      "score": 70,
+      "win_rate": 1.0,
+      "trades": 2
+    },
+    {
+      "strategy": "PS1",
+      "name": "Iran/Öl-Geopolitik",
+      "tickers": [
+        "OXY",
+        "TTE.PA",
+        "EQNR.OL"
+      ],
+      "health": "green",
+      "score": 42,
+      "win_rate": 0.4,
+      "trades": 5
+    },
+    {
+      "strategy": "S4",
+      "name": "Geopolitische Unsicherheit → Silber/Gold",
+      "tickers": [],
+      "health": "green",
+      "score": 30,
+      "win_rate": 0,
+      "trades": 0
+    }
+  ],
+  "ceo_notes": "VIX 30.6 — erhöhte Volatilität. Stops erweitern. | Tech-Positionen (NVDA, PLTR, MSFT) nur halten, nicht ausbauen. | Abwärtstrend aktiv — S&P unter MA200 = kein Growth-Long."
+}

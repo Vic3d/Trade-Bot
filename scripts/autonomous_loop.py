@@ -21,6 +21,26 @@ WATCHLIST_THRESHOLD = 35    # Score für Watchlist
 MAX_POSITIONS = 15          # Maximale Paper-Positionen
 MAX_PER_SECTOR = 3          # Max Positionen pro Sektor
 
+# ─── Sektor-Rotation-Multiplier laden ─────────────────────────────────────────
+def load_rotation_multiplier() -> dict:
+    """
+    Liest data/sector_rotation_state.json und gibt rotation_multiplier zurück.
+    Falls Datei fehlt oder zu alt (>12h): leeres Dict → alle Sektoren 1.0x.
+    """
+    try:
+        _ws = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        _path = os.path.join(_ws, 'data', 'sector_rotation_state.json')
+        if not os.path.exists(_path):
+            return {}
+        state = json.loads(open(_path).read())
+        # Staleness-Check: älter als 12h → ignorieren
+        ts = datetime.datetime.fromisoformat(state.get('timestamp', '2000-01-01'))
+        if (datetime.datetime.now() - ts).total_seconds() > 43200:
+            return {}
+        return state.get('rotation_multiplier', {})
+    except Exception:
+        return {}
+
 def get_price(ticker):
     url = f'https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1wk&range=6mo'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -245,6 +265,18 @@ def run_autonomous_loop(radar_signals=None):
                 sig['direction'], sig['confidence'], atr
             )
 
+            # ─── Sektor-Rotation-Multiplier anwenden ──────────────────
+            # final_score = conviction * rotation_multiplier.get(sector, 1.0)
+            # Sektoren mit 0.0x werden komplett blockiert (z.B. Halbleiter, Agrar)
+            _rotation = load_rotation_multiplier()
+            _sector_display = sector.capitalize() if sector else 'Other'
+            _multiplier = _rotation.get(_sector_display, _rotation.get(sector, 1.0))
+            final_score = round(score * _multiplier)
+            if _multiplier != 1.0:
+                reasons.append(f'Rotation×{_multiplier:.1f} ({_sector_display}): {score}→{final_score}')
+            score = final_score
+            # ─────────────────────────────────────────────────────────
+
             print(f"\n  {ticker:12s} | Score: {score:3d}/100 | {sig['direction']:12s} | {sig['headline'][:45]}")
 
             if score >= ENTRY_THRESHOLD and slots_free > 0 and "BULLISCH" in sig['direction']:
@@ -283,6 +315,32 @@ def run_autonomous_loop(radar_signals=None):
                 except ImportError:
                     pass  # graceful fallback
                 # ─── END ENTRY GATE ───────────────────────────────────
+
+                # ─── CEO REVIEW — Gate 2 der Trade-Pipeline ──────────
+                try:
+                    from ceo_trade_review import ceo_review
+                    _review = ceo_review({
+                        'ticker': ticker,
+                        'strategy_id': strategy,
+                        'price': cur,
+                        'conviction': max(1, score // 10),  # normalize 0-100 → 1-10
+                        'signal': sig.get('direction', 'BULLISCH'),
+                        'sector': sector.capitalize() if sector else 'UNKNOWN'
+                    })
+                    if _review['decision'] == 'REJECT':
+                        print(f"  ❌ CEO REJECT: {ticker} — {_review['reason']}")
+                        continue
+                    elif _review['decision'] == 'WATCH':
+                        print(f"  👁  CEO WATCH: {ticker} — {_review['reason']}")
+                        log_decision(ticker, "CEO WATCH", score, reasons, sig['headline'])
+                        watchlist_added.append(ticker)
+                        continue
+                    # APPROVE → proceed
+                    _thesis_short = _review.get('thesis', '')[:60]
+                    print(f"  🎩 CEO APPROVE: {ticker} | These: {_thesis_short}")
+                except ImportError:
+                    pass  # graceful fallback if script not available
+                # ─── END CEO REVIEW ───────────────────────────────────
 
                 stop, target, shares = open_trade(
                     ticker, strategy, sector, cur, atr, reasons,

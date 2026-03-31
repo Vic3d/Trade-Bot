@@ -147,7 +147,7 @@ def detect_emerging_themes(articles, emerging_theme_detectors):
     """
     detections = []
     for theme_key, detector in emerging_theme_detectors.items():
-        if 'keywords' not in detector:
+        if not isinstance(detector, dict) or 'keywords' not in detector:
             continue  # Skip malformed entries (e.g. genesis/performance meta-fields)
         hits = []
         for art in articles:

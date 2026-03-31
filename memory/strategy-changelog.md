@@ -581,3 +581,67 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
 **Gründe:** Preise schwach -3.7% (14T) | News neutral (Score +0)
 
+
+
+## 2026-03-31 08:01 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 34)
+**Gründe:** Preise schwach -7.7% (14T) | News bullish (Score +40)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -15.1% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -28.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -6.6% (14T) | News neutral (Score +0)
+
+### PS10 (Lufthansa — Peace Dividend)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -12.6% (14T) | News neutral (Score +0)
+
+### PS11 (Defense-EU-Small)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -12.2% (14T) | News neutral (Score +0)
+
+### PS12 (AI-Infrastructure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS13 (Copper-Green-Transition)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -17.8% (14T) | News neutral (Score +0)
+
+### PS14 (Shipping-Normalization)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -10.7% (14T) | News neutral (Score +0)
+
+### PS15 (Biotech-Rate-Reversal)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -4.5% (14T) | News neutral (Score +0)
+
+### PS16 (Nuclear Renaissance — AI Power Demand)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -11.8% (14T) | News neutral (Score +0)
+
+### PS17 (EU Domestic Champions — Trade War Profiteure)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 28)
+**Gründe:** Preise schwach -9.4% (14T) | News neutral (Score +0)
+
+### PS_STLD (Stahl-Tariff-Play (Liberation Day))
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -13.4% (14T) | News neutral (Score +0)
+
+### PS_NVO (Novo Nordisk Value/Turnaround)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts -1.5% (14T) | News neutral (Score +0)
+
+### PS_CCJ (Cameco — Uranium Nuclear Renaissance)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 16)
+**Gründe:** Preise sehr schwach -11.8% (14T) | News neutral (Score +0)
+

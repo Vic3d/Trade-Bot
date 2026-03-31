@@ -196,5 +196,9 @@
     "max_same_strategy": 3
   },
   "ignore_vix_position_limit": true,
-  "max_new_positions_per_run": 10
+  "max_new_positions_per_run": 15,
+  "min_conviction_for_entry": 1,
+  "experimental_mode": true,
+  "risk_mode": "HIGH",
+  "max_position_size_aggressive": 3000
 }

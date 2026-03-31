@@ -1,9 +1,9 @@
 {
-  "date": "2026-03-30",
-  "regime": "BEAR",
+  "date": "2026-03-31",
+  "regime": "CORRECTION",
   "velocity": "VOLATILE",
   "factors": {
-    "vix": 30.61,
+    "vix": 28.92,
     "dxy": 99.103,
     "us10y": 4.281,
     "us2y": 3.612,
@@ -12,14 +12,16 @@
     "sp500_vs_ma200": -0.17
   },
   "config": {
-    "desc": "Abw\u00e4rtstrend >10%, hohe Volatilit\u00e4t",
-    "position_factor": 0.4,
-    "stop_factor": 2.0,
+    "desc": "R\u00fccksetzer 5-10%, erh\u00f6hte Volatilit\u00e4t",
+    "position_factor": 0.6,
+    "stop_factor": 1.5,
     "allowed_strategies": [
+      "S1",
       "S4",
       "PS1",
+      "PS3",
       "PS4"
     ]
   },
-  "updated_at": "2026-03-30T20:45:24.454858+00:00"
+  "updated_at": "2026-03-31T10:45:25.288637+00:00"
 }

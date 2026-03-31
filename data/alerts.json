@@ -271,5 +271,40 @@
     "ticker": "",
     "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 124.19\u20ac | Stop: 127.0\u20ac | -2.3% Abstand [Conviction: 15/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T06:00:52.167133+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 119.94\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 15/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T06:00:52.168190+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -98 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T06:00:52.168611+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f S&P 500 UNTER 200-MA | SPY $631.97 vs MA200 $646.58 (-2.3%) \u2014 Risk-OFF aktiv. Kein aggressiver Aufbau.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T06:15:26.452921+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 119.94\u20ac | Stop: 127.0\u20ac | Nur noch -5.9% Abstand! [Conviction: 15/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T06:31:13.532971+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 119.89\u20ac | Stop: 127.0\u20ac | -5.9% Abstand [Conviction: 15/100]",
+    "value": ""
   }
 ]

@@ -3493,3 +3493,31 @@ Ja. Halt-Perioden müssen länger sein, Stops weiter, psychologische Schwächen 
 3. Headline-Filter: Single-News-Trades blockieren
 4. Psychologie-Training: "kein Druck zu handeln" = höhere Cash-Toleranz
 5. Wochenschluss als Signal-Cutoff verwenden
+
+
+## CEO-Architektur (31.03.2026)
+
+**Was gebaut wurde:** TradeMind CEO — das zentrale Gehirn des Systems.
+
+**Datei:** `scripts/ceo.py`
+**Output:** `data/ceo_directive.json` (täglich, max 24h alt)
+
+### Komponenten:
+1. **load_all_sources()** — Liest alle JSON/MD Datenquellen
+2. **load_historical_data(db)** — DB-Metriken: Win-Rate, Drawdown, Strategie-Performance
+3. **determine_trading_mode()** — AGGRESSIVE / NORMAL / DEFENSIVE / SHUTDOWN Logik
+4. **build_trading_rules()** — Erlaubte/blockierte Strategien nach Modus
+5. **calculate_system_health()** — Score 0–100, Errors + Warnings
+6. **build_directive()** — Vollständige CEO-Direktive zusammenbauen
+7. **generate_report()** — Discord-Briefing für Victor
+
+### Integrations:
+- **entry_signal_engine.py**: liest CEO-Direktive — blockiert Entries wenn SHUTDOWN, blockiert gesperrte Strategien, wendet VIX-Adjustment an
+- **trading_monitor.py**: liest CEO-Direktive — kennt mode, max_new_positions, blocked_strategies
+
+### Aktueller Status (31.03.2026):
+- Mode: DEFENSIVE (VIX 30.6)
+- Win-Rate: 43% gesamt | 39% letzte 7 Tage
+- Drawdown: 12.9%
+- System-Health: 70/100
+- Trade Journal: 3 Einträge (zu wenig!)

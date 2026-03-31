@@ -10,11 +10,85 @@ Tier-System:
   Tier 3: Sonnet Impact-Analyse (nur bei echtem Treffer)
 """
 
-import sqlite3, json, time, os
+import sqlite3, json, time, os, re
 from datetime import datetime, timezone
 
 DB_PATH      = os.path.join(os.path.dirname(__file__), "..", "memory", "newswire.db")
+DB_TRADING   = os.path.join(os.path.dirname(__file__), "..", "data", "trading.db")
 ANALYSIS_OUT = os.path.join(os.path.dirname(__file__), "..", "memory", "newswire-analysis.md")
+
+# ── P1.4 — Sentiment-Magnitude ────────────────────────────────────────────────
+
+# Stärke 3 — starke Handlungsworte / Extremereignisse
+MAGNITUDE_STRONG = {
+    "threatens", "strikes", "vows", "sanctions", "closes", "attacks",
+    "invades", "bans", "seizes", "declares", "war", "crisis", "shock",
+    "crash", "collapse",
+}
+
+# Stärke 2 — moderate Signale
+MAGNITUDE_MEDIUM = {
+    "warns", "considers", "tensions", "rising", "escalates", "concerns",
+    "risks", "disputes", "protests",
+}
+
+# Stärke 1 — schwache / vage Signale (alles andere landet hier als Default)
+MAGNITUDE_WEAK = {
+    "suggests", "hints", "slightly", "minor", "modest", "gradual",
+    "possible", "could",
+}
+
+
+def calculate_magnitude(headline: str) -> int:
+    """
+    Berechnet Sentiment-Magnitude (1–3) aus Schlüsselwörtern.
+
+    Returns:
+        3 = Strong (Extremereignis, sofortige Marktreaktion wahrscheinlich)
+        2 = Medium (moderates Signal, Watchlist)
+        1 = Weak (Rauschen, vage Formulierung)
+    """
+    words = set(re.findall(r'\b\w+\b', headline.lower()))
+    if words & MAGNITUDE_STRONG:
+        return 3
+    if words & MAGNITUDE_MEDIUM:
+        return 2
+    return 1
+
+
+def ensure_magnitude_column_trading_db():
+    """
+    Fügt magnitude-Spalte in overnight_events hinzu falls nicht vorhanden.
+    Idempotent (ALTER TABLE schlägt fehl wenn Spalte existiert → ignorieren).
+    """
+    try:
+        conn = sqlite3.connect(DB_TRADING)
+        try:
+            conn.execute("ALTER TABLE overnight_events ADD COLUMN magnitude INTEGER DEFAULT 1")
+            conn.commit()
+            print("[magnitude] Spalte 'magnitude' zu overnight_events hinzugefügt")
+        except sqlite3.OperationalError:
+            pass  # Spalte existiert bereits
+        conn.close()
+    except Exception as e:
+        print(f"[magnitude] DB-Migration Fehler: {e}")
+
+
+def ensure_magnitude_column_newswire_db():
+    """
+    Fügt magnitude-Spalte in events (newswire.db) hinzu falls nicht vorhanden.
+    """
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        try:
+            conn.execute("ALTER TABLE events ADD COLUMN magnitude INTEGER DEFAULT 1")
+            conn.commit()
+            print("[magnitude] Spalte 'magnitude' zu newswire.events hinzugefügt")
+        except sqlite3.OperationalError:
+            pass  # Spalte existiert bereits
+        conn.close()
+    except Exception as e:
+        print(f"[magnitude] newswire DB-Migration Fehler: {e}")
 
 # ── Per-Aktie Keyword-Sets (präzise, Tier-2-Filter) ───────────────────────────
 # Diese Keywords sind spezifischer als die breiten Strategie-Keywords im Daemon.
@@ -172,11 +246,16 @@ STOCK_KEYWORDS = {
 }
 
 def load_recent_events(minutes=35):
-    """Lade Events der letzten N Minuten mit score >= 2."""
+    """Lade Events der letzten N Minuten mit score >= 2. Inkl. magnitude."""
     conn = sqlite3.connect(DB_PATH)
     cutoff = int(time.time()) - (minutes * 60)
+
+    # Prüfe ob magnitude-Spalte existiert
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(events)").fetchall()}
+    mag_col = "magnitude" if "magnitude" in cols else "1 AS magnitude"
+
     rows = conn.execute(
-        """SELECT id, source, ticker, strategy_id, direction, headline, score
+        f"""SELECT id, source, ticker, strategy_id, direction, headline, score, {mag_col}
            FROM events
            WHERE ts > ? AND score >= 2
            ORDER BY score DESC, ts DESC
@@ -238,6 +317,10 @@ def write_analysis(analysis: str, events_by_stock: dict):
 
 def run():
     """Hauptlogik: DB lesen → per-Aktie matchen → Output für Cron-Analyse."""
+    # P1.4 DB-Migration: magnitude-Spalten sicherstellen
+    ensure_magnitude_column_newswire_db()
+    ensure_magnitude_column_trading_db()
+
     # Phase 3: News-Pipeline mit Dedup vor jedem Analyst-Run ausführen
     # Schreibt frische News in trading.db:news_events (für Conviction Scorer)
     try:
@@ -257,7 +340,27 @@ def run():
 
     # Per-Aktie gruppieren
     events_by_stock = {}
-    for eid, source, ticker, strategy_id, direction, headline, score in events:
+    for row in events:
+        eid, source, ticker, strategy_id, direction, headline, score = row[:7]
+        mag_raw = row[7] if len(row) > 7 else None
+
+        # P1.4: Magnitude berechnen (aus DB oder neu berechnen)
+        if mag_raw is None or mag_raw == 1:
+            magnitude = calculate_magnitude(headline)
+            # Magnitude in DB zurückschreiben falls Spalte vorhanden
+            try:
+                upd_conn = sqlite3.connect(DB_PATH)
+                upd_conn.execute(
+                    "UPDATE events SET magnitude = ? WHERE id = ?",
+                    (magnitude, eid)
+                )
+                upd_conn.commit()
+                upd_conn.close()
+            except Exception:
+                pass
+        else:
+            magnitude = int(mag_raw)
+
         matches = match_stock(headline)
         if not matches:
             # Kein direkter Match — ignorieren in Tier-2
@@ -276,6 +379,7 @@ def run():
                 "score": score,
                 "source": source,
                 "match_type": m["match_type"],
+                "magnitude": magnitude,
             })
 
     if not events_by_stock:
@@ -287,10 +391,13 @@ def run():
     for ticker, data in events_by_stock.items():
         bearish_count = sum(1 for h in data["headlines"] if h["direction"] == "bearish")
         direct_count  = sum(1 for h in data["headlines"] if h["match_type"] == "direct")
+        strong_count  = sum(1 for h in data["headlines"] if h.get("magnitude", 1) >= 3)
         print(f"  {ticker} ({data['name']}): {len(data['headlines'])} Events, "
-              f"{bearish_count} bearish, {direct_count} direkt")
+              f"{bearish_count} bearish, {direct_count} direkt, {strong_count} STRONG")
         for h in data["headlines"]:
-            print(f"    [{h['direction']:8}] [{h['match_type']:8}] score={h['score']} | {h['headline'][:80]}")
+            mag = h.get("magnitude", 1)
+            mag_label = {3: "💥STRONG", 2: "⚡MED", 1: "·weak"}[mag]
+            print(f"    [{h['direction']:8}] [{h['match_type']:8}] score={h['score']} mag={mag_label} | {h['headline'][:75]}")
 
     # Prompt für Sonnet ausgeben (der Cron-Job gibt das an Sonnet weiter)
     print("\n=== SONNET_PROMPT_START ===")
