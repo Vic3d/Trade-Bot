@@ -243,6 +243,26 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "ORCL",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 124.93,
+      "stop": 123.88,
+      "target": 127.02,
+      "opened_at": "2026-03-31 16:40",
+      "status": "OPEN"
+    },
+    {
+      "ticker": "UNH",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 234.57,
+      "stop": 233.29,
+      "target": 237.14,
+      "opened_at": "2026-03-31 16:40",
+      "status": "OPEN"
+    },
+    {
       "ticker": "CSCO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -263,7 +283,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T16:35:06.212344Z",
+  "last_sync": "2026-03-31T16:40:07.545809Z",
   "recent_day_trades": [
     {
       "ticker": "MRK",
