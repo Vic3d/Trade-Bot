@@ -136,17 +136,80 @@ class Portfolio:
         self._load_events()
 
     def _load_real(self):
-        """Liest echte Positionen aus trading_config.json — zieht automatisch aus GitHub."""
-        sync_config_from_github()  # immer frisch vom Server
+        """
+        Liest echte Positionen — IMMER aus positions-live.md (Single Source of Truth).
+        Fallback: trading_config.json wenn positions-live.md fehlt.
+        """
+        import re, subprocess
+
+        POSITIONS_MD = WS / "memory/positions-live.md"
+
+        # ── Primär: positions-live.md ──────────────────────────────────────────
+        if POSITIONS_MD.exists():
+            try:
+                text = POSITIONS_MD.read_text(encoding="utf-8")
+                active_section = re.search(
+                    r"## 🟢 Aktive Positionen\s*\n.*?\n\|[-|]+\|\n(.*?)(?=\n---|\n## |\Z)",
+                    text, re.DOTALL
+                )
+                if active_section:
+                    def to_float(s):
+                        s = s.replace("€", "").replace("%", "").strip()
+                        try: return float(s)
+                        except: return 0.0
+
+                    for line in active_section.group(1).strip().split("\n"):
+                        line = line.strip()
+                        if not line.startswith("|") or line.startswith("|---"):
+                            continue
+                        cols = [c.strip() for c in line.strip("|").split("|")]
+                        if len(cols) < 4:
+                            continue
+                        name_ticker = cols[0]
+                        ticker_match = re.search(r"\(([^)]+)\)", name_ticker)
+                        if not ticker_match:
+                            continue
+                        ticker = ticker_match.group(1).upper()
+                        name   = re.sub(r"\s*\([^)]+\)", "", name_ticker).strip()
+                        entry  = to_float(cols[1])
+                        stop   = to_float(cols[2])
+                        notiz  = cols[5] if len(cols) > 5 else ""
+                        p = Position(
+                            ticker=ticker,
+                            name=name,
+                            portfolio="real",
+                            status="OPEN",
+                            entry_eur=entry,
+                            stop_eur=stop,
+                            notes=notiz,
+                            yahoo=ticker,
+                        )
+                        self._real[ticker] = p
+                    if self._real:
+                        return  # Erfolgreich aus positions-live.md geladen
+            except Exception as e:
+                print(f"⚠ Portfolio: Fehler beim Lesen von positions-live.md: {e}")
+
+        # ── Fallback: trading_config.json ─────────────────────────────────────
+        print("⚠ Portfolio: positions-live.md nicht verfügbar — Fallback auf trading_config.json")
+        sync_config_from_github()
         if not CONFIG_PATH.exists():
             return
         try:
             config = json.loads(CONFIG_PATH.read_text())
             positions = config.get("positions", {})
-            for ticker, pos in positions.items():
+            if isinstance(positions, dict):
+                items = positions.items()
+            else:
+                items = [(p.get("ticker", ""), p) for p in positions if isinstance(p, dict)]
+            for ticker, pos in items:
+                if not ticker:
+                    continue
                 status = pos.get("status", "OPEN")
+                if pos.get("closed"):
+                    status = "CLOSED"
                 p = Position(
-                    ticker=ticker,
+                    ticker=ticker.upper(),
                     name=pos.get("name", ticker),
                     portfolio="real",
                     status=status,
@@ -157,7 +220,7 @@ class Portfolio:
                     notes=pos.get("notes", ""),
                     yahoo=pos.get("yahoo", ticker),
                 )
-                self._real[ticker] = p
+                self._real[ticker.upper()] = p
         except Exception as e:
             print(f"⚠ Portfolio: Fehler beim Laden von trading_config.json: {e}")
 

@@ -1,20 +1,21 @@
 {
   "date": "2026-03-31",
   "alerts_sent_today": [
-    "MACRO_SPY_UNDER_MA200_DAILY",
-    "WL_NOVO-B.CO_WPR_MONTHLY",
-    "PLTR_STOP_HIT",
     "PLTR_STOP_WARN",
-    "PLTR_STOP_CRIT"
+    "PLTR_STOP_CRIT",
+    "MACRO_SPY_UNDER_MA200_DAILY",
+    "MACRO_SPY_MA200_CROSS",
+    "WL_NOVO-B.CO_WPR_MONTHLY",
+    "PLTR_STOP_HIT"
   ],
-  "run_count": 20,
+  "run_count": 48,
   "trail_sent": {
     "EQNR_TRAIL_5": "2026-03-19",
     "EQNR_TRAIL_10": "2026-03-19"
   },
   "wti_open": 102.76,
-  "prev_wti": 104.64,
+  "prev_wti": 101.39,
   "vix_open": 30.61,
-  "spy_above_ma200": false,
-  "last_run": "2026-03-31T10:45:25.276369+00:00"
+  "spy_above_ma200": true,
+  "last_run": "2026-03-31T20:46:34.368630+00:00"
 }

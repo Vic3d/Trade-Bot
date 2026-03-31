@@ -1,80 +1,93 @@
 {
-  "generated": "2026-03-27",
-  "total_trades": 15,
-  "total_pnl": 236.05,
-  "win_rate": 40.0,
-  "by_strategy": {
-    "PS3": {
-      "trades": 3,
-      "wins": 0,
-      "pnl": -7.72,
-      "wr": 0.0,
-      "avg_pnl": -2.57,
-      "best": -1.87,
-      "worst": -2.94
+  "strategies_tested": 3,
+  "results": {
+    "DT4": {
+      "original": {
+        "wr": 0.0,
+        "pnl": -134.22,
+        "trades": 8
+      },
+      "optimized_stop": {
+        "wr": 0.0,
+        "pnl": -96.69,
+        "improvement_pct": 28.0
+      },
+      "optimized_tp": {
+        "wr": 0.0,
+        "pnl": -134.22,
+        "improvement_pct": 0.0
+      },
+      "regime_filtered": {
+        "wr": 0.0,
+        "pnl": 0.0,
+        "trades_skipped": 8,
+        "worst_regimes": [
+          "PAPER_LEARN"
+        ]
+      },
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 100.0
     },
     "PS1": {
-      "trades": 5,
-      "wins": 2,
-      "pnl": -14.74,
-      "wr": 40.0,
-      "avg_pnl": -2.95,
-      "best": 12.36,
-      "worst": -22.7
-    },
-    "PS2": {
-      "trades": 3,
-      "wins": 2,
-      "pnl": -79.03,
-      "wr": 66.7,
-      "avg_pnl": -26.34,
-      "best": 16.0,
-      "worst": -102.81
-    },
-    "PS5": {
-      "trades": 1,
-      "wins": 1,
-      "pnl": 0.65,
-      "wr": 100.0,
-      "avg_pnl": 0.65,
-      "best": 0.65,
-      "worst": 0.65
-    },
-    "new": {
-      "trades": 1,
-      "wins": 0,
-      "pnl": -4.32,
-      "wr": 0.0,
-      "avg_pnl": -4.32,
-      "best": -4.32,
-      "worst": -4.32
+      "original": {
+        "wr": 0.5,
+        "pnl": 18.24,
+        "trades": 6
+      },
+      "optimized_stop": {
+        "wr": 0.5,
+        "pnl": 18.24,
+        "improvement_pct": -0.0
+      },
+      "optimized_tp": {
+        "wr": 0.5,
+        "pnl": 18.24,
+        "improvement_pct": -0.0
+      },
+      "regime_filtered": {
+        "wr": 1.0,
+        "pnl": 32.98,
+        "trades_skipped": 5,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
+      },
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 80.8
     },
     "PT": {
-      "trades": 1,
-      "wins": 1,
-      "pnl": 341.36,
-      "wr": 100.0,
-      "avg_pnl": 341.36,
-      "best": 341.36,
-      "worst": 341.36
-    },
-    "DT1": {
-      "trades": 1,
-      "wins": 0,
-      "pnl": -0.15,
-      "wr": 0.0,
-      "avg_pnl": -0.15,
-      "best": -0.15,
-      "worst": -0.15
+      "original": {
+        "wr": 0.4,
+        "pnl": 681.03,
+        "trades": 5
+      },
+      "optimized_stop": {
+        "wr": 0.6,
+        "pnl": 831.71,
+        "improvement_pct": 22.1
+      },
+      "optimized_tp": {
+        "wr": 0.4,
+        "pnl": 655.43,
+        "improvement_pct": -3.8
+      },
+      "regime_filtered": {
+        "wr": 0.0,
+        "pnl": 0.0,
+        "trades_skipped": 5,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
+      },
+      "best_variant": "optimized_stop",
+      "best_improvement_pct": 22.1
     }
   },
-  "by_regime": {
-    "UNKNOWN": {
-      "trades": 15,
-      "wins": 6,
-      "pnl": 236.05,
-      "wr": 40.0
-    }
+  "system_wide": {
+    "original_pnl": 565.05,
+    "optimized_pnl": 864.69,
+    "improvement_pct": 53.0,
+    "recommendation": "PT (PT): Stop 20% weiter → +€151 Verbesserung"
   },
-  "note": "Basiert auf geschlossenen Paper-Trades. Regime-Daten ab 27.03.2026 verf\u00fcgbar."
+  "timestamp": "2026-03-31T19:36:47"
 }

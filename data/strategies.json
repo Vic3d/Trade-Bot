@@ -266,7 +266,7 @@
     "kill_trigger": "Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise",
     "horizon_weeks": 16,
     "status": "active",
-    "health": "red",
+    "health": "paused",
     "learning_question": "Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?",
     "tickers": [
       "KTOS",
@@ -335,7 +335,9 @@
     "locked": true,
     "vix_correlation": "negative",
     "negation": "Globaler Waffenstillstand in mehreren Regionen gleichzeitig oder EU-Budgetkrise",
-    "horizon": "12-16 Wochen"
+    "horizon": "12-16 Wochen",
+    "lock_reason": "0% WR nach 3 Trades, -€7.70",
+    "locked_date": "2026-03-31"
   },
   "PS4": {
     "name": "Edelmetalle/Miner",
@@ -472,7 +474,7 @@
       "feedback_history": []
     },
     "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
-    "sector": "fertilizer",
+    "sector": "materials",
     "regime": {
       "description": "Russland-Sanktionen aktiv, Agrar-Commodity-Preise stabil/steigend"
     },
@@ -745,7 +747,7 @@
       "feedback_history": []
     },
     "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
-    "sector": "technology",
+    "sector": "tech",
     "regime": {
       "vix_max": 28,
       "description": "VIX <28 für Nachkäufe, SMH über EMA-50"
@@ -971,7 +973,7 @@
       "feedback_history": []
     },
     "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
-    "sector": "energy_renewable",
+    "sector": "energy",
     "regime": {
       "brent_min": 90,
       "description": "Brent >$90, Solar-ETF über EMA50, RSI <70"
@@ -1224,7 +1226,7 @@
       "backtest_exp": 1.23
     },
     "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
-    "sector": "mixed",
+    "sector": "diversified",
     "status": "active",
     "performance": {
       "total_trades": 0,
@@ -1291,7 +1293,7 @@
       "backtest_exp": 1.0
     },
     "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
-    "sector": "mixed",
+    "sector": "diversified",
     "status": "active",
     "performance": {
       "total_trades": 0,
@@ -1365,7 +1367,7 @@
       "backtest_exp": 0.8
     },
     "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
-    "sector": "mixed",
+    "sector": "diversified",
     "status": "active",
     "performance": {
       "total_trades": 0,
@@ -1420,7 +1422,7 @@
       "feedback_history": []
     },
     "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
-    "sector": "mixed",
+    "sector": "diversified",
     "status": "active",
     "performance": {
       "total_trades": 79,
@@ -1463,289 +1465,13 @@
     "vix_correlation": "neutral",
     "active": false,
     "locked": true,
-    "lock_reason": "Disabled: duplicate positions, low conviction, learning mode entries ohne VIX filter",
+    "lock_reason": "0% WR nach 8 Trades, -€134",
     "health": "paused",
     "pause_reason": "0% WR in Paper Lab — automatisch pausiert",
     "negation": "News war Fehler/Gerücht oder breiter Marktabsturz übertönt Catalyst",
     "horizon": "Intraday bis 3 Tage",
-    "tickers": []
-  },
-  "DT5": {
-    "name": "VWAP-Bounce",
-    "type": "day_trade",
-    "genesis": {
-      "created": "2026-03-21",
-      "trigger": "Kurs prallt am VWAP ab — institutioneller Support",
-      "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "never",
-      "feedback_history": []
-    },
-    "thesis": "VWAP ist institutioneller Ankerpunkt — Abpraller sind tradebar",
-    "sector": "mixed",
-    "status": "active",
-    "performance": {
-      "total_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
-      "last_evaluated": null
-    },
-    "position_management": {
-      "tranche_mode": true,
-      "tranches": [
-        0.33,
-        0.33,
-        0.34
-      ],
-      "tranche_triggers": [
-        "initial_signal",
-        "confirmation",
-        "second_confirmation"
-      ],
-      "macro_phase": 1,
-      "macro_phase_reason": "Phase 1 (Standard)",
-      "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-25 22:31",
-      "brent_wti_spread": 6.76,
-      "brent_wti_signal": "neutral",
-      "risk_mode": "risk_off",
-      "bad_news_regime": false,
-      "fed_pause_regime": false,
-      "hormus_days": 5,
-      "hormus_phase_risk": "low"
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "negation": "VWAP bricht nach unten durch mit Volumen (institutioneller Sell)",
-    "horizon": "Intraday",
     "tickers": [],
-    "health": "testing"
-  },
-  "DT6": {
-    "name": "Mean Reversion (Triple RSI)",
-    "type": "day_trade",
-    "genesis": {
-      "created": "2026-03-21",
-      "trigger": "RSI(5) < 35 + fallend + Aufwärtstrend — backtested seit 1993, 90% Win-Rate auf SPY",
-      "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "never",
-      "feedback_history": [],
-      "conviction_backtest": 2,
-      "backtest_wr": 71.8,
-      "backtest_wl": 0.65,
-      "backtest_exp": 0.78
-    },
-    "thesis": "Kurzfristig überverkaufte Aktien im Aufwärtstrend bouncen zuverlässig",
-    "sector": "mixed",
-    "status": "active",
-    "performance": {
-      "total_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
-      "last_evaluated": null
-    },
-    "position_management": {
-      "tranche_mode": true,
-      "tranches": [
-        0.33,
-        0.33,
-        0.34
-      ],
-      "tranche_triggers": [
-        "initial_signal",
-        "confirmation",
-        "second_confirmation"
-      ],
-      "macro_phase": 1,
-      "macro_phase_reason": "Phase 1 (Standard)",
-      "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-25 22:31",
-      "brent_wti_spread": 6.76,
-      "brent_wti_signal": "neutral",
-      "risk_mode": "risk_off",
-      "bad_news_regime": false,
-      "fed_pause_regime": false,
-      "hormus_days": 5,
-      "hormus_phase_risk": "low"
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "negation": "RSI bleibt <35 länger als 3 Tage → echter Trendbruch, kein Bounce",
-    "horizon": "1-5 Tage (Mean Reversion)",
-    "tickers": [],
-    "health": "testing"
-  },
-  "DT7": {
-    "name": "Internal Bar Strength (IBS)",
-    "type": "day_trade",
-    "genesis": {
-      "created": "2026-03-21",
-      "trigger": "IBS < 0.2 (LONG) oder > 0.8 (SHORT) — Mean Reversion auf Kerzenbasis",
-      "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "never",
-      "feedback_history": [],
-      "conviction_backtest": 2,
-      "backtest_wr": 54.2,
-      "backtest_wl": 1.12,
-      "backtest_exp": 0.5
-    },
-    "thesis": "Kerzen nahe Tageshoch/-tief kehren häufig zum Mittelwert zurück",
-    "sector": "mixed",
-    "status": "active",
-    "performance": {
-      "total_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
-      "last_evaluated": null
-    },
-    "position_management": {
-      "tranche_mode": true,
-      "tranches": [
-        0.33,
-        0.33,
-        0.34
-      ],
-      "tranche_triggers": [
-        "initial_signal",
-        "confirmation",
-        "second_confirmation"
-      ],
-      "macro_phase": 1,
-      "macro_phase_reason": "Phase 1 (Standard)",
-      "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-25 22:31",
-      "brent_wti_spread": 6.76,
-      "brent_wti_signal": "neutral",
-      "risk_mode": "risk_off",
-      "bad_news_regime": false,
-      "fed_pause_regime": false,
-      "hormus_days": 5,
-      "hormus_phase_risk": "low"
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "negation": "IBS bleibt extrem (Trend-Tag) → kein Reversion-Signal valide",
-    "horizon": "Intraday bis 2 Tage",
-    "tickers": [],
-    "health": "testing"
-  },
-  "DT8": {
-    "name": "Bollinger Band Squeeze Breakout",
-    "type": "day_trade",
-    "genesis": {
-      "created": "2026-03-21",
-      "trigger": "Volatilitäts-Kompression (Squeeze) → Ausbruch mit Volumen",
-      "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "never",
-      "feedback_history": [],
-      "conviction_backtest": 2,
-      "backtest_wr": 58.3,
-      "backtest_wl": 0.88,
-      "backtest_exp": 0.23
-    },
-    "thesis": "Niedrige Volatilität führt zu explosiven Ausbrüchen — Squeeze + Volume = Signal",
-    "sector": "mixed",
-    "status": "active",
-    "performance": {
-      "total_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
-      "last_evaluated": null
-    },
-    "position_management": {
-      "tranche_mode": true,
-      "tranches": [
-        0.33,
-        0.33,
-        0.34
-      ],
-      "tranche_triggers": [
-        "initial_signal",
-        "confirmation",
-        "second_confirmation"
-      ],
-      "macro_phase": 1,
-      "macro_phase_reason": "Phase 1 (Standard)",
-      "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-25 22:31",
-      "brent_wti_spread": 6.76,
-      "brent_wti_signal": "neutral",
-      "risk_mode": "risk_off",
-      "bad_news_regime": false,
-      "fed_pause_regime": false,
-      "hormus_days": 5,
-      "hormus_phase_risk": "low"
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "negation": "Squeeze löst sich in die falsche Richtung auf (Fake-Breakout)",
-    "horizon": "1-5 Tage nach Squeeze-Auflösung",
-    "tickers": [],
-    "health": "testing"
-  },
-  "DT9": {
-    "name": "Sektor-Momentum",
-    "type": "day_trade",
-    "genesis": {
-      "created": "2026-03-21",
-      "trigger": "Stärkster Sektor-ETF (XLK/XLE/XLF/XLV/XLI) bestimmt Richtung",
-      "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "never",
-      "feedback_history": []
-    },
-    "thesis": "Aktien aus dem stärksten Sektor haben Momentum-Rückenwind intraday",
-    "sector": "mixed",
-    "status": "active",
-    "performance": {
-      "total_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate": 0,
-      "last_evaluated": null
-    },
-    "position_management": {
-      "tranche_mode": true,
-      "tranches": [
-        0.33,
-        0.33,
-        0.34
-      ],
-      "tranche_triggers": [
-        "initial_signal",
-        "confirmation",
-        "second_confirmation"
-      ],
-      "macro_phase": 1,
-      "macro_phase_reason": "Phase 1 (Standard)",
-      "cash_recommendation": 0.5,
-      "last_macro_update": "2026-03-25 22:31",
-      "brent_wti_spread": 6.76,
-      "brent_wti_signal": "neutral",
-      "risk_mode": "risk_off",
-      "bad_news_regime": false,
-      "fed_pause_regime": false,
-      "hormus_days": 5,
-      "hormus_phase_risk": "low"
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "negation": "Sektor-Rotation dreht unerwartet oder breiter Marktabverkauf",
-    "horizon": "Intraday bis 3 Tage",
-    "tickers": [],
-    "health": "testing"
+    "locked_date": "2026-03-31"
   },
   "_config": {
     "position_size_eur": 2000,
@@ -1756,24 +1482,6 @@
     "aggressive_mode": true,
     "vix_correlation": "neutral",
     "active": false
-  },
-  "new": {
-    "health": "yellow",
-    "win_rate": 0.0,
-    "avg_pnl": -2.2,
-    "win_loss_ratio": 0.0,
-    "n_trades": 1,
-    "last_evaluated": "2026-03-26 21:17",
-    "genesis": {
-      "last_updated": "2026-03-25T21:31:02Z",
-      "auto_adjusted": false
-    },
-    "vix_correlation": "neutral",
-    "active": false,
-    "thesis": "Unklassifizierter Test-Trade ohne definierte These",
-    "negation": "Immer — keine gültige These vorhanden",
-    "horizon": "Unbekannt",
-    "tickers": []
   },
   "PT": {
     "health": "yellow",
@@ -1786,7 +1494,8 @@
     "thesis": "Paper-Trade Platzhalter ohne definierte These",
     "negation": "Immer — keine gültige These vorhanden",
     "horizon": "Unbekannt",
-    "tickers": []
+    "tickers": [],
+    "sector": "diversified"
   },
   "PS10": {
     "name": "Lufthansa — Peace Dividend",
@@ -1807,7 +1516,8 @@
     "losses": 0,
     "pnl": 0.0,
     "vix_correlation": "low",
-    "horizon": "8-16 Wochen (Peace Dividend Rerating)"
+    "horizon": "8-16 Wochen (Peace Dividend Rerating)",
+    "sector": "airlines"
   },
   "PS11": {
     "name": "Defense-EU-Small",
@@ -1829,7 +1539,8 @@
     "pnl": 0.0,
     "vix_correlation": "negative",
     "negation": "Frieden in Ukraine/Iran/Israel + NATO-Budget-Kürzungen",
-    "horizon": "8-16 Wochen"
+    "horizon": "8-16 Wochen",
+    "sector": "defense"
   },
   "PS12": {
     "name": "AI-Infrastructure",
@@ -1851,7 +1562,8 @@
     "pnl": 0.0,
     "vix_correlation": "negative",
     "negation": "Hyper-Scaler Capex-Kürzung oder AI-Regulierung stoppt Datacenter-Boom",
-    "horizon": "6-12 Wochen"
+    "horizon": "6-12 Wochen",
+    "sector": "tech"
   },
   "PS13": {
     "name": "Copper-Green-Transition",
@@ -1873,7 +1585,8 @@
     "pnl": 0.0,
     "vix_correlation": "low",
     "negation": "China-Rezession + PMI dauerhaft <47 oder Kupfer fällt unter $3.80/lb",
-    "horizon": "8-16 Wochen"
+    "horizon": "8-16 Wochen",
+    "sector": "materials"
   },
   "PS14": {
     "name": "Shipping-Normalization",
@@ -1895,7 +1608,8 @@
     "pnl": 0.0,
     "vix_correlation": "low",
     "negation": "Rotes Meer Normalisierung oder Frachtraten kollabieren unter Break-Even",
-    "horizon": "6-12 Wochen"
+    "horizon": "6-12 Wochen",
+    "sector": "shipping"
   },
   "PS15": {
     "name": "Biotech-Rate-Reversal",
@@ -1917,7 +1631,8 @@
     "pnl": 0.0,
     "vix_correlation": "low",
     "negation": "Fed erhöht wieder Zinsen oder XBI bleibt dauerhaft unter 200MA",
-    "horizon": "12-20 Wochen"
+    "horizon": "12-20 Wochen",
+    "sector": "healthcare"
   },
   "PS16": {
     "name": "Nuclear Renaissance — AI Power Demand",
@@ -1938,7 +1653,7 @@
       "UEC": "Uranium Energy Corp — US-Miner mit großem Bestand",
       "BWXT": "BWX Technologies — SMR-Hersteller, Regierungsverträge"
     },
-    "sector": "Energy / Nuclear",
+    "sector": "energy",
     "horizon": "mittel-langfristig (6-18 Monate)",
     "vix_correlation": "low"
   },
@@ -1961,7 +1676,7 @@
       "AIR.PA": "Airbus SE — Direkt-Konkurrent zu Boeing, profitiert von US-Imageschaden",
       "SIE.DE": "Siemens AG — EU-Industrie-Infrastruktur, kaum US-Abhängigkeit im Kerngeschäft"
     },
-    "sector": "EU Industrials / Tech",
+    "sector": "industrials",
     "horizon": "mittelfristig (3-12 Monate)",
     "vix_correlation": "low"
   },
@@ -1973,7 +1688,7 @@
     "entry_trigger": "T1: 30.03. US-Börsenstart 15:30 MEZ bei stabilem Kurs. T2: nach April-2-Ankündigung. T3: nach Q1 Earnings mid-April.",
     "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD dauerhaft unter $155",
     "status": "active",
-    "health": "red",
+    "health": "paused",
     "horizon_weeks": 8,
     "tickers": [
       "STLD"
@@ -2008,7 +1723,10 @@
     },
     "vix_correlation": "low",
     "negation": "Tariff-Rollback-Meldung aus Weißem Haus oder STLD dauerhaft unter $155",
-    "horizon": "4-8 Wochen (Liberation Day Momentum)"
+    "horizon": "4-8 Wochen (Liberation Day Momentum)",
+    "locked": true,
+    "lock_reason": "Neg. Expectancy, -€500, CRV 0.1x nach 3 Trades",
+    "locked_date": "2026-03-31"
   },
   "PS_NVO": {
     "name": "Novo Nordisk Value/Turnaround",
@@ -2058,7 +1776,7 @@
     "name": "Cameco — Uranium Nuclear Renaissance",
     "type": "paper_watchlist",
     "thesis": "Weltgrößter Uran-Produzent profitiert von globalem Nuclear Renaissance (AI Data Centers + Taiwan Reaktor-Restart + Energiekrise). Uranium-Spot-Preis strukturell im Aufwärtstrend durch Angebotsdefizit. Cameco: Produktionskosten ~$20/lb, Verkaufspreise ~$85-95/lb = massiver Spread.",
-    "sector": "uranium",
+    "sector": "energy",
     "vix_correlation": "low",
     "entry_trigger": "Kurs unter $98 (~€85) mit RSI unter 40 ODER frische Nachricht über Reaktor-Neubau/Verlängerung in Taiwan/Japan/Europa. KEIN Kauf über $100 ohne Bestätigung (CRV zu niedrig).",
     "entry_zone_usd": [
@@ -2125,7 +1843,7 @@
   "AR-HALB": {
     "name": "Halbleiter Autonomous Radar",
     "type": "autonomous_radar",
-    "sector": "Halbleiter",
+    "sector": "tech",
     "tickers": [
       "AMAT",
       "LRCX",
@@ -2149,7 +1867,7 @@
   "AR-AGRA": {
     "name": "Agrar Autonomous Radar",
     "type": "autonomous_radar",
-    "sector": "Agrar",
+    "sector": "materials",
     "tickers": [
       "MOS",
       "CF",
@@ -2178,7 +1896,7 @@
     "tickers": [
       "LHA.DE"
     ],
-    "sector": "Luftfahrt",
+    "sector": "airlines",
     "entry_zone": "6.50-7.00",
     "target_1": 9.0,
     "target_2": 10.5,
@@ -2202,5 +1920,111 @@
     "rotation_logic": "Iran Peace Watch feuert → EQNR Exit → EQNR-Gewinn direkt in LHA.DE reinvestieren",
     "entry_sizing": "Position = EQNR-Exit-Erlös (oder Teilbetrag daraus)",
     "paired_with": "EQNR.OL (S1)"
+  },
+  "PS18": {
+    "name": "Trade Dislocation & Tariff-Margin-Compression",
+    "type": "paper",
+    "health": "red",
+    "source": "albert_autonomous",
+    "created": "2026-03-31",
+    "genesis": {
+      "created": "2026-03-31",
+      "trigger": "Google News RSS zeigt systematisches Thema: Trump-Zölle (25% Stahl, >10% allgemein) + McKinsey/UNCTAD warnen vor Handelskrieg 2026",
+      "analysis_steps": [
+        "US-Zölle auf EU/China/Mexico Importe angekündigt oder aktiv",
+        "Tariff-Impact auf exportabhängige Consumer/Apparel/Tech: Margin-Druck",
+        "Supply-Chain-Umstellung (Nearshoring USA/Mexico): 6-12 Monate Anpassungszeit",
+        "Gewinner: US-Domestic Producer (RIG-Equipment, Stahl STLD, US-Apparel)",
+        "Verlierer: EU-Exporteure (Autos DAI/BMW, Maschinen SIE), China-Hersteller"
+      ],
+      "logical_chain": "Trump-Zölle → EU/China Exportmargen unter Druck → Supply-Chain-Reorg → US-Domestic/Nearshoring-Player profitieren → 6-12 Wochen Umsetzungszeit",
+      "counter_arguments_checked": [
+        "Handels-Deal stoppt Zölle? → Monitoring nötig, aber Wahrscheinlichkeit <30% gegeben Trumps Zoll-Obsession",
+        "Sind Zölle schon eingepreist? → Nein — Markets ignorieren noch systematisch (VIX 20-22, Europe.Stoxx stabil)"
+      ],
+      "sources": [
+        "Google News RSS (McKinsey, UNCTAD, Reuters)",
+        "liveuamap.com (Geopolitik-Kontext)",
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-31T20:01:00Z",
+      "feedback_history": []
+    },
+    "thesis": "Trump-Zölle schaffen systematische Gewinner/Verlierer — Exportabhängige leiden, US-Domestic und Nearshorer gewinnen. Makro-Theme noch nicht vollständig in Märkten eingepreist.",
+    "sector": "diversified",
+    "regime": {
+      "description": "US-Zölle aktiv oder angekündigt, EU/China Handelskrieg-Eskalation, Supply-Chain-Rekonfiguration"
+    },
+    "entry_trigger": "Trump konkrete Zoll-Ansage (>15%) ODER erste Daten zeigen Importrückgang durch Tariff-Umgehung",
+    "kill_trigger": "Handels-Deal / Zoll-Rollback ODER US-Economy fällt in Rezession + Zölle rückgängig",
+    "horizon_weeks": 16,
+    "status": "active",
+    "tickers": [
+      "DAI",
+      "BMW.DE",
+      "SIE.DE",
+      "BYDDY",
+      "STLD",
+      "CLF",
+      "CMC.CN"
+    ],
+    "ticker_notes": {
+      "DAI": "Daimler — großer US-Exporter, Automargen unter Druck",
+      "BMW.DE": "BMW AG — EU-Auto-Exporteur mit großem US-Geschäft",
+      "SIE.DE": "Siemens — EU-Maschinen-Exporteur, Margendruck bei TariffEskalation",
+      "BYDDY": "BYD (ADR) — China EV Exporter, US-Zölle können bis 50% gehen",
+      "STLD": "Steel Dynamics — US-Domestic Stahlproduzent, profitiert von >15% Stahlzöllen",
+      "CLF": "Cleveland-Cliffs — US-Steelhersteller, Nearshore Play",
+      "CMC.CN": "China Manufacturing (exemplarisch) — China-Hersteller verlieren Preis-Wettbewerb"
+    },
+    "keywords_bullish": [
+      "trump tariff",
+      "trade war",
+      "section 301",
+      "export tariff",
+      "import duty",
+      "nearshoring",
+      "us manufacturing",
+      "supply chain reorg",
+      "domestic producer",
+      "us steel tariff",
+      "tariff announcement",
+      "trade policy"
+    ],
+    "keywords_bearish": [
+      "trade deal",
+      "tariff repeal",
+      "tariff exemption",
+      "tariff waiver",
+      "us recession",
+      "import collapse",
+      "trade agreement"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "Handels-Deal / Tariff-Rollback oder US-Economy fällt in Rezession",
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.5,
+        0.5
+      ],
+      "tranche_triggers": [
+        "first_tariff_shock",
+        "supply_chain_confirmation"
+      ]
+    }
   }
 }

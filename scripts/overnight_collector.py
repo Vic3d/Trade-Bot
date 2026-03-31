@@ -243,6 +243,8 @@ def collect():
             return None
 
     # 6. Verarbeite Artikel
+    MAX_PER_SOURCE_PER_RUN = 15  # Verhindert Bloomberg-Flood (3 Feeds × 25+ = 77)
+    source_counts = {}
     new_count = 0
     for row in articles:
         headline = row[0].strip() if row[0] else ""
@@ -250,6 +252,12 @@ def collect():
         timestamp = row[2] if len(row) > 2 and row[2] else datetime.now().isoformat()
 
         if not headline:
+            continue
+
+        # Source-Limit: max N Events pro Quelle pro Run
+        source_base = source.split('_')[0] if '_' in source else source  # bloomberg_markets → bloomberg
+        source_counts[source_base] = source_counts.get(source_base, 0) + 1
+        if source_counts[source_base] > MAX_PER_SOURCE_PER_RUN:
             continue
 
         # event_id
@@ -266,6 +274,9 @@ def collect():
             try:
                 is_sem_dup, orig_event_id, sim_score = semantic_is_duplicate(headline, conn)
                 if is_sem_dup:
+                    # >80% Ähnlichkeit → komplett droppen (echtes Duplikat)
+                    if sim_score >= 0.80:
+                        continue
                     dup_novelty_override = get_duplicate_novelty_score(sim_score)
                     # Hole timestamp des Originals
                     orig_ts = conn.execute(

@@ -1,6 +1,23 @@
 # Strategy Research Log — Albert
 
 
+## [2026-03-31 22:01] Autonomer Strategie-Scan — NEUE STRATEGIE PS18
+
+- **NEU PS18: Trade Dislocation & Tariff-Margin-Compression**
+  - **These:** Trump-Zölle (>15% allgemein, 25% Stahl) schaffen systematische Gewinner/Verlierer
+  - **Auslöser:** Google News RSS zeigt Thema in McKinsey, UNCTAD, Reuters — noch nicht in Märkten eingepreist
+  - **Kontext:** 
+    - Exportabhängige (DAI, BMW, SIE, BYDDY) verlieren Margen
+    - US-Domestic (STLD, CLF) gewinnen Marktanteile
+    - Supply-Chain-Reorg (Nearshoring) = 6-12 Monate Umsetzungszeit
+  - **Entry-Trigger:** Konkrete Zoll-Ansage >15% oder Importrückgang-Daten
+  - **Kill-Trigger:** Handels-Deal oder US-Rezession
+  - **Horizon:** 12-16 Wochen
+  - **Health:** RED (neu, keine Trades)
+  - **Source:** Autonome Analyse (Builder fand KEIN_SIGNAL, CEO überschreiben nach Manual-Review)
+
+---
+
 ## [2026-03-27 19:49] Autonomer Strategie-Scan
 
 - NEU PS11: Defense-EU-Small — EU-Rüstung Nachholbedarf — Budget-Erhöhungen noch nicht eing...
@@ -73,3 +90,19 @@
 ### Research-Highlight dieser Woche:
 **Non-US-Rotation**: Morningstar bestätigt dass non-tech Sektoren Tech 2026 outperformen. 24/7 Wall St.: "Non-US markets are ripping". EM-Bonds laut VanEck attraktiv. → Gibt es eine fehlende "De-Amerikanisierung"-These? Prüfen ob eigene Strategie sinnvoll oder in EU-Domestic-Champions abgedeckt.
 
+
+## [2026-03-31 22:01] Autonomer Strategie-Scan
+
+- SKIP: Defense-EU-Small (bereits vorhanden)
+- SKIP: AI-Infrastructure (bereits vorhanden)
+- SKIP: Copper-Green-Transition (bereits vorhanden)
+- SKIP: Shipping-Normalization (bereits vorhanden)
+- SKIP: Biotech-Rate-Reversal (bereits vorhanden)
+- Top-Ticker (letzte 14 Tage):
+-   GOOGL: 9 Trades, 67% WR, Ø7.2€
+-   UNH: 6 Trades, 67% WR, Ø-4.8€
+-   ORCL: 9 Trades, 44% WR, Ø-30.2€
+-   9988.HK: 7 Trades, 57% WR, Ø36.0€
+-   1605.T: 6 Trades, 67% WR, Ø13.5€
+
+---

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-31T06:15:51Z",
+  "timestamp": "2026-03-31T17:30:41Z",
   "overall_direction": "NEUTRAL",
   "overall_emoji": "⚪",
   "overall_score": 0,
@@ -81,13 +81,35 @@
       "bullish_ticker_count": 0,
       "cluster": false,
       "top_signals": []
+    },
+    "iran_peace_basket": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
+    },
+    "iran_peace_inverse": {
+      "direction": "NEUTRAL",
+      "dir_emoji": "⚪",
+      "net_flow": 0,
+      "call_premium": 0,
+      "put_premium": 0,
+      "signal_count": 0,
+      "bullish_ticker_count": 0,
+      "cluster": false,
+      "top_signals": []
     }
   },
   "top_signals": [],
   "congressional_tickers": [
-    "PA",
-    "TN",
-    "OH"
+    "FL",
+    "OH",
+    "PA"
   ],
   "auto_trades_created": [],
   "scan_config": {

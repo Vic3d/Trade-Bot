@@ -222,9 +222,21 @@ def main():
         if not result:
             continue
 
-        # Signal in signals.json updaten
+        # Signal in signals.json updaten (match auf id ODER created_at+pair_id+signal_value)
+        sig_id = sig.get("id")
+        sig_created = sig.get("created_at")
+        sig_pair = sig.get("pair_id")
+        sig_val = sig.get("signal_value")
         for s in signals["signals"]:
-            if s.get("created_at") == sig.get("created_at") and s.get("pair_id") == sig.get("pair_id"):
+            matched = False
+            if sig_id and s.get("id") == sig_id:
+                matched = True
+            elif (s.get("created_at") == sig_created 
+                  and s.get("pair_id") == sig_pair 
+                  and s.get("signal_value") == sig_val
+                  and s.get("outcome") == "PENDING"):
+                matched = True
+            if matched:
                 s["outcome"]          = result["outcome"]
                 s["actual_change_pct"] = result["change_pct"]
                 s["lag_price_after"]   = current_price

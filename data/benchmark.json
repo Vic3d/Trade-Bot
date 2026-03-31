@@ -8,13 +8,13 @@
   },
   "benchmarks": {
     "SPY_buyhold": {
-      "return_pct": -4.26,
-      "pnl_eur": -928.28,
-      "vs_paper": -4.12
+      "return_pct": -2.22,
+      "pnl_eur": -480.77,
+      "vs_paper": -6.15
     },
     "60_40": {
-      "return_pct": -3.58,
-      "vs_paper": -4.8
+      "return_pct": -2.18,
+      "vs_paper": -6.2
     }
   }
 }

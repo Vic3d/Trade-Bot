@@ -1,128 +1,190 @@
 #!/usr/bin/env python3
 """
-Signal Tracker — Paperclip-basierter Feedback Loop
-====================================================
-1. Überwacht Lead-Indikatoren (lag_knowledge.json)
-2. Wenn Signal → Paperclip Issue erstellen (TRA-X)
-3. Validator-Agent wird nach lag_hours getriggert → prüft Outcome
-4. Accuracy-Datenbank wächst automatisch
+Signal Tracker v2 — Lead-Lag Feedback Loop (SQLite-basiert)
+============================================================
+1. Liest Lead-Lag-Paare aus data/lag_knowledge.json
+2. Erkennt Signale (Yahoo Finance Kursbewegungen, Spreads)
+3. Loggt Signal + Prognose in trading.db → signals Tabelle
+4. Prüft nach lag_hours ob Prognose stimmte → Outcome WIN/LOSS
+5. Aktualisiert Accuracy in lag_knowledge.json
+6. CEO liest signals-Tabelle für Lead-Lag-Intelligence
 
 Läuft alle 30 Min via OpenClaw Cron.
+Keine externen Dependencies — nur stdlib + sqlite3.
 """
 
-import json, urllib.request, urllib.parse
-from datetime import datetime, timezone
+import json
+import sqlite3
+import time
+import urllib.request
+import urllib.parse
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 WORKSPACE = Path('/data/.openclaw/workspace')
-LAG_DB    = WORKSPACE / 'data/lag_knowledge.json'
-STATE     = WORKSPACE / 'memory/signal-tracker-state.json'
-SIGNALS_JSON = WORKSPACE / 'data/signals.json'
+LAG_DB = WORKSPACE / 'data/lag_knowledge.json'
+STATE = WORKSPACE / 'memory/signal-tracker-state.json'
+DB_PATH = WORKSPACE / 'data/trading.db'
 
-PAPERCLIP_URL = "http://127.0.0.1:53476/api"
-COMPANY_ID    = "9147c9ab-f487-40ed-a67b-c41f0a8d4fba"
-PROJECT_ID    = "a23e17b9-3463-4bf5-adfd-47e5bcad5399"
-VALIDATOR_ID  = "b3c2ccf0-0475-43fd-a330-d403aaa16972"
-GOAL_ID       = "b7b57e54-4289-4e3f-912f-d7b304fb6658"
+# Cooldown: gleiches Paar nicht öfter als alle 6h
+SIGNAL_COOLDOWN_HOURS = 6
+# Minimum Kursänderung für Outcome-Bewertung
+OUTCOME_THRESHOLD_PCT = 0.5
 
 
-# ─── Paperclip API ────────────────────────────────────────────────────
+# ─── DB ───────────────────────────────────────────────────────────────
 
-def pc_post(path, data):
-    url = f"{PAPERCLIP_URL}{path}"
-    body = json.dumps(data).encode()
-    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
-    r = urllib.request.urlopen(req, timeout=10)
-    return json.loads(r.read())
-
-def pc_patch(path, data):
-    url = f"{PAPERCLIP_URL}{path}"
-    body = json.dumps(data).encode()
-    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="PATCH")
-    r = urllib.request.urlopen(req, timeout=10)
-    return json.loads(r.read())
-
-def pc_get(path):
-    req = urllib.request.Request(f"{PAPERCLIP_URL}{path}")
-    r = urllib.request.urlopen(req, timeout=10)
-    return json.loads(r.read())
+def get_db():
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    # Ensure table has all needed columns
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS signals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pair_id TEXT NOT NULL,
+            lead_ticker TEXT,
+            lag_ticker TEXT,
+            signal_value TEXT,
+            lead_price REAL,
+            lag_price_at_signal REAL,
+            lag_price_at_check REAL,
+            change_pct REAL,
+            outcome TEXT DEFAULT 'PENDING',
+            regime_at_signal TEXT,
+            vix_at_signal REAL,
+            accuracy_at_time REAL,
+            check_after_ts REAL,
+            direction TEXT,
+            lag_hours REAL,
+            lead_name TEXT,
+            lag_name TEXT,
+            created_at TEXT,
+            checked_at TEXT
+        )
+    """)
+    # Add columns if missing (backward compat)
+    existing = {r[1] for r in conn.execute("PRAGMA table_info(signals)").fetchall()}
+    new_cols = {
+        'check_after_ts': 'REAL',
+        'direction': 'TEXT',
+        'lag_hours': 'REAL',
+        'lead_name': 'TEXT',
+        'lag_name': 'TEXT',
+    }
+    for col, ctype in new_cols.items():
+        if col not in existing:
+            try:
+                conn.execute(f"ALTER TABLE signals ADD COLUMN {col} {ctype}")
+            except Exception:
+                pass
+    conn.commit()
+    return conn
 
 
 # ─── Yahoo Finance ────────────────────────────────────────────────────
 
 def yahoo_price(ticker):
+    """Holt aktuellen Kurs + Vortagesschluss von Yahoo Finance."""
     url = f"https://query2.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(ticker)}?interval=1d&range=2d"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     try:
-        d = json.loads(urllib.request.urlopen(req, timeout=8).read())
+        with urllib.request.urlopen(req, timeout=8) as r:
+            d = json.loads(r.read())
         meta = d['chart']['result'][0]['meta']
         return meta['regularMarketPrice'], meta.get('chartPreviousClose', meta['regularMarketPrice'])
     except Exception as e:
-        print(f"Yahoo-Fehler {ticker}: {e}")
         return None, None
 
 
-# ─── Brent-WTI Spread ────────────────────────────────────────────────
-
 def brent_wti_spread():
+    """Berechnet Brent-WTI Spread."""
     brent, _ = yahoo_price("BZ=F")
-    wti, _   = yahoo_price("CL=F")
+    wti, _ = yahoo_price("CL=F")
     if brent and wti:
         return round(brent - wti, 2)
     return None
 
 
+def get_vix():
+    """Holt aktuellen VIX."""
+    price, _ = yahoo_price("^VIX")
+    return price
+
+
+def get_regime(vix):
+    """Einfache Regime-Klassifikation."""
+    if not vix:
+        return 'UNKNOWN'
+    if vix < 18:
+        return 'BULL'
+    elif vix < 25:
+        return 'NEUTRAL'
+    elif vix < 32:
+        return 'RISK_OFF'
+    return 'CRASH'
+
+
 # ─── Signal Detection ────────────────────────────────────────────────
 
-def detect_signals(lag_db, state):
+def detect_signals(lag_db, state, conn):
     """Prüft alle Lead-Indikatoren auf aktive Signale."""
     signals = []
-    fired_today = state.get('fired_today', {})
+    now = time.time()
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
+    # Cooldown: Signale der letzten N Stunden aus DB laden
+    cooldown_cutoff = (datetime.now(timezone.utc) - timedelta(hours=SIGNAL_COOLDOWN_HOURS)).isoformat()
+    recent_pairs = {r['pair_id'] for r in conn.execute(
+        "SELECT DISTINCT pair_id FROM signals WHERE created_at > ?", (cooldown_cutoff,)
+    ).fetchall()}
+
     for pair_id, pair in lag_db.get('pairs', {}).items():
-        if pair_id in fired_today.get(today, []):
-            continue  # Heute bereits gesendet
+        if pair_id in recent_pairs:
+            continue  # Cooldown aktiv
 
         lead = pair['lead_ticker']
         direction = pair['direction']
         threshold = pair.get('threshold_pct')
+        lag_h = pair.get('lag_hours', 6)
 
-        # Sonderfall: Computed signals
+        # Sonderfall: Computed Brent-WTI Spread
         if lead == 'COMPUTED_BRENT_WTI_SPREAD':
             spread = brent_wti_spread()
-            if spread and spread > pair.get('threshold_pct', 10):
+            if spread is not None and threshold and spread > threshold:
+                lag_price, _ = yahoo_price(pair['lag_ticker'])
                 signals.append({
                     'pair_id': pair_id,
                     'pair': pair,
                     'signal_value': f"Spread: ${spread:.2f}",
                     'signal_pct': None,
                     'lead_price': spread,
-                    'lag_price_now': None
+                    'lag_price_now': lag_price,
                 })
             continue
 
+        # Sonderfall: liveuamap-basierte Signale → skip (handled by geo scanner)
         if lead == 'LIVEUAMAP_IRAN':
-            # Wird separat durch newswire_analyst behandelt
             continue
 
-        # Yahoo-basierte Leads
+        # Yahoo-basierte Lead-Signale
         if not threshold:
             continue
 
         price_now, price_prev = yahoo_price(lead)
-        if not price_now or not price_prev:
+        if not price_now or not price_prev or price_prev == 0:
             continue
 
         chg_pct = (price_now - price_prev) / price_prev * 100
 
         triggered = False
-        if direction in ('same', 'bullish') and chg_pct <= -threshold:
-            triggered = True  # Lead fällt stark → Lag folgt
-        elif direction == 'inverse' and chg_pct >= threshold:
-            triggered = True  # VIX steigt stark → Tech fällt
-        elif direction == 'same' and chg_pct >= threshold:
-            triggered = True  # Lead steigt stark → Lag folgt
+        if direction == 'inverse' and abs(chg_pct) >= threshold:
+            triggered = True
+        elif direction in ('same', 'bullish') and abs(chg_pct) >= threshold:
+            triggered = True
+        elif direction == 'bullish_when_spread_high':
+            # Special case for spread-based
+            continue
 
         if triggered:
             lag_price, _ = yahoo_price(pair['lag_ticker'])
@@ -132,286 +194,235 @@ def detect_signals(lag_db, state):
                 'signal_value': f"{chg_pct:+.1f}%",
                 'signal_pct': chg_pct,
                 'lead_price': price_now,
-                'lag_price_now': lag_price
+                'lag_price_now': lag_price,
             })
 
     return signals
 
 
-# ─── Paperclip Issue erstellen ────────────────────────────────────────
+# ─── Signal loggen ────────────────────────────────────────────────────
 
-def create_signal_issue(signal, lag_db):
+def log_signal(conn, signal, vix, regime):
+    """Schreibt ein neues Signal in die DB."""
     pair = signal['pair']
-    pair_id = signal['pair_id']
-    accuracy = pair.get('accuracy_pct')
-    samples  = pair.get('sample_count', 0)
-    min_samples = lag_db.get('min_samples_to_trust', 20)
-    min_acc     = lag_db.get('min_accuracy_to_trade', 60.0)
-
     now_utc = datetime.now(timezone.utc)
-    lag_h   = pair.get('lag_hours', 6)
-    check_at = now_utc.strftime(f'in {lag_h}h (~%H:%M UTC + {lag_h}h)')
+    lag_h = pair.get('lag_hours', 6)
+    check_after = time.time() + lag_h * 3600
+    accuracy = pair.get('accuracy_pct')
 
-    # Confidence-Level bestimmen
-    if samples < min_samples:
-        confidence = f"🔬 AUFBAU ({samples}/{min_samples} Samples — noch nicht handelbar)"
-        priority = "low"
-    elif accuracy and accuracy >= min_acc:
-        confidence = f"✅ VERTRAUENSWÜRDIG ({accuracy:.0f}% / {samples} Samples)"
-        priority = "high"
-    else:
-        confidence = f"⚠️ SCHWACH ({accuracy:.0f}% / {samples} Samples — unter {min_acc}% Minimum)"
-        priority = "medium"
+    conn.execute("""
+        INSERT INTO signals (
+            pair_id, lead_ticker, lag_ticker, signal_value,
+            lead_price, lag_price_at_signal, outcome,
+            regime_at_signal, vix_at_signal, accuracy_at_time,
+            check_after_ts, direction, lag_hours,
+            lead_name, lag_name, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        signal['pair_id'],
+        pair['lead_ticker'],
+        pair['lag_ticker'],
+        signal['signal_value'],
+        signal.get('lead_price'),
+        signal.get('lag_price_now'),
+        regime,
+        vix,
+        accuracy,
+        check_after,
+        pair['direction'],
+        lag_h,
+        pair.get('lead_name', pair['lead_ticker']),
+        pair.get('lag_name', pair['lag_ticker']),
+        now_utc.isoformat(),
+    ))
+    conn.commit()
 
-    title = f"Signal: {pair['lead_name']} → {pair['lag_name']} ({signal['signal_value']})"
-
-    description = f"""## Lead-Lag Signal detektiert
-
-**Lead:** {pair['lead_name']} (`{pair['lead_ticker']}`) — {signal['signal_value']}
-**Lag:** {pair['lag_name']} (`{pair['lag_ticker']}`) — aktuell: {signal['lag_price_now'] or 'n/a'}
-**Erwartete Lag-Zeit:** {lag_h}h
-**Richtung:** {pair['direction']}
-**Confidence:** {confidence}
-
-**Theorie:** {pair['description']}
-
----
-
-### Prognose
-In ~{lag_h}h sollte `{pair['lag_ticker']}` sich in Richtung **{pair['direction']}** bewegen.
-Validator prüft das Outcome automatisch um {check_at}.
-
-### Was tun?
-{"🚫 Noch nicht handelbar — Daten sammeln." if samples < min_samples else
- f"{'🟢 Setup prüfen — Confidence hoch genug.' if (accuracy or 0) >= min_acc else '🔴 Nicht handeln — Accuracy zu niedrig.'}"}
-
----
-*Pair ID: {pair_id} | Erstellt: {now_utc.strftime('%Y-%m-%d %H:%M UTC')}*
-*Validator prüft in {lag_h}h automatisch.*"""
-
-    issue = pc_post(f"/companies/{COMPANY_ID}/issues", {
-        "title": title,
-        "description": description,
-        "projectId": PROJECT_ID,
-        "goalId": GOAL_ID,
-        "priority": priority,
-        "status": "todo"
-    })
-
-    print(f"  📋 Issue erstellt: {issue['identifier']} — {title}")
-    return issue
+    sig_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+    print(f"  📡 Signal #{sig_id}: {pair.get('lead_name', pair['lead_ticker'])} → {pair.get('lag_name', pair['lag_ticker'])} ({signal['signal_value']})")
+    print(f"     Prüfung in {lag_h}h | Regime: {regime} | VIX: {vix:.1f}")
+    return sig_id
 
 
-# ─── Outcome-Check (Validator-Rolle) ─────────────────────────────────
+# ─── Outcome Check ───────────────────────────────────────────────────
 
-def check_pending_outcomes(state, lag_db):
-    """Prüft Issues deren lag_hours abgelaufen sind."""
-    pending = state.get('pending_outcomes', [])
-    now = datetime.now(timezone.utc).timestamp()
-    still_pending = []
+def check_pending_outcomes(conn, lag_db):
+    """Prüft alle PENDING Signale deren lag_hours abgelaufen sind."""
+    now = time.time()
+    pending = conn.execute(
+        "SELECT * FROM signals WHERE outcome = 'PENDING' AND check_after_ts IS NOT NULL AND check_after_ts <= ?",
+        (now,)
+    ).fetchall()
 
-    for entry in pending:
-        if now < entry['check_at_ts']:
-            still_pending.append(entry)
+    checked = 0
+    wins = 0
+    losses = 0
+
+    for sig in pending:
+        pair_id = sig['pair_id']
+        lag_ticker = sig['lag_ticker']
+        entry_price = sig['lag_price_at_signal']
+        direction = sig['direction'] or 'same'
+        signal_pct = None
+
+        if not entry_price or entry_price == 0:
+            # Kein Entry-Preis → kann nicht bewerten, als SKIP markieren
+            conn.execute(
+                "UPDATE signals SET outcome = 'SKIP', checked_at = ? WHERE id = ?",
+                (datetime.now(timezone.utc).isoformat(), sig['id'])
+            )
+            conn.commit()
             continue
 
-        # Zeit abgelaufen → Outcome prüfen
-        pair_id   = entry['pair_id']
-        issue_id  = entry['issue_id']
-        pair      = lag_db['pairs'].get(pair_id)
-        if not pair:
-            continue
-
-        lag_ticker = pair['lag_ticker']
+        # Aktuellen Preis holen
         if lag_ticker == 'COMPUTED_BRENT_WTI_SPREAD':
-            current, _ = brent_wti_spread(), None
+            current = brent_wti_spread()
         else:
             current, _ = yahoo_price(lag_ticker)
 
-        if not current:
-            still_pending.append(entry)  # Retry
-            continue
+        if current is None:
+            continue  # Retry nächstes Mal
 
-        entry_price = entry.get('lag_price_at_signal')
-        if not entry_price:
-            still_pending.append(entry)
-            continue
-
-        actual_chg  = (current - entry_price) / entry_price * 100
-        direction   = pair['direction']
-        lag_h       = pair.get('lag_hours', 6)
+        actual_chg = (current - entry_price) / entry_price * 100
 
         # Bewertung
-        if direction == 'inverse':
-            correct = actual_chg < -1.0
-        elif direction in ('same', 'bullish'):
-            correct = actual_chg < -1.0 if entry.get('signal_pct', 0) < 0 else actual_chg > 1.0
-        else:
-            correct = abs(actual_chg) > 1.0
-
-        result_emoji = "✅" if correct else "❌"
-        outcome_text = f"""## Outcome nach {lag_h}h
-
-**{result_emoji} {'KORREKT' if correct else 'FALSCH'}**
-
-| | Bei Signal | Jetzt ({lag_h}h später) | Veränderung |
-|---|---|---|---|
-| {pair['lag_name']} | {entry_price:.2f} | {current:.2f} | {actual_chg:+.1f}% |
-
-**Prognose war:** {direction} Bewegung in {lag_h}h
-**Tatsächlich:** {actual_chg:+.1f}%
-**Urteil:** {'Prognose bestätigt ✅' if correct else 'Prognose nicht bestätigt ❌'}
-
----
-*Accuracy-Datenbank wird automatisch aktualisiert.*"""
-
-        # Kommentar auf Issue posten
         try:
-            pc_post(f"/issues/{issue_id}/comments", {"body": outcome_text})
-            # Issue schließen
-            pc_patch(f"/issues/{issue_id}", {"status": "done" if correct else "cancelled"})
-            print(f"  {result_emoji} Outcome für {issue_id[:8]}: {pair_id} → {actual_chg:+.1f}%")
-        except Exception as e:
-            print(f"  Paperclip-Fehler beim Outcome: {e}")
-            # Trotzdem signals.json updaten
-        
-        # → signals.json updaten
-        update_signal_outcome(issue_id, 'WIN' if correct else 'LOSS', round(actual_chg, 2), current)
+            sv = sig['signal_value'] or ''
+            if '%' in sv:
+                signal_pct = float(sv.replace('%', '').replace('+', ''))
+        except (ValueError, TypeError):
+            signal_pct = None
 
-        # Accuracy updaten
-        pair['sample_count'] = pair.get('sample_count', 0) + 1
-        pair['wins']   = pair.get('wins', 0) + (1 if correct else 0)
-        pair['losses'] = pair.get('losses', 0) + (0 if correct else 1)
-        pair['accuracy_pct'] = round(pair['wins'] / pair['sample_count'] * 100, 1)
+        if direction == 'inverse':
+            # Lead steigt → Lag sollte fallen (oder umgekehrt)
+            if signal_pct and signal_pct > 0:
+                correct = actual_chg < -OUTCOME_THRESHOLD_PCT
+            else:
+                correct = actual_chg > OUTCOME_THRESHOLD_PCT
+        elif direction in ('same', 'bullish'):
+            if signal_pct and signal_pct < 0:
+                correct = actual_chg < -OUTCOME_THRESHOLD_PCT
+            else:
+                correct = actual_chg > OUTCOME_THRESHOLD_PCT
+        else:
+            correct = abs(actual_chg) > OUTCOME_THRESHOLD_PCT
 
-    state['pending_outcomes'] = still_pending
-    return state, lag_db
+        outcome = 'WIN' if correct else 'LOSS'
+        emoji = '✅' if correct else '❌'
+
+        conn.execute("""
+            UPDATE signals SET
+                outcome = ?,
+                lag_price_at_check = ?,
+                change_pct = ?,
+                checked_at = ?
+            WHERE id = ?
+        """, (
+            outcome,
+            current,
+            round(actual_chg, 2),
+            datetime.now(timezone.utc).isoformat(),
+            sig['id'],
+        ))
+        conn.commit()
+        checked += 1
+        if correct:
+            wins += 1
+        else:
+            losses += 1
+
+        print(f"  {emoji} Signal #{sig['id']} ({pair_id}): {entry_price:.2f} → {current:.2f} ({actual_chg:+.1f}%) = {outcome}")
+
+        # Accuracy in lag_knowledge.json updaten
+        pair = lag_db.get('pairs', {}).get(pair_id)
+        if pair:
+            pair['sample_count'] = pair.get('sample_count', 0) + 1
+            pair['wins'] = pair.get('wins', 0) + (1 if correct else 0)
+            pair['losses'] = pair.get('losses', 0) + (0 if correct else 1)
+            pair['accuracy_pct'] = round(pair['wins'] / pair['sample_count'] * 100, 1)
+
+    if checked:
+        print(f"  📊 Outcomes geprüft: {checked} | ✅ {wins} | ❌ {losses}")
+    return lag_db
 
 
-# ─── Signals JSON (Dashboard-Feed) ───────────────────────────────────
+# ─── Stats ────────────────────────────────────────────────────────────
 
-def load_signals_json():
-    if SIGNALS_JSON.exists():
-        return json.loads(SIGNALS_JSON.read_text())
-    return {"signals": [], "stats": {"total": 0, "wins": 0, "losses": 0, "pending": 0}, "updated": None}
+def print_stats(conn):
+    """Zeigt aktuelle Signal-Statistiken."""
+    total = conn.execute("SELECT COUNT(*) FROM signals").fetchone()[0]
+    pending = conn.execute("SELECT COUNT(*) FROM signals WHERE outcome = 'PENDING'").fetchone()[0]
+    wins = conn.execute("SELECT COUNT(*) FROM signals WHERE outcome = 'WIN'").fetchone()[0]
+    losses = conn.execute("SELECT COUNT(*) FROM signals WHERE outcome = 'LOSS'").fetchone()[0]
+    skips = conn.execute("SELECT COUNT(*) FROM signals WHERE outcome = 'SKIP'").fetchone()[0]
 
-def save_signals_json(data):
-    data['updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    # Stats berechnen
-    sigs = data['signals']
-    data['stats'] = {
-        "total": len(sigs),
-        "wins": sum(1 for s in sigs if s.get('outcome') == 'WIN'),
-        "losses": sum(1 for s in sigs if s.get('outcome') == 'LOSS'),
-        "pending": sum(1 for s in sigs if s.get('outcome') == 'PENDING'),
-        "accuracy_pct": round(
-            sum(1 for s in sigs if s.get('outcome') == 'WIN') / max(1, sum(1 for s in sigs if s.get('outcome') in ('WIN','LOSS'))) * 100, 1
-        ) if any(s.get('outcome') in ('WIN','LOSS') for s in sigs) else None
-    }
-    SIGNALS_JSON.write_text(json.dumps(data, indent=2))
+    resolved = wins + losses
+    accuracy = (wins / resolved * 100) if resolved > 0 else 0
 
-def append_signal(signal_entry):
-    data = load_signals_json()
-    data['signals'].insert(0, signal_entry)  # Neueste zuerst
-    # Max 100 Signale behalten
-    data['signals'] = data['signals'][:100]
-    save_signals_json(data)
+    print(f"  📈 Gesamt: {total} | ⏳ {pending} pending | ✅ {wins} wins | ❌ {losses} losses | ⏭️ {skips} skips")
+    if resolved > 0:
+        print(f"  🎯 Accuracy: {accuracy:.1f}% ({resolved} resolved)")
 
-def update_signal_outcome(issue_id, outcome, actual_chg, lag_price_now):
-    data = load_signals_json()
-    for s in data['signals']:
-        if s.get('issue_id') == issue_id:
-            s['outcome'] = outcome
-            s['actual_change_pct'] = actual_chg
-            s['lag_price_after'] = lag_price_now
-            s['resolved_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-            break
-    save_signals_json(data)
-
-def push_signals_to_git():
-    """Auto-commit + push signals.json damit Vercel es sieht."""
-    import subprocess
-    try:
-        subprocess.run(['git', 'add', str(SIGNALS_JSON)], cwd=str(WORKSPACE), capture_output=True, timeout=10)
-        result = subprocess.run(
-            ['git', 'commit', '-m', f'📡 Signal update {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")} [skip ci]'],
-            cwd=str(WORKSPACE), capture_output=True, timeout=10
-        )
-        if result.returncode == 0:
-            subprocess.run(['git', 'push'], cwd=str(WORKSPACE), capture_output=True, timeout=30)
-            print("  📤 signals.json gepusht → Vercel")
-    except Exception as e:
-        print(f"  Git push fehlgeschlagen: {e}")
+    # Per-pair stats
+    pairs = conn.execute("""
+        SELECT pair_id, lead_name, lag_name,
+               COUNT(*) as total,
+               SUM(CASE WHEN outcome='WIN' THEN 1 ELSE 0 END) as wins,
+               SUM(CASE WHEN outcome='LOSS' THEN 1 ELSE 0 END) as losses
+        FROM signals
+        WHERE outcome IN ('WIN', 'LOSS')
+        GROUP BY pair_id
+        ORDER BY total DESC
+    """).fetchall()
+    if pairs:
+        print(f"  --- Per-Pair Accuracy ---")
+        for p in pairs:
+            acc = p['wins'] / (p['wins'] + p['losses']) * 100 if (p['wins'] + p['losses']) > 0 else 0
+            print(f"    {p['pair_id']}: {acc:.0f}% ({p['wins']}W/{p['losses']}L) — {p['lead_name']} → {p['lag_name']}")
 
 
 # ─── Main ────────────────────────────────────────────────────────────
 
 def main():
+    if not LAG_DB.exists():
+        print("KEIN_SIGNAL — lag_knowledge.json nicht gefunden")
+        return
+
     lag_db = json.loads(LAG_DB.read_text())
-    state  = json.loads(STATE.read_text()) if STATE.exists() else {}
-    today  = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+    conn = get_db()
+    now_utc = datetime.now(timezone.utc)
 
-    print(f"[{datetime.now(timezone.utc).strftime('%H:%M UTC')}] Signal Tracker läuft...")
+    print(f"[{now_utc.strftime('%H:%M UTC')}] Signal Tracker v2 läuft...")
+    print(f"  {len(lag_db.get('pairs', {}))} Lead-Lag Paare geladen")
 
-    # 1. Pending Outcomes prüfen
-    state, lag_db = check_pending_outcomes(state, lag_db)
+    # 1. VIX + Regime holen
+    vix = get_vix() or 25.0
+    regime = get_regime(vix)
+    print(f"  VIX: {vix:.1f} | Regime: {regime}")
 
-    # 2. Neue Signale detektieren
-    signals = detect_signals(lag_db, state)
-    print(f"  Signale detektiert: {len(signals)}")
+    # 2. Pending Outcomes prüfen (ZUERST — damit Accuracy aktuell ist)
+    lag_db = check_pending_outcomes(conn, lag_db)
+
+    # 3. Neue Signale detektieren
+    signals = detect_signals(lag_db, {}, conn)
+    print(f"  Neue Signale: {len(signals)}")
 
     for sig in signals:
-        pair_id = sig['pair_id']
-        pair = sig['pair']
-        issue = create_signal_issue(sig, lag_db)
+        log_signal(conn, sig, vix, regime)
 
-        # In pending_outcomes eintragen
-        import time
-        lag_h = pair['lag_hours']
-        if 'pending_outcomes' not in state:
-            state['pending_outcomes'] = []
-        state['pending_outcomes'].append({
-            'pair_id':              pair_id,
-            'issue_id':             issue['id'],
-            'lag_price_at_signal':  sig.get('lag_price_now'),
-            'signal_pct':           sig.get('signal_pct'),
-            'check_at_ts':          time.time() + lag_h * 3600
-        })
+    # 4. Lag-DB mit neuen Accuracy-Werten speichern
+    LAG_DB.write_text(json.dumps(lag_db, indent=2, ensure_ascii=False))
 
-        # fired_today tracken
-        if 'fired_today' not in state:
-            state['fired_today'] = {}
-        state['fired_today'].setdefault(today, []).append(pair_id)
-
-        # → signals.json für Dashboard
-        append_signal({
-            'pair_id': pair_id,
-            'lead_ticker': pair['lead_ticker'],
-            'lead_name': pair['lead_name'],
-            'lag_ticker': pair['lag_ticker'],
-            'lag_name': pair['lag_name'],
-            'signal_value': sig['signal_value'],
-            'signal_pct': sig.get('signal_pct'),
-            'lead_price': sig.get('lead_price'),
-            'lag_price_at_signal': sig.get('lag_price_now'),
-            'lag_hours': lag_h,
-            'direction': pair['direction'],
-            'outcome': 'PENDING',
-            'issue_id': issue['id'],
-            'issue_key': issue.get('identifier', '?'),
-            'confidence': f"{pair.get('sample_count',0)}/{lag_db.get('min_samples_to_trust',20)} samples",
-            'created_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-        })
-
-    # 3. State + Lag-DB speichern
-    STATE.write_text(json.dumps(state, indent=2))
-    LAG_DB.write_text(json.dumps(lag_db, indent=2))
+    # 5. Stats
+    print_stats(conn)
 
     if not signals:
-        print("  KEIN_SIGNAL")
-    else:
-        print(f"  {len(signals)} Issue(s) in Paperclip erstellt.")
-        push_signals_to_git()
+        pending = conn.execute("SELECT COUNT(*) FROM signals WHERE outcome = 'PENDING'").fetchone()[0]
+        if pending:
+            print(f"  KEIN_SIGNAL — {pending} Signale warten auf Outcome-Check")
+        else:
+            print("  KEIN_SIGNAL")
+
+    conn.close()
 
 
 if __name__ == '__main__':

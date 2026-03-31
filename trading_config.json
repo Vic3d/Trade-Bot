@@ -895,6 +895,35 @@
         "tickers": [],
         "weight": 1.0,
         "enabled": true
+      },
+      "iran_peace_basket": {
+        "tickers": [
+          "DAL",
+          "UAL",
+          "AAL",
+          "LUV",
+          "BA",
+          "MAR",
+          "HLT",
+          "BKNG",
+          "EXPE",
+          "JETS"
+        ],
+        "weight": 2.0,
+        "enabled": true,
+        "description": "Airlines + Tourism + Boeing — profitieren von Iran-Deal"
+      },
+      "iran_peace_inverse": {
+        "tickers": [
+          "FRO",
+          "DHT",
+          "STNG",
+          "INSW",
+          "TNK"
+        ],
+        "weight": 1.8,
+        "enabled": true,
+        "description": "Tanker-Aktien — fallen wenn Hormuz öffnet"
       }
     },
     "keywords": [
@@ -905,7 +934,10 @@
       "war",
       "ukraine",
       "ceasefire",
-      "sanctions"
+      "sanctions",
+      "hormuz",
+      "peace",
+      "deal"
     ],
     "min_score": 6,
     "auto_trade_threshold": 8,

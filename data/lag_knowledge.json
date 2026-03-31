@@ -13,7 +13,7 @@
       "sample_count": 0,
       "wins": 0,
       "losses": 0,
-      "description": "JP \u00d6lproduzent bewegt sich in Asien-Session bevor WTI in NY er\u00f6ffnet"
+      "description": "JP Ölproduzent bewegt sich in Asien-Session bevor WTI in NY eröffnet"
     },
     "NIKKEI_COPPER": {
       "lead_ticker": "^N225",
@@ -27,7 +27,7 @@
       "sample_count": 2,
       "wins": 2,
       "losses": 0,
-      "description": "Nikkei als Fr\u00fchindikator f\u00fcr Japan-Industrienachfrage \u2192 Kupfer"
+      "description": "Nikkei als Frühindikator für Japan-Industrienachfrage → Kupfer"
     },
     "VIX_TECH": {
       "lead_ticker": "^VIX",
@@ -41,7 +41,7 @@
       "sample_count": 1,
       "wins": 0,
       "losses": 1,
-      "description": "VIX-Spike f\u00fchrt Tech-Selloff um 1-2 Sessions"
+      "description": "VIX-Spike führt Tech-Selloff um 1-2 Sessions"
     },
     "BRENT_WTI_SPREAD_EQNR": {
       "lead_ticker": "COMPUTED_BRENT_WTI_SPREAD",
@@ -55,7 +55,7 @@
       "sample_count": 0,
       "wins": 0,
       "losses": 0,
-      "description": "Spread >$10 bedeutet strukturelle Knappheit \u2192 europ\u00e4ische \u00d6l-Produzenten profitieren"
+      "description": "Spread >$10 bedeutet strukturelle Knappheit → europäische Öl-Produzenten profitieren"
     },
     "IRAN_BRENT": {
       "lead_ticker": "LIVEUAMAP_IRAN",
@@ -69,11 +69,11 @@
       "sample_count": 0,
       "wins": 0,
       "losses": 0,
-      "description": "Hormus-Eskalation \u2192 Brent-Premium steigt innerhalb von Stunden"
+      "description": "Hormus-Eskalation → Brent-Premium steigt innerhalb von Stunden"
     },
     "OPTIONS_FLOW_OIL_SHORT": {
       "lead_ticker": "OPTIONS_FLOW_USO_XOM_OXY",
-      "lead_name": "Ungew\u00f6hnlicher OTM-Call-Flow (\u00d6l, <7 Tage)",
+      "lead_name": "Ungewöhnlicher OTM-Call-Flow (Öl, <7 Tage)",
       "lag_ticker": "EQNR.OL",
       "lag_name": "Equinor ASA",
       "lag_hours": 24,
@@ -81,13 +81,13 @@
       "threshold_pct": 1.5,
       "accuracy_pct": 100.0,
       "sample_count": 57,
-      "wins": 77,
+      "wins": 126,
       "losses": 0,
-      "description": "Frische kurzlaufende OTM-Calls auf USO/XOM/OXY \u2192 \u00d6l steigt in 24h"
+      "description": "Frische kurzlaufende OTM-Calls auf USO/XOM/OXY → Öl steigt in 24h"
     },
     "OPTIONS_FLOW_OIL_MEDIUM": {
       "lead_ticker": "OPTIONS_FLOW_XLE_BNO",
-      "lead_name": "Ungew\u00f6hnlicher OTM-Call-Flow (Energie-ETF, 7-30 Tage)",
+      "lead_name": "Ungewöhnlicher OTM-Call-Flow (Energie-ETF, 7-30 Tage)",
       "lag_ticker": "EQNR.OL",
       "lag_name": "Equinor ASA",
       "lag_hours": 48,
@@ -95,13 +95,13 @@
       "threshold_pct": 2.0,
       "accuracy_pct": 100.0,
       "sample_count": 10,
-      "wins": 18,
+      "wins": 22,
       "losses": 0,
-      "description": "Mittelfristige Energie-Calls auf XLE/BNO \u2192 \u00d6l steigt in 48h"
+      "description": "Mittelfristige Energie-Calls auf XLE/BNO → Öl steigt in 48h"
     },
     "OPTIONS_FLOW_PUT_OIL": {
       "lead_ticker": "OPTIONS_FLOW_PUT_USO_XOM_OXY",
-      "lead_name": "Ungew\u00f6hnlicher OTM-Put-Flow (\u00d6l)",
+      "lead_name": "Ungewöhnlicher OTM-Put-Flow (Öl)",
       "lag_ticker": "EQNR.OL",
       "lag_name": "Equinor ASA",
       "lag_hours": 24,
@@ -111,7 +111,7 @@
       "sample_count": 0,
       "wins": 0,
       "losses": 0,
-      "description": "Frische OTM-Puts auf \u00d6l-Ticker \u2192 \u00d6l f\u00e4llt in 24h (Short-Signal)"
+      "description": "Frische OTM-Puts auf Öl-Ticker → Öl fällt in 24h (Short-Signal)"
     }
   },
   "min_samples_to_trust": 20,

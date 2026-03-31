@@ -1,8 +1,18 @@
 {
-  "daily_pnl": 0,
-  "daily_trades": 0,
+  "daily_pnl": -581.4910000000002,
+  "daily_trades": 8,
   "last_date": "2026-03-31",
-  "signals_today": [],
-  "scanned": 0,
-  "signals_found": 0
+  "signals_today": [
+    "MSFT",
+    "DIS",
+    "CSCO",
+    "ORCL",
+    "XOM",
+    "GOLD",
+    "MRK",
+    "ORCL",
+    "UNH"
+  ],
+  "scanned": 612,
+  "signals_found": 1104
 }

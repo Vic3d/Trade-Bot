@@ -365,3 +365,17 @@
 [2026-03-30 22:50] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
 [2026-03-30 22:55] OVERNIGHT HOLD: GOLD +2.1%
 [2026-03-30 22:55] EOD Close: 0 Trades geschlossen, 1 Overnight gehalten, Daily P&L: -474€
+[2026-03-31 15:35] CLOSE GOLD LOSS: P&L -140.8€ (-1.7%) via Stop | hold=0d market=US time=afternoon
+[2026-03-31 16:32] Neue Trades: 2 | Offen: 2
+[2026-03-31 16:50] Neue Trades: 1 | Offen: 3
+[2026-03-31 16:55] Neue Trades: 2 | Offen: 5
+[2026-03-31 17:02] Neue Trades: 1 | Offen: 6
+[2026-03-31 17:15] CLOSE ORCL LOSS: P&L -81.8€ (-1.0%) via Stop | hold=0d market=US time=afternoon
+[2026-03-31 17:15] Neue Trades: 1 | Offen: 6
+[2026-03-31 17:20] CLOSE XOM LOSS: P&L -55.8€ (-0.7%) via Stop | hold=0d market=US time=afternoon
+[2026-03-31 17:30] CLOSE GOLD LOSS: P&L -96.2€ (-1.2%) via Stop | hold=0d market=US time=afternoon
+[2026-03-31 17:40] CLOSE DIS LOSS: P&L -39.5€ (-0.5%) via Stop | hold=0d market=US time=afternoon
+[2026-03-31 18:05] CLOSE MRK LOSS: P&L -49.7€ (-0.6%) via Stop | hold=0d market=US time=evening
+[2026-03-31 18:40] Neue Trades: 2 | Offen: 4
+[2026-03-31 18:45] CLOSE MSFT LOSS: P&L -51.4€ (-0.6%) via Stop | hold=0d market=US time=evening
+[2026-03-31 18:45] CLOSE CSCO LOSS: P&L -66.4€ (-0.8%) via Stop | hold=0d market=US time=evening

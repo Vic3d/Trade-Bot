@@ -1,0 +1,189 @@
+{
+  "strategies_analyzed": 3,
+  "strategies_evolved": 3,
+  "evolutions": {
+    "DT4": {
+      "trades_analyzed": 8,
+      "wins": 0,
+      "losses": 8,
+      "win_rate": 0.0,
+      "current_params": {
+        "avg_stop_distance_pct": 9.67,
+        "avg_holding_days": 0.0,
+        "avg_holding_days_losers": 0.0
+      },
+      "recommended_params": {},
+      "findings": [
+        "⛔ Regime PAPER_LEARN: WR 0% bei 8 Trades — vermeiden!",
+        "💀 DNA sagt KILL — 0% WR nach 8 Trades"
+      ],
+      "expected_improvement": "Keine konkreten Anpassungen empfohlen",
+      "confidence": "MEDIUM",
+      "recommendation": "KILL"
+    },
+    "PS1": {
+      "trades_analyzed": 6,
+      "wins": 3,
+      "losses": 3,
+      "win_rate": 0.5,
+      "current_params": {
+        "avg_stop_distance_pct": 3.89,
+        "avg_win_pct": 6.42,
+        "max_win_pct": 12.36,
+        "avg_holding_days": 4.3,
+        "avg_holding_days_winners": 4.3,
+        "avg_holding_days_losers": 4.3
+      },
+      "recommended_params": {
+        "optimal_stop_pct": 6.47,
+        "optimal_tp_pct": 9.89,
+        "optimal_holding_range": "6-10d",
+        "holding_range_detail": {
+          "0-2d": {
+            "wr": 0.5,
+            "avg_pnl": 0.08,
+            "n": 2
+          },
+          "6-10d": {
+            "wr": 0.667,
+            "avg_pnl": 6.4,
+            "n": 3
+          }
+        }
+      },
+      "findings": [
+        "Verlierer-Stops Ø 3.1% vs. Gewinner Ø 4.7% — Stops bei Verlierern zu eng!",
+        "Avg Win 6.4% ist nur 52% des Maximallaufs (12.4%) — Gewinne werden zu früh mitgenommen!",
+        "Sweet Spot Haltedauer: 6-10d (Avg PnL: +6.4%, WR: 67%, n=3)",
+        "🌤️ Regime-unabhängig — performt in allen Marktphasen ähnlich"
+      ],
+      "expected_improvement": "Stop weiter (3.9% → 6.5%) | TP bei 9.9% | Haltedauer 6-10d",
+      "confidence": "LOW",
+      "recommendation": "MONITOR"
+    },
+    "PT": {
+      "trades_analyzed": 5,
+      "wins": 2,
+      "losses": 3,
+      "win_rate": 0.4,
+      "current_params": {
+        "avg_stop_distance_pct": 6.47,
+        "avg_win_pct": 18.88,
+        "max_win_pct": 20.65,
+        "avg_holding_days": 6.2,
+        "avg_holding_days_winners": 2.0,
+        "avg_holding_days_losers": 9.0
+      },
+      "recommended_params": {
+        "optimal_stop_pct": 8.08,
+        "optimal_tp_pct": 16.52,
+        "optimal_holding_range": "6-10d",
+        "holding_range_detail": {
+          "6-10d": {
+            "wr": 0.0,
+            "avg_pnl": 0.0,
+            "n": 2
+          }
+        }
+      },
+      "findings": [
+        "Sweet Spot Haltedauer: 6-10d (Avg PnL: +0.0%, WR: 0%, n=2)",
+        "🌤️ Regime-unabhängig — performt in allen Marktphasen ähnlich"
+      ],
+      "expected_improvement": "Stop weiter (6.5% → 8.1%) | TP bei 16.5% | Haltedauer 6-10d",
+      "confidence": "LOW",
+      "recommendation": "MONITOR"
+    }
+  },
+  "regime_filters": {
+    "DT4": {
+      "best_regime": "PAPER_LEARN",
+      "best_regime_wr": 0.0,
+      "best_regime_trades": 8,
+      "worst_regime": "PAPER_LEARN",
+      "worst_regime_wr": 0.0,
+      "worst_regime_trades": 8,
+      "regime_detail": {
+        "PAPER_LEARN": {
+          "wr": 0.0,
+          "avg_pnl": -6.51,
+          "n": 8
+        }
+      },
+      "recommended_filter": "NICHT traden in PAPER_LEARN (WR 0%)"
+    },
+    "PS1": {
+      "best_regime": "UNKNOWN",
+      "best_regime_wr": 0.4,
+      "best_regime_trades": 5,
+      "worst_regime": "UNKNOWN",
+      "worst_regime_wr": 0.4,
+      "worst_regime_trades": 5,
+      "regime_detail": {
+        "UNKNOWN": {
+          "wr": 0.4,
+          "avg_pnl": -0.4,
+          "n": 5
+        },
+        "RISK_OFF": {
+          "wr": 1.0,
+          "avg_pnl": 1.7,
+          "n": 1
+        }
+      },
+      "recommended_filter": "Regime-unabhängig — \"Allwetter\"-Strategie"
+    },
+    "PT": {
+      "best_regime": "UNKNOWN",
+      "best_regime_wr": 0.4,
+      "best_regime_trades": 5,
+      "worst_regime": "UNKNOWN",
+      "worst_regime_wr": 0.4,
+      "worst_regime_trades": 5,
+      "regime_detail": {
+        "UNKNOWN": {
+          "wr": 0.4,
+          "avg_pnl": 6.86,
+          "n": 5
+        }
+      },
+      "recommended_filter": "Regime-unabhängig — \"Allwetter\"-Strategie"
+    }
+  },
+  "insufficient_data": [
+    "AR-AGRA",
+    "AR-HALB",
+    "DT1",
+    "DT2",
+    "DT3",
+    "PM",
+    "PS10",
+    "PS11",
+    "PS12",
+    "PS13",
+    "PS14",
+    "PS15",
+    "PS16",
+    "PS17",
+    "PS2",
+    "PS3",
+    "PS4",
+    "PS5",
+    "PS9",
+    "PS_CCJ",
+    "PS_LHA",
+    "PS_NVO",
+    "PS_STLD",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "_config",
+    "emerging_themes",
+    "new"
+  ],
+  "timestamp": "2026-03-31T19:36:47"
+}

@@ -306,5 +306,26 @@
     "ticker": "",
     "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 119.89\u20ac | Stop: 127.0\u20ac | -5.9% Abstand [Conviction: 15/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T16:30:42.551484+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.55\u20ac | P&L: +5.9% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 48/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T16:45:25.942694+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udfe2 S&P 500 (SPY) **KREUZT 200-TAGE-MA** \ud83d\udcc8 \u00dcBER\nSPY $646.77 | MA200 $646.59 (+0.0%)\n\u2192 Risk-ON: Regime-Wechsel bullisch. Aktives Positionieren m\u00f6glich.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-03-31T17:00:39.010367+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.55\u20ac | P&L: +5.9% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 48/100]",
+    "value": ""
   }
 ]

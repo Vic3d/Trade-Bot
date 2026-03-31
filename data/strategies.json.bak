@@ -1,0 +1,2212 @@
+{
+  "PS1": {
+    "name": "Iran/Öl-Geopolitik",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-08",
+      "trigger": "Iran-Konflikt eskaliert, Hormuz unter Druck, Ölpreis strukturell über $85",
+      "analysis_steps": [
+        "WTI über $85 seit Konfliktbeginn",
+        "Hormuz-Blockade bedroht 20% weltweiter Ölversorgung",
+        "Nordsee-Leichtöl (EQNR) = einziger EU-Ersatz für Golf-Öl",
+        "Venezuela Heavy Crude kann europäische Raffinerien NICHT beliefern"
+      ],
+      "logical_chain": "Iran-Eskalation → Hormuz-Risiko → Ölversorgung bedroht → Produzenten profitieren",
+      "counter_arguments_checked": [
+        "Venezuela-Öl als Ersatz? → NEIN — Heavy vs Light Crude, verschiedene Raffinerien",
+        "OPEC erhöht Output? → Saudi hat Kapazität, aber politisch zurückhaltend",
+        "IEA Reserven? → Markt ignoriert IEA (Hormuz = 20M bbl/d vs. IEA Kapazität)"
+      ],
+      "sources": [
+        "eigene Analyse",
+        "Eriksen Makro-Video",
+        "liveuamap.com",
+        "Bloomberg RSS"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
+    },
+    "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
+    "sector": "energy",
+    "regime": {
+      "vix_range": [
+        20,
+        30
+      ],
+      "wti_min": 85,
+      "description": "VIX 20-30, WTI >$85, keine aktiven Friedensverhandlungen"
+    },
+    "entry_trigger": "WTI >$85 + keine Deeskalation + Chart-Support gehalten",
+    "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
+    "horizon_weeks": 12,
+    "status": "active",
+    "health": "green",
+    "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
+    "tickers": [
+      "OXY",
+      "TTE.PA",
+      "EQNR.OL",
+      "FRO",
+      "DHT"
+    ],
+    "keywords_bullish": [
+      "iran",
+      "hormuz",
+      "strait",
+      "oil strike",
+      "oil attack",
+      "opec cut",
+      "tanker attack",
+      "persian gulf",
+      "israel iran",
+      "middle east escalation",
+      "crude supply",
+      "oil embargo",
+      "sanctions iran",
+      "drone attack refinery"
+    ],
+    "keywords_bearish": [
+      "ceasefire iran",
+      "iran deal",
+      "nuclear agreement",
+      "hormuz open",
+      "iran talks",
+      "deescalation",
+      "oil surplus",
+      "opec increase output",
+      "us iran negotiations",
+      "peace iran"
+    ],
+    "performance": {
+      "total_trades": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0.0,
+      "expectancy": 0.0,
+      "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "win_rate": 0.4,
+    "avg_pnl": -0.4,
+    "win_loss_ratio": 0.6,
+    "n_trades": 5,
+    "last_evaluated": "2026-03-30",
+    "wins": 2,
+    "losses": 3,
+    "trades": 5,
+    "pnl": -14.74,
+    "vix_correlation": "negative",
+    "negation": "Waffenstillstand Iran/Hormuz oder WTI dauerhaft unter $78 → sofort Exit",
+    "horizon": "8-12 Wochen je nach Eskalationslauf"
+  },
+  "PS2": {
+    "name": "Tanker-Lag-These",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Beobachtung dass Tanker-Frachtraten dem Ölpreis um 2-4 Wochen nachhinken",
+      "analysis_steps": [
+        "WTI steigt durch Iran-Eskalation",
+        "Tanker-Aktien reagieren verzögert — typischer Lag bei Öl-Rallyes",
+        "These: FRO/DHT ziehen in 2-4 Wochen nach"
+      ],
+      "logical_chain": "Ölpreis steigt → Transportnachfrage steigt → Frachtraten erhöhen sich mit Lag → Tanker-Aktien ziehen nach",
+      "counter_arguments_checked": [
+        "Tanker-Überangebot? → Monitoring nötig",
+        "DHT -3.5% trotz WTI +4%? → Disconnect beobachtet, These unter Druck"
+      ],
+      "sources": [
+        "eigene Analyse",
+        "Shipping-Rate-Daten"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
+    "sector": "energy",
+    "regime": {
+      "wti_trending_up": true,
+      "description": "WTI trending up, kein Überangebot an Tankerkapazität"
+    },
+    "entry_trigger": "WTI >$85 seit >2 Wochen UND Tanker-Kurse noch nicht mitgezogen",
+    "kill_trigger": "WTI fällt <$80, oder Tanker-Rally findet nicht statt nach 4 Wochen",
+    "horizon_weeks": 8,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Stimmt die Lag-These überhaupt? Wie lange ist der Lag wirklich?",
+    "tickers": [
+      "FRO",
+      "DHT"
+    ],
+    "keywords_bullish": [
+      "tanker demand",
+      "shipping rates",
+      "baltic dirty tanker",
+      "vlcc rates",
+      "oil tanker",
+      "tanker shortage",
+      "freight rates oil",
+      "suezmax"
+    ],
+    "keywords_bearish": [
+      "tanker oversupply",
+      "shipping rates fall",
+      "tanker glut",
+      "oil demand collapse",
+      "vlcc rates drop"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "win_rate": 0.667,
+    "avg_pnl": 13.65,
+    "win_loss_ratio": 4.52,
+    "n_trades": 3,
+    "last_evaluated": "2026-03-26 21:17",
+    "vix_correlation": "negative",
+    "negation": "WTI fällt unter $80 oder Tanker-Rally bleibt nach 4 Wochen aus",
+    "horizon": "4-8 Wochen (Lag-Periode)"
+  },
+  "PS3": {
+    "name": "NATO/EU-Rüstung",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Europäische Regierungen erhöhen Verteidigungsbudgets — struktureller Trend",
+      "analysis_steps": [
+        "NATO-Beschluss 3% BIP für Verteidigung",
+        "Iran-Konflikt + Ukraine = gleichzeitige Kriege",
+        "EU-Defense-Titel (HAG.DE) haben Nachholbedarf vs. US (KTOS/HII)"
+      ],
+      "logical_chain": "Mehrere Konflikte gleichzeitig → NATO erhöht Budgets → EU-Rüstungsfirmen erhalten Großaufträge → Aktien steigen",
+      "counter_arguments_checked": [
+        "Frieden überall gleichzeitig? → Unwahrscheinlich (Iran + Ukraine + Israel)",
+        "EU-Budgetkrise? → Schuldenbremse gelockert für Verteidigung",
+        "US-Defense besser positioniert? → Vergleich ist die Lernfrage"
+      ],
+      "sources": [
+        "NYT: Germany military spending",
+        "CNBC: Europe war economy",
+        "Rheinmetall FY2025 Zahlen"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
+    },
+    "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
+    "sector": "defense",
+    "regime": {
+      "description": "Geopolitische Eskalation, NATO-Ausgaben steigen, kein globaler Frieden"
+    },
+    "entry_trigger": "EU-Defense-Titel unter ATH + Bundeshaushalt/NATO-Beschluss als Katalysator",
+    "kill_trigger": "Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise",
+    "horizon_weeks": 16,
+    "status": "active",
+    "health": "paused",
+    "learning_question": "Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?",
+    "tickers": [
+      "KTOS",
+      "HII",
+      "HAG.DE"
+    ],
+    "keywords_bullish": [
+      "defense budget",
+      "nato spending",
+      "eu rearmament",
+      "military spending",
+      "defense contract",
+      "pentagon contract",
+      "bundeswehr",
+      "ukraine aid",
+      "weapons delivery",
+      "missile system",
+      "defense order",
+      "kratos",
+      "huntington",
+      "hensoldt",
+      "rheinmetall"
+    ],
+    "keywords_bearish": [
+      "peace deal ukraine",
+      "nato budget cut",
+      "defense spending cut",
+      "trump nato withdrawal",
+      "ukraine ceasefire"
+    ],
+    "performance": {
+      "total_trades": 4,
+      "wins": 0,
+      "losses": 4,
+      "win_rate": 0.0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0.58,
+      "expectancy": -0.58,
+      "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "health_reason": "Score 31/100 — 3 Trades geschlossen ohne echten Gewinn. Gesperrt bis Score >60.",
+    "locked": true,
+    "vix_correlation": "negative",
+    "negation": "Globaler Waffenstillstand in mehreren Regionen gleichzeitig oder EU-Budgetkrise",
+    "horizon": "12-16 Wochen",
+    "lock_reason": "0% WR nach 3 Trades, -€7.70",
+    "locked_date": "2026-03-31"
+  },
+  "PS4": {
+    "name": "Edelmetalle/Miner",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "VIX über 22 + Iran-Unsicherheit → Safe-Haven-Nachfrage steigt",
+      "analysis_steps": [
+        "VIX erhöht → Unsicherheit treibt Gold/Silber",
+        "USD schwächelt → Edelmetalle werden attraktiver",
+        "Miner haben Hebel auf Metallpreis (operativer Leverage)"
+      ],
+      "logical_chain": "Hohe Volatilität + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
+      "counter_arguments_checked": [
+        "VIX fällt unter 18 → Safe-Haven braucht niemand → Exit-Trigger",
+        "Fed hawkish → Dollar stärker → Edelmetalle unter Druck",
+        "Aktuell: VIX bei 22.4 — Thesis schwächt sich ab"
+      ],
+      "sources": [
+        "Eriksen Gold/Silber-Videos",
+        "eigene VIX-Analyse"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
+    },
+    "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
+    "sector": "metals",
+    "regime": {
+      "vix_min": 22,
+      "inflation_min": 3,
+      "usd_weak": true,
+      "description": "VIX >22, Inflation >3%, USD schwach"
+    },
+    "entry_trigger": "Metall an Unterstützung + Miner überverkauft + VIX stabil/steigend",
+    "kill_trigger": "VIX <18 (Risk-on), Fed hawkish, Metall unter Produktionskosten",
+    "horizon_weeks": 10,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Reagieren Silber-Miner schneller als Gold-Miner auf VIX-Bewegungen?",
+    "tickers": [
+      "HL",
+      "PAAS"
+    ],
+    "keywords_bullish": [
+      "gold rally",
+      "silver rally",
+      "safe haven",
+      "inflation hedge",
+      "gold all time high",
+      "central bank gold",
+      "precious metals",
+      "silver demand",
+      "gold demand",
+      "dollar weakness",
+      "vix spike",
+      "recession fears",
+      "gold miner"
+    ],
+    "keywords_bearish": [
+      "gold selloff",
+      "silver selloff",
+      "dollar rally",
+      "rate hike",
+      "gold bear",
+      "precious metals decline",
+      "risk on rally"
+    ],
+    "performance": {
+      "total_trades": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": -4.3,
+      "expectancy": -4.3,
+      "last_evaluated": "2026-03-20 22:30"
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "negative",
+    "negation": "VIX fällt unter 18 (Risk-on) oder Fed hawkish → Dollar stark",
+    "horizon": "6-10 Wochen"
+  },
+  "PS5": {
+    "name": "Dünger/Agrar-Superzyklus",
+    "type": "paper",
+    "genesis": {
+      "created": "2026-03-17",
+      "trigger": "Russische Kali-Sanktionen → Angebot verknappt, Nachfrage stabil",
+      "analysis_steps": [
+        "Russland-Sanktionen auf Kali/Phosphat aktiv",
+        "Globale Lebensmittelnachfrage wächst (Bevölkerung, Ernten)",
+        "Westliche Produzenten (MOS) profitieren als Ersatzlieferant"
+      ],
+      "logical_chain": "Russland-Sanktionen → Kali-Angebot sinkt → Preise steigen → westliche Produzenten profitieren",
+      "counter_arguments_checked": [
+        "Sanktionen werden gelockert? → Monitoring nötig",
+        "Agrarpreise kollabieren? → Bisher keine Anzeichen",
+        "Ist das Superzyklus oder Sanktions-Anomalie? → Die Lernfrage"
+      ],
+      "sources": [
+        "eigene Analyse",
+        "Agrar-Commodity-Daten"
+      ],
+      "conviction_at_start": 2,
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
+    },
+    "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
+    "sector": "fertilizer",
+    "regime": {
+      "description": "Russland-Sanktionen aktiv, Agrar-Commodity-Preise stabil/steigend"
+    },
+    "entry_trigger": "Kali-Preis steigt + Produzent near Support + Newsflow positiv",
+    "kill_trigger": "Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden",
+    "horizon_weeks": 20,
+    "status": "active",
+    "health": "red",
+    "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
+    "tickers": [
+      "MOS"
+    ],
+    "keywords_bullish": [
+      "potash shortage",
+      "fertilizer shortage",
+      "mosaic",
+      "urea prices",
+      "agricultural commodity",
+      "food prices",
+      "crop shortage",
+      "russia potash sanctions",
+      "fertilizer demand"
+    ],
+    "keywords_bearish": [
+      "fertilizer oversupply",
+      "potash glut",
+      "mosaic guidance cut",
+      "agricultural surplus",
+      "russia potash deal"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "win_rate": 1.0,
+    "avg_pnl": 4.56,
+    "win_loss_ratio": 999,
+    "n_trades": 1,
+    "last_evaluated": "2026-03-26 21:17",
+    "vix_correlation": "low",
+    "negation": "Russland-Sanktionen werden gelockert oder Agrarpreise kollabieren",
+    "horizon": "16-20 Wochen (struktureller Zyklus)"
+  },
+  "S1": {
+    "name": "Iran-Konflikt → Öl & Silber",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-01",
+      "trigger": "US/Israel greifen Iran an, Khamenei tot — Ölkrise beginnt",
+      "analysis_steps": [
+        "Hormuz-Straße unter Druck → 20% weltweiter Ölversorgung bedroht",
+        "Nordsee-Leichtöl (Equinor) = einziger EU-Ersatz für Golf-Öl",
+        "Venezuela Heavy Crude kann europäische Raffinerien NICHT verarbeiten",
+        "Mojtaba Khamenei als Nachfolger = Hardliner → kein schneller Frieden",
+        "Kharg Island Bombardierung → 90% Iran-Ölexporte betroffen"
+      ],
+      "logical_chain": "Iran-Krieg → Hormuz blockiert → Ölversorgung Europa bedroht → Equinor als Nordsee-Ersatz profitiert",
+      "counter_arguments_checked": [
+        "Venezuela-Öl als Ersatz? → NEIN (Heavy vs Light Crude)",
+        "IEA Notreserven? → Markt ignoriert IEA (20M bbl/d Hormuz >> IEA Kapazität)",
+        "Waffenstillstand? → Mojtaba Khamenei ist Hardliner, Trump will keinen Deal",
+        "OPEC erhöht Output? → Saudi politisch zurückhaltend"
+      ],
+      "sources": [
+        "liveuamap.com",
+        "Al Jazeera",
+        "Eriksen Makro",
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 5,
+      "conviction_current": 5,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.",
+    "sector": "energy",
+    "regime": {
+      "description": "Aktiver militärischer Konflikt, Hormuz unter Druck"
+    },
+    "entry_trigger": "Konflikt-Eskalation + Ölpreis steigt + Equinor als EU-Alternative",
+    "kill_trigger": "Waffenstillstand konkret + Hormuz offen + US Navy zieht sich zurück",
+    "horizon_weeks": 12,
+    "status": "active",
+    "health": "green_hot",
+    "tickers": [
+      "EQNR"
+    ],
+    "watchlist_tickers": [
+      "ISPA.DE",
+      "AG"
+    ],
+    "keywords_bullish": [
+      "iran",
+      "hormuz",
+      "strait",
+      "oil strike",
+      "oil attack",
+      "opec cut",
+      "tanker attack",
+      "persian gulf",
+      "israel iran",
+      "middle east escalation",
+      "crude supply",
+      "oil embargo",
+      "sanctions iran",
+      "kharg island"
+    ],
+    "keywords_bearish": [
+      "ceasefire iran",
+      "iran deal",
+      "nuclear agreement",
+      "hormuz open",
+      "iran talks",
+      "deescalation",
+      "oil surplus",
+      "peace iran"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "negative",
+    "negation": "Waffenstillstand Iran konkret + Hormuz offen + US Navy zieht sich zurück",
+    "horizon": "8-12 Wochen je nach Konfliktverlauf",
+    "rotation_to": "PS_LHA",
+    "exit_note": "Bei Iran-Deeskalation: Exit EQNR → Gewinn rotiert in LHA.DE (PS_LHA)"
+  },
+  "S2": {
+    "name": "Europäische Aufrüstung → Rüstung",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-04",
+      "trigger": "NATO-Druck + Ukraine-Krieg + Iran-Konflikt → Europa rüstet auf",
+      "analysis_steps": [
+        "NATO 3% BIP-Beschluss — struktureller Treiber 5-10 Jahre",
+        "Rheinmetall: Auftragsbuch bis 2030, Rekordgewinn FY2025",
+        "Mehrere Kriegsschauplätze gleichzeitig (Iran, Ukraine, Israel)",
+        "Germany military spending headlines (NYT, CNBC)"
+      ],
+      "logical_chain": "Mehrere Konflikte → NATO-Budgets steigen → Rheinmetall als DE-Marktführer profitiert",
+      "counter_arguments_checked": [
+        "Globaler Frieden? → Unwahrscheinlich bei 3+ Konflikten",
+        "Budgetkrise? → Schuldenbremse für Verteidigung gelockert",
+        "Q4-Margenenttäuschung? → Kurzfristig, Auftragsbuch intakt"
+      ],
+      "sources": [
+        "NYT",
+        "CNBC",
+        "Dirk 7H Analyse",
+        "Rheinmetall FY2025 Zahlen"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 4,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.",
+    "sector": "defense",
+    "regime": {
+      "description": "Geopolitische Eskalation, NATO-Ausgaben steigen"
+    },
+    "entry_trigger": "Kurs >1.626€ (EMA-10) + erhöhtes Volumen",
+    "kill_trigger": "Globaler Frieden in mehreren Regionen, EU-Budgetkrise",
+    "horizon_weeks": 52,
+    "status": "watchlist",
+    "health": "yellow",
+    "tickers": [
+      "RHM.DE"
+    ],
+    "closed_tickers": [
+      "RHM.DE"
+    ],
+    "watchlist_tickers": [
+      "RHM.DE"
+    ],
+    "keywords_bullish": [
+      "defense budget",
+      "nato spending",
+      "eu rearmament",
+      "rheinmetall",
+      "bundeswehr",
+      "defense contract",
+      "weapons delivery"
+    ],
+    "keywords_bearish": [
+      "peace deal ukraine",
+      "nato budget cut",
+      "defense spending cut",
+      "global ceasefire"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "Globaler Frieden in mehreren Regionen oder EU-Budgetkrise stoppt Rüstungsausgaben",
+    "horizon": "26-52 Wochen (strukturell)"
+  },
+  "S3": {
+    "name": "KI-Infrastruktur-Boom → Halbleiter",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-05",
+      "trigger": "NVDA Q4 Earnings Beat — KI-Infrastruktur wächst strukturell",
+      "analysis_steps": [
+        "Rechenzentren, GPU-Bedarf, NVDA als Hauptprofiteur",
+        "Druckenmiller-Rotation: Big Spender verkauft, Profitable gekauft → NVDA/PLTR = Winners",
+        "SMH (Semiconductor ETF) als Kanarienvogel — darüber = Rückenwind",
+        "VIX-Abhängigkeit: Bei VIX >25 kein Nachkauf Tech"
+      ],
+      "logical_chain": "KI-Boom → Datacenter brauchen GPUs → NVDA profitiert | PLTR = Defense-AI profitiert von Konflikten",
+      "counter_arguments_checked": [
+        "VIX >30 = Tech wird verkauft → Temporär, Hold-Strategie bis Earnings",
+        "Meta AI Chips = Konkurrenz? → Langfristig, nicht akut",
+        "China Chip-Exportverbote? → Monitoring, noch nicht verschärft"
+      ],
+      "sources": [
+        "NVDA Earnings",
+        "Druckenmiller Interview",
+        "eigene SMH/VIX-Analyse"
+      ],
+      "conviction_at_start": 4,
+      "conviction_current": 4,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
+    "sector": "technology",
+    "regime": {
+      "vix_max": 28,
+      "description": "VIX <28 für Nachkäufe, SMH über EMA-50"
+    },
+    "entry_trigger": "VIX <28 + SMH über EMA-50 + Earnings-Bestätigung",
+    "kill_trigger": "VIX >30 persistent, China Chip-Ban verschärft, SMH unter EMA-50 bleibt",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": [
+      "NVDA",
+      "MSFT",
+      "PLTR"
+    ],
+    "keywords_bullish": [
+      "ai datacenter",
+      "nvidia earnings",
+      "gpu demand",
+      "hyperscaler capex",
+      "ai infrastructure",
+      "palantir contract",
+      "microsoft azure"
+    ],
+    "keywords_bearish": [
+      "chip export ban",
+      "semiconductor decline",
+      "ai bubble",
+      "smh crash",
+      "nvidia competition",
+      "tech selloff"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "VIX >30 persistent, China Chip-Ban verschärft, SMH dauerhaft unter EMA-50",
+    "horizon": "16-26 Wochen"
+  },
+  "S4": {
+    "name": "Geopolitische Unsicherheit → Silber/Gold",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-06",
+      "trigger": "Iran-Eskalation + Inflation → Safe-Haven-Nachfrage",
+      "analysis_steps": [
+        "Geopolitische Krisen treiben traditionell Edelmetalle",
+        "Silber hat zusätzlich industriellen Hebel (Solar, EVs)",
+        "USD schwächt sich ab → Edelmetalle attraktiver",
+        "Eriksen WPR-Signal auf Monatsbasis (Akkumulierungssignal)"
+      ],
+      "logical_chain": "Geopolitik-Krise + Inflation → Flucht in sichere Häfen → Gold/Silber steigen",
+      "counter_arguments_checked": [
+        "USD stärkt sich als Kriegswährung? → Beobachtet, gegenläufig",
+        "Fed erhöht Zinsen? → Monitoring",
+        "Aktuell: ISPA.DE unter Kaufsignal 36,90€"
+      ],
+      "sources": [
+        "Eriksen Bitcoin/WPR Video",
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.",
+    "sector": "metals",
+    "regime": {
+      "description": "Geopolitische Eskalation aktiv, Inflation >3%, USD nicht überstark"
+    },
+    "entry_trigger": "ISPA.DE >36,90€ (Silber) ODER AG <$29 mit Umkehrkerze",
+    "kill_trigger": "USD rallyt stark, Fed hawkish, De-Eskalation in allen Konflikten",
+    "horizon_weeks": 16,
+    "status": "watchlist",
+    "health": "green",
+    "tickers": [
+      "ISPA.DE",
+      "AG"
+    ],
+    "watchlist_tickers": [
+      "ISPA.DE",
+      "AG"
+    ],
+    "keywords_bullish": [
+      "gold rally",
+      "silver rally",
+      "safe haven",
+      "inflation hedge",
+      "central bank gold",
+      "precious metals",
+      "dollar weakness"
+    ],
+    "keywords_bearish": [
+      "gold selloff",
+      "dollar rally",
+      "rate hike",
+      "risk on rally"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "USD rallyt stark, Fed hawkish, De-Eskalation in allen Konflikten gleichzeitig",
+    "horizon": "8-16 Wochen"
+  },
+  "S5": {
+    "name": "Rohstoff-Superzyklus → Basismetalle",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-09",
+      "trigger": "Energiewende + Iran-Rohstoff-Schock → Kupfer/Lithium strukturell gefragt",
+      "analysis_steps": [
+        "Rio Tinto transformiert sich vom Eisenerz zum Kupfer/Lithium-Produzenten",
+        "EV-Nachfrage + Infrastrukturprogramme treiben Kupfer",
+        "BHP durch China-Eisenerz-Konflikt belastet → auf Hold",
+        "Oyu Tolgoi Renegotiation (Mongolei) = Risiko für RIO"
+      ],
+      "logical_chain": "Energiewende → Kupfer/Lithium-Nachfrage steigt → Produzenten profitieren",
+      "counter_arguments_checked": [
+        "China-Eisenerz-Restriktionen? → BHP direkt belastet, RIO indirekt",
+        "Oyu Tolgoi Renegotiation? → Monitoring, kein Exit-Trigger bisher",
+        "Kupferpreis-Kollaps? → China-Konjunktur beobachten"
+      ],
+      "sources": [
+        "Reuters",
+        "FT",
+        "Bloomberg"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.",
+    "sector": "materials",
+    "regime": {
+      "vix_max": 28,
+      "description": "VIX <28, Kupferpreis stabil/steigend, keine China-Rezession"
+    },
+    "entry_trigger": "RIO.L >6.700 GBp + VIX <28",
+    "kill_trigger": "China-Rezession, Kupferpreis-Kollaps, Oyu Tolgoi Deal scheitert",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": [
+      "RIO.L"
+    ],
+    "watchlist_tickers": [
+      "BHP.L"
+    ],
+    "keywords_bullish": [
+      "copper shortage",
+      "copper demand",
+      "ev copper",
+      "rio tinto",
+      "lithium demand",
+      "copper mine",
+      "infrastructure spending"
+    ],
+    "keywords_bearish": [
+      "china iron ore",
+      "copper selloff",
+      "bhp china",
+      "rio tinto dividend cut",
+      "global recession",
+      "oyu tolgoi dispute"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "low",
+    "negation": "China-Rezession, Kupferpreis kollabiert oder Oyu Tolgoi Deal scheitert endgültig",
+    "horizon": "16-26 Wochen"
+  },
+  "S6": {
+    "name": "Energie-Wende → Solar/Erneuerbare",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-13",
+      "trigger": "Hohe Ölpreise machen erneuerbare Energien attraktiver",
+      "analysis_steps": [
+        "Brent >$90 → Solar-Prämie steigt",
+        "IRA (USA) + EU Green Deal = Subventionsrückenwind",
+        "Invesco Solar ETF +11,9% seit Entry → bestätigte Korrelation mit Ölpreis"
+      ],
+      "logical_chain": "Iran-Eskalation → Öl teuer → Erneuerbare werden attraktiver → Solar-ETF profitiert",
+      "counter_arguments_checked": [
+        "IRA-Rückbau durch Trump? → Politisches Risiko, aber bisher stabil",
+        "China Solar-Überflutung? → Könnte Hersteller-Margen drücken",
+        "Ölpreisverfall? → Dann auch S1 schwächer, korreliertes Risiko"
+      ],
+      "sources": [
+        "eigene Analyse",
+        "Ölpreis-Korrelation"
+      ],
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
+    "sector": "energy_renewable",
+    "regime": {
+      "brent_min": 90,
+      "description": "Brent >$90, Solar-ETF über EMA50, RSI <70"
+    },
+    "entry_trigger": "Brent >$90 UND Solar-ETF über EMA50 UND RSI <70",
+    "kill_trigger": "Iran-Deal → Brent <$80 ODER RSI >80 ODER IRA-Rückbau",
+    "horizon_weeks": 16,
+    "status": "active",
+    "health": "green",
+    "tickers": [
+      "A2QQ9R"
+    ],
+    "keywords_bullish": [
+      "solar energy",
+      "renewable energy",
+      "green deal",
+      "ira subsidy",
+      "solar demand",
+      "energy transition"
+    ],
+    "keywords_bearish": [
+      "solar tariff",
+      "ira repeal",
+      "renewable cut",
+      "solar oversupply"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "Iran-Deal → Brent fällt unter $80 oder IRA wird rückgängig gemacht",
+    "horizon": "12-16 Wochen"
+  },
+  "S7": {
+    "name": "Biotech-Zyklus → US-Pharma/Biotech",
+    "type": "real",
+    "genesis": {
+      "created": "2026-03-13",
+      "trigger": "Defensiver Sektor mit Zinssenkungserwartungen + M&A-Aktivität",
+      "analysis_steps": [
+        "Biotech profitiert von günstigerer Finanzierung (Zinssenkungen)",
+        "Big Pharma kauft Biotech für Pipeline → M&A-Rückenwind",
+        "Weniger korreliert mit Nasdaq → defensive Qualität bei VIX-Spikes",
+        "Alternde Bevölkerung = Langfrist-Demografie-These"
+      ],
+      "logical_chain": "Zinssenkungserwartungen + M&A → Biotech-Finanzierung günstiger → ETF profitiert",
+      "counter_arguments_checked": [
+        "FDA-Ablehnungen? → ETF diversifiziert das Risiko",
+        "Zinsen steigen weiter? → Exit-Trigger",
+        "Medikamentenpreis-Politik? → Monitoring"
+      ],
+      "sources": [
+        "eigene Analyse"
+      ],
+      "conviction_at_start": 2,
+      "conviction_current": 2,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.",
+    "sector": "healthcare",
+    "regime": {
+      "description": "Zinssenkungserwartungen aktiv, M&A-Aktivität im Sektor"
+    },
+    "entry_trigger": "RSI <40 + Fed Pivot erwartet + M&A-Aktivität",
+    "kill_trigger": "Zinsen steigen wieder, regulatorische Verschärfung (FDA), Medikamentenpreis-Politik",
+    "horizon_weeks": 26,
+    "status": "active",
+    "health": "yellow",
+    "tickers": [
+      "A2DWAW"
+    ],
+    "keywords_bullish": [
+      "biotech acquisition",
+      "fda approval",
+      "rate cut",
+      "pharma merger",
+      "biotech rally",
+      "clinical trial success"
+    ],
+    "keywords_bearish": [
+      "fda rejection",
+      "rate hike",
+      "drug pricing reform",
+      "biotech selloff"
+    ],
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "negation": "Zinsen steigen wieder, regulatorische FDA-Verschärfung oder Medikamentenpreis-Gesetz",
+    "horizon": "16-26 Wochen"
+  },
+  "emerging_themes": {
+    "copper_shortage": {
+      "name": "Kupfer-Knappheit",
+      "keywords": [
+        "copper shortage",
+        "copper supply",
+        "copper demand china",
+        "copper mine strike",
+        "ev copper",
+        "grid copper"
+      ],
+      "sector": "metals",
+      "candidates": [
+        "FCX",
+        "SCCO",
+        "AA",
+        "GLEN.L"
+      ],
+      "thesis_template": "Kupfer-Nachfrage (EV, Energienetz) > Angebot → Miner profitieren"
+    },
+    "us_steel_tariffs": {
+      "name": "US-Stahl/Zölle",
+      "keywords": [
+        "steel tariff",
+        "steel import",
+        "steel production us",
+        "us steel",
+        "tariff steel",
+        "nucor",
+        "cleveland-cliffs"
+      ],
+      "sector": "materials",
+      "candidates": [
+        "CLF",
+        "NUE",
+        "STLD"
+      ],
+      "thesis_template": "US-Zölle auf importierten Stahl → heimische Produzenten profitieren"
+    },
+    "ai_infrastructure": {
+      "name": "KI-Infrastruktur",
+      "keywords": [
+        "ai datacenter",
+        "power grid ai",
+        "electricity demand ai",
+        "nvidia data center",
+        "hyperscaler capex",
+        "ai infrastructure"
+      ],
+      "sector": "technology",
+      "candidates": [
+        "VST",
+        "CEG",
+        "ETN",
+        "SMCI"
+      ],
+      "thesis_template": "KI-Boom → Strom + Kühlsysteme + Infrastruktur stark nachgefragt"
+    },
+    "uranium_renaissance": {
+      "name": "Uran-Renaissance",
+      "keywords": [
+        "uranium demand",
+        "nuclear power",
+        "smr reactor",
+        "nuclear energy",
+        "uranium mine",
+        "uranium spot"
+      ],
+      "sector": "energy",
+      "candidates": [
+        "UUUU",
+        "CCJ",
+        "NXE"
+      ],
+      "thesis_template": "Energiewende + KI-Strom → Atomkraft-Revival → Uran-Nachfrage steigt"
+    },
+    "water_infrastructure": {
+      "name": "Wasser-Infrastruktur",
+      "keywords": [
+        "water shortage",
+        "water infrastructure",
+        "drought",
+        "water treatment",
+        "desalination"
+      ],
+      "sector": "utilities",
+      "candidates": [
+        "AWK",
+        "PNM",
+        "XYLM"
+      ],
+      "thesis_template": "Klimawandel → Wasserknappheit → Infrastruktur-Investitionen"
+    },
+    "genesis": {
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "avg_win_pct": 0,
+      "avg_loss_pct": 0,
+      "expectancy": 0,
+      "last_evaluated": null
+    },
+    "vix_correlation": "neutral",
+    "active": false
+  },
+  "DT1": {
+    "name": "Momentum-Breakout",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Intraday Momentum-Breakout über Widerstand mit Volumen",
+      "conviction_at_start": 3,
+      "conviction_current": 1,
+      "auto_adjusted": true,
+      "last_updated": "2026-03-29T23:16:06Z",
+      "feedback_history": [
+        {
+          "date": "2026-03-27",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 29% nach 41 Trades < 30%",
+          "old_conviction": 3,
+          "new_conviction": 2
+        },
+        {
+          "date": "2026-03-29",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 29% nach 41 Trades < 30%",
+          "old_conviction": 2,
+          "new_conviction": 1
+        }
+      ],
+      "conviction_backtest": 3,
+      "backtest_wr": 57.3,
+      "backtest_wl": 1.48,
+      "backtest_exp": 1.23
+    },
+    "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "locked": true,
+    "lock_reason": "Disabled: duplicate positions, low conviction, learning mode entries ohne VIX filter",
+    "negation": "Breakout ohne Volumen-Bestätigung oder VIX >30 (Momentum bricht zusammen)",
+    "horizon": "Intraday bis 1-3 Tage",
+    "tickers": [],
+    "health": "paused"
+  },
+  "DT2": {
+    "name": "Mean-Reversion Oversold",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Überverkaufte Aktien bounced intraday zurück",
+      "conviction_at_start": 3,
+      "conviction_current": 2,
+      "auto_adjusted": true,
+      "last_updated": "2026-03-27T20:15:58Z",
+      "feedback_history": [
+        {
+          "date": "2026-03-27",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 22% nach 18 Trades < 30%",
+          "old_conviction": 3,
+          "new_conviction": 2
+        }
+      ],
+      "conviction_backtest": 3,
+      "backtest_wr": 56.5,
+      "backtest_wl": 1.41,
+      "backtest_exp": 1.0
+    },
+    "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "locked": true,
+    "lock_reason": "Disabled: duplicate positions, low conviction, learning mode entries ohne VIX filter",
+    "negation": "Kurs setzt Abwärtstrend fort ohne Bounce (kein Support gehalten)",
+    "horizon": "Intraday bis 1-2 Tage",
+    "tickers": [],
+    "health": "paused"
+  },
+  "DT3": {
+    "name": "Gap-Fill",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Gaps werden intraday geschlossen",
+      "conviction_at_start": 3,
+      "conviction_current": 1,
+      "auto_adjusted": true,
+      "last_updated": "2026-03-27T21:30:41Z",
+      "feedback_history": [
+        {
+          "date": "2026-03-27",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 23% nach 13 Trades < 30%",
+          "old_conviction": 3,
+          "new_conviction": 2
+        },
+        {
+          "date": "2026-03-27",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 23% nach 13 Trades < 30%",
+          "old_conviction": 2,
+          "new_conviction": 1
+        }
+      ],
+      "conviction_backtest": 3,
+      "backtest_wr": 54.6,
+      "backtest_wl": 1.2,
+      "backtest_exp": 0.8
+    },
+    "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "locked": true,
+    "lock_reason": "Disabled: duplicate positions, low conviction, learning mode entries ohne VIX filter",
+    "negation": "Gap bleibt offen (starker Trenntag) oder Markt dreht global",
+    "horizon": "Intraday",
+    "tickers": [],
+    "health": "paused"
+  },
+  "DT4": {
+    "name": "News-Catalyst",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Positive News/Earnings treiben Intraday-Bewegung",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
+    },
+    "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 79,
+      "wins": 34,
+      "losses": 45,
+      "win_rate": 43.0,
+      "last_evaluated": "2026-03-25 22:31",
+      "avg_win_pct": 1.2,
+      "avg_loss_pct": -1.24,
+      "wl_ratio": 0.96,
+      "expectancy": -0.19,
+      "recent_win_rate": 20.0,
+      "in_drawdown": true,
+      "position_size_factor": 0.5
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "locked": true,
+    "lock_reason": "0% WR nach 8 Trades, -€134",
+    "health": "paused",
+    "pause_reason": "0% WR in Paper Lab — automatisch pausiert",
+    "negation": "News war Fehler/Gerücht oder breiter Marktabsturz übertönt Catalyst",
+    "horizon": "Intraday bis 3 Tage",
+    "tickers": [],
+    "locked_date": "2026-03-31"
+  },
+  "DT5": {
+    "name": "VWAP-Bounce",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Kurs prallt am VWAP ab — institutioneller Support",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "VWAP ist institutioneller Ankerpunkt — Abpraller sind tradebar",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "negation": "VWAP bricht nach unten durch mit Volumen (institutioneller Sell)",
+    "horizon": "Intraday",
+    "tickers": [],
+    "health": "testing"
+  },
+  "DT6": {
+    "name": "Mean Reversion (Triple RSI)",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "RSI(5) < 35 + fallend + Aufwärtstrend — backtested seit 1993, 90% Win-Rate auf SPY",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 71.8,
+      "backtest_wl": 0.65,
+      "backtest_exp": 0.78
+    },
+    "thesis": "Kurzfristig überverkaufte Aktien im Aufwärtstrend bouncen zuverlässig",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "negation": "RSI bleibt <35 länger als 3 Tage → echter Trendbruch, kein Bounce",
+    "horizon": "1-5 Tage (Mean Reversion)",
+    "tickers": [],
+    "health": "testing"
+  },
+  "DT7": {
+    "name": "Internal Bar Strength (IBS)",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "IBS < 0.2 (LONG) oder > 0.8 (SHORT) — Mean Reversion auf Kerzenbasis",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 54.2,
+      "backtest_wl": 1.12,
+      "backtest_exp": 0.5
+    },
+    "thesis": "Kerzen nahe Tageshoch/-tief kehren häufig zum Mittelwert zurück",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "negation": "IBS bleibt extrem (Trend-Tag) → kein Reversion-Signal valide",
+    "horizon": "Intraday bis 2 Tage",
+    "tickers": [],
+    "health": "testing"
+  },
+  "DT8": {
+    "name": "Bollinger Band Squeeze Breakout",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Volatilitäts-Kompression (Squeeze) → Ausbruch mit Volumen",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": [],
+      "conviction_backtest": 2,
+      "backtest_wr": 58.3,
+      "backtest_wl": 0.88,
+      "backtest_exp": 0.23
+    },
+    "thesis": "Niedrige Volatilität führt zu explosiven Ausbrüchen — Squeeze + Volume = Signal",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "negation": "Squeeze löst sich in die falsche Richtung auf (Fake-Breakout)",
+    "horizon": "1-5 Tage nach Squeeze-Auflösung",
+    "tickers": [],
+    "health": "testing"
+  },
+  "DT9": {
+    "name": "Sektor-Momentum",
+    "type": "day_trade",
+    "genesis": {
+      "created": "2026-03-21",
+      "trigger": "Stärkster Sektor-ETF (XLK/XLE/XLF/XLV/XLI) bestimmt Richtung",
+      "conviction_at_start": 3,
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "never",
+      "feedback_history": []
+    },
+    "thesis": "Aktien aus dem stärksten Sektor haben Momentum-Rückenwind intraday",
+    "sector": "mixed",
+    "status": "active",
+    "performance": {
+      "total_trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate": 0,
+      "last_evaluated": null
+    },
+    "position_management": {
+      "tranche_mode": true,
+      "tranches": [
+        0.33,
+        0.33,
+        0.34
+      ],
+      "tranche_triggers": [
+        "initial_signal",
+        "confirmation",
+        "second_confirmation"
+      ],
+      "macro_phase": 1,
+      "macro_phase_reason": "Phase 1 (Standard)",
+      "cash_recommendation": 0.5,
+      "last_macro_update": "2026-03-25 22:31",
+      "brent_wti_spread": 6.76,
+      "brent_wti_signal": "neutral",
+      "risk_mode": "risk_off",
+      "bad_news_regime": false,
+      "fed_pause_regime": false,
+      "hormus_days": 5,
+      "hormus_phase_risk": "low"
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "negation": "Sektor-Rotation dreht unerwartet oder breiter Marktabverkauf",
+    "horizon": "Intraday bis 3 Tage",
+    "tickers": [],
+    "health": "testing"
+  },
+  "_config": {
+    "position_size_eur": 2000,
+    "max_positions": 8,
+    "capital": 25000,
+    "min_crv": 2.0,
+    "fee_per_trade": 1.0,
+    "aggressive_mode": true,
+    "vix_correlation": "neutral",
+    "active": false
+  },
+  "new": {
+    "health": "yellow",
+    "win_rate": 0.0,
+    "avg_pnl": -2.2,
+    "win_loss_ratio": 0.0,
+    "n_trades": 1,
+    "last_evaluated": "2026-03-26 21:17",
+    "genesis": {
+      "last_updated": "2026-03-25T21:31:02Z",
+      "auto_adjusted": false
+    },
+    "vix_correlation": "neutral",
+    "active": false,
+    "thesis": "Unklassifizierter Test-Trade ohne definierte These",
+    "negation": "Immer — keine gültige These vorhanden",
+    "horizon": "Unbekannt",
+    "tickers": []
+  },
+  "PT": {
+    "health": "yellow",
+    "win_rate": 0.5,
+    "avg_pnl": 8.56,
+    "win_loss_ratio": 999,
+    "n_trades": 2,
+    "last_evaluated": "2026-03-26 21:17",
+    "vix_correlation": "neutral",
+    "thesis": "Paper-Trade Platzhalter ohne definierte These",
+    "negation": "Immer — keine gültige These vorhanden",
+    "horizon": "Unbekannt",
+    "tickers": []
+  },
+  "PS10": {
+    "name": "Lufthansa — Peace Dividend",
+    "thesis": "Post-War Recovery Play: Iran-Konflikt endet → Ölpreis fällt → Kerosinkosten sinken + Luftraum öffnet → LHA re-rates von unterdrücktem Niveau",
+    "regime": "Iran-Deeskalation begonnen, Brent <90$, Risk-On",
+    "trigger": "Min. 2 von 3: Iran Waffenstillstand + Brent <75$ + EMA20-Ausbruch LHA.DE",
+    "negation": "Iran-Eskalation, Brent >110$, Nachfragekollaps (Rezession)",
+    "tickers": [
+      "LHA.DE"
+    ],
+    "health": "red",
+    "locked": false,
+    "source": "victor_suggestion",
+    "created": "2026-03-27",
+    "note": "Paper-Trade aktiv zur Beobachtung — echter Entry erst nach Triggern",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "low",
+    "horizon": "8-16 Wochen (Peace Dividend Rerating)"
+  },
+  "PS11": {
+    "name": "Defense-EU-Small",
+    "thesis": "EU-Rüstung Nachholbedarf — Budget-Erhöhungen noch nicht eingepreist",
+    "regime": "Geopolitik-Eskalation, NATO-Ausgaben steigen",
+    "trigger": "Neuer NATO-Beschluss ODER EU-Haushaltserhöhung",
+    "tickers": [
+      "SAAB-B.ST",
+      "RHM.DE",
+      "BA.L"
+    ],
+    "health": "red",
+    "locked": false,
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "negative",
+    "negation": "Frieden in Ukraine/Iran/Israel + NATO-Budget-Kürzungen",
+    "horizon": "8-16 Wochen"
+  },
+  "PS12": {
+    "name": "AI-Infrastructure",
+    "thesis": "KI-Infrastruktur = picks & shovels für AI-Boom, weniger regulatorisches Risiko als pure-play AI",
+    "regime": "Risk-On, VIX <25, AI-Capex-Zyklus intact",
+    "trigger": "Hyper-Scaler Earnings bestätigen Capex-Erhöhung",
+    "tickers": [
+      "SMCI",
+      "ANET",
+      "DELL"
+    ],
+    "health": "yellow",
+    "locked": false,
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "negative",
+    "negation": "Hyper-Scaler Capex-Kürzung oder AI-Regulierung stoppt Datacenter-Boom",
+    "horizon": "6-12 Wochen"
+  },
+  "PS13": {
+    "name": "Copper-Green-Transition",
+    "thesis": "Kupfer = kritischer Rohstoff für EV + Grid + Offshore Wind, strukturell unterversorgt",
+    "regime": "China-Stimulus aktiv, US-Infrastruktur-Spend hoch",
+    "trigger": "Kupfer-Futures >$4.50/lb + China PMI >50",
+    "tickers": [
+      "FCX",
+      "SCCO",
+      "TECK"
+    ],
+    "health": "red",
+    "locked": false,
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "low",
+    "negation": "China-Rezession + PMI dauerhaft <47 oder Kupfer fällt unter $3.80/lb",
+    "horizon": "8-16 Wochen"
+  },
+  "PS14": {
+    "name": "Shipping-Normalization",
+    "thesis": "Container-Shipping normalisiert sich post-Suez-Krise, Raten stabilisieren",
+    "regime": "Rotes Meer entspannt ODER alternative Route etabliert",
+    "trigger": "Baltic Dry Index steigt >2000 konsistent",
+    "tickers": [
+      "ZIM",
+      "MATX",
+      "SBLK"
+    ],
+    "health": "red",
+    "locked": false,
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "low",
+    "negation": "Rotes Meer Normalisierung oder Frachtraten kollabieren unter Break-Even",
+    "horizon": "6-12 Wochen"
+  },
+  "PS15": {
+    "name": "Biotech-Rate-Reversal",
+    "thesis": "Biotech-Sektor profitiert überproportional von Zinssenkungen (lange Laufzeit der Cash Flows)",
+    "regime": "Fed beginnt Zinssenkungszyklus, VIX <20",
+    "trigger": "Fed-Pivot + XBI über 200-Tage-MA",
+    "tickers": [
+      "XBI",
+      "ARKG",
+      "IBB"
+    ],
+    "health": "red",
+    "locked": false,
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "vix_correlation": "low",
+    "negation": "Fed erhöht wieder Zinsen oder XBI bleibt dauerhaft unter 200MA",
+    "horizon": "12-20 Wochen"
+  },
+  "PS16": {
+    "name": "Nuclear Renaissance — AI Power Demand",
+    "health": "red",
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "thesis": "KI-Rechenzentren brauchen massiv saubere Grundlaststrom — Nuklear ist die einzige skalierbare Option. EU-Energieunabhängigkeit + US-Förderpolitik (IRA) treiben SMR-Entwicklung. Uranium-Spot-Markt bleibt angespannt.",
+    "regime": "Strukturell (3-5 Jahre). Kurzfristige Katalysatoren: SMR-Genehmigungen, Microsoft/Google Power-Purchase-Agreements, Uranminen-Engpässe.",
+    "trigger": "Neue PPA-Ankündigungen (Big Tech + Nuklear), SMR-Genehmigungen NRC, Uranium-Spot > 80 USD/lb, EU-Mitgliedstaaten die Nuklear-Investitionen ankündigen.",
+    "negation": "Politischer Atomausstieg (wie DE), Unfälle, SMR-Technologie-Rückschläge, Erdgas-Preisverfall macht Nuklear unrentabel.",
+    "tickers": [
+      "CCJ",
+      "UEC",
+      "BWXT"
+    ],
+    "ticker_notes": {
+      "CCJ": "Cameco Corp — größter westlicher Urananbieter",
+      "UEC": "Uranium Energy Corp — US-Miner mit großem Bestand",
+      "BWXT": "BWX Technologies — SMR-Hersteller, Regierungsverträge"
+    },
+    "sector": "Energy / Nuclear",
+    "horizon": "mittel-langfristig (6-18 Monate)",
+    "vix_correlation": "low"
+  },
+  "PS17": {
+    "name": "EU Domestic Champions — Trade War Profiteure",
+    "health": "red",
+    "source": "albert_autonomous",
+    "created": "2026-03-27",
+    "thesis": "US-Zölle auf EU-Produkte + drohende EU-Gegenmaßnahmen schaffen Gewinner: EU-Unternehmen die primär intraeuropäisch verkaufen profitieren von Marktschutz + EU-Nachfrageshift weg von US-Produkten. Gleichzeitig: Politischer Druck in EU für europäische Beschaffung (Tech, Cloud, Infra).",
+    "regime": "Geopolitisch-konjunkturell. Aktiv solange US-EU-Handelskrieg eskaliert oder EU-Autonomiepolitik voranschreitet.",
+    "trigger": "Neue US-Zölle auf EU-Waren, EU-Gegenzölle auf US-Produkte, EU-Beschaffungsgesetze (digitale Souveränität), EUR/USD < 1.05 (Exporter-Vorteil).",
+    "negation": "US-EU-Handelsabkommen, geopolitische Entspannung, USD-Schwäche die EU-Exporter relativ teuerer macht.",
+    "tickers": [
+      "SAP",
+      "AIR.PA",
+      "SIE.DE"
+    ],
+    "ticker_notes": {
+      "SAP": "SAP SE — Enterprise Software, primär B2B Europa, profitiert von EU-Cloud-Souveränität",
+      "AIR.PA": "Airbus SE — Direkt-Konkurrent zu Boeing, profitiert von US-Imageschaden",
+      "SIE.DE": "Siemens AG — EU-Industrie-Infrastruktur, kaum US-Abhängigkeit im Kerngeschäft"
+    },
+    "sector": "EU Industrials / Tech",
+    "horizon": "mittelfristig (3-12 Monate)",
+    "vix_correlation": "low"
+  },
+  "PS_STLD": {
+    "name": "Stahl-Tariff-Play (Liberation Day)",
+    "type": "paper",
+    "thesis": "Trump Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. Politischer Druck (36% Approval, Midterms Nov.) macht starke Zölle wahrscheinlicher als schwächere.",
+    "sector": "materials",
+    "entry_trigger": "T1: 30.03. US-Börsenstart 15:30 MEZ bei stabilem Kurs. T2: nach April-2-Ankündigung. T3: nach Q1 Earnings mid-April.",
+    "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD dauerhaft unter $155",
+    "status": "active",
+    "health": "paused",
+    "horizon_weeks": 8,
+    "tickers": [
+      "STLD"
+    ],
+    "keywords_bullish": [
+      "steel tariff",
+      "section 232",
+      "liberation day",
+      "US steel",
+      "steel production",
+      "HRC price",
+      "domestic steel",
+      "tariff announcement"
+    ],
+    "keywords_bearish": [
+      "tariff rollback",
+      "steel exemption",
+      "trade deal steel",
+      "import quota",
+      "tariff waiver"
+    ],
+    "risks": "Schulden $3.4B (Sinton-Investition). Tariff-Rollback-Risiko ~10%. Zyklisches Trough. China-Dumping via Drittländer.",
+    "eps_scenarios": {
+      "conservative": 9.7,
+      "bull": 12.55,
+      "peak": 15.97
+    },
+    "fy2025": {
+      "revenue_b": 18.177,
+      "ebitda_b": 2.027,
+      "eps": 7.99
+    },
+    "vix_correlation": "low",
+    "negation": "Tariff-Rollback-Meldung aus Weißem Haus oder STLD dauerhaft unter $155",
+    "horizon": "4-8 Wochen (Liberation Day Momentum)",
+    "locked": true,
+    "lock_reason": "Neg. Expectancy, -€500, CRV 0.1x nach 3 Trades",
+    "locked_date": "2026-03-31"
+  },
+  "PS_NVO": {
+    "name": "Novo Nordisk Value/Turnaround",
+    "type": "paper",
+    "thesis": "PE 10x bei historisch 30x+ = massiver Abschlag. GLP-1 Megatrend intakt. CagriSema-Enttäuschung und Trump-Preisdeal bereits eingepreist. Warten auf Quantifizierung des Rückgangs.",
+    "sector": "healthcare",
+    "entry_trigger": "Q1 2026 Earnings (April): EPS-Rückgang ≤15% YoY. ODER positive Pipeline-News Amycretin/Petrelintide Phase 2+.",
+    "kill_trigger": "EPS 2026 fällt >30% | LLY Retatrutide >30% Phase 3 | MFN-Pricing wird Gesetz | NVO unter $27",
+    "status": "watching",
+    "health": "yellow",
+    "horizon_weeks": 24,
+    "tickers": [
+      "NOVO-B.CO"
+    ],
+    "keywords_bullish": [
+      "novo nordisk earnings",
+      "cagrisema",
+      "amycretin",
+      "GLP-1 demand",
+      "ozempic sales",
+      "wegovy approval",
+      "novo pipeline"
+    ],
+    "keywords_bearish": [
+      "MFN pricing",
+      "drug price",
+      "most favored nation",
+      "medicare drug",
+      "novo nordisk price cut",
+      "lilly retatrutide",
+      "GLP-1 competition"
+    ],
+    "critical_risks": [
+      "Trump-Preisdeal Nov.2025 bereits aktiv – GLP-1 Preissenkungen laufen",
+      "MFN-Pricing aktiv verfolgt (Feb.2026) – strukturelles Risiko",
+      "LLY Zepbound gewinnt Marktanteile"
+    ],
+    "competitor_monitor": {
+      "ticker": "LLY",
+      "alert_threshold_usd": 720
+    },
+    "vix_correlation": "low",
+    "negation": "EPS 2026 fällt >30% YoY oder MFN-Pricing wird Gesetz",
+    "horizon": "16-24 Wochen (bis Q2 Earnings Bestätigung)"
+  },
+  "PS_CCJ": {
+    "name": "Cameco — Uranium Nuclear Renaissance",
+    "type": "paper_watchlist",
+    "thesis": "Weltgrößter Uran-Produzent profitiert von globalem Nuclear Renaissance (AI Data Centers + Taiwan Reaktor-Restart + Energiekrise). Uranium-Spot-Preis strukturell im Aufwärtstrend durch Angebotsdefizit. Cameco: Produktionskosten ~$20/lb, Verkaufspreise ~$85-95/lb = massiver Spread.",
+    "sector": "uranium",
+    "vix_correlation": "low",
+    "entry_trigger": "Kurs unter $98 (~€85) mit RSI unter 40 ODER frische Nachricht über Reaktor-Neubau/Verlängerung in Taiwan/Japan/Europa. KEIN Kauf über $100 ohne Bestätigung (CRV zu niedrig).",
+    "entry_zone_usd": [
+      88,
+      98
+    ],
+    "entry_zone_eur": [
+      76,
+      85
+    ],
+    "stop_usd": 85,
+    "stop_eur": 74,
+    "target_usd": 123,
+    "target_eur": 107,
+    "crv_expected": 2.5,
+    "kill_trigger": "Uranium Spot-Preis fällt unter $70/lb | Reaktor-Abschaltungen dominant | CCJ Earnings-Einbruch >30% | Kurs unter $85",
+    "status": "watching",
+    "health": "red",
+    "horizon_weeks": 16,
+    "tickers": [
+      "CCJ"
+    ],
+    "keywords_bullish": [
+      "nuclear restart",
+      "uranium supply",
+      "reactor approval",
+      "taiwan nuclear",
+      "nuclear renaissance",
+      "uranium price",
+      "cameco contract",
+      "reactor construction",
+      "AI nuclear power",
+      "data center nuclear"
+    ],
+    "keywords_bearish": [
+      "reactor shutdown",
+      "nuclear phase out",
+      "uranium oversupply",
+      "cameco production cut",
+      "uranium flood market"
+    ],
+    "catalysts_active": [
+      "Taiwan Reaktor-Restart März 2026",
+      "AI Data Center Strombedarf (Nuclear Baseload)",
+      "Europäische AKW-Laufzeitverlängerungen"
+    ],
+    "analyst_target_usd": 123.5,
+    "analyst_rec": "buy",
+    "fundamentals": {
+      "ev_ebitda": 49.4,
+      "note": "Traditionelle Bewertung irrelevant für Uranium-Miner — bewertet nach Uranpreis × Reserven",
+      "net_cash": true,
+      "beta": 0.97
+    },
+    "deep_dive_date": "2026-03-30",
+    "created": "2026-03-30",
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "pnl": 0.0,
+    "negation": "Uranium Spot fällt unter $70/lb oder dominante Reaktor-Abschaltungen",
+    "horizon": "12-16 Wochen"
+  },
+  "AR-HALB": {
+    "name": "Halbleiter Autonomous Radar",
+    "type": "autonomous_radar",
+    "sector": "Halbleiter",
+    "tickers": [
+      "AMAT",
+      "LRCX",
+      "KLAC"
+    ],
+    "locked": true,
+    "health": "paused",
+    "pause_reason": "0% WR in Paper Lab — automatisch pausiert",
+    "performance": {
+      "total_trades": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0
+    },
+    "created": "2026-03-01",
+    "locked_by": "albert_ceo_autonomous",
+    "thesis": "KI-Chip-Equipment Hersteller profitieren von Datacenter-Aufbau — AMAT/LRCX/KLAC als Picks&Shovels",
+    "negation": "China-Exportbeschränkungen verschärft oder Halbleiter-Zyklus dreht nach unten",
+    "horizon": "4-8 Wochen (Radar-Modus)"
+  },
+  "AR-AGRA": {
+    "name": "Agrar Autonomous Radar",
+    "type": "autonomous_radar",
+    "sector": "Agrar",
+    "tickers": [
+      "MOS",
+      "CF",
+      "ADM"
+    ],
+    "locked": true,
+    "health": "paused",
+    "pause_reason": "0% WR in Paper Lab — automatisch pausiert",
+    "performance": {
+      "total_trades": 3,
+      "wins": 0,
+      "losses": 3,
+      "win_rate": 0.0
+    },
+    "created": "2026-03-01",
+    "locked_by": "albert_ceo_autonomous",
+    "thesis": "Agrarrohstoffe unter Druck durch Sanktionen/Klima → Dünger-Produzenten als Profiteure",
+    "negation": "Russland-Sanktionen fallen oder globale Agrarkrise löst sich auf",
+    "horizon": "4-8 Wochen (Radar-Modus)"
+  },
+  "PS_LHA": {
+    "name": "Lufthansa — Iran-Deeskalations-Trade",
+    "thesis": "LHA.DE fundamental unterbewertet (KGV 6x, EPS wächst, Rekordumsatz 2025) aber von Iran-Geopolitik gedrückt. Kerosin ~25% der Betriebskosten — Öl-Prämie belastet direkt. Bei Iran-Deeskalation fällt doppelter Discount weg: Ölpreis + Reiseunsicherheit. CEO Spohr kauft privat zu.",
+    "negation": "Iran eskaliert weiter, Ölpreis steigt nachhaltig über 00, oder direkter Angriff auf Luftfahrtinfrastruktur im Nahost-Raum",
+    "horizon": "4-12 Wochen nach erstem Deeskalations-Signal",
+    "tickers": [
+      "LHA.DE"
+    ],
+    "sector": "Luftfahrt",
+    "entry_zone": "6.50-7.00",
+    "target_1": 9.0,
+    "target_2": 10.5,
+    "stop": 6.0,
+    "upside_pct": "25-50%",
+    "current_price": 7.25,
+    "kgv_2026e": 5.96,
+    "entry_triggers": [
+      "Iran Peace Watch Signal (Waffenstillstand / Diplomatie)",
+      "Ölpreis -10% innerhalb einer Woche",
+      "Q1 Earnings 06.05.2026 — weiteres Gewinnwachstum trotz Geopolitik"
+    ],
+    "correlation": "invers_zu_S1_Iran",
+    "health": "watch",
+    "source": "victor_thesis + deep_dive_31.03.2026",
+    "analyst_note": "Goldman Sachs Kursziel €6.60 explizit wegen Iran — bestätigt These",
+    "insider": "CEO Spohr kauft privat zu (März 2026)",
+    "added": "2026-03-31",
+    "note": "Nicht traden solange S1 (Iran) eskalierend aktiv. Watch bis Entry-Trigger.",
+    "rotation_from": "S1_EQNR",
+    "rotation_logic": "Iran Peace Watch feuert → EQNR Exit → EQNR-Gewinn direkt in LHA.DE reinvestieren",
+    "entry_sizing": "Position = EQNR-Exit-Erlös (oder Teilbetrag daraus)",
+    "paired_with": "EQNR.OL (S1)"
+  }
+}

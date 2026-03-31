@@ -50,8 +50,23 @@ def load_config():
             "volatility": {"tickers": ["UVXY","VXX"],                  "weight": 1.4, "enabled": True},
             "tech":       {"tickers": ["QQQ","NVDA","PLTR"],           "weight": 1.0, "enabled": True},
             "custom":     {"tickers": [],                              "weight": 1.0, "enabled": True},
+            # Iran Peace Basket — Profiteure bei Hormuz-Öffnung / Iran-Deal
+            # Wenn hier ungewöhnliches Kaufvolumen auftaucht VOR einem Trump-Deal → Frühwarnung
+            "iran_peace_basket": {
+                "tickers": ["DAL","UAL","AAL","LUV","BA","MAR","HLT","BKNG","EXPE","JETS"],
+                "weight": 2.0,  # Doppelte Gewichtung — sehr hohes Signal
+                "enabled": True,
+                "description": "Airlines + Tourism + Boeing — profitieren von Iran-Deal (niedrigere Ölpreise)"
+            },
+            # Iran Peace Inverse — diese FALLEN bei Deal (Smart Money verkauft VOR Ankündigung)
+            "iran_peace_inverse": {
+                "tickers": ["FRO","DHT","STNG","INSW","TNK"],
+                "weight": 1.8,
+                "enabled": True,
+                "description": "Tanker-Aktien — fallen wenn Hormuz öffnet (mehr Supply = niedrigere Raten)"
+            },
         },
-        "keywords": ["iran","trump","fed","tariffs","war","ukraine","ceasefire","sanctions"],
+        "keywords": ["iran","trump","fed","tariffs","war","ukraine","ceasefire","sanctions","hormuz","peace","deal"],
         "min_score": 6,
         "auto_trade_threshold": 8,
         "congressional_check": True,
@@ -453,6 +468,30 @@ def main():
                 auto_created.append(sig['ticker'])
                 print(f"  🤖 Auto-Trade: {sig['ticker']} ({sig['sector']}) score={sig['score']}")
 
+    # ── Iran Peace Basket Cross-Signal Detection ─────────────────────────
+    # Wenn Peace Basket BULLISH + Peace Inverse BEARISH → Super-Signal
+    peace_basket = sector_results.get('iran_peace_basket', _empty_sector())
+    peace_inverse = sector_results.get('iran_peace_inverse', _empty_sector())
+    
+    output_extra = {}
+    iran_peace_cross_signal = False
+    if (peace_basket.get('direction', 'NEUTRAL') in ('BULLISH', 'BULLISH_STRONG') and
+        peace_inverse.get('direction', 'NEUTRAL') in ('BEARISH', 'BEARISH_STRONG')):
+        iran_peace_cross_signal = True
+        output_extra['iran_peace_cross_signal'] = True
+        output_extra['iran_peace_cross_detail'] = {
+            'basket_direction': peace_basket.get('direction'),
+            'basket_net_flow': peace_basket.get('net_flow', 0),
+            'inverse_direction': peace_inverse.get('direction'),
+            'inverse_net_flow': peace_inverse.get('net_flow', 0),
+            'interpretation': 'Smart Money kauft Airlines/Tourism UND verkauft Tanker — Iran-Deal wahrscheinlich imminent',
+        }
+        print("  🕊️ ⚡ IRAN PEACE CROSS-SIGNAL: Airlines BULLISH + Tanker BEARISH → Smart Money positioniert sich für Deal!")
+    elif peace_basket.get('direction', 'NEUTRAL') in ('BULLISH', 'BULLISH_STRONG'):
+        print("  🕊️ Iran Peace Basket: Airlines/Tourism BULLISH — mögliches Frühsignal")
+    elif peace_inverse.get('direction', 'NEUTRAL') in ('BEARISH', 'BEARISH_STRONG'):
+        print("  🕊️ Iran Peace Inverse: Tanker BEARISH — mögliches Frühsignal")
+
     # ── Write Output JSON ─────────────────────────────────────────────────
     output = {
         'timestamp':              now.strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -466,6 +505,7 @@ def main():
         'auto_trades_created':    auto_created,
         'scan_config':            {'min_score': min_score, 'auto_trade_threshold': auto_threshold},
     }
+    output.update(output_extra)
     os.makedirs(OUTPUT_FILE.parent, exist_ok=True)
     with open(OUTPUT_FILE, 'w') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
@@ -530,6 +570,25 @@ def _build_alert(signals, sector_results, ov_dir, ov_emoji, ov_score,
     # Congressional
     if congress_tickers:
         lines.append(f"\n🏛️ **Congressional Trades:** {', '.join(congress_tickers[:6])}")
+
+    # Iran Peace Basket Special Alert
+    peace_basket_active = any(
+        s['sector'] == 'iran_peace_basket' and s['side'] == 'CALL'
+        for s in signals
+    )
+    peace_inverse_active = any(
+        s['sector'] == 'iran_peace_inverse' and s['side'] == 'PUT'
+        for s in signals
+    )
+    if peace_basket_active and peace_inverse_active:
+        lines.append("\n🕊️⚡ **IRAN PEACE CROSS-SIGNAL!**")
+        lines.append("Airlines/Tourism CALLS + Tanker PUTS gleichzeitig!")
+        lines.append("→ Smart Money positioniert sich für Iran-Deal")
+        lines.append("→ EQNR Stop prüfen, LHA Entry vorbereiten!")
+    elif peace_basket_active:
+        lines.append("\n🕊️ **Iran Peace Basket aktiv** — Airlines/Tourism CALLS detektiert")
+    elif peace_inverse_active:
+        lines.append("\n🕊️ **Iran Peace Inverse** — Tanker PUTS detektiert")
 
     # Auto-trades
     if auto_created:

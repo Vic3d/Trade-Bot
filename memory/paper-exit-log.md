@@ -1,5 +1,35 @@
 # Paper Exit Log
 
+## 2026-03-31 — 15:02 CET
+
+**6 Stops getroffen + 1 Trailing-Update:**
+
+| Ticker | Entry → Exit | P&L | Status |
+|--------|-------------|-----|--------|
+| ARKG | 21.52€ → 22.34€ | +75.45€ | STOP 🔴 |
+| DHT | 15.69€ → 15.96€ | +32.98€ | STOP 🔴 |
+| DHT | 15.69€ → 15.96€ | +15.99€ | STOP 🔴 |
+| SAAB-B.ST | 527.62€ → 533.10€ | +19.78€ | STOP 🔴 |
+| SAP | 146.45€ → 146.71€ | +2.51€ | STOP 🔴 |
+| STLD | 149.92€ → 151.46€ | +19.57€ | STOP 🔴 |
+| NOVO-B.CO | — | — | TRAIL 🔄 (Stop: 210.89€, +15.0%) |
+
+**Zusammenfassung:** 6 geschlossen (+165.78€ netto), 1 Trailing-Update, 5 Positionen noch offen.
+
+---
+
+## 2026-03-31 — 13:01 CET
+
+**0 Stops getroffen + 1 Trailing-Update:**
+
+| Ticker | Entry → Exit | Status |
+|--------|-------------|--------|
+| NOVO-B.CO | — | TRAIL 🔄 (Stop: 201.85€→210.89€, +14.1%) |
+
+**Zusammenfassung:** 0 geschlossen, 1 Trailing-Update, 12 Positionen noch offen.
+
+---
+
 ## 2026-03-30 — 15:03 CET
 
 **5 Stops getroffen:**
