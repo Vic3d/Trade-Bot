@@ -253,16 +253,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "GOLD",
-      "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 34.39,
-      "stop": 34.18,
-      "target": 34.84,
-      "opened_at": "2026-03-31 15:02",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CSCO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -293,8 +283,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T15:25:06.609339Z",
+  "last_sync": "2026-03-31T15:30:59.469282Z",
   "recent_day_trades": [
+    {
+      "ticker": "GOLD",
+      "strategy": "DT5",
+      "entry_price": 34.39,
+      "exit_price": 33.98,
+      "entry_date": "2026-03-31 15:02",
+      "exit_date": "2026-03-31 15:30",
+      "pnl_pct": -1.21,
+      "status": "LOSS"
+    },
     {
       "ticker": "XOM",
       "strategy": "DT5",
@@ -483,16 +483,6 @@
       "entry_date": "2026-03-30 16:05",
       "exit_date": "2026-03-30 17:20",
       "pnl_pct": -1.23,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "OXY",
-      "strategy": "DT2",
-      "entry_price": 58.22,
-      "exit_price": 57.97,
-      "entry_date": "2026-03-30 16:45",
-      "exit_date": "2026-03-30 17:20",
-      "pnl_pct": -0.43,
       "status": "LOSS"
     }
   ],
