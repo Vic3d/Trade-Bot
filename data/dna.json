@@ -263,16 +263,6 @@
       "status": "OPEN"
     },
     {
-      "ticker": "XOM",
-      "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 150.99,
-      "stop": 150.22,
-      "target": 152.54,
-      "opened_at": "2026-03-31 14:55",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CSCO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -303,8 +293,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T15:15:36.282343Z",
+  "last_sync": "2026-03-31T15:20:06.687873Z",
   "recent_day_trades": [
+    {
+      "ticker": "XOM",
+      "strategy": "DT5",
+      "entry_price": 150.99,
+      "exit_price": 149.92,
+      "entry_date": "2026-03-31 14:55",
+      "exit_date": "2026-03-31 15:20",
+      "pnl_pct": -0.71,
+      "status": "LOSS"
+    },
     {
       "ticker": "ORCL",
       "strategy": "DT5",
@@ -493,16 +493,6 @@
       "entry_date": "2026-03-30 16:45",
       "exit_date": "2026-03-30 17:20",
       "pnl_pct": -0.43,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "PLTR",
-      "strategy": "DT2",
-      "entry_price": 123.5,
-      "exit_price": 121.71,
-      "entry_date": "2026-03-30 16:10",
-      "exit_date": "2026-03-30 17:15",
-      "pnl_pct": -1.45,
       "status": "LOSS"
     }
   ],
