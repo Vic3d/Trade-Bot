@@ -243,16 +243,6 @@
       "entry_date": "2026-03-17"
     },
     {
-      "ticker": "MRK",
-      "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 104.67,
-      "stop": 104.08,
-      "target": 105.85,
-      "opened_at": "2026-03-31 15:15",
-      "status": "OPEN"
-    },
-    {
       "ticker": "CSCO",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -273,8 +263,18 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T16:01:10.922024Z",
+  "last_sync": "2026-03-31T16:05:06.881206Z",
   "recent_day_trades": [
+    {
+      "ticker": "MRK",
+      "strategy": "DT5",
+      "entry_price": 104.67,
+      "exit_price": 104.02,
+      "entry_date": "2026-03-31 15:15",
+      "exit_date": "2026-03-31 16:05",
+      "pnl_pct": -0.62,
+      "status": "LOSS"
+    },
     {
       "ticker": "DIS",
       "strategy": "DT5",
@@ -463,16 +463,6 @@
       "entry_date": "2026-03-30 14:40",
       "exit_date": "2026-03-30 17:25",
       "pnl_pct": -1.23,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "GOLD",
-      "strategy": "DT5",
-      "entry_price": 34.13,
-      "exit_price": 33.83,
-      "entry_date": "2026-03-30 14:40",
-      "exit_date": "2026-03-30 17:20",
-      "pnl_pct": -0.89,
       "status": "LOSS"
     }
   ],
