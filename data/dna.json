@@ -261,30 +261,30 @@
       "target": 237.14,
       "opened_at": "2026-03-31 16:40",
       "status": "OPEN"
+    }
+  ],
+  "last_sync": "2026-03-31T16:45:40.014355Z",
+  "recent_day_trades": [
+    {
+      "ticker": "MSFT",
+      "strategy": "DT5",
+      "entry_price": 316.05,
+      "exit_price": 318.11,
+      "entry_date": "2026-03-31 14:32",
+      "exit_date": "2026-03-31 16:45",
+      "pnl_pct": -0.65,
+      "status": "LOSS"
     },
     {
       "ticker": "CSCO",
       "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 66.79,
-      "stop": 67.11,
-      "target": 66.12,
-      "opened_at": "2026-03-31 14:50",
-      "status": "OPEN"
+      "entry_price": 66.79,
+      "exit_price": 67.35,
+      "entry_date": "2026-03-31 14:50",
+      "exit_date": "2026-03-31 16:45",
+      "pnl_pct": -0.83,
+      "status": "LOSS"
     },
-    {
-      "ticker": "MSFT",
-      "strategy": "DT5",
-      "trade_type": "day_trade",
-      "entry": 316.05,
-      "stop": 317.51,
-      "target": 313.14,
-      "opened_at": "2026-03-31 14:32",
-      "status": "OPEN"
-    }
-  ],
-  "last_sync": "2026-03-31T16:40:07.545809Z",
-  "recent_day_trades": [
     {
       "ticker": "MRK",
       "strategy": "DT5",
@@ -463,26 +463,6 @@
       "entry_date": "2026-03-30 17:20",
       "exit_date": "2026-03-30 18:50",
       "pnl_pct": -0.7,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "DIS",
-      "strategy": "DT2",
-      "entry_price": 82.69,
-      "exit_price": 82.17,
-      "entry_date": "2026-03-30 16:45",
-      "exit_date": "2026-03-30 18:05",
-      "pnl_pct": -0.63,
-      "status": "LOSS"
-    },
-    {
-      "ticker": "CSCO",
-      "strategy": "DT2",
-      "entry_price": 68.48,
-      "exit_price": 67.64,
-      "entry_date": "2026-03-30 14:40",
-      "exit_date": "2026-03-30 17:25",
-      "pnl_pct": -1.23,
       "status": "LOSS"
     }
   ],
