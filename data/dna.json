@@ -243,6 +243,16 @@
       "entry_date": "2026-03-17"
     },
     {
+      "ticker": "GOLD",
+      "strategy": "DT5",
+      "trade_type": "day_trade",
+      "entry": 34.39,
+      "stop": 34.18,
+      "target": 34.84,
+      "opened_at": "2026-03-31 15:02",
+      "status": "OPEN"
+    },
+    {
       "ticker": "ORCL",
       "strategy": "DT5",
       "trade_type": "day_trade",
@@ -293,7 +303,7 @@
       "status": "OPEN"
     }
   ],
-  "last_sync": "2026-03-31T14:55:07.741328Z",
+  "last_sync": "2026-03-31T15:02:13.469163Z",
   "recent_day_trades": [
     {
       "ticker": "GOLD",
