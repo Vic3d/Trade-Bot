@@ -1,5 +1,5 @@
-# Overnight Context — 31.03.2026
-*Erstellt: 2026-03-31 20:46 UTC | Für Morgen-Briefing 08:00*
+# Overnight Context — 01.04.2026
+*Erstellt: 2026-04-01 20:10 UTC | Für Morgen-Briefing 08:00*
 
 ---
 
@@ -9,15 +9,15 @@
 — keine Alerts heute
 
 ### Top-Performer heute
-- iShares Biotech ETF (A2DWAW): 7.32€ (+4.5%)
-- VanEck Oil Services ETF (A3D42Y): 28.67€ (+2.8%)
+- iShares Biotech ETF (A2DWAW): 7.38€ (+5.4%)
+- VanEck Oil Services ETF (A3D42Y): 28.09€ (+0.7%)
 
 ### Underperformer / Verlierer
-- Palantir (PLTR): 126.57€ (-4.2%)
+- Palantir (PLTR): 126.39€ (-4.3%)
 
 ## Kritische Positionen (Stop <3% entfernt)
 
-- ⚠️ Palantir (PLTR): -0.3% über Stop 127.00€
+- ⚠️ Palantir (PLTR): -0.5% über Stop 127.00€
 
 ## Geopolitik-Lage (aus Strategie-Status)
 
@@ -31,9 +31,9 @@
 
 ## Makro-Schlusskurse
 
-- VIX: 25.25
-- WTI: $101.39
-- EUR/USD: 1.1557
+- VIX: 24.76
+- WTI: $99.51
+- EUR/USD: 1.159
 
 ## Entscheidungen die morgen anstehen
 

@@ -1,0 +1,99 @@
+# TradeMind System-Crontab — Reine Script-Ausführung (0 Tokens)
+# Installieren: crontab /data/.openclaw/workspace/scripts/system_crontab.txt
+#
+# Alle Scripts laufen über cron_runner.sh der Alerts in pending_alerts.txt schreibt.
+# Ein einziger OpenClaw Haiku-Cron (Alert Dispatcher) liest die Datei + sendet Discord.
+
+WS=/data/.openclaw/workspace
+RUNNER=/data/.openclaw/workspace/scripts/cron_runner.sh
+PATH=/usr/local/bin:/usr/bin:/bin
+
+# ═══════════════════════════════════════════════════════════════
+# NACHT (0-7h) — Daten sammeln für CEO
+# ═══════════════════════════════════════════════════════════════
+0 0,2,4,6 * * *   $RUNNER $WS/scripts/overnight_collector.py >> /tmp/cron_overnight.log 2>&1
+
+# ═══════════════════════════════════════════════════════════════
+# MORGEN (7h) — Data-Prep für CEO
+# ═══════════════════════════════════════════════════════════════
+0 7 * * 1-5   python3 $WS/scripts/news_pipeline.py >> /tmp/cron_news.log 2>&1
+5 7 * * 1-5   python3 $WS/scripts/ceo.py --live >> /tmp/cron_ceo.log 2>&1
+10 7 * * 1-5  python3 $WS/scripts/daily_snapshot.py >> /tmp/cron_snapshot.log 2>&1
+
+# ═══════════════════════════════════════════════════════════════
+# HANDELSZEITEN (8-22h Mo-Fr) — Monitoring
+# ═══════════════════════════════════════════════════════════════
+
+# Geo-Watch: Iran + Trump (stündlich 6-23h, JEDEN Tag)
+0 6-23 * * *   $RUNNER $WS/scripts/iran_peace_watch.py >> /tmp/cron_iran.log 2>&1
+2 6-23 * * *   $RUNNER $WS/scripts/trump_watch.py >> /tmp/cron_trump.log 2>&1
+
+# Trading Monitor (stündlich 8-22h Mo-Fr)
+10 8-22 * * 1-5   $RUNNER $WS/scripts/trading_monitor.py >> /tmp/cron_trading.log 2>&1
+
+# Signal Tracker (stündlich 8-22h Mo-Fr)
+5 8-22 * * 1-5    $RUNNER $WS/scripts/signal_tracker.py >> /tmp/cron_signal.log 2>&1
+
+# PIFS Political Flow (stündlich 14-21h Mo-Fr)
+15 14-21 * * 1-5  $RUNNER $WS/scripts/political_flow_scanner.py >> /tmp/cron_pifs.log 2>&1
+
+# Paper Exit Monitor (alle 2h 9-21h Mo-Fr)
+10 9,11,13,15,17,19,21 * * 1-5  $RUNNER $WS/scripts/paper_exit_manager.py >> /tmp/cron_paper.log 2>&1
+
+# S10 Lufthansa (3x täglich)
+20 9,14,20 * * *  $RUNNER $WS/scripts/s10_lufthansa_monitor.py >> /tmp/cron_lufthansa.log 2>&1
+
+# Strategy Monitor (2x Mo-Fr)
+40 8,20 * * 1-5   $RUNNER $WS/scripts/strategy_monitor.py >> /tmp/cron_strategy.log 2>&1
+
+# News Gate — Thesis Pre-Screen (2x Mo-Fr)
+20 11,14 * * 1-5  python3 -c "
+import json, urllib.request, xml.etree.ElementTree as ET, urllib.parse
+from pathlib import Path
+from datetime import datetime
+WS = Path('$WS')
+THESIS_KW = {
+    'S1_Iran': ['Iran', 'Hormuz', 'Houthi', 'Brent', 'oil'],
+    'S3_Tech': ['PLTR', 'Palantir', 'Nvidia', 'VIX', 'tech sell'],
+    'S11_Steel': ['Steel', 'STLD', 'tariff', 'Liberation Day'],
+}
+def gnews(q, n=4):
+    url = f'https://news.google.com/rss/search?q={urllib.parse.quote(q)}&hl=de&gl=DE&ceid=DE:de'
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=8) as r:
+            root = ET.fromstring(r.read())
+        return [(i.findtext('title',''), i.findtext('pubDate','')) for i in root.findall('.//item')[:n]]
+    except: return []
+hits = []
+for thesis, kws in THESIS_KW.items():
+    for title, _ in gnews(kws[0]):
+        if any(k.lower() in title.lower() for k in kws):
+            hits.append({'thesis': thesis, 'headline': title})
+seen = set(); uniq = []
+for h in hits:
+    k = h['headline'][:50]
+    if k not in seen: seen.add(k); uniq.append(h)
+gate = {'timestamp': datetime.now().isoformat(), 'relevant': len(uniq) >= 2, 'hit_count': len(uniq), 'top_hits': uniq[:6]}
+(WS/'data/news_gate.json').write_text(json.dumps(gate, ensure_ascii=False, indent=2))
+" >> /tmp/cron_gate.log 2>&1
+
+# News Pipeline (4x Mo-Fr)
+0 7,11,15,19 * * 1-5  python3 $WS/scripts/news_pipeline.py >> /tmp/cron_news.log 2>&1
+
+# Autonomous Scanner (1x Mo-Fr)
+15 9 * * 1-5  python3 $WS/scripts/execution/autonomous_scanner.py 6 >> /tmp/cron_scanner.log 2>&1
+
+# Options Flow (1x Mo-Fr)
+0 22 * * 1-5  $RUNNER $WS/scripts/options_flow_validator.py >> /tmp/cron_options.log 2>&1
+
+# ═══════════════════════════════════════════════════════════════
+# DASHBOARD (alle 15 Min)
+# ═══════════════════════════════════════════════════════════════
+*/15 * * * *  bash $WS/scripts/dashboard_healthcheck.sh >> /tmp/cron_dashboard.log 2>&1
+
+# ═══════════════════════════════════════════════════════════════
+# GIT BACKUPS
+# ═══════════════════════════════════════════════════════════════
+0 13 * * *  cd $WS && git add -A && git diff --cached --quiet || git commit -m "Midday backup $(date +\%Y-\%m-\%d)" && git push origin master >> /tmp/cron_git.log 2>&1
+0 23 * * *  cd $WS && git add -A && git diff --cached --quiet || git commit -m "Daily backup $(date +\%Y-\%m-\%d)" && git push origin master >> /tmp/cron_git.log 2>&1

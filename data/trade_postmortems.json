@@ -1,9 +1,12 @@
 {
-  "total_analyzed": 59,
-  "avg_entry_quality": 5.0,
-  "avg_exit_quality": 5.5,
-  "disposition_effect": -0.291,
+  "total_analyzed": 63,
+  "avg_entry_quality": 6.0,
+  "avg_exit_quality": 5.7,
+  "disposition_effect": -0.253,
   "optimal_holding_days": {
+    "PS14": 1.0,
+    "PS12": 1.0,
+    "PS13": 1.0,
     "PS17": 1.0,
     "PS_STLD": 0.5,
     "PS11": 1.0,
@@ -12,7 +15,6 @@
     "PS15": 0.3,
     "PT": 2.0,
     "PS4": 1.7,
-    "PS13": 1.0,
     "PM": 4.0,
     "S1": 0.0,
     "PS9": 2.0,
@@ -20,9 +22,9 @@
   },
   "regime_performance": {
     "RISK_OFF": {
-      "wr": 0.929,
-      "avg_pnl": 27.38,
-      "trades": 14
+      "wr": 0.889,
+      "avg_pnl": 51.97,
+      "trades": 18
     },
     "PAPER_LEARN": {
       "wr": 0.0,
@@ -36,28 +38,72 @@
     }
   },
   "insights": [
-    "Anti-Disposition: Verlierer werden schneller geschlossen (1.6d) als Gewinner gehalten (2.3d). Gute Disziplin!",
-    "PS17 hat 100% WR — aber nur 1 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (93% WR, 14 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "Anti-Disposition: Verlierer werden schneller geschlossen (1.6d) als Gewinner gehalten (2.1d). Gute Disziplin!",
+    "PS12 hat 100% WR — aber nur 1 Trades. Mehr Daten nötig.",
+    "Bestes Regime: RISK_OFF (89% WR, 18 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
     "PS1 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
     {
+      "id": 72,
+      "ticker": "ZIM",
+      "strategy": "PS14",
+      "entry_quality": 6.0,
+      "exit_quality": 4.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": -7.95,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 68,
+      "ticker": "SMCI",
+      "strategy": "PS12",
+      "entry_quality": 6.0,
+      "exit_quality": 8.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 55.4,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 71,
+      "ticker": "TECK",
+      "strategy": "PS13",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 86.03,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 73,
+      "ticker": "SBLK",
+      "strategy": "PS14",
+      "entry_quality": 6.0,
+      "exit_quality": 8.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 418.63,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
       "id": 55,
       "ticker": "SAP",
       "strategy": "PS17",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 2.51,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 56,
       "ticker": "STLD",
       "strategy": "PS_STLD",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
@@ -68,12 +114,12 @@
       "id": 51,
       "ticker": "SAAB-B.ST",
       "strategy": "PS11",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 19.78,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 57,
@@ -90,34 +136,34 @@
       "id": 58,
       "ticker": "DHT",
       "strategy": "PS2",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 10.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 15.99,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 54,
       "ticker": "ARKG",
       "strategy": "PS15",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 75.45,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 59,
       "ticker": "IBB",
       "strategy": "PS15",
-      "entry_quality": 1.0,
+      "entry_quality": 4.0,
       "exit_quality": 10.0,
       "holding_days": 0,
       "regime": "RISK_OFF",
       "pnl": 178.48,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 15,
@@ -134,12 +180,12 @@
       "id": 28,
       "ticker": "LHA.DE",
       "strategy": "PS10",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 4,
       "regime": "UNKNOWN",
       "pnl": 0.0,
-      "lesson": "Vorhersehbarer Verlust — schwacher Entry, schwacher Ausgang."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 62,
@@ -189,51 +235,51 @@
       "id": 38,
       "ticker": "PAAS",
       "strategy": "PS4",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 10.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 17.28,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 39,
       "ticker": "HL",
       "strategy": "PS4",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": -18.16,
-      "lesson": "Vorhersehbarer Verlust — schwacher Entry, schwacher Ausgang."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 40,
       "ticker": "SCCO",
       "strategy": "PS13",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 4.85,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 47,
       "ticker": "XBI",
       "strategy": "PS15",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 0,
       "regime": "RISK_OFF",
       "pnl": 4.55,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 48,
       "ticker": "STLD",
       "strategy": "PS_STLD",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 10.0,
       "holding_days": 0,
       "regime": "RISK_OFF",
@@ -332,7 +378,7 @@
       "id": 35,
       "ticker": "NUE",
       "strategy": "PS_STLD",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 0,
       "regime": "BEAR",
@@ -376,29 +422,29 @@
       "id": 29,
       "ticker": "PAAS",
       "strategy": "PS4",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 2,
       "regime": "RISK_OFF",
       "pnl": 3.9,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 30,
       "ticker": "HL",
       "strategy": "PS4",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 2,
       "regime": "RISK_OFF",
       "pnl": 4.07,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 34,
       "ticker": "STLD",
       "strategy": "PS_STLD",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 0,
       "regime": "BEAR",
@@ -552,12 +598,12 @@
       "id": 12,
       "ticker": "GLEN.L",
       "strategy": "PS5",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 6.0,
       "holding_days": 7,
       "regime": "UNKNOWN",
       "pnl": 0.65,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
     },
     {
       "id": 14,
@@ -574,34 +620,34 @@
       "id": 17,
       "ticker": "FRO",
       "strategy": "PS2",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 0,
       "regime": "UNKNOWN",
       "pnl": -102.81,
-      "lesson": "Vorhersehbarer Verlust — schwacher Entry, schwacher Ausgang."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 2,
       "ticker": "FRO",
       "strategy": "PS2",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 6.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
       "pnl": 7.78,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 3,
       "ticker": "DHT",
       "strategy": "PS2",
-      "entry_quality": 3.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
       "pnl": 16.0,
-      "lesson": "Glückstreffer — trotz schwachem Entry Gewinn. Nicht replizierbar."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 6,
@@ -662,7 +708,7 @@
       "id": 4,
       "ticker": "KTOS",
       "strategy": "PS3",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 1,
       "regime": "UNKNOWN",
@@ -673,7 +719,7 @@
       "id": 5,
       "ticker": "HII",
       "strategy": "PS3",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 2.0,
       "holding_days": 1,
       "regime": "UNKNOWN",
@@ -684,7 +730,7 @@
       "id": 9,
       "ticker": "HAG.DE",
       "strategy": "PS3",
-      "entry_quality": 5.0,
+      "entry_quality": 6.0,
       "exit_quality": 2.0,
       "holding_days": 1,
       "regime": "UNKNOWN",
@@ -692,7 +738,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-01T07:20:21",
-  "avg_win_holding_days": 2.3,
+  "analysis_timestamp": "2026-04-01T19:18:22",
+  "avg_win_holding_days": 2.1,
   "avg_loss_holding_days": 1.6
 }

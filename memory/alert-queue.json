@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "message": "\ud83d\udfe2 **POSITION GESCHLOSSEN** \u2014 SBLK\nExit: TARGET_HIT | P&L: +418.63\u20ac\nGrund: Ziel $23.51 erreicht \u2014 Gewinne mitnehmen",
+    "target": "452053147620343808",
+    "ts": "2026-04-01T14:45:06.272347+00:00"
+  },
+  {
+    "message": "\ud83d\udccb **Daily Position Review** | VIX 25.0 | 1 Exit(s) | 8 Stop-Adjust(s)\n  \u2705 EXIT SBLK: TARGET_HIT | P&L +418.63\u20ac\n  \ud83d\udd04 TIGHTEN_STOP FCX: 45.83\u219253.06\n  \ud83d\udd04 TIGHTEN_STOP HL: 13.81\u219216.82\n  \ud83d\udd04 TIGHTEN_STOP RHM.DE: 1416.55\u21921479.98\n  \ud83d\udd04 TIGHTEN_STOP SAAB-B.ST: 537.03\u2192561.08\n  \ud83d\udd04 TIGHTEN_STOP SCCO: 131.01\u2192154.50\n  \ud83d\udd04 TIGHTEN_STOP SMCI: 15.44\u219220.27\n  \ud83d\udd04 TIGHTEN_STOP TECK: 40.36\u219246.63\n  \ud83d\udd04 TIGHTEN_STOP ZIM: 21.55\u219223.93\n  \u26aa 4 Positionen HOLD",
+    "target": "452053147620343808",
+    "ts": "2026-04-01T14:45:08.560209+00:00"
+  }
+]

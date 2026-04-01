@@ -1,6 +1,17 @@
 # Strategy Research Log — Albert
 
 
+## [2026-04-01 22:02] Autonomer Strategie-Scan — NO NEW SIGNALS
+
+- **Builder Output:** Analysierte 15 Strategien, keine automatischen Vorschläge
+- **Google News Focus:** Sector Rotation (Tech→Commodities), Mining Dominanz, Nickel-Supply (Indonesia)
+- **Analyse:** Diese Themen sind bereits in existierenden Strategien abgedeckt (PS4/S4 Metals, PS13 Copper, PS16 Nuclear, S5 Rohstoff-Superzyklus)
+- **Nickel-These:** Indonesia-Lieferengpässe = Sub-Theme von Green-Transition Supply Stress → bereits in S5 + PS13 impliziert. Nicht isoliert gross genug für separate PS.
+- **Entscheidung als CEO:** ✅ KEIN_SIGNAL ist korrekt. PS11-PS18 decken neue Makro-Themes ab (Defense-EU, AI-Infra, Copper, Shipping, Biotech, Nuclear, EU Champions, Trade Dislocation).
+- **Status:** ALL SYSTEMS GO — Strategie-Portfolio ausreichend.
+
+---
+
 ## [2026-03-31 22:01] Autonomer Strategie-Scan — NEUE STRATEGIE PS18
 
 - **NEU PS18: Trade Dislocation & Tariff-Margin-Compression**
@@ -92,6 +103,22 @@
 
 
 ## [2026-03-31 22:01] Autonomer Strategie-Scan
+
+- SKIP: Defense-EU-Small (bereits vorhanden)
+- SKIP: AI-Infrastructure (bereits vorhanden)
+- SKIP: Copper-Green-Transition (bereits vorhanden)
+- SKIP: Shipping-Normalization (bereits vorhanden)
+- SKIP: Biotech-Rate-Reversal (bereits vorhanden)
+- Top-Ticker (letzte 14 Tage):
+-   GOOGL: 9 Trades, 67% WR, Ø7.2€
+-   UNH: 6 Trades, 67% WR, Ø-4.8€
+-   ORCL: 9 Trades, 44% WR, Ø-30.2€
+-   9988.HK: 7 Trades, 57% WR, Ø36.0€
+-   1605.T: 6 Trades, 67% WR, Ø13.5€
+
+---
+
+## [2026-04-01 22:02] Autonomer Strategie-Scan
 
 - SKIP: Defense-EU-Small (bereits vorhanden)
 - SKIP: AI-Infrastructure (bereits vorhanden)

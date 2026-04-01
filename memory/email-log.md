@@ -239,3 +239,20 @@
 | 31.03.2026 14:00 | **AUFTRAG** | TSP-AM-OST AW: BV- 269786420 | 31.03.2026 08:08 |
 | 31.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 21:48 |
 | 31.03.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 30.03.2026 21:38 |
+| 01.04.2026 14:00 | **INFO2** | bochum@pertec.de freier HLS Monteur mit A-Schweiß... | 01.04.2026 09:10 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 12:02 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 12:02 |
+| 01.04.2026 14:00 | **AUFTRAG** | Coskun Furkan Auftrag in Bielefeld | 01.04.2026 12:01 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 11:57 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 11:42 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 11:32 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 11:27 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 10:47 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 10:47 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 09:37 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 09:12 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 09:02 |
+| 01.04.2026 14:00 | **AUFTRAG** | Sabrina Hain AW: Termine für Otto-Weingarten-... | 01.04.2026 08:10 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 31.03.2026 20:57 |
+| 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 31.03.2026 20:17 |
+| 01.04.2026 15:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 14:27 |

@@ -14,6 +14,21 @@ Format: Datum | Strategie | Alt → Neu | Grund | Wer hat geändert
 
 ## Log
 
+### 2026-04-01 16:48 — Iran-Deal Signal: Brent -14.5% CRASH
+**Strategie:** S1 (Iran/Öl/Hormuz) | 🟢→🔴 CRITICAL STATUS-WECHSEL
+**Grund:** China + Pakistan 5-Punkte Friedensplan (Axios). Trump pausiert Strikes (Reuters). Irans Präsident bittet angeblich um Ceasefire (DW). WSJ: Trump würde Krieg beenden auch ohne Hormuz-Öffnung.
+**Kern-Erkenntnis:** Das ist nicht mehr Rhetoric — das sind echte Dealfernsignale. Der Markt preist Hormuz-Öffnung ein.
+**Markt-Reaktion:** Brent $118 → $101 (-14.5%) in wenigen Stunden. EQNR -5%. Geopolitik-Prämie löst sich auf.
+**Entscheidung:** S1 These verkaufen (mental). Keine neuen Öl/Energie-Positionen bis Deal klar ist (gültig oder scheitert). EQNR-Stop war bereits raus → kein Damage. Watchlist Re-Entry nur wenn Deal scheitert (Brent >$110) oder stabilisiert (<$85-90).
+**Szenarien:**
+  - Deal geht durch (40%): Brent <$90, S1 tot, EQNR €28-30
+  - Deal scheitert (30%): Brent >$110, aber Anleger trauen nicht mehr, EQNR bleibt schwach
+  - Ceasefire ohne Hormuz-Öffnung (30%): Brent $95-100, S1 schwach, EQNR €32-35
+**Nächster Trigger:** Trump Liberation Day 02.04 09:00 CET — könnte Ceasefire-Ankündigung sein oder Deal scheitern Signal.
+**Victor informiert:** Ja (16:48 CET)
+
+---
+
 ### 2026-03-27 21:02 — Circuit Breaker aktiviert (weekly_loss_limit + consecutive_losses)
 **Strategie (gesamt):** 🟡→🔴 | Trading-Sperre aktiviert bis 2026-03-28 21:02. Weekly Loss Limit + Consecutive Losses Threshold überschritten. 2/2 Slots belegt (OXY +1.6%, FRO -0.6%). **Auslöser:** Autonomer Zyklus erkannt repeated loss pattern. **Auswirkung:** Keine neuen Trades bis morgen 21:02.
 
@@ -656,6 +671,78 @@ Victor informiert: ✅ Discord DM gesendet
 ### PS3 (NATO/EU-Rüstung)
 **🟢 STARK → 🟡 NEUTRAL** (Score: 40)
 **Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS10 (Lufthansa — Peace Dividend)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS11 (Defense-EU-Small)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS12 (AI-Infrastructure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS13 (Copper-Green-Transition)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS14 (Shipping-Normalization)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS15 (Biotech-Rate-Reversal)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS16 (Nuclear Renaissance — AI Power Demand)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS17 (EU Domestic Champions — Trade War Profiteure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_STLD (Stahl-Tariff-Play (Liberation Day))
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_NVO (Novo Nordisk Value/Turnaround)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_CCJ (Cameco — Uranium Nuclear Renaissance)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_LHA (Lufthansa — Iran-Deeskalations-Trade)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS18 (Trade Dislocation & Tariff-Margin-Compression)
+**🟢 STARK → 🔴 GESCHWÄCHT** (Score: 34)
+**Gründe:** Preise seitwärts +0.0% (14T) | News bearish (Score -40)
+
+
+
+## 2026-04-01 20:40 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 50)
+**Gründe:** Preise seitwärts +0.0% (14T) | News bullish (Score +60)
 
 ### PS4 (Edelmetalle/Miner)
 **🟢 STARK → 🟡 NEUTRAL** (Score: 40)
