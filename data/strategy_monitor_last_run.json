@@ -1,80 +1,80 @@
 {
-  "timestamp": "2026-03-31T08:01:36.899494",
+  "timestamp": "2026-04-01T08:40:12.750956",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
       "status": "STARK",
-      "score": 80,
-      "momentum_avg": 11.3,
+      "score": 56,
+      "momentum_avg": 0,
       "news_score": 100,
       "reasons": [
-        "Preise stark +11.3% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News bullish (Score +100)"
       ]
     },
     "PS2": {
       "name": "Tanker-Lag-These",
-      "status": "GESCHWÄCHT",
-      "score": 34,
-      "momentum_avg": -7.7,
-      "news_score": 40,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
       "reasons": [
-        "Preise schwach -7.7% (14T)",
-        "News bullish (Score +40)"
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
       ]
     },
     "PS3": {
       "name": "NATO/EU-Rüstung",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -15.1,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -15.1% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS4": {
       "name": "Edelmetalle/Miner",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -28.0,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -28.0% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS5": {
       "name": "Dünger/Agrar-Superzyklus",
-      "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -6.6,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -6.6% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS10": {
       "name": "Lufthansa — Peace Dividend",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -12.6,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -12.6% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS11": {
       "name": "Defense-EU-Small",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -12.2,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -12.2% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -91,67 +91,67 @@
     },
     "PS13": {
       "name": "Copper-Green-Transition",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -17.8,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -17.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS14": {
       "name": "Shipping-Normalization",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -10.7,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -10.7% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS15": {
       "name": "Biotech-Rate-Reversal",
-      "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -4.5,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -4.5% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS16": {
       "name": "Nuclear Renaissance — AI Power Demand",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -11.8,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -11.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS17": {
       "name": "EU Domestic Champions — Trade War Profiteure",
-      "status": "GESCHWÄCHT",
-      "score": 28,
-      "momentum_avg": -9.4,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise schwach -9.4% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS_STLD": {
       "name": "Stahl-Tariff-Play (Liberation Day)",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -13.4,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -13.4% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -159,22 +159,44 @@
       "name": "Novo Nordisk Value/Turnaround",
       "status": "NEUTRAL",
       "score": 40,
-      "momentum_avg": -1.5,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise seitwärts -1.5% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
     "PS_CCJ": {
       "name": "Cameco — Uranium Nuclear Renaissance",
-      "status": "GESCHWÄCHT",
-      "score": 16,
-      "momentum_avg": -11.8,
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
       "news_score": 0,
       "reasons": [
-        "Preise sehr schwach -11.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
+      ]
+    },
+    "PS_LHA": {
+      "name": "Lufthansa — Iran-Deeskalations-Trade",
+      "status": "NEUTRAL",
+      "score": 40,
+      "momentum_avg": 0,
+      "news_score": 0,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    "PS18": {
+      "name": "Trade Dislocation & Tariff-Margin-Compression",
+      "status": "GESCHWÄCHT",
+      "score": 34,
+      "momentum_avg": 0,
+      "news_score": -40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News bearish (Score -40)"
       ]
     }
   },
@@ -183,21 +205,21 @@
       "ps_id": "PS2",
       "name": "Tanker-Lag-These",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 34,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise schwach -7.7% (14T)",
-        "News bullish (Score +40)"
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
       ]
     },
     {
       "ps_id": "PS3",
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -15.1% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -205,10 +227,10 @@
       "ps_id": "PS4",
       "name": "Edelmetalle/Miner",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -28.0% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -216,10 +238,10 @@
       "ps_id": "PS5",
       "name": "Dünger/Agrar-Superzyklus",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise schwach -6.6% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -227,10 +249,10 @@
       "ps_id": "PS10",
       "name": "Lufthansa — Peace Dividend",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -12.6% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -238,10 +260,10 @@
       "ps_id": "PS11",
       "name": "Defense-EU-Small",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -12.2% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -260,10 +282,10 @@
       "ps_id": "PS13",
       "name": "Copper-Green-Transition",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -17.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -271,10 +293,10 @@
       "ps_id": "PS14",
       "name": "Shipping-Normalization",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -10.7% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -282,10 +304,10 @@
       "ps_id": "PS15",
       "name": "Biotech-Rate-Reversal",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise schwach -4.5% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -293,10 +315,10 @@
       "ps_id": "PS16",
       "name": "Nuclear Renaissance — AI Power Demand",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -11.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -304,10 +326,10 @@
       "ps_id": "PS17",
       "name": "EU Domestic Champions — Trade War Profiteure",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 28,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise schwach -9.4% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -315,10 +337,10 @@
       "ps_id": "PS_STLD",
       "name": "Stahl-Tariff-Play (Liberation Day)",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -13.4% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -329,7 +351,7 @@
       "new_status": "NEUTRAL",
       "score": 40,
       "reasons": [
-        "Preise seitwärts -1.5% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
       ]
     },
@@ -337,11 +359,33 @@
       "ps_id": "PS_CCJ",
       "name": "Cameco — Uranium Nuclear Renaissance",
       "old_status": "STARK",
-      "new_status": "GESCHWÄCHT",
-      "score": 16,
+      "new_status": "NEUTRAL",
+      "score": 40,
       "reasons": [
-        "Preise sehr schwach -11.8% (14T)",
+        "Preise seitwärts +0.0% (14T)",
         "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS_LHA",
+      "name": "Lufthansa — Iran-Deeskalations-Trade",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 40,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News neutral (Score +0)"
+      ]
+    },
+    {
+      "ps_id": "PS18",
+      "name": "Trade Dislocation & Tariff-Margin-Compression",
+      "old_status": "STARK",
+      "new_status": "GESCHWÄCHT",
+      "score": 34,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News bearish (Score -40)"
       ]
     }
   ],

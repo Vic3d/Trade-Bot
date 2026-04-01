@@ -163,7 +163,7 @@
     "kill_trigger": "WTI fällt <$80, oder Tanker-Rally findet nicht statt nach 4 Wochen",
     "horizon_weeks": 8,
     "status": "active",
-    "health": "red",
+    "health": "yellow",
     "learning_question": "Stimmt die Lag-These überhaupt? Wie lange ist der Lag wirklich?",
     "tickers": [
       "FRO",
@@ -266,7 +266,7 @@
     "kill_trigger": "Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise",
     "horizon_weeks": 16,
     "status": "active",
-    "health": "paused",
+    "health": "yellow",
     "learning_question": "Outperformt EU-Defense (HAG.DE) gegenüber US-Defense (KTOS/HII)?",
     "tickers": [
       "KTOS",
@@ -378,7 +378,7 @@
     "kill_trigger": "VIX <18 (Risk-on), Fed hawkish, Metall unter Produktionskosten",
     "horizon_weeks": 10,
     "status": "active",
-    "health": "red",
+    "health": "yellow",
     "learning_question": "Reagieren Silber-Miner schneller als Gold-Miner auf VIX-Bewegungen?",
     "tickers": [
       "HL",
@@ -482,7 +482,7 @@
     "kill_trigger": "Sanktionen gelockert, Agrarpreise kollabieren, Russland-Ukraine Frieden",
     "horizon_weeks": 20,
     "status": "active",
-    "health": "red",
+    "health": "yellow",
     "learning_question": "Ist Dünger wirklich Superzyklus oder nur kurze Sanktions-Anomalie?",
     "tickers": [
       "MOS"
@@ -1506,7 +1506,7 @@
     "tickers": [
       "LHA.DE"
     ],
-    "health": "red",
+    "health": "yellow",
     "locked": false,
     "source": "victor_suggestion",
     "created": "2026-03-27",
@@ -1529,7 +1529,7 @@
       "RHM.DE",
       "BA.L"
     ],
-    "health": "red",
+    "health": "yellow",
     "locked": false,
     "source": "albert_autonomous",
     "created": "2026-03-27",
@@ -1575,7 +1575,7 @@
       "SCCO",
       "TECK"
     ],
-    "health": "red",
+    "health": "yellow",
     "locked": false,
     "source": "albert_autonomous",
     "created": "2026-03-27",
@@ -1598,7 +1598,7 @@
       "MATX",
       "SBLK"
     ],
-    "health": "red",
+    "health": "yellow",
     "locked": false,
     "source": "albert_autonomous",
     "created": "2026-03-27",
@@ -1621,7 +1621,7 @@
       "ARKG",
       "IBB"
     ],
-    "health": "red",
+    "health": "yellow",
     "locked": false,
     "source": "albert_autonomous",
     "created": "2026-03-27",
@@ -1636,7 +1636,7 @@
   },
   "PS16": {
     "name": "Nuclear Renaissance — AI Power Demand",
-    "health": "red",
+    "health": "yellow",
     "source": "albert_autonomous",
     "created": "2026-03-27",
     "thesis": "KI-Rechenzentren brauchen massiv saubere Grundlaststrom — Nuklear ist die einzige skalierbare Option. EU-Energieunabhängigkeit + US-Förderpolitik (IRA) treiben SMR-Entwicklung. Uranium-Spot-Markt bleibt angespannt.",
@@ -1659,7 +1659,7 @@
   },
   "PS17": {
     "name": "EU Domestic Champions — Trade War Profiteure",
-    "health": "red",
+    "health": "yellow",
     "source": "albert_autonomous",
     "created": "2026-03-27",
     "thesis": "US-Zölle auf EU-Produkte + drohende EU-Gegenmaßnahmen schaffen Gewinner: EU-Unternehmen die primär intraeuropäisch verkaufen profitieren von Marktschutz + EU-Nachfrageshift weg von US-Produkten. Gleichzeitig: Politischer Druck in EU für europäische Beschaffung (Tech, Cloud, Infra).",
@@ -1688,7 +1688,7 @@
     "entry_trigger": "T1: 30.03. US-Börsenstart 15:30 MEZ bei stabilem Kurs. T2: nach April-2-Ankündigung. T3: nach Q1 Earnings mid-April.",
     "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD dauerhaft unter $155",
     "status": "active",
-    "health": "paused",
+    "health": "yellow",
     "horizon_weeks": 8,
     "tickers": [
       "STLD"
@@ -1794,7 +1794,7 @@
     "crv_expected": 2.5,
     "kill_trigger": "Uranium Spot-Preis fällt unter $70/lb | Reaktor-Abschaltungen dominant | CCJ Earnings-Einbruch >30% | Kurs unter $85",
     "status": "watching",
-    "health": "red",
+    "health": "yellow",
     "horizon_weeks": 16,
     "tickers": [
       "CCJ"
@@ -1910,7 +1910,7 @@
       "Q1 Earnings 06.05.2026 — weiteres Gewinnwachstum trotz Geopolitik"
     ],
     "correlation": "invers_zu_S1_Iran",
-    "health": "watch",
+    "health": "yellow",
     "source": "victor_thesis + deep_dive_31.03.2026",
     "analyst_note": "Goldman Sachs Kursziel €6.60 explizit wegen Iran — bestätigt These",
     "insider": "CEO Spohr kauft privat zu (März 2026)",

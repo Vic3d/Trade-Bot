@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-04-01T11:20:27.151509",
+  "relevant": true,
+  "hit_count": 27,
+  "top_hits": [
+    {
+      "thesis": "S1_Iran",
+      "keyword": "Iran",
+      "headline": "Iran-Liveblog: ++ Israel meldet Beschuss aus dem Jemen ++ - tagesschau.de",
+      "pubdate": "Wed, 01 Apr 2026 07:00:00 GMT"
+    },
+    {
+      "thesis": "S1_Iran",
+      "keyword": "Iran",
+      "headline": "Iran-News heute: Donald Trump - USA werden Iran »sehr bald« verlassen - Spiegel",
+      "pubdate": "Wed, 01 Apr 2026 08:58:00 GMT"
+    },
+    {
+      "thesis": "S1_Iran",
+      "keyword": "Iran",
+      "headline": "Bericht: Emirate sind bereit für Einstieg in den Iran-Krieg - NTV",
+      "pubdate": "Wed, 01 Apr 2026 08:59:55 GMT"
+    },
+    {
+      "thesis": "S1_Iran",
+      "keyword": "Hormuz",
+      "headline": "US-Präsident Trump spricht zur Nation, Hormuz-Frist am 6. April - BeInCrypto",
+      "pubdate": "Wed, 01 Apr 2026 01:07:00 GMT"
+    },
+    {
+      "thesis": "S1_Iran",
+      "keyword": "Hormuz",
+      "headline": "Wird die Straße von Hormuz bis dahin nicht geöffnet, kommt es zu einem Horrorszenario für die Börse - Börse Online",
+      "pubdate": "Sun, 22 Mar 2026 07:00:00 GMT"
+    },
+    {
+      "thesis": "S3_Tech",
+      "keyword": "NVDA",
+      "headline": "NVIDIA-Aktie: +5,6 % – echte Wende oder nur ein gefährlicher Rücklauf? - Finanztrends",
+      "pubdate": "Wed, 01 Apr 2026 08:50:18 GMT"
+    }
+  ]
+}
