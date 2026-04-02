@@ -8,5 +8,50 @@
     "message": "\ud83d\udccb **Daily Position Review** | VIX 25.0 | 1 Exit(s) | 8 Stop-Adjust(s)\n  \u2705 EXIT SBLK: TARGET_HIT | P&L +418.63\u20ac\n  \ud83d\udd04 TIGHTEN_STOP FCX: 45.83\u219253.06\n  \ud83d\udd04 TIGHTEN_STOP HL: 13.81\u219216.82\n  \ud83d\udd04 TIGHTEN_STOP RHM.DE: 1416.55\u21921479.98\n  \ud83d\udd04 TIGHTEN_STOP SAAB-B.ST: 537.03\u2192561.08\n  \ud83d\udd04 TIGHTEN_STOP SCCO: 131.01\u2192154.50\n  \ud83d\udd04 TIGHTEN_STOP SMCI: 15.44\u219220.27\n  \ud83d\udd04 TIGHTEN_STOP TECK: 40.36\u219246.63\n  \ud83d\udd04 TIGHTEN_STOP ZIM: 21.55\u219223.93\n  \u26aa 4 Positionen HOLD",
     "target": "452053147620343808",
     "ts": "2026-04-01T14:45:08.560209+00:00"
+  },
+  {
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 127.06\u20ac | Stop: 127.0\u20ac | Nur noch 0.0% Abstand! [Conviction: 57/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T06:10:40.342390+00:00"
+  },
+  {
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T06:10:40.346305+00:00"
+  },
+  {
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 127.01\u20ac | Stop: 127.0\u20ac | 0.0% Abstand [Conviction: 57/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T07:10:39.884660+00:00"
+  },
+  {
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: iShares Biotech ETF (A2DWAW) @ 7.41\u20ac | P&L: +5.8% (>5.0%) | Stop auf Breakeven (7.00\u20ac) nachziehen! [Conviction: 36/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T07:10:39.885593+00:00"
+  },
+  {
+    "message": "\ud83d\udcca **PAPER TRADE ER\u00d6FFNET** \u2014 STLD\nStrategie: PS_STLD | Entry: 182.85\u20ac\nStop: 168.22\u20ac | Ziel: 215.76\u20ac | CRV: 2.3:1\nPosition: 2000\u20ac (10.94 Shares) | Conviction: 58/100\nRegime: NEUTRAL | VIX: 24.5\n\ud83d\udcdd [TIER_A] Stahl-Z\u00f6lle + EAF-Vorteil | Thesis: 12% unter 52W-High, RSI=59, CRV=2.3:1",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T07:15:45.107852+00:00"
+  },
+  {
+    "message": "\ud83d\udcca **PAPER TRADE ER\u00d6FFNET** \u2014 AG\nStrategie: S4 | Entry: 22.17\u20ac\nStop: 20.40\u20ac | Ziel: 26.16\u20ac | CRV: 2.3:1\nPosition: 2000\u20ac (90.21 Shares) | Conviction: 62/100\nRegime: NEUTRAL | VIX: 24.5\n\ud83d\udcdd [TIER_A] Silber-Miner bei Geopolitik | Thesis: 31% unter 52W-High, RSI=42, CRV=2.3:1",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T07:15:46.325236+00:00"
+  },
+  {
+    "message": "\ud83d\udcca **PAPER TRADE ER\u00d6FFNET** \u2014 WPM\nStrategie: S4 | Entry: 136.80\u20ac\nStop: 125.86\u20ac | Ziel: 161.42\u20ac | CRV: 2.3:1\nPosition: 2000\u20ac (14.62 Shares) | Conviction: 57/100\nRegime: NEUTRAL | VIX: 24.5\n\ud83d\udcdd [TIER_A] Streaming-Silber / Gold | Thesis: 17% unter 52W-High, RSI=43, CRV=2.3:1",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T07:15:47.087158+00:00"
+  },
+  {
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 126.97\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 60/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T08:10:40.468596+00:00"
+  },
+  {
+    "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.1%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mittel \u2014 Energienachfrage sinkt\n\n\ud83c\udfaf Strategie-Menu:\n  \ud83d\udfe2 Halten: Kurzfristig schmerzt es, mittelfristig erholt sich China\n  \ud83d\udfe1 Stop enger setzen bei Energie-Positionen (EQNR)\n  \ud83d\udd34 Exit Rohstoffe: Wenn PMI < 49 f\u00fcr 2+ Monate best\u00e4tigt",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T10:10:41.941352+00:00"
   }
 ]

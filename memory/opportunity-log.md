@@ -17,3 +17,10 @@
 ## [2026-04-01 18:25 UTC] — 1 Opportunity, 1 Paper Trade
   ✅ [6/10] GOLD: Why the gold rally isn't over yet - ING THINK economic and f
 ---
+
+## [2026-04-02 07:25 UTC] — 2 Opportunities, 2 Paper Trades geöffnet
+
+  ✅ [5/10] RHM.DE (Rheinmetall AG) — 1551.50€ | Trigger: eu rearmament, nato spending
+  ✅ [5/10] ASML.AS (ASML Holding) — 1139.20€ | Trigger: asml order, ai chip production
+
+---

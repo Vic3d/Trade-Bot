@@ -23,10 +23,10 @@
       "lag_hours": 24,
       "direction": "same",
       "threshold_pct": 2.0,
-      "accuracy_pct": 100.0,
-      "sample_count": 2,
+      "accuracy_pct": 66.7,
+      "sample_count": 3,
       "wins": 2,
-      "losses": 0,
+      "losses": 1,
       "description": "Nikkei als Frühindikator für Japan-Industrienachfrage → Kupfer"
     },
     "VIX_TECH": {
@@ -38,9 +38,9 @@
       "direction": "inverse",
       "threshold_pct": 5.0,
       "accuracy_pct": 0.0,
-      "sample_count": 2,
+      "sample_count": 3,
       "wins": 0,
-      "losses": 2,
+      "losses": 3,
       "description": "VIX-Spike führt Tech-Selloff um 1-2 Sessions"
     },
     "BRENT_WTI_SPREAD_EQNR": {

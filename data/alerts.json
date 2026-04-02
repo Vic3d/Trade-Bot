@@ -376,5 +376,47 @@
     "ticker": "",
     "message": "\ud83d\udcca WPR-MONATSSIGNAL \ud83d\udfe2 STUFE 2 \u2014 Rheinmetall AG (RHM.DE)\nWPR Monat: -56 \u2192 -50 (\u00fcber -50 \u2014 Momentum best\u00e4tigt)\n\u2192 Prozyklisches Kaufsignal. Einstieg wenn Kurs \u00fcber fallenden GD (Wochenchart).\n14M-Range: $",
     "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T06:10:40.344762+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 127.06\u20ac | Stop: 127.0\u20ac | Nur noch 0.0% Abstand! [Conviction: 57/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T06:10:40.346721+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T07:10:39.885178+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 127.01\u20ac | Stop: 127.0\u20ac | 0.0% Abstand [Conviction: 57/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T07:10:39.885983+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: iShares Biotech ETF (A2DWAW) @ 7.41\u20ac | P&L: +5.8% (>5.0%) | Stop auf Breakeven (7.00\u20ac) nachziehen! [Conviction: 36/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T08:10:40.469534+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 126.97\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 60/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T10:10:41.941825+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.1%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mi",
+    "value": ""
   }
 ]

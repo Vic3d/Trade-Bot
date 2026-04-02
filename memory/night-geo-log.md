@@ -9,3 +9,10 @@
 [TREND] 2026-04-01 04:00 — 🔴 STRONG: S1 bullish_oil (16 Events in 3h): Jessica Genauer: How Iran Counters US Military Might
 [TREND] 2026-04-01 06:00 — 🔴 STRONG: S1 bullish_oil (20 Events in 3h): Stocks, Bonds Rise on Optimism Iran War Nears End: Markets Wrap
 [TREND] 2026-04-01 06:00 — 🔴 STRONG: S2 bullish_oil (9 Events in 3h): Watch Military Assets, Not Words, on Iran War: Professor
+[TREND] 2026-04-02 00:00 — 🔴 STRONG: S1 bullish_oil (10 Events in 3h): Fmr. US Saudi Arabia Ambassador on What's Next for Iran
+[TREND] 2026-04-02 02:00 — 🔴 STRONG: S1 bullish_oil (14 Events in 3h): Gold Extends Four-Day Gain as Trump Sets Stage for Iran War Exit
+[TREND] 2026-04-02 02:00 — 🔴 STRONG: S1 geopolitical_watchlist (5 Events in 3h): Trump Attends SCOTUS Debate on Birthright Citizenship
+[TREND] 2026-04-02 04:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): Trump:  Other countries need to take care of Strait of Hormuz
+[TREND] 2026-04-02 04:00 — 🔴 STRONG: S4 bullish_oil (8 Events in 3h): Gold Declines After Trump Signals Further US Strikes in Iran War
+[TREND] 2026-04-02 06:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): Trump:  Other countries need to take care of Strait of Hormuz
+[TREND] 2026-04-02 06:00 — 🔴 STRONG: S4 bullish_oil (6 Events in 3h): Gold Declines After Trump Signals Further US Strikes in Iran War

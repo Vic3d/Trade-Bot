@@ -1,30 +1,35 @@
 {
-  "total_analyzed": 63,
-  "avg_entry_quality": 6.0,
+  "total_analyzed": 71,
+  "avg_entry_quality": 6.1,
   "avg_exit_quality": 5.7,
-  "disposition_effect": -0.253,
+  "disposition_effect": -0.23,
   "optimal_holding_days": {
+    "PS_STLD": 0.5,
+    "PS11": 1.5,
+    "PS13": 1.0,
+    "PS1": 4.3,
+    "PS4": 1.5,
     "PS14": 1.0,
     "PS12": 1.0,
-    "PS13": 1.0,
     "PS17": 1.0,
-    "PS_STLD": 0.5,
-    "PS11": 1.0,
-    "PS1": 4.3,
     "PS2": 4.3,
     "PS15": 0.3,
     "PT": 2.0,
-    "PS4": 1.7,
     "PM": 4.0,
     "S1": 0.0,
     "PS9": 2.0,
     "PS5": 7.0
   },
   "regime_performance": {
+    "NEUTRAL": {
+      "wr": 0.0,
+      "avg_pnl": -265.94,
+      "trades": 3
+    },
     "RISK_OFF": {
-      "wr": 0.889,
-      "avg_pnl": 51.97,
-      "trades": 18
+      "wr": 0.87,
+      "avg_pnl": 54.72,
+      "trades": 23
     },
     "PAPER_LEARN": {
       "wr": 0.0,
@@ -38,12 +43,100 @@
     }
   },
   "insights": [
-    "Anti-Disposition: Verlierer werden schneller geschlossen (1.6d) als Gewinner gehalten (2.1d). Gute Disziplin!",
-    "PS12 hat 100% WR — aber nur 1 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (89% WR, 18 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "Anti-Disposition: Verlierer werden schneller geschlossen (1.6d) als Gewinner gehalten (2.0d). Gute Disziplin!",
+    "PS11 hat 100% WR — aber nur 2 Trades. Mehr Daten nötig.",
+    "Bestes Regime: RISK_OFF (87% WR, 23 Trades) | Schlechtestes: NEUTRAL (0% WR, 3 Trades)",
     "PS1 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 82,
+      "ticker": "STLD",
+      "strategy": "PS_STLD",
+      "entry_quality": 10.0,
+      "exit_quality": 2.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -265.94,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 84,
+      "ticker": "WPM",
+      "strategy": "S4",
+      "entry_quality": 10.0,
+      "exit_quality": 4.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -265.94,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 83,
+      "ticker": "AG",
+      "strategy": "S4",
+      "entry_quality": 10.0,
+      "exit_quality": 4.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -265.94,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 67,
+      "ticker": "SAAB-B.ST",
+      "strategy": "PS11",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 2,
+      "regime": "RISK_OFF",
+      "pnl": 98.52,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 70,
+      "ticker": "SCCO",
+      "strategy": "PS13",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 93.08,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 31,
+      "ticker": "EQNR.OL",
+      "strategy": "PS1",
+      "entry_quality": 7.0,
+      "exit_quality": 2.0,
+      "holding_days": 5,
+      "regime": "RISK_OFF",
+      "pnl": -13.94,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 66,
+      "ticker": "HL",
+      "strategy": "PS4",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 56.01,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 69,
+      "ticker": "FCX",
+      "strategy": "PS13",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 89.4,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
     {
       "id": 72,
       "ticker": "ZIM",
@@ -236,7 +329,7 @@
       "ticker": "PAAS",
       "strategy": "PS4",
       "entry_quality": 6.0,
-      "exit_quality": 10.0,
+      "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 17.28,
@@ -738,7 +831,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-01T19:18:22",
-  "avg_win_holding_days": 2.1,
+  "analysis_timestamp": "2026-04-02T12:32:11",
+  "avg_win_holding_days": 2.0,
   "avg_loss_holding_days": 1.6
 }

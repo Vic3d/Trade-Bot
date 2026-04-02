@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-01T20:40:28.544718",
+  "timestamp": "2026-04-02T08:40:28.459964",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
@@ -26,12 +26,12 @@
     "PS3": {
       "name": "NATO/EU-Rüstung",
       "status": "NEUTRAL",
-      "score": 50,
+      "score": 40,
       "momentum_avg": 0,
-      "news_score": 60,
+      "news_score": 0,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News bullish (Score +60)"
+        "News neutral (Score +0)"
       ]
     },
     "PS4": {
@@ -217,10 +217,10 @@
       "name": "NATO/EU-Rüstung",
       "old_status": "STARK",
       "new_status": "NEUTRAL",
-      "score": 50,
+      "score": 40,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News bullish (Score +60)"
+        "News neutral (Score +0)"
       ]
     },
     {

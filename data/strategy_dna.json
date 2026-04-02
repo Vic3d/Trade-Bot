@@ -1,6 +1,6 @@
 {
-  "strategies_analyzed": 3,
-  "strategies_evolved": 3,
+  "strategies_analyzed": 5,
+  "strategies_evolved": 5,
   "evolutions": {
     "DT4": {
       "trades_analyzed": 8,
@@ -22,17 +22,17 @@
       "recommendation": "KILL"
     },
     "PS1": {
-      "trades_analyzed": 6,
+      "trades_analyzed": 7,
       "wins": 3,
-      "losses": 3,
-      "win_rate": 0.5,
+      "losses": 4,
+      "win_rate": 0.429,
       "current_params": {
-        "avg_stop_distance_pct": 3.89,
+        "avg_stop_distance_pct": 4.77,
         "avg_win_pct": 6.42,
         "max_win_pct": 12.36,
-        "avg_holding_days": 4.3,
+        "avg_holding_days": 4.4,
         "avg_holding_days_winners": 4.3,
-        "avg_holding_days_losers": 4.3
+        "avg_holding_days_losers": 4.5
       },
       "recommended_params": {
         "optimal_stop_pct": 6.47,
@@ -44,6 +44,11 @@
             "avg_pnl": 0.08,
             "n": 2
           },
+          "3-5d": {
+            "wr": 0.0,
+            "avg_pnl": -10.17,
+            "n": 2
+          },
           "6-10d": {
             "wr": 0.667,
             "avg_pnl": 6.4,
@@ -52,12 +57,80 @@
         }
       },
       "findings": [
-        "Verlierer-Stops Ø 3.1% vs. Gewinner Ø 4.7% — Stops bei Verlierern zu eng!",
         "Avg Win 6.4% ist nur 52% des Maximallaufs (12.4%) — Gewinne werden zu früh mitgenommen!",
         "Sweet Spot Haltedauer: 6-10d (Avg PnL: +6.4%, WR: 67%, n=3)",
         "🌤️ Regime-unabhängig — performt in allen Marktphasen ähnlich"
       ],
-      "expected_improvement": "Stop weiter (3.9% → 6.5%) | TP bei 9.9% | Haltedauer 6-10d",
+      "expected_improvement": "Stop weiter (4.8% → 6.5%) | TP bei 9.9% | Haltedauer 6-10d",
+      "confidence": "LOW",
+      "recommendation": "MONITOR"
+    },
+    "PS4": {
+      "trades_analyzed": 5,
+      "wins": 4,
+      "losses": 1,
+      "win_rate": 0.8,
+      "current_params": {
+        "avg_stop_distance_pct": 5.0,
+        "avg_win_pct": 1.06,
+        "max_win_pct": 2.85,
+        "avg_holding_days": 1.4,
+        "avg_holding_days_winners": 1.5,
+        "avg_holding_days_losers": 1.0
+      },
+      "recommended_params": {
+        "optimal_stop_pct": 6.5,
+        "optimal_tp_pct": 1.5,
+        "optimal_holding_range": "0-2d",
+        "holding_range_detail": {
+          "0-2d": {
+            "wr": 0.8,
+            "avg_pnl": 0.68,
+            "n": 5
+          }
+        }
+      },
+      "findings": [
+        "Avg Win 1.1% ist nur 57% des Maximallaufs (1.9%) — Gewinne werden zu früh mitgenommen!",
+        "Sweet Spot Haltedauer: 0-2d (Avg PnL: +0.7%, WR: 80%, n=5)",
+        "✅ Regime RISK_OFF: WR 80% bei 5 Trades — ideal!"
+      ],
+      "expected_improvement": "Stop weiter (5.0% → 6.5%) | TP bei 1.5% | Haltedauer 0-2d",
+      "confidence": "LOW",
+      "recommendation": "HEALTHY"
+    },
+    "PS_STLD": {
+      "trades_analyzed": 5,
+      "wins": 2,
+      "losses": 3,
+      "win_rate": 0.4,
+      "current_params": {
+        "avg_stop_distance_pct": 7.07,
+        "avg_win_pct": 1.67,
+        "max_win_pct": 2.31,
+        "avg_holding_days": 0.2,
+        "avg_holding_days_winners": 0.5,
+        "avg_holding_days_losers": 0.0
+      },
+      "recommended_params": {
+        "optimal_stop_pct": 6.5,
+        "optimal_tp_pct": 1.85,
+        "optimal_holding_range": "0-2d",
+        "holding_range_detail": {
+          "0-2d": {
+            "wr": 0.4,
+            "avg_pnl": -7.18,
+            "n": 5
+          }
+        }
+      },
+      "findings": [
+        "Verlierer-Stops Ø 8.4% vs. Gewinner Ø 5.0% — Verlierer-Stops zu weit",
+        "Sweet Spot Haltedauer: 0-2d (Avg PnL: -7.2%, WR: 40%, n=5)",
+        "⛔ Regime BEAR: WR 0% bei 2 Trades — vermeiden!",
+        "✅ Regime RISK_OFF: WR 100% bei 2 Trades — ideal!"
+      ],
+      "expected_improvement": "Stop enger (7.1% → 6.5%) | TP bei 1.9% | Haltedauer 0-2d",
       "confidence": "LOW",
       "recommendation": "MONITOR"
     },
@@ -113,9 +186,9 @@
       "recommended_filter": "NICHT traden in PAPER_LEARN (WR 0%)"
     },
     "PS1": {
-      "best_regime": "UNKNOWN",
-      "best_regime_wr": 0.4,
-      "best_regime_trades": 5,
+      "best_regime": "RISK_OFF",
+      "best_regime_wr": 0.5,
+      "best_regime_trades": 2,
       "worst_regime": "UNKNOWN",
       "worst_regime_wr": 0.4,
       "worst_regime_trades": 5,
@@ -126,12 +199,54 @@
           "n": 5
         },
         "RISK_OFF": {
-          "wr": 1.0,
-          "avg_pnl": 1.7,
-          "n": 1
+          "wr": 0.5,
+          "avg_pnl": 0.52,
+          "n": 2
         }
       },
       "recommended_filter": "Regime-unabhängig — \"Allwetter\"-Strategie"
+    },
+    "PS4": {
+      "best_regime": "RISK_OFF",
+      "best_regime_wr": 0.8,
+      "best_regime_trades": 5,
+      "worst_regime": "RISK_OFF",
+      "worst_regime_wr": 0.8,
+      "worst_regime_trades": 5,
+      "regime_detail": {
+        "RISK_OFF": {
+          "wr": 0.8,
+          "avg_pnl": 0.68,
+          "n": 5
+        }
+      },
+      "recommended_filter": "Optimal in RISK_OFF (WR 80%)"
+    },
+    "PS_STLD": {
+      "best_regime": "RISK_OFF",
+      "best_regime_wr": 1.0,
+      "best_regime_trades": 2,
+      "worst_regime": "BEAR",
+      "worst_regime_wr": 0.0,
+      "worst_regime_trades": 2,
+      "regime_detail": {
+        "BEAR": {
+          "wr": 0.0,
+          "avg_pnl": -13.0,
+          "n": 2
+        },
+        "RISK_OFF": {
+          "wr": 1.0,
+          "avg_pnl": 1.67,
+          "n": 2
+        },
+        "NEUTRAL": {
+          "wr": 0.0,
+          "avg_pnl": -13.25,
+          "n": 1
+        }
+      },
+      "recommended_filter": "NICHT traden in BEAR (WR 0%); Optimal in RISK_OFF (WR 100%)"
     },
     "PT": {
       "best_regime": "UNKNOWN",
@@ -168,13 +283,11 @@
     "PS18",
     "PS2",
     "PS3",
-    "PS4",
     "PS5",
     "PS9",
     "PS_CCJ",
     "PS_LHA",
     "PS_NVO",
-    "PS_STLD",
     "S1",
     "S2",
     "S3",
@@ -186,5 +299,5 @@
     "emerging_themes",
     "new"
   ],
-  "timestamp": "2026-04-01T19:18:22"
+  "timestamp": "2026-04-02T12:32:11"
 }
