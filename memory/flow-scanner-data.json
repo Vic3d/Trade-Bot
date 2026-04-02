@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-01T19:15:20Z",
+  "timestamp": "2026-04-02T19:15:21Z",
   "overall_direction": "NEUTRAL",
   "overall_emoji": "⚪",
   "overall_score": 0,
@@ -107,9 +107,8 @@
   },
   "top_signals": [],
   "congressional_tickers": [
-    "FL",
-    "OH",
-    "PA"
+    "MN",
+    "MO"
   ],
   "auto_trades_created": [],
   "scan_config": {

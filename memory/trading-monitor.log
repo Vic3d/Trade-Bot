@@ -4655,3 +4655,118 @@ WPR Monat: -56 → -50 (übe...
 [2026-04-02 10:10:41] Risk Score: 80/100 (HIGH)
 [2026-04-02 10:10:41] State Snapshot geschrieben: 3 Positionen, 1 Alerts
 [2026-04-02 10:10:41] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 11:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 11:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 11:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 11:10:37] Onvista: 6/6 URLs gecacht
+[2026-04-02 11:10:39] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 11:10:39] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 11:10:39] Paper Engine: VIX=26.8 → Regime=CORRECTION
+[2026-04-02 11:10:39] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 11:10:39] Risk Score: 80/100 (HIGH)
+[2026-04-02 11:10:39] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 11:10:39] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 12:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 12:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 12:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 12:10:37] Onvista: 6/6 URLs gecacht
+[2026-04-02 12:10:39] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 12:10:40] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 12:10:40] Paper Engine: VIX=27.5 → Regime=CORRECTION
+[2026-04-02 12:10:40] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 12:10:40] Risk Score: 80/100 (HIGH)
+[2026-04-02 12:10:40] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 12:10:40] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 13:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 13:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 13:10:42] Fetching Onvista prices (cache)...
+[2026-04-02 13:10:46] Onvista: 6/6 URLs gecacht
+[2026-04-02 13:10:48] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 13:10:49] ALERT QUEUED: ⚠️ MACRO: WTI ÖL Tagesbewegung +6.7% ($105.94→$113.00)
+📌 Ursache: Öl-Schock
+🔗 Ka...
+[2026-04-02 13:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 13:10:49] Paper Engine: VIX=27.5 → Regime=CORRECTION
+[2026-04-02 13:10:49] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 13:10:49] Risk Score: 80/100 (HIGH)
+[2026-04-02 13:10:49] State Snapshot geschrieben: 3 Positionen, 1 Alerts
+[2026-04-02 13:10:49] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 14:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 14:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 14:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 14:10:37] Onvista: 6/6 URLs gecacht
+[2026-04-02 14:10:55] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 14:10:55] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 14:10:55] Paper Engine: VIX=26.4 → Regime=CORRECTION
+[2026-04-02 14:10:55] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 14:10:55] Risk Score: 80/100 (HIGH)
+[2026-04-02 14:10:55] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 14:10:55] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 15:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 15:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 15:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 15:10:37] Onvista: 6/6 URLs gecacht
+[2026-04-02 15:10:56] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 15:10:56] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 15:10:56] Paper Engine: VIX=25.1 → Regime=CORRECTION
+[2026-04-02 15:10:56] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 15:10:56] Risk Score: 80/100 (HIGH)
+[2026-04-02 15:10:56] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 15:10:56] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 16:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 16:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 16:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 16:10:37] Onvista: 6/6 URLs gecacht
+[2026-04-02 16:10:47] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 16:10:47] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 16:10:47] Paper Engine: VIX=25.6 → Regime=CORRECTION
+[2026-04-02 16:10:47] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 16:10:47] Risk Score: 80/100 (HIGH)
+[2026-04-02 16:10:47] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 16:10:47] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 17:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 17:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 17:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 17:10:38] Onvista: 6/6 URLs gecacht
+[2026-04-02 17:10:48] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 17:10:48] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 17:10:48] Paper Engine: VIX=25.5 → Regime=CORRECTION
+[2026-04-02 17:10:48] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 17:10:48] Risk Score: 80/100 (HIGH)
+[2026-04-02 17:10:48] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 17:10:48] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 18:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 18:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 18:10:34] Fetching Onvista prices (cache)...
+[2026-04-02 18:10:38] Onvista: 6/6 URLs gecacht
+[2026-04-02 18:10:43] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 18:10:43] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 18:10:43] Paper Engine: VIX=25.6 → Regime=CORRECTION
+[2026-04-02 18:10:43] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 18:10:43] Risk Score: 80/100 (HIGH)
+[2026-04-02 18:10:43] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 18:10:43] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 19:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 19:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 19:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 19:10:38] Onvista: 6/6 URLs gecacht
+[2026-04-02 19:10:40] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 19:10:40] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 19:10:40] Paper Engine: VIX=25.1 → Regime=CORRECTION
+[2026-04-02 19:10:41] Regime: CORRECTION (Velocity: VOLATILE)
+[2026-04-02 19:10:41] Risk Score: 80/100 (HIGH)
+[2026-04-02 19:10:41] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 19:10:41] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 19:10:41] Overnight Context geschrieben: 02.04.2026
+[2026-04-02 20:10:21] CEO-Direktive geladen: Modus=DEFENSIVE, Max-Neu=2, Health=70/100
+[2026-04-02 20:10:21] Fetching 28 Yahoo tickers...
+[2026-04-02 20:10:33] Fetching Onvista prices (cache)...
+[2026-04-02 20:10:38] Onvista: 6/6 URLs gecacht
+[2026-04-02 20:10:40] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 20:10:40] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-02 20:10:40] Paper Engine: VIX=24.2 → Regime=NEUTRAL
+[2026-04-02 20:10:40] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-02 20:10:40] Risk Score: 80/100 (HIGH)
+[2026-04-02 20:10:40] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-02 20:10:40] positions-live.md aktualisiert: 4 aktiv, 7 geschlossen
+[2026-04-02 20:10:40] Overnight Context geschrieben: 02.04.2026

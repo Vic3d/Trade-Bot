@@ -256,3 +256,11 @@
 | 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 31.03.2026 20:57 |
 | 01.04.2026 14:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 31.03.2026 20:17 |
 | 01.04.2026 15:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 14:27 |
+| 02.04.2026 16:00 | **INFO2** | zahlungsavise@bo... TSP - TechnikServicePlus GmbH - ... | 02.04.2026 13:44 |
+| 02.04.2026 16:00 | **INFO2** | seminarorga@info... Seminarangebot im Viessmann Info... | 02.04.2026 07:17 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 02.04.2026 15:37 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 02.04.2026 14:22 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 02.04.2026 13:02 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 02.04.2026 09:17 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 19:27 |
+| 02.04.2026 16:00 | **AUFTRAG** | noreply-bohandwe... Handwerkerkopplung: Schadstoffhi... | 01.04.2026 18:27 |

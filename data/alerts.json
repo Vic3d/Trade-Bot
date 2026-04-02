@@ -418,5 +418,12 @@
     "ticker": "",
     "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.1%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mi",
     "value": ""
+  },
+  {
+    "timestamp": "2026-04-02T13:10:49.731829+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung +6.7% ($105.94\u2192$113.00)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLT",
+    "value": ""
   }
 ]

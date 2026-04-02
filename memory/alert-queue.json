@@ -53,5 +53,15 @@
     "message": "\u26a0\ufe0f MACRO: EURO STOXX BANKS (SX7E) -2.1%\n\ud83d\udccc Ursache: China-Abschw\u00e4chung\n\ud83d\udd17 Kausalkette: Schwache China-Nachfrage \u2192 Rohstoff-Preise fallen \u2192 Bergbau und Energie verlieren\n\n\ud83d\udcca Portfolio-Impact:\n  \ud83d\udcc9 EQNR: mittel \u2014 Energienachfrage sinkt\n\n\ud83c\udfaf Strategie-Menu:\n  \ud83d\udfe2 Halten: Kurzfristig schmerzt es, mittelfristig erholt sich China\n  \ud83d\udfe1 Stop enger setzen bei Energie-Positionen (EQNR)\n  \ud83d\udd34 Exit Rohstoffe: Wenn PMI < 49 f\u00fcr 2+ Monate best\u00e4tigt",
     "target": "452053147620343808",
     "ts": "2026-04-02T10:10:41.941352+00:00"
+  },
+  {
+    "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung +6.7% ($105.94\u2192$113.00)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLTR: neutral \u2014 Kein direkter \u00d6l-Bezug\n  \ud83d\udcc8 EQNR: stark \u2014 \u00d6lproduzent \u2014 profitiert direkt\n\n\ud83c\udfaf Strategie-Menu:\n  \ud83d\udfe2 Halten: EQNR Stop nachziehen \u2014 Thesis best\u00e4tigt\n  \ud83d\udfe1 Teilverkauf Tech: NVDA/MSFT reduzieren wenn VIX > 27\n  \ud83d\udd34 Voll Exit Rohstoffe: Wenn Nikkei bis 12 Uhr nicht erholt",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T13:10:49.731192+00:00"
+  },
+  {
+    "message": "\ud83d\udccb **Daily Position Review** | VIX 26.4 | 0 Exit(s) | 6 Stop-Adjust(s)\n  \ud83d\udd04 TIGHTEN_STOP DHT: 14.46\u219216.51\n  \ud83d\udd04 TIGHTEN_STOP DHT: 14.46\u219216.51\n  \ud83d\udd04 TIGHTEN_STOP FRO: 27.70\u219231.74\n  \ud83d\udd04 TIGHTEN_STOP FRO: 27.70\u219231.74\n  \ud83d\udd04 TIGHTEN_STOP HL: 14.42\u219217.48\n  \ud83d\udd04 TIGHTEN_STOP OXY: 50.23\u219256.71\n  \u26aa 7 Positionen HOLD",
+    "target": "452053147620343808",
+    "ts": "2026-04-02T14:45:08.523973+00:00"
   }
 ]

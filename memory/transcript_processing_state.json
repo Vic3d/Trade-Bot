@@ -1,0 +1,44 @@
+{
+  "processed": {
+    "eriksen-bitcoin-wpr-2026-03-13.txt": {
+      "hash": "c1c1a0d643eed1361db48b71e4d48a2d1538a78a4e1ab6cc55007e2f604e5b59",
+      "processed_at": "2026-04-02T13:15:39.494784",
+      "had_insights": true
+    },
+    "erichsen_2026-03-30.txt": {
+      "hash": "b31443aa6be6843ae6bc8baf7fb8e9aaaa4a629f289f0288d5279d6817911c50",
+      "processed_at": "2026-04-02T13:15:39.495453",
+      "had_insights": true
+    },
+    "dirk7h-kardinalsfehler-2026-03-22.txt": {
+      "hash": "d7db785582598f52c418cf43ef638bc160a82d40a3bb6281dc0bcf7a33d9194d",
+      "processed_at": "2026-04-02T13:15:39.495729",
+      "had_insights": true
+    },
+    "eriksen-2026-03-23-gold.txt": {
+      "hash": "2b6785aaefd85063b36345012e766196980678ede27aabdbda7041721cc9551f",
+      "processed_at": "2026-04-02T13:15:39.496117",
+      "had_insights": true
+    },
+    "eriksen-rendite-spezialisten-2026-03-22.txt": {
+      "hash": "19e2cc16909d261cebc0d65f07dd3c8ee7f34dffb609c44fc1e0fa8eefa9f2d0",
+      "processed_at": "2026-04-02T13:15:39.496390",
+      "had_insights": true
+    },
+    "erichsen_2026-03-30b.txt": {
+      "hash": "5fc8a1a9af791ceaa6a4b4974ea0609125655fd26fd8203d885d3aace569b2af",
+      "processed_at": "2026-04-02T13:15:39.496634",
+      "had_insights": true
+    },
+    "finanzb\u00e4r-lithium-2026-03-27.txt": {
+      "hash": "3509a594ada18e34d078365d2747ca1d5bbddc38335cbb4db345e9ab19dd2326",
+      "processed_at": "2026-04-02T13:15:39.496857",
+      "had_insights": true
+    },
+    "eriksen-athtargets-2026-03-18.txt": {
+      "hash": "5b70f80e8813cb74211bcdd75b1b5cbf1e1a94a3aaed3bfadf7854a774eedf55",
+      "processed_at": "2026-04-02T13:15:39.497084",
+      "had_insights": true
+    }
+  }
+}

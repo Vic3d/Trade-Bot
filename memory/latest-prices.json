@@ -1,42 +1,42 @@
 {
-  "timestamp": "2026-04-02T10:10:41.942204+00:00",
+  "timestamp": "2026-04-02T20:10:40.514992+00:00",
   "fx": {
-    "EURUSD": 1.1525,
-    "EURNOK": 11.2154,
-    "GBPEUR": 1.1456
+    "EURUSD": 1.1538,
+    "EURNOK": 11.2223,
+    "GBPEUR": 1.1465
   },
   "macro": {
-    "wti": 107.68,
-    "vix": 26.53,
+    "wti": 111.39,
+    "vix": 24.25,
     "nikkei": -2.3751723121537074
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 127.11,
-      "price_raw": 146.49,
+      "price_eur": 128.67,
+      "price_raw": 148.46,
       "entry_eur": 132.11,
-      "pnl_pct": -3.79,
+      "pnl_pct": -2.6,
       "stop_eur": 127.0,
-      "rs_qqq": 0.12,
+      "rs_qqq": 11.73,
       "conviction": 60
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.7,
-      "price_raw": 28.7,
+      "price_eur": 28.47,
+      "price_raw": 28.47,
       "entry_eur": 27.9,
-      "pnl_pct": 2.87,
+      "pnl_pct": 2.04,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 48
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.34,
-      "price_raw": 7.34,
+      "price_eur": 7.36,
+      "price_raw": 7.36,
       "entry_eur": 7.0,
-      "pnl_pct": 4.8,
+      "pnl_pct": 5.16,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 36
@@ -46,86 +46,86 @@
     "STLD": {
       "ticker": "STLD",
       "name": "Steel Dynamics Inc.",
-      "price_eur": 158.66,
-      "price_raw": 182.85
+      "price_eur": 156.18,
+      "price_raw": 180.2
     },
     "RHM.DE": {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
-      "price_eur": 1366.59,
-      "price_raw": 1575.0
+      "price_eur": 1361.15,
+      "price_raw": 1570.5
     },
     "AG": {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "price_eur": 19.24,
-      "price_raw": 22.17
+      "price_eur": 18.92,
+      "price_raw": 21.84
     },
     "ASML.AS": {
       "ticker": "ASML.AS",
       "name": "ASML Holding",
-      "price_eur": 990.72,
-      "price_raw": 1141.8
+      "price_eur": 1006.24,
+      "price_raw": 1161.0
     },
     "BHP.L": {
       "ticker": "BHP.L",
       "name": "BHP Group",
-      "price_eur": 2349.67,
-      "price_raw": 2708.0
+      "price_eur": 2392.1,
+      "price_raw": 2760.0
     },
     "RIO.L": {
       "ticker": "RIO.L",
       "name": "Rio Tinto",
-      "price_eur": 6079.83,
-      "price_raw": 7007.0
+      "price_eur": 6155.31,
+      "price_raw": 7102.0
     },
     "FCX": {
       "ticker": "FCX",
       "name": "Freeport-McMoRan (Kupfer)",
-      "price_eur": 53.1,
-      "price_raw": 61.2
+      "price_eur": 53.17,
+      "price_raw": 61.34
     },
     "GOLD": {
       "ticker": "GOLD",
       "name": "Barrick Gold",
-      "price_eur": 36.28,
-      "price_raw": 41.81
+      "price_eur": 35.82,
+      "price_raw": 41.33
     },
     "NEM": {
       "ticker": "NEM",
       "name": "Newmont Mining (Gold)",
-      "price_eur": 98.73,
-      "price_raw": 113.79
+      "price_eur": 98.85,
+      "price_raw": 114.06
     },
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 34.19,
-      "price_raw": 39.41
+      "price_eur": 34.4,
+      "price_raw": 39.7
     },
     "LHA.DE": {
       "ticker": "LHA.DE",
       "name": "Lufthansa AG",
-      "price_eur": 6.46,
-      "price_raw": 7.45
+      "price_eur": 6.5,
+      "price_raw": 7.5
     },
     "MOS": {
       "ticker": "MOS",
       "name": "Mosaic Company",
-      "price_eur": 23.03,
-      "price_raw": 26.54
+      "price_eur": 22.69,
+      "price_raw": 26.18
     },
     "VALE": {
       "ticker": "VALE",
       "name": "Vale S.A.",
-      "price_eur": 13.93,
-      "price_raw": 16.05
+      "price_eur": 14.04,
+      "price_raw": 16.2
     },
     "SAP.DE": {
       "ticker": "SAP.DE",
       "name": "SAP SE",
-      "price_eur": 146.06,
-      "price_raw": 146.06
+      "price_eur": 148.9,
+      "price_raw": 148.9
     },
     "NOVO-B.CO": {
       "ticker": "NOVO-B.CO",

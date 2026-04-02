@@ -192,9 +192,76 @@
 
 ---
 
+### 9. HEADLINE TRADING IST TOD FÜR PRIVATANLEGER
+**Quelle:** Lars Eriksen, Active Portfolio, 2026-03-30 (Video am Montag-Morgen, Iran-News)
+
+**Why Headline Trading Fails:**
+- Trump-Iran-News am Morgen → Futures steigen → Buy?
+- Nachmittags: Iran-Dementti → Falls wieder
+- Tagesschlusskurs = **einzige gültige Information für Position-Entry**
+- Intraday-Volatilität ist Rauschen, kein Signal
+
+**Echte Signale (wöchentlich):**
+- Wochenschluss-Kurs vs. Gleitenden Durchschnitt
+- Banken-Topbildung (Vorbote für Index-Schwäche)
+- Put-Optionen Volumen (Absicherungs-Änderungen)
+
+**News-Handling für aktive Trader:**
+- Headline verstanden? OK.
+- Position eingehen sofort? NEIN.
+- Abwarten auf wöchentliches Schlusskurs-Signal
+- Dann mit Hebel (Scaling) einsteigen
+
+---
+
+### 10. POLITISCHE MÄRKTE: STRUKTURELLE DOMINANZ > TEMPORÄRES RAUSCHEN
+**Quelle:** Lars Eriksen, Rendite-Spezialisten Ausgabe 13/26, 2026-03-22
+
+**These:** "Politische Börsen haben keine kurzen Beine mehr"
+- Früher: Einzelne Politik-News = schneller, sauberer Preis
+- Heute: Trump/Iran/Sanktionen = dauerhafte Strukturveränderung
+- **Folge:** VIX bleibt hoch, mehrwöchige Schwäche statt einzelner Tage
+
+**Strukturelle Folgen dieser Phase:**
+- Near-/Re-Shoring (USA → Rückverlegung von Produktion) = NICHT vorübergehend
+- Energieversorgung (Hormus-Blockade potentiell, LNG-Abhängigkeiten) = strukturelle Kosten
+- Erwartungserosion: Wiederholte "Ultimatum-Verlängerungen" wirken progressiv negativer
+
+**Was NICHT funktioniert:**
+- Enge Stops in hochpolitischen Zeiten → Rauschen-Ausgestoppt
+- Solution: Wider Stops ODER zeitbasierte (nicht preisbasiert) Stop-Placement
+- Halteperiode: Lange genug dass politisches Rauschen = temporäre Volatilität, nicht Signal
+
+**Marktstruktur-Indikatoren:**
+- Brent vs. WTI Spread = Markt einpreist Exportstop-Risiko
+- S&P mehrere Wochen unter 200-Tage-Linie = Struktur-Schwäche, nicht Einzeltag
+
+---
+
+### 11. CASH IST NICHT PASSIV — CASH OPTIMIZATION
+**Quelle:** Lars Eriksen, Rendite-Spezialisten, 2026-03-18
+
+**Tagesgeld-Zinsen nutzen:**
+- 10.000 € × 2,48% = 2.776 € über 10 Jahre
+- Nicht investierte Cash auf der Bank = Geldverbrennung
+- 5 Minuten Aufwand → Scalable Capital Tagesgeld oder Äquivalent
+
+**Psychologie des "Seitenlinie"-Todes:**
+- 30-Jahre-Studie (Dalbar): Durchschnitt Private 3,9% vs. S&P 10,9%
+- Ursache: Schlechtes Timing beim Wieder-Reinkommen
+- Kosten: 10 beste Tage verpassen = 50% Rendite weg
+
+**Lösung für aktive Trader mit hoher Cashquote:**
+- Cash ist Qualität in Unsicherheit (keine Schande!)
+- Aber: Tagesgeld optimieren + Position-Sizing planen
+- Nicht: "Auf Börsenberuhigung warten, DANN massiv rein"
+
+---
+
 ## 🔴 KOMMENDE ERKENNTNISSE
 
-- **Woche 2026-WW14:** Weitere Transcripts hinzugefügt? → AKTUALISIEREN
+- **Geopolitische Effekte (Iran/Hormus):** Wie schlägt sich im Portfolio durch?
+- **Lithium-Positions vs. Markt-Timing:** Wann ist Nachkauf sinnvoll?
 - **Muster-Validierung:** Welche dieser Methoden funktionieren mit Victors aktuellem Portfolio?
 - **Integration:** In welche Strategien fließt dies ein?
 
