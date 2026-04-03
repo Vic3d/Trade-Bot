@@ -21,21 +21,37 @@ def run():
 
     lines = [f"# State Snapshot — {ts}", "*Automatisch generiert um 23:00. Nicht manuell bearbeiten.*\n"]
 
-    # ── 1. Offene Trades ──────────────────────────────────────────────────────
+    # ── 1. Offene Trades — SINGLE SOURCE OF TRUTH: trading_config.json ─────────
     lines.append("## Offene Positionen")
-    trades = conn.execute("""
-        SELECT ticker, direction, entry_price, stop_price, strategy_id, notes
-        FROM trades WHERE outcome='open' ORDER BY ts_entry ASC
-    """).fetchall()
-
-    if trades:
-        for ticker, direction, entry, stop, strat, notes in trades:
-            stop_str = f"Stop {stop}€" if stop else "⚠️ KEIN STOP"
-            lines.append(f"- **{ticker}** {direction.upper()} @ {entry}€ | {stop_str} | S{strat or '-'}")
-            if notes:
-                lines.append(f"  _{notes}_")
-    else:
-        lines.append("_Keine offenen Positionen_")
+    try:
+        import sys
+        sys.path.insert(0, os.path.dirname(__file__))
+        from portfolio import Portfolio
+        portfolio = Portfolio()
+        real_positions = [p for p in portfolio.real_positions() if p.is_open]
+        if real_positions:
+            for pos in real_positions:
+                stop_str = f"Stop {pos.stop_eur}€" if pos.stop_eur else "⚠️ KEIN STOP"
+                lines.append(f"- **{pos.ticker}** LONG @ {pos.entry_eur}€ | {stop_str} | {pos.strategy or 'S?'}")
+                if pos.notes:
+                    lines.append(f"  _{pos.notes}_")
+        else:
+            lines.append("_Keine offenen Positionen_")
+        trades = real_positions  # für Zähler unten
+    except Exception as e:
+        # Fallback auf newswire.db wenn portfolio.py nicht verfügbar
+        trades = conn.execute("""
+            SELECT ticker, direction, entry_price, stop_price, strategy_id, notes
+            FROM trades WHERE outcome='open' ORDER BY ts_entry ASC
+        """).fetchall()
+        if trades:
+            for ticker, direction, entry, stop, strat, notes in trades:
+                stop_str = f"Stop {stop}€" if stop else "⚠️ KEIN STOP"
+                lines.append(f"- **{ticker}** {direction.upper()} @ {entry}€ | {stop_str} | S{strat or '-'}")
+                if notes:
+                    lines.append(f"  _{notes}_")
+        else:
+            lines.append("_Keine offenen Positionen_")
 
     # ── 2. Makro-Kontext ──────────────────────────────────────────────────────
     lines.append("\n## Makro-Kontext (letzter Stand)")

@@ -18,19 +18,12 @@ WS = Path('/data/.openclaw/workspace')
 
 
 def yahoo(ticker, timeout=8):
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=2d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            d = json.load(r)
-        meta = d['chart']['result'][0]['meta']
-        p = meta['regularMarketPrice']
-        prev = meta.get('chartPreviousClose', p)
-        chg = ((p - prev) / prev * 100) if prev else 0
-        ccy = meta.get('currency', 'USD')
-        return p, round(chg, 2), ccy
-    except:
-        return None, 0, 'USD'
+    # TRA-178: safe_price verhindert Futures-Rollover-Artefakte bei =F Symbolen
+    from core.fetch_price import safe_price
+    d = safe_price(ticker, timeout=timeout)
+    if d:
+        return d['price'], d['change_pct'], d['currency']
+    return None, 0, 'USD'
 
 
 def to_eur(price, ccy, fx):

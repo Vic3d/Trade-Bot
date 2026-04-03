@@ -1,15 +1,5 @@
 [
   {
-    "id": "20260402190221_trump_wa",
-    "timestamp": "2026-04-02T19:02:21.958796",
-    "source": "trump_watch",
-    "priority": "CRITICAL",
-    "headline": "DISCORD_ALERT:PEACE",
-    "detail": "",
-    "thesis": "",
-    "processed": true
-  },
-  {
     "id": "20260403060221_trump_wa",
     "timestamp": "2026-04-03T06:02:21.738776",
     "source": "trump_watch",

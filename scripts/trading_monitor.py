@@ -166,8 +166,16 @@ def yahoo_price(ticker: str, timeout: int = 8, retries: int = 2) -> dict | None:
             meta = result['meta']
             quote = result['indicators']['quote'][0]
 
-            price = meta.get('regularMarketPrice', 0)
-            prev_close = meta.get('chartPreviousClose', meta.get('previousClose', price))
+            # TRA-178: Futures-Rollover-Fix
+            # Bei =F Symbolen regularMarketPrice + chartPreviousClose können vom
+            # falschen Kontrakt sein → ausschließlich Intraday-Daten verwenden.
+            is_futures = ticker.endswith('=F')
+            if is_futures and closes:
+                price      = closes[-1]   # letzter Intraday-Close = echter Kurs
+                prev_close = opens[0] if opens else closes[0]  # Tages-Open = Referenz
+            else:
+                price      = meta.get('regularMarketPrice', 0)
+                prev_close = meta.get('chartPreviousClose', meta.get('previousClose', price))
 
             closes = [v for v in (quote.get('close') or []) if v is not None]
             opens  = [v for v in (quote.get('open')  or []) if v is not None]

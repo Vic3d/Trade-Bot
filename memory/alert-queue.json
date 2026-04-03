@@ -98,5 +98,15 @@
     "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung -36.2% ($112.06\u2192$71.52)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLTR: neutral \u2014 Kein direkter \u00d6l-Bezug\n\n\ud83c\udfaf Strategie-Menu:\n  \ud83d\udfe2 Halten: EQNR Stop nachziehen \u2014 Thesis best\u00e4tigt\n  \ud83d\udfe1 Teilverkauf Tech: NVDA/MSFT reduzieren wenn VIX > 27\n  \ud83d\udd34 Voll Exit Rohstoffe: Wenn Nikkei bis 12 Uhr nicht erholt",
     "target": "452053147620343808",
     "ts": "2026-04-03T08:10:41.955519+00:00"
+  },
+  {
+    "message": "\ud83d\udfe2 **POSITION GESCHLOSSEN** \u2014 ZIM\nExit: TARGET_HIT | P&L: +324.32\u20ac\nGrund: Ziel $26.10 erreicht \u2014 Gewinne mitnehmen",
+    "target": "452053147620343808",
+    "ts": "2026-04-03T14:45:07.200917+00:00"
+  },
+  {
+    "message": "\ud83d\udccb **Daily Position Review** | VIX 23.9 | 1 Exit(s) | 2 Stop-Adjust(s)\n  \u2705 EXIT ZIM: TARGET_HIT | P&L +324.32\u20ac\n  \ud83d\udd04 TIGHTEN_STOP MOS: 19.74\u219223.59\n  \ud83d\udd04 TIGHTEN_STOP SAP: 139.48\u2192156.27\n  \u26aa 8 Positionen HOLD",
+    "target": "452053147620343808",
+    "ts": "2026-04-03T14:45:07.453906+00:00"
   }
 ]

@@ -51,23 +51,20 @@ IMPACT_EMOJI = {
 
 
 def fetch_market_data() -> dict:
-    """Holt Brent (BZ=F), VIX (^VIX), EUR/USD (EURUSD=X) via Yahoo Finance."""
+    """Holt Brent (BZ=F), VIX (^VIX), EUR/USD (EURUSD=X) via Yahoo Finance.
+    TRA-178: safe_price verhindert Futures-Rollover-Artefakte bei =F Symbolen."""
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    from core.fetch_price import safe_price
     tickers = {"BZ=F": "Brent", "^VIX": "VIX", "EURUSD=X": "EUR/USD"}
     results = {}
     for ticker, label in tickers.items():
-        try:
-            enc = urllib.parse.quote(ticker)
-            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{enc}?interval=1d&range=1d"
-            req = urllib.request.Request(
-                url,
-                headers={"User-Agent": "Mozilla/5.0 (compatible; AlbertBot/1.0)"}
-            )
-            with urllib.request.urlopen(req, timeout=10) as r:
-                data = json.loads(r.read())
-            price = data["chart"]["result"][0]["meta"]["regularMarketPrice"]
-            results[label] = round(price, 2)
-        except Exception as e:
-            results[label] = f"N/A ({str(e)[:30]})"
+        d = safe_price(ticker, timeout=10)
+        if d:
+            results[label] = round(d['price'], 2)
+            results[f"{label}_chg"] = round(d['change_pct'], 2)
+        else:
+            results[label] = "N/A"
     return results
 
 

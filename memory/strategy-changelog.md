@@ -1020,3 +1020,111 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🔴 GESCHWÄCHT** (Score: 34)
 **Gründe:** Preise seitwärts +0.0% (14T) | News bearish (Score -40)
 
+
+## 03.04.2026 15:15 — S1 (Iran/Öl) 🟢→🔴 STATUSWECHSEL
+
+**Entscheidung:** S1 (Iran-Konflikt-These) von **🟢 HALTEN** auf **🔴 EXIT** downgraden. Keine neuen Energie-Positionen bis Neubeurteilung.
+
+**Auslöser:**
+- Iran eskaliert MASSIV: IRGC feuert Raketen auf Haifa, Kuwait Raffinerie brennt, Dubai Explosionen
+- **Aber:** Öl −24% heute trotzdem (WTI $71.52, Brent $76.92)
+- Grund: OPEC+ erhöht Produktion (Meeting Sonntag), Rezessionsängste (Tariffs) schlagen Hormuz-Prämie
+
+**Analyse:**
+- These war: Hormuz blockiert → Öl hoch → Energie up
+- Realität: OPEC+ kompensiert Ausfall aktiv, Demand-Destruction > Supply-Shock
+- A3D42Y (Oil Services ETF) direkt exponiert gegen Öl $70-80 Trough
+
+**Nächste Schritte:**
+- [ ] A3D42Y Position reviewed (halten/exit?)
+- [ ] Oil Services Watch-List pausiert bis Öl >$95 stabil
+- [ ] Nur noch PS_* (Tanker, Defense) im Iran-Kontext aktiv
+
+**Lesson:** Geopolitische Prämien sind fragil. Supply-Shock bricht zusammen wenn Demand-Zerstörung größer ist. OPEC als Swing-Producer neutralisiert Hormuz-Risiko strukturell.
+
+## 03.04.2026 17:22 — S1 KORREKTUR: DATENFEHLER RÜCKGÄNGIG
+
+**KORREKTUR:** Der S1-Statuswechsel von 15:15 war auf FALSCHEN DATEN basiert.
+
+**Was passierte:** Yahoo Finance `CL=F` (WTI) zeigte −28.6% weil der chartPreviousClose vom alten Futures-Kontrakt (Mai, $102.88) stammte, aber der aktuelle Preis vom neuen Kontrakt (Juni, $71.52 "adjusted") — kein echter Preisrückgang.
+
+**Realität:**
+- WTI heute: $104→$112 (+6.9%)
+- Brent heute: ~$109 (flach/leicht positiv)
+- S1-These: WEITERHIN INTAKT
+
+**S1 Status zurück auf 🟢 AKTIV**
+
+**Lesson für mich:** Futures-Kontrakt-Rollover bei =F Symbolen immer mit Intraday-Chart verifizieren bevor ich Tages-Returns interpretiere. Nie Daily % von Futures blind verwenden.
+
+
+## 2026-04-03 20:40 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS10 (Lufthansa — Peace Dividend)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS11 (Defense-EU-Small)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS12 (AI-Infrastructure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS13 (Copper-Green-Transition)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS14 (Shipping-Normalization)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS15 (Biotech-Rate-Reversal)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS16 (Nuclear Renaissance — AI Power Demand)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS17 (EU Domestic Champions — Trade War Profiteure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_STLD (Stahl-Tariff-Play (Liberation Day))
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_NVO (Novo Nordisk Value/Turnaround)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_CCJ (Cameco — Uranium Nuclear Renaissance)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_LHA (Lufthansa — Iran-Deeskalations-Trade)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS18 (Trade Dislocation & Tariff-Margin-Compression)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 37)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score -20)
+

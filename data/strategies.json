@@ -1924,7 +1924,7 @@
   "PS18": {
     "name": "Trade Dislocation & Tariff-Margin-Compression",
     "type": "paper",
-    "health": "red",
+    "health": "yellow",
     "source": "albert_autonomous",
     "created": "2026-03-31",
     "genesis": {

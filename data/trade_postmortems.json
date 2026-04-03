@@ -1,35 +1,35 @@
 {
-  "total_analyzed": 79,
+  "total_analyzed": 82,
   "avg_entry_quality": 6.5,
-  "avg_exit_quality": 5.7,
-  "disposition_effect": -0.173,
+  "avg_exit_quality": 5.9,
+  "disposition_effect": -0.146,
   "optimal_holding_days": {
+    "PS17": 1.0,
+    "PS5": 4.0,
+    "PS14": 1.0,
     "PS1": 2.2,
     "PS2": 2.6,
     "PS4": 1.5,
     "PS_STLD": 0.5,
     "PS11": 1.5,
     "PS13": 1.0,
-    "PS14": 1.0,
     "PS12": 1.0,
-    "PS17": 1.0,
     "PS15": 0.3,
     "PT": 2.0,
     "PM": 4.0,
     "S1": 0.0,
-    "PS9": 2.0,
-    "PS5": 7.0
+    "PS9": 2.0
   },
   "regime_performance": {
+    "RISK_OFF": {
+      "wr": 0.885,
+      "avg_pnl": 61.71,
+      "trades": 26
+    },
     "NEUTRAL": {
       "wr": 0.455,
       "avg_pnl": -96.92,
       "trades": 11
-    },
-    "RISK_OFF": {
-      "wr": 0.87,
-      "avg_pnl": 54.72,
-      "trades": 23
     },
     "PAPER_LEARN": {
       "wr": 0.0,
@@ -43,12 +43,45 @@
     }
   },
   "insights": [
-    "Anti-Disposition: Verlierer werden schneller geschlossen (1.5d) als Gewinner gehalten (1.8d). Gute Disziplin!",
-    "PS11 hat 100% WR — aber nur 2 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (87% WR, 23 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
-    "PS1 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
+    "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.5d.",
+    "PS17 hat 100% WR — aber nur 2 Trades. Mehr Daten nötig.",
+    "Bestes Regime: RISK_OFF (88% WR, 26 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "PS5 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 89,
+      "ticker": "SAP",
+      "strategy": "PS17",
+      "entry_quality": 6.0,
+      "exit_quality": 8.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 1.66,
+      "lesson": "Minimal-Gewinn — Position sizing oder Haltedauer prüfen."
+    },
+    {
+      "id": 87,
+      "ticker": "MOS",
+      "strategy": "PS5",
+      "entry_quality": 6.0,
+      "exit_quality": 10.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 19.94,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 88,
+      "ticker": "ZIM",
+      "strategy": "PS14",
+      "entry_quality": 6.0,
+      "exit_quality": 8.0,
+      "holding_days": 1,
+      "regime": "RISK_OFF",
+      "pnl": 324.32,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
     {
       "id": 91,
       "ticker": "WPM",
@@ -263,7 +296,7 @@
       "ticker": "SBLK",
       "strategy": "PS14",
       "entry_quality": 6.0,
-      "exit_quality": 8.0,
+      "exit_quality": 10.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 418.63,
@@ -274,7 +307,7 @@
       "ticker": "SAP",
       "strategy": "PS17",
       "entry_quality": 6.0,
-      "exit_quality": 8.0,
+      "exit_quality": 10.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 2.51,
@@ -919,7 +952,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-03T12:31:38",
-  "avg_win_holding_days": 1.8,
+  "analysis_timestamp": "2026-04-03T18:34:49",
+  "avg_win_holding_days": 1.7,
   "avg_loss_holding_days": 1.5
 }
