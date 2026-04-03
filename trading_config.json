@@ -134,7 +134,8 @@
       "alerts": {},
       "notes": "",
       "size_eur": 2500,
-      "conviction": 50
+      "conviction": 50,
+      "use_onvista": true
     },
     "A14WU5": {
       "name": "L&G Cyber Security ETF",
@@ -161,11 +162,12 @@
       "alerts": {},
       "notes": "",
       "size_eur": 2500,
-      "conviction": 35
+      "conviction": 35,
+      "use_onvista": true
     },
     "EQNR": {
       "name": "Equinor ASA",
-      "status": "OPEN",
+      "status": "CLOSED",
       "entry_eur": 33.58,
       "stop_eur": 34.2,
       "target_eur": null,
@@ -173,7 +175,9 @@
       "entry_date": "2026-03-25",
       "strategy": "S1",
       "conviction": 65,
-      "notes": "Iran-These: Trump nicht glaubwürdig, Krieg nicht vorbei. US ADR Accumulation +65% Vol-Trend."
+      "notes": "Stop 34.20€ ausgelöst 03.04.2026",
+      "exit_eur": 34.2,
+      "exit_date": "2026-04-03"
     }
   },
   "watchlist": [
