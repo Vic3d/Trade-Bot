@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-04-01T10:30:11.302260+00:00",
+  "last_updated": "2026-04-03T06:36:33.410457+00:00",
   "runs": [
     {
       "ts": "2026-03-26T08:36:39.326715+00:00",
@@ -1292,6 +1292,138 @@
       ],
       "strategy_scores": {
         "S1": 77,
+        "S2": 38,
+        "S3": 33,
+        "S9": 23
+      }
+    },
+    {
+      "ts": "2026-04-03T05:33:08.030477+00:00",
+      "total_score": 850,
+      "alert_tier": "HIGH",
+      "alert_items": 28,
+      "affected_strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S9"
+      ],
+      "affected_tickers": [
+        "CCL",
+        "DR0.DE",
+        "EQNR",
+        "GLEN.L",
+        "MSFT",
+        "NVDA",
+        "RHM.DE",
+        "S.TO"
+      ],
+      "top_items": [
+        {
+          "region": "iran",
+          "text": "“Authorizes Member States, acting nationally or through voluntary multinational naval partnerships for which advance notification has been provided to the Security Council, subject to quarterly report",
+          "score": 77,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "iran",
+          "text": "“Authorizes Member States, acting nationally or through voluntary multinational naval partnerships for which advance notification has been provided to the Security Council, subject to quarterly report",
+          "score": 74,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "pakistan",
+          "text": "He said no casualties were reported and added that the Taliban would retaliate for the attack.\" src=\"https://pakistan.liveuamap.com/pics/2026/03/15/22829091_1.jpg\" /></label></div></div><div data-reso",
+          "score": 72,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "turkey",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 67,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "pakistan",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 58,
+          "tier": "CRITICAL"
+        }
+      ],
+      "deep_dive_recommended": true,
+      "deep_dive_terms": [
+        "iran",
+        "airstrike",
+        "pakistan"
+      ],
+      "strategy_scores": {
+        "S1": 77,
+        "S2": 38,
+        "S3": 33,
+        "S9": 23
+      }
+    },
+    {
+      "ts": "2026-04-03T06:36:27.388095+00:00",
+      "total_score": 435,
+      "alert_tier": "HIGH",
+      "alert_items": 13,
+      "affected_strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S9"
+      ],
+      "affected_tickers": [
+        "CCL",
+        "DR0.DE",
+        "EQNR",
+        "GLEN.L",
+        "MSFT",
+        "NVDA",
+        "RHM.DE",
+        "S.TO"
+      ],
+      "top_items": [
+        {
+          "region": "turkey",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 67,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "pakistan",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 58,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "iraq",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 48,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "iran",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 47,
+          "tier": "CRITICAL"
+        },
+        {
+          "region": "russia",
+          "text": "</h4><a href=\"https://me.liveuamap.com/payments/turnadv\" class=\"buy-button\">Buy now</a></div></div><div id=\"modalWrap\" class=\"modalWrap\" style=\"display: none\"><span id=\"closeMW\" class=\"modalWrapClose\"",
+          "score": 38,
+          "tier": "CRITICAL"
+        }
+      ],
+      "deep_dive_recommended": true,
+      "deep_dive_terms": [
+        "airstrike",
+        "pakistan",
+        "turkey"
+      ],
+      "strategy_scores": {
+        "S1": 48,
         "S2": 38,
         "S3": 33,
         "S9": 23

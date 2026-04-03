@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-04-02T20:10:40.514992+00:00",
+  "timestamp": "2026-04-03T10:10:41.961591+00:00",
   "fx": {
-    "EURUSD": 1.1538,
-    "EURNOK": 11.2223,
-    "GBPEUR": 1.1465
+    "EURUSD": 1.1547,
+    "EURNOK": 11.25,
+    "GBPEUR": 1.1464
   },
   "macro": {
-    "wti": 111.39,
-    "vix": 24.25,
-    "nikkei": -2.3751723121537074
+    "wti": 71.52,
+    "vix": 23.87,
+    "nikkei": 1.258442334989796
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 128.67,
+      "price_eur": 128.57,
       "price_raw": 148.46,
       "entry_eur": 132.11,
-      "pnl_pct": -2.6,
+      "pnl_pct": -2.68,
       "stop_eur": 127.0,
       "rs_qqq": 11.73,
-      "conviction": 60
+      "conviction": 57
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.47,
-      "price_raw": 28.47,
+      "price_eur": 28.89,
+      "price_raw": 28.89,
       "entry_eur": 27.9,
-      "pnl_pct": 2.04,
+      "pnl_pct": 3.53,
       "stop_eur": 24.0,
       "rs_qqq": null,
-      "conviction": 48
+      "conviction": 44
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
@@ -46,61 +46,61 @@
     "STLD": {
       "ticker": "STLD",
       "name": "Steel Dynamics Inc.",
-      "price_eur": 156.18,
+      "price_eur": 156.06,
       "price_raw": 180.2
     },
     "RHM.DE": {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
-      "price_eur": 1361.15,
+      "price_eur": 1360.09,
       "price_raw": 1570.5
     },
     "AG": {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "price_eur": 18.92,
+      "price_eur": 18.91,
       "price_raw": 21.84
     },
     "ASML.AS": {
       "ticker": "ASML.AS",
       "name": "ASML Holding",
-      "price_eur": 1006.24,
+      "price_eur": 1005.46,
       "price_raw": 1161.0
     },
     "BHP.L": {
       "ticker": "BHP.L",
       "name": "BHP Group",
-      "price_eur": 2392.1,
+      "price_eur": 2390.23,
       "price_raw": 2760.0
     },
     "RIO.L": {
       "ticker": "RIO.L",
       "name": "Rio Tinto",
-      "price_eur": 6155.31,
+      "price_eur": 6150.52,
       "price_raw": 7102.0
     },
     "FCX": {
       "ticker": "FCX",
       "name": "Freeport-McMoRan (Kupfer)",
-      "price_eur": 53.17,
-      "price_raw": 61.34
+      "price_eur": 53.16,
+      "price_raw": 61.38
     },
     "GOLD": {
       "ticker": "GOLD",
       "name": "Barrick Gold",
-      "price_eur": 35.82,
-      "price_raw": 41.33
+      "price_eur": 35.74,
+      "price_raw": 41.27
     },
     "NEM": {
       "ticker": "NEM",
       "name": "Newmont Mining (Gold)",
-      "price_eur": 98.85,
-      "price_raw": 114.06
+      "price_eur": 98.77,
+      "price_raw": 114.05
     },
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 34.4,
+      "price_eur": 34.38,
       "price_raw": 39.7
     },
     "LHA.DE": {
@@ -112,14 +112,14 @@
     "MOS": {
       "ticker": "MOS",
       "name": "Mosaic Company",
-      "price_eur": 22.69,
-      "price_raw": 26.18
+      "price_eur": 22.66,
+      "price_raw": 26.17
     },
     "VALE": {
       "ticker": "VALE",
       "name": "Vale S.A.",
-      "price_eur": 14.04,
-      "price_raw": 16.2
+      "price_eur": 14.02,
+      "price_raw": 16.19
     },
     "SAP.DE": {
       "ticker": "SAP.DE",

@@ -1,18 +1,18 @@
 {
-  "total_analyzed": 71,
-  "avg_entry_quality": 6.1,
+  "total_analyzed": 79,
+  "avg_entry_quality": 6.5,
   "avg_exit_quality": 5.7,
-  "disposition_effect": -0.23,
+  "disposition_effect": -0.173,
   "optimal_holding_days": {
+    "PS1": 2.2,
+    "PS2": 2.6,
+    "PS4": 1.5,
     "PS_STLD": 0.5,
     "PS11": 1.5,
     "PS13": 1.0,
-    "PS1": 4.3,
-    "PS4": 1.5,
     "PS14": 1.0,
     "PS12": 1.0,
     "PS17": 1.0,
-    "PS2": 4.3,
     "PS15": 0.3,
     "PT": 2.0,
     "PM": 4.0,
@@ -22,9 +22,9 @@
   },
   "regime_performance": {
     "NEUTRAL": {
-      "wr": 0.0,
-      "avg_pnl": -265.94,
-      "trades": 3
+      "wr": 0.455,
+      "avg_pnl": -96.92,
+      "trades": 11
     },
     "RISK_OFF": {
       "wr": 0.87,
@@ -43,12 +43,100 @@
     }
   },
   "insights": [
-    "Anti-Disposition: Verlierer werden schneller geschlossen (1.6d) als Gewinner gehalten (2.0d). Gute Disziplin!",
+    "Anti-Disposition: Verlierer werden schneller geschlossen (1.5d) als Gewinner gehalten (1.8d). Gute Disziplin!",
     "PS11 hat 100% WR — aber nur 2 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (87% WR, 23 Trades) | Schlechtestes: NEUTRAL (0% WR, 3 Trades)",
+    "Bestes Regime: RISK_OFF (87% WR, 23 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
     "PS1 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 91,
+      "ticker": "WPM",
+      "strategy": "S4",
+      "entry_quality": 10.0,
+      "exit_quality": 2.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -269.25,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 90,
+      "ticker": "AG",
+      "strategy": "S4",
+      "entry_quality": 10.0,
+      "exit_quality": 2.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -269.25,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 74,
+      "ticker": "OXY",
+      "strategy": "PS1",
+      "entry_quality": 10.0,
+      "exit_quality": 8.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": 11.7,
+      "lesson": "Solider Trade — Entry + Exit gut."
+    },
+    {
+      "id": 77,
+      "ticker": "FRO",
+      "strategy": "PS1",
+      "entry_quality": 10.0,
+      "exit_quality": 10.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": 96.0,
+      "lesson": "Solider Trade — Entry + Exit gut."
+    },
+    {
+      "id": 79,
+      "ticker": "FRO",
+      "strategy": "PS2",
+      "entry_quality": 9.0,
+      "exit_quality": 10.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": 96.0,
+      "lesson": "Solider Trade — Entry + Exit gut."
+    },
+    {
+      "id": 81,
+      "ticker": "HL",
+      "strategy": "PS4",
+      "entry_quality": 9.0,
+      "exit_quality": 2.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": -27.42,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
+    {
+      "id": 78,
+      "ticker": "DHT",
+      "strategy": "PS1",
+      "entry_quality": 10.0,
+      "exit_quality": 10.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": 46.96,
+      "lesson": "Solider Trade — Entry + Exit gut."
+    },
+    {
+      "id": 80,
+      "ticker": "DHT",
+      "strategy": "PS2",
+      "entry_quality": 9.0,
+      "exit_quality": 10.0,
+      "holding_days": 0,
+      "regime": "NEUTRAL",
+      "pnl": 46.96,
+      "lesson": "Solider Trade — Entry + Exit gut."
+    },
     {
       "id": 82,
       "ticker": "STLD",
@@ -219,7 +307,7 @@
       "ticker": "DHT",
       "strategy": "PS1",
       "entry_quality": 7.0,
-      "exit_quality": 10.0,
+      "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 32.98,
@@ -230,7 +318,7 @@
       "ticker": "DHT",
       "strategy": "PS2",
       "entry_quality": 6.0,
-      "exit_quality": 10.0,
+      "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 15.99,
@@ -736,7 +824,7 @@
       "ticker": "DHT",
       "strategy": "PS2",
       "entry_quality": 6.0,
-      "exit_quality": 8.0,
+      "exit_quality": 6.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
       "pnl": 16.0,
@@ -831,7 +919,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-02T12:32:11",
-  "avg_win_holding_days": 2.0,
-  "avg_loss_holding_days": 1.6
+  "analysis_timestamp": "2026-04-03T12:31:38",
+  "avg_win_holding_days": 1.8,
+  "avg_loss_holding_days": 1.5
 }

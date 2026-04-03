@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-04-02 22:10 CET (Auto-Sync vom Monitor)
+**Zuletzt aktualisiert:** 2026-04-03 12:10 CET (Auto-Sync vom Monitor)
 
 ---
 
@@ -12,10 +12,9 @@
 
 | Name (Ticker) | Entry | Stop (REAL in TR) | Letzter Kurs | P&L | Notiz |
 |---|---|---|---|---|---|
-| Palantir (PLTR) | 132.11€ | 127.00€ | 128.67€ | -2.6% | Stop nachgezogen 09.03. |
-| VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 28.47€ | +2.0% |  |
+| Palantir (PLTR) | 132.11€ | 127.00€ | 128.57€ | -2.7% | Stop nachgezogen 09.03. |
+| VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 28.89€ | +3.5% |  |
 | iShares Biotech ETF (A2DWAW) | 7.00€ | 6.30€ | 7.36€ | +5.2% |  |
-| Equinor ASA (EQNR) | 33.58€ | 34.20€ | — | — | Iran-These: Trump nicht glaubwürdig, Krieg nicht vorbei. US ADR Accumulation +65% Vol-Trend. |
 
 ---
 
@@ -30,6 +29,7 @@
 | Rheinmetall AG (RHM.DE) | 1570.00€ | 1605.00€ | 2.2% | 2026-03-16 | VERKAUFT 16.03. @ ~1605€ (+2,2%) | Watchlist Re-Entry >1626€ |
 | Invesco Solar Energy ETF (A2QQ9R) | 22.40€ | — | — | 2026-03-20 | Phantom-Position, nie gekauft |
 | L&G Cyber Security ETF (A14WU5) | 28.80€ | 25.95€ | -9.9% | 2026-03-20 | Stop ausgelöst |
+| Equinor ASA (EQNR) | 33.58€ | 34.20€ | 1.8% | 2026-04-01 | Stop 34.20€ ausgelöst 01.04.2026 ~11:30 CET. Iran-Deal-Signal (Brent -14.5%). S1-These falsch. |
 
 ---
 

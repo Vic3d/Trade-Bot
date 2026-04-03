@@ -46,3 +46,7 @@ The biggest bridge in Iran comes tumbling down, never to be used again — Much 
 ---
 
 [2026-04-02 18:02 UTC] Scan: 100 Posts, keine Signale
+
+## [2026-04-03 04:02 UTC] ESCALATION_SIGNAL (Peace:0 Esc:4)
+Our Military, the greatest and most powerful (by far!) anywhere in the World, hasn’t even started destroying what’s left in Iran. Bridges next, then E...
+---

@@ -1,6 +1,6 @@
 {
-  "strategies_analyzed": 5,
-  "strategies_evolved": 5,
+  "strategies_analyzed": 6,
+  "strategies_evolved": 6,
   "evolutions": {
     "DT4": {
       "trades_analyzed": 8,
@@ -22,27 +22,27 @@
       "recommendation": "KILL"
     },
     "PS1": {
-      "trades_analyzed": 7,
-      "wins": 3,
+      "trades_analyzed": 10,
+      "wins": 6,
       "losses": 4,
-      "win_rate": 0.429,
+      "win_rate": 0.6,
       "current_params": {
-        "avg_stop_distance_pct": 4.77,
-        "avg_win_pct": 6.42,
+        "avg_stop_distance_pct": 4.84,
+        "avg_win_pct": 4.52,
         "max_win_pct": 12.36,
-        "avg_holding_days": 4.4,
-        "avg_holding_days_winners": 4.3,
+        "avg_holding_days": 3.1,
+        "avg_holding_days_winners": 2.2,
         "avg_holding_days_losers": 4.5
       },
       "recommended_params": {
-        "optimal_stop_pct": 6.47,
-        "optimal_tp_pct": 9.89,
+        "optimal_stop_pct": 6.5,
+        "optimal_tp_pct": 5.97,
         "optimal_holding_range": "6-10d",
         "holding_range_detail": {
           "0-2d": {
-            "wr": 0.5,
-            "avg_pnl": 0.08,
-            "n": 2
+            "wr": 0.8,
+            "avg_pnl": 1.61,
+            "n": 5
           },
           "3-5d": {
             "wr": 0.0,
@@ -57,26 +57,66 @@
         }
       },
       "findings": [
-        "Avg Win 6.4% ist nur 52% des Maximallaufs (12.4%) — Gewinne werden zu früh mitgenommen!",
         "Sweet Spot Haltedauer: 6-10d (Avg PnL: +6.4%, WR: 67%, n=3)",
-        "🌤️ Regime-unabhängig — performt in allen Marktphasen ähnlich"
+        "✅ Regime NEUTRAL: WR 100% bei 3 Trades — ideal!"
       ],
-      "expected_improvement": "Stop weiter (4.8% → 6.5%) | TP bei 9.9% | Haltedauer 6-10d",
+      "expected_improvement": "Stop weiter (4.8% → 6.5%) | TP bei 6.0% | Haltedauer 6-10d",
+      "confidence": "MEDIUM",
+      "recommendation": "HEALTHY"
+    },
+    "PS2": {
+      "trades_analyzed": 6,
+      "wins": 5,
+      "losses": 1,
+      "win_rate": 0.833,
+      "current_params": {
+        "avg_stop_distance_pct": 11.79,
+        "avg_win_pct": 11.0,
+        "max_win_pct": 27.03,
+        "avg_holding_days": 2.2,
+        "avg_holding_days_winners": 2.6,
+        "avg_holding_days_losers": 0.0
+      },
+      "recommended_params": {
+        "optimal_stop_pct": 6.53,
+        "optimal_tp_pct": 18.41,
+        "optimal_holding_range": "6-10d",
+        "holding_range_detail": {
+          "0-2d": {
+            "wr": 0.75,
+            "avg_pnl": 0.96,
+            "n": 4
+          },
+          "6-10d": {
+            "wr": 1.0,
+            "avg_pnl": 23.02,
+            "n": 2
+          }
+        }
+      },
+      "findings": [
+        "Verlierer-Stops Ø 10.0% vs. Gewinner Ø 12.1% — Stops bei Verlierern zu eng!",
+        "Avg Win 11.0% ist nur 48% des Maximallaufs (23.0%) — Gewinne werden zu früh mitgenommen!",
+        "Sweet Spot Haltedauer: 6-10d (Avg PnL: +23.0%, WR: 100%, n=2)",
+        "✅ Regime UNKNOWN: WR 67% bei 3 Trades — ideal!",
+        "✅ Regime NEUTRAL: WR 100% bei 2 Trades — ideal!"
+      ],
+      "expected_improvement": "Stop enger (11.8% → 6.5%) | TP bei 18.4% | Haltedauer 6-10d",
       "confidence": "LOW",
-      "recommendation": "MONITOR"
+      "recommendation": "HEALTHY"
     },
     "PS4": {
-      "trades_analyzed": 5,
+      "trades_analyzed": 6,
       "wins": 4,
-      "losses": 1,
-      "win_rate": 0.8,
+      "losses": 2,
+      "win_rate": 0.667,
       "current_params": {
         "avg_stop_distance_pct": 5.0,
         "avg_win_pct": 1.06,
         "max_win_pct": 2.85,
-        "avg_holding_days": 1.4,
+        "avg_holding_days": 1.2,
         "avg_holding_days_winners": 1.5,
-        "avg_holding_days_losers": 1.0
+        "avg_holding_days_losers": 0.5
       },
       "recommended_params": {
         "optimal_stop_pct": 6.5,
@@ -84,15 +124,15 @@
         "optimal_holding_range": "0-2d",
         "holding_range_detail": {
           "0-2d": {
-            "wr": 0.8,
-            "avg_pnl": 0.68,
-            "n": 5
+            "wr": 0.667,
+            "avg_pnl": 0.35,
+            "n": 6
           }
         }
       },
       "findings": [
         "Avg Win 1.1% ist nur 57% des Maximallaufs (1.9%) — Gewinne werden zu früh mitgenommen!",
-        "Sweet Spot Haltedauer: 0-2d (Avg PnL: +0.7%, WR: 80%, n=5)",
+        "Sweet Spot Haltedauer: 0-2d (Avg PnL: +0.3%, WR: 67%, n=6)",
         "✅ Regime RISK_OFF: WR 80% bei 5 Trades — ideal!"
       ],
       "expected_improvement": "Stop weiter (5.0% → 6.5%) | TP bei 1.5% | Haltedauer 0-2d",
@@ -186,9 +226,9 @@
       "recommended_filter": "NICHT traden in PAPER_LEARN (WR 0%)"
     },
     "PS1": {
-      "best_regime": "RISK_OFF",
-      "best_regime_wr": 0.5,
-      "best_regime_trades": 2,
+      "best_regime": "NEUTRAL",
+      "best_regime_wr": 1.0,
+      "best_regime_trades": 3,
       "worst_regime": "UNKNOWN",
       "worst_regime_wr": 0.4,
       "worst_regime_trades": 5,
@@ -202,9 +242,40 @@
           "wr": 0.5,
           "avg_pnl": 0.52,
           "n": 2
+        },
+        "NEUTRAL": {
+          "wr": 1.0,
+          "avg_pnl": 2.63,
+          "n": 3
         }
       },
-      "recommended_filter": "Regime-unabhängig — \"Allwetter\"-Strategie"
+      "recommended_filter": "Optimal in NEUTRAL (WR 100%)"
+    },
+    "PS2": {
+      "best_regime": "NEUTRAL",
+      "best_regime_wr": 1.0,
+      "best_regime_trades": 2,
+      "worst_regime": "UNKNOWN",
+      "worst_regime_wr": 0.667,
+      "worst_regime_trades": 3,
+      "regime_detail": {
+        "UNKNOWN": {
+          "wr": 0.667,
+          "avg_pnl": 13.65,
+          "n": 3
+        },
+        "RISK_OFF": {
+          "wr": 1.0,
+          "avg_pnl": 1.7,
+          "n": 1
+        },
+        "NEUTRAL": {
+          "wr": 1.0,
+          "avg_pnl": 3.62,
+          "n": 2
+        }
+      },
+      "recommended_filter": "Optimal in UNKNOWN (WR 67%); Optimal in NEUTRAL (WR 100%)"
     },
     "PS4": {
       "best_regime": "RISK_OFF",
@@ -218,6 +289,11 @@
           "wr": 0.8,
           "avg_pnl": 0.68,
           "n": 5
+        },
+        "NEUTRAL": {
+          "wr": 0.0,
+          "avg_pnl": -1.32,
+          "n": 1
         }
       },
       "recommended_filter": "Optimal in RISK_OFF (WR 80%)"
@@ -281,7 +357,6 @@
     "PS16",
     "PS17",
     "PS18",
-    "PS2",
     "PS3",
     "PS5",
     "PS9",
@@ -299,5 +374,5 @@
     "emerging_themes",
     "new"
   ],
-  "timestamp": "2026-04-02T12:32:11"
+  "timestamp": "2026-04-03T12:31:38"
 }

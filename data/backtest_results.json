@@ -1,5 +1,5 @@
 {
-  "strategies_tested": 5,
+  "strategies_tested": 6,
   "results": {
     "DT4": {
       "original": {
@@ -30,50 +30,77 @@
     },
     "PS1": {
       "original": {
-        "wr": 0.429,
-        "pnl": 4.3,
-        "trades": 7
+        "wr": 0.6,
+        "pnl": 158.96,
+        "trades": 10
       },
       "optimized_stop": {
-        "wr": 0.429,
-        "pnl": 4.3,
+        "wr": 0.6,
+        "pnl": 158.96,
         "improvement_pct": 0.0
       },
       "optimized_tp": {
-        "wr": 0.429,
-        "pnl": 4.3,
+        "wr": 0.6,
+        "pnl": 158.96,
         "improvement_pct": 0.0
       },
       "regime_filtered": {
-        "wr": 0.5,
-        "pnl": 19.04,
+        "wr": 0.8,
+        "pnl": 173.7,
         "trades_skipped": 5,
         "worst_regimes": [
           "UNKNOWN"
         ]
       },
       "best_variant": "regime_filtered",
-      "best_improvement_pct": 342.8
+      "best_improvement_pct": 9.3
+    },
+    "PS2": {
+      "original": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "trades": 6
+      },
+      "optimized_stop": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "improvement_pct": 0.0
+      },
+      "optimized_tp": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "improvement_pct": 0.0
+      },
+      "regime_filtered": {
+        "wr": 1.0,
+        "pnl": 158.95,
+        "trades_skipped": 3,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
+      },
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 98.9
     },
     "PS4": {
       "original": {
-        "wr": 0.8,
-        "pnl": 63.1,
-        "trades": 5
+        "wr": 0.667,
+        "pnl": 35.68,
+        "trades": 6
       },
       "optimized_stop": {
-        "wr": 0.8,
-        "pnl": 63.1,
+        "wr": 0.667,
+        "pnl": 35.68,
         "improvement_pct": -0.0
       },
       "optimized_tp": {
-        "wr": 0.8,
-        "pnl": 63.1,
+        "wr": 0.667,
+        "pnl": 35.68,
         "improvement_pct": -0.0
       },
       "regime_filtered": {
         "wr": 0.0,
-        "pnl": 0.0,
+        "pnl": -27.42,
         "trades_skipped": 5,
         "worst_regimes": [
           "RISK_OFF"
@@ -138,10 +165,10 @@
     }
   },
   "system_wide": {
-    "original_pnl": -132.0,
-    "optimized_pnl": 689.56,
-    "improvement_pct": 622.4,
+    "original_pnl": 75.16,
+    "optimized_pnl": 975.75,
+    "improvement_pct": 1198.2,
     "recommendation": "Stahl-Tariff-Play (Liberation Day) (PS_STLD): Regime-Filter → +€522 Verbesserung"
   },
-  "timestamp": "2026-04-02T12:32:11"
+  "timestamp": "2026-04-03T12:31:38"
 }

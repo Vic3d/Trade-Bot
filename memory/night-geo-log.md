@@ -16,3 +16,5 @@
 [TREND] 2026-04-02 04:00 — 🔴 STRONG: S4 bullish_oil (8 Events in 3h): Gold Declines After Trump Signals Further US Strikes in Iran War
 [TREND] 2026-04-02 06:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): Trump:  Other countries need to take care of Strait of Hormuz
 [TREND] 2026-04-02 06:00 — 🔴 STRONG: S4 bullish_oil (6 Events in 3h): Gold Declines After Trump Signals Further US Strikes in Iran War
+[TREND] 2026-04-03 00:00 — 🔴 STRONG: S1 bullish_oil (15 Events in 3h): Reflecting on His Past, Bryan Mines a New Future - Resolution Copper
+[TREND] 2026-04-03 02:00 — 🔴 STRONG: S1 bullish_oil (17 Events in 3h): Reflecting on His Past, Bryan Mines a New Future - Resolution Copper
