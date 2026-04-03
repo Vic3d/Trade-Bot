@@ -175,9 +175,9 @@
       "entry_date": "2026-03-25",
       "strategy": "S1",
       "conviction": 65,
-      "notes": "Stop 34.20€ ausgelöst 03.04.2026",
+      "notes": "Stop 34.20€ ausgelöst 01.04.2026 ~11:30 CET. Iran-Deal-Signal (Brent -14.5%). S1-These falsch.",
       "exit_eur": 34.2,
-      "exit_date": "2026-04-03"
+      "exit_date": "2026-04-01"
     }
   },
   "watchlist": [
