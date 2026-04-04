@@ -29,7 +29,7 @@
         404
       ],
       "alerts": {},
-      "notes": "Stop 338€ ausgelöst",
+      "notes": "Stop 338\u20ac ausgel\u00f6st",
       "status": "CLOSED",
       "exit_eur": 338.0,
       "exit_date": "2026-03-19",
@@ -62,7 +62,7 @@
         44
       ],
       "alerts": {},
-      "notes": "Stop ausgelöst + Slippage",
+      "notes": "Stop ausgel\u00f6st + Slippage",
       "size_eur": 2500,
       "conviction": 55,
       "status": "CLOSED",
@@ -70,7 +70,7 @@
       "exit_eur": 37.48,
       "close_date": "2026-03-22",
       "close_price_eur": 38.0,
-      "close_reason": "Stop 38.00€ ausgelöst",
+      "close_reason": "Stop 38.00\u20ac ausgel\u00f6st",
       "pnl_pct": -4.88
     },
     "RIO.L": {
@@ -83,7 +83,7 @@
         85
       ],
       "alerts": {},
-      "notes": "Stop 73€ ausgelöst",
+      "notes": "Stop 73\u20ac ausgel\u00f6st",
       "status": "CLOSED",
       "exit_eur": 73.0,
       "exit_date": "2026-03-19",
@@ -101,7 +101,7 @@
         1900
       ],
       "alerts": {},
-      "notes": "VERKAUFT 16.03. @ ~1605€ (+2,2%) | Watchlist Re-Entry >1626€",
+      "notes": "VERKAUFT 16.03. @ ~1605\u20ac (+2,2%) | Watchlist Re-Entry >1626\u20ac",
       "status": "CLOSED",
       "exit_eur": 1605.0,
       "exit_date": "2026-03-16",
@@ -145,7 +145,7 @@
       "stop_eur": 25.95,
       "targets_eur": [],
       "alerts": {},
-      "notes": "Stop ausgelöst",
+      "notes": "Stop ausgel\u00f6st",
       "size_eur": 2500,
       "conviction": 45,
       "status": "CLOSED",
@@ -175,7 +175,7 @@
       "entry_date": "2026-03-25",
       "strategy": "S1",
       "conviction": 65,
-      "notes": "Stop 34.20€ ausgelöst 01.04.2026 ~11:30 CET. Iran-Deal-Signal (Brent -14.5%). S1-These falsch.",
+      "notes": "Stop 34.20\u20ac ausgel\u00f6st 01.04.2026 ~11:30 CET. Iran-Deal-Signal (Brent -14.5%). S1-These falsch.",
       "exit_eur": 34.2,
       "exit_date": "2026-04-01"
     }
@@ -196,28 +196,28 @@
         208.0,
         230.0
       ],
-      "note": "Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. T1 Entry 30.03. bei US-Börsenstart 15:30 MEZ prüfen. Stop $155 SOFORT real in TR setzen. WKN: 903772",
+      "note": "Liberation Day 2. April + Section 232 Stahlz\u00f6lle (25%) \u2192 US-Produzenten profitieren. T1 Entry 30.03. bei US-B\u00f6rsenstart 15:30 MEZ pr\u00fcfen. Stop $155 SOFORT real in TR setzen. WKN: 903772",
       "strategy": "PS_STLD",
-      "thesis": "Trump politisch unter Druck (36% Approval) → braucht Liberation Day Win → höhere Wahrscheinlichkeit starker Zölle. Section 232 Stahl-Zölle (25%) bereits aktiv. EAF-Technologie + Sinton Alu-Werk = struktureller Vorteil.",
-      "entry_trigger": "US-Börsenstart 30.03. beobachten. T2 nach April-2-Ankündigung. T3 nach Q1 Earnings mid-April.",
-      "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD unter $155",
+      "thesis": "Trump politisch unter Druck (36% Approval) \u2192 braucht Liberation Day Win \u2192 h\u00f6here Wahrscheinlichkeit starker Z\u00f6lle. Section 232 Stahl-Z\u00f6lle (25%) bereits aktiv. EAF-Technologie + Sinton Alu-Werk = struktureller Vorteil.",
+      "entry_trigger": "US-B\u00f6rsenstart 30.03. beobachten. T2 nach April-2-Ank\u00fcndigung. T3 nach Q1 Earnings mid-April.",
+      "kill_trigger": "Tariff-Rollback-Meldung aus Wei\u00dfem Haus ODER STLD unter $155",
       "wkn": "903772",
       "isin": "US8581191009",
       "added": "2026-03-29",
       "tranche_plan": {
         "T1": {
           "pct": 25,
-          "trigger": "30.03. US-Börsenstart, Kurs stabil",
+          "trigger": "30.03. US-B\u00f6rsenstart, Kurs stabil",
           "price": 171
         },
         "T2": {
           "pct": 25,
-          "trigger": "Nach April-2-Ankündigung, Reaktion stark",
+          "trigger": "Nach April-2-Ank\u00fcndigung, Reaktion stark",
           "price": null
         },
         "T3": {
           "pct": 25,
-          "trigger": "Q1 Earnings mid-April bestätigen Margin-Verbesserung",
+          "trigger": "Q1 Earnings mid-April best\u00e4tigen Margin-Verbesserung",
           "price": null
         },
         "T4": {
@@ -228,9 +228,9 @@
       },
       "risks": [
         "Tariff-Rollback als bilateraler Verhandlungschip (Biden-Muster)",
-        "Schulden $3.4B (Sinton-Investition) – manageable aber zinsempfindlich",
-        "China Stahl-Dumping via Drittländer (Umgehung)",
-        "Zyklisches Trough: EV/EBITDA 11x trough, 6.2x normalized – kein Schnäppchen auf Trough-Basis"
+        "Schulden $3.4B (Sinton-Investition) \u2013 manageable aber zinsempfindlich",
+        "China Stahl-Dumping via Drittl\u00e4nder (Umgehung)",
+        "Zyklisches Trough: EV/EBITDA 11x trough, 6.2x normalized \u2013 kein Schn\u00e4ppchen auf Trough-Basis"
       ],
       "eps_scenarios": {
         "conservative": {
@@ -253,7 +253,7 @@
         "eps": 7.99,
         "shares_m": 148
       },
-      "competitor": "Nucor (NUE) – NUE geparkt, STLD bevorzugt wegen klarerer EBITDA-Recovery und EAF-Aluminium",
+      "competitor": "Nucor (NUE) \u2013 NUE geparkt, STLD bevorzugt wegen klarerer EBITDA-Recovery und EAF-Aluminium",
       "wpr_monthly_check": true
     },
     {
@@ -262,7 +262,7 @@
       "entryMin": 1626,
       "entryMax": 1700,
       "stop": 1520,
-      "note": "Re-Entry Signal A >1.626€ + Volumen nötig",
+      "note": "Re-Entry Signal A >1.626\u20ac + Volumen n\u00f6tig",
       "yahoo": "RHM.DE",
       "wpr_monthly_check": true
     },
@@ -272,7 +272,7 @@
       "entryMin": 13.0,
       "entryMax": 16.5,
       "stop": 11.5,
-      "note": "First Majestic Silver — -42% v.ATH, hochspekulativ. NUR nach Reversal-Kerze einsteigen! Kein Falling Knife.",
+      "note": "First Majestic Silver \u2014 -42% v.ATH, hochspekulativ. NUR nach Reversal-Kerze einsteigen! Kein Falling Knife.",
       "target1": 20.0,
       "target2": 25.0,
       "strategy": "PS6_Rohstoffe",
@@ -286,7 +286,7 @@
       "entryMin": 1140,
       "entryMax": 1180,
       "stop": 1050,
-      "note": "EMA50-Zone ~1.160€, CRV 5:1",
+      "note": "EMA50-Zone ~1.160\u20ac, CRV 5:1",
       "yahoo": "ASML.AS",
       "wpr_monthly_check": true
     },
@@ -296,7 +296,7 @@
       "entryMin": 26,
       "entryMax": 29,
       "stop": 24,
-      "note": "Kupfer/Lithium-Setup, 20W-MA ~27.57€",
+      "note": "Kupfer/Lithium-Setup, 20W-MA ~27.57\u20ac",
       "yahoo": "BHP.L",
       "wpr_monthly_check": true
     },
@@ -306,7 +306,7 @@
       "entryMin": 74,
       "entryMax": 78,
       "stop": 69,
-      "note": "Re-Entry nach Rohstoffkrise. Bedingungen: 1) Nikkei stabilisiert (>−1% 3 Tage), 2) Brent-WTI Spread < 8$ (Lieferlage normal), 3) China PMI > 50 (Nachfrage erholt). Entry-Zone 74–78€, Stop 69€, Ziel 90€, CRV ~3:1",
+      "note": "Re-Entry nach Rohstoffkrise. Bedingungen: 1) Nikkei stabilisiert (>\u22121% 3 Tage), 2) Brent-WTI Spread < 8$ (Lieferlage normal), 3) China PMI > 50 (Nachfrage erholt). Entry-Zone 74\u201378\u20ac, Stop 69\u20ac, Ziel 90\u20ac, CRV ~3:1",
       "yahoo": "RIO.L",
       "wpr_monthly_check": true
     },
@@ -322,7 +322,7 @@
       "target2": 58.0,
       "note": "KI-Rechenzentren + E-Auto Kupfernachfrage. Bodenbildung abwarten. CRV ~3.5:1",
       "strategy": "PS6_Rohstoffe",
-      "signal": "Bodenbildung auf Wochenbasis (2 Wochen Seitwärts ohne neue Tiefs)",
+      "signal": "Bodenbildung auf Wochenbasis (2 Wochen Seitw\u00e4rts ohne neue Tiefs)",
       "yahoo": "FCX",
       "wpr_monthly_check": true
     },
@@ -336,7 +336,7 @@
       "stop": 30.0,
       "target1": 44.0,
       "target2": 50.0,
-      "note": "Goldminer, gehebelt auf Goldpreis. Iran + Fed-Cuts + USD-Schwäche. CRV ~3:1",
+      "note": "Goldminer, gehebelt auf Goldpreis. Iran + Fed-Cuts + USD-Schw\u00e4che. CRV ~3:1",
       "strategy": "PS6_Rohstoffe",
       "signal": "Wochenkerze Hammer/Bullish Engulfing unter MA20w",
       "yahoo": "GOLD",
@@ -352,7 +352,7 @@
       "stop": 70.0,
       "target1": 100.0,
       "target2": 115.0,
-      "note": "Weltgrößter Goldminer, konservativer als Barrick. CRV ~3:1",
+      "note": "Weltgr\u00f6\u00dfter Goldminer, konservativer als Barrick. CRV ~3:1",
       "strategy": "PS6_Rohstoffe",
       "signal": "Wochenkerze Reversal + Gold > MA20w",
       "yahoo": "NEM",
@@ -365,9 +365,9 @@
       "entry_zone": "35.00-38.50",
       "stop": 32.5,
       "target": 46.0,
-      "thesis": "Re-Entry nach Stop — Glyphosat-Urteil + Pipeline-Katalysator abwarten",
+      "thesis": "Re-Entry nach Stop \u2014 Glyphosat-Urteil + Pipeline-Katalysator abwarten",
       "added": "2026-03-22",
-      "note": "Ausgestoppt 22.03 @ 38€. Re-Entry wenn Stabilisierung + Katalysator",
+      "note": "Ausgestoppt 22.03 @ 38\u20ac. Re-Entry wenn Stabilisierung + Katalysator",
       "wpr_monthly_check": true
     },
     {
@@ -382,12 +382,12 @@
         11.5,
         14.0
       ],
-      "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch günstig.",
+      "note": "Post-War Recovery. Entry NUR bei: Waffenstillstand Iran + Brent < 75$ + EMA-Ausbruch. KGV 6 = antizyklisch g\u00fcnstig.",
       "status": "WATCHLIST",
       "wpr_monthly_check": true,
-      "thesis": "Iran-Peace-Dividend: Kriegsende → Kerosinkosten sinken + Iran-Überflugrechte offen → Routen 2-3h kürzer → struktureller Kostenvorteil LHA. Inverse zu S1. KGV 6x = antizyklisch günstig.",
-      "kill_trigger": "Iran-Konflikt eskaliert weiter ODER Brent > 110$ dauerhaft ODER LHA unter 5.80€",
-      "entry_trigger": "Waffenstillstand-Signal Iran + Brent < 75$ + EMA20-Ausbruch über 8.50€",
+      "thesis": "Iran-Peace-Dividend: Kriegsende \u2192 Kerosinkosten sinken + Iran-\u00dcberflugrechte offen \u2192 Routen 2-3h k\u00fcrzer \u2192 struktureller Kostenvorteil LHA. Inverse zu S1. KGV 6x = antizyklisch g\u00fcnstig.",
+      "kill_trigger": "Iran-Konflikt eskaliert weiter ODER Brent > 110$ dauerhaft ODER LHA unter 5.80\u20ac",
+      "entry_trigger": "Waffenstillstand-Signal Iran + Brent < 75$ + EMA20-Ausbruch \u00fcber 8.50\u20ac",
       "sector": "Aviation"
     },
     {
@@ -395,7 +395,7 @@
       "name": "Mosaic Company",
       "yahoo": "MOS",
       "currency": "USD",
-      "sector": "Agrar/Dünger",
+      "sector": "Agrar/D\u00fcnger",
       "region": "USA",
       "entryMin": 24.0,
       "entryMax": 26.0,
@@ -437,7 +437,7 @@
       "targets": [
         220.0
       ],
-      "note": "Europäischer Tech-Defensiv: Cloud-Transition, Recurring Revenue. Nur bei VIX <25.",
+      "note": "Europ\u00e4ischer Tech-Defensiv: Cloud-Transition, Recurring Revenue. Nur bei VIX <25.",
       "wpr": true,
       "thesis": "S_EU_TECH"
     },
@@ -447,7 +447,7 @@
       "yahoo": "NOVO-B.CO",
       "currency": "DKK",
       "sector": "Healthcare/Pharma",
-      "region": "Europa/Dänemark",
+      "region": "Europa/D\u00e4nemark",
       "entryMin": 240.0,
       "entryMax": 260.0,
       "stop": 185.0,
@@ -455,23 +455,23 @@
         356.0,
         477.0
       ],
-      "note": "⚠️ WARTEN – T1 erst nach Q1 2026 Earnings (April). Trump-Preisdeal Nov.2025 + MFN-Pricing aktiv. EPS-Rückgang ≤15% = Entry-Bedingung. WKN: A0NENA",
+      "note": "\u26a0\ufe0f WARTEN \u2013 T1 erst nach Q1 2026 Earnings (April). Trump-Preisdeal Nov.2025 + MFN-Pricing aktiv. EPS-R\u00fcckgang \u226415% = Entry-Bedingung. WKN: A0NENA",
       "strategy": "PS_NVO",
-      "thesis": "PE 10x bei PE-Historisch 30x+ = massiver Bewertungsabschlag. CagriSema-Enttäuschung + Trump-Preisdeal bereits eingepreist. GLP-1 Megatrend strukturell intakt. T1 wenn EPS-Rückgang quantifiziert.",
-      "entry_trigger": "Q1 2026 Earnings (April): EPS-Rückgang ≤15% YoY. ODER positive Pipeline-News (Amycretin/Petrelintide Phase 2+).",
-      "kill_trigger": "EPS 2026 fällt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | MFN-Pricing wird Gesetz | NVO unter 185 DKK",
+      "thesis": "PE 10x bei PE-Historisch 30x+ = massiver Bewertungsabschlag. CagriSema-Entt\u00e4uschung + Trump-Preisdeal bereits eingepreist. GLP-1 Megatrend strukturell intakt. T1 wenn EPS-R\u00fcckgang quantifiziert.",
+      "entry_trigger": "Q1 2026 Earnings (April): EPS-R\u00fcckgang \u226415% YoY. ODER positive Pipeline-News (Amycretin/Petrelintide Phase 2+).",
+      "kill_trigger": "EPS 2026 f\u00e4llt >30% | LLY Retatrutide >30% Gewichtsverlust Phase 3 | MFN-Pricing wird Gesetz | NVO unter 185 DKK",
       "risks": [
-        "🔴 KRITISCH: Trump-Preisdeal Nov.2025 bereits aktiv – GLP-1 Preissenkungen laufen",
-        "🔴 MFN-Pricing (Feb.2026) – US würde europ. Preise zahlen (~50% günstiger) – strukturell",
+        "\ud83d\udd34 KRITISCH: Trump-Preisdeal Nov.2025 bereits aktiv \u2013 GLP-1 Preissenkungen laufen",
+        "\ud83d\udd34 MFN-Pricing (Feb.2026) \u2013 US w\u00fcrde europ. Preise zahlen (~50% g\u00fcnstiger) \u2013 strukturell",
         "LLY Zepbound gewinnt Marktanteile (Retatrutide in Phase 3)",
-        "2026 Revenue-Rückgang guided – Frage ob temporär oder strukturell",
-        "Pharma-Zölle (15% Universal Surcharge) auf Dänemark-Exporte möglich"
+        "2026 Revenue-R\u00fcckgang guided \u2013 Frage ob tempor\u00e4r oder strukturell",
+        "Pharma-Z\u00f6lle (15% Universal Surcharge) auf D\u00e4nemark-Exporte m\u00f6glich"
       ],
-      "competitor_check": "Eli Lilly (LLY) PE 38x, EPS +96% 2025. Zu teuer für Entry. Alert bei LLY <$720.",
+      "competitor_check": "Eli Lilly (LLY) PE 38x, EPS +96% 2025. Zu teuer f\u00fcr Entry. Alert bei LLY <$720.",
       "tranche_plan": {
         "T1": {
           "pct": 25,
-          "trigger": "Q1 Earnings EPS-Rückgang ≤15%",
+          "trigger": "Q1 Earnings EPS-R\u00fcckgang \u226415%",
           "price_usd": "36-38"
         },
         "T2": {
@@ -486,7 +486,7 @@
         },
         "T4": {
           "pct": 25,
-          "trigger": "EPS-Wachstum 2027 bestätigt",
+          "trigger": "EPS-Wachstum 2027 best\u00e4tigt",
           "price_usd": "50+"
         }
       },
@@ -525,70 +525,70 @@
     {
       "id": "PS1",
       "color": "#3498db",
-      "name": "Iran/Öl-Geopolitik",
-      "status": "🟢",
+      "name": "Iran/\u00d6l-Geopolitik",
+      "status": "\ud83d\udfe2",
       "conviction": "Hoch",
       "tickers": [
         "OXY",
         "TTE.PA",
         "NOVO-B.CO"
       ],
-      "desc": "Hormuz-Bedrohung → Öl teuer → Ölproduzenten profitieren.<br><br><strong>Kernthese:</strong> Iran + Houthi = Ölpreis-Versicherungsprämie.<br><strong>Ausstieg:</strong> Iran-Deal oder WTI dauerhaft &lt; 70$."
+      "desc": "Hormuz-Bedrohung \u2192 \u00d6l teuer \u2192 \u00d6lproduzenten profitieren.<br><br><strong>Kernthese:</strong> Iran + Houthi = \u00d6lpreis-Versicherungspr\u00e4mie.<br><strong>Ausstieg:</strong> Iran-Deal oder WTI dauerhaft &lt; 70$."
     },
     {
       "id": "PS2",
       "color": "#e67e22",
       "name": "Tanker-Lag-These",
-      "status": "🟢",
+      "status": "\ud83d\udfe2",
       "conviction": "Mittel",
       "tickers": [
         "FRO",
         "DHT"
       ],
-      "desc": "Öl steigt → Tanker folgen mit 2–4W Verzögerung.<br><br><strong>Kernthese:</strong> Steigende Ölpreise → höhere Frachtraten → Tanker-Aktien ziehen nach.<br><strong>Ausstieg:</strong> Öl &lt; 70$ oder Frachtraten kollabieren."
+      "desc": "\u00d6l steigt \u2192 Tanker folgen mit 2\u20134W Verz\u00f6gerung.<br><br><strong>Kernthese:</strong> Steigende \u00d6lpreise \u2192 h\u00f6here Frachtraten \u2192 Tanker-Aktien ziehen nach.<br><strong>Ausstieg:</strong> \u00d6l &lt; 70$ oder Frachtraten kollabieren."
     },
     {
       "id": "PS3",
       "color": "#2ecc71",
-      "name": "NATO/EU-Rüstung",
+      "name": "NATO/EU-R\u00fcstung",
       "status": "paused",
       "conviction": "Mittel",
       "tickers": [
         "ASML.AS",
         "HO.PA"
       ],
-      "desc": "Verteidigungsbudgets steigen → Rüstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO → ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand.",
-      "pause_reason": "RHM.DE -13.7% in 4 Wochen. Rally eingepreist. Re-Entry unter 1.300€ oder neue Eskalation >1.500€.",
+      "desc": "Verteidigungsbudgets steigen \u2192 R\u00fcstungs- und Dual-Use-Firmen gewinnen.<br><br><strong>Kernthese:</strong> 2%-BIP-Ziel NATO \u2192 ASML, Thales.<br><strong>Risiko:</strong> Ukraine-Waffenstillstand.",
+      "pause_reason": "RHM.DE -13.7% in 4 Wochen. Rally eingepreist. Re-Entry unter 1.300\u20ac oder neue Eskalation >1.500\u20ac.",
       "paused_date": "2026-03-27"
     },
     {
       "id": "PS4",
       "color": "#f1c40f",
       "name": "Edelmetalle/Miner",
-      "status": "🟡",
+      "status": "\ud83d\udfe1",
       "conviction": "Mittel",
       "tickers": [
         "HL",
         "PAAS"
       ],
-      "desc": "VIX hoch + Geopolitik → Gold/Silber → Miner überproportional.<br><br><strong>Kernthese:</strong> Miner = gehebelte Metallwette. Gold +20% → Miner +40–60%.<br><strong>Ausstieg:</strong> VIX &lt; 18, Gold &lt; 2.500$."
+      "desc": "VIX hoch + Geopolitik \u2192 Gold/Silber \u2192 Miner \u00fcberproportional.<br><br><strong>Kernthese:</strong> Miner = gehebelte Metallwette. Gold +20% \u2192 Miner +40\u201360%.<br><strong>Ausstieg:</strong> VIX &lt; 18, Gold &lt; 2.500$."
     },
     {
       "id": "PS5",
       "color": "#8b4513",
-      "name": "Dünger/Agrar-Superzyklus",
-      "status": "🟡",
+      "name": "D\u00fcnger/Agrar-Superzyklus",
+      "status": "\ud83d\udfe1",
       "conviction": "Niedrig",
       "tickers": [
         "MOS",
         "GLEN.L"
       ],
-      "desc": "Russische Kali-Sanktionen → westliche Düngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung."
+      "desc": "Russische Kali-Sanktionen \u2192 westliche D\u00fcngerproduzenten profitieren.<br><br><strong>Kernthese:</strong> Belarus+Russland = 40% globales Kali = struktureller Engpass.<br><strong>Risiko:</strong> Sanktionslockerung."
     },
     {
       "id": "PS11",
       "color": "#06b6d4",
-      "name": "Antizyklischer Öl-Airline-Flip",
+      "name": "Antizyklischer \u00d6l-Airline-Flip",
       "status": "active",
       "conviction": 65,
       "style": "swing",
@@ -599,46 +599,46 @@
         "IAG.L",
         "AF.PA"
       ],
-      "desc": "Airlines leiden unter hohem Ölpreis (Kerosin = größter Kostenfaktor). Wenn Iran-Deal / Hormuz-Entspannung → Brent fällt → Airlines erholen überproportional. Antizyklischer Kauf im 'Crisis Discount'. Inverse Korrelation LHA/Brent historisch bestätigt: Brent +35% → LHA –18% (Jan→Mär 2026).",
-      "thesis": "Öl-Preisanstieg ist geopolitisch getrieben (Iran/Hormuz) und damit temporär. Wenn Auslöser wegfällt, normalisiert sich Brent Richtung $75-85. Airlines reprisen dann: LHA von 7.35→9.00+ möglich (+22%). Verbindung zu S1: wenn S1-These aufgelöst wird (Frieden/Deal), flippt die Ölkorrelation direkt in einen Airline-Gewinn.",
+      "desc": "Airlines leiden unter hohem \u00d6lpreis (Kerosin = gr\u00f6\u00dfter Kostenfaktor). Wenn Iran-Deal / Hormuz-Entspannung \u2192 Brent f\u00e4llt \u2192 Airlines erholen \u00fcberproportional. Antizyklischer Kauf im 'Crisis Discount'. Inverse Korrelation LHA/Brent historisch best\u00e4tigt: Brent +35% \u2192 LHA \u201318% (Jan\u2192M\u00e4r 2026).",
+      "thesis": "\u00d6l-Preisanstieg ist geopolitisch getrieben (Iran/Hormuz) und damit tempor\u00e4r. Wenn Ausl\u00f6ser wegf\u00e4llt, normalisiert sich Brent Richtung $75-85. Airlines reprisen dann: LHA von 7.35\u21929.00+ m\u00f6glich (+22%). Verbindung zu S1: wenn S1-These aufgel\u00f6st wird (Frieden/Deal), flippt die \u00d6lkorrelation direkt in einen Airline-Gewinn.",
       "entry_conditions": [
-        "Brent beginnt zu fallen (3-Tages-Rückgang >5%)",
-        "Erste glaubwürdige Iran-Deal-Signale",
-        "LHA.DE über EMA-20 nach Rücksetzer",
-        "VIX fällt unter 25 (Risk-On Bestätigung)"
+        "Brent beginnt zu fallen (3-Tages-R\u00fcckgang >5%)",
+        "Erste glaubw\u00fcrdige Iran-Deal-Signale",
+        "LHA.DE \u00fcber EMA-20 nach R\u00fccksetzer",
+        "VIX f\u00e4llt unter 25 (Risk-On Best\u00e4tigung)"
       ],
       "exit_conditions": [
-        "Brent wieder über $110 (Thesis falsch)",
-        "Iran-Verhandlungen kollabieren endgültig",
-        "LHA.DE unter Stop 5.80€"
+        "Brent wieder \u00fcber $110 (Thesis falsch)",
+        "Iran-Verhandlungen kollabieren endg\u00fcltig",
+        "LHA.DE unter Stop 5.80\u20ac"
       ],
       "target_price": 9.21,
       "stop_price": 5.8,
-      "current_position": "LHA.DE @ 7.35€ (PS10 → umgewandelt in PS11)",
+      "current_position": "LHA.DE @ 7.35\u20ac (PS10 \u2192 umgewandelt in PS11)",
       "created": "2026-03-27",
-      "linked_strategy": "S1 (invers — wenn S1 endet, PS11 profitiert)"
+      "linked_strategy": "S1 (invers \u2014 wenn S1 endet, PS11 profitiert)"
     },
     {
       "id": "PS_STLD",
       "color": "#ef4444",
       "name": "Stahl-Tariff-Play (Liberation Day)",
-      "status": "🟡",
+      "status": "\ud83d\udfe1",
       "conviction": "Mittel-Hoch",
       "tickers": [
         "STLD"
       ],
-      "desc": "Trump Liberation Day 2. April + 25% Section-232-Stahlzölle → US-Stahlproduzenten profitieren von Pricing Power.<br><br><strong>Kernthese:</strong> Trump bei 36% Approval → braucht politischen Win → starke Zölle wahrscheinlicher (60%). Section 232 bereits aktiv.<br><strong>EPS-Szenarien:</strong> Conservative +$150/t HRC = $9.70 EPS | Bull = $12.55 | Peak = $15.97<br><strong>Ausstieg:</strong> Tariff-Rollback-Meldung ODER STLD unter $155."
+      "desc": "Trump Liberation Day 2. April + 25% Section-232-Stahlz\u00f6lle \u2192 US-Stahlproduzenten profitieren von Pricing Power.<br><br><strong>Kernthese:</strong> Trump bei 36% Approval \u2192 braucht politischen Win \u2192 starke Z\u00f6lle wahrscheinlicher (60%). Section 232 bereits aktiv.<br><strong>EPS-Szenarien:</strong> Conservative +$150/t HRC = $9.70 EPS | Bull = $12.55 | Peak = $15.97<br><strong>Ausstieg:</strong> Tariff-Rollback-Meldung ODER STLD unter $155."
     },
     {
       "id": "PS_NVO",
       "color": "#8b5cf6",
       "name": "Novo Nordisk Value/Turnaround",
-      "status": "⏸️",
+      "status": "\u23f8\ufe0f",
       "conviction": "Mittel (warten)",
       "tickers": [
         "NOVO-B.CO"
       ],
-      "desc": "PE 10x nach -60% vom ATH = massiver Bewertungsabschlag. GLP-1 Megatrend strukturell intakt.<br><br><strong>⚠️ WARTEN bis Q1 Earnings April:</strong> Trump-Preisdeal (Nov.2025) + MFN-Pricing (Feb.2026) aktiv. Rückgang könnte strukturell sein.<br><strong>T1-Trigger:</strong> Q1 Earnings mit EPS-Rückgang ≤15%.<br><strong>Kill:</strong> MFN-Pricing Gesetz ODER EPS -30%+."
+      "desc": "PE 10x nach -60% vom ATH = massiver Bewertungsabschlag. GLP-1 Megatrend strukturell intakt.<br><br><strong>\u26a0\ufe0f WARTEN bis Q1 Earnings April:</strong> Trump-Preisdeal (Nov.2025) + MFN-Pricing (Feb.2026) aktiv. R\u00fcckgang k\u00f6nnte strukturell sein.<br><strong>T1-Trigger:</strong> Q1 Earnings mit EPS-R\u00fcckgang \u226415%.<br><strong>Kill:</strong> MFN-Pricing Gesetz ODER EPS -30%+."
     }
   ],
   "earnings": [
@@ -733,7 +733,7 @@
     "PAAS": "Edelmetalle",
     "BAYN.DE": "Pharma",
     "NOVO-B.CO": "Pharma",
-    "HO.PA": "Rüstung"
+    "HO.PA": "R\u00fcstung"
   },
   "sector_colors": {
     "KI/Tech": "#7c3aed",
@@ -741,7 +741,7 @@
     "Rohstoffe": "#8b4513",
     "Edelmetalle": "#f1c40f",
     "Pharma": "#2ecc71",
-    "Rüstung": "#3498db"
+    "R\u00fcstung": "#3498db"
   },
   "corr_groups": [
     {
@@ -755,7 +755,7 @@
       ]
     },
     {
-      "name": "Öl/Energie",
+      "name": "\u00d6l/Energie",
       "color": "#e67e22",
       "tickers": [
         "OXY",
@@ -780,7 +780,7 @@
       ]
     },
     {
-      "name": "Agrar/Dünger",
+      "name": "Agrar/D\u00fcnger",
       "color": "#2ecc71",
       "tickers": [
         "MOS",
@@ -794,7 +794,7 @@
     "Rohstoffe": 0.02,
     "Edelmetalle": 0.025,
     "Pharma": 0.016,
-    "Rüstung": 0.018
+    "R\u00fcstung": 0.018
   },
   "correlations": {
     "NVDA-MSFT": 0.82,
@@ -832,7 +832,7 @@
       "exit_eur": 34.46,
       "pnl_pct": 27.4,
       "closed_date": "2026-03-23",
-      "reason": "Stop ausgelöst, bearischer Markt (Iran-Krise Phase-1-Schock)",
+      "reason": "Stop ausgel\u00f6st, bearischer Markt (Iran-Krise Phase-1-Schock)",
       "watchlist_reentry": true
     }
   },
@@ -915,7 +915,7 @@
         ],
         "weight": 2.0,
         "enabled": true,
-        "description": "Airlines + Tourism + Boeing — profitieren von Iran-Deal"
+        "description": "Airlines + Tourism + Boeing \u2014 profitieren von Iran-Deal"
       },
       "iran_peace_inverse": {
         "tickers": [
@@ -927,7 +927,7 @@
         ],
         "weight": 1.8,
         "enabled": true,
-        "description": "Tanker-Aktien — fallen wenn Hormuz öffnet"
+        "description": "Tanker-Aktien \u2014 fallen wenn Hormuz \u00f6ffnet"
       }
     },
     "keywords": [
@@ -946,5 +946,19 @@
     "min_score": 6,
     "auto_trade_threshold": 8,
     "congressional_check": true
+  },
+  "blocked_strategies": [
+    "DT1",
+    "DT2",
+    "DT3",
+    "DT4",
+    "AR-AGRA",
+    "AR-HALB",
+    "AR-TECH"
+  ],
+  "entry_window_cet": {
+    "start": 17,
+    "end": 22,
+    "note": "WR 78% vs 30% outside window"
   }
 }

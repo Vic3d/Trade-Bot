@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "20260404170222_trump_wa",
+    "timestamp": "2026-04-04T17:02:22.823560",
+    "source": "trump_watch",
+    "priority": "CRITICAL",
+    "headline": "DISCORD_ALERT:PEACE",
+    "detail": "",
+    "thesis": "",
+    "processed": false
+  }
+]

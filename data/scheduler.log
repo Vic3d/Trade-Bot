@@ -1,2 +1,46 @@
 [2026-04-01 17:41:50] Scheduler gestartet (PID 48476, 18 Jobs)
 [2026-04-04 12:34:13] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 13:34:22] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 13:40:21] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 16:17:39] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 17:00:00] ▶️  Newswire Analyst: Start
+[2026-04-04 17:00:07] ✅ Newswire Analyst: OK
+[2026-04-04 17:05:00] ▶️  News Gate Update: Start
+[2026-04-04 17:05:00] ✅ News Gate Update: OK
+[2026-04-04 18:05:01] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:13:08] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:18:47] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:18:47] 💥 Daemon Crash: name 'WORKSPACE' is not defined
+[2026-04-04 18:18:54] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:18:55] 💥 Daemon Crash: name 'WORKSPACE' is not defined
+[2026-04-04 18:19:06] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:19:06] 📡 Price Monitor gestartet (PID 64168)
+[2026-04-04 18:55:54] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 18:55:55] 📡 Price Monitor gestartet (PID 64216)
+[2026-04-04 19:05:57] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 19:05:57] 📡 Price Monitor gestartet (PID 64316)
+[2026-04-04 20:05:09] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 20:07:38] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 20:07:38] 📡 Price Monitor gestartet (PID 64407)
+[2026-04-04 20:25:09] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 20:25:09] 📡 Price Monitor gestartet (PID 64471)
+[2026-04-04 20:28:39] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 20:28:39] 📡 Price Monitor gestartet (PID 64478)
+[2026-04-04 20:42:33] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-04 20:42:33] 📡 Price Monitor gestartet (PID 64519)
+[2026-04-04 21:00:00] ▶️  Live Data Refresh: Start
+[2026-04-04 21:00:03] ✅ Live Data Refresh: OK
+[2026-04-04 21:00:03] ▶️  Alpha Decay: Start
+[2026-04-04 21:00:03] ✅ Alpha Decay: OK
+[2026-04-04 21:00:03] ▶️  Newswire Analyst: Start
+[2026-04-04 21:00:09] ✅ Newswire Analyst: OK
+[2026-04-04 21:05:00] ▶️  News Gate Update: Start
+[2026-04-04 21:05:00] ✅ News Gate Update: OK
+[2026-04-04 21:10:00] ▶️  CEO Radar: Start
+[2026-04-04 21:10:06] ✅ CEO Radar: OK
+[2026-04-04 21:30:00] ▶️  Performance Tracker: Start
+[2026-04-04 21:30:00] ✅ Performance Tracker: OK
+[2026-04-04 22:45:00] ▶️  Daily Learning: Start
+[2026-04-04 22:45:00] ✅ Daily Learning: OK
+[2026-04-04 23:00:00] ▶️  Tagesabschluss: Start
+[2026-04-04 23:00:01] ✅ Tagesabschluss: OK + Discord gesendet

@@ -22,19 +22,46 @@ import sqlite3, json, math
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+DB_PATH  = Path('/data/.openclaw/workspace/data/trading.db')
+DATA_DIR = Path('/data/.openclaw/workspace/data')
+
+# Strategy → Thesis-Mapping (für news_gate.json Abgleich)
+STRATEGY_TO_THESIS = {
+    'PS1':        'PS1_Oil',
+    'PS2':        'PS2_Tanker',
+    'PS3':        'PS3_Defense',
+    'PS4':        'PS4_Metals',
+    'PS5':        'PS5_Agrar',
+    'PS11':       'PS11_DefEU',
+    'PS14':       'PS14_Ship',
+    'PS17':       'S2_Rüstung',
+    'PS18':       'S2_Rüstung',
+    'PS_STLD':    'S5_Rohstoff',
+    'PS_NVO':     'S3_KI',
+    'PS_Copper':  'PS_Copper',
+    'PS_China':   'PS_China',
+    'PS_AIInfra': 'PS_AIInfra',
+    'PS_Uranium': 'S5_Rohstoff',
+    'S1':         'S1_Iran',
+    'S2':         'S2_Rüstung',
+    'S3':         'S3_KI',
+    'S4':         'S4_Silver',
+    'S5':         'S5_Rohstoff',
+    'S7':         'S3_KI',
+}
 DATA_DIR = Path('/data/.openclaw/workspace/data')
 
 # ─── Gewichtung (default, self-calibrating ab 50 Trades) ───
 DEFAULT_WEIGHTS = {
-    'regime_alignment': 0.20,
-    'technical_setup': 0.20,
-    'volume_confirm': 0.10,
-    'news_momentum': 0.10,
-    'signal_confluence': 0.15,
-    'backtest_perf': 0.10,
-    'correlation': 0.05,
-    'sector_rotation': 0.10,
+    'regime_alignment': 0.18,
+    'technical_setup':  0.18,
+    'volume_confirm':   0.09,
+    'news_momentum':    0.10,
+    'signal_confluence':0.14,
+    'backtest_perf':    0.10,
+    'correlation':      0.05,
+    'sector_rotation':  0.09,
+    'watchlist_trend':  0.07,   # ← NEU: Preis-Trend aus Snapshots
 }
 
 # Regime → Strategie Affinität
@@ -55,10 +82,12 @@ REGIME_STRATEGY_FIT = {
                       'PS_LHA': 0.2},   # CRISIS = schlechtestes Umfeld für LHA
 }
 
-# Paper Trading: niedrigere Schwellen, weil Lernsystem
+# Paper Trading: Schwellen nach Trade-Style
 # Thesis-Plays (PS_*) brauchen keine 52+ — sie wurden manuell validiert
-PAPER_ENTRY_THRESHOLD_DEFAULT  = 52   # Generische Strategien
-PAPER_ENTRY_THRESHOLD_THESIS   = 35   # PS_* = Deep-Dive validiert, einfach rein
+PAPER_ENTRY_THRESHOLD_DEFAULT  = 52   # Generische Strategien (Swing)
+PAPER_ENTRY_THRESHOLD_THESIS   = 35   # PS_* = Deep-Dive validiert (Swing)
+PAPER_ENTRY_THRESHOLD_DAY      = 65   # Day Trades brauchen höhere Conviction
+PAPER_ENTRY_THRESHOLD_DAY_THESIS = 55 # DT-Thesis-Plays etwas weniger streng
 
 
 def get_db():
@@ -120,20 +149,113 @@ def _score_volume_confirmation(conn, ticker, date=None):
     return 20
 
 
-def _score_news_momentum(conn, ticker, hours=48):
-    """Sentiment-Trend in den letzten 48h. 0-100"""
+def _score_news_momentum(conn, ticker, hours=48, strategy=None):
+    """Sentiment-Trend in den letzten 48h + news_gate These-Bestätigung. 0-100"""
+
+    # Primär: news_gate.json — bestätigt aktuelle News unsere Strategie-These?
+    gate_score = 50  # neutral default
+    try:
+        gate_path = DATA_DIR / 'news_gate.json'
+        if gate_path.exists():
+            gate = json.loads(gate_path.read_text())
+            if gate.get('relevant') and gate.get('theses_hit'):
+                thesis = STRATEGY_TO_THESIS.get(strategy or '', '')
+                if thesis in gate.get('theses_hit', []):
+                    hits = gate.get('hit_count', 0)
+                    # Sentiment-Direction aus top_hits prüfen
+                    bearish_hits = sum(
+                        1 for h in gate.get('top_hits', [])
+                        if h.get('thesis') == thesis and h.get('direction', '') == 'bearish'
+                    )
+                    bullish_hits = sum(
+                        1 for h in gate.get('top_hits', [])
+                        if h.get('thesis') == thesis and h.get('direction', '') in ('bullish', 'neutral')
+                    )
+                    if bearish_hits > bullish_hits:
+                        gate_score = 35  # Bearishe News für diese These → warnen
+                    else:
+                        gate_score = min(100, 65 + min(hits, 35))  # 65-100 bei bullisher These
+                elif gate.get('hit_count', 0) > 20:
+                    gate_score = 55
+    except Exception:
+        pass
+
+    # Sekundär: Ticker-spezifisches Sentiment aus news_events
     rows = conn.execute("""
         SELECT sentiment_score FROM news_events 
         WHERE tickers LIKE ? AND created_at > datetime('now', ?)
         ORDER BY created_at DESC
     """, (f'%{ticker}%', f'-{hours} hours')).fetchall()
-    
-    if not rows:
-        return 50  # neutral
-    
-    avg_sentiment = sum(r['sentiment_score'] or 0 for r in rows) / len(rows)
-    # -1 bis +1 → 0-100
-    return max(0, min(100, int((avg_sentiment + 1) * 50)))
+
+    if rows:
+        avg_sentiment = sum(r['sentiment_score'] or 0 for r in rows) / len(rows)
+        ticker_score = max(0, min(100, int((avg_sentiment + 1) * 50)))
+        # Kombinieren: 60% news_gate (These-Ebene), 40% Ticker-Sentiment
+        return int(gate_score * 0.6 + ticker_score * 0.4)
+
+    return gate_score
+
+
+def _score_watchlist_trend(conn, ticker: str) -> int:
+    """
+    Nutzt watchlist_prices Snapshots um Kurstrend zu bewerten.
+    Positiver Trend (Kurs steigt in letzten Snapshots) = höherer Score.
+    Trend + RSI in Entry-Zone = bestes Signal.
+    Returns: 0-100
+    """
+    try:
+        rows = conn.execute('''
+            SELECT price_eur, rsi, ma50, trend_5d, trend_20d, timestamp
+            FROM watchlist_prices
+            WHERE ticker=?
+            ORDER BY timestamp DESC LIMIT 6
+        ''', (ticker,)).fetchall()
+
+        if len(rows) < 2:
+            return 50  # Kein Trend-Daten → neutral
+
+        prices = [r['price_eur'] for r in rows if r['price_eur']]
+        rsi    = rows[0]['rsi'] or 50
+        ma50   = rows[0]['ma50']
+        t5d    = rows[0]['trend_5d'] or 0
+        t20d   = rows[0]['trend_20d'] or 0
+
+        score = 50  # Neutral-Baseline
+
+        # Kurzfristiger Preis-Trend (letzte Snapshots = letzte Stunden)
+        if len(prices) >= 4:
+            recent_trend = (prices[0] - prices[3]) / prices[3] * 100  # letzte ~2h
+            if -2 < recent_trend < 0:   # Leichter Rücklauf = gut für Long-Entry
+                score += 20
+            elif recent_trend < -2:     # Starker Fall = noch warten
+                score -= 10
+            elif recent_trend > 2:      # Schon gestiegen = zu spät
+                score -= 15
+
+        # RSI in Entry-Zone?
+        if 28 <= rsi <= 48:
+            score += 20  # Rücklauf-Zone: perfekt
+        elif 48 < rsi <= 60:
+            score += 5   # Neutral
+        elif rsi > 65:
+            score -= 20  # Überkauft
+
+        # Kurs nahe MA50?
+        if ma50 and prices:
+            dist = (prices[0] - ma50) / ma50 * 100
+            if -3 < dist < 2:
+                score += 15  # Nahe MA50 = Unterstützung
+
+        # Mittelfristiger Trend positiv (20d)?
+        if t20d > 0:
+            score += 10
+        elif t20d < -5:
+            score -= 10
+
+        return max(0, min(100, score))
+
+    except Exception:
+        return 50  # Fehler → neutral
 
 
 def _score_signal_confluence(conn, ticker, hours=72):
@@ -152,23 +274,50 @@ def _score_signal_confluence(conn, ticker, hours=72):
 
 
 def _score_backtest_performance(strategy):
-    """Historische Win-Rate aus Backtests. 0-100"""
-    bt_path = DATA_DIR / 'backtest_results.json'
-    if not bt_path.exists():
-        return 50
-    
+    """
+    Historische Win-Rate — aus echten Paper Trades + Backtest.
+    LIVE-Ergebnisse haben mehr Gewicht als Backtests.
+    Strategies mit 0% echte Win-Rate werden hart geblockt (Score ≤ 15).
+    """
+    # Erst: echte Paper-Trade Performance (wichtiger als Backtest)
+    live_score = None
     try:
-        data = json.loads(bt_path.read_text())
-        strat_data = data.get('detailed_results', {}).get(strategy, {})
-        results = strat_data.get('results', [])
-        if not results:
-            return 50
-        
-        wins = sum(1 for r in results if r.get('pnl', 0) > 0)
-        wr = wins / len(results) * 100
-        return max(10, min(100, int(wr)))
-    except:
-        return 50
+        conn = get_db()
+        rows = conn.execute('''
+            SELECT pnl_eur FROM paper_portfolio
+            WHERE strategy=? AND status IN ('WIN','CLOSED','LOSS')
+            ORDER BY id DESC LIMIT 20
+        ''', (strategy,)).fetchall()
+        if len(rows) >= 3:  # Mindestens 3 echte Trades
+            wins = sum(1 for r in rows if (r[0] or 0) > 0)
+            wr = wins / len(rows) * 100
+            # Harte Strafe für konsistent schlechte Strategien
+            if wr == 0 and len(rows) >= 5:
+                conn.close()
+                return 5   # Blockiert de facto
+            live_score = max(10, min(100, int(wr)))
+        conn.close()
+    except Exception:
+        pass
+
+    # Dann: Backtest-Daten
+    bt_score = 50
+    bt_path = DATA_DIR / 'backtest_results.json'
+    if bt_path.exists():
+        try:
+            data = json.loads(bt_path.read_text())
+            strat_data = data.get('detailed_results', {}).get(strategy, {})
+            results = strat_data.get('results', [])
+            if results:
+                wins = sum(1 for r in results if r.get('pnl', 0) > 0)
+                bt_score = max(10, min(100, int(wins / len(results) * 100)))
+        except Exception:
+            pass
+
+    # Live-Ergebnis hat 70% Gewicht wenn vorhanden
+    if live_score is not None:
+        return int(live_score * 0.70 + bt_score * 0.30)
+    return bt_score
 
 
 def _score_correlation(conn, ticker):
@@ -243,7 +392,23 @@ def _get_current_regime(conn) -> str:
     return row['regime'] if row else 'UNKNOWN'
 
 
-def check_entry_allowed(strategy: str = None, conn=None) -> tuple[bool, str]:
+def get_conviction_threshold(strategy: str, style: str = 'swing') -> int:
+    """
+    Gibt den Entry-Threshold zurück je nach Trade-Style und Strategie-Typ.
+    Day Trades brauchen höhere Conviction als Swing Trades.
+    """
+    is_thesis = (strategy and (
+        strategy.upper().startswith('PS_') or
+        strategy.upper().startswith('PS') or
+        strategy.upper() in {'S1', 'S2', 'S4', 'S5'}
+    ))
+    if style == 'day':
+        return PAPER_ENTRY_THRESHOLD_DAY_THESIS if is_thesis else PAPER_ENTRY_THRESHOLD_DAY
+    else:
+        return PAPER_ENTRY_THRESHOLD_THESIS if is_thesis else PAPER_ENTRY_THRESHOLD_DEFAULT
+
+
+def check_entry_allowed(strategy: str = None, conn=None, style: str = 'swing') -> tuple[bool, str]:
     """
     VIX Hard Block: Prüft ob ein Entry überhaupt erlaubt ist.
     
@@ -254,6 +419,7 @@ def check_entry_allowed(strategy: str = None, conn=None) -> tuple[bool, str]:
     - BEAR   (VIX 30-35): Kein Entry außer S4/PS1/PS4
     - CORRECTION (VIX 25-30): Entry erlaubt aber Position Factor 0.6×
     - NEUTRAL/BULL: Kein Hard Block
+    - Day Trades: zusätzlich VIX > 25 → kein Entry
     """
     close_conn = conn is None
     if conn is None:
@@ -273,6 +439,10 @@ def check_entry_allowed(strategy: str = None, conn=None) -> tuple[bool, str]:
         strategy.upper().startswith('PS_') or  # Thesis-Play: PS_STLD, PS_NVO, ...
         strategy.upper() in {'S1', 'S2', 'S5', 'S6', 'S7'}  # Makro-Thesen
     ))
+
+    # ── Day Trade Extra-Block: VIX > 25 ──────────────────────────────
+    if style == 'day' and vix is not None and vix > 25.0:
+        return False, f"🔴 DAY TRADE BLOCK: VIX {vix:.1f} > 25 — Intraday zu riskant bei hoher Volatilität"
     
     if regime == 'CRISIS' or (vix is not None and vix >= 35):
         if strategy and strategy.upper() not in HEDGE_STRATEGIES and not is_thesis_strategy:
@@ -324,16 +494,20 @@ def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=N
     except Exception:
         pass
 
-    # Alle 8 Faktoren berechnen
+    # Faktor 9: Watchlist-Preis-Trend (aus watchlist_prices Tabelle)
+    watchlist_trend_score = _score_watchlist_trend(conn, ticker)
+
+    # Alle 9 Faktoren berechnen
     factors = {
         'regime_alignment': _score_regime_alignment(conn, strategy),
         'technical_setup': _score_technical_setup(entry_price, stop, target),
         'volume_confirm': _score_volume_confirmation(conn, ticker),
-        'news_momentum': _score_news_momentum(conn, ticker),
+        'news_momentum': _score_news_momentum(conn, ticker, strategy=strategy),
         'signal_confluence': _score_signal_confluence(conn, ticker),
         'backtest_perf': _score_backtest_performance(strategy),
         'correlation': _score_correlation(conn, ticker),
-        'sector_rotation': sector_score,   # ← Echter Sektor-ETF statt Einzel-Ticker
+        'sector_rotation': sector_score,
+        'watchlist_trend': watchlist_trend_score,  # ← NEU: Preis-Trend aus Snapshots
     }
     
     # Gewichteter Score

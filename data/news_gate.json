@@ -1,37 +1,135 @@
 {
-  "timestamp": "2026-04-01T14:20:19.601639",
+  "timestamp": "2026-04-04T21:05:00.331736",
   "relevant": true,
-  "hit_count": 55,
+  "hit_count": 78,
+  "events_scanned": 111,
+  "window_hours": 24,
   "top_hits": [
     {
-      "thesis": "S1_Iran",
-      "headline": "Iran-Liveblog: ++ Trump: Ziehen NATO-Austritt ernsthaft in Erwägung ++ - tagesschau.de",
-      "pubdate": "Wed, 01 Apr 2026 07:00:00 GMT"
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Palantir: Winner Of The AI War",
+      "ticker": "PLTR",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "finnhub_PLTR",
+      "ts": "2026-04-04 19:00:09"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Got $5,000? 3 AI Supercycle Growth Stocks at Every Layer of the Stack.",
+      "ticker": "",
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "finnhub_PLTR",
+      "ts": "2026-04-04 19:00:09"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Palantir Technologies (PLTR) fällt um 5,5 % nach großen Deals im Verteidigungsbereich und bei Stellantis AI - hat sich d",
+      "ticker": "PLTR",
+      "score": -0.6,
+      "direction": "bearish",
+      "source": "google_news",
+      "ts": "2026-04-04 19:00:07"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "What will NVIDIA (NVDA) hit Week of April 6 2026? Wettquoten & Prognosen (Apr. 3, 2026) - Polymarket",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-04 19:00:06"
     },
     {
       "thesis": "S1_Iran",
-      "headline": "Iran-News heute: Donald Trump - USA werden Iran »sehr bald« verlassen - Spiegel",
-      "pubdate": "Wed, 01 Apr 2026 08:58:00 GMT"
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "US Arrests Niece of Late Iranian General Soleimani",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:06"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "DNC Chair: \"We Don't Need to Out-Raise the Republicans\"",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:06"
     },
     {
       "thesis": "S1_Iran",
-      "headline": "Trump erwägt drastische Maßnahme: US-Präsident denkt über NATO-Austritt wegen Iran-Krieg nach - Frankfurter Rundschau",
-      "pubdate": "Wed, 01 Apr 2026 10:24:08 GMT"
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "US Deploys Bulk of Stealthy Long-Range Missile for Iran War",
+      "ticker": "",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:05"
     },
     {
       "thesis": "S1_Iran",
-      "headline": "„Energiepreisschock“ – Institute halbieren Konjunkturprognose wegen Folgen des Iran-Kriegs - WELT",
-      "pubdate": "Wed, 01 Apr 2026 08:50:02 GMT"
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Trump’s Victory Rhetoric Undercut by Downed US Jet in Iran War",
+      "ticker": "",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:05"
+    },
+    {
+      "thesis": "PS2_Tanker",
+      "all_theses": [
+        "PS2_Tanker"
+      ],
+      "headline": "Peru’s Presidential Front-Runners Shift With Election Days Away",
+      "ticker": "FRO",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:05"
     },
     {
       "thesis": "S1_Iran",
-      "headline": "Verbraucherpreise steigen: Institute: Iran-Krieg bremst deutsches Wirtschaftswachstum - NTV",
-      "pubdate": "Wed, 01 Apr 2026 08:05:04 GMT"
-    },
-    {
-      "thesis": "S1_Iran",
-      "headline": "Vereinigte Arabische Emirate (UAE) bereiten Hormuz-Einsatz vor - streben UN-Resolution an - upday News",
-      "pubdate": "Wed, 01 Apr 2026 09:42:20 GMT"
+      "all_theses": [
+        "S1_Iran",
+        "S3_KI"
+      ],
+      "headline": "Iran Says Iraqi Ships Are Allowed to Use Strait of Hormuz",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-04 19:00:05"
     }
+  ],
+  "theses_hit": [
+    "S3_KI",
+    "S1_Iran",
+    "PS2_Tanker"
   ]
 }

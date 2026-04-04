@@ -296,15 +296,19 @@ def run_autonomous_loop(radar_signals=None):
                             "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
                         ).fetchone()
                         _regime = _rrow[0] if _rrow else ''
+                        _vix_row = _conn_r.execute(
+                            "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+                        ).fetchone()
+                        _live_vix = _vix_row[0] if _vix_row else 0
                         _conn_r.close()
                     except Exception:
-                        pass
+                        _live_vix = 0
                     _gate_result = _gate.check(
                         ticker, strategy,
                         news_headline=sig.get('headline', ''),
                         news_source=sig.get('source', ''),
                         regime=_regime,
-                        vix=0
+                        vix=_live_vix
                     )
                     if not _gate_result['allowed']:
                         print(f"  🚫 [ENTRY GATE BLOCKED] {ticker}/{strategy}: {_gate_result['reason']}")

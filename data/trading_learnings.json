@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-04-04T09:10:09Z",
+  "last_updated": "2026-04-04T20:45:03Z",
   "strategy_scores": {
     "PS1": {
       "win_rate": 0.5,
@@ -109,6 +109,15 @@
       "recommendation": "INSUFFICIENT_DATA",
       "source": "swing"
     },
+    "PS11": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -1.83,
+      "total_pnl_eur": -36.59,
+      "trades": 1,
+      "risk_adj_return": 0.0,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
     "PS14": {
       "win_rate": 0.0,
       "avg_pnl_pct": -0.35,
@@ -185,9 +194,9 @@
       "total_pnl_eur": -720.3
     },
     "UK": {
-      "trades": 26,
-      "win_rate": 0.462,
-      "total_pnl_eur": -55.21
+      "trades": 27,
+      "win_rate": 0.444,
+      "total_pnl_eur": -91.8
     },
     "NO": {
       "trades": 3,

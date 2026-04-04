@@ -43,3 +43,14 @@ if __name__ == '__main__':
     msg = ' '.join(sys.argv[1:]) or 'Test von discord_sender.py'
     ok = send(msg)
     print('✅ Gesendet' if ok else '❌ Fehler')
+
+
+def send_alert(priority: str, title: str, body: str):
+    """
+    Strukturierter Alert mit Priorität.
+    priority: 'critical' | 'warning' | 'info' | 'success'
+    """
+    icons = {'critical': '🚨', 'warning': '⚠️', 'info': '📊', 'success': '✅'}
+    icon = icons.get(priority, '📌')
+    msg = f"{icon} **{title}**\n{body}"
+    send(msg)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 Autonomous Scanner — Findet und traded selbst, ohne Victor
 ===========================================================
@@ -37,76 +37,93 @@ sys.path.insert(0, str(WS / 'scripts' / 'core'))
 UNIVERSE = {
     # ── Tier A: Thesis-Plays (Victor's validierte Strategien)
     'TIER_A': [
+        # Thesis-Plays — von Victor validiert, Deep-Dive
         ('STLD',      'PS_STLD',    'Stahl-Zölle + EAF-Vorteil'),
         ('NUE',       'PS_STLD',    'Stahl-Zölle Sekundärplay'),
         ('NOVO-B.CO', 'PS_NVO',     'GLP-1 Bewertungsabschlag PE 10x'),
-        ('OXY',       'S1',         'Iran-These / Hormuz-Prämie'),
-        ('EQNR.OL',   'S1',         'Nordsee-Öl Ersatz für EU'),
-        ('AG',        'S4',         'Silber-Miner bei Geopolitik'),
-        ('WPM',       'S4',         'Streaming-Silber / Gold'),
-        ('FRO',       'S1',         'Tanker-Rates bei Hormuz-Stress'),
+        ('OXY',       'PS1',        'Iran-These / Hormuz-Prämie'),
+        ('EQNR.OL',   'PS1',        'Nordsee-Öl Ersatz für EU'),
+        ('AG',        'PS4',        'Silber-Miner bei Geopolitik'),
+        ('WPM',       'PS4',        'Streaming-Silber / Gold'),
+        ('FRO',       'PS2',        'Tanker-Rates bei Hormuz-Stress'),
+        # Neu aus Discovery 04.04.2026
+        ('FCX',       'PS_Copper',  'Kupfer — China-Erholung + grüne Transition'),
+        ('SCCO',      'PS_Copper',  'Southern Copper — diversified Cu-Produzent'),
+        ('RHM.DE',    'PS11',       'Rheinmetall — EU-Rüstungsbudgets'),
+        ('BA.L',      'PS11',       'BAE Systems — UK/EU Defense'),
+        ('LMT',       'PS3',        'Lockheed — NATO Spending Wachstum'),
     ],
 
     # ── Tier B: Sektor-Rotation + Technische Setups
     'TIER_B': [
         # Energie
-        ('XOM',   'S1',   'Öl-Major'),
-        ('CVX',   'S1',   'Öl-Major'),
-        ('PSX',   'S1',   'Raffinerie'),
-        ('VLO',   'S1',   'Raffinerie'),
-        # Rüstung
-        ('LMT',   'S2',   'Lockheed NATO-Spending'),
-        ('RTX',   'S2',   'Raytheon Missiles'),
-        ('NOC',   'S2',   'Northrop B-21'),
-        ('KTOS',  'S2',   'Drohnen/AI-Defense'),
-        # Rohstoffe
-        ('FCX',   'S5',   'Kupfer China-Erholung'),
-        ('GLEN.L','S5',   'Diversified Miner'),
-        ('RIO.L', 'S5',   'Eisenerz + Kupfer'),
-        ('BHP.L', 'S5',   'Eisenerz + Kupfer'),
-        ('MOS',   'S5',   'Dünger/Kali Agrar'),
-        # Biotech
-        ('IBB',   'S7',   'Biotech ETF'),
-        ('XBI',   'S7',   'Small Cap Biotech'),
-        # Solar/Energie
-        ('ENPH',  'S6',   'Solar Wechselrichter'),
-        ('FSLR',  'S6',   'First Solar US-Hersteller'),
-        # Tech (moderat, kein Entry bei BEAR)
-        ('MSFT',  'S3',   'Tech-Qualität'),
-        ('ASML.AS','S3',  'Halbleiter Monopol'),
-        ('NVDA',  'S3',   'KI-Chips'),
+        ('XOM',    'PS1',   'Öl-Major'),
+        ('CVX',    'PS1',   'Öl-Major'),
+        ('TTE.PA', 'PS1',   'TotalEnergies — EU-Öl'),
+        ('PSX',    'PS1',   'Raffinerie'),
+        ('VLO',    'PS1',   'Raffinerie'),
+        # EU Defense (breiter)
+        ('RTX',    'PS3',   'Raytheon Missiles'),
+        ('NOC',    'PS3',   'Northrop B-21'),
+        ('KTOS',   'PS3',   'Drohnen/AI-Defense'),
+        ('SAF.PA', 'PS11',  'Safran — EU Aerospace/Defense'),
+        ('HO.PA',  'PS11',  'Thales — EU Defense Electronics'),
+        # Kupfer/Rohstoffe
+        ('GLEN.L', 'PS_Copper', 'Glencore — Diversified Miner'),
+        ('RIO.L',  'PS_Copper', 'Rio Tinto — Kupfer + Eisenerz'),
+        ('BHP.L',  'PS_Copper', 'BHP — Kupfer + Eisenerz'),
+        ('TECK',   'PS_Copper', 'Teck Resources — Steelmaking Coal + Kupfer'),
+        # China Recovery
+        ('FXI',    'PS_China', 'iShares China Large-Cap ETF'),
+        ('KWEB',   'PS_China', 'KraneShares China Internet'),
+        ('BABA',   'PS_China', 'Alibaba — China Consumer Recovery'),
+        ('JD',     'PS_China', 'JD.com — China E-Commerce'),
+        # Agrar
+        ('MOS',    'PS5',   'Dünger/Kali — Agrar-Preis'),
+        ('NTR',    'PS5',   'Nutrien — größter Dünger-Produzent'),
+        # AI Infrastructure
+        ('AMAT',   'PS_AIInfra', 'Applied Materials — Chip Equipment'),
+        ('MU',     'PS_AIInfra', 'Micron — HBM Memory für AI'),
+        ('VRT',    'PS_AIInfra', 'Vertiv — Datacenter Cooling/Power'),
         # Edelmetalle
-        ('GLD',   'S4',   'Gold ETF'),
-        ('SLV',   'S4',   'Silber ETF'),
-        ('GDX',   'S4',   'Gold-Miner ETF'),
-        ('GOLD',  'S4',   'Barrick Gold'),
-        ('NEM',   'S4',   'Newmont'),
+        ('GLD',    'PS4',   'Gold ETF'),
+        ('SLV',    'PS4',   'Silber ETF'),
+        ('GDX',    'PS4',   'Gold-Miner ETF'),
+        ('GOLD',   'PS4',   'Barrick Gold'),
+        ('NEM',    'PS4',   'Newmont'),
+        # Tech selektiv (nur bei BULL/NEUTRAL)
+        ('MSFT',   'S3',    'Microsoft — Tech-Qualität'),
+        ('ASML.AS','S3',    'ASML — Halbleiter-Monopol'),
+        ('NVDA',   'S3',    'Nvidia — KI-Chips'),
     ],
 
-    # ── Tier C: Aggressiv / Pokern / Testen
+    # ── Tier C: Aggressiv / Lernen / Spekulative Thesen
     'TIER_C': [
-        # Zykliker (auch mal bei VIX 30+ testen — reines Paper)
-        ('CLF',   'DT4',  'Stahl Cleveland-Cliffs volatil'),
-        ('X',     'DT4',  'US Steel post-Tariff'),
-        ('AA',    'DT4',  'Aluminium Zölle'),
-        ('CX',    'DT4',  'Cemex Reshoring'),
-        # Shipping (hoch volatil)
-        ('ZIM',   'DT4',  'Container-Shipping VIX-Play'),
-        ('SBLK',  'DT4',  'Bulk Shipping'),
-        ('DHT',   'DT4',  'Tanker aggressiv'),
-        # Spekulative Thesen
-        ('VALE',  'DT4',  'Vale Eisenerz Brazil'),
-        ('SCCO',  'DT4',  'Southern Copper Peru'),
-        ('MP',    'DT4',  'Rare Earth US Independence'),
-        ('UUUU',  'DT4',  'Energy Fuels Uranium'),
-        ('CCJ',   'DT4',  'Cameco Uranium'),
-        # Lateinamerika / Emerging
-        ('EWZ',   'DT4',  'Brazil ETF Trump-Tariff'),
-        ('EWW',   'DT4',  'Mexico Nearshoring'),
+        # Stahl/Metall Zykliker
+        ('CLF',    'PS5',   'Cleveland-Cliffs — US Stahl'),
+        ('X',      'PS5',   'US Steel post-Tariff'),
+        ('AA',     'PS5',   'Alcoa — Aluminium Zölle'),
+        # Shipping volatil
+        ('ZIM',    'PS14',  'Container-Shipping Boom/Bust'),
+        ('SBLK',   'PS14',  'Star Bulk — Dry Bulk Shipping'),
+        ('DHT',    'PS2',   'DHT Holdings — Tanker aggressiv'),
+        # Spekulative Rohstoff-Thesen
+        ('VALE',   'PS_Copper', 'Vale — Eisenerz + Kupfer Brazil'),
+        ('MP',     'S5',    'MP Materials — Rare Earth US'),
+        # Uran (neue These — in Beobachtung)
+        ('CCJ',    'PS_Uranium', 'Cameco — Uran Produzent #1'),
+        ('UUUU',   'PS_Uranium', 'Energy Fuels — Uran + Seltenerde'),
+        ('NXE',    'PS_Uranium', 'NexGen Energy — High-Grade Uran'),
+        # China spekulative Plays
+        ('EWZ',    'PS_China', 'Brazil ETF — China-Handels-Proxy'),
         # Rebound-Plays (oversold quality)
-        ('BAYN.DE','S7',  'Bayer Rebound von Tief'),
-        ('LHA.DE', 'S10', 'Lufthansa günstig nach Corona-Recovery'),
-        ('RHM.DE', 'S2',  'Rheinmetall Bodenbildung'),
+        ('BAYN.DE','S7',    'Bayer — Rebound nach Tief'),
+        ('LHA.DE', 'PS17',  'Lufthansa — EU Domestic Champion'),
+        ('SIE.DE', 'PS17',  'Siemens — EU Industrials'),
+        ('BMW.DE', 'PS18',  'BMW — EU Auto Domestic'),
+        # AI Infra spekulative
+        ('SMCI',   'PS_AIInfra', 'Super Micro — AI Server (volatil)'),
+        ('VST',    'PS_AIInfra', 'Vistra — AI Power Demand'),
     ],
 }
 
@@ -389,11 +406,140 @@ def execute_paper(ticker: str, strategy: str, entry: float, stop: float,
 
 # ─── Main Scan ──────────────────────────────────────────────────────
 
+def is_market_open() -> bool:
+    """Prüft ob mindestens eine der gehandelten Börsen heute offen ist."""
+    try:
+        sys.path.insert(0, str(WS / 'scripts' / 'core'))
+        from market_hours import is_any_trading_day
+        all_tickers = [t for tier in UNIVERSE.values() for t, _, _ in tier]
+        return is_any_trading_day(all_tickers)
+    except Exception:
+        return datetime.now(timezone.utc).weekday() < 5
+
+
+def is_optimal_entry_time() -> bool:
+    """
+    Daten zeigen: WR 78% bei Entries 17-22h (US Session).
+    WR nur 29-30% vor 17h.
+    → Neue Entries NUR 17:00–22:00 CET erlaubt.
+
+    Ausnahme: Tier A Thesis-Plays dürfen auch 08:30-10:00 (Xetra-Open Momentum)
+    """
+    try:
+        import zoneinfo
+        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
+        hour = now.hour
+        return 17 <= hour < 22  # Hauptfenster
+    except Exception:
+        return True  # Fallback: immer erlaubt
+
+
+def is_in_entry_zone(data: dict, entry: float, stop: float) -> tuple[bool, str]:
+    """
+    Prüft ob der aktuelle Kurs in einer sinnvollen Entry-Zone liegt.
+    Returns: (ok, reason)
+
+    Entry-Zone = eine der folgenden Bedingungen:
+      1. Kurs innerhalb 2% des EMA50 (Rücklauf ans Niveau)
+      2. Kurs bricht über letztes 5-Tage-Hoch (Ausbruch)
+      3. RSI 30-50 (Rücklauf-Zone, nicht überkauft)
+      4. Kurs an 52W-Low-Unterstützung (±5%)
+    """
+    p = data['price']
+    ema50 = data.get('ema50')
+    ema20 = data.get('ema20')
+    rsi = data.get('rsi', 50) or 50
+    high52 = data.get('high52')
+    low52 = data.get('low52')
+    closes = data.get('closes', [])
+
+    # Zone 1: Kurs nahe EMA50 (Rücklauf)
+    if ema50 and abs(p - ema50) / ema50 < 0.03:
+        return True, f"Nahe EMA50 ({ema50:.2f}€, {((p/ema50)-1)*100:.1f}%)"
+
+    # Zone 2: Ausbruch über 5-Tage-Hoch
+    if closes and len(closes) >= 6:
+        high_5d = max(closes[-6:-1])
+        if p > high_5d * 1.002:
+            return True, f"Ausbruch über 5-Tage-Hoch ({high_5d:.2f}€)"
+
+    # Zone 3: RSI Rücklauf-Zone
+    if 28 <= rsi <= 48:
+        return True, f"RSI {rsi:.0f} — Rücklauf-Zone"
+
+    # Zone 4: Nahe 52W-Low (Unterstützung)
+    if low52 and p < low52 * 1.07:
+        return True, f"Nahe 52W-Low ({low52:.2f}€) — Unterstützung"
+
+    # Nicht in Zone — Kurs ist zu hoch oder zu trendlos
+    zone_info = []
+    if ema50:
+        zone_info.append(f"EMA50 {((p/ema50)-1)*100:.1f}% entfernt")
+    zone_info.append(f"RSI {rsi:.0f}")
+    return False, f"Außerhalb Entry-Zone ({', '.join(zone_info)}) — warte auf Rücklauf"
+
+
+def add_pending_setup(ticker: str, strategy: str, conviction: int,
+                      entry: float, stop: float, target: float,
+                      trigger_type: str, notes: str):
+    """Fügt Setup zur Watchlist hinzu — warte auf Trigger."""
+    conn = get_db()
+    now = datetime.now(timezone.utc).isoformat()
+
+    # Bestehenden Setup für diesen Ticker updaten statt neu anlegen
+    existing = conn.execute(
+        "SELECT id FROM pending_setups WHERE ticker=? AND status='WATCHING'",
+        (ticker,)
+    ).fetchone()
+
+    if existing:
+        conn.execute('''
+            UPDATE pending_setups SET
+                strategy=?, conviction=?, entry_trigger=?, trigger_type=?,
+                current_price=?, stop_suggestion=?, target_suggestion=?,
+                updated_at=?, notes=?
+            WHERE id=?
+        ''', (strategy, conviction, entry, trigger_type, entry,
+              stop, target, now, notes, existing['id']))
+    else:
+        conn.execute('''
+            INSERT INTO pending_setups
+                (ticker, strategy, conviction, entry_trigger, trigger_type,
+                 current_price, stop_suggestion, target_suggestion, created_at, notes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (ticker, strategy, conviction, entry, trigger_type,
+              entry, stop, target, now, notes))
+
+    conn.commit()
+    conn.close()
+
+
 def run_scan(max_new_trades: int = 5) -> list:
     """
     Führt den vollständigen autonomen Scan aus.
     max_new_trades: Limit pro Lauf (verhindert Überallokation)
+
+    NEU: Entry-Zone-Check + Pending Setups für Borderline-Conviction
     """
+    if not is_market_open():
+        print(f"📅 Markt geschlossen (heute: {datetime.now().strftime('%A')}) — kein Scan.")
+        return []
+
+    # Entry-Zeit-Filter (Daten: WR 78% bei 17-22h, nur 29% davor)
+    if not is_optimal_entry_time():
+        import zoneinfo
+        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
+        print(f"⏰ {now.strftime('%H:%M')} — Kein Entry-Fenster (optimal: 17-22h CET). "
+              f"Nur Watchlist-Snapshots und Trigger-Checks laufen.")
+        # Außerhalb Entry-Fenster: nur Watchlist aktualisieren, keine neuen Trades
+        try:
+            sys.path.insert(0, str(WS / 'scripts'))
+            from watchlist_tracker import run_snapshot
+            run_snapshot()
+        except Exception as e:
+            print(f"Watchlist-Update Fehler: {e}")
+        return []
+
     from paper_trade_engine import sync_prices_for_tickers
 
     # Alle Ticker aus dem Universum sammeln
@@ -402,11 +548,12 @@ def run_scan(max_new_trades: int = 5) -> list:
         [t for t, _, _ in UNIVERSE['TIER_B']] +
         [t for t, _, _ in UNIVERSE['TIER_C']]
     )
-    # Preisdaten aktualisieren
+    # Preisdaten aktualisieren (via live_data)
     sync_prices_for_tickers(all_tickers)
 
     results = []
     new_trades = 0
+    pending_added = 0
 
     for tier, items in UNIVERSE.items():
         if new_trades >= max_new_trades:
@@ -442,7 +589,30 @@ def run_scan(max_new_trades: int = 5) -> list:
                 continue
 
             entry, stop, target, reason = setup
-            full_thesis = f"{description} | {reason}"
+
+            # ── NEU: Entry-Zone-Check ──────────────────────────────────
+            in_zone, zone_reason = is_in_entry_zone(data, entry, stop)
+
+            if not in_zone:
+                # Kurs noch nicht am Entry-Punkt → Pending Setup anlegen
+                # Trigger: wenn Kurs zurückkommt auf Entry-Level
+                add_pending_setup(
+                    ticker=ticker, strategy=strategy,
+                    conviction=0,  # wird beim Trigger neu berechnet
+                    entry=entry, stop=stop, target=target,
+                    trigger_type='BELOW',  # Long: warte auf Rücklauf (unter aktuellen Preis)
+                    notes=f"{description} | {reason} | Warte: {zone_reason}"
+                )
+                results.append({
+                    'ticker': ticker, 'tier': tier, 'status': 'watching',
+                    'price': data['price'], 'trigger': entry, 'zone_reason': zone_reason,
+                })
+                pending_added += 1
+                time.sleep(0.2)
+                continue
+            # ── Ende Entry-Zone-Check ──────────────────────────────────
+
+            full_thesis = f"{description} | {reason} | {zone_reason}"
 
             result = execute_paper(ticker, strategy, entry, stop, target, full_thesis, tier)
             result['ticker'] = ticker

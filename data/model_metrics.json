@@ -1,9 +1,24 @@
 {
-  "n_trained": 622,
+  "n_trained": 624,
   "n_bootstrapped": 622,
   "accuracy": 0.622,
   "auc_roc": null,
   "brier_score": null,
-  "last_updated": "2026-04-04T09:20:26.172549+00:00",
-  "prediction_history": []
+  "last_updated": "2026-04-04T13:25:10.550924+00:00",
+  "prediction_history": [
+    {
+      "ts": "2026-04-04T13:25:10.549444+00:00",
+      "trade_id": 95,
+      "predicted_prob": 0.446,
+      "actual": 0,
+      "correct": 1
+    },
+    {
+      "ts": "2026-04-04T13:25:10.550772+00:00",
+      "trade_id": 94,
+      "predicted_prob": 0.0,
+      "actual": 0,
+      "correct": 1
+    }
+  ]
 }

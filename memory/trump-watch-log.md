@@ -58,3 +58,13 @@ With a little more time, we can easily OPEN THE HORMUZ STRAIT, TAKE THE OIL, &am
 [2026-04-03 20:02 UTC] Scan: 100 Posts, keine Signale
 
 [2026-04-04 04:02 UTC] Scan: 100 Posts, keine Signale
+
+## [2026-04-04 14:02 UTC] ESCALATION_WATCH (Peace:0 Esc:2)
+Not only were the jobs numbers GREAT yesterday, 178,000 new jobs, but the TRADE DEFICIT was down 55%, the biggest drop in history. THANK YOU MR. TARIF...
+---
+
+## [2026-04-04 15:02 UTC] PEACE_SIGNAL (Peace:6 Esc:0)
+Remember when I gave Iran ten days to MAKE A DEAL or OPEN UP THE HORMUZ STRAIT. Time is running out - 48 hours before all Hell will reign down on them...
+---
+
+[2026-04-04 20:02 UTC] Scan: 100 Posts, keine Signale

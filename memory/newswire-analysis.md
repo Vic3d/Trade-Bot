@@ -1,4 +1,26 @@
 
+## 2026-04-04 11:33 UTC — Geopolitical Scanner
+- **[CRITICAL]** `🇹🇷 Türkei` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇮🇷 Iran/Hormuz` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇮🇱 Israel/Palästina` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇵🇰 Pakistan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1
+- **[CRITICAL]** `🇮🇶 Irak/Öl` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[CRITICAL]** `🇷🇺 Russland` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S2
+- **[CRITICAL]** `🇹🇼 Taiwan` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S3, S9
+- **[CRITICAL]** `🇻🇪 Venezuela` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+- **[CRITICAL]** `🇱🇾 Libyen/Öl` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S1, S8
+- **[HIGH]** `🌊 Karibik/Kuba` — </h4><a href="https://me.liveuamap.com/payments/turnadv" class="buy-button">Buy now</a></div></div><div id="modalWrap" c...
+  → Strategien: S9
+
 ## 2026-04-04 10:48 UTC — Geopolitical Scanner
 - **[CRITICAL]** `🇵🇰 Pakistan` — He said no casualties were reported and added that the Taliban would retaliate for the attack." src="https://pakistan.li...
   → Strategien: S1
@@ -89,4 +111,32 @@
 
 **Alert Decision:** HIGH (50+) — Hormuz + escalation keywords trigger, but PEACE SIGNALS present (sanctions easing, diplomatic call)
 
+---
+
+## [2026-04-04 20:24] News Radar — 35 neue Headlines
+  [S1_Iran] (S+) Iran nimmt den Ölhandel in den Würgegriff - Spiegel
+  [S1_Iran] Nahost-Eskalation treibt Oelpreise: Iran droht Hormuz-Schliessung, Irak drosselt Produktio
+  [S1_Iran] Wegen Iran-Eskalation: Straße von Hormus „praktisch geschlossen“ – Ölmarkt gerät unter Dru
+  [S1_Iran] Iran-Krieg: Welche Folgen hat Trumps Hormuz-Ultimatum? - Kleine Zeitung
+  [S1_Iran] „Wenn in der Straße von Hormus etwas ins Stocken gerät, reagieren die Märkte sofort“ - Wir
+  [PS1_Oil] WTI vs. Brent: Droht 2026 der nächste explosive Öl-Superzyklus? - AD HOC NEWS
+  [PS1_Oil] Iran-Krieg blockiert Hormus-Strasse: OPEC-Förderung sinkt um 8 Millionen Barrel, Brent tre
+  [PS1_Oil] Ölpreis: Produktionssteigerung drückt die Preise für Öl - WirtschaftsWoche
+  [PS1_Oil] Ölpreis fällt und droht weiter abzusacken – OPEC mit Ölschwemme - finanzmarktwelt.de
+  [PS1_Oil] Brent und WTI: Gerüchte um höhere Produktion lassen Ölpreis abrutschen - Handelsblatt
+High-Impact: 20 | Actionable: True
+---
+
+## [2026-04-04 21:10] News Radar — 11 neue Headlines
+  [S1_Iran] "Macht sich an der Tankstelle bemerkbar": Iran sperrt Straße von Hormus - T-Online
+  [S3_KI] Palantir: Winner Of The AI War
+  [S3_KI] Got $5,000? 3 AI Supercycle Growth Stocks at Every Layer of the Stack.
+  [S3_KI] Palantir Technologies (PLTR) fällt um 5,5 % nach großen Deals im Verteidigungsbereich und 
+  [S3_KI] What will NVIDIA (NVDA) hit Week of April 6 2026? Wettquoten & Prognosen (Apr. 3, 2026) - 
+  [S1_Iran] US Arrests Niece of Late Iranian General Soleimani
+  [S3_KI] DNC Chair: "We Don't Need to Out-Raise the Republicans"
+  [S1_Iran] US Deploys Bulk of Stealthy Long-Range Missile for Iran War
+  [S1_Iran] Trump’s Victory Rhetoric Undercut by Downed US Jet in Iran War
+  [PS2_Tanker] Peru’s Presidential Front-Runners Shift With Election Days Away
+High-Impact: 5 | Actionable: True
 ---

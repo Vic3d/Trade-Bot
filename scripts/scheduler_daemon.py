@@ -31,14 +31,71 @@ LOG_FILE = WS / 'data/scheduler.log'
 
 SCHEDULE = [
     # Täglich
-    ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  0,  None),
+    # ── Live Data Refresh: 5x täglich (vor jedem wichtigen Job) ──────────────
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             7,  0,  None),   # Morgens
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             9,  0,  None),   # Vor Scanner
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             13, 0,  None),   # Mittags
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             17, 0,  None),   # Nachmittags
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             21, 0,  None),   # Abends
+    # ── Watchlist Tracker: alle 30 Min während Marktzeiten ────────────────────
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        9,  0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        9,  30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        10, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        10, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        11, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        11, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        12, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        12, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        13, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        13, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        14, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        14, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        15, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        15, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        16, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        16, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        17, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        17, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        18, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        18, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        19, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        19, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 0,  [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 30, [0,1,2,3,4]),
+    ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        21, 0,  [0,1,2,3,4]),
+    ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
+    # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
+    # Format: (name, script, args, hour, min, weekdays, discord)
+    ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
+    ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4], True),
+    ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4], True),
+    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4], True),
+    ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None,        True),
+    # ─────────────────────────────────────────────────────────────────────────
+    ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
+    ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
+    ('CEO Radar Nacht',     'news_ceo_radar.py',       [],                        2,  0,  None),
+    ('CEO Radar Morgen',    'news_ceo_radar.py',       [],                        7,  0,  None),
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        9,  0,  None),
+    ('News Gate Update',    'news_gate_updater.py',    [],                        9,  5,  None),
+    ('CEO Radar',           'news_ceo_radar.py',       [],                        9,  10, None),
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        13, 0,  None),
+    ('News Gate Update',    'news_gate_updater.py',    [],                        13, 5,  None),
+    ('CEO Radar',           'news_ceo_radar.py',       [],                        13, 10, None),
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        17, 0,  None),
+    ('News Gate Update',    'news_gate_updater.py',    [],                        17, 5,  None),
+    ('CEO Radar',           'news_ceo_radar.py',       [],                        17, 10, None),
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        21, 0,  None),
+    ('News Gate Update',    'news_gate_updater.py',    [],                        21, 5,  None),
+    ('CEO Radar',           'news_ceo_radar.py',       [],                        21, 10, None),
     # Mo-Fr
     ('Feature Analyzer',    'feature_analyzer.py',     ['--quick'],               11, 30, [5]),   # Sa
     ('Backtest Engine',     'backtest_engine.py',      ['--quick'],               9,  0,  [6]),   # So
     ('Strategy DNA',        'strategy_dna.py',         [],                        12, 0,  [5]),   # Sa
+    ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
 ]
 
@@ -74,8 +131,8 @@ def notify(msg: str):
 
 # ── Job Runner ────────────────────────────────────────────────────────────────
 
-def run_job(name: str, script: str, args: list[str]) -> bool:
-    """Führt ein Script aus und gibt True bei Erfolg zurück."""
+def run_job(name: str, script: str, args: list[str], discord: bool = False) -> bool:
+    """Führt ein Script aus. Bei discord=True wird stdout an Victor gesendet."""
     script_path = SCRIPTS / script
     if not script_path.exists():
         log(f'⚠️  {name}: Script nicht gefunden — {script}')
@@ -89,7 +146,12 @@ def run_job(name: str, script: str, args: list[str]) -> bool:
             cwd=str(WS)
         )
         if result.returncode == 0:
-            log(f'✅ {name}: OK')
+            output = result.stdout.strip()
+            if discord and output and len(output) > 20 and 'KEIN_SIGNAL' not in output:
+                notify(output[:1900])
+                log(f'✅ {name}: OK + Discord gesendet')
+            else:
+                log(f'✅ {name}: OK')
             return True
         else:
             log(f'❌ {name}: Fehler (code {result.returncode})')
@@ -115,10 +177,42 @@ def should_run(hour: int, minute: int, weekdays) -> bool:
     return True
 
 
+def start_price_monitor():
+    """Startet den Price Monitor als Hintergrund-Prozess."""
+    import subprocess as _sp
+    monitor_pid_file = WS / 'data/price_monitor.pid'
+
+    # Prüfen ob bereits läuft
+    if monitor_pid_file.exists():
+        try:
+            pid = int(monitor_pid_file.read_text().strip())
+            os.kill(pid, 0)  # 0 = nur prüfen ob läuft
+            return  # Läuft schon
+        except (ProcessLookupError, ValueError):
+            pass  # PID tot → neu starten
+
+    proc = _sp.Popen(
+        ['python3.13', str(WS / 'scripts/price_monitor.py')],
+        start_new_session=True,
+        stdout=open(str(WS / 'data/price_monitor.log'), 'a'),
+        stderr=_sp.STDOUT,
+    )
+    log(f'📡 Price Monitor gestartet (PID {proc.pid})')
+
+
 def scheduler_loop():
     """Haupt-Schleife — prüft jede Minute ob Jobs laufen sollen."""
     log('🚀 TradeMind Scheduler Daemon gestartet')
-    notify('🤖 **TradeMind Scheduler** gestartet — alle Crons laufen jetzt token-frei')
+
+    # Startup-Nachricht nur einmal pro Tag — nicht bei jedem Watchdog-Neustart
+    startup_flag = WS / 'data/scheduler_started_today.txt'
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    if not startup_flag.exists() or startup_flag.read_text().strip() != today_str:
+        notify('🤖 **TradeMind** online')
+        startup_flag.write_text(today_str)
+
+    # Price Monitor sofort starten
+    start_price_monitor()
 
     last_run = {}  # Verhindert Doppel-Ausführungen
 
@@ -126,7 +220,10 @@ def scheduler_loop():
         now = datetime.now()
         current_key = f'{now.strftime("%Y-%m-%d %H:%M")}'
 
-        for name, script, args, hour, minute, weekdays in SCHEDULE:
+        for entry in SCHEDULE:
+            name, script, args, hour, minute, weekdays = entry[:6]
+            discord_send = entry[6] if len(entry) > 6 else False
+
             job_key = f'{name}_{current_key}'
             if job_key in last_run:
                 continue
@@ -139,7 +236,7 @@ def scheduler_loop():
                     for k in old_keys:
                         del last_run[k]
 
-                success = run_job(name, script, args)
+                success = run_job(name, script, args, discord=discord_send)
 
                 # Bestimmte Jobs senden Discord-Notification bei Fehler
                 if not success:

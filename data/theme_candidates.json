@@ -1,0 +1,63 @@
+[
+  {
+    "phrase": "stocks",
+    "count": 70,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "markets",
+    "count": 32,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "copper",
+    "count": 31,
+    "theme_key": "copper",
+    "tickers": [
+      [
+        "FCX",
+        "Freeport-McMoRan"
+      ],
+      [
+        "SCCO",
+        "Southern Copper"
+      ],
+      [
+        "TECK",
+        "Teck Resources"
+      ]
+    ]
+  },
+  {
+    "phrase": "china",
+    "count": 31,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "defense",
+    "count": 30,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "than",
+    "count": 28,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "more",
+    "count": 27,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "could",
+    "count": 27,
+    "theme_key": null,
+    "tickers": []
+  }
+]

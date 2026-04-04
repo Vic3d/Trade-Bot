@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 Paper Exit Manager — Verbesserung 1: Time-based Exits + saubere Exit-Typen
 =========================================================================
@@ -30,21 +30,29 @@ TRAILING_TRIGGER      = 0.05  # Bei +5% Stop auf Breakeven ziehen
 PROGRESS_THRESHOLD    = 0.30  # Muss nach 50% der Haltezeit 30% Richtung Ziel gelaufen sein
 
 def yahoo(ticker):
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=5d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    try:
-        with urllib.request.urlopen(req, timeout=8) as r:
-            d = json.load(r)
-        return d['chart']['result'][0]['meta'].get('regularMarketPrice')
-    except:
-        return None
+    """→ live_data.get_price_eur(). Gibt immer EUR zurück. Kein direkter Yahoo-Aufruf."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import get_price_eur
+    return get_price_eur(ticker)
 
 def get_eurusd():
-    return yahoo('EURUSD=X') or 1.15
+    """→ live_data.get_eurusd(). Single Source of Truth."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import get_eurusd as _fx
+    return _fx()
 
 def close_position(db, row_id, close_price, exit_type, entry_price, shares, fees):
     pnl = (close_price - entry_price) * shares - fees
     pnl_pct = (close_price - entry_price) / entry_price * 100
+
+    # Ticker holen bevor wir schließen
+    ticker_row = db.execute(
+        "SELECT ticker FROM paper_portfolio WHERE id=?", (row_id,)
+    ).fetchone()
+    ticker = ticker_row[0] if ticker_row else None
+
     db.execute("""
         UPDATE paper_portfolio
         SET status=?, close_price=?, close_date=datetime('now'),
@@ -59,9 +67,38 @@ def close_position(db, row_id, close_price, exit_type, entry_price, shares, fees
         row_id
     ))
     db.commit()
+
+    # Pending Setup für diesen Ticker zurücksetzen (WATCHING → EXPIRED nach Exit)
+    if ticker:
+        db.execute(
+            "UPDATE pending_setups SET status='EXPIRED', updated_at=datetime('now') "
+            "WHERE ticker=? AND status IN ('WATCHING','TRIGGERED')",
+            (ticker,)
+        )
+        db.commit()
+
     return pnl
 
+def is_market_open() -> bool:
+    """Prüft ob mindestens eine relevante Börse heute handelt."""
+    try:
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent / 'core'))
+        from market_hours import is_any_trading_day
+        # Repräsentative Tickers für alle genutzten Börsen
+        probe = ['AAPL', 'RHM.DE', 'EQNR.OL', 'BA.L', 'TTE.PA', 'ASML.AS']
+        return is_any_trading_day(probe)
+    except Exception:
+        from datetime import datetime, timezone
+        return datetime.now(timezone.utc).weekday() < 5
+
+
 def run():
+    if not is_market_open():
+        from datetime import datetime
+        print(f"📅 Markt geschlossen ({datetime.now().strftime('%A')}) — kein Exit-Check.")
+        return
+
     db = sqlite3.connect(DB)
     db.row_factory = sqlite3.Row
     eurusd = get_eurusd()
@@ -76,12 +113,9 @@ def run():
     trailing_updates = []
 
     for t in open_trades:
-        price_raw = yahoo(t['ticker'])
-        if not price_raw:
+        price = yahoo(t['ticker'])  # bereits in EUR via live_data.get_price_eur()
+        if not price:
             continue
-
-        # EUR-Konvertierung
-        price = price_raw / eurusd if not any(t['ticker'].endswith(s) for s in ['.DE','.PA','.AS','.L','.OL','.CO']) else price_raw
         entry = t['entry_price']
         stop  = t['stop_price'] or (entry * 0.93)
         target = t['target_price'] or (entry * 1.15)
@@ -109,6 +143,32 @@ def run():
         max_hold = HOLD_LIMITS.get(tier, HOLD_LIMITS['DEFAULT'])
         half_hold = max_hold // 2
 
+        # ── Day Trade: Zwangsschluss bei 21:50 CET ───────────────────
+        trade_style = t['style'] or 'swing'
+        if trade_style == 'day':
+            from datetime import timezone as _tz
+            import zoneinfo
+            now_berlin = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
+            # Prüfe ob Entry heute war (Day Trade = selber Tag)
+            try:
+                entry_dt_aware = datetime.fromisoformat(str(t['entry_date'])).astimezone(
+                    zoneinfo.ZoneInfo('Europe/Berlin'))
+                same_day = entry_dt_aware.date() == now_berlin.date()
+            except Exception:
+                same_day = True
+
+            force_close = (
+                same_day and
+                (now_berlin.hour > 21 or (now_berlin.hour == 21 and now_berlin.minute >= 50))
+            ) or (not same_day)  # Übernacht-Day-Trade → sofort schließen
+
+            if force_close:
+                pnl = close_position(db, t['id'], price, 'DAY_TRADE_CLOSE', entry, shares, fees)
+                closed.append(
+                    f"🕘 DAYCLS {t['ticker']:8} | {entry:.2f}→{price:.2f}€ | P&L: {pnl:+.2f}€ [DAY]"
+                )
+                continue
+
         # 1. STOP getroffen
         if price <= stop:
             pnl = close_position(db, t['id'], price, 'STOP', entry, shares, fees)
@@ -122,6 +182,7 @@ def run():
             continue
 
         # 3. TIME EXIT — tier-spezifisch
+        # Day Trade: max 1 Tag (oben behandelt)
         # Regel: max_hold Tage erreicht + weniger als MIN_MOVE → raus
         if hold_days >= max_hold and move_pct < MIN_MOVE_FOR_HOLD:
             pnl = close_position(db, t['id'], price, f'TIME_{hold_days}d', entry, shares, fees)
@@ -238,6 +299,9 @@ def trigger_learning_if_needed(closed_count: int):
 
 
 if __name__ == '__main__':
-    closed, trailing = run()
+    result = run()
+    if result is None:
+        exit(0)  # Markt geschlossen
+    closed, trailing = result
     trigger_online_learning(closed)        # Phase 4: sofort lernen
     trigger_learning_if_needed(len(closed))  # Phase 1-3: Scores updaten

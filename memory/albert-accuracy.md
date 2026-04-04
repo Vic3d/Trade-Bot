@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-04-04 09:10 UTC | Learning System v2.0 (Auto)*
+*Generiert: 2026-04-04 20:45 UTC | Learning System v2.0 (Auto)*
 
 ---
 
@@ -8,9 +8,9 @@
 | | Paper | Real |
 |---|---|---|
 | Offene Positionen | 10 | — |
-| Geschlossene Positionen | 80 | — |
-| Realisierte P&L | +1996.91€ | — |
-| Win-Rate | 42% (34W / 30L) | — |
+| Geschlossene Positionen | 81 | — |
+| Realisierte P&L | +1960.32€ | — |
+| Win-Rate | 42% (34W / 31L) | — |
 
 ## 🏆 Strategie-Ranking (nach P&L)
 
@@ -24,7 +24,7 @@
 | PS13 | 4 | 100% | +3.5% | +273.4€ |
 | PS15 | 3 | 100% | +7.4% | +258.5€ |
 | PS1 | 9 | 67% | +0.9% | +163.2€ |
-| PS11 | 2 | 100% | +3.0% | +118.3€ |
+| PS11 | 3 | 67% | +1.4% | +81.7€ |
 | PS2 | 6 | 83% | +8.3% | +79.9€ |
 | PS12 | 1 | 100% | +2.8% | +55.4€ |
 | PS4 | 6 | 67% | +0.3% | +35.7€ |

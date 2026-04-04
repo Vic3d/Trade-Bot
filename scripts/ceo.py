@@ -1058,12 +1058,22 @@ def calculate_adaptive_thresholds(conn, current_vix: float = None,
         'performance_adjusted': False,
     }
 
-    # Determine current VIX
+    # Determine current VIX — aus DB, nie hardcoded
     if current_vix is None:
         if market_data and not market_data.get('vix', {}).get('error'):
-            current_vix = market_data['vix'].get('price', 25.0)
-        else:
-            current_vix = 25.0
+            current_vix = market_data['vix'].get('price')
+        if current_vix is None:
+            # Fallback: aus trading.db holen
+            try:
+                import sqlite3 as _sq
+                _c = _sq.connect('/data/.openclaw/workspace/data/trading.db')
+                _row = _c.execute(
+                    "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+                ).fetchone()
+                _c.close()
+                current_vix = _row[0] if _row else None
+            except Exception:
+                current_vix = None  # None statt hardcoded 25 — lieber kein Trade als falscher VIX
 
     # ── 1. Collect VIX history ────────────────────────────────────────────
     vix_values = []
@@ -4756,6 +4766,33 @@ def generate_report_full(directive: dict, hist: dict) -> str:
         report_lines.append('')
         report_lines.append('**Top Opportunities:**')
         report_lines.extend(opp_lines)
+
+    # ── Pending Setups (warte auf Trigger) ──────────────────────────
+    try:
+        pending = conn.execute('''
+            SELECT ticker, strategy, conviction, entry_trigger, current_price,
+                   stop_suggestion, target_suggestion, notes, created_at
+            FROM pending_setups WHERE status='WATCHING'
+            ORDER BY conviction DESC LIMIT 5
+        ''').fetchall()
+        if pending:
+            report_lines.append('')
+            report_lines.append(f'**⏳ Watchlist — warte auf Entry ({len(pending)} Setups):**')
+            for p in pending:
+                crv = ''
+                if p['stop_suggestion'] and p['target_suggestion'] and p['entry_trigger']:
+                    risk = p['entry_trigger'] - p['stop_suggestion']
+                    reward = p['target_suggestion'] - p['entry_trigger']
+                    if risk > 0:
+                        crv = f" CRV {reward/risk:.1f}:1"
+                curr = p['current_price'] or 0
+                dist = ((curr - p['entry_trigger']) / p['entry_trigger'] * 100) if p['entry_trigger'] else 0
+                report_lines.append(
+                    f"  • {p['ticker']} ({p['strategy']}) | Trigger: {p['entry_trigger']:.2f}€"
+                    f" | Kurs jetzt: {curr:.2f}€ ({dist:+.1f}%){crv}"
+                )
+    except Exception:
+        pass
 
     report_lines.append('')
     report_lines.append(f'**System-Gesundheit:** {health_score}/100')

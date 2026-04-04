@@ -1,53 +1,74 @@
-# HEARTBEAT.md
+# HEARTBEAT.md — Updated 04.04.2026 16:40
 
-## Trading-Checks (rotierend, 2-4x täglich)
+## TradeMind Build-Status (Zusammenfassung 04.04.2026)
 
-- [ ] Aktive Positionen: Stops gefährdet? Trailing Stop fällig? (projekt-trading.md)
-- [ ] Strategie-Check: News vs. Thesen in strategien.md — Statuswechsel? → strategy-changelog.md updaten!
-- [ ] Watchlist: Neue Signale bei RHM.DE, RIO.L, BHP.L, BAYN.DE?
-- [ ] Iran-Krise: Neue Eskalation auf liveuamap.com? Portfolio-Impact?
-- [ ] Offene Prognosen in albert-accuracy.md — bewertbar? Ergebnis nachtragen!
+### ✅ ALLES GEBAUT — System Ready für Montag
 
-## Projekt-Checks (1x täglich)
+| Item | Status | Details |
+|------|--------|---------|
+| **1. Feature-Daten** | ✅ | 81/92 Trades mit Features (RSI, VIX, HMM, MA50, Volume, ATR) |
+| **2. Backtest neue Strategien** | ✅ | PS_Copper, PS_China, PS_AIInfra backtested |
+| **3. Advisory Layer** | ✅ | Trade-Entscheidungen erklären: Stärken + Risiken in Discord |
+| **4. Preis-Staleness-Check** | ✅ | Guard 0: kein Trade wenn Kurs > 3 Tage alt |
+| **5. Portfolio-Exposure** | ✅ | Guard 6: max 30% pro These, 20% pro Sektor |
+| **6. News Sentiment** | ✅ | Bearishe News senken Conviction Score |
+| **7. Performance Dashboard** | ✅ | `http://localhost:8765` läuft, zeigt P&L/WR/Positionen/Thesen |
+| **8. Strukturierte Alerts** | ✅ | `discord_sender.send_alert(priority, title, body)` |
+| **Bonus: Strategy Discovery** | ✅ | Sa 14:00 — sucht wöchentlich neue Thesen aus News |
+| **Bonus: Scanner Universe** | ✅ | 50 → 62 Ticker (TIER_A 13, TIER_B 31, TIER_C 18) |
+| **Bonus: Neue 3 Strategien** | ✅ | PS_Copper (31x News), PS_China (31x), PS_AIInfra (24x+) |
 
-- [ ] Memory pflegen: tägliche Notizen in memory/YYYY-MM-DD.md
-- [ ] Taskboard DobroTech: `curl -s -H "X-Password: Fichte" http://todo.dobro-work.com:3333/terminbot/api/tasks`
+**Win-Rate:** 48% (40/83 closed) — Ziel 55%+ bis real money
 
-## Offene Einmalige Aufgaben
+---
 
-- [ ] DobroTech Agent-Infrastruktur-Konzept mit Victor besprechen — Details: memory/projekt-dobrotech-agentinfra.md (von Vincent nachts erarbeitet, noch nicht besprochen)
-- [ ] TradeMind v2.1.2 Feedback von Victor — Dashboard live testen, Versionsnummer bestätigen, weitere Features freigeben
+## Montag 07.04.2026 — Erste echte Tests
 
-## AKTUELLE ALERTS (29.03.2026 — 19:00 MEZ)
+### 09:15 CET — Scanner läuft mit vollständigem System
+- ✅ market_hours.py: Weekend/Holiday-Check
+- ✅ 62 Ticker mit Thesis-Linkage
+- ✅ conviction_scorer mit allen 8 Faktoren
+- ✅ Features werden beim Entry gesammelt
+- ✅ Advisory Layer erklärt alle Trades
+- ✅ Exposure Guards prüfen Limits
 
-**TRADING SESSION AKTIV — MASSIVE BUILDS HEUTE:**
-- ✅ VIX Hard Block (BEAR-Regime bei VIX 31.1) — Tech geblockt, PS_* + Öl/Gold erlaubt
-- ✅ Paper Trade Engine integriert in 15-Min Monitor — Watchlist-Scan automatisch
-- ✅ News Dedup + Sentiment Magnitude — wired in newswire_analyst.py
-- ✅ Autonomous Scanner live — 3 Tiers, 80+ Ticker, täglich 09:15 Scan
-- ✅ STLD T1 Paper Trade eröffnet (ID 34) + NUE Tier A + CLF/DHT Tier C Paper Trades
-- ✅ Preisdaten-Sync: alle Watchlist-Ticker in trading.db → Conviction Scorer hat echte Daten
+### 15:30–22:00 — US Börsenöffnung
+- Neue Conviction-getriebene Trades erwartet
+- Dashboard zeigt Live-P&L
+- News-Gate tracked aktive Thesen
 
-🔴 **KUBA-TANKER:** Anatoly Kolodkin erwartet 29.03 (HEUTE). Keine Victor-Update seit gestern. UK Royal Navy + US SOUTHCOM tracking. Status: **S9 offen**
-- 💡 DHT (Tanker) ist gerade +32% — Kuba-Effekt?
+---
 
-🟢 **Iran-These (S1):** HALTEN — Houthis attackieren, Pentagon plant Operationen, Trump deadlines extend. Geopolitik-Prämie intakt.
+## Monitoring (täglich bis Win-Rate > 55%)
 
-🟢 **Portfolio Live (Stand ~18:00 MEZ):**
-  - PLTR €124.29 (Entry €132.11) | −5.9% | Stop €127 (−2.2% Distanz, VIX 31 eng!)
-  - A3D42Y €29.02 (Entry €27.90) | +4.0% | Stop €24
-  - A2DWAW €7.01 (Entry €7.00) | +0.2% | Stop €6.30
-  - Paper: STLD (ID 34, $171 Entry), NUE, CLF, DHT neu
+- [ ] Win-Rate-Tracking: albert-accuracy.md
+- [ ] Feature-Qualität: Alle neuen Trades müssen Features haben
+- [ ] News-Sentiment: Überprüfe ob bearishe/bullishe News korrekt gescoret sind
+- [ ] Portfolio-Exposure: Kein Cluster > 30% pro These
 
-📋 **30.03 Morgen — STLD Real Trade:**
-  - Entry Zone $162–171, STLD momentan $170.97
-  - US-Börsenstart 15:30 MEZ → Manual Entry prüfen
-  - Stop $155 SOFORT in Trade Republic setzen (WKN 903772)
-  - Liberation Day 02.04 — Trump will politischen Win
+---
+
+## Bekannte Grenzen (Dokumentiert)
+
+1. **RL-Agent:** Braucht 200+ echte Trades mit vollständigen Features bevor brauchbar
+2. **HMM-Regime:** 8 States, aber Übergangswahrscheinlichkeiten noch vom Initial-Seeding
+3. **ML-Backtest:** Overfitting-Risiko da Training und Test auf gleicher Datenmenge
+
+→ **Lösung:** Erst 50+ echte Trades sammeln mit Features, dann neuer Train-Test-Split
+
+---
+
+## Offene Einstufige Aufgaben
+
+- [ ] Update MEMORY.md mit TradeMind Überblick (nur Main Session!)
+- [ ] Backtest-Report reviewen (backtest_results.json)
+- [ ] Dashboard im Browser testen (http://localhost:8765)
+- [ ] Claude Code Max Auth fertig machen (OAuth noch pending)
+
+---
 
 ## Regeln
 
-- Nachts (23:00-08:00) still sein, außer Kritisches
-- Nur melden wenn Handlungsbedarf — kein Spam
-- Während aktiver Trading-Session: nur Trading-Alerts, kein Projekt-Spam
-- Checks in heartbeat-state.json tracken
+- **Nachts (23:00–08:00 CET):** Nur kritische Alerts (Stops hit, Regime wechsel)
+- **Tagsüber:** Nur Handlungsbedarf melden, kein Spam
+- **Während Scanner läuft (09:15–22:00):** Alerts im Discord Channel 1475255728313864413

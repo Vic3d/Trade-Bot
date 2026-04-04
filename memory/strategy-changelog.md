@@ -1128,3 +1128,11 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🟡 NEUTRAL** (Score: 37)
 **Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score -20)
 
+
+## 2026-04-04 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg
+
+## 2026-04-04 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg

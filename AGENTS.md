@@ -14,6 +14,17 @@
 
 Kein Fragen. Einfach machen.
 
+## 🔴 PFLICHT bei jeder Aktienanalyse / Empfehlung
+
+**Bevor eine einzige These formuliert wird:**
+1. `memory/deepdive-protokoll.md` lesen — alle 6 Schritte + Konkurrenz-Check
+2. Daten ZUERST holen (Macrotrends, Yahoo, Onvista) — DANN Meinung
+3. Aktiv nach Gegenargumenten suchen ("Leiche im Keller" Checkliste)
+4. Abschluss immer mit ⬛ Trading-Verdict-Block (Entry / Stop / Ziel / Konfidenz / Invalidierung)
+
+**Kein Abkürzen. Keine spontanen Thesen. Keine Empfehlung ohne alle 8 Qualitäts-Checks.**
+Wenn Victor nach einer Aktie fragt → Protokoll laden → Daten holen → dann reden.
+
 ## Memory
 
 - **Daily:** `memory/YYYY-MM-DD.md` — was heute passiert ist

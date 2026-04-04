@@ -1,9 +1,10 @@
 {
-  "total_analyzed": 82,
+  "total_analyzed": 83,
   "avg_entry_quality": 6.5,
   "avg_exit_quality": 5.9,
-  "disposition_effect": -0.146,
+  "disposition_effect": -0.097,
   "optimal_holding_days": {
+    "PS11": 1.5,
     "PS17": 1.0,
     "PS5": 4.0,
     "PS14": 1.0,
@@ -11,7 +12,6 @@
     "PS2": 2.6,
     "PS4": 1.5,
     "PS_STLD": 0.5,
-    "PS11": 1.5,
     "PS13": 1.0,
     "PS12": 1.0,
     "PS15": 0.3,
@@ -22,9 +22,9 @@
   },
   "regime_performance": {
     "RISK_OFF": {
-      "wr": 0.885,
-      "avg_pnl": 61.71,
-      "trades": 26
+      "wr": 0.852,
+      "avg_pnl": 58.07,
+      "trades": 27
     },
     "NEUTRAL": {
       "wr": 0.455,
@@ -44,11 +44,22 @@
   },
   "insights": [
     "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.5d.",
-    "PS17 hat 100% WR — aber nur 2 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (88% WR, 26 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "PS11 hat 67% WR — aber nur 3 Trades. Mehr Daten nötig.",
+    "Bestes Regime: RISK_OFF (85% WR, 27 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
     "PS5 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 53,
+      "ticker": "BA.L",
+      "strategy": "PS11",
+      "entry_quality": 6.0,
+      "exit_quality": 4.0,
+      "holding_days": 5,
+      "regime": "RISK_OFF",
+      "pnl": -36.59,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
     {
       "id": 89,
       "ticker": "SAP",
@@ -952,7 +963,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-03T18:34:49",
+  "analysis_timestamp": "2026-04-04T21:10:05",
   "avg_win_holding_days": 1.7,
   "avg_loss_holding_days": 1.5
 }

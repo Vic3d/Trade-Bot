@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 Paper Trade Engine v1 — Autonome Paper Trade Ausführung
 ========================================================
@@ -87,24 +87,34 @@ def get_sector_count(conn, sector: str) -> int:
 
 
 def yahoo_price(ticker: str) -> float | None:
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=1d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    try:
-        with urllib.request.urlopen(req, timeout=8) as r:
-            data = json.load(r)
-        return data['chart']['result'][0]['meta'].get('regularMarketPrice')
-    except Exception:
-        return None
+    """→ live_data.get_price(). Alle Preise kommen aus einer Quelle."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import get_price
+    return get_price(ticker)
+
+
+def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
+    """→ live_data.is_price_fresh()."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import is_price_fresh as _fresh
+    return _fresh(ticker, max_days)
 
 
 # ─── Preisdaten für Watchlist-Ticker in trading.db laden ────────────
 
 def sync_prices_for_tickers(tickers: list):
-    """
-    Holt aktuelle Kurse + Volumen für alle übergebenen Ticker von Yahoo
-    und schreibt sie in trading.db:prices.
-    Stellt sicher dass Conviction Scorer echte Daten hat.
-    """
+    """→ live_data.refresh_prices_bulk(). Alle Preise kommen aus einer Quelle."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import refresh_prices_bulk
+    results = refresh_prices_bulk(tickers)
+    return sum(1 for v in results.values() if v is not None)
+
+
+def _sync_prices_for_tickers_DEPRECATED(tickers: list):
+    """DEPRECATED — nicht mehr verwenden. Nur als Referenz behalten."""
     import time as _time
     conn = get_db()
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
@@ -164,8 +174,11 @@ def sync_watchlist_prices():
 # ─── VIX & Regime aktualisieren ──────────────────────────────────────
 
 def refresh_vix_in_db():
-    """Holt aktuellen VIX von Yahoo und schreibt in macro_daily."""
-    vix = yahoo_price('^VIX')
+    """→ live_data.refresh_vix(). VIX kommt aus einer Quelle."""
+    import sys as _sys
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import refresh_vix as _rv
+    vix = _rv()  # schreibt schon in DB
     if vix is None:
         return None
     
@@ -246,7 +259,27 @@ def execute_paper_entry(
     Returns: {'success': bool, 'trade_id': int|None, 'message': str, 'blocked_by': str|None}
     """
     ticker = ticker.upper()
-    
+
+    # ── Style automatisch aus Strategie ableiten ──────────────────────
+    try:
+        import sys as _sys
+        _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+        from trade_style import classify_strategy, get_style_config, validate_stop_for_style, validate_crv_for_style
+        if style == 'swing':  # nur überschreiben wenn default
+            style = classify_strategy(strategy)
+        style_cfg = get_style_config(style)
+    except Exception:
+        style_cfg = None
+
+    # ── Guard 0: Preis-Frische ────────────────────────────────────────
+    if not is_price_fresh(ticker, max_days=3):
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': f'❌ {ticker}: Preisdaten älter als 3 Tage — kein Trade ohne frische Kurse',
+            'blocked_by': 'stale_price',
+        }
+
     # ── Guard 1: VIX Hard Block ──────────────────────────────────────
     # VIX aktualisieren bevor wir entscheiden
     vix = refresh_vix_in_db()
@@ -320,6 +353,50 @@ def execute_paper_entry(
             'message': f'❌ Sektor {sector} voll ({sector_count}/{max_sector} Positionen)',
             'blocked_by': 'sector_limit',
         }
+
+    # ── Guard 5b: Style-spezifische Checks ──────────────────────────
+    if style_cfg:
+        # VIX-Limit für Day Trades enger
+        if vix and vix > style_cfg.max_vix:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f'❌ {style.upper()}: VIX {vix:.1f} > {style_cfg.max_vix} — kein {style_cfg.name}',
+                'blocked_by': f'vix_{style}',
+            }
+        # Stop-Abstand validieren
+        try:
+            from trade_style import validate_stop_for_style, validate_crv_for_style
+            stop_ok, stop_reason = validate_stop_for_style(entry_price, stop_price, style)
+            if not stop_ok:
+                conn.close()
+                return {'success': False, 'trade_id': None, 'message': f'❌ {stop_reason}', 'blocked_by': 'stop_style'}
+            crv_ok, crv_reason = validate_crv_for_style(entry_price, stop_price, target_price, style)
+            if not crv_ok:
+                conn.close()
+                return {'success': False, 'trade_id': None, 'message': f'❌ {crv_reason}', 'blocked_by': 'crv_style'}
+        except Exception:
+            pass
+
+    # ── Guard 6: Thesis-Exposure (max 30% Kapital pro These) ────────
+    try:
+        total_capital = 25000.0
+        thesis_rows = conn.execute('''
+            SELECT SUM(entry_price * shares) FROM paper_portfolio
+            WHERE status="OPEN" AND strategy=?
+        ''', (strategy,)).fetchone()
+        thesis_exposure = thesis_rows[0] or 0
+        if thesis_exposure / total_capital > 0.30:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f'❌ Thesis-Exposure {strategy} zu hoch: {thesis_exposure/total_capital*100:.0f}% > 30%',
+                'blocked_by': 'thesis_exposure',
+            }
+    except Exception:
+        pass
     
     # ── Guard 6: Freies Cash ─────────────────────────────────────────
     free_cash = get_free_cash(conn)
@@ -429,12 +506,28 @@ def execute_paper_entry(
     _warn_str = ""
     if _dna_violations:
         _warn_str = "\n⚠️  " + " | ".join(_dna_violations[:2])
+    # Advisory Layer — Warum dieser Trade?
+    try:
+        from conviction_scorer import calculate_conviction
+        _adv = calculate_conviction(ticker, strategy, entry_price, stop_price, target_price)
+        _factors = _adv.get('factors', {})
+        _strongest = _adv.get('strongest', [])
+        _weakest  = _adv.get('weakest', [])
+        _adv_str  = ""
+        if _strongest:
+            _adv_str += f"\n💡 Stärken: {', '.join(f'{f[\"factor\"]} ({f[\"score\"]})' for f in _strongest)}"
+        if _weakest and _weakest[0]['score'] < 40:
+            _adv_str += f"\n⚠️ Risiko: {_weakest[0]['factor']} ({_weakest[0]['score']}) schwach"
+    except Exception:
+        _adv_str = ""
+
     msg = (
         f"📊 **PAPER TRADE ERÖFFNET** — {ticker}\n"
         f"Strategie: {strategy} | Entry: {entry_price:.2f}€\n"
         f"Stop: {stop_price:.2f}€ | Ziel: {target_price:.2f}€ | CRV: {crv}:1\n"
         f"Position: {position_eur:.0f}€ ({shares:.2f} Shares) | Conviction: {conv_score:.0f}/100{_prob_str}{_dna_str}\n"
-        f"Regime: {regime} | VIX: {f'{vix_val:.1f}' if vix_val else 'n/a'}{_warn_str}\n"
+        f"Regime: {regime} | VIX: {f'{vix_val:.1f}' if vix_val else 'n/a'}{_warn_str}"
+        f"{_adv_str}\n"
         f"📝 {thesis[:120] if thesis else '(kein Thesis)'}"
     )
     queue_alert(msg)

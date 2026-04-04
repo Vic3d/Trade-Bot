@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeMind Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
+    --green: #00d4a0; --red: #ff4d6d; --yellow: #ffd166;
+    --blue: #4facfe; --text: #e2e8f0; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .card-value { font-size: 1.8rem; font-weight: 700; }
+  .card-value.green { color: var(--green); }
+  .card-value.red   { color: var(--red); }
+  .card-value.yellow{ color: var(--yellow); }
+  .section { margin-bottom: 24px; }
+  .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 8px 12px; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(0,212,160,0.15); color: var(--green); }
+  .badge-red   { background: rgba(255,77,109,0.15); color: var(--red); }
+  .badge-yellow{ background: rgba(255,209,102,0.15); color: var(--yellow); }
+  .badge-blue  { background: rgba(79,172,254,0.15); color: var(--blue); }
+  .bar-container { background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .regime-indicator { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; }
+  .news-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .news-item:last-child { border-bottom: none; }
+  .news-thesis { font-size: 0.75rem; color: var(--blue); margin-top: 2px; }
+  .loading { color: var(--muted); font-style: italic; }
+  @media (max-width: 600px) { body { padding: 12px; } }
+</style>
+</head>
+<body>
+
+<h1>🎩 TradeMind Dashboard</h1>
+<p class="subtitle" id="last-update">Wird geladen...</p>
+
+<div class="grid" id="stats-grid">
+  <div class="card"><div class="card-label">Fund P&L</div><div class="card-value" id="total-pnl">—</div></div>
+  <div class="card"><div class="card-label">Win-Rate</div><div class="card-value" id="win-rate">—</div></div>
+  <div class="card"><div class="card-label">Offene Positionen</div><div class="card-value" id="open-pos">—</div></div>
+  <div class="card"><div class="card-label">Closed Trades</div><div class="card-value" id="closed-trades">—</div></div>
+  <div class="card"><div class="card-label">Regime / VIX</div><div class="card-value" id="regime-vix">—</div></div>
+  <div class="card"><div class="card-label">News Gate</div><div class="card-value" id="news-gate">—</div></div>
+</div>
+
+<div class="section">
+  <h2>Offene Positionen</h2>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Stop</th><th>Ziel</th><th>P&L</th><th>Conviction</th></tr></thead>
+    <tbody id="positions-table"><tr><td colspan="7" class="loading">Lade...</td></tr></tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Aktive Thesen</h2>
+  <div id="theses-list" class="loading">Lade...</div>
+</div>
+
+<div class="section">
+  <h2>Letzte News (Hits)</h2>
+  <div id="news-list" class="loading">Lade...</div>
+</div>
+
+<div class="section">
+  <h2>Strategie-Performance</h2>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead><tr><th>Strategie</th><th>Trades</th><th>Win-Rate</th><th>P&L</th><th>Status</th></tr></thead>
+    <tbody id="strategy-table"><tr><td colspan="5" class="loading">Lade...</td></tr></tbody>
+  </table>
+  </div>
+</div>
+
+<script>
+async function loadDashboard() {
+  try {
+    const r = await fetch('/api/dashboard-data');
+    const data = await r.json();
+    renderDashboard(data);
+  } catch(e) {
+    // Fallback: direkt aus JSON-Dateien (lokaler Modus)
+    document.getElementById('last-update').textContent = 'API nicht verfügbar — statische Ansicht';
+  }
+}
+
+function pnlClass(v) { return v > 0 ? 'green' : v < 0 ? 'red' : ''; }
+function pnlStr(v)   { return v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1) + '%'; }
+
+function renderDashboard(d) {
+  document.getElementById('last-update').textContent = 'Zuletzt: ' + new Date().toLocaleString('de-DE');
+  document.getElementById('total-pnl').textContent = (d.total_pnl >= 0 ? '+' : '') + d.total_pnl.toFixed(0) + '€';
+  document.getElementById('total-pnl').className = 'card-value ' + pnlClass(d.total_pnl);
+  document.getElementById('win-rate').textContent = d.win_rate + '%';
+  document.getElementById('win-rate').className = 'card-value ' + (d.win_rate >= 55 ? 'green' : d.win_rate >= 45 ? 'yellow' : 'red');
+  document.getElementById('open-pos').textContent = d.open_positions;
+  document.getElementById('closed-trades').textContent = d.closed_trades;
+  document.getElementById('regime-vix').textContent = d.regime + ' / ' + d.vix;
+  document.getElementById('regime-vix').className = 'card-value ' + (d.regime === 'BULL_CALM' ? 'green' : d.regime === 'CRASH' || d.regime === 'CRISIS' ? 'red' : 'yellow');
+  document.getElementById('news-gate').textContent = d.news_relevant ? '🟢 Aktiv' : '⬜ Neutral';
+
+  // Positionen
+  const posHtml = (d.positions || []).map(p => `
+    <tr>
+      <td><strong>${p.ticker}</strong></td>
+      <td><span class="badge badge-blue">${p.strategy}</span></td>
+      <td>${p.entry.toFixed(2)}</td>
+      <td>${p.stop ? p.stop.toFixed(2) : '—'}</td>
+      <td>${p.target ? p.target.toFixed(2) : '—'}</td>
+      <td class="${pnlClass(p.pnl_pct)}">${pnlStr(p.pnl_pct)}</td>
+      <td>
+        <div class="bar-container"><div class="bar" style="width:${p.conviction||0}%;background:${p.conviction>=65?'var(--green)':p.conviction>=45?'var(--yellow)':'var(--red)'}"></div></div>
+        <small>${p.conviction||'?'}/100</small>
+      </td>
+    </tr>`).join('');
+  document.getElementById('positions-table').innerHTML = posHtml || '<tr><td colspan="7" style="color:var(--muted)">Keine offenen Positionen</td></tr>';
+
+  // Thesen
+  const thesenHtml = (d.active_theses || []).map(t => `
+    <span class="badge badge-${t.active ? 'green' : 'blue'}" style="margin:4px">${t.id}: ${t.name}</span>
+  `).join('');
+  document.getElementById('theses-list').innerHTML = thesenHtml || '<span style="color:var(--muted)">Keine aktiven Thesen</span>';
+
+  // News
+  const newsHtml = (d.news_hits || []).slice(0,8).map(n => `
+    <div class="news-item">
+      ${n.headline}
+      <div class="news-thesis">${n.thesis} · ${n.source}</div>
+    </div>`).join('');
+  document.getElementById('news-list').innerHTML = newsHtml || '<span style="color:var(--muted)">Keine News-Hits</span>';
+
+  // Strategie-Performance
+  const stratHtml = (d.strategies || []).map(s => `
+    <tr>
+      <td>${s.id}</td>
+      <td>${s.trades}</td>
+      <td class="${pnlClass(s.wr - 50)}">${s.wr}%</td>
+      <td class="${pnlClass(s.pnl)}">${s.pnl >= 0 ? '+' : ''}${s.pnl.toFixed(0)}€</td>
+      <td><span class="badge badge-${s.wr>=60?'green':s.wr>=45?'yellow':'red'}">${s.wr>=60?'✅ STARK':s.wr>=45?'⚠️ OK':'❌ WEAK'}</span></td>
+    </tr>`).join('');
+  document.getElementById('strategy-table').innerHTML = stratHtml || '<tr><td colspan="5" style="color:var(--muted)">Keine Daten</td></tr>';
+}
+
+loadDashboard();
+setInterval(loadDashboard, 60000);  // Refresh jede Minute
+</script>
+</body>
+</html>

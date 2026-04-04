@@ -1,1445 +1,174 @@
 {
-  "PS1": {
-    "status": "ok",
-    "strategy": "PS1",
-    "tickers_tested": [
-      "OXY",
-      "TTE.PA",
-      "EQNR.OL",
-      "FRO",
-      "DHT"
-    ],
-    "total_trades": 155,
-    "overall": {
-      "total_trades": 155,
-      "win_rate": 0.51,
-      "total_pnl_eur": 2900.81,
-      "avg_pnl_pct": 1.04,
-      "avg_win_eur": 126.1,
-      "avg_loss_eur": -92.91,
-      "expectancy_eur": 18.71,
-      "profit_factor": 1.41,
-      "max_drawdown_pct": -71.01,
-      "sharpe_ratio": 2.037,
-      "alpha_vs_spy": -58.75,
-      "avg_hold_days": 22.7,
-      "exit_types": {
-        "STOP": 33,
-        "TARGET": 30,
-        "TIME": 92
-      }
+  "strategies_tested": 6,
+  "results": {
+    "DT4": {
+      "original": {
+        "wr": 0.0,
+        "pnl": -134.22,
+        "trades": 8
+      },
+      "optimized_stop": {
+        "wr": 0.0,
+        "pnl": -96.69,
+        "improvement_pct": 28.0
+      },
+      "optimized_tp": {
+        "wr": 0.0,
+        "pnl": -134.22,
+        "improvement_pct": 0.0
+      },
+      "regime_filtered": {
+        "wr": 0.0,
+        "pnl": 0.0,
+        "trades_skipped": 8,
+        "worst_regimes": [
+          "PAPER_LEARN"
+        ]
+      },
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 100.0
     },
-    "ticker_breakdown": {
-      "OXY": {
-        "total_trades": 27,
-        "win_rate": 0.519,
-        "total_pnl_eur": 183.58,
-        "avg_pnl_pct": 0.44,
-        "avg_win_eur": 102.31,
-        "avg_loss_eur": -96.06,
-        "expectancy_eur": 6.8,
-        "profit_factor": 1.15,
-        "max_drawdown_pct": -32.41,
-        "sharpe_ratio": 0.783,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 24.0,
-        "exit_types": {
-          "STOP": 5,
-          "TARGET": 4,
-          "TIME": 18
-        }
+    "PS1": {
+      "original": {
+        "wr": 0.6,
+        "pnl": 158.96,
+        "trades": 10
       },
-      "TTE.PA": {
-        "total_trades": 30,
-        "win_rate": 0.5,
-        "total_pnl_eur": 652.01,
-        "avg_pnl_pct": 1.19,
-        "avg_win_eur": 109.63,
-        "avg_loss_eur": -66.17,
-        "expectancy_eur": 21.73,
-        "profit_factor": 1.66,
-        "max_drawdown_pct": -20.0,
-        "sharpe_ratio": 2.692,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 24.7,
-        "exit_types": {
-          "STOP": 3,
-          "TARGET": 5,
-          "TIME": 22
-        }
+      "optimized_stop": {
+        "wr": 0.6,
+        "pnl": 158.96,
+        "improvement_pct": 0.0
       },
-      "EQNR.OL": {
-        "total_trades": 33,
-        "win_rate": 0.424,
-        "total_pnl_eur": 343.63,
-        "avg_pnl_pct": 0.62,
-        "avg_win_eur": 134.65,
-        "avg_loss_eur": -81.13,
-        "expectancy_eur": 10.41,
-        "profit_factor": 1.22,
-        "max_drawdown_pct": -32.6,
-        "sharpe_ratio": 1.151,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 21.6,
-        "exit_types": {
-          "STOP": 6,
-          "TARGET": 6,
-          "TIME": 21
-        }
+      "optimized_tp": {
+        "wr": 0.6,
+        "pnl": 158.96,
+        "improvement_pct": 0.0
       },
-      "FRO": {
-        "total_trades": 36,
-        "win_rate": 0.528,
-        "total_pnl_eur": 1068.91,
-        "avg_pnl_pct": 1.58,
-        "avg_win_eur": 153.29,
-        "avg_loss_eur": -108.45,
-        "expectancy_eur": 29.69,
-        "profit_factor": 1.58,
-        "max_drawdown_pct": -34.23,
-        "sharpe_ratio": 2.908,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 19.6,
-        "exit_types": {
-          "STOP": 11,
-          "TARGET": 9,
-          "TIME": 16
-        }
+      "regime_filtered": {
+        "wr": 0.8,
+        "pnl": 173.7,
+        "trades_skipped": 5,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
       },
-      "DHT": {
-        "total_trades": 29,
-        "win_rate": 0.586,
-        "total_pnl_eur": 652.68,
-        "avg_pnl_pct": 1.23,
-        "avg_win_eur": 122.8,
-        "avg_loss_eur": -119.58,
-        "expectancy_eur": 22.51,
-        "profit_factor": 1.45,
-        "max_drawdown_pct": -26.31,
-        "sharpe_ratio": 2.327,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 24.6,
-        "exit_types": {
-          "STOP": 8,
-          "TARGET": 6,
-          "TIME": 15
-        }
-      }
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 9.3
     },
-    "walk_forward": [
-      {
-        "total_trades": 13,
-        "win_rate": 0.538,
-        "total_pnl_eur": 407.01,
-        "avg_pnl_pct": 1.67,
-        "avg_win_eur": 135.82,
-        "avg_loss_eur": -90.62,
-        "expectancy_eur": 31.31,
-        "profit_factor": 1.75,
-        "max_drawdown_pct": -17.67,
-        "sharpe_ratio": 3.284,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 23.5,
-        "exit_types": {
-          "STOP": 3,
-          "TARGET": 3,
-          "TIME": 7
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
+    "PS2": {
+      "original": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "trades": 6
       },
-      {
-        "total_trades": 10,
-        "win_rate": 0.3,
-        "total_pnl_eur": -368.19,
-        "avg_pnl_pct": -1.74,
-        "avg_win_eur": 193.66,
-        "avg_loss_eur": -135.59,
-        "expectancy_eur": -36.82,
-        "profit_factor": 0.61,
-        "max_drawdown_pct": -46.21,
-        "sharpe_ratio": -3.574,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.9,
-        "exit_types": {
-          "STOP": 6,
-          "TARGET": 2,
-          "TIME": 2
-        },
-        "period": "2025-01 → 2025-04",
-        "is_oos": true
+      "optimized_stop": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "improvement_pct": 0.0
       },
-      {
-        "total_trades": 14,
-        "win_rate": 0.714,
-        "total_pnl_eur": 451.66,
-        "avg_pnl_pct": 1.71,
-        "avg_win_eur": 61.24,
-        "avg_loss_eur": -40.18,
-        "expectancy_eur": 32.26,
-        "profit_factor": 3.81,
-        "max_drawdown_pct": -5.61,
-        "sharpe_ratio": 6.071,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 20.7,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 1,
-          "TIME": 12
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
+      "optimized_tp": {
+        "wr": 0.833,
+        "pnl": 79.92,
+        "improvement_pct": 0.0
       },
-      {
-        "total_trades": 16,
-        "win_rate": 0.625,
-        "total_pnl_eur": 187.39,
-        "avg_pnl_pct": 0.68,
-        "avg_win_eur": 61.69,
-        "avg_loss_eur": -71.58,
-        "expectancy_eur": 11.71,
-        "profit_factor": 1.44,
-        "max_drawdown_pct": -17.27,
-        "sharpe_ratio": 2.03,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 24.7,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 1,
-          "TIME": 15
-        },
-        "period": "2025-07 → 2025-10",
-        "is_oos": true
+      "regime_filtered": {
+        "wr": 1.0,
+        "pnl": 158.95,
+        "trades_skipped": 3,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
       },
-      {
-        "total_trades": 11,
-        "win_rate": 0.636,
-        "total_pnl_eur": 634.17,
-        "avg_pnl_pct": 2.98,
-        "avg_win_eur": 140.0,
-        "avg_loss_eur": -86.45,
-        "expectancy_eur": 57.65,
-        "profit_factor": 2.83,
-        "max_drawdown_pct": -15.84,
-        "sharpe_ratio": 6.183,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 25.3,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 3,
-          "TIME": 7
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 98.9
+    },
+    "PS4": {
+      "original": {
+        "wr": 0.667,
+        "pnl": 35.68,
+        "trades": 6
       },
-      {
-        "total_trades": 9,
-        "win_rate": 0.889,
-        "total_pnl_eur": 1805.32,
-        "avg_pnl_pct": 10.13,
-        "avg_win_eur": 243.41,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 200.59,
-        "profit_factor": 13.71,
-        "max_drawdown_pct": -3.87,
-        "sharpe_ratio": 21.379,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 19.7,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 7,
-          "TIME": 1
-        },
-        "period": "2026-01 → 2026-04",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.83,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:11.335289+00:00"
+      "optimized_stop": {
+        "wr": 0.667,
+        "pnl": 35.68,
+        "improvement_pct": -0.0
+      },
+      "optimized_tp": {
+        "wr": 0.667,
+        "pnl": 35.68,
+        "improvement_pct": -0.0
+      },
+      "regime_filtered": {
+        "wr": 0.0,
+        "pnl": -27.42,
+        "trades_skipped": 5,
+        "worst_regimes": [
+          "RISK_OFF"
+        ]
+      },
+      "best_variant": "original",
+      "best_improvement_pct": 0.0
+    },
+    "PS_STLD": {
+      "original": {
+        "wr": 0.4,
+        "pnl": -746.21,
+        "trades": 5
+      },
+      "optimized_stop": {
+        "wr": 0.4,
+        "pnl": -547.89,
+        "improvement_pct": 26.6
+      },
+      "optimized_tp": {
+        "wr": 0.4,
+        "pnl": -746.21,
+        "improvement_pct": -0.0
+      },
+      "regime_filtered": {
+        "wr": 0.667,
+        "pnl": -224.29,
+        "trades_skipped": 2,
+        "worst_regimes": [
+          "BEAR"
+        ]
+      },
+      "best_variant": "regime_filtered",
+      "best_improvement_pct": 69.9
+    },
+    "PT": {
+      "original": {
+        "wr": 0.4,
+        "pnl": 681.03,
+        "trades": 5
+      },
+      "optimized_stop": {
+        "wr": 0.6,
+        "pnl": 831.71,
+        "improvement_pct": 22.1
+      },
+      "optimized_tp": {
+        "wr": 0.4,
+        "pnl": 655.43,
+        "improvement_pct": -3.8
+      },
+      "regime_filtered": {
+        "wr": 0.0,
+        "pnl": 0.0,
+        "trades_skipped": 5,
+        "worst_regimes": [
+          "UNKNOWN"
+        ]
+      },
+      "best_variant": "optimized_stop",
+      "best_improvement_pct": 22.1
+    }
   },
-  "PS2": {
-    "status": "ok",
-    "strategy": "PS2",
-    "tickers_tested": [
-      "FRO",
-      "DHT"
-    ],
-    "total_trades": 65,
-    "overall": {
-      "total_trades": 65,
-      "win_rate": 0.554,
-      "total_pnl_eur": 1721.59,
-      "avg_pnl_pct": 1.42,
-      "avg_win_eur": 138.9,
-      "avg_loss_eur": -113.06,
-      "expectancy_eur": 26.49,
-      "profit_factor": 1.53,
-      "max_drawdown_pct": -47.41,
-      "sharpe_ratio": 2.655,
-      "alpha_vs_spy": -55.56,
-      "avg_hold_days": 21.9,
-      "exit_types": {
-        "STOP": 19,
-        "TARGET": 15,
-        "TIME": 31
-      }
-    },
-    "ticker_breakdown": {
-      "FRO": {
-        "total_trades": 36,
-        "win_rate": 0.528,
-        "total_pnl_eur": 1068.91,
-        "avg_pnl_pct": 1.58,
-        "avg_win_eur": 153.29,
-        "avg_loss_eur": -108.45,
-        "expectancy_eur": 29.69,
-        "profit_factor": 1.58,
-        "max_drawdown_pct": -34.23,
-        "sharpe_ratio": 2.908,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 19.6,
-        "exit_types": {
-          "STOP": 11,
-          "TARGET": 9,
-          "TIME": 16
-        }
-      },
-      "DHT": {
-        "total_trades": 29,
-        "win_rate": 0.586,
-        "total_pnl_eur": 652.68,
-        "avg_pnl_pct": 1.23,
-        "avg_win_eur": 122.8,
-        "avg_loss_eur": -119.58,
-        "expectancy_eur": 22.51,
-        "profit_factor": 1.45,
-        "max_drawdown_pct": -26.31,
-        "sharpe_ratio": 2.327,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 24.6,
-        "exit_types": {
-          "STOP": 8,
-          "TARGET": 6,
-          "TIME": 15
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 6,
-        "win_rate": 0.667,
-        "total_pnl_eur": 313.62,
-        "avg_pnl_pct": 2.71,
-        "avg_win_eur": 149.41,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 52.27,
-        "profit_factor": 2.1,
-        "max_drawdown_pct": -9.48,
-        "sharpe_ratio": 4.768,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 16.2,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 2
-        },
-        "period": "2024-11 → 2025-02",
-        "is_oos": true
-      },
-      {
-        "total_trades": 5,
-        "win_rate": 0.4,
-        "total_pnl_eur": 267.72,
-        "avg_pnl_pct": 2.78,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -96.09,
-        "expectancy_eur": 53.54,
-        "profit_factor": 1.93,
-        "max_drawdown_pct": -14.2,
-        "sharpe_ratio": 4.446,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 21.2,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 1
-        },
-        "period": "2025-02 → 2025-05",
-        "is_oos": true
-      },
-      {
-        "total_trades": 5,
-        "win_rate": 1.0,
-        "total_pnl_eur": 230.5,
-        "avg_pnl_pct": 2.41,
-        "avg_win_eur": 46.1,
-        "avg_loss_eur": 0,
-        "expectancy_eur": 46.1,
-        "profit_factor": 99.0,
-        "max_drawdown_pct": 0.0,
-        "sharpe_ratio": 69.519,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 22.8,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 0,
-          "TIME": 5
-        },
-        "period": "2025-05 → 2025-08",
-        "is_oos": true
-      },
-      {
-        "total_trades": 6,
-        "win_rate": 0.667,
-        "total_pnl_eur": 288.14,
-        "avg_pnl_pct": 2.5,
-        "avg_win_eur": 109.31,
-        "avg_loss_eur": -74.55,
-        "expectancy_eur": 48.02,
-        "profit_factor": 2.93,
-        "max_drawdown_pct": -4.42,
-        "sharpe_ratio": 6.364,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 30.7,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 1,
-          "TIME": 5
-        },
-        "period": "2025-08 → 2025-11",
-        "is_oos": true
-      },
-      {
-        "total_trades": 3,
-        "win_rate": 1.0,
-        "total_pnl_eur": 834.0,
-        "avg_pnl_pct": 14.0,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": 0,
-        "expectancy_eur": 278.0,
-        "profit_factor": 99.0,
-        "max_drawdown_pct": 0.0,
-        "sharpe_ratio": 0.0,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 25.0,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 3,
-          "TIME": 0
-        },
-        "period": "2025-11 → 2026-02",
-        "is_oos": true
-      }
-    ],
-    "consistency": 1.0,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:11.349344+00:00"
+  "system_wide": {
+    "original_pnl": 75.16,
+    "optimized_pnl": 975.75,
+    "improvement_pct": 1198.2,
+    "recommendation": "Stahl-Tariff-Play (Liberation Day) (PS_STLD): Regime-Filter → +€522 Verbesserung"
   },
-  "PS3": {
-    "status": "ok",
-    "strategy": "PS3",
-    "tickers_tested": [
-      "KTOS",
-      "HII",
-      "HAG.DE"
-    ],
-    "total_trades": 108,
-    "overall": {
-      "total_trades": 108,
-      "win_rate": 0.5,
-      "total_pnl_eur": 4797.54,
-      "avg_pnl_pct": 2.32,
-      "avg_win_eur": 187.15,
-      "avg_loss_eur": -98.31,
-      "expectancy_eur": 44.42,
-      "profit_factor": 1.9,
-      "max_drawdown_pct": -21.2,
-      "sharpe_ratio": 4.116,
-      "alpha_vs_spy": -61.14,
-      "avg_hold_days": 18.4,
-      "exit_types": {
-        "STOP": 29,
-        "TARGET": 34,
-        "TIME": 45
-      }
-    },
-    "ticker_breakdown": {
-      "KTOS": {
-        "total_trades": 40,
-        "win_rate": 0.55,
-        "total_pnl_eur": 2113.21,
-        "avg_pnl_pct": 2.74,
-        "avg_win_eur": 188.23,
-        "avg_loss_eur": -112.66,
-        "expectancy_eur": 52.83,
-        "profit_factor": 2.04,
-        "max_drawdown_pct": -12.5,
-        "sharpe_ratio": 4.721,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 16.9,
-        "exit_types": {
-          "STOP": 11,
-          "TARGET": 14,
-          "TIME": 15
-        }
-      },
-      "HII": {
-        "total_trades": 29,
-        "win_rate": 0.517,
-        "total_pnl_eur": 1330.17,
-        "avg_pnl_pct": 2.39,
-        "avg_win_eur": 163.92,
-        "avg_loss_eur": -80.61,
-        "expectancy_eur": 45.87,
-        "profit_factor": 2.18,
-        "max_drawdown_pct": -17.01,
-        "sharpe_ratio": 4.647,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 25.8,
-        "exit_types": {
-          "STOP": 5,
-          "TARGET": 8,
-          "TIME": 16
-        }
-      },
-      "HAG.DE": {
-        "total_trades": 39,
-        "win_rate": 0.436,
-        "total_pnl_eur": 1354.16,
-        "avg_pnl_pct": 1.84,
-        "avg_win_eur": 206.26,
-        "avg_loss_eur": -97.83,
-        "expectancy_eur": 34.72,
-        "profit_factor": 1.63,
-        "max_drawdown_pct": -29.03,
-        "sharpe_ratio": 3.154,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 14.6,
-        "exit_types": {
-          "STOP": 13,
-          "TARGET": 12,
-          "TIME": 14
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 7,
-        "win_rate": 0.714,
-        "total_pnl_eur": 588.19,
-        "avg_pnl_pct": 4.3,
-        "avg_win_eur": 127.74,
-        "avg_loss_eur": -25.26,
-        "expectancy_eur": 84.03,
-        "profit_factor": 12.64,
-        "max_drawdown_pct": -1.67,
-        "sharpe_ratio": 10.596,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 22.3,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 2,
-          "TIME": 5
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 10,
-        "win_rate": 0.7,
-        "total_pnl_eur": 803.34,
-        "avg_pnl_pct": 4.12,
-        "avg_win_eur": 175.62,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 80.33,
-        "profit_factor": 2.89,
-        "max_drawdown_pct": -9.46,
-        "sharpe_ratio": 7.214,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 15.0,
-        "exit_types": {
-          "STOP": 3,
-          "TARGET": 4,
-          "TIME": 3
-        },
-        "period": "2025-01 → 2025-04",
-        "is_oos": true
-      },
-      {
-        "total_trades": 12,
-        "win_rate": 0.833,
-        "total_pnl_eur": 1894.82,
-        "avg_pnl_pct": 8.0,
-        "avg_win_eur": 205.65,
-        "avg_loss_eur": -80.83,
-        "expectancy_eur": 157.9,
-        "profit_factor": 12.72,
-        "max_drawdown_pct": -6.23,
-        "sharpe_ratio": 16.768,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 22.1,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 7,
-          "TIME": 4
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
-      },
-      {
-        "total_trades": 7,
-        "win_rate": 0.571,
-        "total_pnl_eur": 585.14,
-        "avg_pnl_pct": 4.28,
-        "avg_win_eur": 212.22,
-        "avg_loss_eur": -87.91,
-        "expectancy_eur": 83.59,
-        "profit_factor": 3.22,
-        "max_drawdown_pct": -9.26,
-        "sharpe_ratio": 7.555,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.0,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 3,
-          "TIME": 3
-        },
-        "period": "2025-07 → 2025-10",
-        "is_oos": true
-      },
-      {
-        "total_trades": 8,
-        "win_rate": 0.625,
-        "total_pnl_eur": 1086.44,
-        "avg_pnl_pct": 6.89,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -101.19,
-        "expectancy_eur": 135.81,
-        "profit_factor": 4.58,
-        "max_drawdown_pct": -7.09,
-        "sharpe_ratio": 11.505,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 18.0,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 5,
-          "TIME": 1
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 10,
-        "win_rate": 0.1,
-        "total_pnl_eur": -1224.26,
-        "avg_pnl_pct": -6.02,
-        "avg_win_eur": 53.74,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": -122.43,
-        "profit_factor": 0.04,
-        "max_drawdown_pct": -61.21,
-        "sharpe_ratio": -33.182,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 9.7,
-        "exit_types": {
-          "STOP": 9,
-          "TARGET": 0,
-          "TIME": 1
-        },
-        "period": "2026-01 → 2026-04",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.83,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:13.509023+00:00"
-  },
-  "PS4": {
-    "status": "ok",
-    "strategy": "PS4",
-    "tickers_tested": [
-      "HL",
-      "PAAS"
-    ],
-    "total_trades": 83,
-    "overall": {
-      "total_trades": 83,
-      "win_rate": 0.458,
-      "total_pnl_eur": 3214.52,
-      "avg_pnl_pct": 2.04,
-      "avg_win_eur": 226.99,
-      "avg_loss_eur": -120.25,
-      "expectancy_eur": 38.73,
-      "profit_factor": 1.59,
-      "max_drawdown_pct": -28.9,
-      "sharpe_ratio": 3.243,
-      "alpha_vs_spy": -69.68,
-      "avg_hold_days": 14.4,
-      "exit_types": {
-        "STOP": 34,
-        "TARGET": 30,
-        "TIME": 19
-      }
-    },
-    "ticker_breakdown": {
-      "HL": {
-        "total_trades": 43,
-        "win_rate": 0.512,
-        "total_pnl_eur": 2335.82,
-        "avg_pnl_pct": 2.82,
-        "avg_win_eur": 233.43,
-        "avg_loss_eur": -133.32,
-        "expectancy_eur": 54.32,
-        "profit_factor": 1.83,
-        "max_drawdown_pct": -17.16,
-        "sharpe_ratio": 4.365,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 13.0,
-        "exit_types": {
-          "STOP": 18,
-          "TARGET": 18,
-          "TIME": 7
-        }
-      },
-      "PAAS": {
-        "total_trades": 40,
-        "win_rate": 0.4,
-        "total_pnl_eur": 878.7,
-        "avg_pnl_pct": 1.2,
-        "avg_win_eur": 218.14,
-        "avg_loss_eur": -108.81,
-        "expectancy_eur": 21.97,
-        "profit_factor": 1.34,
-        "max_drawdown_pct": -24.85,
-        "sharpe_ratio": 1.941,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 15.9,
-        "exit_types": {
-          "STOP": 16,
-          "TARGET": 12,
-          "TIME": 12
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 5,
-        "win_rate": 0.4,
-        "total_pnl_eur": 249.93,
-        "avg_pnl_pct": 2.6,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -102.02,
-        "expectancy_eur": 49.99,
-        "profit_factor": 1.82,
-        "max_drawdown_pct": -15.3,
-        "sharpe_ratio": 4.123,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 20.4,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 1
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 7,
-        "win_rate": 0.286,
-        "total_pnl_eur": -574.89,
-        "avg_pnl_pct": -4.01,
-        "avg_win_eur": 33.85,
-        "avg_loss_eur": -128.52,
-        "expectancy_eur": -82.13,
-        "profit_factor": 0.11,
-        "max_drawdown_pct": -28.74,
-        "sharpe_ratio": -16.909,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 14.4,
-        "exit_types": {
-          "STOP": 4,
-          "TARGET": 0,
-          "TIME": 3
-        },
-        "period": "2025-01 → 2025-04",
-        "is_oos": true
-      },
-      {
-        "total_trades": 7,
-        "win_rate": 0.571,
-        "total_pnl_eur": 297.88,
-        "avg_pnl_pct": 2.23,
-        "avg_win_eur": 162.2,
-        "avg_loss_eur": -116.97,
-        "expectancy_eur": 42.55,
-        "profit_factor": 1.85,
-        "max_drawdown_pct": -8.65,
-        "sharpe_ratio": 4.059,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 16.0,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 3
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
-      },
-      {
-        "total_trades": 8,
-        "win_rate": 0.75,
-        "total_pnl_eur": 1384.0,
-        "avg_pnl_pct": 8.75,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 173.0,
-        "profit_factor": 5.87,
-        "max_drawdown_pct": -4.19,
-        "sharpe_ratio": 15.073,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 16.1,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 6,
-          "TIME": 0
-        },
-        "period": "2025-07 → 2025-10",
-        "is_oos": true
-      },
-      {
-        "total_trades": 12,
-        "win_rate": 0.75,
-        "total_pnl_eur": 2076.0,
-        "avg_pnl_pct": 8.75,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 173.0,
-        "profit_factor": 5.87,
-        "max_drawdown_pct": -7.1,
-        "sharpe_ratio": 15.073,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 11.2,
-        "exit_types": {
-          "STOP": 3,
-          "TARGET": 9,
-          "TIME": 0
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 5,
-        "win_rate": 0.0,
-        "total_pnl_eur": -602.09,
-        "avg_pnl_pct": -5.92,
-        "avg_win_eur": 0,
-        "avg_loss_eur": -120.42,
-        "expectancy_eur": -120.42,
-        "profit_factor": 0.0,
-        "max_drawdown_pct": -30.1,
-        "sharpe_ratio": -44.403,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 7.0,
-        "exit_types": {
-          "STOP": 4,
-          "TARGET": 0,
-          "TIME": 1
-        },
-        "period": "2026-01 → 2026-04",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.67,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:14.979372+00:00"
-  },
-  "PS5": {
-    "status": "ok",
-    "strategy": "PS5",
-    "tickers_tested": [
-      "MOS"
-    ],
-    "total_trades": 34,
-    "overall": {
-      "total_trades": 34,
-      "win_rate": 0.382,
-      "total_pnl_eur": -890.12,
-      "avg_pnl_pct": -1.21,
-      "avg_win_eur": 111.65,
-      "avg_loss_eur": -111.5,
-      "expectancy_eur": -26.18,
-      "profit_factor": 0.62,
-      "max_drawdown_pct": -63.64,
-      "sharpe_ratio": -3.137,
-      "alpha_vs_spy": -61.61,
-      "avg_hold_days": 17.3,
-      "exit_types": {
-        "STOP": 14,
-        "TARGET": 4,
-        "TIME": 16
-      }
-    },
-    "ticker_breakdown": {
-      "MOS": {
-        "total_trades": 34,
-        "win_rate": 0.382,
-        "total_pnl_eur": -890.12,
-        "avg_pnl_pct": -1.21,
-        "avg_win_eur": 111.65,
-        "avg_loss_eur": -111.5,
-        "expectancy_eur": -26.18,
-        "profit_factor": 0.62,
-        "max_drawdown_pct": -63.64,
-        "sharpe_ratio": -3.137,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.3,
-        "exit_types": {
-          "STOP": 14,
-          "TARGET": 4,
-          "TIME": 16
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 3,
-        "win_rate": 0.333,
-        "total_pnl_eur": -6.0,
-        "avg_pnl_pct": 0.0,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": -2.0,
-        "profit_factor": 0.98,
-        "max_drawdown_pct": -7.1,
-        "sharpe_ratio": -0.186,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 18.0,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 1,
-          "TIME": 0
-        },
-        "period": "2024-11 → 2025-02",
-        "is_oos": true
-      },
-      {
-        "total_trades": 4,
-        "win_rate": 0.5,
-        "total_pnl_eur": 171.45,
-        "avg_pnl_pct": 2.25,
-        "avg_win_eur": 164.47,
-        "avg_loss_eur": -78.75,
-        "expectancy_eur": 42.86,
-        "profit_factor": 2.09,
-        "max_drawdown_pct": -6.14,
-        "sharpe_ratio": 4.431,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.2,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 1,
-          "TIME": 2
-        },
-        "period": "2025-11 → 2026-02",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.5,
-    "verdict": "🔴 WEAK — Historisch schwach, Strategie überdenken",
-    "backtested_at": "2026-04-04T09:05:15.676226+00:00"
-  },
-  "S1": {
-    "status": "ok",
-    "strategy": "S1",
-    "tickers_tested": [
-      "EQNR"
-    ],
-    "total_trades": 34,
-    "overall": {
-      "total_trades": 34,
-      "win_rate": 0.471,
-      "total_pnl_eur": 301.79,
-      "avg_pnl_pct": 0.54,
-      "avg_win_eur": 126.71,
-      "avg_loss_eur": -95.87,
-      "expectancy_eur": 8.88,
-      "profit_factor": 1.17,
-      "max_drawdown_pct": -41.12,
-      "sharpe_ratio": 0.954,
-      "alpha_vs_spy": -67.59,
-      "avg_hold_days": 21.2,
-      "exit_types": {
-        "STOP": 8,
-        "TARGET": 6,
-        "TIME": 20
-      }
-    },
-    "ticker_breakdown": {
-      "EQNR": {
-        "total_trades": 34,
-        "win_rate": 0.471,
-        "total_pnl_eur": 301.79,
-        "avg_pnl_pct": 0.54,
-        "avg_win_eur": 126.71,
-        "avg_loss_eur": -95.87,
-        "expectancy_eur": 8.88,
-        "profit_factor": 1.17,
-        "max_drawdown_pct": -41.12,
-        "sharpe_ratio": 0.954,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 21.2,
-        "exit_types": {
-          "STOP": 8,
-          "TARGET": 6,
-          "TIME": 20
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 3,
-        "win_rate": 0.333,
-        "total_pnl_eur": -90.9,
-        "avg_pnl_pct": -1.41,
-        "avg_win_eur": 56.32,
-        "avg_loss_eur": -73.61,
-        "expectancy_eur": -30.3,
-        "profit_factor": 0.38,
-        "max_drawdown_pct": -7.36,
-        "sharpe_ratio": -5.864,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.7,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 0,
-          "TIME": 2
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 3,
-        "win_rate": 0.667,
-        "total_pnl_eur": 318.57,
-        "avg_pnl_pct": 5.41,
-        "avg_win_eur": 164.44,
-        "avg_loss_eur": -10.31,
-        "expectancy_eur": 106.19,
-        "profit_factor": 31.9,
-        "max_drawdown_pct": -0.44,
-        "sharpe_ratio": 13.551,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 20.0,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 1,
-          "TIME": 2
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
-      },
-      {
-        "total_trades": 3,
-        "win_rate": 0.333,
-        "total_pnl_eur": -116.67,
-        "avg_pnl_pct": -1.84,
-        "avg_win_eur": 53.03,
-        "avg_loss_eur": -84.85,
-        "expectancy_eur": -38.89,
-        "profit_factor": 0.31,
-        "max_drawdown_pct": -8.49,
-        "sharpe_ratio": -9.231,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 21.0,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 0,
-          "TIME": 3
-        },
-        "period": "2025-07 → 2025-10",
-        "is_oos": true
-      },
-      {
-        "total_trades": 3,
-        "win_rate": 0.333,
-        "total_pnl_eur": 88.34,
-        "avg_pnl_pct": 1.57,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -94.83,
-        "expectancy_eur": 29.45,
-        "profit_factor": 1.47,
-        "max_drawdown_pct": -9.48,
-        "sharpe_ratio": 2.57,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 22.0,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 1,
-          "TIME": 1
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.5,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:16.377098+00:00"
-  },
-  "S2": {
-    "status": "ok",
-    "strategy": "S2",
-    "tickers_tested": [
-      "RHM.DE"
-    ],
-    "total_trades": 37,
-    "overall": {
-      "total_trades": 37,
-      "win_rate": 0.514,
-      "total_pnl_eur": 1790.43,
-      "avg_pnl_pct": 2.52,
-      "avg_win_eur": 182.36,
-      "avg_loss_eur": -93.02,
-      "expectancy_eur": 48.39,
-      "profit_factor": 2.07,
-      "max_drawdown_pct": -14.98,
-      "sharpe_ratio": 4.516,
-      "alpha_vs_spy": -69.36,
-      "avg_hold_days": 18.4,
-      "exit_types": {
-        "STOP": 9,
-        "TARGET": 12,
-        "TIME": 16
-      }
-    },
-    "ticker_breakdown": {
-      "RHM.DE": {
-        "total_trades": 37,
-        "win_rate": 0.514,
-        "total_pnl_eur": 1790.43,
-        "avg_pnl_pct": 2.52,
-        "avg_win_eur": 182.36,
-        "avg_loss_eur": -93.02,
-        "expectancy_eur": 48.39,
-        "profit_factor": 2.07,
-        "max_drawdown_pct": -14.98,
-        "sharpe_ratio": 4.516,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 18.4,
-        "exit_types": {
-          "STOP": 9,
-          "TARGET": 12,
-          "TIME": 16
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 3,
-        "win_rate": 1.0,
-        "total_pnl_eur": 569.66,
-        "avg_pnl_pct": 9.59,
-        "avg_win_eur": 189.89,
-        "avg_loss_eur": 0,
-        "expectancy_eur": 189.89,
-        "profit_factor": 99.0,
-        "max_drawdown_pct": 0.0,
-        "sharpe_ratio": 24.15,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 20.3,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 2,
-          "TIME": 1
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 5,
-        "win_rate": 0.8,
-        "total_pnl_eur": 726.68,
-        "avg_pnl_pct": 7.37,
-        "avg_win_eur": 217.17,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": 145.34,
-        "profit_factor": 6.12,
-        "max_drawdown_pct": -4.95,
-        "sharpe_ratio": 13.399,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 12.0,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 3,
-          "TIME": 1
-        },
-        "period": "2025-01 → 2025-04",
-        "is_oos": true
-      },
-      {
-        "total_trades": 4,
-        "win_rate": 0.5,
-        "total_pnl_eur": 148.58,
-        "avg_pnl_pct": 1.96,
-        "avg_win_eur": 158.25,
-        "avg_loss_eur": -83.97,
-        "expectancy_eur": 37.14,
-        "profit_factor": 1.88,
-        "max_drawdown_pct": -7.25,
-        "sharpe_ratio": 3.812,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 15.8,
-        "exit_types": {
-          "STOP": 1,
-          "TARGET": 1,
-          "TIME": 2
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
-      },
-      {
-        "total_trades": 4,
-        "win_rate": 0.25,
-        "total_pnl_eur": -67.97,
-        "avg_pnl_pct": -0.75,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -115.32,
-        "expectancy_eur": -16.99,
-        "profit_factor": 0.8,
-        "max_drawdown_pct": -14.2,
-        "sharpe_ratio": -1.585,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 14.2,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 1,
-          "TIME": 1
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.75,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:17.088555+00:00"
-  },
-  "S3": {
-    "status": "ok",
-    "strategy": "S3",
-    "tickers_tested": [
-      "NVDA",
-      "MSFT",
-      "PLTR"
-    ],
-    "total_trades": 106,
-    "overall": {
-      "total_trades": 106,
-      "win_rate": 0.528,
-      "total_pnl_eur": 4132.88,
-      "avg_pnl_pct": 2.05,
-      "avg_win_eur": 177.61,
-      "avg_loss_eur": -116.27,
-      "expectancy_eur": 38.99,
-      "profit_factor": 1.71,
-      "max_drawdown_pct": -25.19,
-      "sharpe_ratio": 3.54,
-      "alpha_vs_spy": -60.25,
-      "avg_hold_days": 19.6,
-      "exit_types": {
-        "STOP": 32,
-        "TARGET": 33,
-        "TIME": 41
-      }
-    },
-    "ticker_breakdown": {
-      "NVDA": {
-        "total_trades": 37,
-        "win_rate": 0.514,
-        "total_pnl_eur": 1283.43,
-        "avg_pnl_pct": 1.83,
-        "avg_win_eur": 174.18,
-        "avg_loss_eur": -112.56,
-        "expectancy_eur": 34.69,
-        "profit_factor": 1.63,
-        "max_drawdown_pct": -18.84,
-        "sharpe_ratio": 3.19,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 19.2,
-        "exit_types": {
-          "STOP": 11,
-          "TARGET": 11,
-          "TIME": 15
-        }
-      },
-      "MSFT": {
-        "total_trades": 27,
-        "win_rate": 0.519,
-        "total_pnl_eur": -41.49,
-        "avg_pnl_pct": 0.02,
-        "avg_win_eur": 85.49,
-        "avg_loss_eur": -95.26,
-        "expectancy_eur": -1.54,
-        "profit_factor": 0.97,
-        "max_drawdown_pct": -23.69,
-        "sharpe_ratio": -0.243,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 28.2,
-        "exit_types": {
-          "STOP": 5,
-          "TARGET": 3,
-          "TIME": 19
-        }
-      },
-      "PLTR": {
-        "total_trades": 42,
-        "win_rate": 0.548,
-        "total_pnl_eur": 2890.94,
-        "avg_pnl_pct": 3.54,
-        "avg_win_eur": 236.51,
-        "avg_loss_eur": -134.15,
-        "expectancy_eur": 68.83,
-        "profit_factor": 2.13,
-        "max_drawdown_pct": -19.79,
-        "sharpe_ratio": 5.527,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 14.5,
-        "exit_types": {
-          "STOP": 16,
-          "TARGET": 19,
-          "TIME": 7
-        }
-      }
-    },
-    "walk_forward": [
-      {
-        "total_trades": 9,
-        "win_rate": 0.333,
-        "total_pnl_eur": 50.52,
-        "avg_pnl_pct": 0.38,
-        "avg_win_eur": 204.59,
-        "avg_loss_eur": -93.87,
-        "expectancy_eur": 5.61,
-        "profit_factor": 1.09,
-        "max_drawdown_pct": -20.85,
-        "sharpe_ratio": 0.537,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 18.7,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 5
-        },
-        "period": "2024-10 → 2025-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 7,
-        "win_rate": 0.286,
-        "total_pnl_eur": -154.0,
-        "avg_pnl_pct": -1.0,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -142.0,
-        "expectancy_eur": -22.0,
-        "profit_factor": 0.78,
-        "max_drawdown_pct": -31.17,
-        "sharpe_ratio": -1.867,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 10.1,
-        "exit_types": {
-          "STOP": 5,
-          "TARGET": 2,
-          "TIME": 0
-        },
-        "period": "2025-01 → 2025-04",
-        "is_oos": true
-      },
-      {
-        "total_trades": 9,
-        "win_rate": 0.889,
-        "total_pnl_eur": 1861.13,
-        "avg_pnl_pct": 10.44,
-        "avg_win_eur": 248.91,
-        "avg_loss_eur": -130.16,
-        "expectancy_eur": 206.79,
-        "profit_factor": 15.3,
-        "max_drawdown_pct": -4.18,
-        "sharpe_ratio": 23.498,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 29.2,
-        "exit_types": {
-          "STOP": 0,
-          "TARGET": 7,
-          "TIME": 2
-        },
-        "period": "2025-04 → 2025-07",
-        "is_oos": true
-      },
-      {
-        "total_trades": 9,
-        "win_rate": 0.556,
-        "total_pnl_eur": 273.2,
-        "avg_pnl_pct": 1.62,
-        "avg_win_eur": 124.19,
-        "avg_loss_eur": -86.94,
-        "expectancy_eur": 30.36,
-        "profit_factor": 1.79,
-        "max_drawdown_pct": -15.27,
-        "sharpe_ratio": 3.263,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 21.4,
-        "exit_types": {
-          "STOP": 2,
-          "TARGET": 2,
-          "TIME": 5
-        },
-        "period": "2025-07 → 2025-10",
-        "is_oos": true
-      },
-      {
-        "total_trades": 10,
-        "win_rate": 0.4,
-        "total_pnl_eur": -585.14,
-        "avg_pnl_pct": -2.83,
-        "avg_win_eur": 34.52,
-        "avg_loss_eur": -120.53,
-        "expectancy_eur": -58.51,
-        "profit_factor": 0.19,
-        "max_drawdown_pct": -30.9,
-        "sharpe_ratio": -11.039,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 17.1,
-        "exit_types": {
-          "STOP": 4,
-          "TARGET": 0,
-          "TIME": 6
-        },
-        "period": "2025-10 → 2026-01",
-        "is_oos": true
-      },
-      {
-        "total_trades": 6,
-        "win_rate": 0.167,
-        "total_pnl_eur": -380.67,
-        "avg_pnl_pct": -3.07,
-        "avg_win_eur": 278.0,
-        "avg_loss_eur": -131.73,
-        "expectancy_eur": -63.44,
-        "profit_factor": 0.42,
-        "max_drawdown_pct": -20.83,
-        "sharpe_ratio": -6.579,
-        "alpha_vs_spy": null,
-        "avg_hold_days": 13.0,
-        "exit_types": {
-          "STOP": 4,
-          "TARGET": 1,
-          "TIME": 1
-        },
-        "period": "2026-01 → 2026-04",
-        "is_oos": true
-      }
-    ],
-    "consistency": 0.5,
-    "verdict": "🟡 CONDITIONAL — Funktioniert, aber Konsistenz prüfen",
-    "backtested_at": "2026-04-04T09:05:19.335118+00:00"
-  }
+  "timestamp": "2026-04-04T21:10:05"
 }

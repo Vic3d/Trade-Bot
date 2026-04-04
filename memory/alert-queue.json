@@ -108,5 +108,15 @@
     "message": "\ud83d\udccb **Daily Position Review** | VIX 23.9 | 1 Exit(s) | 2 Stop-Adjust(s)\n  \u2705 EXIT ZIM: TARGET_HIT | P&L +324.32\u20ac\n  \ud83d\udd04 TIGHTEN_STOP MOS: 19.74\u219223.59\n  \ud83d\udd04 TIGHTEN_STOP SAP: 139.48\u2192156.27\n  \u26aa 8 Positionen HOLD",
     "target": "452053147620343808",
     "ts": "2026-04-03T14:45:07.453906+00:00"
+  },
+  {
+    "message": "\ud83d\udcca **PAPER TRADE ER\u00d6FFNET** \u2014 AG\nStrategie: S4 | Entry: 21.84\u20ac\nStop: 20.09\u20ac | Ziel: 25.77\u20ac | CRV: 2.2:1\nPosition: 2000\u20ac (91.58 Shares) | Conviction: 65/100\nRegime: NEUTRAL | VIX: 23.9\n\ud83d\udcdd [TIER_A] Silber-Miner bei Geopolitik | Thesis: 32% unter 52W-High, RSI=47, CRV=2.2:1",
+    "target": "452053147620343808",
+    "ts": "2026-04-04T13:16:13.626542+00:00"
+  },
+  {
+    "message": "\ud83d\udcca **PAPER TRADE ER\u00d6FFNET** \u2014 WPM\nStrategie: S4 | Entry: 135.56\u20ac\nStop: 124.72\u20ac | Ziel: 159.96\u20ac | CRV: 2.3:1\nPosition: 2000\u20ac (14.75 Shares) | Conviction: 60/100\nRegime: NEUTRAL | VIX: 23.9\n\ud83d\udcdd [TIER_A] Streaming-Silber / Gold | Thesis: 18% unter 52W-High, RSI=46, CRV=2.3:1",
+    "target": "452053147620343808",
+    "ts": "2026-04-04T13:16:15.436462+00:00"
   }
 ]
