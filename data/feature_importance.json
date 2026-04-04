@@ -1,0 +1,234 @@
+{
+  "data_source": "bootstrap(622 samples)",
+  "n_samples": 622,
+  "n_wins": 321,
+  "n_losses": 301,
+  "win_rate": 0.516,
+  "composite_scores": {
+    "rsi_at_entry": 0.6953,
+    "volume_ratio": 0.2275,
+    "vix_at_entry": 0.0,
+    "atr_pct_at_entry": 0.0,
+    "ma50_distance": 0.614,
+    "day_of_week": 0.0,
+    "sector_momentum": 0.0,
+    "spy_5d_return": 0.0,
+    "hmm_regime": 0.0
+  },
+  "permutation_importance": {
+    "rsi_at_entry": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": -0.0773,
+      "std_drop": 0.0173,
+      "importance": -0.1682
+    },
+    "volume_ratio": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0145,
+      "std_drop": 0.01,
+      "importance": 0.0315
+    },
+    "vix_at_entry": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    },
+    "atr_pct_at_entry": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    },
+    "ma50_distance": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0027,
+      "std_drop": 0.005,
+      "importance": 0.0059
+    },
+    "day_of_week": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    },
+    "sector_momentum": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    },
+    "spy_5d_return": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    },
+    "hmm_regime": {
+      "baseline_accuracy": 0.4598,
+      "mean_drop": 0.0,
+      "std_drop": 0.0,
+      "importance": 0.0
+    }
+  },
+  "spearman": {
+    "rsi_at_entry": {
+      "correlation": -0.1865,
+      "p_value": 0.0,
+      "significant": true,
+      "direction": "negative"
+    },
+    "volume_ratio": {
+      "correlation": 0.1033,
+      "p_value": 0.0099,
+      "significant": true,
+      "direction": "positive"
+    },
+    "vix_at_entry": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    },
+    "atr_pct_at_entry": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    },
+    "ma50_distance": {
+      "correlation": -0.3048,
+      "p_value": 0.0,
+      "significant": true,
+      "direction": "negative"
+    },
+    "day_of_week": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    },
+    "sector_momentum": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    },
+    "spy_5d_return": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    },
+    "hmm_regime": {
+      "correlation": 0.0,
+      "p_value": 1.0,
+      "significant": false,
+      "direction": "negative"
+    }
+  },
+  "mutual_information": {
+    "rsi_at_entry": 0.0449,
+    "volume_ratio": 0.0133,
+    "vix_at_entry": 0.0,
+    "atr_pct_at_entry": 0.0,
+    "ma50_distance": 0.1141,
+    "day_of_week": 0.0,
+    "sector_momentum": 0.0,
+    "spy_5d_return": 0.0,
+    "hmm_regime": 0.0
+  },
+  "ks_test": {
+    "rsi_at_entry": {
+      "ks_stat": 0.1847,
+      "p_value": 0.0,
+      "discriminative": true,
+      "win_mean": 55.858,
+      "loss_mean": 58.28,
+      "win_median": 54.75,
+      "loss_median": 57.8
+    },
+    "volume_ratio": {
+      "ks_stat": 0.1332,
+      "p_value": 0.0071,
+      "discriminative": true,
+      "win_mean": 1.007,
+      "loss_mean": 0.926,
+      "win_median": 0.926,
+      "loss_median": 0.831
+    },
+    "vix_at_entry": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 22.0,
+      "loss_mean": 22.0,
+      "win_median": 22.0,
+      "loss_median": 22.0
+    },
+    "atr_pct_at_entry": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 2.5,
+      "loss_mean": 2.5,
+      "win_median": 2.5,
+      "loss_median": 2.5
+    },
+    "ma50_distance": {
+      "ks_stat": 0.3182,
+      "p_value": 0.0,
+      "discriminative": true,
+      "win_mean": 3.132,
+      "loss_mean": 6.179,
+      "win_median": 1.616,
+      "loss_median": 5.426
+    },
+    "day_of_week": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 2.0,
+      "loss_mean": 2.0,
+      "win_median": 2.0,
+      "loss_median": 2.0
+    },
+    "sector_momentum": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 0.0,
+      "loss_mean": 0.0,
+      "win_median": 0.0,
+      "loss_median": 0.0
+    },
+    "spy_5d_return": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 0.0,
+      "loss_mean": 0.0,
+      "win_median": 0.0,
+      "loss_median": 0.0
+    },
+    "hmm_regime": {
+      "ks_stat": 0.0,
+      "p_value": 1.0,
+      "discriminative": false,
+      "win_mean": 1.0,
+      "loss_mean": 1.0,
+      "win_median": 1.0,
+      "loss_median": 1.0
+    }
+  },
+  "recommendations": [
+    "🏆 TOP Features: RSI(14), MA50-Distanz, Volume-Ratio",
+    "🗑️  Schwache Features: Sektor-Momentum, SPY 5d Return, HMM-Regime",
+    "  → RSI(14): niedriger = WIN (KS signifikant, Corr -0.19)",
+    "  → MA50-Distanz: niedriger = WIN (KS signifikant, Corr -0.30)",
+    "  → Volume-Ratio: höher = WIN (KS signifikant, Corr +0.10)",
+    "\n📊 Feature-Redundanz:",
+    "  ✅ Keine offensichtliche Redundanz"
+  ],
+  "analyzed_at": "2026-04-04T09:33:44.338682+00:00"
+}

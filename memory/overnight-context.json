@@ -1,14 +1,14 @@
 {
-  "generated": "2026-04-03T11:53:55.913909",
+  "generated": "2026-04-04T10:48:41.549977",
   "prices": {
     "PLTR": {
-      "price_eur": 128.57,
-      "pnl_pct": -2.7
+      "price_eur": 128.85,
+      "pnl_pct": -2.5
     }
   },
   "vix": 23.87,
-  "wti": 71.52,
+  "wti": 112.05999755859375,
   "risks": [
-    "Palantir (PLTR): Stop nur 1.2% weg"
+    "Palantir (PLTR): Stop nur 1.4% weg"
   ]
 }

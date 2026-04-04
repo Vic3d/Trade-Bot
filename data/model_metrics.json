@@ -1,0 +1,9 @@
+{
+  "n_trained": 622,
+  "n_bootstrapped": 622,
+  "accuracy": 0.622,
+  "auc_roc": null,
+  "brier_score": null,
+  "last_updated": "2026-04-04T09:20:26.172549+00:00",
+  "prediction_history": []
+}

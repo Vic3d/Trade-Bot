@@ -3,7 +3,7 @@
   "mode": "DEFENSIVE",
   "mode_reason": "Geo-Score 75 > 50 + 2 HIGH Anomalien",
   "vix": 23.9,
-  "regime": "RANGE_BOUND",
+  "regime": "CRASH",
   "geo_alert_level": "HIGH",
   "geo_score": 75,
   "trading_rules": {
@@ -2012,5 +2012,19 @@
         "samples": 4
       }
     ]
+  },
+  "hmm_regime": {
+    "name": "CRASH",
+    "probabilities": {
+      "RISK_OFF": 0.466,
+      "NEUTRAL": 0.0,
+      "CRASH": 0.534,
+      "BULL": 0.0
+    },
+    "streak_days": 6,
+    "trend": "STABLE",
+    "switch_risk": 0.029,
+    "vix": 23.87,
+    "updated_at": "2026-04-04T09:19:52.566423+00:00"
   }
 }

@@ -376,19 +376,65 @@ def execute_paper_entry(
     trade_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
     conn.commit()
     conn.close()
-    
+
+    # ── Phase 1: Feature Tracking ──
+    _features = {}
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent.parent))
+        from feature_collector import collect_and_save, collect_features
+        _features = collect_features(ticker)
+        collect_and_save(trade_id, ticker)
+    except Exception as _fe:
+        print(f"  ⚠️  Feature Collector Fehler (nicht kritisch): {_fe}")
+
+    # ── Phase 4: Online Model Prediction ──
+    _win_prob = None
+    try:
+        from online_model import predict as _predict
+        _pred = _predict(_features)
+        _win_prob = _pred.get('win_probability')
+        _interp = _pred.get('interpretation', '')
+        _conf = _pred.get('confidence', '')
+        if _win_prob is not None:
+            print(f"  🧠 Modell-Prognose: {_win_prob:.0%} Win ({_conf}) — {_interp}")
+    except Exception as _oe:
+        print(f"  ⚠️  Online Model Fehler (nicht kritisch): {_oe}")
+
+    # ── Phase 7: DNA Gate Check ──
+    _dna_score = None
+    _dna_violations = []
+    try:
+        from strategy_dna import check_dna_gate as _dna_check
+        _dna = _dna_check(strategy, _features)
+        _dna_score = _dna.get('score')
+        _dna_status = _dna.get('status', 'UNKNOWN')
+        _dna_violations = _dna.get('violations', [])
+        if _dna_score is not None:
+            _icon = {'GREEN': '🟢', 'YELLOW': '🟡', 'RED': '🔴'}.get(_dna_status, '⚫')
+            print(f"  🧬 DNA Gate: {_icon} {_dna_score}/100 ({_dna_status})")
+            for v in _dna_violations:
+                print(f"     ⚠️  {v}")
+    except Exception as _de:
+        print(f"  ⚠️  DNA Gate Fehler (nicht kritisch): {_de}")
+
     # CRV berechnen
     reward = abs(target_price - entry_price)
     risk = abs(entry_price - stop_price)
     crv = round(reward / risk, 1) if risk > 0 else 0
     
     # Alert senden
+    _prob_str = f" | 🧠 {_win_prob:.0%}" if _win_prob is not None else ""
+    _dna_str = f" | 🧬 DNA {_dna_score}/100" if _dna_score is not None else ""
+    _warn_str = ""
+    if _dna_violations:
+        _warn_str = "\n⚠️  " + " | ".join(_dna_violations[:2])
     msg = (
         f"📊 **PAPER TRADE ERÖFFNET** — {ticker}\n"
         f"Strategie: {strategy} | Entry: {entry_price:.2f}€\n"
         f"Stop: {stop_price:.2f}€ | Ziel: {target_price:.2f}€ | CRV: {crv}:1\n"
-        f"Position: {position_eur:.0f}€ ({shares:.2f} Shares) | Conviction: {conv_score:.0f}/100\n"
-        f"Regime: {regime} | VIX: {f'{vix_val:.1f}' if vix_val else 'n/a'}\n"
+        f"Position: {position_eur:.0f}€ ({shares:.2f} Shares) | Conviction: {conv_score:.0f}/100{_prob_str}{_dna_str}\n"
+        f"Regime: {regime} | VIX: {f'{vix_val:.1f}' if vix_val else 'n/a'}{_warn_str}\n"
         f"📝 {thesis[:120] if thesis else '(kein Thesis)'}"
     )
     queue_alert(msg)

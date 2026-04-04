@@ -179,5 +179,65 @@ def run():
     print(f"Offene Positionen: {open_now}")
     return closed, trailing_updates
 
+def trigger_online_learning(closed_trades: list):
+    """
+    Phase 4: Online Model nach jedem Trade-Close updaten.
+    Lernt sofort aus dem Ergebnis — kein Batch, kein Warten.
+    """
+    if not closed_trades:
+        return
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from online_model import learn_from_closed_trade
+        import sqlite3 as _sql
+        conn = _sql.connect(str(WS / 'data/trading.db'))
+        # Letzte geschlossene Trades holen (die gerade geschlossen wurden)
+        recent = conn.execute("""
+            SELECT id FROM paper_portfolio
+            WHERE status IN ('WIN','CLOSED','LOSS')
+              AND rsi_at_entry IS NOT NULL
+              AND close_date >= datetime('now', '-5 minutes')
+            ORDER BY close_date DESC LIMIT 10
+        """).fetchall()
+        conn.close()
+        for row in recent:
+            learn_from_closed_trade(row[0])
+    except Exception as e:
+        print(f"  ⚠️  Online Learning Fehler (nicht kritisch): {e}")
+
+
+def trigger_learning_if_needed(closed_count: int):
+    """
+    Triggert den Learning Engine automatisch wenn Trades geschlossen wurden.
+    Kein manuelles 'python3 learning_system.py' mehr nötig.
+    """
+    if closed_count == 0:
+        return
+
+    import subprocess, sys
+    learning_script = WS / 'scripts/paper_learning_engine.py'
+    if not learning_script.exists():
+        print("  ⚠️  Learning Engine nicht gefunden — skip")
+        return
+
+    try:
+        result = subprocess.run(
+            [sys.executable, str(learning_script), '--update-scores'],
+            capture_output=True, text=True, timeout=30
+        )
+        if result.stdout:
+            for line in result.stdout.strip().splitlines():
+                print(f"  🧠 {line}")
+        if result.returncode != 0 and result.stderr:
+            print(f"  ⚠️  Learning Engine Fehler: {result.stderr[:200]}")
+    except subprocess.TimeoutExpired:
+        print("  ⚠️  Learning Engine Timeout — wird beim nächsten Cron nachgeholt")
+    except Exception as e:
+        print(f"  ⚠️  Learning Engine Exception: {e}")
+
+
 if __name__ == '__main__':
-    run()
+    closed, trailing = run()
+    trigger_online_learning(closed)        # Phase 4: sofort lernen
+    trigger_learning_if_needed(len(closed))  # Phase 1-3: Scores updaten

@@ -1,13 +1,13 @@
 {
-  "last_updated": "2026-03-28T10:00:28Z",
+  "last_updated": "2026-04-04T09:10:09Z",
   "strategy_scores": {
     "PS1": {
-      "win_rate": 0.556,
-      "avg_pnl_pct": 6.71,
-      "total_pnl_eur": -77.39,
-      "trades": 9,
-      "risk_adj_return": 0.491,
-      "recommendation": "INSUFFICIENT_DATA",
+      "win_rate": 0.5,
+      "avg_pnl_pct": 5.97,
+      "total_pnl_eur": -91.33,
+      "trades": 10,
+      "risk_adj_return": 0.454,
+      "recommendation": "KEEP",
       "source": "both"
     },
     "PS2": {
@@ -37,19 +37,19 @@
       "recommendation": "INSUFFICIENT_DATA",
       "source": "both"
     },
+    "PT": {
+      "win_rate": 0.333,
+      "avg_pnl_pct": 4.55,
+      "total_pnl_eur": 268.98,
+      "trades": 3,
+      "risk_adj_return": 0.506,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
     "new": {
       "win_rate": 0.0,
       "avg_pnl_pct": -2.2,
       "total_pnl_eur": -4.32,
-      "trades": 1,
-      "risk_adj_return": 0.0,
-      "recommendation": "INSUFFICIENT_DATA",
-      "source": "swing"
-    },
-    "PT": {
-      "win_rate": 1.0,
-      "avg_pnl_pct": 17.12,
-      "total_pnl_eur": 341.36,
       "trades": 1,
       "risk_adj_return": 0.0,
       "recommendation": "INSUFFICIENT_DATA",
@@ -64,23 +64,68 @@
       "recommendation": "SUSPEND",
       "source": "both"
     },
-    "PS4": {
-      "win_rate": 0.5,
-      "avg_pnl_pct": 1.83,
-      "total_pnl_eur": -4.85,
-      "trades": 2,
-      "risk_adj_return": 0.545,
+    "PS10": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": 0.0,
+      "total_pnl_eur": 0.0,
+      "trades": 1,
+      "risk_adj_return": 0.0,
       "recommendation": "INSUFFICIENT_DATA",
-      "source": "day"
+      "source": "swing"
+    },
+    "PS_STLD": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -13.08,
+      "total_pnl_eur": -787.86,
+      "trades": 3,
+      "risk_adj_return": -111.016,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
     },
     "DT4": {
-      "win_rate": 0.433,
-      "avg_pnl_pct": -0.14,
-      "total_pnl_eur": -724.25,
-      "trades": 104,
-      "risk_adj_return": -0.068,
+      "win_rate": 0.402,
+      "avg_pnl_pct": -0.59,
+      "total_pnl_eur": -858.47,
+      "trades": 112,
+      "risk_adj_return": -0.193,
       "recommendation": "KEEP",
-      "source": "day"
+      "source": "both"
+    },
+    "PS4": {
+      "win_rate": 0.25,
+      "avg_pnl_pct": 0.37,
+      "total_pnl_eur": -50.43,
+      "trades": 4,
+      "risk_adj_return": 0.132,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "both"
+    },
+    "AR": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -13.14,
+      "total_pnl_eur": -1582.98,
+      "trades": 6,
+      "risk_adj_return": -13.14,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
+    "PS14": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -0.35,
+      "total_pnl_eur": -7.95,
+      "trades": 1,
+      "risk_adj_return": 0.0,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
+    },
+    "S4": {
+      "win_rate": 0.0,
+      "avg_pnl_pct": -13.33,
+      "total_pnl_eur": -1070.38,
+      "trades": 4,
+      "risk_adj_return": -166.625,
+      "recommendation": "INSUFFICIENT_DATA",
+      "source": "swing"
     },
     "DT3": {
       "win_rate": 0.231,
@@ -101,11 +146,11 @@
       "source": "day"
     },
     "DT2": {
-      "win_rate": 0.348,
-      "avg_pnl_pct": -0.13,
-      "total_pnl_eur": -175.04,
-      "trades": 23,
-      "risk_adj_return": -0.291,
+      "win_rate": 0.408,
+      "avg_pnl_pct": -0.16,
+      "total_pnl_eur": -579.79,
+      "trades": 49,
+      "risk_adj_return": -0.238,
       "recommendation": "KEEP",
       "source": "day"
     },
@@ -117,45 +162,54 @@
       "risk_adj_return": 0.283,
       "recommendation": "INSUFFICIENT_DATA",
       "source": "day"
+    },
+    "DT5": {
+      "win_rate": 0.1,
+      "avg_pnl_pct": -0.81,
+      "total_pnl_eur": -651.04,
+      "trades": 10,
+      "risk_adj_return": -1.855,
+      "recommendation": "SUSPEND",
+      "source": "day"
     }
   },
   "market_scores": {
     "US": {
-      "trades": 102,
-      "win_rate": 0.392,
-      "total_pnl_eur": -1467.61
+      "trades": 162,
+      "win_rate": 0.327,
+      "total_pnl_eur": -6152.37
     },
     "EU": {
-      "trades": 41,
-      "win_rate": 0.268,
-      "total_pnl_eur": -647.92
+      "trades": 44,
+      "win_rate": 0.25,
+      "total_pnl_eur": -720.3
     },
     "UK": {
       "trades": 26,
       "win_rate": 0.462,
       "total_pnl_eur": -55.21
     },
+    "NO": {
+      "trades": 3,
+      "win_rate": 0.333,
+      "total_pnl_eur": -27.73
+    },
     "ASIA": {
       "trades": 48,
       "win_rate": 0.479,
       "total_pnl_eur": 368.7
-    },
-    "NO": {
-      "trades": 2,
-      "win_rate": 0.5,
-      "total_pnl_eur": -13.79
     }
   },
   "time_scores": {
     "evening": {
-      "trades": 65,
-      "win_rate": 0.492,
-      "total_pnl_eur": -450.57
+      "trades": 69,
+      "win_rate": 0.507,
+      "total_pnl_eur": -385.38
     },
     "afternoon": {
-      "trades": 93,
-      "win_rate": 0.366,
-      "total_pnl_eur": -985.69
+      "trades": 122,
+      "win_rate": 0.336,
+      "total_pnl_eur": -2366.7
     },
     "morning": {
       "trades": 10,
@@ -163,9 +217,9 @@
       "total_pnl_eur": -542.6
     },
     "midday": {
-      "trades": 35,
-      "win_rate": 0.429,
-      "total_pnl_eur": 27.57
+      "trades": 38,
+      "win_rate": 0.474,
+      "total_pnl_eur": 287.6
     },
     "unknown": {
       "trades": 2,
@@ -183,13 +237,27 @@
       "avg_trail_count": 1.0
     },
     "without_trail": {
-      "trades": 205,
-      "win_rate": 38.0,
-      "avg_pnl_pct": 0.12,
-      "total_pnl": -2339.25,
-      "avg_max_unrealized": 0.18
+      "trades": 241,
+      "win_rate": 37.8,
+      "avg_pnl_pct": 0.05,
+      "total_pnl": -3395.04,
+      "avg_max_unrealized": 0.23
     },
     "worst_left_on_table": [
+      {
+        "ticker": "GOLD",
+        "strategy": "DT5",
+        "max_unrealized": 2.6,
+        "actual_pnl": -1.73,
+        "left_on_table": 4.33
+      },
+      {
+        "ticker": "GOLD",
+        "strategy": "DT5",
+        "max_unrealized": 1.37,
+        "actual_pnl": -0.89,
+        "left_on_table": 2.26
+      },
       {
         "ticker": "FRES.L",
         "strategy": "DT3",
@@ -210,26 +278,13 @@
         "max_unrealized": 1.93,
         "actual_pnl": 0.79,
         "left_on_table": 1.14
-      },
-      {
-        "ticker": "ORCL",
-        "strategy": "DT1",
-        "max_unrealized": 1.17,
-        "actual_pnl": 0.05,
-        "left_on_table": 1.12
-      },
-      {
-        "ticker": "META",
-        "strategy": "DT9",
-        "max_unrealized": 1.99,
-        "actual_pnl": 1.06,
-        "left_on_table": 0.93
       }
     ]
   },
   "active_rules": [
     "DT1 suspended: 29% win rate after 41 trades",
-    "DT3 suspended: 23% win rate after 13 trades"
+    "DT3 suspended: 23% win rate after 13 trades",
+    "DT5 suspended: 10% win rate after 10 trades"
   ],
   "confidence_calibration": {
     "0-50": {

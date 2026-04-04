@@ -358,3 +358,42 @@ Alle Hauptthesen intakt:
 - **Portfolio-Impact:** Oil-Positionen profitieren, Tech-Positionen bei volatilen Schocks gefährdet
 
 **Ukraine:** Routine-Kämpfe, keine Lageänderung.
+
+
+## Woche 2026-03-31 bis 2026-04-03
+
+### Was hat funktioniert?
+
+**S1-Thesis (Iran/Öl)** war fundamental korrekt: Hormuz-Eskalation, IRGC-Raketen, Infrastruktur-Beschädigungen — Brent stieg von $78 auf $118, öl-Positionen liefen. Die Exit-Entscheidung am 01.04. war *präzise*: Trump signalisierte Deal-Gespräche → Brent fiel -14,5% → EQNR gestoppt @ Break-Even. **Stop-Discipline über Gewinn-Jagd** — korrekt.
+
+**Stop-System funktioniert:** EQNR, PLTR, alle Positionen folgen Stops. Kein Hoffnungshandel.
+
+**Paper-Portfolio deckte Fehler auf:** Sektor-Clustering (zu viele Metalle) führte zu synchronized Stops. Danach diversifiziert.
+
+### Was nicht funktioniert hat?
+
+**Paper-Portfolio Performance:** −11,76% vs Startkapital, obwohl einzelne Trades korrekt waren. Win-Rate 69% aber viele kleine Verluste + zu wenig Cash-Verwaltung (78% invested = "full deployed").
+
+**Daten-Infrastruktur-Fehler:** Futures-Rollover-Bug (Yahoo Finance `chartPreviousClose` vom alten Kontrakt) führte zu falschen Alerts. Hätte echte Trades gefährdet.
+
+**Sektor-Überlappung:** 3+ Metall-Positionen (RIO.L, WPM, STLD) alle am selben Tag gestoppt. Mangelnde Risiko-Diversifikation.
+
+### 3 konkrete Learnings
+
+1. **Geopolitische Prämien sind fragil.** Ein Deal-Signal + Hormuz-Öffnung erwartet = -$17/Bbl in Stunden. Nicht versuchen "den Boden zu fangen". Warten bis Deal klar ist (Deal-Realität ODER Deal-Fail), dann neu evaluieren. S1 von 🟢 auf 🔴 downgraden war richtig.
+
+2. **Datenquellen-Zuverlässigkeit ist K.O.-Kriterium.** Futures-Rollover-Fehler hätte falsche Alerts triggert. Fix: Für =F Symbole NUR Intraday-Charts (5m interval) nutzen, nie `chartPreviousClose` für Tages-%. Script-Lösung gebaut: `core/fetch_price.py`.
+
+3. **Portfolio-Liquidität ist Strategie.** "Full deployed" (92%) bedeutet keine Handlungsfähigkeit bei neuen Setups. Regel: min 10-15% Cash halten für Volatilität + Einstiegsmöglichkeiten. Paper-Portfolio lernt das gerade hart.
+
+### Plan nächste Woche (KW15 06.–10.04.)
+
+**Montag US-Open:** PLTR Stop überprüfen (eng @ 127€), A2DWAW Pharma-Zoll-Risiko evaluieren (100% Zölle auf Generika → Exit?). OPEC+-Entscheidung Sonntag nachts prüfen.
+
+**Dienstag Frankfurt-Öffnung:** Watchlist aktivieren: RHM.DE (PS2), LHA.DE (PS11), FRO (Tanker S1), BAYN.DE (Pharma). Gap-Risiko bei Wochenend-News.
+
+**Strategie:** Regime STAGFLATION bestätigt. Tech defensiv halten, Öl/Tanker/Rüstung beobachten (Geo bleibt HOCH trotz Deal-Signals).
+
+**Cron-Infrastruktur:** 6 Crons am 04.04. optimiert, laufen schneller, sollten keine Timeouts mehr haben.
+
+**Real-Portfolio:** 3 aktive Positionen, alle gesund. Keine neuen Trades vor klarem Makro-Signal.

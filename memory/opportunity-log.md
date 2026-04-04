@@ -30,3 +30,9 @@
      Trigger: chip demand surge + asml order + ai chip production
      Gründe: Starke Trigger (3x bullisch), Kurs mitten in Zone, VIX 23.9 (neutral)
 ---
+
+## [2026-04-04 07:25 UTC] — 1 Opportunity, 1 Paper Trade
+  ✅ [7/10] ASML.AS: Exclusive: ASML says next-gen EUV tools ready to mass-
+     Entry: 1161.00€ (Zone 1140–1180€) | Stop: 1050€ | Target: 1400€
+     Trigger: ai chip production, asml order | Bestätigung: price_in_zone
+---

@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-03-25 23:00 | Learning System v1.0*
+*Generiert: 2026-04-04 09:10 UTC | Learning System v2.0 (Auto)*
 
 ---
 
@@ -7,48 +7,53 @@
 
 | | Paper | Real |
 |---|---|---|
-| Startkapital | 25000€ | — |
-| Cash | 18923.13€ | — |
-| Investiert | 6312.05€ | — |
-| Portfolio-Wert | 25235.19€ | — |
-| Realisierte P&L | -105.17€ | — |
-| Offene Positionen | 6 | — |
-| Geschlossene Positionen | 14 | — |
+| Offene Positionen | 10 | — |
+| Geschlossene Positionen | 80 | — |
+| Realisierte P&L | +1996.91€ | — |
+| Win-Rate | 42% (34W / 30L) | — |
 
-**Paper Win-Rate:** 36% (5W / 9L)
+## 🏆 Strategie-Ranking (nach P&L)
 
-## 🏆 Strategie-Ranking (nach Expectancy)
-
-| Strategie | Trades | WR | Expectancy | P&L |
+| Strategie | Trades | Win-Rate | Avg P&L% | Total P&L |
 |---|---|---|---|---|
-| PS1 (Iran/Öl-Geopolitik) | 6 | 50% | 0.00 | -69.87€ |
-| PS5 (Dünger/Agrar-Superzyklus) | 2 | 50% | 0.00 | -331.63€ |
-| new (new) | 1 | 0% | 0.00 | -3.00€ |
-| DT4 (News-Catalyst) | 79 | 43% | -0.19 | -826.82€ |
-| PS3 (NATO/EU-Rüstung) | 4 | 0% | -0.58 | -19.73€ |
-| PS4 (Edelmetalle/Miner) | 3 | 33% | -4.30 | -7.85€ |
+| S1 | 2 | 100% | +58.1% | +2320.9€ |
+| PS14 | 3 | 67% | +12.3% | +735.0€ |
+| PT | 4 | 50% | +11.4% | +681.0€ |
+| PM | 2 | 100% | +12.2% | +485.2€ |
+| PS9 | 1 | 100% | +15.6% | +311.7€ |
+| PS13 | 4 | 100% | +3.5% | +273.4€ |
+| PS15 | 3 | 100% | +7.4% | +258.5€ |
+| PS1 | 9 | 67% | +0.9% | +163.2€ |
+| PS11 | 2 | 100% | +3.0% | +118.3€ |
+| PS2 | 6 | 83% | +8.3% | +79.9€ |
+| PS12 | 1 | 100% | +2.8% | +55.4€ |
+| PS4 | 6 | 67% | +0.3% | +35.7€ |
+| PS5 | 2 | 100% | +2.8% | +20.6€ |
+| PS17 | 2 | 100% | +0.2% | +4.2€ |
+| PS10 | 1 | 0% | +0.0% | +0.0€ |
+| DT1 | 1 | 0% | +0.0% | -0.1€ |
+| new | 1 | 0% | -2.2% | -4.3€ |
+| PS3 | 3 | 0% | +0.8% | -7.7€ |
+| DT4 | 8 | 0% | -13.0% | -134.2€ |
+| PS_STLD | 5 | 40% | -7.2% | -746.2€ |
+| AR-HALB | 3 | 0% | -13.1% | -791.5€ |
+| AR-AGRA | 3 | 0% | -13.1% | -791.5€ |
+| S4 | 4 | 0% | -13.3% | -1070.4€ |
+| S10-TEST | 4 | 0% | +0.0% | +0.0€ |
 
-## 🎯 Conviction-Änderungen
+## 🎯 Auto-Conviction-Änderungen
 
-- **PS1**: 4 → 3 ↓
-- **PS3**: 4 → 2 ↓
-- **PS4**: 3 → 2 ↓
+- **DT1**: 3 → 2 (2026-03-27) — Win-Rate 29% nach 41 Trades < 30%
+- **DT1**: 2 → 1 (2026-03-29) — Win-Rate 29% nach 41 Trades < 30%
+- **DT2**: 3 → 2 (2026-03-27) — Win-Rate 22% nach 18 Trades < 30%
+- **DT3**: 3 → 2 (2026-03-27) — Win-Rate 23% nach 13 Trades < 30%
+- **DT3**: 2 → 1 (2026-03-27) — Win-Rate 23% nach 13 Trades < 30%
 
-## 🧪 Hypothesen-Status
+## 📋 Aktive Regeln (aus Lernloop)
 
-- **H001**: 🟡 Offen
-- **H002**: ✅ BESTÄTIGT
-- **H003**: 🟡 Offen
-- **H004**: 🟡 Offen
-- **H005**: ✅ BESTÄTIGT
-- **H006**: ✅ BESTÄTIGT
-- **H007**: ✅ BESTÄTIGT
-
-## 📚 Top Lektionen
-
-- **OXY** (LOSS): Loss 0.0%. Thesis falsch oder Entry zu früh.
-- **9988.HK** (LOSS): CRV 0.2:1 war zu niedrig — schlechtes Setup.
-- **7203.T** (LOSS): Stop korrekt ausgelöst bei 18.11. Regel befolgt.
+- DT1 suspended: 29% win rate after 41 trades
+- DT3 suspended: 23% win rate after 13 trades
+- DT5 suspended: 10% win rate after 10 trades
 
 ---
-*Nächste Evaluierung: Manuell via `python3 scripts/learning_system.py full`*
+*Nächste Auto-Aktualisierung: täglich 22:00 CET via daily_learning_cycle.py*
