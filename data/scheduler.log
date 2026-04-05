@@ -44,3 +44,31 @@
 [2026-04-04 22:45:00] ✅ Daily Learning: OK
 [2026-04-04 23:00:00] ▶️  Tagesabschluss: Start
 [2026-04-04 23:00:01] ✅ Tagesabschluss: OK + Discord gesendet
+[2026-04-05 02:00:00] ▶️  RL Training: Start
+[2026-04-05 02:00:15] ❌ RL Training: Fehler (code 1)
+[2026-04-05 02:00:15]    STDERR: h.serialization.safe_globals([numpy._core.multiarray.scalar])` context manager to allowlist this global if you trust this class/function.
+
+Check the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html.
+
+[2026-04-05 02:00:15] ▶️  CEO Radar Nacht: Start
+[2026-04-05 02:00:17] ✅ CEO Radar Nacht: OK
+[2026-04-05 07:00:00] ▶️  Live Data Refresh: Start
+[2026-04-05 07:00:04] ✅ Live Data Refresh: OK
+[2026-04-05 07:00:04] ▶️  CEO Radar Morgen: Start
+[2026-04-05 07:00:10] ✅ CEO Radar Morgen: OK
+[2026-04-05 07:05:00] ▶️  Regime Detector: Start
+[2026-04-05 07:05:01] ✅ Regime Detector: OK
+[2026-04-05 09:00:00] ▶️  Live Data Refresh: Start
+[2026-04-05 09:00:03] ✅ Live Data Refresh: OK
+[2026-04-05 09:00:03] ▶️  Newswire Analyst: Start
+[2026-04-05 09:00:13] ✅ Newswire Analyst: OK
+[2026-04-05 09:00:13] ▶️  Backtest Engine: Start
+[2026-04-05 09:00:27] ✅ Backtest Engine: OK
+[2026-04-05 09:05:00] ▶️  News Gate Update: Start
+[2026-04-05 09:05:00] ✅ News Gate Update: OK
+[2026-04-05 09:10:00] ▶️  CEO Radar: Start
+[2026-04-05 09:10:06] ✅ CEO Radar: OK
+[2026-04-05 13:00:00] ▶️  Live Data Refresh: Start
+[2026-04-05 13:00:04] ✅ Live Data Refresh: OK
+[2026-04-05 13:00:04] ▶️  Newswire Analyst: Start
+[2026-04-05 13:00:09] ✅ Newswire Analyst: OK

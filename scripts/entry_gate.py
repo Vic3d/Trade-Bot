@@ -8,20 +8,24 @@ from datetime import datetime
 
 GARBAGE_SOURCES = [
     'usgs.gov', 'usgs', 'geological survey', '富途', 'futu', 'futubull',
-    'reddit.com', 'reddit', 'stocktwits', 'weather.com', 'noaa.gov', 'noaa'
+    'reddit.com', 'reddit', 'stocktwits', 'weather.com', 'noaa.gov', 'noaa',
+    '牛牛', 'xueqiu', '雪球', 'eastmoney', '东方财富', 'sina finance', '新浪',
+    'weibo', 'wechat', 'zhihu', '知乎', 'toutiao', '今日头条'
 ]
 GARBAGE_KEYWORDS = [
     'floods and drought', 'science to keep us safe', 'union strike vote',
     'weather forecast', 'earthquake magnitude', 'samsung union strike',
-    'samsung strike vote'
+    'samsung strike vote', 'hurricane season', 'wildfire update',
+    'drought monitor', 'flood warning', 'storm track'
 ]
 
 TIER_1 = ['reuters', 'bloomberg', 'wsj', 'ft.com', 'apnews', 'liveuamap', 'maritime-executive']
 TIER_2 = ['politico', 'aljazeera', 'bbc', 'cnbc', 'yahoo finance', 'seeking alpha', 'yahoo']
 TIER_3 = ['reddit', 'stocktwits', 'futu', 'futubull', 'usgs', 'noaa', '富途']
 
-# AR-* kompatible Regime
-AR_ALLOWED_REGIMES = {'NEUTRAL', 'CORRECTION', 'BULL', 'RISK_OFF', 'PAPER_LEARN', ''}
+# AR-* kompatible Regime — CRASH und BEAR explizit verboten
+AR_ALLOWED_REGIMES = {'NEUTRAL', 'CORRECTION', 'BULL', 'PAPER_LEARN', ''}
+AR_BLOCKED_REGIMES = {'BEAR', 'CRASH', 'TREND_DOWN', 'DEFENSIVE'}
 
 # High-VIX Whitelist (Ticker-Fragmente)
 HIGH_VIX_WHITELIST = ['OXY', 'XOM', 'CVX', 'EQNR', 'FRO', 'DHT', 'TTE', 'BP',  # Oil
@@ -181,8 +185,8 @@ class EntryGate:
                                news_headline, news_source, regime, vix)
             return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': tier}
 
-        if strategy_upper.startswith('AR-') and regime_upper == 'BEAR':
-            reason = f"AR-Strategie '{strategy}' nicht erlaubt im BEAR-Regime"
+        if strategy_upper.startswith('AR-') and regime_upper in AR_BLOCKED_REGIMES:
+            reason = f"AR-Strategie '{strategy}' blockiert im {regime}-Regime (nur NEUTRAL/CORRECTION/BULL erlaubt)"
             self._log_blocked(ticker, strategy, 'GATE3_REGIME_MISMATCH', reason,
                                news_headline, news_source, regime, vix)
             return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': tier}

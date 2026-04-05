@@ -20,3 +20,9 @@
 [TREND] 2026-04-03 02:00 — 🔴 STRONG: S1 bullish_oil (17 Events in 3h): Reflecting on His Past, Bryan Mines a New Future - Resolution Copper
 [TREND] 2026-04-04 00:00 — 🔴 STRONG: S1 bullish_oil (10 Events in 3h): A ship was targeted near the Strait of Hormuz, and a fire broke out inside it.
 [TREND] 2026-04-04 02:00 — 🔴 STRONG: S1 bullish_oil (12 Events in 3h): A ship was targeted near the Strait of Hormuz, and a fire broke out inside it.
+[TREND] 2026-04-05 00:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): US Inflation Seen Spiking in First Snapshot Since Iran War
+[TREND] 2026-04-05 00:00 — 🔴 STRONG: S4 bullish_oil (9 Events in 3h): US Inflation Seen Spiking in First Snapshot Since Iran War
+[TREND] 2026-04-05 02:00 — 🔴 STRONG: S1 bullish_oil (26 Events in 3h): Kuwaiti Oil Headquarters Set Ablaze by Iranian Drone Strike
+[TREND] 2026-04-05 02:00 — 🔴 STRONG: S4 bullish_oil (9 Events in 3h): US Inflation Seen Spiking in First Snapshot Since Iran War
+[TREND] 2026-04-05 02:00 — 🔴 STRONG: S2 bullish_oil (5 Events in 3h): The Israeli military detected an Iranian missile launch toward the southern part of the country. Alarms will sound in affected areas momentarily
+[TREND] 2026-04-05 04:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): Kuwaiti Oil Headquarters Set Ablaze by Iranian Drone Strike

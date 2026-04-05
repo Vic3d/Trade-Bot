@@ -1,6 +1,6 @@
 {
-  "_timestamp": 1775329802.0981097,
-  "_fetched_at": "2026-04-04T21:10:02",
+  "_timestamp": 1775373002.3935382,
+  "_fetched_at": "2026-04-05T09:10:02",
   "_source": "yahoo_finance",
   "vix": {
     "price": 23.87,

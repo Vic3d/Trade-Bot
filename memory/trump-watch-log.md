@@ -68,3 +68,11 @@ Remember when I gave Iran ten days to MAKE A DEAL or OPEN UP THE HORMUZ STRAIT. 
 ---
 
 [2026-04-04 20:02 UTC] Scan: 100 Posts, keine Signale
+
+## [2026-04-04 21:02 UTC] ESCALATION_WATCH (Peace:0 Esc:2)
+Many of Iran’s Military Leaders, who have led them poorly and unwisely, are terminated, along with much else, with this massive strike in Tehran! Pres...
+---
+
+## [2026-04-05 05:02 UTC] PEACE_WATCH (Peace:2 Esc:0)
+FROM PRESIDENT DONALD J. TRUMP  WE GOT HIM! My fellow Americans, over the past several hours, the United States Military pulled off one of the most da...
+---

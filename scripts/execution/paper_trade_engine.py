@@ -433,6 +433,23 @@ def execute_paper_entry(
     vix_val = conviction.get('vix', 0)
     now = datetime.now(timezone.utc).isoformat()
     
+    # ── Entry Gate Check (PFLICHT) ────────────────────────────────────
+    try:
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.dirname(__file__)))
+        from entry_gate import EntryGate
+        _gate = EntryGate(db_path)
+        _headline = conviction.get('headline', '')
+        _source = conviction.get('source', '')
+        _gate_result = _gate.check(ticker, strategy, _headline, _source, regime, vix_val)
+        if not _gate_result['allowed']:
+            conn.close()
+            return {'success': False, 'trade_id': None,
+                    'reason': f"Entry Gate blocked: {_gate_result['reason']}"}
+    except Exception as _e:
+        pass  # Gate-Fehler nicht blockierend
+    # ─────────────────────────────────────────────────────────────────
+    
     conn.execute("""
         INSERT INTO paper_portfolio 
         (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,

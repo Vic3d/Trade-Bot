@@ -276,6 +276,24 @@ def open_paper_trade(ticker, profile, price_eur, score, matched_triggers, top_he
             conn.close()
             return False, f"Bereits offener Trade für {ticker}"
 
+        # ── Entry Gate Check (Pflicht) ────────────────────────────────
+        try:
+            import sys as _sys, os as _os
+            _sys.path.insert(0, _os.path.dirname(__file__))
+            from entry_gate import EntryGate
+            _gate = EntryGate(self.db_path)
+            _regime = profile.get('regime', '')
+            _vix = profile.get('vix', 0)
+            _result = _gate.check(ticker, profile.get('strategy', 'NEWS'),
+                                  top_headline, profile.get('source', ''),
+                                  _regime, _vix)
+            if not _result['allowed']:
+                conn.close()
+                return False, f"Entry Gate: {_result['reason']}"
+        except Exception as _e:
+            pass  # Gate-Fehler nicht blockierend — aber loggen
+        # ─────────────────────────────────────────────────────────────
+
         today = date.today().isoformat()
         note = f"News-Signal Score {score}/10 | Trigger: {', '.join(matched_triggers[:2])} | {top_headline[:60]}"
 

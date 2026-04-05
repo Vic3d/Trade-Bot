@@ -140,3 +140,30 @@ High-Impact: 20 | Actionable: True
   [PS2_Tanker] Peru’s Presidential Front-Runners Shift With Election Days Away
 High-Impact: 5 | Actionable: True
 ---
+
+## [2026-04-05 02:00] News Radar — 1 neue Headlines
+  [PS1_Oil] WTI vs. Brent: Der gnadenlose Öl-Showdown – droht 2026 der nächste Preisschock? - AD HOC N
+High-Impact: 1 | Actionable: False
+---
+
+## [2026-04-05 07:00] News Radar — 4 neue Headlines
+  [S1_Iran] Ölpreis steigt nach Iran-Eskalation und verteuert Tanken - ZDFheute
+  [PS1_Oil] Rohöl-Schock voraus? Wie WTI & Brent jetzt die Weichen bis 2026 stellen - AD HOC NEWS
+  [S4_Silver] Explodiert Silber jetzt – oder tappt der Markt in die nächste Bullenfalle? - AD HOC NEWS
+  [S3_KI] Diese 30 KI-Aktien prägen die Zukunft – laut Wedbush - Finanztrends
+High-Impact: 2 | Actionable: True
+---
+
+## [2026-04-05 09:10] News Radar — 11 neue Headlines
+  [S1_Iran] Iran-Krieg: Straße von Hormus gesperrt – was Sie über das Nadelöhr des Ölhandels wissen mü
+  [S3_KI] Palantir Aktie: Bewertung unter dem Mikroskop - Börse Express
+  [S3_KI] NVIDIA Aktie (NVDA) • US67066G1040 - BörsenNEWS.de
+  [S3_KI] NVIDIA Corp (NVD.DE) Aktienkurs, Nachrichten, Kurs und Verlauf - Yahoo! Finanzen Deutschla
+  [S1_Iran] Missing US Airman Rescued as Iran Steps Up Attacks on Neighbors
+  [S3_KI] Italy Sets Jet Fuel Limits at Some Airports on Supply Shortage
+  [S1_Iran] Top 50 mining companies power through Iran war – up $250 billion in 2026 - Mining.com
+  [S3_KI] Meta rolls out in-house AI chips weeks after massive Nvidia, AMD deals - cnbc.com
+  [S3_KI] Nvidia's AI Chip Demand Drives Higher Rental Prices - GuruFocus
+  [S1_Iran] U.S. oil prices soar 11% as Trump's Iran war speech stokes fears of further escalation - c
+High-Impact: 5 | Actionable: True
+---
