@@ -10,9 +10,16 @@ TRA-5 | Sprint 1 | TradeMind Bauplan
 
 import hashlib, json, sqlite3, re
 from difflib import SequenceMatcher
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 import sys
+
+# ─── Freshness-Konstante ─────────────────────────────────────────────────────
+# Artikel älter als X Stunden werden beim Ingest NICHT in die DB übernommen.
+# In volatilen Marktphasen (Iran-Krieg, Flash-Crash etc.) relevant:
+# alte News = falsche Signale. Kann per Env-Variable überschrieben werden.
+MAX_NEWS_AGE_HOURS = int(__import__('os').getenv('MAX_NEWS_AGE_HOURS', '4'))
 
 # news_fetcher importieren (bestehender Code)
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -54,6 +61,42 @@ TICKER_ALIASES = {
 def url_hash(url):
     """SHA256 Hash der URL für Deduplikation."""
     return hashlib.sha256(url.encode()).hexdigest()[:16]
+
+
+def parse_article_age_hours(published_str) -> float | None:
+    """
+    Parst ein Datum-String und gibt das Alter in Stunden zurück.
+    Unterstützt: RFC 2822 (RSS pubDate), ISO 8601, YYYY-MM-DD.
+    Gibt None zurück wenn das Datum nicht parsebar ist.
+    """
+    if not published_str:
+        return None
+    try:
+        # RFC 2822 (RSS standard): "Sun, 05 Apr 2026 10:00:00 +0000"
+        dt = parsedate_to_datetime(str(published_str))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        age = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
+        return round(age, 2)
+    except Exception:
+        pass
+    try:
+        # ISO 8601: "2026-04-05T10:00:00Z" oder "2026-04-05T10:00:00+00:00"
+        s = str(published_str).replace('Z', '+00:00')
+        dt = datetime.fromisoformat(s)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        age = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
+        return round(age, 2)
+    except Exception:
+        pass
+    try:
+        # Nur Datum: "2026-04-05" → Mitternacht UTC
+        dt = datetime.strptime(str(published_str)[:10], '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        age = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
+        return round(age, 2)
+    except Exception:
+        return None
 
 
 def headline_similar(headline, existing_headlines, threshold=0.80):
@@ -156,8 +199,17 @@ def simple_sentiment(headline):
     return max(-1.0, min(1.0, round(score, 2)))
 
 
-def ingest_articles(articles, source_name='unknown'):
-    """Speichert Artikel in news_events mit Deduplikation."""
+def ingest_articles(articles, source_name='unknown', max_age_hours=None):
+    """
+    Speichert Artikel in news_events mit Deduplikation + Freshness-Check.
+    
+    max_age_hours: Maximales Alter in Stunden (Standard: MAX_NEWS_AGE_HOURS=4).
+                   Artikel die älter sind werden übersprungen.
+                   None = Env-Default nutzen.
+    """
+    if max_age_hours is None:
+        max_age_hours = MAX_NEWS_AGE_HOURS
+
     conn = sqlite3.connect(str(DB_PATH))
     c = conn.cursor()
     
@@ -171,14 +223,22 @@ def ingest_articles(articles, source_name='unknown'):
     inserted = 0
     skipped_url = 0
     skipped_similar = 0
+    skipped_stale = 0
     
     for article in articles:
         headline = article.get('title', '').strip()
         url = article.get('url', article.get('link', ''))
-        published = article.get('published', article.get('datetime', ''))
+        published = article.get('published', article.get('date', article.get('datetime', '')))
         
         if not headline:
             continue
+
+        # Freshness-Check: Artikel älter als max_age_hours → überspringen
+        age_h = parse_article_age_hours(published)
+        if age_h is not None and age_h > max_age_hours:
+            skipped_stale += 1
+            continue
+        # Kein Datum vorhanden: trotzdem aufnehmen (lieber false positive als miss)
         
         # Dedup 1: URL-Hash
         uhash = url_hash(url) if url else url_hash(headline)
@@ -219,14 +279,14 @@ def ingest_articles(articles, source_name='unknown'):
     conn.commit()
     conn.close()
     
-    return {'inserted': inserted, 'skipped_url': skipped_url, 'skipped_similar': skipped_similar}
+    return {'inserted': inserted, 'skipped_url': skipped_url, 'skipped_similar': skipped_similar, 'skipped_stale': skipped_stale}
 
 
 def run_full_pipeline():
     """Führt komplette News-Pipeline aus: alle Quellen → Dedup → DB."""
     print(f"[{datetime.now(timezone.utc).strftime('%H:%M UTC')}] News Pipeline läuft...")
     
-    total = {'inserted': 0, 'skipped_url': 0, 'skipped_similar': 0}
+    total = {'inserted': 0, 'skipped_url': 0, 'skipped_similar': 0, 'skipped_stale': 0}
     
     # Bloomberg RSS
     for cat in ['markets', 'energy', 'technology', 'politics']:
@@ -256,7 +316,7 @@ def run_full_pipeline():
     conn.close()
     
     print(f"\n  ═══ Pipeline komplett ═══")
-    print(f"  Neu: {total['inserted']} | Skip URL: {total['skipped_url']} | Skip Similar: {total['skipped_similar']}")
+    print(f"  Neu: {total['inserted']} | Skip URL: {total['skipped_url']} | Skip Similar: {total['skipped_similar']} | Skip Stale (>{MAX_NEWS_AGE_HOURS}h): {total.get('skipped_stale', 0)}")
     print(f"  DB gesamt: {total_events} Events | Heute: {today_events}")
     
     return total

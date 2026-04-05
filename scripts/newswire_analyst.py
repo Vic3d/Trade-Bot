@@ -246,7 +246,13 @@ STOCK_KEYWORDS = {
 }
 
 def load_recent_events(minutes=35):
-    """Lade Events der letzten N Minuten mit score >= 2. Inkl. magnitude."""
+    """
+    Lade Events der letzten N Minuten mit score >= 2. Inkl. magnitude.
+    
+    'minutes' bezieht sich auf den Ingest-Zeitpunkt (ts = wann Albert die News
+    gesehen hat). In news_pipeline.py wird zusätzlich das Publikations-Alter
+    gefiltert (MAX_NEWS_AGE_HOURS). Beide Checks greifen zusammen.
+    """
     conn = sqlite3.connect(DB_PATH)
     cutoff = int(time.time()) - (minutes * 60)
 
@@ -263,6 +269,12 @@ def load_recent_events(minutes=35):
         (cutoff,)
     ).fetchall()
     conn.close()
+
+    if rows:
+        print(f"[analyst] {len(rows)} Events aus den letzten {minutes} Min geladen")
+    else:
+        print(f"[analyst] Keine Events in den letzten {minutes} Min (cutoff={cutoff})")
+
     return rows
 
 def match_stock(headline: str) -> list[dict]:

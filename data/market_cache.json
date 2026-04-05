@@ -1,6 +1,6 @@
 {
-  "_timestamp": 1775373002.3935382,
-  "_fetched_at": "2026-04-05T09:10:02",
+  "_timestamp": 1775416202.5202367,
+  "_fetched_at": "2026-04-05T21:10:02",
   "_source": "yahoo_finance",
   "vix": {
     "price": 23.87,
@@ -30,9 +30,9 @@
     "data_points": 125
   },
   "eurusd": {
-    "price": 1.1522,
+    "price": 1.1518,
     "prev_close": 1.1725,
-    "change_pct": -1.73,
+    "change_pct": -1.77,
     "ma50": 1.1702,
     "ma200": 1.1668,
     "period_high": 1.2024,

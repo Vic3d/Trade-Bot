@@ -1,0 +1,7 @@
+{
+  "last_check": "2026-04-05T20:55:00+02:00",
+  "scheduler_status": "running",
+  "daemon_restarts_today": 0,
+  "next_check_interval": "5min",
+  "notes": "Routine check OK"
+}

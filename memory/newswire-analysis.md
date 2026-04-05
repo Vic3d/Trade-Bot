@@ -167,3 +167,40 @@ High-Impact: 2 | Actionable: True
   [S1_Iran] U.S. oil prices soar 11% as Trump's Iran war speech stokes fears of further escalation - c
 High-Impact: 5 | Actionable: True
 ---
+
+## [2026-04-05 13:10] News Radar — 8 neue Headlines
+  [S4_Silver] Der perfekte Sturm?: Safe-Haven-Run frisst Risiko: Gold & Silber knacken neue Rekorde - Fi
+  [S4_Silver] Silberpreis bei 85,70 USD: Geopolitische Eskalation treibt Safe-Haven-Nachfrage trotz ETF-
+  [S4_Silver] Silber vor der nächsten Rakete – oder droht der brutale Absturz für XAGUSD? - AD HOC NEWS
+  [S3_KI] IncomeShares Palantir (PLTR) Options ETP | XS3068775009 | A4AN03 - extraETF
+  [S1_Iran] US Request Prompts Planet Labs to Withhold Iran War Images
+  [S3_KI] Nvidia Partner Hon Hai’s Sales Meet Estimates on Solid AI Demand
+  [S1_Iran] US Rescues Missing Airman as Iran Strikes Persian Gulf States
+  [PS1_Oil] OPEC+ Plans Symbolic Oil Quota Hike Amid War, Delegates Say
+High-Impact: 3 | Actionable: True
+---
+
+## [2026-04-05 17:10] News Radar — 10 neue Headlines
+  [S3_KI] Nvidia-Aktie: Kursziel 227 Dollar! - Börse Express
+  [S3_KI] Nvidia Aktie: Nächster Zyklus im Visier - Börse Express
+  [PS2_Tanker] Congo Agrees to Take 3rd Country Deportees From US, Reuters Says
+  [PS14_Ship] Trump Risks Confidence in US Role as Guardian of Global Shipping
+  [S3_KI] Trump to Hold News Conference on Monday After Airman Rescued
+  [S1_Iran] Trump Threatens Tuesday Strike on Iran Power Plants, Bridges
+  [PS2_Tanker] Congo Is Latest Country to Take Third Country Deportees From US
+  [S3_KI] IBM, Masters use AI to Bring the Fairway to Every Fan
+  [S1_Iran] Oil Tanker Carrying Iraqi Cargo Seen Transiting Strait of Hormuz
+  [S1_Iran] US Successfully Rescues Second Airman from Iran
+High-Impact: 3 | Actionable: True
+---
+
+## [2026-04-05 21:10] News Radar — 7 neue Headlines
+  [S1_Iran] Iran-Blockade: Hormus dicht – Ölpreis explodiert - InvestmentWeek
+  [PS1_Oil] Ölpreis: Produktionssteigerung drückt die Preise für Öl - wiwo.de
+  [S12_Rüstung] European Defence Index: Warum sich dieser Rüstungswert neu an die Spitze schiebt - Der Akt
+  [S1_Iran] Israel Says More Than 1,000 Iranian Missiles Still Threaten It
+  [S1_Iran] Trump Escalates Threats to Bomb Iran’s Power Plants After Rescue
+  [PS1_Oil] On NASA’s Moon Mission, the Biggest Headache Has Been the Toilet
+  [S1_Iran] Hormuz Tracker: Iraq-Linked Oil Tanker Exits Hormuz Via Iran
+High-Impact: 7 | Actionable: True
+---

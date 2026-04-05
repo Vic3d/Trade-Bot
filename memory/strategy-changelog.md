@@ -1136,3 +1136,11 @@ Victor informiert: ✅ Discord DM gesendet
 ## 2026-04-04 — Alpha Decay Check
 
 - 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg
+
+## 2026-04-05 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg
+
+## 2026-04-05 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg

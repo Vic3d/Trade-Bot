@@ -5,6 +5,20 @@ Verwendung: exec('open("/data/.openclaw/workspace/scripts/news_fetcher.py").read
 oder: exec(open('/data/.openclaw/workspace/scripts/news_fetcher.py').read())
 """
 import urllib.request, json, xml.etree.ElementTree as ET, urllib.parse, os, time
+from email.utils import parsedate_to_datetime
+from datetime import datetime, timezone
+
+def _age_hours(date_str) -> float | None:
+    """Alter eines Datums-Strings in Stunden. None wenn nicht parsebar."""
+    if not date_str:
+        return None
+    try:
+        dt = parsedate_to_datetime(date_str)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return (datetime.now(timezone.utc) - dt).total_seconds() / 3600
+    except Exception:
+        return None
 
 POLYGON  = os.getenv('POLYGON_KEY',  'UratMpPH0sxlZeDYcSaiXsK_g6C1_7ml')
 FINNHUB  = os.getenv('FINNHUB_KEY',  'd6o6lm1r01qu09ciaj3gd6o6lm1r01qu09ciaj40')
@@ -33,8 +47,8 @@ REUTERS_FEEDS = {
     'metals':     'https://feeds.reuters.com/metals/',
 }
 
-def bloomberg(categories=None, n=3):
-    """Fetch Bloomberg RSS. categories: list of keys from BLOOMBERG_FEEDS."""
+def bloomberg(categories=None, n=3, max_age_hours=6):
+    """Fetch Bloomberg RSS. Filtert Artikel älter als max_age_hours."""
     if categories is None:
         categories = ['markets', 'energy']
     results = []
@@ -45,15 +59,21 @@ def bloomberg(categories=None, n=3):
         if not raw: continue
         try:
             root = ET.fromstring(raw)
-            for item in root.findall('.//item')[:n]:
+            count = 0
+            for item in root.findall('.//item'):
+                if count >= n: break
                 title = item.findtext('title', '')
-                pub   = item.findtext('pubDate', '')[:22]
-                results.append({'source': f'Bloomberg/{cat}', 'title': title, 'date': pub})
+                pub   = item.findtext('pubDate', '')
+                age   = _age_hours(pub)
+                if age is not None and age > max_age_hours:
+                    continue  # zu alt
+                results.append({'source': f'Bloomberg/{cat}', 'title': title, 'date': pub[:22]})
+                count += 1
         except: pass
     return results
 
-def reuters(categories=None, n=3):
-    """Fetch Reuters RSS. categories: list of keys from REUTERS_FEEDS."""
+def reuters(categories=None, n=3, max_age_hours=6):
+    """Fetch Reuters RSS. Filtert Artikel älter als max_age_hours."""
     if categories is None:
         categories = ['markets', 'energy']
     results = []
@@ -64,10 +84,16 @@ def reuters(categories=None, n=3):
         if not raw: continue
         try:
             root = ET.fromstring(raw)
-            for item in root.findall('.//item')[:n]:
+            count = 0
+            for item in root.findall('.//item'):
+                if count >= n: break
                 title = item.findtext('title', '')
-                pub   = item.findtext('pubDate', '')[:22]
-                results.append({'source': f'Reuters/{cat}', 'title': title, 'date': pub})
+                pub   = item.findtext('pubDate', '')
+                age   = _age_hours(pub)
+                if age is not None and age > max_age_hours:
+                    continue  # zu alt
+                results.append({'source': f'Reuters/{cat}', 'title': title, 'date': pub[:22]})
+                count += 1
         except: pass
     return results
 
@@ -179,15 +205,27 @@ def polygon_company(ticker, n=3):
     except: return []
 
 # ── Google News RSS ────────────────────────────────────────────────────────────
-def google_news(query, lang='de', n=3):
-    """Google News RSS fallback."""
+def google_news(query, lang='de', n=3, max_age_hours=6):
+    """Google News RSS — filtert Artikel älter als max_age_hours."""
     q = urllib.parse.quote(query)
     url = f'https://news.google.com/rss/search?q={q}&hl={lang}&gl=DE&ceid=DE:{lang}'
     raw = _get(url)
     if not raw: return []
     try:
         root = ET.fromstring(raw)
-        return [{'source': i.findtext('source','Google'), 'title': i.findtext('title',''), 'date': i.findtext('pubDate','')[:16]} for i in root.findall('.//item')[:n]]
+        results = []
+        for item in root.findall('.//item'):
+            if len(results) >= n: break
+            pub = item.findtext('pubDate', '')
+            age = _age_hours(pub)
+            if age is not None and age > max_age_hours:
+                continue  # zu alt
+            results.append({
+                'source': item.findtext('source', 'Google'),
+                'title':  item.findtext('title', ''),
+                'date':   pub[:16],
+            })
+        return results
     except: return []
 
 # ── Kombiniert: alle Quellen für ein Ticker-Set ────────────────────────────────

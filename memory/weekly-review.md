@@ -397,3 +397,29 @@ Alle Hauptthesen intakt:
 **Cron-Infrastruktur:** 6 Crons am 04.04. optimiert, laufen schneller, sollten keine Timeouts mehr haben.
 
 **Real-Portfolio:** 3 aktive Positionen, alle gesund. Keine neuen Trades vor klarem Makro-Signal.
+
+# 📊 Weekly Review — Woche 2026-04-05
+
+## Was funktioniert hat
+- **Win-Rate 42% (34W/31L):** Stabil über 5 Wochen, deutet auf konsistente Methodologie hin
+- **Top Strategie (S1):** 100% WR auf 2 Trades, +58% durchschnittliche Return — Pattern erkannt?
+- **Position PLTR:** Stop nachgezogen (09.03), Momentum hält — Breakout-Setup funktioniert
+- **Position A3D42Y:** Solider Einstieg 27.9€, Trend intact
+
+## Was nicht funktioniert hat
+- **31 Verluste in 81 Trades:** Fast 40% Ausfallquote — Risikomanagement überprüfen
+- **Offset-Timing:** Mehrere Trades zu früh geschlossen (Gewinnmitnahme vs. Trend-Fortsetzung) — Ziel-Levels zu eng?
+
+## 🎯 Erkannte Lektionen
+1. **Deep-Dive-Protokoll zahlt sich aus:** Trades mit vollständiger Analyse (KGV, EPS, Sentiment) > spontane Trades
+2. **Stop-Management kritisch:** Nachziehen funktioniert, aber Platzierung initial zu eng
+3. **Geopolitik ignorieren ist teuer:** Iran-Eskalation (Trump + F-15-Abschuss) treibt Ölvolatilität — Energy-Exposure überprüfen
+
+## ⚠️ Regel-Verletzungen
+- Keine dokumentierten Verstöße gegen Ticker-Format, EUR-Vorgaben oder Deep-Dive-Pflicht
+- Alle offenen Positionen mit Stop versehen ✅
+
+## 📈 VIX-Regime (Snapshot: 27.2 = ORANGE)
+- Risk-OFF Modus aktiv (>20 = Stress)
+- Volatility-Umfeld bevorzugt enge Stops + schnellere Gewinnmitnahmen
+- Energy-Sektor elevated (Brent $103.86, Geopolitik)
