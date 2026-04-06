@@ -1,14 +1,14 @@
 {
-  "total_analyzed": 83,
+  "total_analyzed": 85,
   "avg_entry_quality": 6.5,
   "avg_exit_quality": 5.9,
-  "disposition_effect": -0.097,
+  "disposition_effect": -0.007,
   "optimal_holding_days": {
+    "PS1": 2.2,
     "PS11": 1.5,
     "PS17": 1.0,
     "PS5": 4.0,
     "PS14": 1.0,
-    "PS1": 2.2,
     "PS2": 2.6,
     "PS4": 1.5,
     "PS_STLD": 0.5,
@@ -22,14 +22,14 @@
   },
   "regime_performance": {
     "RISK_OFF": {
-      "wr": 0.852,
-      "avg_pnl": 58.07,
-      "trades": 27
+      "wr": 0.821,
+      "avg_pnl": 25.88,
+      "trades": 28
     },
     "NEUTRAL": {
-      "wr": 0.455,
-      "avg_pnl": -96.92,
-      "trades": 11
+      "wr": 0.417,
+      "avg_pnl": -240.8,
+      "trades": 12
     },
     "PAPER_LEARN": {
       "wr": 0.0,
@@ -43,12 +43,34 @@
     }
   },
   "insights": [
-    "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.5d.",
+    "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.7d.",
     "PS11 hat 67% WR — aber nur 3 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (85% WR, 27 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
-    "PS5 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
+    "Bestes Regime: RISK_OFF (82% WR, 28 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "PS1 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 61,
+      "ticker": "NOVO-B.CO",
+      "strategy": "PS_NVO",
+      "entry_quality": 4.0,
+      "exit_quality": 4.0,
+      "holding_days": 6,
+      "regime": "RISK_OFF",
+      "pnl": -843.12,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
+    {
+      "id": 76,
+      "ticker": "EQNR.OL",
+      "strategy": "PS1",
+      "entry_quality": 10.0,
+      "exit_quality": 2.0,
+      "holding_days": 4,
+      "regime": "NEUTRAL",
+      "pnl": -1823.51,
+      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+    },
     {
       "id": 53,
       "ticker": "BA.L",
@@ -241,7 +263,7 @@
       "ticker": "EQNR.OL",
       "strategy": "PS1",
       "entry_quality": 7.0,
-      "exit_quality": 2.0,
+      "exit_quality": 4.0,
       "holding_days": 5,
       "regime": "RISK_OFF",
       "pnl": -13.94,
@@ -912,7 +934,7 @@
       "ticker": "MOS",
       "strategy": "PS1",
       "entry_quality": 7.0,
-      "exit_quality": 2.0,
+      "exit_quality": 4.0,
       "holding_days": 5,
       "regime": "UNKNOWN",
       "pnl": -22.7,
@@ -963,7 +985,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-05T21:10:06",
+  "analysis_timestamp": "2026-04-06T09:10:06",
   "avg_win_holding_days": 1.7,
-  "avg_loss_holding_days": 1.5
+  "avg_loss_holding_days": 1.7
 }

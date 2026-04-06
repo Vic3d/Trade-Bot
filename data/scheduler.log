@@ -100,3 +100,52 @@ Check the documentation of torch.load to learn more about types accepted by defa
 [2026-04-05 22:45:02] ✅ Daily Learning: OK
 [2026-04-05 23:00:00] ▶️  Tagesabschluss: Start
 [2026-04-05 23:00:01] ✅ Tagesabschluss: OK + Discord gesendet
+[2026-04-05 23:26:06] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-06 02:00:00] ▶️  RL Training: Start
+[2026-04-06 02:00:09] ❌ RL Training: Fehler (code 1)
+[2026-04-06 02:00:09]    STDERR: h.serialization.safe_globals([numpy._core.multiarray.scalar])` context manager to allowlist this global if you trust this class/function.
+
+Check the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html.
+
+[2026-04-06 02:00:09] ▶️  CEO Radar Nacht: Start
+[2026-04-06 02:00:11] ✅ CEO Radar Nacht: OK
+[2026-04-06 07:00:00] ▶️  Live Data Refresh: Start
+[2026-04-06 07:00:03] ✅ Live Data Refresh: OK
+[2026-04-06 07:00:03] ▶️  CEO Radar Morgen: Start
+[2026-04-06 07:00:05] ✅ CEO Radar Morgen: OK
+[2026-04-06 07:05:00] ▶️  Regime Detector: Start
+[2026-04-06 07:05:03] ✅ Regime Detector: OK
+[2026-04-06 08:30:00] ▶️  Morgen-Briefing: Start
+[2026-04-06 08:30:03] ✅ Morgen-Briefing: OK + Discord gesendet
+[2026-04-06 09:00:00] ▶️  Live Data Refresh: Start
+[2026-04-06 09:00:03] ✅ Live Data Refresh: OK
+[2026-04-06 09:00:03] ▶️  Watchlist Tracker: Start
+[2026-04-06 09:00:09] ✅ Watchlist Tracker: OK
+[2026-04-06 09:00:09] ▶️  Newswire Analyst: Start
+[2026-04-06 09:00:14] ✅ Newswire Analyst: OK
+[2026-04-06 09:05:00] ▶️  News Gate Update: Start
+[2026-04-06 09:05:00] ✅ News Gate Update: OK
+[2026-04-06 09:10:00] ▶️  CEO Radar: Start
+[2026-04-06 09:10:06] ✅ CEO Radar: OK
+[2026-04-06 09:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 09:30:07] ✅ Watchlist Tracker: OK
+[2026-04-06 09:30:07] ▶️  Xetra Opening: Start
+[2026-04-06 09:30:09] ✅ Xetra Opening: OK + Discord gesendet
+[2026-04-06 10:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 10:00:07] ✅ Watchlist Tracker: OK
+[2026-04-06 10:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 10:30:07] ✅ Watchlist Tracker: OK
+[2026-04-06 11:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 11:00:06] ✅ Watchlist Tracker: OK
+[2026-04-06 11:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 11:30:07] ✅ Watchlist Tracker: OK
+[2026-04-06 12:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 12:00:07] ✅ Watchlist Tracker: OK
+[2026-04-06 12:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-06 12:30:07] ✅ Watchlist Tracker: OK
+[2026-04-06 13:00:00] ▶️  Live Data Refresh: Start
+[2026-04-06 13:00:03] ✅ Live Data Refresh: OK
+[2026-04-06 13:00:03] ▶️  Watchlist Tracker: Start
+[2026-04-06 13:00:10] ✅ Watchlist Tracker: OK
+[2026-04-06 13:00:10] ▶️  Newswire Analyst: Start
+[2026-04-06 13:00:20] ✅ Newswire Analyst: OK

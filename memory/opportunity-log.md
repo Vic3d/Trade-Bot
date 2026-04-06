@@ -40,3 +40,13 @@
 ## [2026-04-05 18:25 UTC] — 1 Opportunities, 1 Paper Trades
   ✅ [6/10] GOLD: Why the gold rally isn't over yet - ING THINK economic and f
 ---
+
+## [2026-04-06 07:25 UTC] — 1 Signal gefunden
+
+  ❌ [5/10] RHM.DE (Rheinmetall AG) — **PS3 gesperrt** (Score 31/100 — zu schwach)
+  Kurs: 1570.50€ | Zone: 1626–1700€
+  Trigger: nato spending, eu rearmament
+  Top-News: German armsmaker wins big from Trump's NATO spending demands
+  → Paper Trade NICHT eröffnet (Strategie-Sperrung)
+
+---

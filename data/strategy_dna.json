@@ -22,17 +22,17 @@
       "recommendation": "KILL"
     },
     "PS1": {
-      "trades_analyzed": 10,
+      "trades_analyzed": 11,
       "wins": 6,
-      "losses": 4,
-      "win_rate": 0.6,
+      "losses": 5,
+      "win_rate": 0.545,
       "current_params": {
-        "avg_stop_distance_pct": 4.84,
+        "avg_stop_distance_pct": 5.22,
         "avg_win_pct": 4.52,
         "max_win_pct": 12.36,
-        "avg_holding_days": 3.1,
+        "avg_holding_days": 3.2,
         "avg_holding_days_winners": 2.2,
-        "avg_holding_days_losers": 4.5
+        "avg_holding_days_losers": 4.4
       },
       "recommended_params": {
         "optimal_stop_pct": 6.5,
@@ -46,8 +46,8 @@
           },
           "3-5d": {
             "wr": 0.0,
-            "avg_pnl": -10.17,
-            "n": 2
+            "avg_pnl": -37.16,
+            "n": 3
           },
           "6-10d": {
             "wr": 0.667,
@@ -58,9 +58,9 @@
       },
       "findings": [
         "Sweet Spot Haltedauer: 6-10d (Avg PnL: +6.4%, WR: 67%, n=3)",
-        "✅ Regime NEUTRAL: WR 100% bei 3 Trades — ideal!"
+        "✅ Regime NEUTRAL: WR 75% bei 4 Trades — ideal!"
       ],
-      "expected_improvement": "Stop weiter (4.8% → 6.5%) | TP bei 6.0% | Haltedauer 6-10d",
+      "expected_improvement": "Stop weiter (5.2% → 6.5%) | TP bei 6.0% | Haltedauer 6-10d",
       "confidence": "MEDIUM",
       "recommendation": "HEALTHY"
     },
@@ -227,8 +227,8 @@
     },
     "PS1": {
       "best_regime": "NEUTRAL",
-      "best_regime_wr": 1.0,
-      "best_regime_trades": 3,
+      "best_regime_wr": 0.75,
+      "best_regime_trades": 4,
       "worst_regime": "UNKNOWN",
       "worst_regime_wr": 0.4,
       "worst_regime_trades": 5,
@@ -244,12 +244,12 @@
           "n": 2
         },
         "NEUTRAL": {
-          "wr": 1.0,
-          "avg_pnl": 2.63,
-          "n": 3
+          "wr": 0.75,
+          "avg_pnl": -20.81,
+          "n": 4
         }
       },
-      "recommended_filter": "Optimal in NEUTRAL (WR 100%)"
+      "recommended_filter": "Optimal in NEUTRAL (WR 75%)"
     },
     "PS2": {
       "best_regime": "NEUTRAL",
@@ -374,5 +374,5 @@
     "emerging_themes",
     "new"
   ],
-  "timestamp": "2026-04-05T21:10:06"
+  "timestamp": "2026-04-06T09:10:06"
 }

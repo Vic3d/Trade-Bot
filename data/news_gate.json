@@ -1,136 +1,137 @@
 {
-  "timestamp": "2026-04-05T21:05:00.605786",
+  "timestamp": "2026-04-06T09:05:00.880643",
   "relevant": true,
-  "hit_count": 61,
-  "events_scanned": 87,
+  "hit_count": 77,
+  "events_scanned": 106,
   "window_hours": 24,
   "top_hits": [
     {
-      "thesis": "S1_Iran",
+      "thesis": "S3_KI",
       "all_theses": [
-        "S1_Iran"
+        "S3_KI"
       ],
-      "headline": "Israel Says More Than 1,000 Iranian Missiles Still Threaten It",
-      "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-05 19:00:05"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Trump Escalates Threats to Bomb Iran’s Power Plants After Rescue",
-      "ticker": "",
+      "headline": "Nvidia Aktie: Teures China-Comeback - Börse Express",
+      "ticker": "NVDA",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-05 19:00:05"
+      "source": "google_news",
+      "ts": "2026-04-06 07:00:12"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Nvidia-Aktie: Das könnte sehr wichtig werden! - Finanztrends",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-06 07:00:12"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "On NASA’s Moon Mission, the Biggest Headache Has Been the Toilet",
+      "headline": "Ölpreis steigt auf mehr als 110 Dollar - nTV",
       "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-05 19:00:05"
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "google_news",
+      "ts": "2026-04-06 07:00:12"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran",
-        "PS1_Oil",
-        "PS2_Tanker"
-      ],
-      "headline": "Hormuz Tracker: Iraq-Linked Oil Tanker Exits Hormuz Via Iran",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-05 19:00:04"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
         "S3_KI"
       ],
-      "headline": "Nvidia-Aktie: Kursziel 227 Dollar! - Börse Express",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-05 15:00:07"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Nvidia Aktie: Nächster Zyklus im Visier - Börse Express",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-05 15:00:07"
-    },
-    {
-      "thesis": "PS2_Tanker",
-      "all_theses": [
-        "PS2_Tanker"
-      ],
-      "headline": "Congo Agrees to Take 3rd Country Deportees From US, Reuters Says",
-      "ticker": "FRO",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-05 15:00:06"
-    },
-    {
-      "thesis": "PS14_Ship",
-      "all_theses": [
-        "PS14_Ship"
-      ],
-      "headline": "Trump Risks Confidence in US Role as Guardian of Global Shipping",
-      "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-05 15:00:06"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Trump to Hold News Conference on Monday After Airman Rescued",
+      "headline": "Japan’s Takaichi Seeks Talks With Iran’s Leader Before Ultimatum",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-05 15:00:06"
+      "ts": "2026-04-06 07:00:12"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Trump Threatens Tuesday Strike on Iran Power Plants, Bridges",
+      "headline": "Singapore Lawmakers to Discuss Impact of Iran War in Parliament",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-05 15:00:06"
+      "ts": "2026-04-06 07:00:12"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "S3_KI"
+      ],
+      "headline": "AirAsia X Fares Rise as Much as 40% Due to Iran War, CEO Says",
+      "ticker": "",
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 07:00:11"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "The Iran War May Be Permanently Rewiring Global Energy Security",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-06 07:00:10"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "PS1_Oil"
+      ],
+      "headline": "Iraq Tells Buyers to Collect Crude as Its Oil Can Cross Hormuz",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-06 07:00:10"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "S3_KI"
+      ],
+      "headline": "Emerging Market Stocks, Currencies Gain on Iran Ceasefire Report",
+      "ticker": "",
+      "score": 0.8,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-06 07:00:10"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI",
+        "PS1_Oil"
+      ],
+      "headline": "Saudis Raise Asia Oil to Record Premium as War Upends Market",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-06 07:00:10"
     }
   ],
   "theses_hit": [
-    "PS2_Tanker",
-    "PS14_Ship",
     "S3_KI",
     "S1_Iran",
     "PS1_Oil"

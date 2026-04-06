@@ -26,3 +26,10 @@
 [TREND] 2026-04-05 02:00 — 🔴 STRONG: S4 bullish_oil (9 Events in 3h): US Inflation Seen Spiking in First Snapshot Since Iran War
 [TREND] 2026-04-05 02:00 — 🔴 STRONG: S2 bullish_oil (5 Events in 3h): The Israeli military detected an Iranian missile launch toward the southern part of the country. Alarms will sound in affected areas momentarily
 [TREND] 2026-04-05 04:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): Kuwaiti Oil Headquarters Set Ablaze by Iranian Drone Strike
+[TREND] 2026-04-06 00:00 — 🔴 STRONG: S1 bullish_oil (20 Events in 3h): The Revolutionary Guard's naval command: The Strait of Hormuz will never return to its previous state, especially for America and Israel.
+[TREND] 2026-04-06 00:00 — 🔴 STRONG: S8 bullish_oil (9 Events in 3h): Hormuz Tracker: Iraq-Linked Oil Tanker Exits Hormuz Via Iran
+[TREND] 2026-04-06 02:00 — 🔴 STRONG: S1 bullish_oil (24 Events in 3h): Oil Rises on New Deadline as Trump Raises the Stakes Over Hormuz
+[TREND] 2026-04-06 02:00 — 🔴 STRONG: S8 bullish_oil (9 Events in 3h): Hormuz Tracker: Iraq-Linked Oil Tanker Exits Hormuz Via Iran
+[TREND] 2026-04-06 04:00 — 🔴 STRONG: S1 bullish_oil (6 Events in 3h): Oil Rises on New Deadline as Trump Raises the Stakes Over Hormuz
+[TREND] 2026-04-06 06:00 — 🔴 STRONG: S1 bearish_oil (10 Events in 3h): Oil Steadies as Traders Track Report of Push for Iran Ceasefire
+[TREND] 2026-04-06 06:00 — 🔴 STRONG: S1 bullish_oil (6 Events in 3h): Stocks Rise, Oil Pares Gain on Iran Talks Report: Markets Wrap

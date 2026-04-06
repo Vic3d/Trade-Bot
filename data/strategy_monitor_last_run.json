@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-03T20:40:29.563518",
+  "timestamp": "2026-04-06T08:40:30.740475",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
@@ -191,12 +191,12 @@
     "PS18": {
       "name": "Trade Dislocation & Tariff-Margin-Compression",
       "status": "NEUTRAL",
-      "score": 37,
+      "score": 40,
       "momentum_avg": 0,
-      "news_score": -20,
+      "news_score": 0,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News neutral (Score -20)"
+        "News neutral (Score +0)"
       ]
     }
   },
@@ -382,13 +382,13 @@
       "name": "Trade Dislocation & Tariff-Margin-Compression",
       "old_status": "STARK",
       "new_status": "NEUTRAL",
-      "score": 37,
+      "score": 40,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News neutral (Score -20)"
+        "News neutral (Score +0)"
       ]
     }
   ],
   "emerging_themes": [],
-  "articles_analyzed": 36
+  "articles_analyzed": 12
 }

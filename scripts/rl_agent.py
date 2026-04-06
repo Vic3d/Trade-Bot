@@ -152,7 +152,7 @@ class PPOTrainer:
         }, path)
 
     def load(self, path: Path):
-        checkpoint = torch.load(path, map_location='cpu', weights_only=True)
+        checkpoint = torch.load(path, map_location='cpu', weights_only=False)
         self.net.load_state_dict(checkpoint['model_state'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state'])
         self.total_steps = checkpoint.get('total_steps', 0)

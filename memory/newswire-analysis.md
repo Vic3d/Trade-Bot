@@ -204,3 +204,28 @@ High-Impact: 3 | Actionable: True
   [S1_Iran] Hormuz Tracker: Iraq-Linked Oil Tanker Exits Hormuz Via Iran
 High-Impact: 7 | Actionable: True
 ---
+
+## [2026-04-06 02:00] News Radar — 2 neue Headlines
+  [PS1_Oil] Rohöl vor der nächsten Schockwelle? WTI & Brent zwischen Bärenmarkt-Risiko und Supply-Sque
+  [S3_KI] NASDAQ-Aktie Palantir mit herben Verlusten: KI-Schwäche auch bei NVIDIA & Co. nach Rally -
+High-Impact: 1 | Actionable: False
+---
+
+## [2026-04-06 07:00] News Radar — 1 neue Headlines
+  [S12_Rüstung] Neue Drohnen für die Bundeswehr: Kamikaze mit Peter Thiel - taz.de
+High-Impact: 1 | Actionable: False
+---
+
+## [2026-04-06 09:10] News Radar — 11 neue Headlines
+  [S1_Iran] Eskalation im Nahen Osten: Angriffe bei Straße von Hormus verschärfen Iran-Krieg - Handels
+  [S3_KI] Nvidia Aktie: Teures China-Comeback - Börse Express
+  [S3_KI] Nvidia-Aktie: Das könnte sehr wichtig werden! - Finanztrends
+  [PS1_Oil] Ölpreis steigt auf mehr als 110 Dollar - nTV
+  [S1_Iran] Japan’s Takaichi Seeks Talks With Iran’s Leader Before Ultimatum
+  [S1_Iran] Singapore Lawmakers to Discuss Impact of Iran War in Parliament
+  [S1_Iran] AirAsia X Fares Rise as Much as 40% Due to Iran War, CEO Says
+  [S1_Iran] The Iran War May Be Permanently Rewiring Global Energy Security
+  [S1_Iran] Iraq Tells Buyers to Collect Crude as Its Oil Can Cross Hormuz
+  [S1_Iran] Emerging Market Stocks, Currencies Gain on Iran Ceasefire Report
+High-Impact: 8 | Actionable: True
+---

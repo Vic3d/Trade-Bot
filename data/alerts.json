@@ -460,5 +460,26 @@
     "ticker": "",
     "message": "\u26a0\ufe0f MACRO: WTI \u00d6L Tagesbewegung -36.2% ($112.06\u2192$71.52)\n\ud83d\udccc Ursache: \u00d6l-Schock\n\ud83d\udd17 Kausalkette: Brent/WTI steigt \u2192 Energie-Importeure (Japan) unter Kosten-Druck \u2192 Nikkei f\u00e4llt\n\n\ud83d\udcca Portfolio-Impact:\n  \u27a1\ufe0f PLT",
     "value": ""
+  },
+  {
+    "timestamp": "2026-04-06T06:10:49.055280+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 128.76\u20ac | Stop: 127.0\u20ac | Nur noch 1.4% Abstand! [Conviction: 55/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-06T06:10:49.056673+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-06T07:10:47.801153+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 128.77\u20ac | Stop: 127.0\u20ac | 1.4% Abstand [Conviction: 57/100]",
+    "value": ""
   }
 ]

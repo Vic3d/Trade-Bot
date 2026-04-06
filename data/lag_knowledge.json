@@ -23,10 +23,10 @@
       "lag_hours": 24,
       "direction": "same",
       "threshold_pct": 2.0,
-      "accuracy_pct": 28.6,
-      "sample_count": 7,
+      "accuracy_pct": 25.0,
+      "sample_count": 8,
       "wins": 2,
-      "losses": 5,
+      "losses": 6,
       "description": "Nikkei als Frühindikator für Japan-Industrienachfrage → Kupfer"
     },
     "VIX_TECH": {
