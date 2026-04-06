@@ -229,3 +229,45 @@ High-Impact: 1 | Actionable: False
   [S1_Iran] Emerging Market Stocks, Currencies Gain on Iran Ceasefire Report
 High-Impact: 8 | Actionable: True
 ---
+
+## [2026-04-06 13:10] News Radar — 11 neue Headlines
+  [S3_KI] Palantir Stock Falls Over 4% Even As the AI Giant Beats Q3 Estimates - TIKR.com
+  [S3_KI] Palantir Aktie: Institutionelle greifen zu - Börse Express
+  [S1_Iran] Thai PM Anutin Pledges to Tackle Economic Fallout From Iran War
+  [S1_Iran] Trump Extends Iran Deadline Amid Ceasefire Push
+  [S3_KI] OpenAI Advocates Electric Grid, Safety Net Spending for New AI Era
+  [PS1_Oil] Ex-Wall Street Trader Attempts Distressed M&amp;A Turnarounds in Milei’s Argentina
+  [PS1_Oil] Oil Shock Is Adding Stress to the Global Economy
+  [S1_Iran] Hormuz Traffic Rises to Highest in Weeks as More Transits Agreed
+  [S2_Rüstung] Trump Looks to Boost Defense in $2.2 Trillion 2027 Budget
+  [PS_AIInfra] Micron Is Slumping and Rival’s $10 Billion US Listing Won’t Help
+High-Impact: 5 | Actionable: True
+---
+
+## [2026-04-06 17:10] News Radar — 11 neue Headlines
+  [S1_Iran] +++ Iran-Krieg im Live-Ticker: Trump wütet gegen Iran: "Öffnet die Straße, ihr Bastarde" -
+  [PS1_Oil] Ölpreis korrigiert nach OPEC+-Produktionserhöhung: Brent bei 108 USD, WTI bei 110 USD – Ir
+  [S3_KI] Ex-Head of Russia’s Kursk Region Gets 14 Years in Jail for Graft
+  [PS_AIInfra] Oracle Taps New CFO to Navigate Data Center Building Spree
+  [S1_Iran] Qatar LNG Ships U-Turn After Attempt to Pass Through Hormuz
+  [S3_KI] US Bonds Steady as Traders Bet War Uncertainty Keeps Fed on Hold
+  [S3_KI] US Natural Gas Futures Reverse Losses on Cold Weather, Oil Gains
+  [PS1_Oil] Jamie Dimon Urges US to ‘Get Stronger’ in Shareholder Letter
+  [S3_KI] Earnings a 'Blessing' for Markets, Citi's Kaiser Says
+  [S1_Iran] A drone launched by the Iran-backed Houthis in Yemen at Israel was intercepted, according 
+High-Impact: 5 | Actionable: True
+---
+
+## [2026-04-06 21:10] News Radar — 10 neue Headlines
+  [S3_KI] Palantir-Aktienkursprognose: Unterstützung bei 146,00 $, da PLTR seitwärts tendiert - Trad
+  [S3_KI] Die Nvidia-Aktie konsolidiert sich, da U.S.-Exportbeschränkungen für Nvidia-Chips nach Chi
+  [S3_KI] NVIDIA Has Fallen 20% From Its High. Is the AI Chip King Finally Cheap? - TIKR.com
+  [PS1_Oil] RFK Jr. Lays Groundwork to Rebuild Weakened Vaccine Committee
+  [S1_Iran] What Are the World Cup’s Options If Iran Backs Out?
+  [S1_Iran] Trump Says Iran Deal Must Include Free Flow of Oil in Hormuz
+  [S3_KI] Trump Threatens to Jail Journalists Who Reported on Pilot Rescue
+  [S1_Iran] Trump Amps Threat to ‘Take Out’ Iran Before Tuesday Deadline
+  [S1_Iran] Trump Threatens to Jail Journalist Over Iran Rescue Mission Leak
+  [S1_Iran] Trump Says Reopening Hormuz Must Be in Iran Ceasefire Deal
+High-Impact: 6 | Actionable: True
+---

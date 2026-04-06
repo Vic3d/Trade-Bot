@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-04-05 20:45 UTC | Learning System v2.0 (Auto)*
+*Generiert: 2026-04-06 20:45 UTC | Learning System v2.0 (Auto)*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | | Paper | Real |
 |---|---|---|
-| Offene Positionen | 10 | — |
-| Geschlossene Positionen | 81 | — |
-| Realisierte P&L | +1960.32€ | — |
-| Win-Rate | 42% (34W / 31L) | — |
+| Offene Positionen | 8 | — |
+| Geschlossene Positionen | 83 | — |
+| Realisierte P&L | -706.31€ | — |
+| Win-Rate | 41% (34W / 33L) | — |
 
 ## 🏆 Strategie-Ranking (nach P&L)
 
@@ -23,7 +23,6 @@
 | PS9 | 1 | 100% | +15.6% | +311.7€ |
 | PS13 | 4 | 100% | +3.5% | +273.4€ |
 | PS15 | 3 | 100% | +7.4% | +258.5€ |
-| PS1 | 9 | 67% | +0.9% | +163.2€ |
 | PS11 | 3 | 67% | +1.4% | +81.7€ |
 | PS2 | 6 | 83% | +8.3% | +79.9€ |
 | PS12 | 1 | 100% | +2.8% | +55.4€ |
@@ -38,7 +37,9 @@
 | PS_STLD | 5 | 40% | -7.2% | -746.2€ |
 | AR-HALB | 3 | 0% | -13.1% | -791.5€ |
 | AR-AGRA | 3 | 0% | -13.1% | -791.5€ |
+| PS_NVO | 1 | 0% | -84.2% | -843.1€ |
 | S4 | 4 | 0% | -13.3% | -1070.4€ |
+| PS1 | 10 | 60% | -8.3% | -1660.3€ |
 | S10-TEST | 4 | 0% | +0.0% | +0.0€ |
 
 ## 🎯 Auto-Conviction-Änderungen

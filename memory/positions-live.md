@@ -4,7 +4,7 @@
 > **Sync:** Albert updated immer GLEICHZEITIG diese Datei + trading_config.json
 > Format: immer in EUR. Letzter Update-Zeitstempel pflegen.
 
-**Zuletzt aktualisiert:** 2026-04-06 12:10 CET (Auto-Sync vom Monitor)
+**Zuletzt aktualisiert:** 2026-04-06 22:10 CET (Auto-Sync vom Monitor)
 
 ---
 
@@ -12,7 +12,7 @@
 
 | Name (Ticker) | Entry | Stop (REAL in TR) | Letzter Kurs | P&L | Notiz |
 |---|---|---|---|---|---|
-| Palantir (PLTR) | 132.11€ | 127.00€ | 128.46€ | -2.8% | Stop nachgezogen 09.03. |
+| Palantir (PLTR) | 132.11€ | 127.00€ | 128.13€ | -3.0% | Stop nachgezogen 09.03. |
 | VanEck Oil Services ETF (A3D42Y) | 27.90€ | 24.00€ | 28.49€ | +2.1% |  |
 | iShares Biotech ETF (A2DWAW) | 7.00€ | 6.30€ | 7.36€ | +5.2% |  |
 

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-06T09:20:24.887888",
+  "timestamp": "2026-04-06T20:20:25.481482",
   "lha": {
     "price": 7.502,
     "ema20": 7.724785280204863,
@@ -9,7 +9,7 @@
     "week_low": 7.196000099182129,
     "week_high": 7.76800012588501
   },
-  "brent_price": 109.45,
+  "brent_price": 110.71,
   "triggers": {
     "brent_below_75": false,
     "above_ema20": false,

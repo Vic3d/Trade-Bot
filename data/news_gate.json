@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-06T09:05:00.880643",
+  "timestamp": "2026-04-06T21:05:00.907368",
   "relevant": true,
-  "hit_count": 77,
-  "events_scanned": 106,
+  "hit_count": 143,
+  "events_scanned": 203,
   "window_hours": 24,
   "top_hits": [
     {
@@ -10,86 +10,61 @@
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Nvidia Aktie: Teures China-Comeback - Börse Express",
-      "ticker": "NVDA",
+      "headline": "Palantir-Aktienkursprognose: Unterstützung bei 146,00 $, da PLTR seitwärts tendiert - Traders Union",
+      "ticker": "PLTR",
       "score": 0.0,
       "direction": "neutral",
       "source": "google_news",
-      "ts": "2026-04-06 07:00:12"
+      "ts": "2026-04-06 19:00:11"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Nvidia-Aktie: Das könnte sehr wichtig werden! - Finanztrends",
+      "headline": "Die Nvidia-Aktie konsolidiert sich, da U.S.-Exportbeschränkungen für Nvidia-Chips nach China die Stimmung belasten - Tra",
       "ticker": "NVDA",
       "score": 0.0,
       "direction": "neutral",
       "source": "google_news",
-      "ts": "2026-04-06 07:00:12"
+      "ts": "2026-04-06 19:00:10"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI",
+        "PS2_Tanker"
+      ],
+      "headline": "NVIDIA Has Fallen 20% From Its High. Is the AI Chip King Finally Cheap? - TIKR.com",
+      "ticker": "NVDA FRO",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "google_news",
+      "ts": "2026-04-06 19:00:10"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "Ölpreis steigt auf mehr als 110 Dollar - nTV",
-      "ticker": "",
-      "score": 0.3,
-      "direction": "bullish",
-      "source": "google_news",
-      "ts": "2026-04-06 07:00:12"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran",
-        "S3_KI"
-      ],
-      "headline": "Japan’s Takaichi Seeks Talks With Iran’s Leader Before Ultimatum",
+      "headline": "RFK Jr. Lays Groundwork to Rebuild Weakened Vaccine Committee",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-06 07:00:12"
+      "ts": "2026-04-06 19:00:09"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Singapore Lawmakers to Discuss Impact of Iran War in Parliament",
+      "headline": "What Are the World Cup’s Options If Iran Backs Out?",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-06 07:00:12"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran",
-        "S3_KI"
-      ],
-      "headline": "AirAsia X Fares Rise as Much as 40% Due to Iran War, CEO Says",
-      "ticker": "",
-      "score": 0.3,
-      "direction": "bullish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-06 07:00:11"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "The Iran War May Be Permanently Rewiring Global Energy Security",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-06 07:00:10"
+      "ts": "2026-04-06 19:00:09"
     },
     {
       "thesis": "S1_Iran",
@@ -97,43 +72,66 @@
         "S1_Iran",
         "PS1_Oil"
       ],
-      "headline": "Iraq Tells Buyers to Collect Crude as Its Oil Can Cross Hormuz",
+      "headline": "Trump Says Iran Deal Must Include Free Flow of Oil in Hormuz",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-06 07:00:10"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran",
-        "S3_KI"
-      ],
-      "headline": "Emerging Market Stocks, Currencies Gain on Iran Ceasefire Report",
-      "ticker": "",
-      "score": 0.8,
-      "direction": "bullish",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-06 07:00:10"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 19:00:09"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
-        "S3_KI",
-        "PS1_Oil"
+        "S3_KI"
       ],
-      "headline": "Saudis Raise Asia Oil to Record Premium as War Upends Market",
+      "headline": "Trump Threatens to Jail Journalists Who Reported on Pilot Rescue",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-06 07:00:10"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 19:00:09"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Trump Amps Threat to ‘Take Out’ Iran Before Tuesday Deadline",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 19:00:09"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "S3_KI"
+      ],
+      "headline": "Trump Threatens to Jail Journalist Over Iran Rescue Mission Leak",
+      "ticker": "",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 19:00:09"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Trump Says Reopening Hormuz Must Be in Iran Ceasefire Deal",
+      "ticker": "",
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-06 19:00:09"
     }
   ],
   "theses_hit": [
+    "PS1_Oil",
     "S3_KI",
-    "S1_Iran",
-    "PS1_Oil"
+    "S1_Iran"
   ]
 }
