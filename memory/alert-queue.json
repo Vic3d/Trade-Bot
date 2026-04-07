@@ -133,5 +133,20 @@
     "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 128.77\u20ac | Stop: 127.0\u20ac | 1.4% Abstand [Conviction: 57/100]",
     "target": "452053147620343808",
     "ts": "2026-04-06T07:10:47.800433+00:00"
+  },
+  {
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 128.20\u20ac | Stop: 127.0\u20ac | Nur noch 0.9% Abstand! [Conviction: 60/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-07T06:10:49.958301+00:00"
+  },
+  {
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "target": "452053147620343808",
+    "ts": "2026-04-07T06:10:49.961585+00:00"
+  },
+  {
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 128.16\u20ac | Stop: 127.0\u20ac | 0.9% Abstand [Conviction: 60/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-07T07:10:48.061653+00:00"
   }
 ]

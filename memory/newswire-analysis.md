@@ -271,3 +271,22 @@ High-Impact: 5 | Actionable: True
   [S1_Iran] Trump Says Reopening Hormuz Must Be in Iran Ceasefire Deal
 High-Impact: 6 | Actionable: True
 ---
+
+## [2026-04-07 07:00] News Radar — 1 neue Headlines
+  [PS1_Oil] Ölpreis volatil um 108-110 Dollar: Trumps Drohungen und OPEC+-Angebot treiben Brent und WT
+High-Impact: 1 | Actionable: False
+---
+
+## [2026-04-07 09:10] News Radar — 10 neue Headlines
+  [S1_Iran] Helen Thompson on Iran, the Oil Shock and Britain’s Energy Crisis
+  [S1_Iran] Control Risks Sees No US-Iran De-Escalation for at Least 4-6 Weeks
+  [S1_Iran] Trump's Deadline for Iran Nears as Threats Escalate
+  [S1_Iran] Oil Rises as Trump Escalates Iran Threats
+  [S1_Iran] European Gas Ticks Higher as Trump Threatens Iran War Escalation
+  [S1_Iran] Bitcoin Slides With Risk Assets as Trump’s Iran Ultimatum Looms
+  [PS1_Oil] Dangote Says Nigerian Crude Supply to Refinery Doubled in March
+  [S3_KI] Air India CEO Campbell Wilson to Step Down Amid Mounting Losses
+  [PS1_Oil] India Returns to Buying Venezuelan Crude to Ease Supply Crunch
+  [S5_Rohstoff] Panama to authorise removal of material from First Quantum copper mine - Mining Weekly
+High-Impact: 8 | Actionable: True
+---

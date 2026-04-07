@@ -33,3 +33,7 @@
 [TREND] 2026-04-06 04:00 — 🔴 STRONG: S1 bullish_oil (6 Events in 3h): Oil Rises on New Deadline as Trump Raises the Stakes Over Hormuz
 [TREND] 2026-04-06 06:00 — 🔴 STRONG: S1 bearish_oil (10 Events in 3h): Oil Steadies as Traders Track Report of Push for Iran Ceasefire
 [TREND] 2026-04-06 06:00 — 🔴 STRONG: S1 bullish_oil (6 Events in 3h): Stocks Rise, Oil Pares Gain on Iran Talks Report: Markets Wrap
+[TREND] 2026-04-07 00:00 — 🔴 STRONG: S1 bullish_oil (20 Events in 3h): Brazil Expands Fuel Tax Cuts, Subsidies as Iran War Carries On
+[TREND] 2026-04-07 02:00 — 🔴 STRONG: S1 bullish_oil (30 Events in 3h): Yuan May Dodge Seasonal Slump on Iran War Resilience, Economy
+[TREND] 2026-04-07 04:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): Homin Lee on Investment Scenarios Amid Hormuz Closure
+[TREND] 2026-04-07 06:00 — 🔴 STRONG: S1 bullish_oil (22 Events in 3h): New Security Council Draft on Hormuz Eases Off Threats of Force

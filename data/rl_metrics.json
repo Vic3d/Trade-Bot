@@ -1,7 +1,7 @@
 {
-  "total_steps": 50176,
-  "total_episodes": 65,
-  "best_episode_reward": -4.072462599526414,
+  "total_steps": 245248,
+  "total_episodes": 400,
+  "best_episode_reward": 8.423716761077614,
   "episode_history": [],
   "training_history": [
     {
@@ -73,6 +73,286 @@
       "policy_loss": 0.0119,
       "entropy": 0.6874,
       "ts": "2026-04-06"
+    },
+    {
+      "total_steps": 50176,
+      "avg_reward_20": -4.773,
+      "policy_loss": -0.0009,
+      "entropy": 0.6288,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 55296,
+      "avg_reward_20": -14.632,
+      "policy_loss": -0.0004,
+      "entropy": 0.5247,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 60416,
+      "avg_reward_20": -14.196,
+      "policy_loss": -0.0014,
+      "entropy": 0.5592,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 65536,
+      "avg_reward_20": -13.662,
+      "policy_loss": 0.0002,
+      "entropy": 0.7307,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 70144,
+      "avg_reward_20": -8.428,
+      "policy_loss": -0.0011,
+      "entropy": 0.5673,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 75264,
+      "avg_reward_20": -0.744,
+      "policy_loss": 0.0,
+      "entropy": 0.4156,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 80384,
+      "avg_reward_20": -1.916,
+      "policy_loss": -0.0011,
+      "entropy": 0.7831,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 85504,
+      "avg_reward_20": -5.915,
+      "policy_loss": -0.0017,
+      "entropy": 0.7701,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 90112,
+      "avg_reward_20": -7.722,
+      "policy_loss": -0.0006,
+      "entropy": 0.6091,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 95232,
+      "avg_reward_20": -6.458,
+      "policy_loss": -0.0014,
+      "entropy": 0.7452,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 100352,
+      "avg_reward_20": -5.436,
+      "policy_loss": -0.0021,
+      "entropy": 0.7176,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 105472,
+      "avg_reward_20": 1.21,
+      "policy_loss": -0.0001,
+      "entropy": 0.7306,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 110080,
+      "avg_reward_20": -4.413,
+      "policy_loss": -0.0028,
+      "entropy": 0.7491,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 115200,
+      "avg_reward_20": -6.75,
+      "policy_loss": -0.0023,
+      "entropy": 0.711,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 120320,
+      "avg_reward_20": -9.846,
+      "policy_loss": 0.0011,
+      "entropy": 0.6566,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 125440,
+      "avg_reward_20": -3.836,
+      "policy_loss": -0.0002,
+      "entropy": 0.5785,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 130560,
+      "avg_reward_20": -5.559,
+      "policy_loss": -0.0006,
+      "entropy": 0.6208,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 135168,
+      "avg_reward_20": 0.519,
+      "policy_loss": -0.0013,
+      "entropy": 0.5927,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 140288,
+      "avg_reward_20": -1.137,
+      "policy_loss": -0.0038,
+      "entropy": 0.5442,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 145408,
+      "avg_reward_20": -3.638,
+      "policy_loss": -0.0029,
+      "entropy": 0.611,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 150528,
+      "avg_reward_20": -5.117,
+      "policy_loss": 0.0012,
+      "entropy": 0.4499,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 155136,
+      "avg_reward_20": -4.747,
+      "policy_loss": 0.0004,
+      "entropy": 0.6071,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 160256,
+      "avg_reward_20": -0.764,
+      "policy_loss": -0.0002,
+      "entropy": 0.6653,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 165376,
+      "avg_reward_20": -0.586,
+      "policy_loss": 0.0007,
+      "entropy": 0.6399,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 170496,
+      "avg_reward_20": 2.312,
+      "policy_loss": 0.0002,
+      "entropy": 0.6408,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 175104,
+      "avg_reward_20": 7.747,
+      "policy_loss": -0.0005,
+      "entropy": 0.5907,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 180224,
+      "avg_reward_20": 5.182,
+      "policy_loss": -0.0014,
+      "entropy": 0.6711,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 185344,
+      "avg_reward_20": 5.56,
+      "policy_loss": 0.0003,
+      "entropy": 0.6742,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 190464,
+      "avg_reward_20": 2.685,
+      "policy_loss": -0.0003,
+      "entropy": 0.6062,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 195072,
+      "avg_reward_20": 8.424,
+      "policy_loss": -0.0012,
+      "entropy": 0.6616,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 200192,
+      "avg_reward_20": 3.965,
+      "policy_loss": -0.0006,
+      "entropy": 0.7119,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 205312,
+      "avg_reward_20": 2.112,
+      "policy_loss": -0.0008,
+      "entropy": 0.7082,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 210432,
+      "avg_reward_20": 1.305,
+      "policy_loss": -0.0019,
+      "entropy": 0.6801,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 215552,
+      "avg_reward_20": 4.55,
+      "policy_loss": -0.001,
+      "entropy": 0.6892,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 220160,
+      "avg_reward_20": 8.034,
+      "policy_loss": -0.0009,
+      "entropy": 0.7022,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 225280,
+      "avg_reward_20": -0.656,
+      "policy_loss": 0.0004,
+      "entropy": 0.7007,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 230400,
+      "avg_reward_20": -4.463,
+      "policy_loss": -0.0003,
+      "entropy": 0.6847,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 235520,
+      "avg_reward_20": -4.187,
+      "policy_loss": -0.0006,
+      "entropy": 0.6984,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 240128,
+      "avg_reward_20": -0.117,
+      "policy_loss": -0.0002,
+      "entropy": 0.6959,
+      "ts": "2026-04-07"
+    },
+    {
+      "total_steps": 245248,
+      "avg_reward_20": 2.142,
+      "policy_loss": -0.0019,
+      "entropy": 0.5544,
+      "ts": "2026-04-07"
     }
   ]
 }

@@ -1,17 +1,24 @@
 {
-  "timestamp": "2026-04-06T07:05:27",
-  "mode": "DEFENSIVE",
-  "mode_reason": "Geo-Score 65 > 50",
-  "vix": 23.9,
+  "timestamp": "2026-04-07T07:05:27",
+  "mode": "SHUTDOWN",
+  "mode_reason": "Sharpe -1.14 < -1.0 (30+ Trades) + Expectancy €-8.77 < 0 (30+ Trades)",
+  "vix": 24.2,
   "regime": "RANGE_BOUND",
   "geo_alert_level": "HIGH",
   "geo_score": 65,
   "trading_rules": {
-    "max_new_positions_today": 2,
-    "max_position_size_eur": 1500,
-    "stop_tightening_factor": 1.3,
-    "vix_conviction_adjustment": -2,
-    "allowed_strategies": [
+    "max_new_positions_today": 0,
+    "max_position_size_eur": 0,
+    "stop_tightening_factor": 1.5,
+    "vix_conviction_adjustment": -3,
+    "allowed_strategies": [],
+    "blocked_strategies": [
+      "AR-AGRA",
+      "AR-HALB",
+      "DT1",
+      "DT2",
+      "DT3",
+      "DT4",
       "PS1",
       "PS10",
       "PS11",
@@ -23,30 +30,22 @@
       "PS17",
       "PS18",
       "PS2",
+      "PS3",
       "PS4",
       "PS5",
       "PS_CCJ",
       "PS_LHA",
       "PS_NVO",
+      "PS_STLD",
       "PT",
       "S1",
+      "S10-TEST",
       "S2",
       "S3",
+      "S4",
       "S5",
       "S6",
       "S7"
-    ],
-    "blocked_strategies": [
-      "AR-AGRA",
-      "AR-HALB",
-      "DT1",
-      "DT2",
-      "DT3",
-      "DT4",
-      "PS3",
-      "PS_STLD",
-      "S10-TEST",
-      "S4"
     ],
     "dna_overrides": {
       "PS1": {
@@ -72,82 +71,47 @@
     "experimental_strategies": true
   },
   "system_health": {
-    "score": 70,
+    "score": 60,
     "errors": [],
     "warnings": [
       "P1.3 Trade Journal: nur 4 Einträge — mehr Daten nötig",
-      "Drawdown 12.9% — erhöht"
+      "Drawdown 12.9% — erhöht",
+      "2 Verlust-Tage in Folge — beobachten"
     ]
   },
   "learning_status": {
-    "overall_win_rate": 0.506,
-    "win_rate_7d": 0.52,
-    "win_rate_30d": 0.482,
+    "overall_win_rate": 0.494,
+    "win_rate_7d": 0.564,
+    "win_rate_30d": 0.471,
     "best_strategy": "PM",
     "worst_strategy": "AR-AGRA",
-    "total_closed_trades": 79,
-    "open_positions": 10,
+    "total_closed_trades": 81,
+    "open_positions": 8,
     "portfolio_drawdown": 0.129,
     "p1_features_active": false,
     "data_quality_score": 65
   },
-  "top_opportunities": [
-    {
-      "strategy": "S1",
-      "name": "Iran-Konflikt → Öl & Silber",
-      "tickers": [
-        "EQNR"
-      ],
-      "health": "green_hot",
-      "score": 70,
-      "win_rate": 1.0,
-      "trades": 2
-    },
-    {
-      "strategy": "PS1",
-      "name": "Iran/Öl-Geopolitik",
-      "tickers": [
-        "OXY",
-        "TTE.PA",
-        "EQNR.OL"
-      ],
-      "health": "green",
-      "score": 48,
-      "win_rate": 0.6,
-      "trades": 10
-    },
-    {
-      "strategy": "PS5",
-      "name": "Dünger/Agrar-Superzyklus",
-      "tickers": [
-        "MOS"
-      ],
-      "health": "yellow",
-      "score": 40,
-      "win_rate": 1.0,
-      "trades": 2
-    }
-  ],
-  "ceo_notes": "VIX 23.9 — erhöhte Volatilität. Stops erweitern.",
+  "top_opportunities": [],
+  "ceo_notes": "System im SHUTDOWN-Modus. Keine neuen Positionen öffnen. | ⚠️ 2 Verlust-Tage in Folge — Position Sizing reduzieren.",
   "risk_metrics": {
     "overall": {
-      "sharpe_ratio": 0.958,
-      "sortino_ratio": 1.307,
-      "calmar_ratio": 1.333,
-      "profit_factor": 1.502,
-      "crv": 1.465,
-      "expectancy": 24.76,
-      "total_trades": 79
+      "sharpe_ratio": -1.139,
+      "sortino_ratio": -0.999,
+      "calmar_ratio": -1.15,
+      "profit_factor": 0.892,
+      "crv": 0.914,
+      "expectancy": -8.77,
+      "total_trades": 81
     },
     "by_strategy": {
       "PS1": {
-        "sharpe_ratio": -1.236,
-        "sortino_ratio": -0.823,
-        "calmar_ratio": -5.73,
-        "profit_factor": 4.768,
-        "crv": 3.178,
-        "expectancy": 15.9,
-        "total_trades": 10
+        "sharpe_ratio": -4.957,
+        "sortino_ratio": -3.011,
+        "calmar_ratio": -18.875,
+        "profit_factor": 0.108,
+        "crv": 0.09,
+        "expectancy": -151.32,
+        "total_trades": 11
       },
       "PS2": {
         "sharpe_ratio": 11.013,
@@ -320,6 +284,15 @@
         "expectancy": 2.08,
         "total_trades": 2
       },
+      "PS_NVO": {
+        "sharpe_ratio": -13386.788,
+        "sortino_ratio": -15.875,
+        "calmar_ratio": -252.0,
+        "profit_factor": 0.0,
+        "crv": 0.0,
+        "expectancy": -843.12,
+        "total_trades": 1
+      },
       "PS12": {
         "sharpe_ratio": 436.905,
         "sortino_ratio": 436.905,
@@ -351,36 +324,36 @@
   },
   "portfolio_concentration": {
     "sector_weights": {
-      "tech": 0.2381,
-      "energy": 0.4286,
-      "materials": 0.1429,
+      "tech": 0.2778,
+      "energy": 0.3889,
+      "materials": 0.1667,
       "other": 0.0,
-      "healthcare": 0.0476,
-      "defense": 0.0952,
-      "industrials": 0.0476
+      "defense": 0.1111,
+      "industrials": 0.0556
     },
-    "hhi": 0.2744,
+    "hhi": 0.2716,
     "hhi_label": "CONCENTRATED",
     "warnings": [
       "⚠️ HHI 0.27 — Portfolio konzentriert.",
-      "⚠️ energy: 43% — konzentriert. Max 1 neue Position."
+      "⚠️ energy: 39% — konzentriert. Max 1 neue Position.",
+      "⚠️ tech: 28% — konzentriert. Max 1 neue Position."
     ],
     "blocked_sectors": [],
-    "total_invested": 20999.8
+    "total_invested": 17999.78
   },
   "position_sizing": {
     "method": "half_kelly",
     "portfolio_value": 26492.95,
-    "vix": 23.87,
+    "vix": 24.17,
     "mode": "NORMAL",
     "default_sizes": {
       "PS1": {
-        "kelly_pct": 0.4742,
-        "half_kelly_pct": 0.2371,
-        "vix_adjusted_pct": 0.1778,
-        "recommended_size_eur": 3974.0,
-        "reason": "Half-Kelly 23.7% × VIX-Adj 0.75 = 15.0%",
-        "tradeable": true
+        "kelly_pct": -4.5137,
+        "half_kelly_pct": 0.0,
+        "vix_adjusted_pct": 0.0,
+        "recommended_size_eur": 0.0,
+        "reason": "Kelly -451.4% negativ — KEIN TRADE (negativer Erwartungswert)",
+        "tradeable": false
       },
       "PS2": {
         "kelly_pct": 0.3645,
@@ -539,7 +512,7 @@
         "half_kelly_pct": 0.0,
         "vix_adjusted_pct": 0.0,
         "recommended_size_eur": 1325.0,
-        "reason": "Zu wenige Trades (0) — Default 5%",
+        "reason": "Zu wenige Trades (1) — Default 5%",
         "tradeable": true
       },
       "PS_CCJ": {
@@ -568,14 +541,6 @@
       }
     },
     "actionable": {
-      "PS1": {
-        "kelly_pct": 0.4742,
-        "half_kelly_pct": 0.2371,
-        "vix_adjusted_pct": 0.1778,
-        "recommended_size_eur": 3974.0,
-        "reason": "Half-Kelly 23.7% × VIX-Adj 0.75 = 15.0%",
-        "tradeable": true
-      },
       "PS2": {
         "kelly_pct": 0.3645,
         "half_kelly_pct": 0.1822,
@@ -636,9 +601,9 @@
   },
   "regime_detail": {
     "overall": "RANGE_BOUND",
-    "vix": 23.87,
-    "spy_vs_ma200": -3.13,
-    "spy_vs_ma50": -2.96,
+    "vix": 24.17,
+    "spy_vs_ma200": -2.7,
+    "spy_vs_ma50": -2.45,
     "spy_trend": "FLAT",
     "sectors": {
       "energy": "BULL",
@@ -656,17 +621,16 @@
     "sector_laggards": [
       "financials"
     ],
-    "nasdaq_vs_ma200": -4.75,
-    "eurusd": 1.1527
+    "nasdaq_vs_ma200": -4.21,
+    "eurusd": 1.1542
   },
   "live_data_available": true,
   "geo_intel": {
     "geo_score": 65,
     "geo_trend": "ESCALATING",
     "geo_hotspots": [
-      "Iran/Hormuz",
       "Taiwan Strait",
-      "Ukraine/Russia"
+      "Iran/Hormuz"
     ],
     "geo_trades_affected": [
       "DHT",
@@ -683,22 +647,23 @@
       "trump_watch_score": 15,
       "pifs_score": 0,
       "strategy_score": 10,
-      "events_24h": 40
+      "events_24h": 61
     }
   },
   "stress_tests": {
-    "max_portfolio_loss_all_stops": 1580.22,
-    "max_portfolio_loss_pct": 5.7,
-    "portfolio_value": 27493.33,
-    "open_positions_count": 10,
+    "max_portfolio_loss_all_stops": 1261.26,
+    "max_portfolio_loss_pct": 5.1,
+    "portfolio_value": 24493.31,
+    "open_positions_count": 8,
     "scenarios": {
       "vix_spike": {
-        "description": "Impact: €-970 (-3.5%)",
-        "impact_eur": -969.99,
-        "impact_pct": -3.5,
+        "description": "Impact: €-890 (-3.6%)",
+        "impact_eur": -889.99,
+        "impact_pct": -3.6,
         "positions_at_risk": [
           "ASML.AS",
-          "MUV2.DE"
+          "MUV2.DE",
+          "RHM.DE"
         ],
         "position_details": [
           {
@@ -712,11 +677,6 @@
             "impact_pct": -3.0
           },
           {
-            "ticker": "EQNR.OL",
-            "impact_eur": -60.0,
-            "impact_pct": -3.0
-          },
-          {
             "ticker": "MOS",
             "impact_eur": -150.01,
             "impact_pct": -5.0
@@ -725,11 +685,6 @@
             "ticker": "MUV2.DE",
             "impact_eur": -0.0,
             "impact_pct": -5.0
-          },
-          {
-            "ticker": "NOVO-B.CO",
-            "impact_eur": -20.0,
-            "impact_pct": -2.0
           },
           {
             "ticker": "RHM.DE",
@@ -755,12 +710,12 @@
       },
       "sector_crash": {
         "description": "Worst sector -10%",
-        "impact_eur": -899.98,
+        "impact_eur": -699.98,
         "details_by_sector": {
           "tech": {
-            "description": "Impact: €-500 (-1.8%)",
+            "description": "Impact: €-500 (-2.0%)",
             "impact_eur": -499.99,
-            "impact_pct": -1.8,
+            "impact_pct": -2.0,
             "positions_at_risk": [
               "ASML.AS"
             ],
@@ -776,22 +731,12 @@
                 "impact_pct": 0.0
               },
               {
-                "ticker": "EQNR.OL",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
                 "ticker": "MOS",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
               },
               {
                 "ticker": "MUV2.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
               },
@@ -817,10 +762,60 @@
               }
             ]
           },
+          "other": {
+            "description": "Impact: €+0 (+0.0%)",
+            "impact_eur": 0.0,
+            "impact_pct": 0.0,
+            "positions_at_risk": [
+              "MUV2.DE"
+            ],
+            "position_details": [
+              {
+                "ticker": "ASML.AS",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "BMW.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "MOS",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "MUV2.DE",
+                "impact_eur": -0.0,
+                "impact_pct": -10.0
+              },
+              {
+                "ticker": "RHM.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "SIE.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "TTE.PA",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "ZIM",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              }
+            ]
+          },
           "defense": {
-            "description": "Impact: €-200 (-0.7%)",
+            "description": "Impact: €-200 (-0.8%)",
             "impact_eur": -199.99,
-            "impact_pct": -0.7,
+            "impact_pct": -0.8,
             "positions_at_risk": [
               "RHM.DE"
             ],
@@ -836,9 +831,56 @@
                 "impact_pct": 0.0
               },
               {
-                "ticker": "EQNR.OL",
+                "ticker": "MOS",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
+              },
+              {
+                "ticker": "MUV2.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "RHM.DE",
+                "impact_eur": -199.99,
+                "impact_pct": -10.0
+              },
+              {
+                "ticker": "SIE.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "TTE.PA",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "ZIM",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              }
+            ]
+          },
+          "energy": {
+            "description": "Impact: €-700 (-2.9%)",
+            "impact_eur": -699.98,
+            "impact_pct": -2.9,
+            "positions_at_risk": [
+              "BMW.DE",
+              "TTE.PA",
+              "ZIM"
+            ],
+            "position_details": [
+              {
+                "ticker": "ASML.AS",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "BMW.DE",
+                "impact_eur": -200.0,
+                "impact_pct": -10.0
               },
               {
                 "ticker": "MOS",
@@ -851,14 +893,57 @@
                 "impact_pct": 0.0
               },
               {
-                "ticker": "NOVO-B.CO",
+                "ticker": "RHM.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "SIE.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "TTE.PA",
+                "impact_eur": -200.0,
+                "impact_pct": -10.0
+              },
+              {
+                "ticker": "ZIM",
+                "impact_eur": -299.98,
+                "impact_pct": -10.0
+              }
+            ]
+          },
+          "materials": {
+            "description": "Impact: €-300 (-1.2%)",
+            "impact_eur": -300.01,
+            "impact_pct": -1.2,
+            "positions_at_risk": [],
+            "position_details": [
+              {
+                "ticker": "ASML.AS",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "BMW.DE",
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
+              },
+              {
+                "ticker": "MOS",
+                "impact_eur": -300.01,
+                "impact_pct": -10.0
+              },
+              {
+                "ticker": "MUV2.DE",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
               },
               {
                 "ticker": "RHM.DE",
-                "impact_eur": -199.99,
-                "impact_pct": -10.0
+                "impact_eur": 0.0,
+                "impact_pct": 0.0
               },
               {
                 "ticker": "SIE.DE",
@@ -896,22 +981,12 @@
                 "impact_pct": 0.0
               },
               {
-                "ticker": "EQNR.OL",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
                 "ticker": "MOS",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
               },
               {
                 "ticker": "MUV2.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
                 "impact_eur": 0.0,
                 "impact_pct": 0.0
               },
@@ -924,247 +999,6 @@
                 "ticker": "SIE.DE",
                 "impact_eur": -100.0,
                 "impact_pct": -10.0
-              },
-              {
-                "ticker": "TTE.PA",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "ZIM",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              }
-            ]
-          },
-          "energy": {
-            "description": "Impact: €-900 (-3.3%)",
-            "impact_eur": -899.98,
-            "impact_pct": -3.3,
-            "positions_at_risk": [
-              "BMW.DE",
-              "EQNR.OL",
-              "TTE.PA",
-              "ZIM"
-            ],
-            "position_details": [
-              {
-                "ticker": "ASML.AS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "BMW.DE",
-                "impact_eur": -200.0,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "EQNR.OL",
-                "impact_eur": -200.0,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "MOS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MUV2.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "RHM.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "SIE.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "TTE.PA",
-                "impact_eur": -200.0,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "ZIM",
-                "impact_eur": -299.98,
-                "impact_pct": -10.0
-              }
-            ]
-          },
-          "other": {
-            "description": "Impact: €+0 (+0.0%)",
-            "impact_eur": 0.0,
-            "impact_pct": 0.0,
-            "positions_at_risk": [
-              "MUV2.DE"
-            ],
-            "position_details": [
-              {
-                "ticker": "ASML.AS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "BMW.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "EQNR.OL",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MOS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MUV2.DE",
-                "impact_eur": -0.0,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "RHM.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "SIE.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "TTE.PA",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "ZIM",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              }
-            ]
-          },
-          "healthcare": {
-            "description": "Impact: €-100 (-0.4%)",
-            "impact_eur": -100.0,
-            "impact_pct": -0.4,
-            "positions_at_risk": [
-              "NOVO-B.CO"
-            ],
-            "position_details": [
-              {
-                "ticker": "ASML.AS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "BMW.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "EQNR.OL",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MOS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MUV2.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
-                "impact_eur": -100.0,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "RHM.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "SIE.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "TTE.PA",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "ZIM",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              }
-            ]
-          },
-          "materials": {
-            "description": "Impact: €-300 (-1.1%)",
-            "impact_eur": -300.01,
-            "impact_pct": -1.1,
-            "positions_at_risk": [],
-            "position_details": [
-              {
-                "ticker": "ASML.AS",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "BMW.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "EQNR.OL",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "MOS",
-                "impact_eur": -300.01,
-                "impact_pct": -10.0
-              },
-              {
-                "ticker": "MUV2.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "NOVO-B.CO",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "RHM.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
-              },
-              {
-                "ticker": "SIE.DE",
-                "impact_eur": 0.0,
-                "impact_pct": 0.0
               },
               {
                 "ticker": "TTE.PA",
@@ -1182,12 +1016,12 @@
         "positions_at_risk": []
       },
       "iran_peace_deal": {
-        "description": "Impact: €-920 (-3.3%)",
-        "impact_eur": -919.98,
-        "impact_pct": -3.3,
+        "description": "Impact: €-730 (-3.0%)",
+        "impact_eur": -729.98,
+        "impact_pct": -3.0,
         "positions_at_risk": [
           "BMW.DE",
-          "EQNR.OL",
+          "RHM.DE",
           "TTE.PA",
           "ZIM"
         ],
@@ -1203,11 +1037,6 @@
             "impact_pct": -10.0
           },
           {
-            "ticker": "EQNR.OL",
-            "impact_eur": -200.0,
-            "impact_pct": -10.0
-          },
-          {
             "ticker": "MOS",
             "impact_eur": -60.0,
             "impact_pct": -2.0
@@ -1216,11 +1045,6 @@
             "ticker": "MUV2.DE",
             "impact_eur": -0.0,
             "impact_pct": -3.0
-          },
-          {
-            "ticker": "NOVO-B.CO",
-            "impact_eur": 10.0,
-            "impact_pct": 1.0
           },
           {
             "ticker": "RHM.DE",
@@ -1245,10 +1069,12 @@
         ]
       },
       "liberation_day": {
-        "description": "Impact: €-530 (-1.9%)",
-        "impact_eur": -530.0,
-        "impact_pct": -1.9,
-        "positions_at_risk": [],
+        "description": "Impact: €-510 (-2.1%)",
+        "impact_eur": -510.0,
+        "impact_pct": -2.1,
+        "positions_at_risk": [
+          "RHM.DE"
+        ],
         "position_details": [
           {
             "ticker": "ASML.AS",
@@ -1261,11 +1087,6 @@
             "impact_pct": 0.0
           },
           {
-            "ticker": "EQNR.OL",
-            "impact_eur": 0.0,
-            "impact_pct": 0.0
-          },
-          {
             "ticker": "MOS",
             "impact_eur": -120.01,
             "impact_pct": -4.0
@@ -1274,11 +1095,6 @@
             "ticker": "MUV2.DE",
             "impact_eur": -0.0,
             "impact_pct": -3.0
-          },
-          {
-            "ticker": "NOVO-B.CO",
-            "impact_eur": -20.0,
-            "impact_pct": -2.0
           },
           {
             "ticker": "RHM.DE",
@@ -1303,12 +1119,13 @@
         ]
       },
       "flash_crash": {
-        "description": "Impact: €-1,071 (-3.9%)",
-        "impact_eur": -1070.99,
-        "impact_pct": -3.9,
+        "description": "Impact: €-918 (-3.7%)",
+        "impact_eur": -917.99,
+        "impact_pct": -3.7,
         "positions_at_risk": [
           "BMW.DE",
-          "MUV2.DE"
+          "MUV2.DE",
+          "RHM.DE"
         ],
         "position_details": [
           {
@@ -1322,11 +1139,6 @@
             "impact_pct": -5.0
           },
           {
-            "ticker": "EQNR.OL",
-            "impact_eur": -102.0,
-            "impact_pct": -5.0
-          },
-          {
             "ticker": "MOS",
             "impact_eur": -153.01,
             "impact_pct": -5.0
@@ -1334,11 +1146,6 @@
           {
             "ticker": "MUV2.DE",
             "impact_eur": -0.0,
-            "impact_pct": -5.0
-          },
-          {
-            "ticker": "NOVO-B.CO",
-            "impact_eur": -51.0,
             "impact_pct": -5.0
           },
           {
@@ -1367,31 +1174,47 @@
     "risk_rating": "MEDIUM"
   },
   "anomalies": {
-    "anomaly_count": 0,
-    "anomalies": [],
-    "portfolio_anomalies": [],
+    "anomaly_count": 1,
+    "anomalies": [
+      {
+        "type": "STREAK",
+        "severity": "MEDIUM",
+        "ticker": "NOVO-B.CO, EQNR.OL, BA.L",
+        "description": "Losing streak: 3 Verluste in Folge (NOVO-B.CO, EQNR.OL, BA.L)",
+        "action_suggested": "CEO sollte Exposure reduzieren"
+      }
+    ],
+    "portfolio_anomalies": [
+      {
+        "type": "STREAK",
+        "severity": "MEDIUM",
+        "ticker": "NOVO-B.CO, EQNR.OL, BA.L",
+        "description": "Losing streak: 3 Verluste in Folge (NOVO-B.CO, EQNR.OL, BA.L)",
+        "action_suggested": "CEO sollte Exposure reduzieren"
+      }
+    ],
     "market_anomalies": [],
     "high_count": 0,
-    "medium_count": 0,
+    "medium_count": 1,
     "low_count": 0
   },
   "postmortem_summary": {
-    "total_analyzed": 83,
+    "total_analyzed": 85,
     "avg_entry_quality": 6.5,
     "avg_exit_quality": 5.9,
-    "disposition_effect": -0.097,
+    "disposition_effect": -0.007,
     "avg_win_holding_days": 1.7,
-    "avg_loss_holding_days": 1.5,
+    "avg_loss_holding_days": 1.7,
     "regime_performance": {
       "RISK_OFF": {
-        "wr": 0.852,
-        "avg_pnl": 58.07,
-        "trades": 27
+        "wr": 0.821,
+        "avg_pnl": 25.88,
+        "trades": 28
       },
       "NEUTRAL": {
-        "wr": 0.455,
-        "avg_pnl": -96.92,
-        "trades": 11
+        "wr": 0.417,
+        "avg_pnl": -240.8,
+        "trades": 12
       },
       "PAPER_LEARN": {
         "wr": 0.0,
@@ -1405,9 +1228,9 @@
       }
     },
     "top_insights": [
-      "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.5d.",
+      "Haltedauer ausgeglichen: Gewinner Ø 1.7d, Verlierer Ø 1.7d.",
       "PS11 hat 67% WR — aber nur 3 Trades. Mehr Daten nötig.",
-      "Bestes Regime: RISK_OFF (85% WR, 27 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)"
+      "Bestes Regime: RISK_OFF (82% WR, 28 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)"
     ]
   },
   "strategy_dna": {
@@ -1434,17 +1257,17 @@
         "recommendation": "KILL"
       },
       "PS1": {
-        "trades_analyzed": 10,
+        "trades_analyzed": 11,
         "wins": 6,
-        "losses": 4,
-        "win_rate": 0.6,
+        "losses": 5,
+        "win_rate": 0.545,
         "current_params": {
-          "avg_stop_distance_pct": 4.84,
+          "avg_stop_distance_pct": 5.22,
           "avg_win_pct": 4.52,
           "max_win_pct": 12.36,
-          "avg_holding_days": 3.1,
+          "avg_holding_days": 3.2,
           "avg_holding_days_winners": 2.2,
-          "avg_holding_days_losers": 4.5
+          "avg_holding_days_losers": 4.4
         },
         "recommended_params": {
           "optimal_stop_pct": 6.5,
@@ -1458,8 +1281,8 @@
             },
             "3-5d": {
               "wr": 0.0,
-              "avg_pnl": -10.17,
-              "n": 2
+              "avg_pnl": -37.16,
+              "n": 3
             },
             "6-10d": {
               "wr": 0.667,
@@ -1470,9 +1293,9 @@
         },
         "findings": [
           "Sweet Spot Haltedauer: 6-10d (Avg PnL: +6.4%, WR: 67%, n=3)",
-          "✅ Regime NEUTRAL: WR 100% bei 3 Trades — ideal!"
+          "✅ Regime NEUTRAL: WR 75% bei 4 Trades — ideal!"
         ],
-        "expected_improvement": "Stop weiter (4.8% → 6.5%) | TP bei 6.0% | Haltedauer 6-10d",
+        "expected_improvement": "Stop weiter (5.2% → 6.5%) | TP bei 6.0% | Haltedauer 6-10d",
         "confidence": "MEDIUM",
         "recommendation": "HEALTHY"
       },
@@ -1639,8 +1462,8 @@
       },
       "PS1": {
         "best_regime": "NEUTRAL",
-        "best_regime_wr": 1.0,
-        "best_regime_trades": 3,
+        "best_regime_wr": 0.75,
+        "best_regime_trades": 4,
         "worst_regime": "UNKNOWN",
         "worst_regime_wr": 0.4,
         "worst_regime_trades": 5,
@@ -1656,12 +1479,12 @@
             "n": 2
           },
           "NEUTRAL": {
-            "wr": 1.0,
-            "avg_pnl": 2.63,
-            "n": 3
+            "wr": 0.75,
+            "avg_pnl": -20.81,
+            "n": 4
           }
         },
-        "recommended_filter": "Optimal in NEUTRAL (WR 100%)"
+        "recommended_filter": "Optimal in NEUTRAL (WR 75%)"
       },
       "PS2": {
         "best_regime": "NEUTRAL",
@@ -1786,7 +1609,7 @@
       "emerging_themes",
       "new"
     ],
-    "timestamp": "2026-04-06T07:05:27"
+    "timestamp": "2026-04-07T07:05:27"
   },
   "backtest_summary": {
     "strategies_tested": 6,
@@ -1820,30 +1643,30 @@
       },
       "PS1": {
         "original": {
-          "wr": 0.6,
-          "pnl": 158.96,
-          "trades": 10
+          "wr": 0.545,
+          "pnl": -1664.55,
+          "trades": 11
         },
         "optimized_stop": {
-          "wr": 0.6,
-          "pnl": 158.96,
-          "improvement_pct": 0.0
+          "wr": 0.545,
+          "pnl": -1249.97,
+          "improvement_pct": 24.9
         },
         "optimized_tp": {
-          "wr": 0.6,
-          "pnl": 158.96,
+          "wr": 0.545,
+          "pnl": -1664.55,
           "improvement_pct": 0.0
         },
         "regime_filtered": {
-          "wr": 0.8,
-          "pnl": 173.7,
+          "wr": 0.667,
+          "pnl": -1649.81,
           "trades_skipped": 5,
           "worst_regimes": [
             "UNKNOWN"
           ]
         },
-        "best_variant": "regime_filtered",
-        "best_improvement_pct": 9.3
+        "best_variant": "optimized_stop",
+        "best_improvement_pct": 24.9
       },
       "PS2": {
         "original": {
@@ -1955,91 +1778,89 @@
       }
     },
     "system_wide": {
-      "original_pnl": 75.16,
-      "optimized_pnl": 975.75,
-      "improvement_pct": 1198.2,
+      "original_pnl": -1748.35,
+      "optimized_pnl": -447.92,
+      "improvement_pct": 74.4,
       "recommendation": "Stahl-Tariff-Play (Liberation Day) (PS_STLD): Regime-Filter → +€522 Verbesserung"
     },
-    "timestamp": "2026-04-06T07:05:27"
+    "timestamp": "2026-04-07T07:05:27"
   },
   "portfolio_optimization": {
     "current_allocation": {
-      "tech": 0.2381,
-      "energy": 0.4286,
-      "materials": 0.1429,
-      "healthcare": 0.0476,
-      "defense": 0.0952,
-      "industrials": 0.0476
+      "tech": 0.2778,
+      "energy": 0.3889,
+      "materials": 0.1667,
+      "defense": 0.1111,
+      "industrials": 0.0556
     },
     "optimal_allocation": {
-      "tech": 0.1209,
-      "defense": 0.213,
-      "industrials": 0.1848,
-      "energy": 0.068,
-      "healthcare": 0.2497,
-      "consumer": 0.1635
+      "tech": 0.1296,
+      "consumer": 0.1757,
+      "defense": 0.2286,
+      "industrials": 0.1984,
+      "healthcare": 0.2677
     },
     "rebalance_suggestions": [
       {
         "action": "DECREASE",
-        "sector": "energy",
-        "reason": "43% → 7% (Klumpenrisiko!)",
-        "current_pct": 0.4286,
-        "target_pct": 0.068
+        "sector": "tech",
+        "reason": "28% → 13% (konzentriert)",
+        "current_pct": 0.2778,
+        "target_pct": 0.1296
       },
       {
-        "action": "DECREASE",
-        "sector": "tech",
-        "reason": "24% → 12%",
-        "current_pct": 0.2381,
-        "target_pct": 0.1209
+        "action": "REMOVE",
+        "sector": "energy",
+        "reason": "aktuell 39%, nicht im optimalen Portfolio",
+        "current_pct": 0.3889,
+        "target_pct": 0
       },
       {
         "action": "REMOVE",
         "sector": "materials",
-        "reason": "aktuell 14%, nicht im optimalen Portfolio",
-        "current_pct": 0.1429,
+        "reason": "aktuell 17%, nicht im optimalen Portfolio",
+        "current_pct": 0.1667,
         "target_pct": 0
       },
       {
         "action": "INCREASE",
         "sector": "defense",
-        "reason": "10% → 21% (überdurchschnittliche Rendite: 9%)",
-        "current_pct": 0.0952,
-        "target_pct": 0.213
-      },
-      {
-        "action": "INCREASE",
-        "sector": "healthcare",
-        "reason": "5% → 25% (überdurchschnittliche Rendite: 10%)",
-        "current_pct": 0.0476,
-        "target_pct": 0.2497
+        "reason": "11% → 23% (überdurchschnittliche Rendite: 9%)",
+        "current_pct": 0.1111,
+        "target_pct": 0.2286
       },
       {
         "action": "INCREASE",
         "sector": "industrials",
-        "reason": "5% → 18% (überdurchschnittliche Rendite: 7%)",
-        "current_pct": 0.0476,
-        "target_pct": 0.1848
+        "reason": "6% → 20% (überdurchschnittliche Rendite: 7%)",
+        "current_pct": 0.0556,
+        "target_pct": 0.1984
       },
       {
         "action": "ADD",
         "sector": "consumer",
-        "reason": "aktuell 0%, optimal 16% — unterrepräsentiert",
+        "reason": "aktuell 0%, optimal 18% — unterrepräsentiert",
         "current_pct": 0,
-        "target_pct": 0.1635
+        "target_pct": 0.1757
+      },
+      {
+        "action": "ADD",
+        "sector": "healthcare",
+        "reason": "aktuell 0%, optimal 27% — unterrepräsentiert",
+        "current_pct": 0,
+        "target_pct": 0.2677
       }
     ],
-    "diversification_score": 0.8656,
-    "diversification_score_current": 0.8656,
-    "optimal_diversification_score": 0.9522,
-    "diversification_score_optimal": 0.9522,
-    "expected_portfolio_return": 0.1451,
-    "expected_return_pct": 14.51,
-    "expected_portfolio_risk": 0.1224,
-    "expected_risk_pct": 12.24,
-    "sharpe_current": 0.12,
-    "sharpe_optimal": 0.82,
+    "diversification_score": 0.8284,
+    "diversification_score_current": 0.8284,
+    "optimal_diversification_score": 0.829,
+    "diversification_score_optimal": 0.829,
+    "expected_portfolio_return": 0.0873,
+    "expected_return_pct": 8.73,
+    "expected_portfolio_risk": 0.1059,
+    "expected_risk_pct": 10.59,
+    "sharpe_current": -1.2,
+    "sharpe_optimal": 0.4,
     "sector_stats": {
       "tech": {
         "expected_return": 0.12,
@@ -2047,29 +1868,23 @@
         "data_source": "default",
         "trade_count": 4
       },
+      "consumer": {
+        "expected_return": 0.06,
+        "std_return": 0.18,
+        "data_source": "default",
+        "trade_count": 1
+      },
       "defense": {
         "expected_return": 0.09,
         "std_return": 0.14,
         "data_source": "default",
         "trade_count": 4
       },
-      "industrials": {
-        "expected_return": 0.07,
-        "std_return": 0.16,
-        "data_source": "default",
-        "trade_count": 0
-      },
       "energy": {
-        "expected_return": 0.9373,
-        "std_return": 0.6042,
+        "expected_return": -0.757,
+        "std_return": 1.3944,
         "data_source": "historical",
-        "trade_count": 13
-      },
-      "healthcare": {
-        "expected_return": 0.1,
-        "std_return": 0.12,
-        "data_source": "default",
-        "trade_count": 1
+        "trade_count": 14
       },
       "materials": {
         "expected_return": -2.5502,
@@ -2077,22 +1892,28 @@
         "data_source": "historical",
         "trade_count": 12
       },
-      "consumer": {
-        "expected_return": 0.06,
-        "std_return": 0.18,
+      "industrials": {
+        "expected_return": 0.07,
+        "std_return": 0.16,
         "data_source": "default",
-        "trade_count": 1
+        "trade_count": 0
+      },
+      "healthcare": {
+        "expected_return": 0.1,
+        "std_return": 0.12,
+        "data_source": "default",
+        "trade_count": 2
       }
     }
   },
   "adaptive_thresholds": {
     "vix_defensive_threshold": 32.0,
     "vix_shutdown_threshold": 37.0,
-    "vix_30d_avg": 24.55,
-    "vix_30d_std": 3.0,
-    "current_vix_zscore": -0.23,
+    "vix_30d_avg": 24.77,
+    "vix_30d_std": 2.73,
+    "current_vix_zscore": -0.22,
     "regime_context": "NORMAL",
-    "adaptive_reason": "VIX 30d Ø24.6 ±3.0 | Z-Score: -0.23 | Regime: NORMAL | VIX 25-32 Trades profitabel (WR 51%, n=39) → Schwelle hoch",
+    "adaptive_reason": "VIX 30d Ø24.8 ±2.7 | Z-Score: -0.22 | Regime: NORMAL | VIX 25-32 Trades profitabel (WR 50%, n=40) → Schwelle hoch",
     "static_defensive": 28.0,
     "static_shutdown": 40.0,
     "performance_adjusted": true
@@ -2101,9 +1922,9 @@
     "spy": {
       "daily": "BEAR",
       "weekly": "NEUTRAL",
-      "monthly": "BEAR",
+      "monthly": "NEUTRAL",
       "alignment": "MIXED",
-      "interpretation": "SPY: Mixed Signals (D:BEAR W:NEUTRAL M:BEAR) → Abwarten oder reduzierte Positionsgrößen."
+      "interpretation": "SPY: Mixed Signals (D:BEAR W:NEUTRAL M:NEUTRAL) → Abwarten oder reduzierte Positionsgrößen."
     },
     "sectors": {
       "energy": {
@@ -2135,11 +1956,11 @@
         "interpretation": "Industrials: Daily BEAR in Weekly BULL → Pullback im Aufwärtstrend. Kaufgelegenheit bei Support."
       },
       "materials": {
-        "daily": "NEUTRAL",
+        "daily": "BEAR",
         "weekly": "BULL",
         "monthly": "BULL",
         "alignment": "MIXED",
-        "interpretation": "Materials: Mixed Signals (D:NEUTRAL W:BULL M:BULL) → Abwarten oder reduzierte Positionsgrößen."
+        "interpretation": "Materials: Daily BEAR in Weekly BULL → Pullback im Aufwärtstrend. Kaufgelegenheit bei Support."
       },
       "healthcare": {
         "daily": "BEAR",
@@ -2153,23 +1974,23 @@
     "confidence": 0.43
   },
   "signal_tracker": {
-    "total": 11,
+    "total": 12,
     "wins": 0,
-    "losses": 10,
+    "losses": 11,
     "pending": 1,
     "accuracy": 0.0,
     "top_pairs": [
       {
-        "pair_id": "VIX_TECH",
-        "lead": "VIX Volatility Index",
-        "lag": "Palantir (als Tech-Proxy)",
-        "accuracy": 0.0,
-        "samples": 5
-      },
-      {
         "pair_id": "NIKKEI_COPPER",
         "lead": "Nikkei 225",
         "lag": "Copper Futures",
+        "accuracy": 0.0,
+        "samples": 6
+      },
+      {
+        "pair_id": "VIX_TECH",
+        "lead": "VIX Volatility Index",
+        "lag": "Palantir (als Tech-Proxy)",
         "accuracy": 0.0,
         "samples": 5
       }

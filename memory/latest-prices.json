@@ -1,41 +1,41 @@
 {
-  "timestamp": "2026-04-06T20:10:48.983391+00:00",
+  "timestamp": "2026-04-07T10:10:49.114004+00:00",
   "fx": {
-    "EURUSD": 1.1545,
-    "EURNOK": 11.204,
-    "GBPEUR": 1.1466
+    "EURUSD": 1.1559,
+    "EURNOK": 11.2152,
+    "GBPEUR": 1.147
   },
   "macro": {
-    "vix": 24.34,
-    "nikkei": 0.5462555265100285
+    "vix": 24.45,
+    "nikkei": 0.029730211436466054
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 128.13,
+      "price_eur": 127.98,
       "price_raw": 147.93,
       "entry_eur": 132.11,
-      "pnl_pct": -3.01,
+      "pnl_pct": -3.13,
       "stop_eur": 127.0,
       "rs_qqq": -0.59,
-      "conviction": 60
+      "conviction": 59
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.49,
-      "price_raw": 28.49,
+      "price_eur": 28.54,
+      "price_raw": 28.54,
       "entry_eur": 27.9,
-      "pnl_pct": 2.12,
+      "pnl_pct": 2.29,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 50
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.36,
-      "price_raw": 7.36,
+      "price_eur": 7.33,
+      "price_raw": 7.33,
       "entry_eur": 7.0,
-      "pnl_pct": 5.16,
+      "pnl_pct": 4.76,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 43
@@ -45,92 +45,92 @@
     "STLD": {
       "ticker": "STLD",
       "name": "Steel Dynamics Inc.",
-      "price_eur": 152.91,
+      "price_eur": 152.72,
       "price_raw": 176.53
     },
     "RHM.DE": {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
-      "price_eur": 1360.33,
-      "price_raw": 1570.5
+      "price_eur": 1349.77,
+      "price_raw": 1560.2
     },
     "AG": {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "price_eur": 18.53,
-      "price_raw": 21.39
+      "price_eur": 18.51,
+      "price_raw": 21.4
     },
     "ASML.AS": {
       "ticker": "ASML.AS",
       "name": "ASML Holding",
-      "price_eur": 1005.63,
-      "price_raw": 1161.0
+      "price_eur": 983.82,
+      "price_raw": 1137.2
     },
     "BHP.L": {
       "ticker": "BHP.L",
       "name": "BHP Group",
-      "price_eur": 2390.65,
-      "price_raw": 2760.0
+      "price_eur": 2403.75,
+      "price_raw": 2778.5
     },
     "RIO.L": {
       "ticker": "RIO.L",
       "name": "Rio Tinto",
-      "price_eur": 6151.58,
-      "price_raw": 7102.0
+      "price_eur": 6196.04,
+      "price_raw": 7162.0
     },
     "FCX": {
       "ticker": "FCX",
       "name": "Freeport-McMoRan (Kupfer)",
-      "price_eur": 52.89,
-      "price_raw": 61.06
+      "price_eur": 52.82,
+      "price_raw": 61.05
     },
     "GOLD": {
       "ticker": "GOLD",
       "name": "Barrick Gold",
-      "price_eur": 36.88,
+      "price_eur": 36.84,
       "price_raw": 42.58
     },
     "NEM": {
       "ticker": "NEM",
       "name": "Newmont Mining (Gold)",
-      "price_eur": 97.71,
-      "price_raw": 112.81
+      "price_eur": 97.61,
+      "price_raw": 112.83
     },
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 34.38,
-      "price_raw": 39.7
+      "price_eur": 34.7,
+      "price_raw": 40.11
     },
     "LHA.DE": {
       "ticker": "LHA.DE",
       "name": "Lufthansa AG",
-      "price_eur": 6.5,
-      "price_raw": 7.5
+      "price_eur": 6.51,
+      "price_raw": 7.52
     },
     "MOS": {
       "ticker": "MOS",
       "name": "Mosaic Company",
-      "price_eur": 22.96,
+      "price_eur": 22.93,
       "price_raw": 26.51
     },
     "VALE": {
       "ticker": "VALE",
       "name": "Vale S.A.",
-      "price_eur": 13.98,
+      "price_eur": 13.96,
       "price_raw": 16.14
     },
     "SAP.DE": {
       "ticker": "SAP.DE",
       "name": "SAP SE",
-      "price_eur": 148.9,
-      "price_raw": 148.9
+      "price_eur": 149.48,
+      "price_raw": 149.48
     },
     "NOVO-B.CO": {
       "ticker": "NOVO-B.CO",
       "name": "Novo Nordisk A/S",
       "price_eur": null,
-      "price_raw": 236.9
+      "price_raw": 236.1
     }
   }
 }
