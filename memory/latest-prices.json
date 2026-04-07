@@ -1,41 +1,41 @@
 {
-  "timestamp": "2026-04-07T10:10:49.114004+00:00",
+  "timestamp": "2026-04-07T20:10:49.773689+00:00",
   "fx": {
-    "EURUSD": 1.1559,
-    "EURNOK": 11.2152,
-    "GBPEUR": 1.147
+    "EURUSD": 1.1602,
+    "EURNOK": 11.1611,
+    "GBPEUR": 1.146
   },
   "macro": {
-    "vix": 24.45,
+    "vix": 26.3,
     "nikkei": 0.029730211436466054
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 127.98,
-      "price_raw": 147.93,
+      "price_eur": 129.35,
+      "price_raw": 150.07,
       "entry_eur": 132.11,
-      "pnl_pct": -3.13,
+      "pnl_pct": -2.09,
       "stop_eur": 127.0,
-      "rs_qqq": -0.59,
-      "conviction": 59
+      "rs_qqq": null,
+      "conviction": 63
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.54,
-      "price_raw": 28.54,
+      "price_eur": 28.98,
+      "price_raw": 28.98,
       "entry_eur": 27.9,
-      "pnl_pct": 2.29,
+      "pnl_pct": 3.85,
       "stop_eur": 24.0,
       "rs_qqq": null,
-      "conviction": 50
+      "conviction": 53
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.33,
-      "price_raw": 7.33,
+      "price_eur": 7.27,
+      "price_raw": 7.27,
       "entry_eur": 7.0,
-      "pnl_pct": 4.76,
+      "pnl_pct": 3.84,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 43
@@ -46,91 +46,91 @@
       "ticker": "STLD",
       "name": "Steel Dynamics Inc.",
       "price_eur": 152.72,
-      "price_raw": 176.53
+      "price_raw": 177.19
     },
     "RHM.DE": {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
-      "price_eur": 1349.77,
-      "price_raw": 1560.2
+      "price_eur": 1319.6,
+      "price_raw": 1531.0
     },
     "AG": {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "price_eur": 18.51,
-      "price_raw": 21.4
+      "price_eur": 18.32,
+      "price_raw": 21.25
     },
     "ASML.AS": {
       "ticker": "ASML.AS",
       "name": "ASML Holding",
-      "price_eur": 983.82,
-      "price_raw": 1137.2
+      "price_eur": 960.01,
+      "price_raw": 1113.8
     },
     "BHP.L": {
       "ticker": "BHP.L",
       "name": "BHP Group",
-      "price_eur": 2403.75,
-      "price_raw": 2778.5
+      "price_eur": 2375.45,
+      "price_raw": 2756.0
     },
     "RIO.L": {
       "ticker": "RIO.L",
       "name": "Rio Tinto",
-      "price_eur": 6196.04,
-      "price_raw": 7162.0
+      "price_eur": 6136.01,
+      "price_raw": 7119.0
     },
     "FCX": {
       "ticker": "FCX",
       "name": "Freeport-McMoRan (Kupfer)",
-      "price_eur": 52.82,
-      "price_raw": 61.05
+      "price_eur": 52.39,
+      "price_raw": 60.78
     },
     "GOLD": {
       "ticker": "GOLD",
       "name": "Barrick Gold",
-      "price_eur": 36.84,
-      "price_raw": 42.58
+      "price_eur": 37.49,
+      "price_raw": 43.5
     },
     "NEM": {
       "ticker": "NEM",
       "name": "Newmont Mining (Gold)",
-      "price_eur": 97.61,
-      "price_raw": 112.83
+      "price_eur": 98.84,
+      "price_raw": 114.67
     },
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 34.7,
-      "price_raw": 40.11
+      "price_eur": 33.85,
+      "price_raw": 39.27
     },
     "LHA.DE": {
       "ticker": "LHA.DE",
       "name": "Lufthansa AG",
-      "price_eur": 6.51,
-      "price_raw": 7.52
+      "price_eur": 6.35,
+      "price_raw": 7.36
     },
     "MOS": {
       "ticker": "MOS",
       "name": "Mosaic Company",
-      "price_eur": 22.93,
-      "price_raw": 26.51
+      "price_eur": 22.75,
+      "price_raw": 26.4
     },
     "VALE": {
       "ticker": "VALE",
       "name": "Vale S.A.",
-      "price_eur": 13.96,
-      "price_raw": 16.14
+      "price_eur": 13.95,
+      "price_raw": 16.18
     },
     "SAP.DE": {
       "ticker": "SAP.DE",
       "name": "SAP SE",
-      "price_eur": 149.48,
-      "price_raw": 149.48
+      "price_eur": 145.22,
+      "price_raw": 145.22
     },
     "NOVO-B.CO": {
       "ticker": "NOVO-B.CO",
       "name": "Novo Nordisk A/S",
       "price_eur": null,
-      "price_raw": 236.1
+      "price_raw": 235.1
     }
   }
 }

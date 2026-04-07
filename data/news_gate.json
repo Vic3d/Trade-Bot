@@ -1,140 +1,137 @@
 {
-  "timestamp": "2026-04-07T09:05:00.955476",
+  "timestamp": "2026-04-07T21:05:00.784095",
   "relevant": true,
-  "hit_count": 161,
-  "events_scanned": 219,
+  "hit_count": 181,
+  "events_scanned": 276,
   "window_hours": 24,
   "top_hits": [
     {
-      "thesis": "S1_Iran",
+      "thesis": "S4_Silver",
       "all_theses": [
-        "S1_Iran",
-        "S3_KI",
-        "PS1_Oil"
+        "S4_Silver"
       ],
-      "headline": "Helen Thompson on Iran, the Oil Shock and Britain’s Energy Crisis",
-      "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-07 07:00:09"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Control Risks Sees No US-Iran De-Escalation for at Least 4-6 Weeks",
-      "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-07 07:00:09"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Trump's Deadline for Iran Nears as Threats Escalate",
+      "headline": "Silber: Insider sieht Mega-Chance bei diesen Aktien - Wallstreet Online",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-07 07:00:09"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran",
-        "PS1_Oil"
-      ],
-      "headline": "Oil Rises as Trump Escalates Iran Threats",
-      "ticker": "",
-      "score": 0.3,
-      "direction": "bullish",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "European Gas Ticks Higher as Trump Threatens Iran War Escalation",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Bitcoin Slides With Risk Assets as Trump’s Iran Ultimatum Looms",
-      "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
-    },
-    {
-      "thesis": "PS1_Oil",
-      "all_theses": [
-        "PS1_Oil"
-      ],
-      "headline": "Dangote Says Nigerian Crude Supply to Refinery Doubled in March",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
+      "source": "google_news",
+      "ts": "2026-04-07 19:00:10"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Air India CEO Campbell Wilson to Step Down Amid Mounting Losses",
+      "headline": "Chinesische Konkurrenten drücken die Nvidia-Aktie nach unten, da das Unternehmen Marktanteile im Inland verliert - Trade",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-07 19:00:09"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "NVIDIA (NVDA) Up or Down am 8. April? Wettquoten & Prognosen (Apr. 8, 2026) - Polymarket",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-07 19:00:08"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "S2_Rüstung"
+      ],
+      "headline": "Italy’s Defense Minister Stands by US Base Denial on Iran",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-07 19:00:08"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Canada Urges US and Iran Not to Target Civilian Infrastructure",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-07 19:00:08"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Apple’s Foldable iPhone Remains on Track for September Debut",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-07 19:00:07"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Sony Pictures Entertainment Cuts Hundreds of Jobs in TV, Film",
+      "ticker": "",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-07 19:00:07"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Anthropic Lets Apple, Amazon Test More Powerful Mythos AI Model",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-07 19:00:06"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "India Returns to Buying Venezuelan Crude to Ease Supply Crunch",
+      "headline": "US Emergency Oil Heads to Distant Peru With Decades-Old Energy Flows Upended",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_markets",
-      "ts": "2026-04-07 07:00:07"
+      "ts": "2026-04-07 19:00:05"
     },
     {
-      "thesis": "S5_Rohstoff",
+      "thesis": "PS_AIInfra",
       "all_theses": [
-        "S5_Rohstoff",
-        "PS2_Tanker",
-        "PS_Copper"
+        "PS_AIInfra"
       ],
-      "headline": "Panama to authorise removal of material from First Quantum copper mine - Mining Weekly",
-      "ticker": "FRO",
-      "score": 0.3,
-      "direction": "bullish",
-      "source": "google_news",
-      "ts": "2026-04-07 05:00:31"
+      "headline": "Pimco Weighs $14 Billion Debt Deal for Oracle Data Center",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-07 19:00:05"
     }
   ],
   "theses_hit": [
-    "S1_Iran",
     "PS1_Oil",
+    "PS_AIInfra",
     "S3_KI",
-    "S5_Rohstoff"
+    "S1_Iran",
+    "S4_Silver"
   ]
 }

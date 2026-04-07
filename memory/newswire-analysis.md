@@ -290,3 +290,45 @@ High-Impact: 1 | Actionable: False
   [S5_Rohstoff] Panama to authorise removal of material from First Quantum copper mine - Mining Weekly
 High-Impact: 8 | Actionable: True
 ---
+
+## [2026-04-07 13:10] News Radar — 11 neue Headlines
+  [S1_Iran] (S+) Iran nimmt den Ölhandel in den Würgegriff - spiegel.de
+  [S1_Iran] Goldpreis aktuell: Trump setzt Iran-Ultimatum – Gold reagiert kaum - WirtschaftsWoche
+  [S1_Iran] US-Notenbank prüft Zinserhöhung wegen Iran-Kriegsinflation - Euronews.com
+  [S4_Silver] Aya Gold & Silver Aktie: Chancen im Silberboom für Anleger - AD HOC NEWS
+  [S3_KI] Nvidia Aktie: Expansion in Australien - Börse Express
+  [S3_KI] NVIDIA Corporation Aktie: Trotz Rückgang – KI-König unschlagbar? - AD HOC NEWS
+  [S1_Iran] Have Trump and Hegseth Boxed Themselves in Over Iran?
+  [S3_KI] China Issues New Supply Chain Rules Targeting Foreign Disruption
+  [PS2_Tanker] UK Government Steps In to Shield Graduates From Interest Shocks
+  [PS2_Tanker] Cyber Stocks Look to Go From Losers to Winners
+High-Impact: 4 | Actionable: True
+---
+
+## [2026-04-07 17:10] News Radar — 13 neue Headlines
+  [PS1_Oil] Nach US-Zöllen: Ölpreis fällt auf rund 63 Dollar und kostet so wenig wie zuletzt April 202
+  [PS1_Oil] Zölle und OPEC+ sorgen für Gegenwind: Goldman Sachs kappt Ölpreisprognosen - Finanzen.net
+  [PS1_Oil] Ölpreise fallen nach Annäherung von USA und Iran - tagesschau.de
+  [S4_Silver] Starten Gold, Silber, Kupfer wieder durch? Diese Aktie rückt jetzt in den Fokus - Wallstre
+  [S4_Silver] Der Countdown läuft: Starten Gold, Silber, Kupfer wieder durch? Diese Aktie rückt jetzt in
+  [S3_KI] Nvidia Aktie: Neue Exportregeln drohen - Börse Express
+  [S3_KI] Was erwartet Sie beim NVIDIA-Aktienkurs im April 2026? - BeInCrypto
+  [S1_Iran] UK Signals It Won’t Let US Use Bases for Strikes on Iran Energy
+  [S1_Iran] US Strikes Kharg Island as Trump Says Iran Could ‘Die Tonight’
+  [PS2_Tanker] Ye Banned from UK for Festival After Antisemitic Remarks
+High-Impact: 6 | Actionable: True
+---
+
+## [2026-04-07 21:10] News Radar — 10 neue Headlines
+  [S4_Silver] Silber: Insider sieht Mega-Chance bei diesen Aktien - Wallstreet Online
+  [S3_KI] Chinesische Konkurrenten drücken die Nvidia-Aktie nach unten, da das Unternehmen Marktante
+  [S3_KI] NVIDIA (NVDA) Up or Down am 8. April? Wettquoten & Prognosen (Apr. 8, 2026) - Polymarket
+  [S1_Iran] Italy’s Defense Minister Stands by US Base Denial on Iran
+  [S1_Iran] Canada Urges US and Iran Not to Target Civilian Infrastructure
+  [S3_KI] Apple’s Foldable iPhone Remains on Track for September Debut
+  [S3_KI] Sony Pictures Entertainment Cuts Hundreds of Jobs in TV, Film
+  [S3_KI] Anthropic Lets Apple, Amazon Test More Powerful Mythos AI Model
+  [PS1_Oil] US Emergency Oil Heads to Distant Peru With Decades-Old Energy Flows Upended
+  [PS_AIInfra] Pimco Weighs $14 Billion Debt Deal for Oracle Data Center
+High-Impact: 3 | Actionable: True
+---

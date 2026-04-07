@@ -38,9 +38,9 @@
       "direction": "inverse",
       "threshold_pct": 5.0,
       "accuracy_pct": 0.0,
-      "sample_count": 6,
+      "sample_count": 7,
       "wins": 0,
-      "losses": 6,
+      "losses": 7,
       "description": "VIX-Spike führt Tech-Selloff um 1-2 Sessions"
     },
     "BRENT_WTI_SPREAD_EQNR": {
