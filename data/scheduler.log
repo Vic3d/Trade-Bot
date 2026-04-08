@@ -365,3 +365,69 @@ Check the documentation of torch.load to learn more about types accepted by defa
 [2026-04-08 13:00:04] ✅ Watchlist Tracker: OK
 [2026-04-08 13:00:04] ▶️  Newswire Analyst: Start
 [2026-04-08 13:00:19] ✅ Newswire Analyst: OK
+[2026-04-08 13:05:00] ▶️  News Gate Update: Start
+[2026-04-08 13:05:00] ✅ News Gate Update: OK
+[2026-04-08 13:10:00] ▶️  CEO Radar: Start
+[2026-04-08 13:10:06] ✅ CEO Radar: OK
+[2026-04-08 13:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 13:30:02] ✅ Watchlist Tracker: OK
+[2026-04-08 14:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 14:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 14:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 14:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 15:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 15:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 15:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 15:30:02] ✅ Watchlist Tracker: OK
+[2026-04-08 16:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 16:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 16:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 16:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 16:30:01] ▶️  US Opening: Start
+[2026-04-08 16:30:03] ✅ US Opening: OK + Discord gesendet
+[2026-04-08 17:00:00] ▶️  Live Data Refresh: Start
+[2026-04-08 17:00:03] ✅ Live Data Refresh: OK
+[2026-04-08 17:00:03] ▶️  Watchlist Tracker: Start
+[2026-04-08 17:00:04] ✅ Watchlist Tracker: OK
+[2026-04-08 17:00:04] ▶️  Newswire Analyst: Start
+[2026-04-08 17:00:26] ✅ Newswire Analyst: OK
+[2026-04-08 17:05:00] ▶️  News Gate Update: Start
+[2026-04-08 17:05:00] ✅ News Gate Update: OK
+[2026-04-08 17:10:00] ▶️  CEO Radar: Start
+[2026-04-08 17:10:07] ✅ CEO Radar: OK
+[2026-04-08 17:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 17:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 18:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 18:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 18:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 18:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 19:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 19:00:02] ✅ Watchlist Tracker: OK
+[2026-04-08 19:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 19:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 20:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 20:00:02] ✅ Watchlist Tracker: OK
+[2026-04-08 20:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 20:30:02] ✅ Watchlist Tracker: OK
+[2026-04-08 21:00:00] ▶️  Live Data Refresh: Start
+[2026-04-08 21:00:02] ✅ Live Data Refresh: OK
+[2026-04-08 21:00:02] ▶️  Watchlist Tracker: Start
+[2026-04-08 21:00:04] ✅ Watchlist Tracker: OK
+[2026-04-08 21:00:04] ▶️  Alpha Decay: Start
+[2026-04-08 21:00:04] ✅ Alpha Decay: OK
+[2026-04-08 21:00:04] ▶️  Newswire Analyst: Start
+[2026-04-08 21:00:25] ✅ Newswire Analyst: OK
+[2026-04-08 21:05:00] ▶️  News Gate Update: Start
+[2026-04-08 21:05:00] ✅ News Gate Update: OK
+[2026-04-08 21:10:00] ▶️  CEO Radar: Start
+[2026-04-08 21:10:06] ✅ CEO Radar: OK
+[2026-04-08 21:30:00] ▶️  Performance Tracker: Start
+[2026-04-08 21:30:01] ✅ Performance Tracker: OK
+[2026-04-08 22:00:00] ▶️  Abend-Report: Start
+[2026-04-08 22:00:08] ✅ Abend-Report: OK + Discord gesendet
+[2026-04-08 22:00:08] ▶️  Advisory Backfill: Start
+[2026-04-08 22:00:08] ✅ Advisory Backfill: OK
+[2026-04-08 22:45:00] ▶️  Daily Learning: Start
+[2026-04-08 22:45:00] ✅ Daily Learning: OK
+[2026-04-08 23:00:00] ▶️  Tagesabschluss: Start
+[2026-04-08 23:00:03] ✅ Tagesabschluss: OK + Discord gesendet

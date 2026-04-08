@@ -346,3 +346,45 @@ High-Impact: 3 | Actionable: True
   [PS1_Oil] China’s LNG Demand Won’t Bounce Back From Middle East Turmoil
 High-Impact: 7 | Actionable: True
 ---
+
+## [2026-04-08 13:10] News Radar — 10 neue Headlines
+  [S3_KI] Palantir Technologies Aktie: Was Du jetzt wissen solltest - AD HOC NEWS
+  [S3_KI] Palantir Technologies Inc Aktie: Warum sie Investoren fasziniert - AD HOC NEWS
+  [S3_KI] Bain Capital Rechenzentrum-Sparte bricht Beziehungen zu Nvidia-Käufer nach US-Ermittlungen
+  [S3_KI] NVIDIA-Aktie: Gelingt ein Ausbruch? Bärenfalle nimmt Form an! - Finanztrends
+  [S1_Iran] Japan, Australia Warn of Asia Security Vacuum With Focus on Iran
+  [S1_Iran] What Next for the 800 Vessels Trapped in the Persian Gulf?
+  [S1_Iran] Trump’s Iran War Leaves the US Looking Weakened to Adversaries
+  [PS2_Tanker] Allies Count Cost to US Ties From Trump’s War
+  [S1_Iran] US and Iran Agree to Ceasefire, Easing Fears of Energy Crisis
+  [S1_Iran] Japan’s Takaichi Urges Lasting Peace in Call With Iran President
+High-Impact: 5 | Actionable: True
+---
+
+## [2026-04-08 17:10] News Radar — 11 neue Headlines
+  [PS1_Oil] Ölpreis volatil nach Trump-Drohungen gegen Iran: Brent fällt auf 108 USD, WTI bei 111 USD 
+  [S3_KI] Nvidia-Aktie: Es geht los! - Börse Express
+  [S3_KI] Russia Boosts Oil Income to Highest Since Early in Ukraine War
+  [S1_Iran] Pakistan Says Iran Confirms to Attend Talks With US in Islamabad
+  [S1_Iran] US Discussing Iran Sanctions Relief, Threatens Tariffs
+  [S1_Iran] Hegseth Declares Victory in War on Iran After Ceasefire Deal
+  [S1_Iran] Israelis Criticize Netanyahu for Truce Seen Empowering Iran
+  [S1_Iran] What We Know About the US-Iran Ceasefire
+  [S1_Iran] Polymarket’s Iran Bets Draw Fresh Disputes and Insider Scrutiny
+  [S3_KI] Global Chaos, AI Fears Help Tech’s Dividend Stocks Beat Market
+High-Impact: 7 | Actionable: True
+---
+
+## [2026-04-08 21:10] News Radar — 10 neue Headlines
+  [S3_KI] Nvidia Aktie: Hedgefonds vs. Analysten - Börse Express
+  [S3_KI] Nvidia-Aktienkursprognose: Widerstand bei 180,97 $, während NVDA um 1,61 % zulegt - Trader
+  [S3_KI] NVIDIA (NVDA) schließt über ___ am 9. April? Wettquoten & Prognosen - Polymarket
+  [S1_Iran] Vance to Lead US Negotiations With Iran in Pakistan Saturday
+  [PS2_Tanker] Lula Distances Himself From Top Court Over Banco Master Scandal
+  [S1_Iran] Trump’s Conflicting Statements Sow Confusion on Iran Ceasefire
+  [S1_Iran] Vance to Lead Iran Talks as Tehran Claims Ceasefire Violations
+  [S2_Rüstung] Trump to Discuss Leaving NATO When He Meets Alliance Chief
+  [S3_KI] Goldman Embraces ‘Picks and Shovels’ of AI With More Capex Ahead
+  [S3_KI] Supply Chain Uncertainty Remains Despite Ceasefire
+High-Impact: 3 | Actionable: True
+---
