@@ -1,137 +1,140 @@
 {
-  "timestamp": "2026-04-07T21:05:00.784095",
+  "timestamp": "2026-04-08T09:05:00.273273",
   "relevant": true,
-  "hit_count": 181,
-  "events_scanned": 276,
+  "hit_count": 168,
+  "events_scanned": 258,
   "window_hours": 24,
   "top_hits": [
     {
-      "thesis": "S4_Silver",
+      "thesis": "S1_Iran",
       "all_theses": [
-        "S4_Silver"
+        "S1_Iran"
       ],
-      "headline": "Silber: Insider sieht Mega-Chance bei diesen Aktien - Wallstreet Online",
+      "headline": "Trump’s Pakistan Ties Led to Pivotal Role in Truce With Iran",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-07 19:00:10"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-08 07:00:07"
+    },
+    {
+      "thesis": "S2_Rüstung",
+      "all_theses": [
+        "S2_Rüstung"
+      ],
+      "headline": "As Trump Bullies NATO, Europeans Question Its Deferential Chief",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-08 07:00:07"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Chinesische Konkurrenten drücken die Nvidia-Aktie nach unten, da das Unternehmen Marktanteile im Inland verliert - Trade",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-07 19:00:09"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "NVIDIA (NVDA) Up or Down am 8. April? Wettquoten & Prognosen (Apr. 8, 2026) - Polymarket",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-07 19:00:08"
+      "headline": "Zhipu Hikes Prices Again as China AI Monetization Wave Quickens",
+      "ticker": "",
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-08 07:00:06"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran",
-        "S2_Rüstung"
+        "S3_KI"
       ],
-      "headline": "Italy’s Defense Minister Stands by US Base Denial on Iran",
+      "headline": "Sustained Rally Hinges on Hormuz Reopening, BNP's Huynh Says",
       "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-07 19:00:08"
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Canada Urges US and Iran Not to Target Civilian Infrastructure",
+      "headline": "Iran Ceasefire Fuels Hope of Cheaper Funding for Japanese Firms",
+      "ticker": "",
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
+    },
+    {
+      "thesis": "S4_Silver",
+      "all_theses": [
+        "S4_Silver"
+      ],
+      "headline": "E&amp;P of Ghana Wins Bid to Run Damang Mine After Gold Fields Exit",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-07 19:00:08"
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
     },
     {
-      "thesis": "S3_KI",
+      "thesis": "S1_Iran",
       "all_theses": [
-        "S3_KI"
+        "S1_Iran",
+        "PS1_Oil"
       ],
-      "headline": "Apple’s Foldable iPhone Remains on Track for September Debut",
+      "headline": "Shell Says Oil Trade Profit Surged as Iran War Caused Chaos",
       "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-07 19:00:07"
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
     },
     {
-      "thesis": "S3_KI",
+      "thesis": "S1_Iran",
       "all_theses": [
-        "S3_KI"
+        "S1_Iran"
       ],
-      "headline": "Sony Pictures Entertainment Cuts Hundreds of Jobs in TV, Film",
+      "headline": "German Bonds Jump as Energy Prices Slump on US-Iran Ceasefire",
       "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-07 19:00:07"
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
     },
     {
-      "thesis": "S3_KI",
+      "thesis": "S1_Iran",
       "all_theses": [
+        "S1_Iran",
         "S3_KI"
       ],
-      "headline": "Anthropic Lets Apple, Amazon Test More Powerful Mythos AI Model",
+      "headline": "European Stocks Set for Biggest Gain Since 2022 on US-Iran Deal",
       "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-07 19:00:06"
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-08 07:00:05"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
-        "PS1_Oil"
+        "PS1_Oil",
+        "PS2_Tanker"
       ],
-      "headline": "US Emergency Oil Heads to Distant Peru With Decades-Old Energy Flows Upended",
-      "ticker": "",
+      "headline": "China’s LNG Demand Won’t Bounce Back From Middle East Turmoil",
+      "ticker": "FRO",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_markets",
-      "ts": "2026-04-07 19:00:05"
-    },
-    {
-      "thesis": "PS_AIInfra",
-      "all_theses": [
-        "PS_AIInfra"
-      ],
-      "headline": "Pimco Weighs $14 Billion Debt Deal for Oracle Data Center",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-07 19:00:05"
+      "ts": "2026-04-08 07:00:05"
     }
   ],
   "theses_hit": [
-    "PS1_Oil",
-    "PS_AIInfra",
+    "S2_Rüstung",
     "S3_KI",
-    "S1_Iran",
-    "S4_Silver"
+    "S4_Silver",
+    "PS1_Oil",
+    "S1_Iran"
   ]
 }

@@ -18,5 +18,25 @@
     "detail": "",
     "thesis": "",
     "processed": false
+  },
+  {
+    "id": "20260408060224_trump_wa",
+    "timestamp": "2026-04-08T06:02:24.861988",
+    "source": "trump_watch",
+    "priority": "CRITICAL",
+    "headline": "DISCORD_ALERT:PEACE",
+    "detail": "",
+    "thesis": "",
+    "processed": false
+  },
+  {
+    "id": "20260408070225_trump_wa",
+    "timestamp": "2026-04-08T07:02:25.070736",
+    "source": "trump_watch",
+    "priority": "CRITICAL",
+    "headline": "DISCORD_ALERT:PEACE",
+    "detail": "",
+    "thesis": "",
+    "processed": false
   }
 ]

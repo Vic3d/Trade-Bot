@@ -1,38 +1,38 @@
 {
-  "timestamp": "2026-04-07T20:20:26.010065",
+  "timestamp": "2026-04-08T09:20:26.316825",
   "lha": {
-    "price": 7.364,
-    "ema20": 7.689853567599709,
-    "ema50": 8.238049107671488,
-    "above_ema20": false,
+    "price": 8.23,
+    "ema20": 7.740600715201681,
+    "ema50": 8.248927973192297,
+    "above_ema20": true,
     "above_ema50": false,
     "week_low": 7.196000099182129,
-    "week_high": 7.76800012588501
+    "week_high": 8.229999542236328
   },
-  "brent_price": 109.63,
+  "brent_price": 94.54,
   "triggers": {
     "brent_below_75": false,
-    "above_ema20": false,
+    "above_ema20": true,
     "peace_signal": false,
-    "total_met": 0
+    "total_met": 1
   },
   "in_entry_zone": true,
-  "alert_level": "STANDBY",
-  "alert_msg": "\ud83d\ude34 S10 Standby: 0/3 Trigger aktiv",
+  "alert_level": "WARMING_UP",
+  "alert_msg": "\ud83d\udc40 S10 erwacht: 1/3 Trigger aktiv",
   "risk_reward": {
     "Jetzt": {
-      "entry": 7.36,
+      "entry": 8.23,
       "stop": 5.8,
       "target1": 11.5,
       "target2": 14.0,
-      "risk_pct": 21.2,
-      "gain_pct_t1": 56.2,
-      "gain_pct_t2": 90.1,
-      "crv_t1": 2.64,
-      "crv_t2": 4.24,
-      "max_loss_eur": 425.0,
-      "gain_t1_eur": 1123.0,
-      "gain_t2_eur": 1802.0
+      "risk_pct": 29.5,
+      "gain_pct_t1": 39.7,
+      "gain_pct_t2": 70.1,
+      "crv_t1": 1.35,
+      "crv_t2": 2.37,
+      "max_loss_eur": 591.0,
+      "gain_t1_eur": 795.0,
+      "gain_t2_eur": 1402.0
     },
     "Entry Min": {
       "entry": 7.0,

@@ -332,3 +332,17 @@ High-Impact: 6 | Actionable: True
   [PS_AIInfra] Pimco Weighs $14 Billion Debt Deal for Oracle Data Center
 High-Impact: 3 | Actionable: True
 ---
+
+## [2026-04-08 09:10] News Radar — 10 neue Headlines
+  [S1_Iran] Trump’s Pakistan Ties Led to Pivotal Role in Truce With Iran
+  [S2_Rüstung] As Trump Bullies NATO, Europeans Question Its Deferential Chief
+  [S3_KI] Zhipu Hikes Prices Again as China AI Monetization Wave Quickens
+  [S1_Iran] Sustained Rally Hinges on Hormuz Reopening, BNP's Huynh Says
+  [S1_Iran] Iran Ceasefire Fuels Hope of Cheaper Funding for Japanese Firms
+  [S4_Silver] E&amp;P of Ghana Wins Bid to Run Damang Mine After Gold Fields Exit
+  [S1_Iran] Shell Says Oil Trade Profit Surged as Iran War Caused Chaos
+  [S1_Iran] German Bonds Jump as Energy Prices Slump on US-Iran Ceasefire
+  [S1_Iran] European Stocks Set for Biggest Gain Since 2022 on US-Iran Deal
+  [PS1_Oil] China’s LNG Demand Won’t Bounce Back From Middle East Turmoil
+High-Impact: 7 | Actionable: True
+---

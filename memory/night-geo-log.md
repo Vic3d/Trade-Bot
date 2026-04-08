@@ -37,3 +37,13 @@
 [TREND] 2026-04-07 02:00 — 🔴 STRONG: S1 bullish_oil (30 Events in 3h): Yuan May Dodge Seasonal Slump on Iran War Resilience, Economy
 [TREND] 2026-04-07 04:00 — 🔴 STRONG: S1 bullish_oil (18 Events in 3h): Homin Lee on Investment Scenarios Amid Hormuz Closure
 [TREND] 2026-04-07 06:00 — 🔴 STRONG: S1 bullish_oil (22 Events in 3h): New Security Council Draft on Hormuz Eases Off Threats of Force
+[TREND] 2026-04-08 00:00 — 🔴 STRONG: S1 bullish_oil (22 Events in 3h): Trump Says US in ‘Heated’ Iran Talks Amid Extension Request
+[TREND] 2026-04-08 00:00 — 🔴 STRONG: S2 bullish_oil (9 Events in 3h): Trump’s New Iran Threats Pose Ethical Dilemma for US Military
+[TREND] 2026-04-08 00:00 — 🔴 STRONG: S3 bullish_oil (5 Events in 3h): Anthropic launches new AI model to help fight cyberattacks
+[TREND] 2026-04-08 02:00 — 🔴 STRONG: S1 bullish_oil (34 Events in 3h): China Bank Stocks Emerge as Haven as Iran War Jolts Markets
+[TREND] 2026-04-08 02:00 — 🔴 STRONG: S1 bearish_oil (10 Events in 3h): Trump Hails Ceasefire, Says US in ‘Heated’ Talks
+[TREND] 2026-04-08 02:00 — 🔴 STRONG: S2 bullish_oil (9 Events in 3h): Trump’s New Iran Threats Pose Ethical Dilemma for US Military
+[TREND] 2026-04-08 02:00 — 🔴 STRONG: S3 bullish_oil (5 Events in 3h): Anthropic launches new AI model to help fight cyberattacks
+[TREND] 2026-04-08 04:00 — 🔴 STRONG: S1 bearish_oil (19 Events in 3h): Asia’s Ceasefire Relief Rally Hinges on Hormuz, Oil: Strategists
+[TREND] 2026-04-08 04:00 — 🔴 STRONG: S1 bullish_oil (12 Events in 3h): China Bank Stocks Emerge as Haven as Iran War Jolts Markets
+[TREND] 2026-04-08 06:00 — 🔴 STRONG: S1 bearish_oil (12 Events in 3h): Emerging-Market Assets Rally as Iran Ceasefire Spurs Risk Demand

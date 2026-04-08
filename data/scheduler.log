@@ -323,3 +323,45 @@ Check the documentation of torch.load to learn more about types accepted by defa
 [2026-04-07 22:45:01] ✅ Daily Learning: OK
 [2026-04-07 23:00:00] ▶️  Tagesabschluss: Start
 [2026-04-07 23:00:00] ✅ Tagesabschluss: OK + Discord gesendet
+[2026-04-08 02:00:00] ▶️  RL Training: Start
+[2026-04-08 02:01:23] ✅ RL Training: OK
+[2026-04-08 07:00:00] ▶️  Live Data Refresh: Start
+[2026-04-08 07:00:03] ✅ Live Data Refresh: OK
+[2026-04-08 07:00:03] ▶️  CEO Radar Morgen: Start
+[2026-04-08 07:00:04] ✅ CEO Radar Morgen: OK
+[2026-04-08 07:05:00] ▶️  Regime Detector: Start
+[2026-04-08 07:05:03] ✅ Regime Detector: OK
+[2026-04-08 08:30:00] ▶️  Morgen-Briefing: Start
+[2026-04-08 08:30:05] ✅ Morgen-Briefing: OK + Discord gesendet
+[2026-04-08 09:00:00] ▶️  Live Data Refresh: Start
+[2026-04-08 09:00:02] ✅ Live Data Refresh: OK
+[2026-04-08 09:00:02] ▶️  Watchlist Tracker: Start
+[2026-04-08 09:00:04] ✅ Watchlist Tracker: OK
+[2026-04-08 09:00:04] ▶️  Newswire Analyst: Start
+[2026-04-08 09:00:12] ✅ Newswire Analyst: OK
+[2026-04-08 09:05:00] ▶️  News Gate Update: Start
+[2026-04-08 09:05:00] ✅ News Gate Update: OK
+[2026-04-08 09:10:00] ▶️  CEO Radar: Start
+[2026-04-08 09:10:07] ✅ CEO Radar: OK
+[2026-04-08 09:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 09:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 09:30:01] ▶️  Xetra Opening: Start
+[2026-04-08 09:30:03] ✅ Xetra Opening: OK + Discord gesendet
+[2026-04-08 10:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 10:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 10:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 10:30:02] ✅ Watchlist Tracker: OK
+[2026-04-08 11:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 11:00:01] ✅ Watchlist Tracker: OK
+[2026-04-08 11:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 11:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 12:00:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 12:00:02] ✅ Watchlist Tracker: OK
+[2026-04-08 12:30:00] ▶️  Watchlist Tracker: Start
+[2026-04-08 12:30:01] ✅ Watchlist Tracker: OK
+[2026-04-08 13:00:00] ▶️  Live Data Refresh: Start
+[2026-04-08 13:00:03] ✅ Live Data Refresh: OK
+[2026-04-08 13:00:03] ▶️  Watchlist Tracker: Start
+[2026-04-08 13:00:04] ✅ Watchlist Tracker: OK
+[2026-04-08 13:00:04] ▶️  Newswire Analyst: Start
+[2026-04-08 13:00:19] ✅ Newswire Analyst: OK

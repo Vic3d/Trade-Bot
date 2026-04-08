@@ -163,5 +163,35 @@
     "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.46\u20ac | P&L: +5.6% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 53/100]",
     "target": "452053147620343808",
     "ts": "2026-04-07T19:10:49.177865+00:00"
+  },
+  {
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 128.37\u20ac | Stop: 127.0\u20ac | Nur noch 1.1% Abstand! [Conviction: 66/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T06:10:49.592946+00:00"
+  },
+  {
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: iShares Biotech ETF (A2DWAW) @ 7.55\u20ac | P&L: +7.9% (>5.0%) | Stop auf Breakeven (7.00\u20ac) nachziehen! [Conviction: 43/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T06:10:49.595629+00:00"
+  },
+  {
+    "message": "\ud83d\udcca WPR-MONATSSIGNAL \ud83d\udfe2 STUFE 2 \u2014 Barrick Gold (GOLD)\nWPR Monat: -51 \u2192 -49 (\u00fcber -50 \u2014 Momentum best\u00e4tigt)\n\u2192 Prozyklisches Kaufsignal. Einstieg wenn Kurs \u00fcber fallenden GD (Wochenchart).\n14M-Range: $19.39 \u2013 $66.70 | Akt. $43.47",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T06:10:49.596341+00:00"
+  },
+  {
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T06:10:49.597018+00:00"
+  },
+  {
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 128.40\u20ac | Stop: 127.0\u20ac | 1.1% Abstand [Conviction: 66/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T07:10:48.811204+00:00"
+  },
+  {
+    "message": "\ud83d\udcca WPR-MONATSSIGNAL \ud83d\udfe2 STUFE 2 \u2014 Lufthansa AG (LHA.DE)\nWPR Monat: -52 \u2192 -34 (\u00fcber -50 \u2014 Momentum best\u00e4tigt)\n\u2192 Prozyklisches Kaufsignal. Einstieg wenn Kurs \u00fcber fallenden GD (Wochenchart).\n14M-Range: $5.53 \u2013 $9.59 | Akt. $8.20",
+    "target": "452053147620343808",
+    "ts": "2026-04-08T08:10:49.740713+00:00"
   }
 ]

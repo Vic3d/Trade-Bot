@@ -1,41 +1,41 @@
 {
-  "timestamp": "2026-04-07T20:10:49.773689+00:00",
+  "timestamp": "2026-04-08T10:10:48.939032+00:00",
   "fx": {
-    "EURUSD": 1.1602,
-    "EURNOK": 11.1611,
-    "GBPEUR": 1.146
+    "EURUSD": 1.1685,
+    "EURNOK": 11.1836,
+    "GBPEUR": 1.1498
   },
   "macro": {
-    "vix": 26.3,
-    "nikkei": 0.029730211436466054
+    "vix": 20.37,
+    "nikkei": 5.3881409466969235
   },
   "positions": {
     "PLTR": {
       "name": "Palantir",
-      "price_eur": 129.35,
+      "price_eur": 128.43,
       "price_raw": 150.07,
       "entry_eur": 132.11,
-      "pnl_pct": -2.09,
+      "pnl_pct": -2.79,
       "stop_eur": 127.0,
       "rs_qqq": null,
-      "conviction": 63
+      "conviction": 65
     },
     "A3D42Y": {
       "name": "VanEck Oil Services ETF",
-      "price_eur": 28.98,
-      "price_raw": 28.98,
+      "price_eur": 27.66,
+      "price_raw": 27.66,
       "entry_eur": 27.9,
-      "pnl_pct": 3.85,
+      "pnl_pct": -0.86,
       "stop_eur": 24.0,
       "rs_qqq": null,
       "conviction": 53
     },
     "A2DWAW": {
       "name": "iShares Biotech ETF",
-      "price_eur": 7.27,
-      "price_raw": 7.27,
+      "price_eur": 7.43,
+      "price_raw": 7.43,
       "entry_eur": 7.0,
-      "pnl_pct": 3.84,
+      "pnl_pct": 6.21,
       "stop_eur": 6.3,
       "rs_qqq": null,
       "conviction": 43
@@ -45,92 +45,92 @@
     "STLD": {
       "ticker": "STLD",
       "name": "Steel Dynamics Inc.",
-      "price_eur": 152.72,
+      "price_eur": 151.64,
       "price_raw": 177.19
     },
     "RHM.DE": {
       "ticker": "RHM.DE",
       "name": "Rheinmetall AG",
-      "price_eur": 1319.6,
-      "price_raw": 1531.0
+      "price_eur": 1339.32,
+      "price_raw": 1565.0
     },
     "AG": {
       "ticker": "AG",
       "name": "First Majestic Silver",
-      "price_eur": 18.32,
-      "price_raw": 21.25
+      "price_eur": 18.19,
+      "price_raw": 21.26
     },
     "ASML.AS": {
       "ticker": "ASML.AS",
       "name": "ASML Holding",
-      "price_eur": 960.01,
-      "price_raw": 1113.8
+      "price_eur": 1029.53,
+      "price_raw": 1203.0
     },
     "BHP.L": {
       "ticker": "BHP.L",
       "name": "BHP Group",
-      "price_eur": 2375.45,
-      "price_raw": 2756.0
+      "price_eur": 2482.24,
+      "price_raw": 2900.5
     },
     "RIO.L": {
       "ticker": "RIO.L",
       "name": "Rio Tinto",
-      "price_eur": 6136.01,
-      "price_raw": 7119.0
+      "price_eur": 6347.45,
+      "price_raw": 7417.0
     },
     "FCX": {
       "ticker": "FCX",
       "name": "Freeport-McMoRan (Kupfer)",
-      "price_eur": 52.39,
-      "price_raw": 60.78
+      "price_eur": 52.0,
+      "price_raw": 60.76
     },
     "GOLD": {
       "ticker": "GOLD",
       "name": "Barrick Gold",
-      "price_eur": 37.49,
-      "price_raw": 43.5
+      "price_eur": 37.2,
+      "price_raw": 43.47
     },
     "NEM": {
       "ticker": "NEM",
       "name": "Newmont Mining (Gold)",
-      "price_eur": 98.84,
-      "price_raw": 114.67
+      "price_eur": 98.12,
+      "price_raw": 114.65
     },
     "BAYN.DE": {
       "ticker": "BAYN.DE",
       "name": "Bayer AG",
-      "price_eur": 33.85,
-      "price_raw": 39.27
+      "price_eur": 34.56,
+      "price_raw": 40.38
     },
     "LHA.DE": {
       "ticker": "LHA.DE",
       "name": "Lufthansa AG",
-      "price_eur": 6.35,
-      "price_raw": 7.36
+      "price_eur": 6.97,
+      "price_raw": 8.15
     },
     "MOS": {
       "ticker": "MOS",
       "name": "Mosaic Company",
-      "price_eur": 22.75,
-      "price_raw": 26.4
+      "price_eur": 22.57,
+      "price_raw": 26.37
     },
     "VALE": {
       "ticker": "VALE",
       "name": "Vale S.A.",
-      "price_eur": 13.95,
+      "price_eur": 13.85,
       "price_raw": 16.18
     },
     "SAP.DE": {
       "ticker": "SAP.DE",
       "name": "SAP SE",
-      "price_eur": 145.22,
-      "price_raw": 145.22
+      "price_eur": 152.2,
+      "price_raw": 152.2
     },
     "NOVO-B.CO": {
       "ticker": "NOVO-B.CO",
       "name": "Novo Nordisk A/S",
       "price_eur": null,
-      "price_raw": 235.1
+      "price_raw": 241.75
     }
   }
 }
