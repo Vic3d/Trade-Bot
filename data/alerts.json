@@ -572,5 +572,40 @@
     "ticker": "",
     "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 125.12\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 64/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-04-09T06:10:50.664124+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 120.67\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 65/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-09T06:10:50.665663+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONATSSIGNAL \ud83d\udfe2 STUFE 2 \u2014 Lufthansa AG (LHA.DE)\nWPR Monat: -55 \u2192 -36 (\u00fcber -50 \u2014 Momentum best\u00e4tigt)\n\u2192 Prozyklisches Kaufsignal. Einstieg wenn Kurs \u00fcber fallenden GD (Wochenchart).\n14M-Range: $5.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-09T06:10:50.666447+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -95 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-09T07:10:50.747336+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 120.62\u20ac | Stop: 127.0\u20ac | Nur noch -5.3% Abstand! [Conviction: 65/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-09T08:10:49.076134+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 120.65\u20ac | Stop: 127.0\u20ac | -5.3% Abstand [Conviction: 64/100]",
+    "value": ""
   }
 ]

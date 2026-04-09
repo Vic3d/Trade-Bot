@@ -1,82 +1,46 @@
 {
-  "timestamp": "2026-04-08T21:05:00.362905",
+  "timestamp": "2026-04-09T09:05:00.229509",
   "relevant": true,
-  "hit_count": 196,
-  "events_scanned": 277,
+  "hit_count": 152,
+  "events_scanned": 223,
   "window_hours": 24,
   "top_hits": [
     {
-      "thesis": "S3_KI",
+      "thesis": "S1_Iran",
       "all_theses": [
-        "S3_KI"
+        "S1_Iran",
+        "S4_Silver"
       ],
-      "headline": "Nvidia Aktie: Hedgefonds vs. Analysten - Börse Express",
-      "ticker": "NVDA",
+      "headline": "Gold stabil: Händler achten auf US-Inflationsdaten und Iran-Waffenstillstandsrisiken - TradingView",
+      "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "google_news",
-      "ts": "2026-04-08 19:00:09"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Nvidia-Aktienkursprognose: Widerstand bei 180,97 $, während NVDA um 1,61 % zulegt - Traders Union",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-08 19:00:08"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI",
-        "PS4_Metals"
-      ],
-      "headline": "NVIDIA (NVDA) schließt über ___ am 9. April? Wettquoten & Prognosen - Polymarket",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-08 19:00:08"
+      "ts": "2026-04-09 07:00:10"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Vance to Lead US Negotiations With Iran in Pakistan Saturday",
+      "headline": "Iran Talks Set for Saturday, Vance to Lead US Delegation",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-08 19:00:08"
-    },
-    {
-      "thesis": "PS2_Tanker",
-      "all_theses": [
-        "PS2_Tanker"
-      ],
-      "headline": "Lula Distances Himself From Top Court Over Banco Master Scandal",
-      "ticker": "FRO",
-      "score": -0.5,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-08 19:00:07"
+      "ts": "2026-04-09 07:00:08"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Trump’s Conflicting Statements Sow Confusion on Iran Ceasefire",
+      "headline": "UK to Urge Lebanon’s Inclusion in Ceasefire Between US and Iran",
       "ticker": "",
       "score": 0.5,
       "direction": "bullish",
       "source": "bloomberg_politics",
-      "ts": "2026-04-08 19:00:07"
+      "ts": "2026-04-09 07:00:07"
     },
     {
       "thesis": "S1_Iran",
@@ -84,55 +48,89 @@
         "S1_Iran",
         "S3_KI"
       ],
-      "headline": "Vance to Lead Iran Talks as Tehran Claims Ceasefire Violations",
+      "headline": "Gulf Nations Greet Iran Truce With Relief, Uncertainty",
+      "ticker": "",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-09 07:00:07"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "US and Iran Gear Up for Talks to Firm Up Fragile Ceasefire",
       "ticker": "",
       "score": 0.5,
       "direction": "bullish",
       "source": "bloomberg_politics",
-      "ts": "2026-04-08 19:00:07"
-    },
-    {
-      "thesis": "S2_Rüstung",
-      "all_theses": [
-        "S2_Rüstung"
-      ],
-      "headline": "Trump to Discuss Leaving NATO When He Meets Alliance Chief",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-08 19:00:07"
+      "ts": "2026-04-09 07:00:07"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI",
-        "S4_Silver"
+        "PS1_Oil"
       ],
-      "headline": "Goldman Embraces ‘Picks and Shovels’ of AI With More Capex Ahead",
+      "headline": "China Considers Financial Aid for Airlines Hit by Oil Shock",
       "ticker": "",
-      "score": 0.0,
+      "score": 0.1,
       "direction": "neutral",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-08 19:00:06"
+      "source": "bloomberg_markets",
+      "ts": "2026-04-09 07:00:06"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Supply Chain Uncertainty Remains Despite Ceasefire",
+      "headline": "TAP Posts Fourth Straight Profit as Sale Process Gains Pace",
       "ticker": "",
-      "score": 0.2,
+      "score": 0.3,
       "direction": "bullish",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-08 19:00:06"
+      "source": "bloomberg_markets",
+      "ts": "2026-04-09 07:00:06"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Thai Central Bank Vows to Keep Rates Steady to Support Economy",
+      "ticker": "",
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-09 07:00:06"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Galp Energia Buys Wind Portfolio in Spain in €320 Million Deal",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-09 07:00:06"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "German Industry Production Disappointed Even Before Iran War",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-09 07:00:05"
     }
   ],
   "theses_hit": [
-    "PS2_Tanker",
     "S1_Iran",
-    "S2_Rüstung",
     "S3_KI"
   ]
 }

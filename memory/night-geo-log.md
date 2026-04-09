@@ -47,3 +47,13 @@
 [TREND] 2026-04-08 04:00 — 🔴 STRONG: S1 bearish_oil (19 Events in 3h): Asia’s Ceasefire Relief Rally Hinges on Hormuz, Oil: Strategists
 [TREND] 2026-04-08 04:00 — 🔴 STRONG: S1 bullish_oil (12 Events in 3h): China Bank Stocks Emerge as Haven as Iran War Jolts Markets
 [TREND] 2026-04-08 06:00 — 🔴 STRONG: S1 bearish_oil (12 Events in 3h): Emerging-Market Assets Rally as Iran Ceasefire Spurs Risk Demand
+[TREND] 2026-04-09 00:00 — 🔴 STRONG: S1 bearish_oil (19 Events in 3h): BTG Deal to Buy Digimais Said to Get Insurance Fund Support
+[TREND] 2026-04-09 00:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): UAE Says Iran’s Nuclear, Military Capabilities Must Be Addressed
+[TREND] 2026-04-09 00:00 — 🔴 STRONG: S3 bearish_oil (5 Events in 3h): Dow Jones Futures: Iran Ceasefire Spurs Bullish Turn, What's Your Move? Google, Nvidia Parent Among 7 New Buys
+[TREND] 2026-04-09 02:00 — 🔴 STRONG: S1 bearish_oil (23 Events in 3h): Gold Steadies as Traders Weigh Fragile Ceasefire in Iran War
+[TREND] 2026-04-09 02:00 — 🔴 STRONG: S1 bullish_oil (10 Events in 3h): Lawmaker Urges SEC to Probe ‘Suspicious’ Trading Amid Iran War
+[TREND] 2026-04-09 02:00 — 🔴 STRONG: S3 bearish_oil (5 Events in 3h): Dow Jones Futures: Iran Ceasefire Spurs Bullish Turn, What's Your Move? Google, Nvidia Parent Among 7 New Buys
+[TREND] 2026-04-09 04:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): Oil Rises After Biggest Drop Since 2020 as Hormuz Stays Blocked
+[TREND] 2026-04-09 04:00 — 🔴 STRONG: S1 bearish_oil (7 Events in 3h): Trump's Conflicting Statements Sow Confusion on Ceasefire | Balance of Power: Late Edition 04/08/26
+[TREND] 2026-04-09 06:00 — 🔴 STRONG: S1 bullish_oil (12 Events in 3h): Oil Rises After Biggest Drop Since 2020 as Hormuz Stays Blocked
+[TREND] 2026-04-09 06:00 — 🔴 STRONG: S1 bearish_oil (5 Events in 3h): China Has Done Its Best for Mideast Peace, Expert Says

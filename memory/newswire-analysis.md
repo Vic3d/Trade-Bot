@@ -388,3 +388,17 @@ High-Impact: 7 | Actionable: True
   [S3_KI] Supply Chain Uncertainty Remains Despite Ceasefire
 High-Impact: 3 | Actionable: True
 ---
+
+## [2026-04-09 09:10] News Radar — 12 neue Headlines
+  [PS1_Oil] Ölpreise fallen nach Opec-plus-Entscheid - Handelsblatt
+  [S4_Silver] Silber jetzt kaufen oder Finger weg? Steht XAGUSD vor der nächsten Rakete – oder vor dem b
+  [S1_Iran] Gold stabil: Händler achten auf US-Inflationsdaten und Iran-Waffenstillstandsrisiken - Tra
+  [S1_Iran] Iran Talks Set for Saturday, Vance to Lead US Delegation
+  [S1_Iran] UK to Urge Lebanon’s Inclusion in Ceasefire Between US and Iran
+  [S1_Iran] Gulf Nations Greet Iran Truce With Relief, Uncertainty
+  [S1_Iran] US and Iran Gear Up for Talks to Firm Up Fragile Ceasefire
+  [S3_KI] China Considers Financial Aid for Airlines Hit by Oil Shock
+  [S3_KI] TAP Posts Fourth Straight Profit as Sale Process Gains Pace
+  [S3_KI] Thai Central Bank Vows to Keep Rates Steady to Support Economy
+High-Impact: 7 | Actionable: True
+---

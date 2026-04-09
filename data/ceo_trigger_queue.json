@@ -58,5 +58,15 @@
     "detail": "",
     "thesis": "",
     "processed": false
+  },
+  {
+    "id": "20260409060225_trump_wa",
+    "timestamp": "2026-04-09T06:02:25.530390",
+    "source": "trump_watch",
+    "priority": "CRITICAL",
+    "headline": "DISCORD_ALERT:PEACE",
+    "detail": "",
+    "thesis": "",
+    "processed": false
   }
 ]
