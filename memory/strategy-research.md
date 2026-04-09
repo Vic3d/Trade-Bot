@@ -165,3 +165,19 @@
 -   1605.T: 6 Trades, 67% WR, Ø13.5€
 
 ---
+
+## [2026-04-09 22:01] Autonomer Strategie-Scan
+
+- SKIP: Defense-EU-Small (bereits vorhanden)
+- SKIP: AI-Infrastructure (bereits vorhanden)
+- SKIP: Copper-Green-Transition (bereits vorhanden)
+- SKIP: Shipping-Normalization (bereits vorhanden)
+- SKIP: Biotech-Rate-Reversal (bereits vorhanden)
+- Top-Ticker (letzte 14 Tage):
+-   GOOGL: 8 Trades, 62% WR, Ø8.0€
+-   UNH: 6 Trades, 67% WR, Ø-4.8€
+-   ORCL: 9 Trades, 44% WR, Ø-30.2€
+-   XOM: 7 Trades, 43% WR, Ø-7.1€
+-   HAL: 8 Trades, 38% WR, Ø-9.5€
+
+---

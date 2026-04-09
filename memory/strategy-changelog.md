@@ -1672,3 +1672,83 @@ Victor informiert: ✅ Discord DM gesendet
 **🟢 STARK → 🟡 NEUTRAL** (Score: 40)
 **Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
 
+
+
+## 2026-04-09 20:40 — Automatischer Status-Check
+
+### PS2 (Tanker-Lag-These)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS3 (NATO/EU-Rüstung)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS4 (Edelmetalle/Miner)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS5 (Dünger/Agrar-Superzyklus)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS10 (Lufthansa — Peace Dividend)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS11 (Defense-EU-Small)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS12 (AI-Infrastructure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS13 (Copper-Green-Transition)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS14 (Shipping-Normalization)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS15 (Biotech-Rate-Reversal)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS16 (Nuclear Renaissance — AI Power Demand)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS17 (EU Domestic Champions — Trade War Profiteure)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_STLD (Stahl-Tariff-Play (Liberation Day))
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_NVO (Novo Nordisk Value/Turnaround)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_CCJ (Cameco — Uranium Nuclear Renaissance)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS_LHA (Lufthansa — Iran-Deeskalations-Trade)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+### PS18 (Trade Dislocation & Tariff-Margin-Compression)
+**🟢 STARK → 🟡 NEUTRAL** (Score: 40)
+**Gründe:** Preise seitwärts +0.0% (14T) | News neutral (Score +0)
+
+
+## 2026-04-09 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg
+
+## 2026-04-09 — Alpha Decay Check
+
+- 🔴 **DT4**: SUSPEND_CANDIDATE | EWMA 0% (raw 0%) | EWMA Win-Rate 0% < 30% — Edge möglicherweise weg

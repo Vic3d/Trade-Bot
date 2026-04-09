@@ -223,5 +223,20 @@
     "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 120.65\u20ac | Stop: 127.0\u20ac | -5.3% Abstand [Conviction: 64/100]",
     "target": "452053147620343808",
     "ts": "2026-04-09T08:10:49.075421+00:00"
+  },
+  {
+    "message": "\ud83d\udfe2 **POSITION GESCHLOSSEN** \u2014 ZIM\nExit: TARGET_HIT | P&L: +467.42\u20ac\nGrund: Ziel $26.32 erreicht \u2014 Gewinne mitnehmen",
+    "target": "452053147620343808",
+    "ts": "2026-04-09T14:45:06.376209+00:00"
+  },
+  {
+    "message": "\ud83d\udccb **Daily Position Review** | VIX 21.4 | 1 Exit(s) | 1 Stop-Adjust(s)\n  \u2705 EXIT ZIM: TARGET_HIT | P&L +467.42\u20ac\n  \ud83d\udd04 TIGHTEN_STOP MOS: 20.14\u219223.86\n  \u26aa 6 Positionen HOLD",
+    "target": "452053147620343808",
+    "ts": "2026-04-09T14:45:06.746328+00:00"
+  },
+  {
+    "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.45\u20ac | P&L: +5.6% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 50/100]",
+    "target": "452053147620343808",
+    "ts": "2026-04-09T19:10:50.158967+00:00"
   }
 ]

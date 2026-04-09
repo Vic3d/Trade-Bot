@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-09T08:40:32.921098",
+  "timestamp": "2026-04-09T20:40:34.066123",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
@@ -15,12 +15,12 @@
     "PS2": {
       "name": "Tanker-Lag-These",
       "status": "NEUTRAL",
-      "score": 43,
+      "score": 40,
       "momentum_avg": 0,
-      "news_score": 20,
+      "news_score": 0,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     "PS3": {
@@ -206,10 +206,10 @@
       "name": "Tanker-Lag-These",
       "old_status": "STARK",
       "new_status": "NEUTRAL",
-      "score": 43,
+      "score": 40,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News neutral (Score +20)"
+        "News neutral (Score +0)"
       ]
     },
     {
@@ -390,5 +390,5 @@
     }
   ],
   "emerging_themes": [],
-  "articles_analyzed": 17
+  "articles_analyzed": 18
 }

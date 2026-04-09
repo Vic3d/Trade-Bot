@@ -402,3 +402,45 @@ High-Impact: 3 | Actionable: True
   [S3_KI] Thai Central Bank Vows to Keep Rates Steady to Support Economy
 High-Impact: 7 | Actionable: True
 ---
+
+## [2026-04-09 13:10] News Radar — 10 neue Headlines
+  [S3_KI] Russia Detains Ex-Radio Free Europe Journalist on Treason Charges
+  [S1_Iran] Philippines Will Roll Out Fuel Subsidies to Address Fallout From Iran War
+  [S1_Iran] Iran Deputy Minister Says Ships Need Army Consent to Pass Hormuz
+  [S1_Iran] Trump Vows to Keep Troops in Persian Gulf Before Iran Talks
+  [S3_KI] Apple’s AirPods Max 2 Aren’t a Worthy Sequel to the Original
+  [S1_Iran] China EV Exports Jump to Record as Iran Oil Shock Entices Buyers
+  [S3_KI] OpenAI Pauses Stargate UK Data Center Citing Energy Costs
+  [S4_Silver] Goldman Sachs Sees Highest Energy Capex Since Shale Revolution
+  [S1_Iran] Emerging-Market Rebound Stalls as Iran Truce Doubts Lift Oil
+  [PS_AIInfra] Wall Street Still Loves Bitcoin Even if Fever Is Cooling
+High-Impact: 5 | Actionable: False
+---
+
+## [2026-04-09 17:10] News Radar — 11 neue Headlines
+  [S3_KI] Michael Burry wettet gegen KI-Euphorie: Aktien von NVIDIA und Palantir geshortet - Finanze
+  [S3_KI] Palantir-Aktie: Crash-Wette! - Börse Express
+  [S1_Iran] Trump Hunt for Iran’s Uranium Hindered by Monitoring Disruption
+  [S2_Rüstung] India Pushes Defense Self-Reliance Amid Middle East Conflict
+  [S1_Iran] Trump May Use Emergency Law for Iran Tariffs Despite Court Ruling, Adviser Says
+  [S1_Iran] Hormuz Traffic Still Blocked as Only Iran-Linked Ships Cross
+  [S1_Iran] Merz Says Germany Wants a UN Mandate to Secure Strait of Hormuz
+  [S3_KI] CoreWeave Tapping Junk Debt Market After Meta AI Computing Deal
+  [PS_AIInfra] SiFive to Fuel Data Center Push With $400 Million Funding Round
+  [S3_KI] Intel Wins Google Commitment to Use Xeon Chips in Data Centers
+High-Impact: 4 | Actionable: True
+---
+
+## [2026-04-09 21:10] News Radar — 11 neue Headlines
+  [S3_KI] NVIDIA-Aktie und Super Micro überholt? Darum ist Palantir 2025 der Star im S&P 500 - Finan
+  [S3_KI] Palantir-Aktienkursprognose: Widerstand bei 149,35 $, während PLTR um 7,71 % fällt - Trade
+  [S1_Iran] Nvidia-Aktie bleibt stabil, da der Waffenstillstand zwischen den USA und Iran das globale 
+  [S3_KI] Nvidia Aktie: Expansion ins All - Börse Express
+  [PS1_Oil] UK Gives £380 Million Subsidy to Tata’s Jaguar Battery Factory
+  [S1_Iran] Iran War Erodes Exxon, Chevron Profits Even as Oil Prices Soar
+  [S1_Iran] Iran War Has Changed the Middle East ‘Forever’
+  [S1_Iran] Starmer Says Trump’s Iran Rhetoric Is Contrary to British Values
+  [S1_Iran] Can the US and Iran Agree to a Durable End to the War?
+  [S2_Rüstung] Meta, Amazon, X.AI Pressed by Key Senator on Child Exploitation
+High-Impact: 7 | Actionable: True
+---

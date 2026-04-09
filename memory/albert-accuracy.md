@@ -1,5 +1,5 @@
 # Albert Accuracy & Learning Report
-*Generiert: 2026-04-08 20:45 UTC | Learning System v2.0 (Auto)*
+*Generiert: 2026-04-09 20:45 UTC | Learning System v2.0 (Auto)*
 
 ---
 
@@ -7,17 +7,17 @@
 
 | | Paper | Real |
 |---|---|---|
-| Offene Positionen | 8 | — |
-| Geschlossene Positionen | 83 | — |
-| Realisierte P&L | -706.31€ | — |
-| Win-Rate | 41% (34W / 33L) | — |
+| Offene Positionen | 6 | — |
+| Geschlossene Positionen | 85 | — |
+| Realisierte P&L | -229.99€ | — |
+| Win-Rate | 41% (35W / 33L) | — |
 
 ## 🏆 Strategie-Ranking (nach P&L)
 
 | Strategie | Trades | Win-Rate | Avg P&L% | Total P&L |
 |---|---|---|---|---|
 | S1 | 2 | 100% | +58.1% | +2320.9€ |
-| PS14 | 3 | 67% | +12.3% | +735.0€ |
+| PS14 | 4 | 75% | +13.1% | +1202.4€ |
 | PT | 4 | 50% | +11.4% | +681.0€ |
 | PM | 2 | 100% | +12.2% | +485.2€ |
 | PS9 | 1 | 100% | +15.6% | +311.7€ |
@@ -27,7 +27,7 @@
 | PS2 | 6 | 83% | +8.3% | +79.9€ |
 | PS12 | 1 | 100% | +2.8% | +55.4€ |
 | PS4 | 6 | 67% | +0.3% | +35.7€ |
-| PS5 | 2 | 100% | +2.8% | +20.6€ |
+| PS5 | 3 | 100% | +2.0% | +29.5€ |
 | PS17 | 2 | 100% | +0.2% | +4.2€ |
 | PS10 | 1 | 0% | +0.0% | +0.0€ |
 | DT1 | 1 | 0% | +0.0% | -0.1€ |

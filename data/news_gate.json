@@ -1,136 +1,138 @@
 {
-  "timestamp": "2026-04-09T09:05:00.229509",
+  "timestamp": "2026-04-09T21:05:00.910467",
   "relevant": true,
-  "hit_count": 152,
-  "events_scanned": 223,
+  "hit_count": 164,
+  "events_scanned": 244,
   "window_hours": 24,
   "top_hits": [
     {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Palantir-Aktienkursprognose: Widerstand bei 149,35 $, während PLTR um 7,71 % fällt - Traders Union",
+      "ticker": "PLTR",
+      "score": -0.3,
+      "direction": "bearish",
+      "source": "google_news",
+      "ts": "2026-04-09 19:00:09"
+    },
+    {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran",
-        "S4_Silver"
+        "S3_KI"
       ],
-      "headline": "Gold stabil: Händler achten auf US-Inflationsdaten und Iran-Waffenstillstandsrisiken - TradingView",
-      "ticker": "",
+      "headline": "Nvidia-Aktie bleibt stabil, da der Waffenstillstand zwischen den USA und Iran das globale Versandrisiko verringert. - Tr",
+      "ticker": "NVDA",
       "score": 0.0,
       "direction": "neutral",
       "source": "google_news",
-      "ts": "2026-04-09 07:00:10"
+      "ts": "2026-04-09 19:00:09"
     },
     {
-      "thesis": "S1_Iran",
+      "thesis": "S3_KI",
       "all_theses": [
-        "S1_Iran"
+        "S3_KI"
       ],
-      "headline": "Iran Talks Set for Saturday, Vance to Lead US Delegation",
+      "headline": "Nvidia Aktie: Expansion ins All - Börse Express",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-09 19:00:09"
+    },
+    {
+      "thesis": "PS1_Oil",
+      "all_theses": [
+        "PS1_Oil"
+      ],
+      "headline": "UK Gives £380 Million Subsidy to Tata’s Jaguar Battery Factory",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-09 07:00:08"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "UK to Urge Lebanon’s Inclusion in Ceasefire Between US and Iran",
-      "ticker": "",
-      "score": 0.5,
-      "direction": "bullish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 07:00:07"
+      "ts": "2026-04-09 19:00:08"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran",
+        "PS1_Oil"
+      ],
+      "headline": "Iran War Erodes Exxon, Chevron Profits Even as Oil Prices Soar",
+      "ticker": "",
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-09 19:00:08"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Iran War Has Changed the Middle East ‘Forever’",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-09 19:00:08"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Starmer Says Trump’s Iran Rhetoric Is Contrary to British Values",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-09 19:00:08"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Can the US and Iran Agree to a Durable End to the War?",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-09 19:00:08"
+    },
+    {
+      "thesis": "S2_Rüstung",
+      "all_theses": [
+        "S2_Rüstung",
         "S3_KI"
       ],
-      "headline": "Gulf Nations Greet Iran Truce With Relief, Uncertainty",
+      "headline": "Meta, Amazon, X.AI Pressed by Key Senator on Child Exploitation",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-09 19:00:07"
+    },
+    {
+      "thesis": "PS1_Oil",
+      "all_theses": [
+        "PS1_Oil"
+      ],
+      "headline": "Gulf Tensions Push Oil Higher | Open Interest 4/9/2026",
       "ticker": "",
       "score": -0.3,
       "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 07:00:07"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "US and Iran Gear Up for Talks to Firm Up Fragile Ceasefire",
-      "ticker": "",
-      "score": 0.5,
-      "direction": "bullish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 07:00:07"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI",
-        "PS1_Oil"
-      ],
-      "headline": "China Considers Financial Aid for Airlines Hit by Oil Shock",
-      "ticker": "",
-      "score": 0.1,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-09 07:00:06"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "TAP Posts Fourth Straight Profit as Sale Process Gains Pace",
-      "ticker": "",
-      "score": 0.3,
-      "direction": "bullish",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-09 07:00:06"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Thai Central Bank Vows to Keep Rates Steady to Support Economy",
-      "ticker": "",
-      "score": 0.5,
-      "direction": "bullish",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-09 07:00:06"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Galp Energia Buys Wind Portfolio in Spain in €320 Million Deal",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-09 07:00:06"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "German Industry Production Disappointed Even Before Iran War",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_markets",
-      "ts": "2026-04-09 07:00:05"
+      "source": "bloomberg_technology",
+      "ts": "2026-04-09 19:00:07"
     }
   ],
   "theses_hit": [
     "S1_Iran",
-    "S3_KI"
+    "S3_KI",
+    "PS1_Oil",
+    "S2_Rüstung"
   ]
 }

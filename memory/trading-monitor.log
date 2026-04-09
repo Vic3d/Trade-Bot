@@ -5857,3 +5857,176 @@ WPR Monat: -55 → -36 (über ...
 [2026-04-09 10:10:49] Risk Score: 80/100 (HIGH)
 [2026-04-09 10:10:49] State Snapshot geschrieben: 3 Positionen, 0 Alerts
 [2026-04-09 10:10:49] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 11:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 11:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 11:10:27] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 11:10:29] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 11:10:30] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 11:10:40] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 11:10:41] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 11:10:43] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 11:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 11:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 11:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 11:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 11:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 11:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 11:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 11:10:50] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 11:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 12:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 12:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 12:10:26] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 12:10:27] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 12:10:28] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 12:10:30] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 12:10:31] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 12:10:33] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 12:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 12:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 12:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 12:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 12:10:49] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 12:10:49] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 12:10:49] Risk Score: 80/100 (HIGH)
+[2026-04-09 12:10:49] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 12:10:49] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 13:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 13:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 13:10:28] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 13:10:29] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 13:10:31] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 13:10:34] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 13:10:35] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 13:10:36] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 13:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 13:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 13:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 13:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 13:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 13:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 13:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 13:10:50] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 13:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 14:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 14:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 14:10:30] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 14:10:31] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 14:10:32] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 14:10:38] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 14:10:39] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 14:10:41] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 14:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 14:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 14:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 14:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 14:10:49] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 14:10:49] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 14:10:49] Risk Score: 80/100 (HIGH)
+[2026-04-09 14:10:49] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 14:10:49] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 15:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 15:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 15:10:30] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 15:10:31] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 15:10:33] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 15:10:37] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 15:10:38] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 15:10:40] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 15:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 15:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 15:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 15:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 15:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 15:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 15:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 15:10:50] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 15:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 16:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 16:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 16:10:34] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 16:10:35] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 16:10:37] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 16:10:40] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 16:10:41] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 16:10:43] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 16:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 16:10:48] Onvista: 6/6 URLs gecacht
+[2026-04-09 16:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 16:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 16:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 16:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 16:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 16:10:50] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 16:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 17:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 17:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 17:10:27] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 17:10:28] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 17:10:30] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 17:10:31] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 17:10:32] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 17:10:34] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 17:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 17:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 17:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 17:10:49] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 17:10:49] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 17:10:49] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 17:10:49] Risk Score: 80/100 (HIGH)
+[2026-04-09 17:10:49] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 17:10:49] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 18:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 18:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 18:10:25] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 18:10:26] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 18:10:28] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 18:10:30] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 18:10:31] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 18:10:33] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 18:10:44] Fetching Onvista prices (cache)...
+[2026-04-09 18:10:48] Onvista: 6/6 URLs gecacht
+[2026-04-09 18:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 18:10:51] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 18:10:51] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 18:10:51] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 18:10:51] Risk Score: 80/100 (HIGH)
+[2026-04-09 18:10:51] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 18:10:51] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 19:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 19:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 19:10:37] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 19:10:38] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 19:10:40] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 19:10:40] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 19:10:41] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 19:10:43] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 19:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 19:10:47] Onvista: 6/6 URLs gecacht
+[2026-04-09 19:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 19:10:50] ALERT QUEUED: 📈 Trailing Stop fällig: VanEck Oil Services ETF (A3D42Y) @ 29.45€ | P&L: +5.6% (...
+[2026-04-09 19:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 19:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 19:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 19:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 19:10:50] State Snapshot geschrieben: 3 Positionen, 1 Alerts
+[2026-04-09 19:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 19:10:50] Overnight Context geschrieben: 09.04.2026
+[2026-04-09 20:10:25] CEO-Direktive geladen: Modus=SHUTDOWN, Max-Neu=0, Health=60/100
+[2026-04-09 20:10:25] Fetching 28 Yahoo tickers...
+[2026-04-09 20:10:35] Yahoo RETRY 1/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 20:10:36] Yahoo RETRY 2/2 für BZ=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 20:10:37] Yahoo FEHLER BZ=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 20:10:39] Yahoo RETRY 1/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.0s
+[2026-04-09 20:10:40] Yahoo RETRY 2/2 für CL=F (Fehler: cannot access local variable 'closes' where it is not associated with a value) — warte 1.5s
+[2026-04-09 20:10:42] Yahoo FEHLER CL=F (alle 3 Versuche): cannot access local variable 'closes' where it is not associated with a value
+[2026-04-09 20:10:43] Fetching Onvista prices (cache)...
+[2026-04-09 20:10:48] Onvista: 6/6 URLs gecacht
+[2026-04-09 20:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 20:10:50] WARNUNG: Unbekannte Währung 'DKK' für NOVO-B.CO — Position übersprungen
+[2026-04-09 20:10:50] Paper Trade Engine Fehler: unexpected character after line continuation character (paper_trade_engine.py, line 535)
+[2026-04-09 20:10:50] Regime: NEUTRAL (Velocity: VOLATILE)
+[2026-04-09 20:10:50] Risk Score: 80/100 (HIGH)
+[2026-04-09 20:10:50] State Snapshot geschrieben: 3 Positionen, 0 Alerts
+[2026-04-09 20:10:50] positions-live.md aktualisiert: 3 aktiv, 8 geschlossen
+[2026-04-09 20:10:50] Overnight Context geschrieben: 09.04.2026

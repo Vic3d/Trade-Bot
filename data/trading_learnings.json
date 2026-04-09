@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-04-08T20:45:00Z",
+  "last_updated": "2026-04-09T20:45:02Z",
   "strategy_scores": {
     "PS1": {
       "win_rate": 0.455,
@@ -29,11 +29,11 @@
       "source": "both"
     },
     "PS5": {
-      "win_rate": 0.667,
-      "avg_pnl_pct": -1.37,
-      "total_pnl_eur": -330.98,
-      "trades": 3,
-      "risk_adj_return": -0.164,
+      "win_rate": 0.75,
+      "avg_pnl_pct": -0.95,
+      "total_pnl_eur": -322.08,
+      "trades": 4,
+      "risk_adj_return": -0.13,
       "recommendation": "INSUFFICIENT_DATA",
       "source": "both"
     },
@@ -193,9 +193,9 @@
   },
   "market_scores": {
     "US": {
-      "trades": 162,
-      "win_rate": 0.327,
-      "total_pnl_eur": -6152.37
+      "trades": 163,
+      "win_rate": 0.331,
+      "total_pnl_eur": -6143.47
     },
     "EU": {
       "trades": 45,

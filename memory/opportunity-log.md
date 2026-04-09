@@ -50,3 +50,7 @@
   → Paper Trade NICHT eröffnet (Strategie-Sperrung)
 
 ---
+
+## [2026-04-09 18:25 UTC] — 1 Opportunities, 1 Paper Trade(s)
+  ✅ [5/10] RHM.DE: German armsmaker wins big from Trump's NATO spending demands
+---
