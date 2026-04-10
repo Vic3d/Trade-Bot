@@ -56,6 +56,45 @@ SUFFIX_CURRENCY = {
 EUR_SUFFIXES = {s for s, c in SUFFIX_CURRENCY.items() if c == 'EUR'}
 
 
+def get_fx_factor(ticker: str) -> float:
+    """
+    Gibt den Multiplikator zurück, um Yahoo-Rohpreise in EUR zu konvertieren.
+    Beispiel: EQNR.OL (NOK) → 0.085, AAPL (USD) → 0.91, RHM.DE (EUR) → 1.0
+    """
+    ticker_upper = ticker.upper()
+    suffix = next((s for s in SUFFIX_CURRENCY if ticker_upper.endswith(s.upper())), None)
+    currency = SUFFIX_CURRENCY.get(suffix, 'USD') if suffix else 'USD'
+
+    if currency == 'EUR':
+        return 1.0
+
+    eurusd = get_eurusd()
+    if not eurusd:
+        return 1.0  # Fallback: unkonvertiert
+
+    if currency == 'GBp':
+        # London: Pence → GBP (÷100), dann GBP→EUR
+        gbpusd_data = _yahoo_raw('GBPUSD=X', range_='1d')
+        try:
+            gbp_rate = gbpusd_data['chart']['result'][0]['meta']['regularMarketPrice']
+        except Exception:
+            gbp_rate = 1.27  # Notfall-Fallback
+        return (1.0 / 100) * gbp_rate / eurusd
+
+    FX_PAIRS = {'NOK': 'NOKUSD=X', 'DKK': 'DKKUSD=X', 'SEK': 'SEKUSD=X'}
+    fx_pair = FX_PAIRS.get(currency)
+    if fx_pair:
+        fx_data = _yahoo_raw(fx_pair, range_='1d')
+        try:
+            fx_rate = fx_data['chart']['result'][0]['meta']['regularMarketPrice']
+            return fx_rate / eurusd
+        except Exception:
+            pass
+
+    # USD → EUR
+    return 1.0 / eurusd
+
+
 def _get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row

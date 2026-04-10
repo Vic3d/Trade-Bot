@@ -33,7 +33,7 @@ PAPER_CFG = WORKSPACE / 'data' / 'paper_config.json'
 ALERT_QUEUE = WORKSPACE / 'memory' / 'alert-queue.json'
 
 ENTRY_THRESHOLD_DEFAULT = 52   # Generische Strategien
-ENTRY_THRESHOLD_THESIS  = 35   # PS_* Thesis-Plays (Deep Dive validiert)
+ENTRY_THRESHOLD_THESIS  = 40   # PS_* Thesis-Plays (Deep Dive validiert) — erhöht von 35
 ENTRY_THRESHOLD = 52           # Rückwärtskompatibilität
 MAX_POSITIONS = 15        # Maximale offene Paper-Positionen
 DEFAULT_POSITION_EUR = 2000  # € pro Position wenn keine Config
@@ -280,6 +280,27 @@ def execute_paper_entry(
             'blocked_by': 'stale_price',
         }
 
+    # ── Guard 0b: Stop muss unter Entry liegen (Long) ─────────────
+    if stop_price >= entry_price:
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': f'❌ {ticker}: Stop ({stop_price:.2f}) >= Entry ({entry_price:.2f}) — ungültiger Trade',
+            'blocked_by': 'invalid_stop',
+        }
+
+    # ── Guard 0c: Minimum CRV 2:1 ──────────────────────────────────
+    _reward = abs(target_price - entry_price)
+    _risk = abs(entry_price - stop_price)
+    _crv = _reward / _risk if _risk > 0 else 0
+    if _crv < 2.0:
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 2.0:1 Minimum',
+            'blocked_by': 'crv_minimum',
+        }
+
     # ── Guard 1: VIX Hard Block ──────────────────────────────────────
     # VIX aktualisieren bevor wir entscheiden
     vix = refresh_vix_in_db()
@@ -315,8 +336,12 @@ def execute_paper_entry(
                 'conviction_score': conv_score,
             }
     except Exception as e:
-        conviction = {'score': 0, 'regime': 'UNKNOWN', 'vix': None}
-        conv_score = 0
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': f'❌ Conviction Score nicht berechenbar: {e}',
+            'blocked_by': 'conviction_error',
+        }
     
     conn = get_db()
     
@@ -481,6 +506,12 @@ def execute_paper_entry(
         collect_and_save(trade_id, ticker)
     except Exception as _fe:
         print(f"  ⚠️  Feature Collector Fehler (nicht kritisch): {_fe}")
+
+    # ── Feature-Vollständigkeit prüfen ──
+    REQUIRED_FEATURES = ['rsi_at_entry', 'volume_ratio', 'vix_at_entry', 'ma50_distance', 'spy_5d_return']
+    _missing = [f for f in REQUIRED_FEATURES if not _features.get(f)]
+    if _missing:
+        print(f"  ⚠️  Fehlende Features: {_missing} — ML-Training-Qualität eingeschränkt")
 
     # ── Phase 4: Online Model Prediction ──
     _win_prob = None

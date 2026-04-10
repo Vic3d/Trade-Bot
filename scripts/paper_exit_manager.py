@@ -44,8 +44,20 @@ def get_eurusd():
     return _fx()
 
 def close_position(db, row_id, close_price, exit_type, entry_price, shares, fees):
+    pnl_pct = (close_price - entry_price) / entry_price * 100 if entry_price else 0
+
+    # ── Plausibilitäts-Check: > 50% Verlust ist verdächtig ──────────
+    if pnl_pct < -50:
+        print(f"⚠️ VERDÄCHTIGER EXIT: PnL {pnl_pct:.1f}% für Trade {row_id} (Entry {entry_price:.2f} → Close {close_price:.2f}) — möglicher Preis-/Währungsfehler")
+        db.execute(
+            "UPDATE paper_portfolio SET notes = notes || ? WHERE id=?",
+            (f' [SUSPECT: PnL {pnl_pct:.1f}% @ {close_price:.2f}]', row_id)
+        )
+        db.commit()
+        return 0  # Kein PnL buchen, Trade bleibt offen zur manuellen Prüfung
+    # ────────────────────────────────────────────────────────────────
+
     pnl = (close_price - entry_price) * shares - fees
-    pnl_pct = (close_price - entry_price) / entry_price * 100
 
     # Ticker holen bevor wir schließen
     ticker_row = db.execute(
