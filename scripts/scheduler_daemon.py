@@ -16,6 +16,7 @@ import os
 import signal
 import subprocess
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -213,6 +214,16 @@ def scheduler_loop():
 
     # Price Monitor sofort starten
     start_price_monitor()
+
+    # Albert Discord-Chat-Thread starten
+    try:
+        sys.path.insert(0, str(SCRIPTS))
+        import discord_chat
+        chat_thread = threading.Thread(target=discord_chat.run_forever, daemon=True, name='AlbertChat')
+        chat_thread.start()
+        log('💬 Albert Discord-Chat-Thread gestartet')
+    except Exception as e:
+        log(f'⚠️  Albert Discord-Chat konnte nicht gestartet werden: {e}')
 
     last_run = {}  # Verhindert Doppel-Ausführungen
 
