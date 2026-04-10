@@ -121,6 +121,9 @@ SCHEDULE = [
     ('Strategy DNA',        'strategy_dna.py',         [],                        12, 0,  [5]),   # Sa
     ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
+    # ── Phase 6: Autonome Thesen-Entdeckung ──────────────────────────────────
+    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [6]),   # So 07:00 UTC
+    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [2]),   # Mi 07:00 UTC (mid-week)
 ]
 
 

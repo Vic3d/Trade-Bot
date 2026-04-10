@@ -341,6 +341,126 @@ def ask_albert(message: str) -> str:
         )
 
 
+# ── Phase 6: Thesis Confirmation / Rejection ─────────────────────────────────
+
+def _confirm_thesis(thesis_id: str) -> None:
+    """
+    Confirms a PROPOSED thesis: adds it to strategies.json as ACTIVE
+    and updates its status in the DB.
+    """
+    thesis_id = thesis_id.strip().upper()
+    print(f'[Albert] Confirming thesis: {thesis_id}', flush=True)
+
+    # Load pending thesis data
+    pending_file = DATA / 'pending_theses.json'
+    thesis_data: dict = {}
+    try:
+        if pending_file.exists():
+            raw = json.loads(pending_file.read_text(encoding='utf-8'))
+            if isinstance(raw, dict):
+                thesis_data = raw.get(thesis_id, {})
+            elif isinstance(raw, list):
+                for item in raw:
+                    if isinstance(item, dict) and item.get('id') == thesis_id:
+                        thesis_data = item
+                        break
+    except Exception as e:
+        print(f'[Albert] pending_theses.json read error: {e}', flush=True)
+
+    # Write to strategies.json if we have the data
+    if thesis_data:
+        try:
+            strategies_file = DATA / 'strategies.json'
+            strategies: dict = {}
+            if strategies_file.exists():
+                try:
+                    strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
+                except Exception:
+                    strategies = {}
+
+            # Build strategy entry from thesis data
+            new_entry = {
+                'name':           thesis_data.get('name', thesis_id),
+                'type':           'paper',
+                'thesis':         thesis_data.get('thesis', ''),
+                'entry_trigger':  thesis_data.get('entry_trigger', ''),
+                'kill_trigger':   thesis_data.get('kill_trigger', ''),
+                'tickers':        thesis_data.get('tickers', []),
+                'direction':      thesis_data.get('direction', 'LONG'),
+                'timeframe':      thesis_data.get('timeframe', ''),
+                'confidence':     thesis_data.get('confidence', 70),
+                'status':         'active',
+                'genesis': {
+                    'created':    datetime.now().strftime('%Y-%m-%d'),
+                    'trigger':    'Von Victor bestätigt via Discord',
+                    'auto_discovered': True,
+                },
+            }
+            strategies[thesis_id] = new_entry
+            strategies_file.write_text(json.dumps(strategies, indent=2, ensure_ascii=False), encoding='utf-8')
+            print(f'[Albert] {thesis_id} written to strategies.json', flush=True)
+        except Exception as e:
+            print(f'[Albert] strategies.json write error: {e}', flush=True)
+
+    # Update DB status
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(SCRIPTS))
+        from core.thesis_engine import set_thesis_status
+        set_thesis_status(thesis_id, 'ACTIVE', 'Von Victor bestätigt')
+    except Exception as e:
+        print(f'[Albert] set_thesis_status error: {e}', flush=True)
+
+    # Send confirmation to Discord
+    _send_message(
+        f'✅ **These {thesis_id} ist jetzt AKTIV.** Albert sucht ab sofort nach Entries.',
+        CHANNEL_ID,
+    )
+
+
+def _reject_thesis(thesis_id: str) -> None:
+    """
+    Rejects a PROPOSED thesis: marks it INVALIDATED in DB
+    and removes it from pending_theses.json.
+    """
+    thesis_id = thesis_id.strip().upper()
+    print(f'[Albert] Rejecting thesis: {thesis_id}', flush=True)
+
+    # Update DB status
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(SCRIPTS))
+        from core.thesis_engine import set_thesis_status
+        set_thesis_status(thesis_id, 'INVALIDATED', 'Von Victor abgelehnt')
+    except Exception as e:
+        print(f'[Albert] set_thesis_status error: {e}', flush=True)
+
+    # Remove from pending_theses.json
+    pending_file = DATA / 'pending_theses.json'
+    try:
+        if pending_file.exists():
+            raw = json.loads(pending_file.read_text(encoding='utf-8'))
+            if isinstance(raw, dict) and thesis_id in raw:
+                del raw[thesis_id]
+                pending_file.write_text(json.dumps(raw, indent=2, ensure_ascii=False), encoding='utf-8')
+    except Exception as e:
+        print(f'[Albert] pending_theses.json cleanup error: {e}', flush=True)
+
+    # Send rejection confirmation
+    _send_message(f'❌ **These {thesis_id} abgelehnt.**', CHANNEL_ID)
+
+
+def _extract_thesis_id(content: str, prefix: str) -> str:
+    """Extract thesis ID from a command like 'Bestätigen: PS21' or 'Bestätigen PS21'."""
+    # Remove the prefix (case-insensitive)
+    remainder = content[len(prefix):].strip()
+    # Optionally strip leading colon/space
+    remainder = remainder.lstrip(':').strip()
+    # Take first word-token (the ID)
+    parts = remainder.split()
+    return parts[0] if parts else ''
+
+
 # ── Phase 4: Thesis Suggestion Intake ────────────────────────────────────────
 
 def _handle_thesis_suggestion(content: str) -> None:
@@ -415,9 +535,43 @@ def poll_once() -> None:
 
         print(f'[Albert] Neue Nachricht von Victor: {content[:80]}', flush=True)
 
+        # ── Phase 6: Thesis confirmation / rejection ──────────────────────
+        # "Bestätigen: PS21", "Bestätigen PS21", "Confirm: PS21"
+        # "Ablehnen: PS21", "Ablehnen PS21", "Reject: PS21"
+        content_stripped = content.strip()
+        content_lower = content_stripped.lower()
+
+        confirm_prefixes = ('bestätigen:', 'bestätigen ', 'bestaetigen:', 'bestaetigen ', 'confirm:', 'confirm ')
+        reject_prefixes  = ('ablehnen:', 'ablehnen ', 'reject:', 'reject ')
+
+        matched_confirm = next(
+            (p for p in confirm_prefixes if content_lower.startswith(p)), None
+        )
+        matched_reject = next(
+            (p for p in reject_prefixes if content_lower.startswith(p)), None
+        )
+
+        if matched_confirm:
+            thesis_id = _extract_thesis_id(content_stripped, content_stripped[:len(matched_confirm)])
+            if thesis_id:
+                _confirm_thesis(thesis_id)
+                # Update state and continue (no Albert LLM call needed)
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+
+        elif matched_reject:
+            thesis_id = _extract_thesis_id(content_stripped, content_stripped[:len(matched_reject)])
+            if thesis_id:
+                _reject_thesis(thesis_id)
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+
         # ── Phase 4: Thesis suggestion intake ────────────────────────────
         # If Victor writes "These:", "Thesis:", or "Strategie:" → parse as thesis
-        content_lower = content.lower()
         is_thesis_suggestion = any(
             content_lower.startswith(kw) or f'\n{kw}' in content_lower
             for kw in ('these:', 'thesis:', 'strategie:')
