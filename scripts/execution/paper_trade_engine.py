@@ -563,7 +563,7 @@ def execute_paper_entry(
         _weakest  = _adv.get('weakest', [])
         _adv_str  = ""
         if _strongest:
-            _adv_str += f"\n💡 Stärken: {', '.join(f'{f[\"factor\"]} ({f[\"score\"]})' for f in _strongest)}"
+            _adv_str += "\n💡 Stärken: " + ', '.join(f"{f['factor']} ({f['score']})" for f in _strongest)
         if _weakest and _weakest[0]['score'] < 40:
             _adv_str += f"\n⚠️ Risiko: {_weakest[0]['factor']} ({_weakest[0]['score']}) schwach"
     except Exception:
