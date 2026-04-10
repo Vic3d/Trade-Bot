@@ -167,6 +167,28 @@ def get_next_earnings(ticker: str) -> date | None:
         return None
 
 
+def get_vix_modifier(vix: float | None) -> int:
+    """
+    Phase 2: VIX is a conviction score modifier only — no hard block.
+    Returns score adjustment that feeds into conviction scorer Market Context factor.
+    VIX < 20:  +0 (handled in conviction_scorer as full 15 pts)
+    VIX 20-25: -5 modifier hint (conviction scorer awards 10/15)
+    VIX 25-30: -10 modifier hint (conviction scorer awards 5/15)
+    VIX > 30:  -15 modifier hint (conviction scorer awards 0/15)
+    Note: actual scoring is done in conviction_scorer._score_market_context().
+    """
+    if vix is None:
+        return 0
+    if vix < 20:
+        return 0
+    elif vix < 25:
+        return -5
+    elif vix < 30:
+        return -10
+    else:
+        return -15
+
+
 def check_earnings_safe(ticker: str, days_buffer: int = 5) -> tuple[bool, str]:
     """
     Returns (safe_to_enter, reason).

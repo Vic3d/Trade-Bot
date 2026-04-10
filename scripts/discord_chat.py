@@ -341,6 +341,41 @@ def ask_albert(message: str) -> str:
         )
 
 
+# ── Phase 4: Thesis Suggestion Intake ────────────────────────────────────────
+
+def _handle_thesis_suggestion(content: str) -> None:
+    """
+    Parses a thesis suggestion from Victor and stores it in ceo_directive.json.
+    Triggered when message starts with 'These:', 'Thesis:', or 'Strategie:'.
+
+    The actual evaluation is done by Albert (ask_albert) in the normal flow.
+    This function persists the raw suggestion for review.
+    """
+    import json as _json
+    from datetime import datetime as _dt
+
+    directive_path = DATA / 'ceo_directive.json'
+    try:
+        directive = _json.loads(directive_path.read_text()) if directive_path.exists() else {}
+    except Exception:
+        directive = {}
+
+    suggestions = directive.get('thesis_suggestions', [])
+    suggestions.append({
+        'raw_text': content,
+        'received_at': _dt.now().isoformat(),
+        'status': 'PENDING_EVALUATION',
+        'evaluated_by': 'Albert',
+    })
+    directive['thesis_suggestions'] = suggestions[-20:]  # keep last 20
+
+    try:
+        directive_path.write_text(_json.dumps(directive, indent=2, ensure_ascii=False))
+        print(f'[Albert] Thesis suggestion stored: {content[:80]}', flush=True)
+    except Exception as e:
+        print(f'[Albert] Failed to store thesis suggestion: {e}', flush=True)
+
+
 # ── Polling-Logik ─────────────────────────────────────────────────────────────
 
 def poll_once() -> None:
@@ -379,6 +414,16 @@ def poll_once() -> None:
             continue
 
         print(f'[Albert] Neue Nachricht von Victor: {content[:80]}', flush=True)
+
+        # ── Phase 4: Thesis suggestion intake ────────────────────────────
+        # If Victor writes "These:", "Thesis:", or "Strategie:" → parse as thesis
+        content_lower = content.lower()
+        is_thesis_suggestion = any(
+            content_lower.startswith(kw) or f'\n{kw}' in content_lower
+            for kw in ('these:', 'thesis:', 'strategie:')
+        )
+        if is_thesis_suggestion:
+            _handle_thesis_suggestion(content)
 
         # Typing-Indikator senden
         _send_typing(CHANNEL_ID)

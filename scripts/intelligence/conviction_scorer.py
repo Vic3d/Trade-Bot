@@ -1,643 +1,677 @@
 #!/usr/bin/env python3
 """
-Conviction Scorer v2 — Multi-Faktor Trade-Bewertung
-=====================================================
-8 Faktoren → 0-100 Score pro Trade-Setup.
-Self-calibrating: passt Gewichte nach 50+ Trades an.
+Conviction Scorer v3 — 4-Faktor Trade-Bewertung
+================================================
+Replaces the old 9-factor broken scorer with 4 properly calibrated factors:
 
-Faktoren:
-1. Regime Alignment (Strategie passt zum Regime?)
-2. Technical Setup (CRV, Patterns, Trend)
-3. Volume Confirmation (Volumen-Anomalie?)
-4. News Momentum (Sentiment-Trend letzte 48h)
-5. Signal Confluence (mehrere Lead-Lag Signale?)
-6. Backtest Performance (historische Win-Rate für Setup)
-7. Correlation (Korrelation zum Gesamtportfolio)
-8. Sector Rotation (Sektor gerade im Aufwind?)
+1. Thesis Strength     (35 pts max) — Is the macro thesis still valid?
+2. Technical Alignment (30 pts max) — Trend/RSI/Volume confirming?
+3. Risk/Reward Quality (20 pts max) — CRV + stop placement
+4. Market Context      (15 pts max) — VIX environment
 
-Sprint 2 | TradeMind Bauplan
+Scoring thresholds:
+  >= 60 : STRONG  → 2% risk sizing
+  >= 45 : MODERATE → 1% risk sizing
+  <  45 : WEAK    → skip trade
+
+ENTRY_THRESHOLD = 45
+
+Albert | TradeMind v3 | 2026-04-10
 """
 
-import sqlite3, json, math
-from datetime import datetime, timezone, timedelta
+import json
+import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
 
-DB_PATH  = Path('/data/.openclaw/workspace/data/trading.db')
-DATA_DIR = Path('/data/.openclaw/workspace/data')
+WS       = Path('/data/.openclaw/workspace')
+DB_PATH  = WS / 'data' / 'trading.db'
+DATA_DIR = WS / 'data'
 
-# Strategy → Thesis-Mapping (für news_gate.json Abgleich)
-STRATEGY_TO_THESIS = {
-    'PS1':        'PS1_Oil',
-    'PS2':        'PS2_Tanker',
-    'PS3':        'PS3_Defense',
-    'PS4':        'PS4_Metals',
-    'PS5':        'PS5_Agrar',
-    'PS11':       'PS11_DefEU',
-    'PS14':       'PS14_Ship',
-    'PS17':       'S2_Rüstung',
-    'PS18':       'S2_Rüstung',
-    'PS_STLD':    'S5_Rohstoff',
-    'PS_NVO':     'S3_KI',
-    'PS_Copper':  'PS_Copper',
-    'PS_China':   'PS_China',
-    'PS_AIInfra': 'PS_AIInfra',
-    'PS_Uranium': 'S5_Rohstoff',
-    'S1':         'S1_Iran',
-    'S2':         'S2_Rüstung',
-    'S3':         'S3_KI',
-    'S4':         'S4_Silver',
-    'S5':         'S5_Rohstoff',
-    'S7':         'S3_KI',
-}
-DATA_DIR = Path('/data/.openclaw/workspace/data')
-
-# ─── Gewichtung (default, self-calibrating ab 50 Trades) ───
-DEFAULT_WEIGHTS = {
-    'regime_alignment': 0.18,
-    'technical_setup':  0.18,
-    'volume_confirm':   0.09,
-    'news_momentum':    0.10,
-    'signal_confluence':0.14,
-    'backtest_perf':    0.10,
-    'correlation':      0.05,
-    'sector_rotation':  0.09,
-    'watchlist_trend':  0.07,   # ← NEU: Preis-Trend aus Snapshots
-}
-
-# Regime → Strategie Affinität
-# PS_* = Thesis-Plays (6-Schritt Deep Dive validiert) — in allen Regimes gut
-REGIME_STRATEGY_FIT = {
-    'BULL_CALM':     {'S3': 1.0, 'S5': 0.9, 'S6': 0.9, 'PS2': 0.8, 'PS5': 0.8,
-                      'PS_STLD': 0.8, 'PS_NVO': 0.7, 'PS_LHA': 0.9},
-    'BULL_VOLATILE': {'S1': 0.9, 'S2': 0.9, 'S3': 0.8, 'PS1': 0.8, 'PS3': 0.8,
-                      'PS_STLD': 0.9, 'PS_NVO': 0.8, 'PS_LHA': 0.7},
-    'NEUTRAL':       {'S1': 0.7, 'S4': 0.8, 'PS1': 0.7, 'PS4': 0.7,
-                      'PS_STLD': 0.75, 'PS_NVO': 0.7, 'PS_LHA': 0.6},
-    'CORRECTION':    {'S1': 0.9, 'S4': 1.0, 'PS1': 0.9, 'PS3': 0.8, 'PS4': 0.9,
-                      'PS_STLD': 0.85, 'PS_NVO': 0.7, 'PS_LHA': 0.5},
-    'BEAR':          {'S4': 1.0, 'PS4': 1.0, 'S1': 0.8, 'PS1': 0.8,
-                      'PS_STLD': 0.7, 'PS_NVO': 0.6,
-                      'PS_LHA': 0.4},   # BEAR = Krise läuft noch → LHA leidet noch
-    'CRISIS':        {'S4': 1.0, 'PS4': 1.0, 'PS_STLD': 0.5, 'PS_NVO': 0.4,
-                      'PS_LHA': 0.2},   # CRISIS = schlechtestes Umfeld für LHA
-}
-
-# Paper Trading: Schwellen nach Trade-Style
-# Thesis-Plays (PS_*) brauchen keine 52+ — sie wurden manuell validiert
-PAPER_ENTRY_THRESHOLD_DEFAULT  = 52   # Generische Strategien (Swing)
-PAPER_ENTRY_THRESHOLD_THESIS   = 35   # PS_* = Deep-Dive validiert (Swing)
-PAPER_ENTRY_THRESHOLD_DAY      = 65   # Day Trades brauchen höhere Conviction
-PAPER_ENTRY_THRESHOLD_DAY_THESIS = 55 # DT-Thesis-Plays etwas weniger streng
+ENTRY_THRESHOLD = 45  # Minimum conviction score to enter a trade
 
 
-def get_db():
+# ─── DB Helper ────────────────────────────────────────────────────────────────
+
+def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     return conn
 
 
-def _score_regime_alignment(conn, strategy, date=None):
-    """Wie gut passt die Strategie zum aktuellen Regime? 0-100"""
-    regime_row = conn.execute(
-        "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
-    ).fetchone()
-    if not regime_row:
-        return 50  # neutral
-    
-    regime = regime_row['regime']
-    fit_map = REGIME_STRATEGY_FIT.get(regime, {})
-    fit = fit_map.get(strategy, 0.3)  # default: schlechter Fit
-    return int(fit * 100)
+# ─── Factor 1: Thesis Strength (0-35 pts) ────────────────────────────────────
 
+def _score_thesis_strength(strategy: str, ticker: str = '') -> tuple[int, str]:
+    """
+    Evaluates whether the macro thesis behind this strategy is still valid.
 
-def _score_technical_setup(entry_price, stop, target):
-    """CRV-basierter Score. CRV 3:1 = 100. 0-100"""
-    if not all([entry_price, stop, target]):
-        return 30
-    
-    risk = abs(entry_price - stop)
-    reward = abs(target - entry_price)
-    if risk <= 0:
-        return 10
-    
-    crv = reward / risk
-    # CRV 1:1 = 33, CRV 2:1 = 67, CRV 3:1 = 100
-    score = min(100, int(crv * 33.3))
-    return max(10, score)
+    Returns: (score: int, reason: str)
+    If thesis is INVALIDATED: returns (0, 'BLOCK') — caller should skip trade.
 
-
-def _score_volume_confirmation(conn, ticker, date=None):
-    """Volume > 2× 20-SMA = starke Bestätigung. 0-100"""
-    rows = conn.execute("""
-        SELECT volume FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 21
-    """, (ticker,)).fetchall()
-    
-    if len(rows) < 5:
-        return 50
-    
-    current_vol = rows[0]['volume'] or 0
-    avg_vol = sum(r['volume'] or 0 for r in rows[1:]) / max(len(rows)-1, 1)
-    
-    if avg_vol <= 0:
-        return 50
-    
-    ratio = current_vol / avg_vol
-    if ratio > 2.0: return 100
-    if ratio > 1.5: return 80
-    if ratio > 1.0: return 60
-    if ratio > 0.5: return 40
-    return 20
-
-
-def _score_news_momentum(conn, ticker, hours=48, strategy=None):
-    """Sentiment-Trend in den letzten 48h + news_gate These-Bestätigung. 0-100"""
-
-    # Primär: news_gate.json — bestätigt aktuelle News unsere Strategie-These?
-    gate_score = 50  # neutral default
+    Scoring:
+      ACTIVE thesis:   base 20 pts
+      + entry_trigger keywords match recent thesis_checks: +5 to +15 pts
+      DEGRADED thesis: cap at 15 pts
+      INVALIDATED:     return 0 immediately (block)
+    """
+    # Load strategies.json
+    strategies = {}
     try:
-        gate_path = DATA_DIR / 'news_gate.json'
-        if gate_path.exists():
-            gate = json.loads(gate_path.read_text())
-            if gate.get('relevant') and gate.get('theses_hit'):
-                thesis = STRATEGY_TO_THESIS.get(strategy or '', '')
-                if thesis in gate.get('theses_hit', []):
-                    hits = gate.get('hit_count', 0)
-                    # Sentiment-Direction aus top_hits prüfen
-                    bearish_hits = sum(
-                        1 for h in gate.get('top_hits', [])
-                        if h.get('thesis') == thesis and h.get('direction', '') == 'bearish'
-                    )
-                    bullish_hits = sum(
-                        1 for h in gate.get('top_hits', [])
-                        if h.get('thesis') == thesis and h.get('direction', '') in ('bullish', 'neutral')
-                    )
-                    if bearish_hits > bullish_hits:
-                        gate_score = 35  # Bearishe News für diese These → warnen
-                    else:
-                        gate_score = min(100, 65 + min(hits, 35))  # 65-100 bei bullisher These
-                elif gate.get('hit_count', 0) > 20:
-                    gate_score = 55
+        strategies_path = DATA_DIR / 'strategies.json'
+        if strategies_path.exists():
+            strategies = json.loads(strategies_path.read_text(encoding='utf-8'))
     except Exception:
         pass
 
-    # Sekundär: Ticker-spezifisches Sentiment aus news_events
-    rows = conn.execute("""
-        SELECT sentiment_score FROM news_events 
-        WHERE tickers LIKE ? AND created_at > datetime('now', ?)
-        ORDER BY created_at DESC
-    """, (f'%{ticker}%', f'-{hours} hours')).fetchall()
+    strategy_cfg = strategies.get(strategy, {})
+    json_status = strategy_cfg.get('status', 'active').lower()
 
-    if rows:
-        avg_sentiment = sum(r['sentiment_score'] or 0 for r in rows) / len(rows)
-        ticker_score = max(0, min(100, int((avg_sentiment + 1) * 50)))
-        # Kombinieren: 60% news_gate (These-Ebene), 40% Ticker-Sentiment
-        return int(gate_score * 0.6 + ticker_score * 0.4)
-
-    return gate_score
-
-
-def _score_watchlist_trend(conn, ticker: str) -> int:
-    """
-    Nutzt watchlist_prices Snapshots um Kurstrend zu bewerten.
-    Positiver Trend (Kurs steigt in letzten Snapshots) = höherer Score.
-    Trend + RSI in Entry-Zone = bestes Signal.
-    Returns: 0-100
-    """
-    try:
-        rows = conn.execute('''
-            SELECT price_eur, rsi, ma50, trend_5d, trend_20d, timestamp
-            FROM watchlist_prices
-            WHERE ticker=?
-            ORDER BY timestamp DESC LIMIT 6
-        ''', (ticker,)).fetchall()
-
-        if len(rows) < 2:
-            return 50  # Kein Trend-Daten → neutral
-
-        prices = [r['price_eur'] for r in rows if r['price_eur']]
-        rsi    = rows[0]['rsi'] or 50
-        ma50   = rows[0]['ma50']
-        t5d    = rows[0]['trend_5d'] or 0
-        t20d   = rows[0]['trend_20d'] or 0
-
-        score = 50  # Neutral-Baseline
-
-        # Kurzfristiger Preis-Trend (letzte Snapshots = letzte Stunden)
-        if len(prices) >= 4:
-            recent_trend = (prices[0] - prices[3]) / prices[3] * 100  # letzte ~2h
-            if -2 < recent_trend < 0:   # Leichter Rücklauf = gut für Long-Entry
-                score += 20
-            elif recent_trend < -2:     # Starker Fall = noch warten
-                score -= 10
-            elif recent_trend > 2:      # Schon gestiegen = zu spät
-                score -= 15
-
-        # RSI in Entry-Zone?
-        if 28 <= rsi <= 48:
-            score += 20  # Rücklauf-Zone: perfekt
-        elif 48 < rsi <= 60:
-            score += 5   # Neutral
-        elif rsi > 65:
-            score -= 20  # Überkauft
-
-        # Kurs nahe MA50?
-        if ma50 and prices:
-            dist = (prices[0] - ma50) / ma50 * 100
-            if -3 < dist < 2:
-                score += 15  # Nahe MA50 = Unterstützung
-
-        # Mittelfristiger Trend positiv (20d)?
-        if t20d > 0:
-            score += 10
-        elif t20d < -5:
-            score -= 10
-
-        return max(0, min(100, score))
-
-    except Exception:
-        return 50  # Fehler → neutral
-
-
-def _score_signal_confluence(conn, ticker, hours=72):
-    """Wie viele Signale zeigen in gleiche Richtung? 0-100"""
-    rows = conn.execute("""
-        SELECT COUNT(*) as cnt FROM signals 
-        WHERE lag_ticker LIKE ? AND outcome='PENDING'
-        AND created_at > datetime('now', ?)
-    """, (f'%{ticker}%', f'-{hours} hours')).fetchall()
-    
-    count = rows[0]['cnt'] if rows else 0
-    if count >= 3: return 100
-    if count == 2: return 80
-    if count == 1: return 60
-    return 30
-
-
-def _score_backtest_performance(strategy):
-    """
-    Historische Win-Rate — aus echten Paper Trades + Backtest.
-    LIVE-Ergebnisse haben mehr Gewicht als Backtests.
-    Strategies mit 0% echte Win-Rate werden hart geblockt (Score ≤ 15).
-    """
-    # Erst: echte Paper-Trade Performance (wichtiger als Backtest)
-    live_score = None
+    # Check thesis_status table in DB
+    db_status = None
+    health_score = 100
     try:
         conn = get_db()
-        rows = conn.execute('''
-            SELECT pnl_eur FROM paper_portfolio
-            WHERE strategy=? AND status IN ('WIN','CLOSED','LOSS')
-            ORDER BY id DESC LIMIT 20
-        ''', (strategy,)).fetchall()
-        if len(rows) >= 3:  # Mindestens 3 echte Trades
-            wins = sum(1 for r in rows if (r[0] or 0) > 0)
-            wr = wins / len(rows) * 100
-            # Harte Strafe für konsistent schlechte Strategien
-            if wr == 0 and len(rows) >= 5:
-                conn.close()
-                return 5   # Blockiert de facto
-            live_score = max(10, min(100, int(wr)))
+        row = conn.execute(
+            "SELECT status, health_score FROM thesis_status WHERE thesis_id = ?",
+            (strategy,)
+        ).fetchone()
+        conn.close()
+        if row:
+            db_status = row['status']
+            health_score = row['health_score'] or 100
+    except Exception:
+        pass
+
+    # DB status takes precedence over JSON status
+    effective_status = db_status or ('ACTIVE' if json_status == 'active' else 'PAUSED')
+
+    if effective_status == 'INVALIDATED':
+        return (0, 'BLOCK: thesis INVALIDATED — kill trigger fired')
+
+    if effective_status == 'DEGRADED':
+        # Check for entry_trigger confirmation bonus (capped at 15)
+        entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
+        score = min(15, 10 + entry_bonus)
+        return (score, f'DEGRADED thesis — capped at {score}/15')
+
+    if effective_status in ('ACTIVE', 'WATCHING', 'EVALUATING'):
+        base = 20
+        entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
+        score = min(35, base + entry_bonus)
+        return (score, f'ACTIVE thesis — {score}/35 (bonus={entry_bonus})')
+
+    # PAUSED or unknown
+    return (10, f'thesis status {effective_status} — partial credit 10/35')
+
+
+def _check_entry_trigger_bonus(strategy: str, strategy_cfg: dict) -> int:
+    """
+    Checks recent thesis_checks table for entry trigger confirmations.
+    Returns 0-15 bonus points.
+    """
+    entry_trigger = strategy_cfg.get('entry_trigger', '')
+    if not entry_trigger:
+        return 0
+
+    # Parse entry trigger keywords
+    import re
+    keywords = [k.strip().lower() for k in re.split(r'[,;|]|\bOR\b|\bODER\b', entry_trigger, flags=re.IGNORECASE)
+                if len(k.strip()) >= 4]
+    if not keywords:
+        return 0
+
+    # Check thesis_checks table for recent positive matches
+    try:
+        conn = get_db()
+        rows = conn.execute(
+            """
+            SELECT news_headline, direction FROM thesis_checks
+            WHERE thesis_id = ?
+              AND datetime(checked_at) >= datetime('now', '-48 hours')
+              AND kill_trigger_match = 0
+            ORDER BY checked_at DESC LIMIT 20
+            """,
+            (strategy,)
+        ).fetchall()
+        conn.close()
+
+        if not rows:
+            return 0
+
+        combined = ' '.join((r['news_headline'] or '') for r in rows).lower()
+        matches = sum(1 for kw in keywords if kw in combined)
+
+        if matches >= 3:
+            return 15
+        elif matches == 2:
+            return 10
+        elif matches == 1:
+            return 5
+        return 0
+    except Exception:
+        return 0
+
+
+# ─── Factor 2: Technical Alignment (0-30 pts) ─────────────────────────────────
+
+def _score_technical_alignment(
+    entry_price: float | None,
+    ema20: float | None,
+    ema50: float | None,
+    rsi: float | None,
+    vol_ratio: float | None,
+) -> tuple[int, str]:
+    """
+    Technical factor scoring:
+      trend_aligned (price > ema20 > ema50): +12 pts
+      momentum_in_range (RSI 40-72):        +10 pts
+      volume_confirms (vol_ratio >= 0.8):   +8 pts
+
+    Returns: (score, breakdown_str)
+    """
+    score = 0
+    parts = []
+
+    # Trend alignment: price > EMA20 > EMA50
+    if entry_price and ema20 and ema50:
+        if entry_price > ema20 > ema50:
+            score += 12
+            parts.append('trend+12')
+        elif entry_price > ema50:
+            score += 5
+            parts.append('trend~+5')
+        else:
+            parts.append('trend+0')
+    else:
+        # Partial credit if some data available
+        score += 5
+        parts.append('trend_nodata+5')
+
+    # RSI momentum in healthy range (40-72)
+    if rsi is not None:
+        if 40 <= rsi <= 72:
+            score += 10
+            parts.append(f'rsi({rsi:.0f})+10')
+        elif 35 <= rsi < 40 or 72 < rsi <= 78:
+            score += 5
+            parts.append(f'rsi({rsi:.0f})+5')
+        else:
+            parts.append(f'rsi({rsi:.0f})+0')
+    else:
+        score += 5
+        parts.append('rsi_nodata+5')
+
+    # Volume confirmation
+    if vol_ratio is not None:
+        if vol_ratio >= 0.8:
+            score += 8
+            parts.append(f'vol({vol_ratio:.1f})+8')
+        elif vol_ratio >= 0.5:
+            score += 4
+            parts.append(f'vol({vol_ratio:.1f})+4')
+        else:
+            parts.append(f'vol({vol_ratio:.1f})+0')
+    else:
+        score += 3
+        parts.append('vol_nodata+3')
+
+    return (min(30, score), ' | '.join(parts))
+
+
+def _fetch_technical_data(ticker: str, entry_price: float | None) -> dict:
+    """
+    Fetches EMA20, EMA50, RSI, volume ratio from DB prices table.
+    Returns dict with keys: ema20, ema50, rsi, vol_ratio (all may be None).
+    """
+    result = {'ema20': None, 'ema50': None, 'rsi': None, 'vol_ratio': None}
+    try:
+        conn = get_db()
+        rows = conn.execute(
+            "SELECT close, volume FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 55",
+            (ticker,)
+        ).fetchall()
+        conn.close()
+
+        closes  = [r['close']  for r in rows if r['close']  is not None]
+        volumes = [r['volume'] for r in rows if r['volume'] is not None]
+
+        if len(closes) >= 20:
+            result['ema20'] = sum(closes[:20]) / 20  # Simple MA as proxy
+        if len(closes) >= 50:
+            result['ema50'] = sum(closes[:50]) / 50
+
+        # RSI calculation (14-period)
+        if len(closes) >= 15:
+            gains, losses = [], []
+            for i in range(14):
+                diff = closes[i] - closes[i + 1]
+                if diff > 0:
+                    gains.append(diff)
+                    losses.append(0)
+                else:
+                    gains.append(0)
+                    losses.append(abs(diff))
+            avg_gain = sum(gains) / 14 or 0.001
+            avg_loss = sum(losses) / 14 or 0.001
+            rs = avg_gain / avg_loss
+            result['rsi'] = 100 - (100 / (1 + rs))
+
+        # Volume ratio: today vs 20-day average
+        if len(volumes) >= 2:
+            current_vol = volumes[0]
+            avg_vol = sum(volumes[1:min(21, len(volumes))]) / max(len(volumes) - 1, 1)
+            if avg_vol > 0:
+                result['vol_ratio'] = current_vol / avg_vol
+
+    except Exception:
+        pass
+    return result
+
+
+# ─── Factor 3: Risk/Reward Quality (0-20 pts) ─────────────────────────────────
+
+def _score_risk_reward(
+    entry_price: float | None,
+    stop_price: float | None,
+    target_price: float | None,
+    atr: float | None = None,
+) -> tuple[int, str]:
+    """
+    CRV-based score + ATR stop placement check.
+
+    CRV >= 3.0: 20 pts
+    CRV >= 2.5: 15 pts
+    CRV >= 2.0: 10 pts
+    CRV <  2.0: 0 pts (block)
+
+    stop_distance check:
+      wider than 3x ATR: -5 pts penalty
+
+    Returns: (score, reason)
+    If CRV < 2.0 returns (0, 'BLOCK: CRV too low')
+    """
+    if not entry_price or not stop_price or not target_price:
+        return (10, 'no_price_data — partial 10/20')
+
+    risk = abs(entry_price - stop_price)
+    reward = abs(target_price - entry_price)
+
+    if risk <= 0:
+        return (0, 'BLOCK: zero risk distance')
+
+    crv = reward / risk
+
+    if crv >= 3.0:
+        base = 20
+    elif crv >= 2.5:
+        base = 15
+    elif crv >= 2.0:
+        base = 10
+    else:
+        return (0, f'BLOCK: CRV {crv:.2f} < 2.0 minimum')
+
+    # ATR stop distance penalty
+    penalty = 0
+    if atr and atr > 0:
+        stop_dist_atr = risk / atr
+        if stop_dist_atr > 3.0:
+            penalty = 5
+
+    score = max(0, base - penalty)
+    penalty_str = f' (-{penalty} wide_stop)' if penalty else ''
+    return (score, f'CRV={crv:.2f} → {score}/20{penalty_str}')
+
+
+# ─── Factor 4: Market Context (0-15 pts) ──────────────────────────────────────
+
+def _score_market_context(strategy: str) -> tuple[int, str]:
+    """
+    VIX-based market context score.
+
+    VIX < 20:    15 pts
+    VIX 20-25:   10 pts
+    VIX 25-30:    5 pts
+    VIX > 30:     0 pts (no block — just no points)
+
+    Regime fit modifier (up to +5, capped at 15 total):
+      strategy preferred_regime matches current regime → small bonus
+    """
+    vix = None
+    regime = 'UNKNOWN'
+
+    try:
+        conn = get_db()
+        vix_row = conn.execute(
+            "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if vix_row:
+            vix = vix_row['value']
+
+        regime_row = conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if regime_row:
+            regime = regime_row['regime']
         conn.close()
     except Exception:
         pass
 
-    # Dann: Backtest-Daten
-    bt_score = 50
-    bt_path = DATA_DIR / 'backtest_results.json'
-    if bt_path.exists():
+    # Fallback: read from market-regime.json
+    if vix is None or regime == 'UNKNOWN':
         try:
-            data = json.loads(bt_path.read_text())
-            strat_data = data.get('detailed_results', {}).get(strategy, {})
-            results = strat_data.get('results', [])
-            if results:
-                wins = sum(1 for r in results if r.get('pnl', 0) > 0)
-                bt_score = max(10, min(100, int(wins / len(results) * 100)))
+            regime_file = DATA_DIR / 'market-regime.json'
+            if regime_file.exists():
+                data = json.loads(regime_file.read_text())
+                if vix is None:
+                    vix = data.get('vix')
+                if regime == 'UNKNOWN':
+                    regime = data.get('current_regime', 'UNKNOWN')
         except Exception:
             pass
 
-    # Live-Ergebnis hat 70% Gewicht wenn vorhanden
-    if live_score is not None:
-        return int(live_score * 0.70 + bt_score * 0.30)
-    return bt_score
-
-
-def _score_correlation(conn, ticker):
-    """Portfolio-Korrelation. Niedrig = besser (Diversifikation). 0-100"""
-    corr_path = DATA_DIR / 'correlations.json'
-    if not corr_path.exists():
-        return 50
-    
-    try:
-        data = json.loads(corr_path.read_text())
-        # Check average correlation with existing positions
-        open_trades = conn.execute(
-            "SELECT DISTINCT ticker FROM trades WHERE status='OPEN'"
-        ).fetchall()
-        open_tickers = [t['ticker'] for t in open_trades]
-        
-        if not open_tickers:
-            return 80  # Erstes Position = gut
-        
-        total_corr = 0
-        count = 0
-        for ot in open_tickers:
-            key = f"{ticker}_{ot}"
-            key2 = f"{ot}_{ticker}"
-            corr = data.get(key, data.get(key2))
-            if corr is not None:
-                total_corr += abs(corr)
-                count += 1
-        
-        if count == 0:
-            return 50
-        
-        avg_corr = total_corr / count
-        # Niedrige Korrelation = besser
-        return max(10, min(100, int((1 - avg_corr) * 100)))
-    except:
-        return 50
-
-
-def _score_sector_rotation(conn, ticker, days=20):
-    """Sektor-Momentum der letzten 20 Tage. 0-100"""
-    rows = conn.execute("""
-        SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT ?
-    """, (ticker, days + 1)).fetchall()
-    
-    if len(rows) < 5:
-        return 50
-    
-    current = rows[0]['close']
-    past = rows[-1]['close']
-    if not past:
-        return 50
-    
-    change_pct = (current / past - 1) * 100
-    # -10% = 0, 0% = 50, +10% = 100
-    return max(0, min(100, int(change_pct * 5 + 50)))
-
-
-def _get_current_vix(conn) -> float | None:
-    """Holt den aktuellsten VIX-Wert aus macro_daily."""
-    row = conn.execute(
-        "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
-    ).fetchone()
-    return row['value'] if row else None
-
-
-def _get_current_regime(conn) -> str:
-    """Holt das aktuelle Markt-Regime aus regime_history."""
-    row = conn.execute(
-        "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
-    ).fetchone()
-    return row['regime'] if row else 'UNKNOWN'
-
-
-def get_conviction_threshold(strategy: str, style: str = 'swing') -> int:
-    """
-    Gibt den Entry-Threshold zurück je nach Trade-Style und Strategie-Typ.
-    Day Trades brauchen höhere Conviction als Swing Trades.
-    """
-    is_thesis = (strategy and (
-        strategy.upper().startswith('PS_') or
-        strategy.upper().startswith('PS') or
-        strategy.upper() in {'S1', 'S2', 'S4', 'S5'}
-    ))
-    if style == 'day':
-        return PAPER_ENTRY_THRESHOLD_DAY_THESIS if is_thesis else PAPER_ENTRY_THRESHOLD_DAY
+    # VIX score
+    if vix is None:
+        vix_score = 7  # neutral/unknown
+        vix_str = 'VIX=n/a'
+    elif vix < 20:
+        vix_score = 15
+        vix_str = f'VIX={vix:.1f}<20'
+    elif vix < 25:
+        vix_score = 10
+        vix_str = f'VIX={vix:.1f} 20-25'
+    elif vix < 30:
+        vix_score = 5
+        vix_str = f'VIX={vix:.1f} 25-30'
     else:
-        return PAPER_ENTRY_THRESHOLD_THESIS if is_thesis else PAPER_ENTRY_THRESHOLD_DEFAULT
+        vix_score = 0
+        vix_str = f'VIX={vix:.1f}>30'
+
+    # Regime fit: check strategy's preferred_regime
+    regime_bonus = 0
+    try:
+        strategies = {}
+        strategies_path = DATA_DIR / 'strategies.json'
+        if strategies_path.exists():
+            strategies = json.loads(strategies_path.read_text(encoding='utf-8'))
+        s_cfg = strategies.get(strategy, {})
+        preferred = s_cfg.get('preferred_regime', s_cfg.get('regime', ''))
+        if preferred and regime and preferred.upper() in regime.upper():
+            regime_bonus = 3
+    except Exception:
+        pass
+
+    score = min(15, vix_score + regime_bonus)
+    bonus_str = f' +{regime_bonus}regime_fit' if regime_bonus else ''
+    return (score, f'{vix_str}{bonus_str} → {score}/15')
+
+
+# ─── Position Sizing ──────────────────────────────────────────────────────────
+
+def get_position_size(
+    score: float,
+    portfolio_value: float,
+    entry_price: float,
+    stop_price: float,
+) -> int:
+    """
+    Risk-based position sizing:
+      score >= 60: 2% risk (STRONG)
+      score >= 45: 1% risk (MODERATE)
+      else:        0 shares (skip)
+
+    Capped at 5% of portfolio per position.
+    Returns number of shares (integer).
+    """
+    if score < ENTRY_THRESHOLD:
+        return 0
+
+    risk_pct = 0.02 if score >= 60 else 0.01
+    risk_per_share = entry_price - stop_price
+    if risk_per_share <= 0:
+        return 0
+
+    risk_amount = portfolio_value * risk_pct
+    shares = int(risk_amount / risk_per_share)
+
+    # Cap at 5% of portfolio per position
+    max_shares = int(portfolio_value * 0.05 / entry_price)
+    return min(shares, max_shares)
+
+
+# ─── Main Conviction Calculator ───────────────────────────────────────────────
+
+def calculate_conviction(
+    ticker: str,
+    strategy: str,
+    entry_price: float | None = None,
+    stop: float | None = None,
+    target: float | None = None,
+    atr: float | None = None,
+    ema20: float | None = None,
+    ema50: float | None = None,
+    rsi: float | None = None,
+    vol_ratio: float | None = None,
+) -> dict:
+    """
+    Calculates conviction score (0-100) for a trade setup.
+
+    Returns dict with:
+      score, recommendation, factors, entry_allowed, block_reason,
+      position_sizing (STRONG/MODERATE/WEAK), vix, regime
+    """
+    # ── Factor 1: Thesis Strength ─────────────────────────────────────────
+    thesis_score, thesis_reason = _score_thesis_strength(strategy, ticker)
+
+    # Hard block: INVALIDATED thesis
+    if thesis_reason.startswith('BLOCK'):
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': thesis_reason,
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength': 0,
+                'technical_alignment': 0,
+                'risk_reward_quality': 0,
+                'market_context': 0,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+        }
+
+    # ── Factor 2: Technical Alignment ────────────────────────────────────
+    # If not provided, try to fetch from DB
+    if ema20 is None or rsi is None or vol_ratio is None:
+        tech_data = _fetch_technical_data(ticker, entry_price)
+        ema20     = ema20 or tech_data.get('ema20')
+        ema50     = ema50 or tech_data.get('ema50')
+        rsi       = rsi or tech_data.get('rsi')
+        vol_ratio = vol_ratio or tech_data.get('vol_ratio')
+
+    tech_score, tech_reason = _score_technical_alignment(
+        entry_price, ema20, ema50, rsi, vol_ratio
+    )
+
+    # ── Factor 3: Risk/Reward Quality ────────────────────────────────────
+    rr_score, rr_reason = _score_risk_reward(entry_price, stop, target, atr)
+
+    # Hard block: CRV too low
+    if rr_reason.startswith('BLOCK'):
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': rr_reason,
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength': thesis_score,
+                'technical_alignment': tech_score,
+                'risk_reward_quality': 0,
+                'market_context': 0,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+        }
+
+    # ── Factor 4: Market Context ──────────────────────────────────────────
+    mkt_score, mkt_reason = _score_market_context(strategy)
+
+    # ── Total Score ───────────────────────────────────────────────────────
+    total = thesis_score + tech_score + rr_score + mkt_score
+
+    # ── Sizing recommendation ─────────────────────────────────────────────
+    if total >= 60:
+        sizing = 'STRONG'        # 2% risk
+        recommendation = 'STRONG_BUY'
+    elif total >= ENTRY_THRESHOLD:
+        sizing = 'MODERATE'      # 1% risk
+        recommendation = 'BUY'
+    else:
+        sizing = 'SKIP'
+        recommendation = 'AVOID'
+
+    # Determine VIX and regime for metadata
+    vix = None
+    regime = None
+    try:
+        conn = get_db()
+        vix_row = conn.execute(
+            "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if vix_row:
+            vix = vix_row['value']
+        reg_row = conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if reg_row:
+            regime = reg_row['regime']
+        conn.close()
+    except Exception:
+        pass
+
+    return {
+        'score': round(total, 1),
+        'recommendation': recommendation,
+        'entry_allowed': total >= ENTRY_THRESHOLD,
+        'block_reason': None,
+        'factors': {
+            'thesis_strength':     thesis_score,
+            'technical_alignment': tech_score,
+            'risk_reward_quality': rr_score,
+            'market_context':      mkt_score,
+        },
+        'factor_reasons': {
+            'thesis_strength':     thesis_reason,
+            'technical_alignment': tech_reason,
+            'risk_reward_quality': rr_reason,
+            'market_context':      mkt_reason,
+        },
+        'position_sizing': sizing,
+        'vix': vix,
+        'regime': regime,
+        # Legacy compat fields
+        'vix_block': False,
+        'vix_block_reason': None,
+    }
 
 
 def check_entry_allowed(strategy: str = None, conn=None, style: str = 'swing') -> tuple[bool, str]:
     """
-    VIX Hard Block: Prüft ob ein Entry überhaupt erlaubt ist.
-    
+    Phase 2: VIX is now ONLY a conviction score modifier — no hard VIX block.
+    Entry is allowed unless thesis is INVALIDATED.
+
+    Kept for backward compatibility with paper_trade_engine.py
     Returns: (allowed: bool, reason: str)
-    
-    Regeln:
-    - CRISIS (VIX ≥ 35): Kein Entry außer S4/PS4 (Hedges/Gold)
-    - BEAR   (VIX 30-35): Kein Entry außer S4/PS1/PS4
-    - CORRECTION (VIX 25-30): Entry erlaubt aber Position Factor 0.6×
-    - NEUTRAL/BULL: Kein Hard Block
-    - Day Trades: zusätzlich VIX > 25 → kein Entry
     """
-    close_conn = conn is None
-    if conn is None:
-        conn = get_db()
-    
-    vix = _get_current_vix(conn)
-    regime = _get_current_regime(conn)
-    
-    if close_conn:
-        conn.close()
-    
-    HEDGE_STRATEGIES = {'S4', 'PS4', 'PS1'}  # Defensive Strategien erlaubt in jedem Regime
-    
-    # PS_* = Thesis-basierte Strategien (6-Schritt Deep Dive validiert)
-    # Erkennbar an Prefix PS_ mit Suffix (PS_STLD, PS_NVO etc.)
-    is_thesis_strategy = (strategy and (
-        strategy.upper().startswith('PS_') or  # Thesis-Play: PS_STLD, PS_NVO, ...
-        strategy.upper() in {'S1', 'S2', 'S5', 'S6', 'S7'}  # Makro-Thesen
-    ))
+    # The only hard block is now thesis INVALIDATED
+    if strategy:
+        ts, reason = _score_thesis_strength(strategy)
+        if reason.startswith('BLOCK'):
+            return False, f'Thesis INVALIDATED: {reason}'
 
-    # ── Day Trade Extra-Block: VIX > 25 ──────────────────────────────
-    if style == 'day' and vix is not None and vix > 25.0:
-        return False, f"🔴 DAY TRADE BLOCK: VIX {vix:.1f} > 25 — Intraday zu riskant bei hoher Volatilität"
-    
-    if regime == 'CRISIS' or (vix is not None and vix >= 35):
-        if strategy and strategy.upper() not in HEDGE_STRATEGIES and not is_thesis_strategy:
-            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — nur Hedges/Gold (S4, PS4) + Thesis-Plays erlaubt"
-        return True, f"⚠️ CRISIS-Regime: Thesis-Play ({strategy}) mit max. 50% Positionsgröße"
-    
-    if regime == 'BEAR' or (vix is not None and vix >= 30):
-        allowed_in_bear = HEDGE_STRATEGIES | {'S1'}
-        if strategy and strategy.upper() not in allowed_in_bear and not is_thesis_strategy:
-            return False, f"🔴 VIX HARD BLOCK: {regime} (VIX={vix:.1f}) — kein generischer Tech/Zykliker. Erlaubt: Thesis-Plays (PS_*), S1, S4, PS1, PS4"
-        return True, f"⚠️ BEAR-Regime: {strategy} erlaubt (Thesis/Öl/Hedge), Stop-Buffer +50% empfohlen"
-    
-    vix_str = f"{vix:.1f}" if vix else "n/a"
-    return True, f"✅ Regime {regime} (VIX={vix_str}) — Entry erlaubt"
-
-
-def calculate_conviction(ticker, strategy, entry_price=None, stop=None, target=None, weights=None):
-    """
-    Berechnet den Conviction Score (0-100) für ein Trade-Setup.
-    
-    Bei BEAR/CRISIS-Regime: Score wird auf max. 35 gekappt (Hard Block).
-    
-    Returns: dict mit score, breakdown, recommendation, vix_block
-    """
-    if weights is None:
-        weights = DEFAULT_WEIGHTS
-    
-    conn = get_db()
-    
-    # VIX Hard Block prüfen (vor Faktor-Berechnung)
-    entry_allowed, block_reason = check_entry_allowed(strategy, conn)
-    vix = _get_current_vix(conn)
-    regime = _get_current_regime(conn)
-    
-    # Market Guards (Earnings, Thesis, Sektor) — importiert aus market_guards
-    earnings_ok   = True
-    earnings_note = ''
-    thesis_mod    = 0
-    sector_score  = 50
+    # Get VIX for info only (no block)
+    vix = None
+    regime = 'UNKNOWN'
     try:
-        import sys
-        _mg_path = str(Path(__file__).parent)
-        if _mg_path not in sys.path:
-            sys.path.insert(0, _mg_path)
-        from market_guards import check_earnings_safe, thesis_conviction_modifier, score_sector_momentum
-        earnings_ok, earnings_note = check_earnings_safe(ticker)
-        thesis_mod   = thesis_conviction_modifier(ticker)
-        sector_score = score_sector_momentum(ticker)
+        _conn = conn or get_db()
+        vix_row = _conn.execute(
+            "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if vix_row:
+            vix = vix_row['value']
+        reg_row = _conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if reg_row:
+            regime = reg_row['regime']
+        if conn is None:
+            _conn.close()
     except Exception:
         pass
 
-    # Faktor 9: Watchlist-Preis-Trend (aus watchlist_prices Tabelle)
-    watchlist_trend_score = _score_watchlist_trend(conn, ticker)
-
-    # Alle 9 Faktoren berechnen
-    factors = {
-        'regime_alignment': _score_regime_alignment(conn, strategy),
-        'technical_setup': _score_technical_setup(entry_price, stop, target),
-        'volume_confirm': _score_volume_confirmation(conn, ticker),
-        'news_momentum': _score_news_momentum(conn, ticker, strategy=strategy),
-        'signal_confluence': _score_signal_confluence(conn, ticker),
-        'backtest_perf': _score_backtest_performance(strategy),
-        'correlation': _score_correlation(conn, ticker),
-        'sector_rotation': sector_score,
-        'watchlist_trend': watchlist_trend_score,  # ← NEU: Preis-Trend aus Snapshots
-    }
-    
-    # Gewichteter Score
-    total_weight = sum(weights.values())
-    score = sum(factors[k] * weights[k] for k in factors) / total_weight
-    score = round(score, 1)
-    
-    # Thesis-Modifier anwenden (Kill-Trigger -20, Entry-Signal +10)
-    score = max(0, min(100, score + thesis_mod))
-
-    # Earnings Hard Block: Entry verboten wenn Earnings in ≤5 Tagen
-    earnings_blocked = False
-    if not earnings_ok:
-        score = min(score, 15)  # Effektiv blockiert
-        earnings_blocked = True
-
-    # VIX Hard Cap: BEAR → max 35, CRISIS → max 20
-    vix_blocked = False
-    if regime == 'CRISIS' or (vix is not None and vix >= 35):
-        if not entry_allowed:
-            score = min(score, 20)
-            vix_blocked = True
-    elif regime == 'BEAR' or (vix is not None and vix >= 30):
-        if not entry_allowed:
-            score = min(score, 35)
-            vix_blocked = True
-        else:
-            # Auch erlaubte Strategien bei BEAR: Score-Penalty
-            score = min(score, 55)
-    
-    # Recommendation
-    if vix_blocked:
-        rec = 'STRONG_AVOID'
-    elif score >= 80:
-        rec = 'STRONG_BUY'
-    elif score >= 65:
-        rec = 'BUY'
-    elif score >= 50:
-        rec = 'HOLD'
-    elif score >= 35:
-        rec = 'AVOID'
-    else:
-        rec = 'STRONG_AVOID'
-    
-    # Schwächste Faktoren identifizieren
-    sorted_factors = sorted(factors.items(), key=lambda x: x[1])
-    weakest = sorted_factors[:2]
-    strongest = sorted_factors[-2:]
-    
-    conn.close()
-    
-    return {
-        'score': score,
-        'recommendation': rec,
-        'factors': factors,
-        'weights': weights,
-        'weakest': [{'factor': k, 'score': v} for k, v in weakest],
-        'strongest': [{'factor': k, 'score': v} for k, v in strongest],
-        'vix_block': vix_blocked,
-        'vix_block_reason': block_reason if vix_blocked else None,
-        'regime': regime,
-        'vix': vix,
-        'entry_allowed': entry_allowed,
-    }
+    vix_str = f'{vix:.1f}' if vix else 'n/a'
+    return True, f'Entry allowed — Regime {regime} (VIX={vix_str}). VIX is conviction modifier only.'
 
 
-def score_all_open_trades():
-    """Scored alle offenen Trades."""
-    conn = get_db()
-    trades = conn.execute("""
-        SELECT id, ticker, strategy, entry_price, stop, target 
-        FROM trades WHERE status='OPEN'
-    """).fetchall()
-    conn.close()
-    
+def score_all_open_trades() -> list[dict]:
+    """Scores all open trades for monitoring."""
+    try:
+        conn = get_db()
+        trades = conn.execute(
+            "SELECT id, ticker, strategy, entry_price, stop_price, target_price "
+            "FROM paper_portfolio WHERE status='OPEN'"
+        ).fetchall()
+        conn.close()
+    except Exception:
+        return []
+
     results = []
     for t in trades:
         result = calculate_conviction(
-            t['ticker'], t['strategy'] or 'S1',
-            t['entry_price'], t['stop'], t['target']
+            ticker=t['ticker'],
+            strategy=t['strategy'] or 'DEFAULT',
+            entry_price=t['entry_price'],
+            stop=t['stop_price'],
+            target=t['target_price'],
         )
         result['trade_id'] = t['id']
         result['ticker'] = t['ticker']
         results.append(result)
-    
+
     return sorted(results, key=lambda x: x['score'], reverse=True)
 
 
-def calibrate_weights():
-    """Self-Calibration: passt Gewichte an basierend auf geschlossenen Trades."""
-    conn = get_db()
-    closed = conn.execute("""
-        SELECT COUNT(*) FROM trades WHERE status IN ('WIN','LOSS')
-    """).fetchone()[0]
-    
-    if closed < 50:
-        conn.close()
-        return None, f"Nicht genug Trades ({closed}/50). Default-Gewichte bleiben."
-    
-    # TODO: Faktor-Performance-Analyse nach 50+ geschlossenen Trades
-    # Für jeden Faktor: korreliert hoher Score mit WIN?
-    conn.close()
-    return DEFAULT_WEIGHTS, "Self-Calibration ab 50 Trades aktiv"
-
+# ─── CLI ──────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
     import sys
-    
+
     if len(sys.argv) > 1 and sys.argv[1] == 'all':
         results = score_all_open_trades()
-        print(f"═══ Conviction Scores — {len(results)} offene Trades ═══")
+        print(f'=== Conviction Scores v3 — {len(results)} open trades ===')
         for r in results:
-            emoji = '🟢' if r['score'] >= 65 else ('🟡' if r['score'] >= 50 else '🔴')
-            print(f"  {emoji} {r['ticker']:12} Score: {r['score']:5.1f} → {r['recommendation']}")
+            icon = '[STRONG]' if r['score'] >= 60 else ('[MOD]' if r['score'] >= 45 else '[WEAK]')
+            print(f"  {icon} {r['ticker']:12} Score: {r['score']:5.1f} -> {r['recommendation']}")
             for k, v in r['factors'].items():
-                bar = '█' * (v // 10) + '░' * (10 - v // 10)
-                print(f"      {k:22} {bar} {v:3}")
+                print(f"      {k:25} {v:3}/{'35' if k=='thesis_strength' else '30' if k=='technical_alignment' else '20' if k=='risk_reward_quality' else '15'}")
             print()
-    
+
     elif len(sys.argv) >= 4:
-        ticker, strategy = sys.argv[1], sys.argv[2]
-        entry = float(sys.argv[3]) if len(sys.argv) > 3 else None
-        stop = float(sys.argv[4]) if len(sys.argv) > 4 else None
-        target = float(sys.argv[5]) if len(sys.argv) > 5 else None
-        
-        result = calculate_conviction(ticker, strategy, entry, stop, target)
-        print(f"Conviction: {result['score']}/100 → {result['recommendation']}")
+        ticker   = sys.argv[1]
+        strategy = sys.argv[2]
+        entry    = float(sys.argv[3]) if len(sys.argv) > 3 else None
+        stop_p   = float(sys.argv[4]) if len(sys.argv) > 4 else None
+        target_p = float(sys.argv[5]) if len(sys.argv) > 5 else None
+
+        result = calculate_conviction(ticker, strategy, entry, stop_p, target_p)
+        print(f'Conviction v3: {result["score"]}/100 -> {result["recommendation"]} ({result["position_sizing"]})')
         for k, v in result['factors'].items():
-            print(f"  {k:22} {v:3}/100")
-    
+            reason = result['factor_reasons'].get(k, '')
+            print(f'  {k:25} {v:3}  [{reason}]')
+        if not result['entry_allowed']:
+            print(f'  BLOCKED: {result["block_reason"]}')
+
     else:
-        results = score_all_open_trades()
-        print(json.dumps(results, indent=2))
+        print('Usage: conviction_scorer.py TICKER STRATEGY ENTRY STOP TARGET')
+        print('       conviction_scorer.py all')

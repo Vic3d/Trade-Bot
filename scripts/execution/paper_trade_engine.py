@@ -301,37 +301,44 @@ def execute_paper_entry(
             'blocked_by': 'crv_minimum',
         }
 
-    # ── Guard 1: VIX Hard Block ──────────────────────────────────────
-    # VIX aktualisieren bevor wir entscheiden
+    # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
+    # Phase 2: VIX is no longer a hard block — only a conviction modifier.
+    # Hard blocks are: thesis INVALIDATED or CRV < 2.0
     vix = refresh_vix_in_db()
-    
+
     try:
-        from conviction_scorer import check_entry_allowed, calculate_conviction
+        from conviction_scorer import check_entry_allowed, calculate_conviction, get_position_size, ENTRY_THRESHOLD
         allowed, reason = check_entry_allowed(strategy)
         if not allowed:
             return {
                 'success': False,
                 'trade_id': None,
-                'message': f'❌ VIX Block: {reason}',
-                'blocked_by': 'vix_regime',
+                'message': f'❌ Entry blocked: {reason}',
+                'blocked_by': 'thesis_invalidated',
             }
     except Exception as e:
-        reason = f'Regime check unavailable: {e}'
-    
-    # ── Guard 2: Conviction Score ────────────────────────────────────
-    # PS_* = Thesis-Strategien (manuell Deep-Dive validiert) → niedrigere Schwelle
-    is_thesis = strategy.upper().startswith('PS_')
-    threshold = ENTRY_THRESHOLD_THESIS if is_thesis else ENTRY_THRESHOLD_DEFAULT
+        reason = f'Entry check unavailable: {e}'
 
+    # ── Guard 2: Conviction Score ────────────────────────────────────
     try:
         conviction = calculate_conviction(ticker, strategy, entry_price, stop_price, target_price)
         conv_score = conviction['score']
 
-        if conv_score < threshold:
+        # Hard block from conviction scorer (thesis invalidated or CRV too low)
+        if not conviction.get('entry_allowed', True):
             return {
                 'success': False,
                 'trade_id': None,
-                'message': f'❌ Conviction zu niedrig: {conv_score:.0f} < {threshold} ({"Thesis" if is_thesis else "Standard"}-Threshold)',
+                'message': f'❌ Conviction block: {conviction.get("block_reason", "score too low")}',
+                'blocked_by': 'conviction',
+                'conviction_score': conv_score,
+            }
+
+        if conv_score < ENTRY_THRESHOLD:
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f'❌ Conviction zu niedrig: {conv_score:.0f} < {ENTRY_THRESHOLD} (ENTRY_THRESHOLD)',
                 'blocked_by': 'conviction',
                 'conviction_score': conv_score,
             }
@@ -423,24 +430,40 @@ def execute_paper_entry(
     except Exception:
         pass
     
-    # ── Guard 6: Freies Cash ─────────────────────────────────────────
+    # ── Guard 6: Freies Cash + Position Sizing ───────────────────────
     free_cash = get_free_cash(conn)
     cfg = load_config()
-    
-    # Position Sizing: 2% Risiko-Methode
-    risk_per_share = abs(entry_price - stop_price)
     portfolio_value = cfg.get('capital', 25000)
-    if risk_per_share > 0 and entry_price > 0:
-        max_risk_eur = portfolio_value * 0.02
-        position_eur = min(
-            round(max_risk_eur / (risk_per_share / entry_price), 2),
-            cfg.get('position_sizing', {}).get('score_6_to_9', DEFAULT_POSITION_EUR),
-            free_cash - 100  # mind. 100€ Cash-Reserve
-        )
-    else:
-        position_eur = DEFAULT_POSITION_EUR
-    
-    if position_eur <= 0 or free_cash < position_eur:
+
+    # Phase 2: Use get_position_size() from conviction_scorer (score-based sizing)
+    try:
+        from conviction_scorer import get_position_size as _gps
+        shares_from_risk = _gps(conv_score, portfolio_value, entry_price, stop_price)
+    except Exception:
+        # Fallback: 2% risk method
+        risk_per_share = abs(entry_price - stop_price)
+        if risk_per_share > 0:
+            shares_from_risk = int(portfolio_value * 0.02 / risk_per_share)
+        else:
+            shares_from_risk = 0
+
+    if shares_from_risk <= 0:
+        conn.close()
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': f'❌ Position sizing returned 0 shares (conviction={conv_score:.0f}, entry={entry_price:.2f}, stop={stop_price:.2f})',
+            'blocked_by': 'sizing_zero',
+        }
+
+    # Apply cash constraint
+    position_eur = shares_from_risk * entry_price
+    if position_eur > free_cash - 100:
+        # Scale down to available cash
+        shares_from_risk = int((free_cash - 100) / entry_price)
+        position_eur = shares_from_risk * entry_price
+
+    if shares_from_risk <= 0 or free_cash < position_eur:
         conn.close()
         return {
             'success': False,
@@ -448,8 +471,8 @@ def execute_paper_entry(
             'message': f'❌ Nicht genug Cash: {free_cash:.0f}€ verfügbar, {position_eur:.0f}€ benötigt',
             'blocked_by': 'cash',
         }
-    
-    shares = round(position_eur / entry_price, 4)
+
+    shares = float(shares_from_risk)
     fees = FEE_PER_TRADE
     total_cost = shares * entry_price + fees
     
