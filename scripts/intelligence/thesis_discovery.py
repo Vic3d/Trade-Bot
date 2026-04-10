@@ -334,6 +334,70 @@ Regeln:
         return []
 
 
+# ── Auto-Activate Thesis ─────────────────────────────────────────────────────
+
+def _auto_activate_thesis(thesis: dict) -> bool:
+    """
+    Aktiviert eine These direkt ohne Bestätigung.
+    Schreibt in strategies.json + setzt status ACTIVE.
+    """
+    thesis_id = thesis.get('id', '')
+    if not thesis_id:
+        print('[thesis_discovery] _auto_activate_thesis: missing id', flush=True)
+        return False
+
+    confidence = thesis.get('confidence', 0)
+    today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+
+    # Read current strategies.json
+    try:
+        strategies: dict = {}
+        if STRATEGIES_JSON.exists():
+            try:
+                strategies = json.loads(STRATEGIES_JSON.read_text(encoding='utf-8'))
+            except Exception:
+                strategies = {}
+
+        # Build strategy entry from thesis dict
+        new_entry = {
+            'name':          thesis.get('name', thesis_id),
+            'type':          'paper',
+            'thesis':        thesis.get('thesis', ''),
+            'entry_trigger': thesis.get('entry_trigger', ''),
+            'kill_trigger':  thesis.get('kill_trigger', ''),
+            'tickers':       thesis.get('tickers', []),
+            'direction':     thesis.get('direction', 'LONG'),
+            'timeframe':     thesis.get('timeframe', ''),
+            'confidence':    confidence,
+            'status':        'active',
+            'genesis': {
+                'created':         today,
+                'trigger':         f'Albert auto-aktiviert (Konfidenz: {confidence}%)',
+                'auto_discovered': True,
+            },
+        }
+        strategies[thesis_id] = new_entry
+        STRATEGIES_JSON.write_text(
+            json.dumps(strategies, indent=2, ensure_ascii=False),
+            encoding='utf-8',
+        )
+        print(f'[thesis_discovery] {thesis_id} written to strategies.json', flush=True)
+    except Exception as e:
+        print(f'[thesis_discovery] strategies.json write error: {e}', flush=True)
+        return False
+
+    # Update DB status
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from core.thesis_engine import set_thesis_status
+        set_thesis_status(thesis_id, 'ACTIVE', f'Albert auto-aktiviert (Konfidenz: {confidence}%)')
+    except Exception as e:
+        print(f'[thesis_discovery] set_thesis_status error: {e}', flush=True)
+
+    return True
+
+
 # ── Store Proposed Theses ─────────────────────────────────────────────────────
 
 def store_proposed_theses(theses: list[dict]) -> int:
@@ -421,7 +485,7 @@ def store_proposed_theses(theses: list[dict]) -> int:
 
 def send_discovery_report(theses: list[dict], headlines_count: int) -> bool:
     """
-    Format and send Discord report with Albert's weekly thesis findings.
+    Format and send Discord report with Albert's autonomous thesis actions.
     Returns True on success.
     """
     try:
@@ -430,35 +494,53 @@ def send_discovery_report(theses: list[dict], headlines_count: int) -> bool:
         print('[thesis_discovery] discord_sender not available', flush=True)
         return False
 
-    # Build message
+    # Partition theses by confidence
+    auto_activated = [t for t in theses if t.get('confidence', 0) >= 65]
+    watching       = [t for t in theses if 50 <= t.get('confidence', 0) <= 64]
+    proposed_only  = [t for t in theses if t.get('confidence', 0) < 50]
+
     today = datetime.now(timezone.utc).strftime('%d.%m.%Y')
     lines = [
         f'🔍 **Albert | Wöchentliche Thesen-Analyse** ({today}, Sonntag)',
         f'Analysierte Headlines: **{headlines_count}**',
         '',
-        '📌 **Neue Thesen-Vorschläge:**',
-        '',
     ]
 
     number_emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
 
-    for i, t in enumerate(theses):
-        num_emoji = number_emojis[i] if i < len(number_emojis) else f'{i+1}.'
-        tid       = t.get('id', '?')
-        name      = t.get('name', '?')
-        thesis    = t.get('thesis', '?')
-        tickers   = t.get('tickers', [])
-        timeframe = t.get('timeframe', '?')
-        confidence = t.get('confidence', '?')
-        direction  = t.get('direction', '')
+    # AUTO-AKTIVIERT section
+    if auto_activated:
+        lines.append('✅ **AUTO-AKTIVIERT (Konfidenz ≥ 65%):**')
+        for i, t in enumerate(auto_activated):
+            num_emoji  = number_emojis[i] if i < len(number_emojis) else f'{i+1}.'
+            tid        = t.get('id', '?')
+            name       = t.get('name', '?')
+            confidence = t.get('confidence', '?')
+            lines.append(f'{num_emoji} **{tid} — {name}** ({confidence}%) → AKTIV, Albert sucht Entries')
+        lines.append('')
 
-        ticker_str = ', '.join(tickers) if tickers else '?'
-        dir_str    = f' ({direction})' if direction else ''
+    # BEOBACHTUNG section
+    if watching:
+        lines.append('👁️ **BEOBACHTUNG (Konfidenz 50-64%):**')
+        offset = len(auto_activated)
+        for i, t in enumerate(watching):
+            num_emoji  = number_emojis[offset + i] if (offset + i) < len(number_emojis) else f'{offset+i+1}.'
+            tid        = t.get('id', '?')
+            name       = t.get('name', '?')
+            confidence = t.get('confidence', '?')
+            lines.append(f'{num_emoji} **{tid} — {name}** ({confidence}%) → WATCHING')
+        lines.append('')
 
-        lines.append(f'{num_emoji} **{tid} — {name}** (Konfidenz: {confidence}%){dir_str}')
-        lines.append(f'   These: {thesis}')
-        lines.append(f'   Ticker: {ticker_str}')
-        lines.append(f'   Zeitrahmen: {timeframe}')
+    # PROPOSED ONLY section
+    if proposed_only:
+        lines.append('📋 **VORGESCHLAGEN (Konfidenz < 50%):**')
+        offset = len(auto_activated) + len(watching)
+        for i, t in enumerate(proposed_only):
+            num_emoji  = number_emojis[offset + i] if (offset + i) < len(number_emojis) else f'{offset+i+1}.'
+            tid        = t.get('id', '?')
+            name       = t.get('name', '?')
+            confidence = t.get('confidence', '?')
+            lines.append(f'{num_emoji} **{tid} — {name}** ({confidence}%) → gespeichert, kein Entry')
         lines.append('')
 
     if not theses:
@@ -466,8 +548,8 @@ def send_discovery_report(theses: list[dict], headlines_count: int) -> bool:
         lines.append('')
 
     lines.append('─' * 30)
-    lines.append('Zum Bestätigen: `Bestätigen: PS21` in Discord schreiben')
-    lines.append('Zum Ablehnen: `Ablehnen: PS21`')
+    lines.append('ℹ️ Albert handelt autonom. Keine Bestätigung nötig.')
+    lines.append('Zum Stoppen einer These: `Stopp: PS21`')
 
     full_message = '\n'.join(lines)
 
@@ -538,7 +620,7 @@ def run_discovery() -> dict:
         print(f'[thesis_discovery] Claude error: {e}', flush=True)
         theses = []
 
-    # Step 4: Store proposed theses
+    # Step 4: Store proposed theses + auto-activate based on confidence
     if theses:
         try:
             stored = store_proposed_theses(theses)
@@ -546,6 +628,32 @@ def run_discovery() -> dict:
         except Exception as e:
             errors.append(f'store_proposed_theses: {e}')
             print(f'[thesis_discovery] Store error: {e}', flush=True)
+
+        # Auto-activate or set watching status immediately — no confirmation needed
+        for t in theses:
+            confidence = t.get('confidence', 0)
+            tid = t.get('id', '?')
+            try:
+                if confidence >= 65:
+                    # Activate: write to strategies.json + set ACTIVE in DB
+                    ok = _auto_activate_thesis(t)
+                    print(f'[thesis_discovery] {tid} AUTO-AKTIVIERT (Konfidenz {confidence}%) — ok={ok}', flush=True)
+                elif confidence >= 50:
+                    # Watching: DB status only, no strategies.json entry yet
+                    try:
+                        import sys as _sys
+                        _sys.path.insert(0, str(WS / 'scripts'))
+                        from core.thesis_engine import set_thesis_status
+                        set_thesis_status(tid, 'WATCHING', f'Albert: Konfidenz {confidence}% — beobachtet')
+                    except Exception as e:
+                        print(f'[thesis_discovery] set_thesis_status WATCHING error: {e}', flush=True)
+                    print(f'[thesis_discovery] {tid} → WATCHING (Konfidenz {confidence}%)', flush=True)
+                else:
+                    # Below threshold — stays PROPOSED, already stored
+                    print(f'[thesis_discovery] {tid} → PROPOSED only (Konfidenz {confidence}% < 50)', flush=True)
+            except Exception as e:
+                errors.append(f'auto_activate {tid}: {e}')
+                print(f'[thesis_discovery] Auto-activate error for {tid}: {e}', flush=True)
 
     # Step 5: Send Discord report
     try:

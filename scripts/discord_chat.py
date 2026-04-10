@@ -341,113 +341,47 @@ def ask_albert(message: str) -> str:
         )
 
 
-# ── Phase 6: Thesis Confirmation / Rejection ─────────────────────────────────
+# ── Phase 6: Thesis Stop (manual override) ───────────────────────────────────
+# Note: _confirm_thesis and _reject_thesis removed — Albert now auto-activates.
+# Victor's only remaining override is "Stopp: PSxx" to stop an active thesis.
 
-def _confirm_thesis(thesis_id: str) -> None:
+def _stop_thesis(thesis_id: str) -> None:
     """
-    Confirms a PROPOSED thesis: adds it to strategies.json as ACTIVE
-    and updates its status in the DB.
+    Stops an active thesis immediately on Victor's request.
+    Marks it INVALIDATED in DB and removes it from strategies.json active entries.
     """
     thesis_id = thesis_id.strip().upper()
-    print(f'[Albert] Confirming thesis: {thesis_id}', flush=True)
+    print(f'[Albert] Stopping thesis on Victor request: {thesis_id}', flush=True)
 
-    # Load pending thesis data
-    pending_file = DATA / 'pending_theses.json'
-    thesis_data: dict = {}
-    try:
-        if pending_file.exists():
-            raw = json.loads(pending_file.read_text(encoding='utf-8'))
-            if isinstance(raw, dict):
-                thesis_data = raw.get(thesis_id, {})
-            elif isinstance(raw, list):
-                for item in raw:
-                    if isinstance(item, dict) and item.get('id') == thesis_id:
-                        thesis_data = item
-                        break
-    except Exception as e:
-        print(f'[Albert] pending_theses.json read error: {e}', flush=True)
-
-    # Write to strategies.json if we have the data
-    if thesis_data:
-        try:
-            strategies_file = DATA / 'strategies.json'
-            strategies: dict = {}
-            if strategies_file.exists():
-                try:
-                    strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
-                except Exception:
-                    strategies = {}
-
-            # Build strategy entry from thesis data
-            new_entry = {
-                'name':           thesis_data.get('name', thesis_id),
-                'type':           'paper',
-                'thesis':         thesis_data.get('thesis', ''),
-                'entry_trigger':  thesis_data.get('entry_trigger', ''),
-                'kill_trigger':   thesis_data.get('kill_trigger', ''),
-                'tickers':        thesis_data.get('tickers', []),
-                'direction':      thesis_data.get('direction', 'LONG'),
-                'timeframe':      thesis_data.get('timeframe', ''),
-                'confidence':     thesis_data.get('confidence', 70),
-                'status':         'active',
-                'genesis': {
-                    'created':    datetime.now().strftime('%Y-%m-%d'),
-                    'trigger':    'Von Victor bestätigt via Discord',
-                    'auto_discovered': True,
-                },
-            }
-            strategies[thesis_id] = new_entry
-            strategies_file.write_text(json.dumps(strategies, indent=2, ensure_ascii=False), encoding='utf-8')
-            print(f'[Albert] {thesis_id} written to strategies.json', flush=True)
-        except Exception as e:
-            print(f'[Albert] strategies.json write error: {e}', flush=True)
-
-    # Update DB status
+    # Update DB status via thesis_engine
     try:
         import sys as _sys
         _sys.path.insert(0, str(SCRIPTS))
-        from core.thesis_engine import set_thesis_status
-        set_thesis_status(thesis_id, 'ACTIVE', 'Von Victor bestätigt')
+        from core.thesis_engine import invalidate_thesis
+        invalidate_thesis(thesis_id, 'Von Victor gestoppt')
     except Exception as e:
-        print(f'[Albert] set_thesis_status error: {e}', flush=True)
+        print(f'[Albert] invalidate_thesis error: {e}', flush=True)
+
+    # Mark as inactive in strategies.json if present
+    strategies_file = DATA / 'strategies.json'
+    try:
+        if strategies_file.exists():
+            strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
+            if isinstance(strategies, dict) and thesis_id in strategies:
+                strategies[thesis_id]['status'] = 'inactive'
+                strategies_file.write_text(
+                    json.dumps(strategies, indent=2, ensure_ascii=False),
+                    encoding='utf-8',
+                )
+                print(f'[Albert] {thesis_id} set inactive in strategies.json', flush=True)
+    except Exception as e:
+        print(f'[Albert] strategies.json update error: {e}', flush=True)
 
     # Send confirmation to Discord
     _send_message(
-        f'✅ **These {thesis_id} ist jetzt AKTIV.** Albert sucht ab sofort nach Entries.',
+        f'🛑 **These {thesis_id} gestoppt.** Von Victor manuell deaktiviert.',
         CHANNEL_ID,
     )
-
-
-def _reject_thesis(thesis_id: str) -> None:
-    """
-    Rejects a PROPOSED thesis: marks it INVALIDATED in DB
-    and removes it from pending_theses.json.
-    """
-    thesis_id = thesis_id.strip().upper()
-    print(f'[Albert] Rejecting thesis: {thesis_id}', flush=True)
-
-    # Update DB status
-    try:
-        import sys as _sys
-        _sys.path.insert(0, str(SCRIPTS))
-        from core.thesis_engine import set_thesis_status
-        set_thesis_status(thesis_id, 'INVALIDATED', 'Von Victor abgelehnt')
-    except Exception as e:
-        print(f'[Albert] set_thesis_status error: {e}', flush=True)
-
-    # Remove from pending_theses.json
-    pending_file = DATA / 'pending_theses.json'
-    try:
-        if pending_file.exists():
-            raw = json.loads(pending_file.read_text(encoding='utf-8'))
-            if isinstance(raw, dict) and thesis_id in raw:
-                del raw[thesis_id]
-                pending_file.write_text(json.dumps(raw, indent=2, ensure_ascii=False), encoding='utf-8')
-    except Exception as e:
-        print(f'[Albert] pending_theses.json cleanup error: {e}', flush=True)
-
-    # Send rejection confirmation
-    _send_message(f'❌ **These {thesis_id} abgelehnt.**', CHANNEL_ID)
 
 
 def _extract_thesis_id(content: str, prefix: str) -> str:
@@ -535,36 +469,22 @@ def poll_once() -> None:
 
         print(f'[Albert] Neue Nachricht von Victor: {content[:80]}', flush=True)
 
-        # ── Phase 6: Thesis confirmation / rejection ──────────────────────
-        # "Bestätigen: PS21", "Bestätigen PS21", "Confirm: PS21"
-        # "Ablehnen: PS21", "Ablehnen PS21", "Reject: PS21"
+        # ── Phase 6: Thesis stop (manual override) ────────────────────────
+        # Victor can stop an active thesis: "Stopp: PS21" or "Stopp PS21"
         content_stripped = content.strip()
         content_lower = content_stripped.lower()
 
-        confirm_prefixes = ('bestätigen:', 'bestätigen ', 'bestaetigen:', 'bestaetigen ', 'confirm:', 'confirm ')
-        reject_prefixes  = ('ablehnen:', 'ablehnen ', 'reject:', 'reject ')
+        stop_prefixes = ('stopp:', 'stopp ', 'stop:', 'stop ')
 
-        matched_confirm = next(
-            (p for p in confirm_prefixes if content_lower.startswith(p)), None
-        )
-        matched_reject = next(
-            (p for p in reject_prefixes if content_lower.startswith(p)), None
+        matched_stop = next(
+            (p for p in stop_prefixes if content_lower.startswith(p)), None
         )
 
-        if matched_confirm:
-            thesis_id = _extract_thesis_id(content_stripped, content_stripped[:len(matched_confirm)])
+        if matched_stop:
+            thesis_id = _extract_thesis_id(content_stripped, content_stripped[:len(matched_stop)])
             if thesis_id:
-                _confirm_thesis(thesis_id)
+                _stop_thesis(thesis_id)
                 # Update state and continue (no Albert LLM call needed)
-                state['last_message_id'] = highest_id
-                state['last_poll'] = datetime.now().isoformat()
-                _save_state(state)
-                continue
-
-        elif matched_reject:
-            thesis_id = _extract_thesis_id(content_stripped, content_stripped[:len(matched_reject)])
-            if thesis_id:
-                _reject_thesis(thesis_id)
                 state['last_message_id'] = highest_id
                 state['last_poll'] = datetime.now().isoformat()
                 _save_state(state)
