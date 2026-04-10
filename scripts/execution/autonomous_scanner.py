@@ -38,13 +38,9 @@ UNIVERSE = {
     # ── Tier A: Thesis-Plays (Victor's validierte Strategien)
     'TIER_A': [
         # Thesis-Plays — von Victor validiert, Deep-Dive
-        ('STLD',      'PS_STLD',    'Stahl-Zölle + EAF-Vorteil'),
-        ('NUE',       'PS_STLD',    'Stahl-Zölle Sekundärplay'),
-        ('NOVO-B.CO', 'PS_NVO',     'GLP-1 Bewertungsabschlag PE 10x'),
+        # ENTFERNT: PS_STLD (3 Trades, 0% WR, -788€), PS4/S4 (0% WR, -1070€)
         ('OXY',       'PS1',        'Iran-These / Hormuz-Prämie'),
         ('EQNR.OL',   'PS1',        'Nordsee-Öl Ersatz für EU'),
-        ('AG',        'PS4',        'Silber-Miner bei Geopolitik'),
-        ('WPM',       'PS4',        'Streaming-Silber / Gold'),
         ('FRO',       'PS2',        'Tanker-Rates bei Hormuz-Stress'),
         # Neu aus Discovery 04.04.2026
         ('FCX',       'PS_Copper',  'Kupfer — China-Erholung + grüne Transition'),
@@ -85,12 +81,7 @@ UNIVERSE = {
         ('AMAT',   'PS_AIInfra', 'Applied Materials — Chip Equipment'),
         ('MU',     'PS_AIInfra', 'Micron — HBM Memory für AI'),
         ('VRT',    'PS_AIInfra', 'Vertiv — Datacenter Cooling/Power'),
-        # Edelmetalle
-        ('GLD',    'PS4',   'Gold ETF'),
-        ('SLV',    'PS4',   'Silber ETF'),
-        ('GDX',    'PS4',   'Gold-Miner ETF'),
-        ('GOLD',   'PS4',   'Barrick Gold'),
-        ('NEM',    'PS4',   'Newmont'),
+        # ENTFERNT: PS4 Edelmetalle (2 Trades, 0% WR, -46€) — pausiert bis genug Daten
         # Tech selektiv (nur bei BULL/NEUTRAL)
         ('MSFT',   'S3',    'Microsoft — Tech-Qualität'),
         ('ASML.AS','S3',    'ASML — Halbleiter-Monopol'),
@@ -128,7 +119,7 @@ UNIVERSE = {
 }
 
 # Tier C: VIX-Block überschreiben — Paper ist Lernen, kein echtes Geld
-TIER_C_BYPASS_VIX = True
+TIER_C_BYPASS_VIX = False  # Deaktiviert — Tier C muss durch alle Guards
 
 # ─── DB Helpers ─────────────────────────────────────────────────────
 
@@ -163,7 +154,7 @@ def get_free_cash() -> float:
 # ─── Preis + Technische Analyse ─────────────────────────────────────
 
 def fetch_data(ticker: str, days: int = 90) -> dict | None:
-    """Holt OHLCV + einfache Technicals für einen Ticker."""
+    """Holt OHLCV + einfache Technicals für einen Ticker. Alle Preise in EUR."""
     url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={days}d'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     try:
@@ -185,6 +176,21 @@ def fetch_data(ticker: str, days: int = 90) -> dict | None:
         high52  = meta.get('fiftyTwoWeekHigh')
         low52   = meta.get('fiftyTwoWeekLow')
         prev    = meta.get('chartPreviousClose', closes[-2] if len(closes) > 1 else price)
+
+        # ── FX-Konvertierung: Alles in EUR ──────────────────────────
+        try:
+            from live_data import get_fx_factor
+            fx = get_fx_factor(ticker)
+        except Exception:
+            fx = 1.0
+        price  = price * fx
+        high52 = high52 * fx if high52 else None
+        low52  = low52 * fx if low52 else None
+        prev   = prev * fx if prev else price
+        closes = [c * fx for c in closes]
+        # Volumes bleiben unkonvertiert (Stückzahl, keine Währung)
+        # ────────────────────────────────────────────────────────────
+
         change  = (price - prev) / prev * 100 if prev else 0
 
         ema20 = _ema(closes, 20)
@@ -271,7 +277,7 @@ def score_tier_a(data: dict) -> tuple[float, float, float, str] | None:
     target = ema50 if (ema50 and ema50 > p * 1.08) else p * 1.18
     crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
 
-    if crv < 1.5:
+    if crv < 2.0:
         return None
 
     reason = f"Thesis: {abs(from_high):.0f}% unter 52W-High, RSI={rsi:.0f}, CRV={crv:.1f}:1"
@@ -298,7 +304,7 @@ def score_tier_b(data: dict) -> tuple[float, float, float, str] | None:
             stop = ema50 * 0.97 if ema50 else p * 0.94
             target = p * 1.12
             crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-            if crv >= 1.5:
+            if crv >= 2.0:
                 reason = f"EMA-Trend: P={p:.2f} > EMA20={ema20:.2f} > EMA50={ema50:.2f}, RSI={rsi:.0f}"
                 return (p, stop, target, reason)
 
@@ -307,7 +313,7 @@ def score_tier_b(data: dict) -> tuple[float, float, float, str] | None:
         stop = p * 0.93
         target = ema50 * 1.05 if ema50 > p else p * 1.10
         crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 1.5:
+        if crv >= 2.0:
             reason = f"Oversold Bounce: RSI={rsi:.0f} < 35, Stabilisierung über EMA50"
             return (p, stop, target, reason)
 
@@ -334,7 +340,7 @@ def score_tier_c(data: dict) -> tuple[float, float, float, str] | None:
         stop = p * 0.94
         target = data['high52'] * 1.05
         crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 1.2:  # Tier C: auch 1.2:1 reicht zum Testen
+        if crv >= 2.0:
             return (p, stop, target, f"Breakout: nahe 52W-High, Vol {vol_ratio:.1f}x")
 
     # Deep Oversold: > 40% unter High + RSI < 30 = antizyklisch
@@ -348,7 +354,7 @@ def score_tier_c(data: dict) -> tuple[float, float, float, str] | None:
         stop = data['ema20'] * 0.97
         target = p * 1.10
         crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 1.2:
+        if crv >= 2.0:
             return (p, stop, target, f"Momentum: +{data['change']:.1f}% heute, über EMA20")
 
     return None
