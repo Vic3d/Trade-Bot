@@ -56,6 +56,10 @@ def load_config() -> dict:
 
 def get_free_cash(conn) -> float:
     """Freies Cash aus paper_fund."""
+    row = conn.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+    if row:
+        return row['value']
+    # Fallback: try legacy 'cash' key
     row = conn.execute("SELECT value FROM paper_fund WHERE key='cash'").fetchone()
     return row['value'] if row else 10000.0
 
@@ -486,7 +490,7 @@ def execute_paper_entry(
         import sys as _sys, os as _os
         _sys.path.insert(0, _os.path.dirname(_os.path.dirname(__file__)))
         from entry_gate import EntryGate
-        _gate = EntryGate(db_path)
+        _gate = EntryGate(str(DB_PATH))
         _headline = conviction.get('headline', '')
         _source = conviction.get('source', '')
         _gate_result = _gate.check(ticker, strategy, _headline, _source, regime, vix_val)
@@ -512,7 +516,7 @@ def execute_paper_entry(
     
     # Cash reduzieren
     conn.execute("""
-        UPDATE paper_fund SET value = value - ? WHERE key = 'cash'
+        UPDATE paper_fund SET value = value - ? WHERE key = 'current_cash'
     """, (total_cost,))
     
     trade_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]

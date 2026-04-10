@@ -33,6 +33,38 @@ ENTRY_THRESHOLD = 45  # Minimum conviction score to enter a trade
 
 # ─── DB Helper ────────────────────────────────────────────────────────────────
 
+def _get_current_vix(conn=None) -> float:
+    """Liest aktuellen VIX aus DB. Gibt 20.0 als Fallback zurück."""
+    try:
+        should_close = conn is None
+        if conn is None:
+            conn = sqlite3.connect(str(DB_PATH))
+        row = conn.execute(
+            "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if should_close:
+            conn.close()
+        return float(row[0]) if row else 20.0
+    except Exception:
+        return 20.0
+
+
+def _get_current_regime(conn=None) -> str:
+    """Liest aktuelles Marktregime aus DB. Gibt UNKNOWN als Fallback zurück."""
+    try:
+        should_close = conn is None
+        if conn is None:
+            conn = sqlite3.connect(str(DB_PATH))
+        row = conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        if should_close:
+            conn.close()
+        return str(row[0]) if row else 'UNKNOWN'
+    except Exception:
+        return 'UNKNOWN'
+
+
 def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row

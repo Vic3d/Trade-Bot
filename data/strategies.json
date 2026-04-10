@@ -2026,5 +2026,31 @@
         "supply_chain_confirmation"
       ]
     }
+  },
+  "PS19": {
+    "name": "Dollar-Schwäche / Emerging Markets",
+    "status": "active",
+    "thesis": "Schwächelnder USD durch US-Haushaltsdefizit und Rezessionsängste stärkt Emerging Markets und Rohstoffwährungen",
+    "entry_trigger": "DXY unter 100 ODER Fed Pivot Erwartung steigt ODER US-Rezessionsdaten schwächer als erwartet",
+    "kill_trigger": "DXY steigt über 105 ODER Fed hawkish überraschung ODER US-Wirtschaft überraschend stark",
+    "tickers": ["EEM", "VWO", "FXI", "EWZ", "GDX"],
+    "direction": "LONG",
+    "timeframe": "4-8 Wochen",
+    "preferred_regime": "BULL_QUIET",
+    "added_by": "victor",
+    "added_at": "2026-04-10"
+  },
+  "PS20": {
+    "name": "US Rezessionsabsicherung / Defensive Rotation",
+    "status": "active",
+    "thesis": "Steigende US-Rezessionswahrscheinlichkeit treibt Rotation in defensive Sektoren: Healthcare, Utilities, Consumer Staples",
+    "entry_trigger": "ISM Manufacturing unter 48 ODER US Jobless Claims steigen über 250k ODER Yield Curve invertiert stärker",
+    "kill_trigger": "US BIP-Wachstum überraschend stark ODER Fed senkt aggressiv ODER Soft Landing bestätigt",
+    "tickers": ["XLP", "XLU", "XLV", "VDC", "KO", "PG", "JNJ"],
+    "direction": "LONG defensive",
+    "timeframe": "4-8 Wochen",
+    "preferred_regime": "BEAR_QUIET",
+    "added_by": "victor",
+    "added_at": "2026-04-10"
   }
 }
