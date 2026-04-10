@@ -10,7 +10,7 @@ import urllib.error
 from pathlib import Path
 
 OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
-VICTOR_DM = '1475255728313864413'   # Victor DM Channel
+VICTOR_DM = '1492225799062032484'   # Victor DM Channel
 
 def _get_token() -> str:
     cfg = json.loads(OPENCLAW_CFG.read_text())
