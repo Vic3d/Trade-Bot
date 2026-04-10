@@ -517,8 +517,28 @@ def calculate_conviction(
     # ── Factor 4: Market Context ──────────────────────────────────────────
     mkt_score, mkt_reason = _score_market_context(strategy)
 
-    # ── Total Score ───────────────────────────────────────────────────────
+    # ── Total Score (4 factors) ───────────────────────────────────────────
     total = thesis_score + tech_score + rr_score + mkt_score
+
+    # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
+    crowd_mod = 0
+    if total >= 40:
+        try:
+            from crowd_reaction import get_crowd_modifier
+            strategy_cfg = {}
+            try:
+                sp = DATA_DIR / 'strategies.json'
+                if sp.exists():
+                    strategy_cfg = json.loads(sp.read_text(encoding='utf-8')).get(strategy, {})
+            except Exception:
+                pass
+            strategy_name   = strategy_cfg.get('name', strategy)
+            entry_trigger   = strategy_cfg.get('entry_trigger', '')
+            scenario        = f"{strategy_name}: {entry_trigger}"
+            crowd_mod       = get_crowd_modifier(strategy, scenario)
+            total           = max(0, min(100, total + crowd_mod))
+        except Exception:
+            pass  # crowd reaction is optional
 
     # ── Sizing recommendation ─────────────────────────────────────────────
     if total >= 60:
@@ -560,12 +580,14 @@ def calculate_conviction(
             'technical_alignment': tech_score,
             'risk_reward_quality': rr_score,
             'market_context':      mkt_score,
+            **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
         },
         'factor_reasons': {
             'thesis_strength':     thesis_reason,
             'technical_alignment': tech_reason,
             'risk_reward_quality': rr_reason,
             'market_context':      mkt_reason,
+            **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
         },
         'position_sizing': sizing,
         'vix': vix,
