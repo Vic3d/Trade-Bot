@@ -1,0 +1,29 @@
+[Unit]
+Description=TradeMind Dashboard API (Port 8765)
+After=network.target trademind-scheduler.service
+
+[Service]
+Type=simple
+User=trademind
+Group=trademind
+WorkingDirectory=/opt/trademind
+ExecStart=/opt/trademind/venv/bin/python3.13 scripts/api_server.py
+Restart=always
+RestartSec=5
+
+# Environment
+EnvironmentFile=/opt/trademind/deploy/.env
+
+# Logging
+StandardOutput=append:/opt/trademind/data/api-server.log
+StandardError=append:/opt/trademind/data/api-server.log
+
+# Sicherheit
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/trademind/data
+ReadOnlyPaths=/opt/trademind/scripts
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
