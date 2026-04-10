@@ -124,6 +124,37 @@ SCHEDULE = [
     # ── Phase 6: Autonome Thesen-Entdeckung ──────────────────────────────────
     ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [6]),   # So 07:00 UTC
     ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [2]),   # Mi 07:00 UTC (mid-week)
+    # ── Autonomous Scanner: alle 30 Min Mo-Fr 08:00–16:30 UTC (09:00–17:30 CET) ──
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   10, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   10, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   11, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   11, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   12, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   12, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   13, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   13, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   14, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   14, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 30, [0,1,2,3,4]),
+    # ── Lab Scanner: stündlich Mo-Fr 08:45–16:45 UTC (versetzt zum Hauptscanner) ─
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  8,  45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  9,  45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  10, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  11, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  12, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  13, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  14, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  15, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  16, 45, [0,1,2,3,4]),
+    # ── Backtest v2: jeden Sonntag 08:00 UTC (nach Thesis Discovery 07:00) ──────
+    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 UTC
 ]
 
 

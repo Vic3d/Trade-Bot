@@ -1,229 +1,231 @@
 #!/usr/bin/env python3.13
 """
-Autonomous Scanner — Findet und traded selbst, ohne Victor
-===========================================================
-Scannt täglich 80+ Tickers in 3 Risiko-Tiers:
+Autonomous Scanner v2 — TradeMind Dual-Gate System
+====================================================
+Dual-Gate: Jeder Trade braucht BEIDE Gates:
+  Gate 1: Thesen-Bestätigung  — These aktiv? Kill-Trigger still silent?
+  Gate 2: Technische Bestätigung — Chart bestätigt die These?
 
-Tier A — Konservativ (Thesis-Plays, tiefe Entry-Zonen)
-  → Höhere Conviction gefordert, gutes CRV, klarer Katalysator
-  → Ziel: 65%+ Win-Rate
+Thesen-spezifische Entry-Kriterien pro Strategie.
+ATR-basierte Stop/Target-Berechnung.
+Max 3 neue Trades pro Lauf (konservativ).
 
-Tier B — Moderat (Sektor-Rotation, technische Setups)
-  → Momentum + Oversold-Bounce + EMA-Cross
-  → Ziel: 55%+ Win-Rate
+Ziel: 60%+ Win-Rate (aktuell 15%).
 
-Tier C — Aggressiv (News-Katalyst, Breakouts, Pokern)
-  → Auch mal reinspringen wenn Signal da ist, CRV 1.5:1 reicht
-  → Ziel: 50%+ Win-Rate, dafür mehr Volume → mehr Daten
-
-Gesamtziel: Mehr Trades → echte Statistik → win rate auf 60%
-
-Albert 🎩 | v1.0 | 29.03.2026
+Albert | TradeMind v2 | 2026-04-10
 """
 
-import json, sqlite3, sys, time, urllib.request
-from datetime import datetime, timezone, timedelta
+import json
+import sqlite3
+import sys
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data' / 'trading.db'
+
+sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
 sys.path.insert(0, str(WS / 'scripts' / 'core'))
 
-# ─── Universum ──────────────────────────────────────────────────────
-# 80+ Ticker quer durch Sektoren — breite Datenbasis für Lerneffekt
 
-UNIVERSE = {
-    # ── Tier A: Thesis-Plays (Victor's validierte Strategien)
-    'TIER_A': [
-        # Thesis-Plays — von Victor validiert, Deep-Dive
-        # ENTFERNT: PS_STLD (3 Trades, 0% WR, -788€), PS4/S4 (0% WR, -1070€)
-        ('OXY',       'PS1',        'Iran-These / Hormuz-Prämie'),
-        ('EQNR.OL',   'PS1',        'Nordsee-Öl Ersatz für EU'),
-        ('FRO',       'PS2',        'Tanker-Rates bei Hormuz-Stress'),
-        # Neu aus Discovery 04.04.2026
-        ('FCX',       'PS_Copper',  'Kupfer — China-Erholung + grüne Transition'),
-        ('SCCO',      'PS_Copper',  'Southern Copper — diversified Cu-Produzent'),
-        ('RHM.DE',    'PS11',       'Rheinmetall — EU-Rüstungsbudgets'),
-        ('BA.L',      'PS11',       'BAE Systems — UK/EU Defense'),
-        ('LMT',       'PS3',        'Lockheed — NATO Spending Wachstum'),
-    ],
+# ─── Thesen-spezifische Entry-Kriterien ──────────────────────────────────────
 
-    # ── Tier B: Sektor-Rotation + Technische Setups
-    'TIER_B': [
-        # Energie
-        ('XOM',    'PS1',   'Öl-Major'),
-        ('CVX',    'PS1',   'Öl-Major'),
-        ('TTE.PA', 'PS1',   'TotalEnergies — EU-Öl'),
-        ('PSX',    'PS1',   'Raffinerie'),
-        ('VLO',    'PS1',   'Raffinerie'),
-        # EU Defense (breiter)
-        ('RTX',    'PS3',   'Raytheon Missiles'),
-        ('NOC',    'PS3',   'Northrop B-21'),
-        ('KTOS',   'PS3',   'Drohnen/AI-Defense'),
-        ('SAF.PA', 'PS11',  'Safran — EU Aerospace/Defense'),
-        ('HO.PA',  'PS11',  'Thales — EU Defense Electronics'),
-        # Kupfer/Rohstoffe
-        ('GLEN.L', 'PS_Copper', 'Glencore — Diversified Miner'),
-        ('RIO.L',  'PS_Copper', 'Rio Tinto — Kupfer + Eisenerz'),
-        ('BHP.L',  'PS_Copper', 'BHP — Kupfer + Eisenerz'),
-        ('TECK',   'PS_Copper', 'Teck Resources — Steelmaking Coal + Kupfer'),
-        # China Recovery
-        ('FXI',    'PS_China', 'iShares China Large-Cap ETF'),
-        ('KWEB',   'PS_China', 'KraneShares China Internet'),
-        ('BABA',   'PS_China', 'Alibaba — China Consumer Recovery'),
-        ('JD',     'PS_China', 'JD.com — China E-Commerce'),
-        # Agrar
-        ('MOS',    'PS5',   'Dünger/Kali — Agrar-Preis'),
-        ('NTR',    'PS5',   'Nutrien — größter Dünger-Produzent'),
-        # AI Infrastructure
-        ('AMAT',   'PS_AIInfra', 'Applied Materials — Chip Equipment'),
-        ('MU',     'PS_AIInfra', 'Micron — HBM Memory für AI'),
-        ('VRT',    'PS_AIInfra', 'Vertiv — Datacenter Cooling/Power'),
-        # ENTFERNT: PS4 Edelmetalle (2 Trades, 0% WR, -46€) — pausiert bis genug Daten
-        # Tech selektiv (nur bei BULL/NEUTRAL)
-        ('MSFT',   'S3',    'Microsoft — Tech-Qualität'),
-        ('ASML.AS','S3',    'ASML — Halbleiter-Monopol'),
-        ('NVDA',   'S3',    'Nvidia — KI-Chips'),
-    ],
-
-    # ── Tier C: Aggressiv / Lernen / Spekulative Thesen
-    'TIER_C': [
-        # Stahl/Metall Zykliker
-        ('CLF',    'PS5',   'Cleveland-Cliffs — US Stahl'),
-        ('X',      'PS5',   'US Steel post-Tariff'),
-        ('AA',     'PS5',   'Alcoa — Aluminium Zölle'),
-        # Shipping volatil
-        ('ZIM',    'PS14',  'Container-Shipping Boom/Bust'),
-        ('SBLK',   'PS14',  'Star Bulk — Dry Bulk Shipping'),
-        ('DHT',    'PS2',   'DHT Holdings — Tanker aggressiv'),
-        # Spekulative Rohstoff-Thesen
-        ('VALE',   'PS_Copper', 'Vale — Eisenerz + Kupfer Brazil'),
-        ('MP',     'S5',    'MP Materials — Rare Earth US'),
-        # Uran (neue These — in Beobachtung)
-        ('CCJ',    'PS_Uranium', 'Cameco — Uran Produzent #1'),
-        ('UUUU',   'PS_Uranium', 'Energy Fuels — Uran + Seltenerde'),
-        ('NXE',    'PS_Uranium', 'NexGen Energy — High-Grade Uran'),
-        # China spekulative Plays
-        ('EWZ',    'PS_China', 'Brazil ETF — China-Handels-Proxy'),
-        # Rebound-Plays (oversold quality)
-        ('BAYN.DE','S7',    'Bayer — Rebound nach Tief'),
-        ('LHA.DE', 'PS17',  'Lufthansa — EU Domestic Champion'),
-        ('SIE.DE', 'PS17',  'Siemens — EU Industrials'),
-        ('BMW.DE', 'PS18',  'BMW — EU Auto Domestic'),
-        # AI Infra spekulative
-        ('SMCI',   'PS_AIInfra', 'Super Micro — AI Server (volatil)'),
-        ('VST',    'PS_AIInfra', 'Vistra — AI Power Demand'),
-    ],
+THESIS_ENTRY_CRITERIA = {
+    # EU Aufrüstung — Defense-Aktien im Aufwärtstrend
+    'S2': {
+        'trend':    lambda d: d['price'] > d['ema20'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 72,
+        'volume':   lambda d: d['vol_ratio'] >= 0.8,
+        'stop_atr': 2.0,
+        'target_r': 3.0,
+        'hold_days': (14, 60),
+    },
+    # PS3: NATO Spending (Lockheed, Raytheon)
+    'PS3': {
+        'trend':    lambda d: d['price'] > d['ema20'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 72,
+        'volume':   lambda d: d['vol_ratio'] >= 0.8,
+        'stop_atr': 2.0,
+        'target_r': 3.0,
+        'hold_days': (14, 60),
+    },
+    # EU Domestic Champions / Trade War
+    'PS17': {
+        'trend':    lambda d: d['price'] > d['ema20'],
+        'momentum': lambda d: 35 <= (d['rsi'] or 50) <= 70,
+        'volume':   lambda d: d['vol_ratio'] >= 0.7,
+        'stop_atr': 2.5,
+        'target_r': 3.0,
+        'hold_days': (7, 45),
+    },
+    # Trade Dislocation
+    'PS18': {
+        'trend':    lambda d: d['price'] > d['ema20'],
+        'momentum': lambda d: 35 <= (d['rsi'] or 50) <= 70,
+        'volume':   lambda d: d['vol_ratio'] >= 0.8,
+        'stop_atr': 2.0,
+        'target_r': 3.0,
+        'hold_days': (10, 45),
+    },
+    # Dollar-Schwäche — EU Unternehmen mit USD-Umsätzen
+    'PS19': {
+        'trend':    lambda d: d['price'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 75,
+        'volume':   lambda d: d['vol_ratio'] >= 0.7,
+        'stop_atr': 2.5,
+        'target_r': 3.5,
+        'hold_days': (14, 60),
+    },
+    # Nuclear Renaissance
+    'PS16': {
+        'trend':    lambda d: d['price'] > d['ema20'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 70,
+        'volume':   lambda d: d['vol_ratio'] >= 1.0,
+        'stop_atr': 2.0,
+        'target_r': 4.0,
+        'hold_days': (21, 90),
+    },
+    # Edelmetalle / Gold (ATH-Umfeld)
+    'PS4': {
+        'trend':    lambda d: d['price'] > d['ema20'],
+        'momentum': lambda d: 45 <= (d['rsi'] or 50) <= 75,
+        'volume':   lambda d: d['vol_ratio'] >= 0.8,
+        'stop_atr': 2.0,
+        'target_r': 3.0,
+        'hold_days': (7, 30),
+    },
+    # Kupfer / Green Transition
+    'PS13': {
+        'trend':    lambda d: d['price'] > d['ema20'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 68,
+        'volume':   lambda d: d['vol_ratio'] >= 0.9,
+        'stop_atr': 2.5,
+        'target_r': 3.0,
+        'hold_days': (14, 60),
+    },
+    # US Rezessionsabsicherung — Defensiv
+    'PS20': {
+        'trend':    lambda d: d['price'] > d['ema20'],
+        'momentum': lambda d: 35 <= (d['rsi'] or 50) <= 65,
+        'volume':   lambda d: d['vol_ratio'] >= 0.6,
+        'stop_atr': 1.5,
+        'target_r': 2.5,
+        'hold_days': (7, 30),
+    },
+    # Fallback für unbekannte Strategien — konservativ
+    'DEFAULT': {
+        'trend':    lambda d: d['price'] > d['ema20'] > d['ema50'],
+        'momentum': lambda d: 40 <= (d['rsi'] or 50) <= 65,
+        'volume':   lambda d: d['vol_ratio'] >= 0.9,
+        'stop_atr': 2.0,
+        'target_r': 3.0,
+        'hold_days': (7, 30),
+    },
 }
 
-# Tier C: VIX-Block überschreiben — Paper ist Lernen, kein echtes Geld
-TIER_C_BYPASS_VIX = False  # Deaktiviert — Tier C muss durch alle Guards
 
-# ─── DB Helpers ─────────────────────────────────────────────────────
+# ─── Universum (aktive Strategien, PS1/S1 deaktiviert) ───────────────────────
 
-def get_db():
+UNIVERSE = [
+    # EU Aufrüstung (S2/PS3) — stärkste These
+    ('RHM.DE',  'S2',   'Rheinmetall — EU Defense Budget Leader'),
+    ('HAG.DE',  'S2',   'Hensoldt — Sensor-Technologie EU Defense'),
+    ('SAF.PA',  'S2',   'Safran — Triebwerke/Avionik EU'),
+    ('BA.L',    'S2',   'BAE Systems — UK/EU Defense'),
+    ('LMT',     'PS3',  'Lockheed Martin — NATO Spending'),
+    ('RTX',     'PS3',  'Raytheon — Missiles/Defense'),
+    # EU Domestic Champions / Trade War (PS17/PS18)
+    ('SIE.DE',  'PS17', 'Siemens — EU Industrial Champion'),
+    ('AIR.PA',  'PS17', 'Airbus — EU Domestic + Export'),
+    ('SAP.DE',  'PS17', 'SAP — EU Software Champion'),
+    ('MUV2.DE', 'PS17', 'Munich Re — EU Financials Domestic'),
+    ('BAS.DE',  'PS18', 'BASF — EU Chemicals, Trade War Opfer/Profiteur'),
+    # Dollar-Schwäche (PS19) — EU Aktien mit USD-Umsätzen
+    ('ASML.AS', 'PS19', 'ASML — 70% USD-Umsaetze, starker Euro = Gegenwind/Bewertungsschub'),
+    ('NVO',     'PS19', 'Novo Nordisk — USD-Umsaetze, guenstige Bewertung'),
+    # Nuclear Renaissance (PS16)
+    ('CCJ',     'PS16', 'Cameco — Uran Produzent #1 Weltweit'),
+    ('UUUU',    'PS16', 'Energy Fuels — US Uran + Seltenerde'),
+    ('CEG',     'PS16', 'Constellation Energy — Nuclear Power Plants'),
+    # Edelmetalle (PS4) — Gold ATH
+    ('GOLD',    'PS4',  'Barrick Gold — Gold ATH Profiteur'),
+    ('NEM',     'PS4',  'Newmont — Gold Miner mit Hebel'),
+    ('WPM',     'PS4',  'Wheaton PM — Royalty, weniger Kosten-Risiko'),
+    # Kupfer (PS13)
+    ('FCX',     'PS13', 'Freeport — Groesster US Kupfer-Produzent'),
+    ('SCCO',    'PS13', 'Southern Copper — Guenstigste Kosten'),
+    ('RIO.L',   'PS13', 'Rio Tinto — Diversified Copper + Iron'),
+    # Defensive Rotation (PS20)
+    ('XLP',     'PS20', 'Consumer Staples ETF — Defensiv'),
+    ('XLU',     'PS20', 'Utilities ETF — AI Power Demand + Defensiv'),
+    ('JNJ',     'PS20', 'Johnson und Johnson — Qualitaet Defensiv'),
+]
+
+
+# ─── DB Helpers ──────────────────────────────────────────────────────────────
+
+def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB))
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def has_open(ticker: str) -> bool:
-    conn = get_db()
-    r = conn.execute(
-        "SELECT id FROM paper_portfolio WHERE ticker=? AND status='OPEN'", (ticker.upper(),)
-    ).fetchone()
-    conn.close()
-    return r is not None
+    try:
+        conn = get_db()
+        r = conn.execute(
+            "SELECT id FROM paper_portfolio WHERE ticker=? AND status='OPEN'",
+            (ticker.upper(),)
+        ).fetchone()
+        conn.close()
+        return r is not None
+    except Exception:
+        return False
 
 
 def open_count() -> int:
-    conn = get_db()
-    n = conn.execute("SELECT COUNT(*) FROM paper_portfolio WHERE status='OPEN'").fetchone()[0]
-    conn.close()
-    return n
+    try:
+        conn = get_db()
+        n = conn.execute(
+            "SELECT COUNT(*) FROM paper_portfolio WHERE status='OPEN'"
+        ).fetchone()[0]
+        conn.close()
+        return n
+    except Exception:
+        return 0
 
 
 def get_free_cash() -> float:
-    conn = get_db()
-    r = conn.execute("SELECT value FROM paper_fund WHERE key='cash'").fetchone()
-    conn.close()
-    return r['value'] if r else 5000.0
-
-# ─── Preis + Technische Analyse ─────────────────────────────────────
-
-def fetch_data(ticker: str, days: int = 90) -> dict | None:
-    """Holt OHLCV + einfache Technicals für einen Ticker. Alle Preise in EUR."""
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={days}d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     try:
-        with urllib.request.urlopen(req, timeout=8) as r:
-            data = json.load(r)
-        res = data['chart']['result'][0]
-        meta = res['meta']
-        q = res['indicators']['quote'][0]
-
-        closes  = [c for c in (q.get('close')  or []) if c]
-        volumes = [v for v in (q.get('volume') or []) if v]
-        highs   = [h for h in (q.get('high')   or []) if h]
-        lows    = [l for l in (q.get('low')    or []) if l]
-
-        if len(closes) < 10:
-            return None
-
-        price   = meta.get('regularMarketPrice', closes[-1])
-        high52  = meta.get('fiftyTwoWeekHigh')
-        low52   = meta.get('fiftyTwoWeekLow')
-        prev    = meta.get('chartPreviousClose', closes[-2] if len(closes) > 1 else price)
-
-        # ── FX-Konvertierung: Alles in EUR ──────────────────────────
-        try:
-            from live_data import get_fx_factor
-            fx = get_fx_factor(ticker)
-        except Exception:
-            fx = 1.0
-        price  = price * fx
-        high52 = high52 * fx if high52 else None
-        low52  = low52 * fx if low52 else None
-        prev   = prev * fx if prev else price
-        closes = [c * fx for c in closes]
-        # Volumes bleiben unkonvertiert (Stückzahl, keine Währung)
-        # ────────────────────────────────────────────────────────────
-
-        change  = (price - prev) / prev * 100 if prev else 0
-
-        ema20 = _ema(closes, 20)
-        ema50 = _ema(closes, 50)
-        ema20_val = ema20[-1] if ema20 else None
-        ema50_val = ema50[-1] if ema50 else None
-
-        avg_vol = sum(volumes[-20:]) / min(len(volumes), 20) if volumes else 0
-        curr_vol = volumes[-1] if volumes else 0
-        vol_ratio = curr_vol / avg_vol if avg_vol > 0 else 1.0
-
-        rsi = _rsi(closes, 14)
-
-        from_high = (price / high52 - 1) * 100 if high52 else 0
-        from_low  = (price / low52  - 1) * 100 if low52  else 0
-
-        return {
-            'price': price,
-            'prev': prev,
-            'change': change,
-            'high52': high52,
-            'low52': low52,
-            'from_high': from_high,
-            'from_low': from_low,
-            'ema20': ema20_val,
-            'ema50': ema50_val,
-            'rsi': rsi,
-            'vol_ratio': vol_ratio,
-            'closes': closes,
-        }
+        conn = get_db()
+        r = conn.execute("SELECT value FROM paper_fund WHERE key='cash'").fetchone()
+        conn.close()
+        return r['value'] if r else 5000.0
     except Exception:
-        return None
+        return 5000.0
 
+
+# ─── ATR-Berechnung ──────────────────────────────────────────────────────────
+
+def _atr(closes: list, highs: list, lows: list, period: int = 14) -> float:
+    """Average True Range für Stop-Berechnung."""
+    if len(closes) < period + 1:
+        return closes[-1] * 0.03 if closes else 1.0
+    trs = []
+    for i in range(1, min(period + 1, len(closes))):
+        tr = max(
+            highs[i] - lows[i],
+            abs(highs[i] - closes[i - 1]),
+            abs(lows[i] - closes[i - 1])
+        )
+        trs.append(tr)
+    return sum(trs) / len(trs) if trs else closes[-1] * 0.03
+
+
+# ─── EMA + RSI ───────────────────────────────────────────────────────────────
 
 def _ema(prices: list, period: int) -> list:
     if len(prices) < period:
@@ -238,8 +240,8 @@ def _ema(prices: list, period: int) -> list:
 def _rsi(closes: list, period: int = 14) -> float | None:
     if len(closes) < period + 1:
         return None
-    deltas = [closes[i] - closes[i-1] for i in range(1, len(closes))]
-    gains = [d for d in deltas[-period:] if d > 0]
+    deltas = [closes[i] - closes[i - 1] for i in range(1, len(closes))]
+    gains  = [d for d in deltas[-period:] if d > 0]
     losses = [-d for d in deltas[-period:] if d < 0]
     avg_g = sum(gains) / period
     avg_l = sum(losses) / period
@@ -248,418 +250,545 @@ def _rsi(closes: list, period: int = 14) -> float | None:
     rs = avg_g / avg_l
     return round(100 - 100 / (1 + rs), 1)
 
-# ─── Setup-Bewertung pro Tier ────────────────────────────────────────
 
-def score_tier_a(data: dict) -> tuple[float, float, float, str] | None:
+# ─── Preis + Technische Analyse ──────────────────────────────────────────────
+
+def fetch_data(ticker: str, days: int = 90) -> dict | None:
     """
-    Tier A: Thesis-Play Scoring
-    Sucht: Abschlag vom 52W-High > 20% + RSI < 45 + Stabilisierung
-    Returns: (entry, stop, target, reason) oder None
+    Holt OHLCV + Technicals für einen Ticker.
+    Gibt highs und lows zurück (für ATR-Berechnung).
+    Alle Preise in EUR.
     """
-    p = data['price']
-    if not p or not data['high52'] or not data['low52']:
+    import urllib.request
+    url = (
+        f'https://query2.finance.yahoo.com/v8/finance/chart/'
+        f'{ticker}?interval=1d&range={days}d'
+    )
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.load(r)
+
+        res  = data['chart']['result'][0]
+        meta = res['meta']
+        q    = res['indicators']['quote'][0]
+
+        closes  = [c for c in (q.get('close')  or []) if c]
+        volumes = [v for v in (q.get('volume') or []) if v]
+        highs   = [h for h in (q.get('high')   or []) if h]
+        lows    = [lo for lo in (q.get('low')   or []) if lo]
+
+        if len(closes) < 10:
+            return None
+
+        price  = meta.get('regularMarketPrice', closes[-1])
+        high52 = meta.get('fiftyTwoWeekHigh')
+        low52  = meta.get('fiftyTwoWeekLow')
+        prev   = meta.get('chartPreviousClose', closes[-2] if len(closes) > 1 else price)
+
+        # FX-Konvertierung: Alles in EUR
+        try:
+            from live_data import get_fx_factor
+            fx = get_fx_factor(ticker)
+        except Exception:
+            fx = 1.0
+
+        price  = price * fx
+        high52 = high52 * fx if high52 else None
+        low52  = low52 * fx  if low52  else None
+        prev   = prev * fx   if prev   else price
+        closes = [c * fx for c in closes]
+        highs  = [h * fx for h in highs]
+        lows   = [lo * fx for lo in lows]
+
+        change = (price - prev) / prev * 100 if prev else 0
+
+        ema20     = _ema(closes, 20)
+        ema50     = _ema(closes, 50)
+        ema20_val = ema20[-1] if ema20 else None
+        ema50_val = ema50[-1] if ema50 else None
+
+        avg_vol   = sum(volumes[-20:]) / min(len(volumes), 20) if volumes else 0
+        curr_vol  = volumes[-1] if volumes else 0
+        vol_ratio = curr_vol / avg_vol if avg_vol > 0 else 1.0
+
+        rsi = _rsi(closes, 14)
+
+        from_high = (price / high52 - 1) * 100 if high52 else 0
+        from_low  = (price / low52  - 1) * 100 if low52  else 0
+
+        return {
+            'price':     price,
+            'prev':      prev,
+            'change':    change,
+            'high52':    high52,
+            'low52':     low52,
+            'from_high': from_high,
+            'from_low':  from_low,
+            'ema20':     ema20_val,
+            'ema50':     ema50_val,
+            'rsi':       rsi,
+            'vol_ratio': vol_ratio,
+            'closes':    closes,
+            'highs':     highs,
+            'lows':      lows,
+        }
+    except Exception:
         return None
 
-    from_high = data['from_high']  # negativ = unter High
-    rsi = data['rsi'] or 50
-    ema20 = data['ema20']
-    ema50 = data['ema50']
 
-    # Bedingungen für Tier A Entry
-    if from_high > -10:  # Zu nah am High
-        return None
-    if rsi > 60:  # Nicht überkauft
+# ─── Gate 1: Thesen-Status prüfen ────────────────────────────────────────────
+
+def _thesis_gate_ok(strategy: str) -> bool:
+    """
+    Gate 1: Prüft ob die These aktiv ist (nicht INVALIDATED oder PAUSED).
+    Returns True wenn Entries erlaubt, False wenn blockiert.
+    """
+    try:
+        from thesis_engine import get_thesis_status
+        status_dict = get_thesis_status(strategy)
+        if not status_dict:
+            # Noch kein DB-Eintrag → These als aktiv betrachten (neu)
+            return True
+        blocked = {'INVALIDATED', 'PAUSED'}
+        return status_dict.get('status', 'ACTIVE') not in blocked
+    except Exception:
+        # Wenn thesis_engine nicht verfügbar → erlauben (fail-open)
+        return True
+
+
+# ─── Gate 2: Technische Bestätigung + Setup-Berechnung ───────────────────────
+
+def evaluate_setup(ticker: str, strategy: str, data: dict) -> dict | None:
+    """
+    Dual-Gate Bewertung: Thesis + Technical.
+
+    Gate 1: Thesis aktiv? (thesis_status Tabelle)
+    Gate 2: Technische Bestätigung (trend/momentum/volume)
+
+    Returns: Setup-Dict mit entry/stop/target/reason oder None
+    """
+    # Gate 1: Thesis aktiv?
+    if not _thesis_gate_ok(strategy):
         return None
 
-    # Stop: 8% unter Kurs oder 52W-Low + 5%, je nachdem was größer
-    stop = max(p * 0.92, data['low52'] * 1.05)
-    # Target: EMA50 wenn über Kurs, sonst +15%
-    target = ema50 if (ema50 and ema50 > p * 1.08) else p * 1.18
-    crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
+    # Gate 2: Technische Bestätigung
+    criteria = THESIS_ENTRY_CRITERIA.get(strategy, THESIS_ENTRY_CRITERIA['DEFAULT'])
+
+    # EMA-Werte müssen vorhanden sein für Trend-Check
+    if data.get('ema20') is None or data.get('ema50') is None:
+        # Nur EMA20 nötig wenn criteria nur ema20 prüft
+        pass
+
+    if not criteria['trend'](data):
+        return None
+
+    if not criteria['momentum'](data):
+        return None
+
+    if not criteria['volume'](data):
+        return None
+
+    # Stop via ATR
+    closes = data.get('closes', [])
+    highs  = data.get('highs', [])
+    lows   = data.get('lows', [])
+
+    atr  = _atr(closes, highs, lows)
+    stop = data['price'] - criteria['stop_atr'] * atr
+
+    # Sanity-Check: Stop darf nicht negativ oder > 30% unter Preis sein
+    min_stop = data['price'] * 0.70
+    stop = max(stop, min_stop)
+
+    # Target via CRV
+    risk   = data['price'] - stop
+    if risk <= 0:
+        return None
+
+    target = data['price'] + criteria['target_r'] * risk
+    crv    = (target - data['price']) / risk
 
     if crv < 2.0:
         return None
 
-    reason = f"Thesis: {abs(from_high):.0f}% unter 52W-High, RSI={rsi:.0f}, CRV={crv:.1f}:1"
-    return (p, stop, target, reason)
+    rsi_val = data.get('rsi') or 50
+    reason  = (
+        f"Thesis+Tech: RSI={rsi_val:.0f}, Trend-OK, "
+        f"Vol={data['vol_ratio']:.1f}x, CRV={crv:.1f}:1"
+    )
+
+    return {
+        'entry':     data['price'],
+        'stop':      round(stop, 4),
+        'target':    round(target, 4),
+        'crv':       round(crv, 2),
+        'atr':       round(atr, 4),
+        'hold_days': criteria['hold_days'],
+        'reason':    reason,
+    }
 
 
-def score_tier_b(data: dict) -> tuple[float, float, float, str] | None:
-    """
-    Tier B: Sektor-Rotation / Technisches Setup
-    Sucht: EMA20 > EMA50 (Aufwärtstrend) + RSI 45-65 + Volumen-Bestätigung
-    """
-    p = data['price']
-    if not p:
-        return None
-
-    rsi = data['rsi'] or 50
-    ema20 = data['ema20']
-    ema50 = data['ema50']
-    vol_ratio = data['vol_ratio']
-
-    # Aufwärtstrend: Preis über EMA20, EMA20 über EMA50
-    if ema20 and ema50 and p > ema20 > ema50:
-        if 40 <= rsi <= 65:
-            stop = ema50 * 0.97 if ema50 else p * 0.94
-            target = p * 1.12
-            crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-            if crv >= 2.0:
-                reason = f"EMA-Trend: P={p:.2f} > EMA20={ema20:.2f} > EMA50={ema50:.2f}, RSI={rsi:.0f}"
-                return (p, stop, target, reason)
-
-    # Oversold-Bounce: RSI < 35 + Preis über EMA50
-    if rsi and rsi < 35 and ema50 and p > ema50 * 0.95:
-        stop = p * 0.93
-        target = ema50 * 1.05 if ema50 > p else p * 1.10
-        crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 2.0:
-            reason = f"Oversold Bounce: RSI={rsi:.0f} < 35, Stabilisierung über EMA50"
-            return (p, stop, target, reason)
-
-    return None
-
-
-def score_tier_c(data: dict) -> tuple[float, float, float, str] | None:
-    """
-    Tier C: Aggressiv — auch mal pokern
-    Sucht: Irgendwas mit Potenzial, CRV 1.5:1 reicht
-    Auch bei schlechtem Setup → Paper-Lerndaten sammeln
-    """
-    p = data['price']
-    if not p or not data['high52'] or not data['low52']:
-        return None
-
-    from_high = data['from_high']
-    from_low = data['from_low']
-    rsi = data['rsi'] or 50
-    vol_ratio = data['vol_ratio']
-
-    # Breakout: nahe 52W-High + hohes Volumen
-    if from_high > -5 and vol_ratio > 1.5:
-        stop = p * 0.94
-        target = data['high52'] * 1.05
-        crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 2.0:
-            return (p, stop, target, f"Breakout: nahe 52W-High, Vol {vol_ratio:.1f}x")
-
-    # Deep Oversold: > 40% unter High + RSI < 30 = antizyklisch
-    if from_high < -40 and rsi < 30:
-        stop = p * 0.88  # Weiterer Stop für volatile Werte
-        target = p * 1.25
-        return (p, stop, target, f"Deep Oversold: {abs(from_high):.0f}% unter High, RSI={rsi:.0f}")
-
-    # Momentum: Tag +2% oder mehr + über EMA20
-    if data['change'] >= 2.0 and data['ema20'] and p > data['ema20']:
-        stop = data['ema20'] * 0.97
-        target = p * 1.10
-        crv = (target - p) / (p - stop) if (p - stop) > 0 else 0
-        if crv >= 2.0:
-            return (p, stop, target, f"Momentum: +{data['change']:.1f}% heute, über EMA20")
-
-    return None
-
-# ─── Execution ───────────────────────────────────────────────────────
+# ─── Paper Trade Ausführung ───────────────────────────────────────────────────
 
 def execute_paper(ticker: str, strategy: str, entry: float, stop: float,
-                  target: float, thesis: str, tier: str) -> dict:
-    """Führt Paper Trade aus — Tier C bypassed VIX-Block."""
-    from paper_trade_engine import execute_paper_entry
-
-    if tier == 'TIER_C' and TIER_C_BYPASS_VIX:
-        # Tier C: VIX-Guard überschreiben — wir wollen lernen, auch bei VIX 35
-        from conviction_scorer import check_entry_allowed
-        _allowed, _reason = check_entry_allowed(strategy)
-        if not _allowed:
-            # Für Tier C: direkt in DB schreiben ohne VIX-Block
-            conn = get_db()
-            now = datetime.now(timezone.utc).isoformat()
-            risk = abs(entry - stop)
-            position_eur = min(1000.0, get_free_cash() * 0.05)  # Tier C: kleinere Positionen
-            shares = round(position_eur / entry, 4)
-            reward = abs(target - entry)
-            crv = round(reward / risk, 1) if risk > 0 else 0
-
-            conn.execute("""
-                INSERT INTO paper_portfolio
-                (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,
-                 status, fees, notes, style, conviction, regime_at_entry, sector)
-                VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', 1.0, ?, 'swing', 0, 'PAPER_LEARN', ?)
-            """, (
-                ticker, strategy, entry, now, shares,
-                stop, target,
-                f'[TIER_C LEARN] {thesis}',
-                'LEARN',
-            ))
-            conn.execute("UPDATE paper_fund SET value = value - ? WHERE key = 'cash'",
-                        (shares * entry + 1.0,))
-            trade_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-            conn.commit()
-            conn.close()
-            return {'success': True, 'trade_id': trade_id, 'crv': crv,
-                    'position_eur': position_eur, 'conviction_score': 0, 'tier': tier,
-                    'bypass': True}
-
-    result = execute_paper_entry(
-        ticker=ticker, strategy=strategy,
-        entry_price=entry, stop_price=stop, target_price=target,
-        thesis=f'[{tier}] {thesis}', source=f'autonomous_scanner_{tier.lower()}',
-    )
-    result['tier'] = tier
-    result['bypass'] = False
-    return result
+                  target: float, thesis: str) -> dict:
+    """Führt Paper Trade aus via paper_trade_engine."""
+    try:
+        from paper_trade_engine import execute_paper_entry
+        result = execute_paper_entry(
+            ticker=ticker,
+            strategy=strategy,
+            entry_price=entry,
+            stop_price=stop,
+            target_price=target,
+            thesis=thesis,
+            source='autonomous_scanner_v2',
+        )
+        return result
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
 
 
-# ─── Main Scan ──────────────────────────────────────────────────────
+# ─── Markt-Check ─────────────────────────────────────────────────────────────
 
 def is_market_open() -> bool:
     """Prüft ob mindestens eine der gehandelten Börsen heute offen ist."""
     try:
-        sys.path.insert(0, str(WS / 'scripts' / 'core'))
         from market_hours import is_any_trading_day
-        all_tickers = [t for tier in UNIVERSE.values() for t, _, _ in tier]
+        all_tickers = [t for t, _, _ in UNIVERSE]
         return is_any_trading_day(all_tickers)
     except Exception:
         return datetime.now(timezone.utc).weekday() < 5
 
 
-def is_optimal_entry_time() -> bool:
+# ─── Haupt-Scan ──────────────────────────────────────────────────────────────
+
+MAX_NEW_TRADES_PER_RUN = 6  # erhöht von 3 für schnellere Datensammlung
+
+
+def run_scan(max_new_trades: int = MAX_NEW_TRADES_PER_RUN) -> list:
     """
-    Daten zeigen: WR 78% bei Entries 17-22h (US Session).
-    WR nur 29-30% vor 17h.
-    → Neue Entries NUR 17:00–22:00 CET erlaubt.
+    Neuer Dual-Gate Scanner.
+    Max 6 neue Trades pro Lauf (erhöht von 3 für schnellere Datensammlung).
 
-    Ausnahme: Tier A Thesis-Plays dürfen auch 08:30-10:00 (Xetra-Open Momentum)
-    """
-    try:
-        import zoneinfo
-        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
-        hour = now.hour
-        return 17 <= hour < 22  # Hauptfenster
-    except Exception:
-        return True  # Fallback: immer erlaubt
-
-
-def is_in_entry_zone(data: dict, entry: float, stop: float) -> tuple[bool, str]:
-    """
-    Prüft ob der aktuelle Kurs in einer sinnvollen Entry-Zone liegt.
-    Returns: (ok, reason)
-
-    Entry-Zone = eine der folgenden Bedingungen:
-      1. Kurs innerhalb 2% des EMA50 (Rücklauf ans Niveau)
-      2. Kurs bricht über letztes 5-Tage-Hoch (Ausbruch)
-      3. RSI 30-50 (Rücklauf-Zone, nicht überkauft)
-      4. Kurs an 52W-Low-Unterstützung (±5%)
-    """
-    p = data['price']
-    ema50 = data.get('ema50')
-    ema20 = data.get('ema20')
-    rsi = data.get('rsi', 50) or 50
-    high52 = data.get('high52')
-    low52 = data.get('low52')
-    closes = data.get('closes', [])
-
-    # Zone 1: Kurs nahe EMA50 (Rücklauf)
-    if ema50 and abs(p - ema50) / ema50 < 0.03:
-        return True, f"Nahe EMA50 ({ema50:.2f}€, {((p/ema50)-1)*100:.1f}%)"
-
-    # Zone 2: Ausbruch über 5-Tage-Hoch
-    if closes and len(closes) >= 6:
-        high_5d = max(closes[-6:-1])
-        if p > high_5d * 1.002:
-            return True, f"Ausbruch über 5-Tage-Hoch ({high_5d:.2f}€)"
-
-    # Zone 3: RSI Rücklauf-Zone
-    if 28 <= rsi <= 48:
-        return True, f"RSI {rsi:.0f} — Rücklauf-Zone"
-
-    # Zone 4: Nahe 52W-Low (Unterstützung)
-    if low52 and p < low52 * 1.07:
-        return True, f"Nahe 52W-Low ({low52:.2f}€) — Unterstützung"
-
-    # Nicht in Zone — Kurs ist zu hoch oder zu trendlos
-    zone_info = []
-    if ema50:
-        zone_info.append(f"EMA50 {((p/ema50)-1)*100:.1f}% entfernt")
-    zone_info.append(f"RSI {rsi:.0f}")
-    return False, f"Außerhalb Entry-Zone ({', '.join(zone_info)}) — warte auf Rücklauf"
-
-
-def add_pending_setup(ticker: str, strategy: str, conviction: int,
-                      entry: float, stop: float, target: float,
-                      trigger_type: str, notes: str):
-    """Fügt Setup zur Watchlist hinzu — warte auf Trigger."""
-    conn = get_db()
-    now = datetime.now(timezone.utc).isoformat()
-
-    # Bestehenden Setup für diesen Ticker updaten statt neu anlegen
-    existing = conn.execute(
-        "SELECT id FROM pending_setups WHERE ticker=? AND status='WATCHING'",
-        (ticker,)
-    ).fetchone()
-
-    if existing:
-        conn.execute('''
-            UPDATE pending_setups SET
-                strategy=?, conviction=?, entry_trigger=?, trigger_type=?,
-                current_price=?, stop_suggestion=?, target_suggestion=?,
-                updated_at=?, notes=?
-            WHERE id=?
-        ''', (strategy, conviction, entry, trigger_type, entry,
-              stop, target, now, notes, existing['id']))
-    else:
-        conn.execute('''
-            INSERT INTO pending_setups
-                (ticker, strategy, conviction, entry_trigger, trigger_type,
-                 current_price, stop_suggestion, target_suggestion, created_at, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (ticker, strategy, conviction, entry, trigger_type,
-              entry, stop, target, now, notes))
-
-    conn.commit()
-    conn.close()
-
-
-def run_scan(max_new_trades: int = 5) -> list:
-    """
-    Führt den vollständigen autonomen Scan aus.
-    max_new_trades: Limit pro Lauf (verhindert Überallokation)
-
-    NEU: Entry-Zone-Check + Pending Setups für Borderline-Conviction
+    VIX ist kein Hard-Block mehr — wird als Multiplikator für
+    Position-Sizing in paper_trade_engine gehandhabt.
     """
     if not is_market_open():
-        print(f"📅 Markt geschlossen (heute: {datetime.now().strftime('%A')}) — kein Scan.")
+        print(
+            f"Markt geschlossen "
+            f"(heute: {datetime.now().strftime('%A')}) — kein Scan."
+        )
         return []
-
-    # Entry-Zeit-Filter (Daten: WR 78% bei 17-22h, nur 29% davor)
-    if not is_optimal_entry_time():
-        import zoneinfo
-        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
-        print(f"⏰ {now.strftime('%H:%M')} — Kein Entry-Fenster (optimal: 17-22h CET). "
-              f"Nur Watchlist-Snapshots und Trigger-Checks laufen.")
-        # Außerhalb Entry-Fenster: nur Watchlist aktualisieren, keine neuen Trades
-        try:
-            sys.path.insert(0, str(WS / 'scripts'))
-            from watchlist_tracker import run_snapshot
-            run_snapshot()
-        except Exception as e:
-            print(f"Watchlist-Update Fehler: {e}")
-        return []
-
-    from paper_trade_engine import sync_prices_for_tickers
-
-    # Alle Ticker aus dem Universum sammeln
-    all_tickers = (
-        [t for t, _, _ in UNIVERSE['TIER_A']] +
-        [t for t, _, _ in UNIVERSE['TIER_B']] +
-        [t for t, _, _ in UNIVERSE['TIER_C']]
-    )
-    # Preisdaten aktualisieren (via live_data)
-    sync_prices_for_tickers(all_tickers)
 
     results = []
     new_trades = 0
-    pending_added = 0
 
-    for tier, items in UNIVERSE.items():
+    for ticker, strategy, description in UNIVERSE:
         if new_trades >= max_new_trades:
             break
 
-        score_fn = {'TIER_A': score_tier_a, 'TIER_B': score_tier_b, 'TIER_C': score_tier_c}[tier]
-        position_cap = {'TIER_A': 3000, 'TIER_B': 2000, 'TIER_C': 1000}[tier]
+        if has_open(ticker):
+            results.append({'ticker': ticker, 'status': 'already_open'})
+            continue
 
-        for ticker, strategy, description in items:
-            if new_trades >= max_new_trades:
-                break
-            if has_open(ticker):
-                results.append({'ticker': ticker, 'tier': tier, 'status': 'already_open'})
-                continue
-            if open_count() >= 20:
-                results.append({'ticker': ticker, 'tier': tier, 'status': 'max_positions'})
-                break
-            if get_free_cash() < position_cap * 0.5:
-                results.append({'ticker': ticker, 'tier': tier, 'status': 'low_cash'})
-                break
+        if open_count() >= 15:
+            results.append({'ticker': ticker, 'status': 'max_positions'})
+            break
 
-            data = fetch_data(ticker)
-            if data is None:
-                results.append({'ticker': ticker, 'tier': tier, 'status': 'no_data'})
-                time.sleep(0.2)
-                continue
-
-            setup = score_fn(data)
-            if setup is None:
-                results.append({'ticker': ticker, 'tier': tier, 'status': 'no_setup',
-                                 'price': data['price'], 'rsi': data.get('rsi')})
-                time.sleep(0.2)
-                continue
-
-            entry, stop, target, reason = setup
-
-            # ── NEU: Entry-Zone-Check ──────────────────────────────────
-            in_zone, zone_reason = is_in_entry_zone(data, entry, stop)
-
-            if not in_zone:
-                # Kurs noch nicht am Entry-Punkt → Pending Setup anlegen
-                # Trigger: wenn Kurs zurückkommt auf Entry-Level
-                add_pending_setup(
-                    ticker=ticker, strategy=strategy,
-                    conviction=0,  # wird beim Trigger neu berechnet
-                    entry=entry, stop=stop, target=target,
-                    trigger_type='BELOW',  # Long: warte auf Rücklauf (unter aktuellen Preis)
-                    notes=f"{description} | {reason} | Warte: {zone_reason}"
-                )
-                results.append({
-                    'ticker': ticker, 'tier': tier, 'status': 'watching',
-                    'price': data['price'], 'trigger': entry, 'zone_reason': zone_reason,
-                })
-                pending_added += 1
-                time.sleep(0.2)
-                continue
-            # ── Ende Entry-Zone-Check ──────────────────────────────────
-
-            full_thesis = f"{description} | {reason} | {zone_reason}"
-
-            result = execute_paper(ticker, strategy, entry, stop, target, full_thesis, tier)
-            result['ticker'] = ticker
-            result['tier'] = tier
-            result['reason'] = reason
-            results.append(result)
-
-            if result.get('success'):
-                new_trades += 1
-
+        data = fetch_data(ticker)
+        if data is None:
+            results.append({'ticker': ticker, 'status': 'no_data'})
             time.sleep(0.3)
+            continue
+
+        setup = evaluate_setup(ticker, strategy, data)
+        if setup is None:
+            results.append({
+                'ticker': ticker,
+                'status': 'no_setup',
+                'price':  data['price'],
+                'rsi':    data.get('rsi'),
+            })
+            time.sleep(0.3)
+            continue
+
+        thesis = f"[v2] {description} | {setup['reason']}"
+        result = execute_paper(
+            ticker, strategy,
+            setup['entry'], setup['stop'], setup['target'],
+            thesis
+        )
+        result['ticker']   = ticker
+        result['strategy'] = strategy
+        result['crv']      = setup['crv']
+        result['reason']   = setup['reason']
+        results.append(result)
+
+        if result.get('success'):
+            new_trades += 1
+
+        time.sleep(0.3)
 
     return results
 
+
+# ─── Lab Mode ────────────────────────────────────────────────────────────────
+
+ENTRY_THRESHOLD_LAB  = 35   # entspannter als normale 45
+MAX_LAB_TRADES_PER_RUN = 4
+LAB_RISK_PCT = 0.005         # 0.5% Risiko pro Trade (statt 2%)
+
+
+def _thesis_gate_lab_ok(strategy: str) -> bool:
+    """
+    Gate 1 (Lab): ACTIVE und WATCHING erlaubt — nur INVALIDATED/PAUSED blockieren.
+    """
+    try:
+        from thesis_engine import get_thesis_status
+        status_dict = get_thesis_status(strategy)
+        if not status_dict:
+            return True
+        blocked = {'INVALIDATED', 'PAUSED'}
+        return status_dict.get('status', 'ACTIVE') not in blocked
+    except Exception:
+        return True
+
+
+def execute_paper_lab(ticker: str, strategy: str, entry: float, stop: float,
+                      target: float, thesis: str) -> dict:
+    """
+    Führt Lab-Trade direkt in DB aus — umgeht Conviction Guard.
+    Verwendet LAB_RISK_PCT für Position-Sizing.
+    """
+    try:
+        conn = get_db()
+
+        # Duplikat-Check (inkl. LAB-Positionen)
+        lab_strategy = strategy + '_LAB'
+        r = conn.execute(
+            "SELECT id FROM paper_portfolio WHERE ticker=? AND status='OPEN' AND strategy=?",
+            (ticker.upper(), lab_strategy)
+        ).fetchone()
+        if r is not None:
+            conn.close()
+            return {'success': False, 'error': 'already_open_lab'}
+
+        # Position-Sizing: LAB_RISK_PCT vom verfügbaren Cash
+        free_cash = get_free_cash()
+        portfolio_value = 25000.0
+        risk_per_share = abs(entry - stop)
+        if risk_per_share <= 0:
+            conn.close()
+            return {'success': False, 'error': 'invalid_stop'}
+
+        shares = int(portfolio_value * LAB_RISK_PCT / risk_per_share)
+        if shares <= 0:
+            conn.close()
+            return {'success': False, 'error': 'sizing_zero'}
+
+        position_eur = shares * entry
+        if position_eur > free_cash - 50:
+            shares = max(1, int((free_cash - 50) / entry))
+            position_eur = shares * entry
+
+        if shares <= 0:
+            conn.close()
+            return {'success': False, 'error': 'insufficient_cash'}
+
+        now = datetime.now(timezone.utc).isoformat()
+        conn.execute("""
+            INSERT INTO paper_portfolio
+            (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,
+             status, fees, notes, style, conviction, regime_at_entry, sector)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, 'swing', 35, 'LAB', 'UNKNOWN')
+        """, (
+            ticker.upper(), lab_strategy, entry, now, float(shares),
+            stop, target, 0.5,
+            f'LAB_MODE | {thesis}',
+        ))
+
+        conn.execute(
+            "UPDATE paper_fund SET value = value - ? WHERE key = 'current_cash'",
+            (position_eur + 0.5,)
+        )
+
+        trade_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        conn.commit()
+        conn.close()
+
+        return {
+            'success': True,
+            'trade_id': trade_id,
+            'position_eur': round(position_eur, 2),
+            'shares': shares,
+        }
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+
+
+def run_lab_scan() -> list:
+    """
+    Lab-Modus Scanner mit entspannten Parametern.
+    - Gate 1: WATCHING erlaubt (nur INVALIDATED/PAUSED blockieren)
+    - Gate 2: technische Kriterien identisch
+    - Risiko: 0.5% statt 2%
+    - Strategie in DB: strategy + '_LAB', notes = 'LAB_MODE'
+    """
+    if not is_market_open():
+        print(
+            f"Markt geschlossen "
+            f"(heute: {datetime.now().strftime('%A')}) — kein Lab-Scan."
+        )
+        return []
+
+    results = []
+    new_trades = 0
+
+    for ticker, strategy, description in UNIVERSE:
+        if new_trades >= MAX_LAB_TRADES_PER_RUN:
+            break
+
+        # Bereits offene LAB-Position für diesen Ticker?
+        lab_strategy = strategy + '_LAB'
+        try:
+            conn = get_db()
+            r = conn.execute(
+                "SELECT id FROM paper_portfolio WHERE ticker=? AND status='OPEN' AND strategy=?",
+                (ticker.upper(), lab_strategy)
+            ).fetchone()
+            conn.close()
+            if r is not None:
+                results.append({'ticker': ticker, 'status': 'already_open_lab'})
+                continue
+        except Exception:
+            pass
+
+        if open_count() >= 20:  # Lab hat höheres Limit
+            results.append({'ticker': ticker, 'status': 'max_positions'})
+            break
+
+        data = fetch_data(ticker)
+        if data is None:
+            results.append({'ticker': ticker, 'status': 'no_data'})
+            time.sleep(0.3)
+            continue
+
+        # Gate 1 (Lab): WATCHING erlaubt
+        if not _thesis_gate_lab_ok(strategy):
+            results.append({'ticker': ticker, 'status': 'thesis_blocked'})
+            time.sleep(0.3)
+            continue
+
+        # Gate 2: technische Bestätigung (identisch mit Hauptscanner)
+        criteria = THESIS_ENTRY_CRITERIA.get(strategy, THESIS_ENTRY_CRITERIA['DEFAULT'])
+
+        if not criteria['trend'](data):
+            results.append({'ticker': ticker, 'status': 'no_setup', 'price': data['price'], 'rsi': data.get('rsi')})
+            time.sleep(0.3)
+            continue
+
+        if not criteria['momentum'](data):
+            results.append({'ticker': ticker, 'status': 'no_setup', 'price': data['price'], 'rsi': data.get('rsi')})
+            time.sleep(0.3)
+            continue
+
+        if not criteria['volume'](data):
+            results.append({'ticker': ticker, 'status': 'no_setup', 'price': data['price'], 'rsi': data.get('rsi')})
+            time.sleep(0.3)
+            continue
+
+        # Stop/Target berechnen
+        closes = data.get('closes', [])
+        highs  = data.get('highs', [])
+        lows   = data.get('lows', [])
+        atr    = _atr(closes, highs, lows)
+        stop   = data['price'] - criteria['stop_atr'] * atr
+        stop   = max(stop, data['price'] * 0.70)
+        risk   = data['price'] - stop
+        if risk <= 0:
+            results.append({'ticker': ticker, 'status': 'no_setup'})
+            time.sleep(0.3)
+            continue
+
+        target = data['price'] + criteria['target_r'] * risk
+        crv    = (target - data['price']) / risk
+        if crv < 2.0:
+            results.append({'ticker': ticker, 'status': 'no_setup'})
+            time.sleep(0.3)
+            continue
+
+        rsi_val = data.get('rsi') or 50
+        thesis  = (
+            f"[LAB] {description} | RSI={rsi_val:.0f}, "
+            f"Vol={data['vol_ratio']:.1f}x, CRV={crv:.1f}:1"
+        )
+
+        result = execute_paper_lab(
+            ticker, strategy,
+            data['price'], round(stop, 4), round(target, 4),
+            thesis
+        )
+        result['ticker']   = ticker
+        result['strategy'] = lab_strategy
+        result['crv']      = round(crv, 2)
+        results.append(result)
+
+        if result.get('success'):
+            new_trades += 1
+
+        time.sleep(0.3)
+
+    return results
+
+
+# ─── Summary ─────────────────────────────────────────────────────────────────
 
 def print_summary(results: list):
     entered  = [r for r in results if r.get('success')]
     skipped  = [r for r in results if r.get('status') == 'no_setup']
     no_data  = [r for r in results if r.get('status') == 'no_data']
     open_pos = [r for r in results if r.get('status') == 'already_open']
+    blocked  = [r for r in results if r.get('status') == 'max_positions']
 
-    print(f"\n═══ Autonomous Scanner ═══")
-    print(f"  ✅ Neue Trades: {len(entered)}")
-    print(f"  📍 Kein Setup:  {len(skipped)}")
-    print(f"  ⚪ Bereits offen: {len(open_pos)}")
-    print(f"  ❌ Kein Preis:  {len(no_data)}")
+    print("\n=== Autonomous Scanner v2 ===")
+    print(f"  Neue Trades   : {len(entered)}")
+    print(f"  Kein Setup    : {len(skipped)}")
+    print(f"  Bereits offen : {len(open_pos)}")
+    print(f"  Kein Preis    : {len(no_data)}")
+    print(f"  Max Positionen: {len(blocked)}")
 
     if entered:
-        print(f"\n  Neue Paper Trades:")
+        print("\n  Neue Paper Trades:")
         for r in entered:
-            bypass = " [VIX-BYPASS]" if r.get('bypass') else ""
-            print(f"    [{r['tier']}] {r['ticker']:12} "
-                  f"CRV {r.get('crv', '?')}:1 | "
-                  f"Conviction {r.get('conviction_score', 0):.0f} | "
-                  f"{r.get('reason', '')[:50]}"
-                  f"{bypass}")
+            print(
+                f"    {r['ticker']:12} "
+                f"CRV {r.get('crv', '?')}:1 | "
+                f"Strat {r.get('strategy', '?'):6} | "
+                f"{r.get('reason', '')[:60]}"
+            )
 
+    if skipped:
+        print("\n  Kein Setup (Top 5):")
+        for r in skipped[:5]:
+            rsi_str = f"RSI={r['rsi']:.0f}" if r.get('rsi') else "RSI=n/a"
+            print(
+                f"    {r['ticker']:12} "
+                f"Kurs={r.get('price', 0):.2f} | {rsi_str}"
+            )
+
+
+# ─── CLI ─────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-    import sys
-    max_t = int(sys.argv[1]) if len(sys.argv) > 1 else 5
-    print(f"🔍 Autonomous Scanner läuft — max {max_t} neue Trades...")
-    results = run_scan(max_new_trades=max_t)
-    print_summary(results)
+    import sys as _sys_cli
+    if '--lab' in _sys_cli.argv:
+        print(f"Lab-Scanner laeuft — max {MAX_LAB_TRADES_PER_RUN} neue Lab-Trades...")
+        results = run_lab_scan()
+        print_summary(results)
+    else:
+        max_t = int(_sys_cli.argv[1]) if len(_sys_cli.argv) > 1 and _sys_cli.argv[1].lstrip('-').isdigit() else MAX_NEW_TRADES_PER_RUN
+        print(f"Autonomous Scanner v2 laeuft — max {max_t} neue Trades...")
+        results = run_scan(max_new_trades=max_t)
+        print_summary(results)
