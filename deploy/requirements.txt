@@ -1,0 +1,24 @@
+# TradeMind — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# ML & Data Science
+numpy>=1.26
+scipy>=1.12
+hmmlearn>=0.3.0
+river>=0.21
+pandas>=2.1
+
+# RL Agent (CPU-only — kein CUDA auf VPS nötig)
+torch>=2.2 --index-url https://download.pytorch.org/whl/cpu
+
+# Market Data
+yfinance>=0.2.36
+exchange_calendars>=4.5
+
+# API & Validation
+pydantic>=2.5
+
+# Claude API (optional — für Entity Extraction)
+anthropic>=0.40
+
+# Discord Alerts (built-in urllib — kein Package nötig)
