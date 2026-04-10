@@ -43,7 +43,7 @@
     "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
     "horizon_weeks": 12,
     "status": "active",
-    "health": "green",
+    "health": "yellow",
     "learning_question": "Profitiert US-Produzent (OXY) oder EU-Major (TTE.PA) stärker?",
     "tickers": [
       "OXY",

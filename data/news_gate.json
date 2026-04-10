@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-09T21:05:00.910467",
+  "timestamp": "2026-04-10T09:05:00.779539",
   "relevant": true,
-  "hit_count": 164,
-  "events_scanned": 244,
+  "hit_count": 158,
+  "events_scanned": 242,
   "window_hours": 24,
   "top_hits": [
     {
@@ -10,129 +10,127 @@
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Palantir-Aktienkursprognose: Widerstand bei 149,35 $, während PLTR um 7,71 % fällt - Traders Union",
-      "ticker": "PLTR",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "google_news",
-      "ts": "2026-04-09 19:00:09"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran",
-        "S3_KI"
-      ],
-      "headline": "Nvidia-Aktie bleibt stabil, da der Waffenstillstand zwischen den USA und Iran das globale Versandrisiko verringert. - Tr",
-      "ticker": "NVDA",
+      "headline": "Xi Tells Taiwan's Main Opposition Chief That China Wants Peace, Unification",
+      "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-09 19:00:09"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-10 07:00:10"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Nvidia Aktie: Expansion ins All - Börse Express",
-      "ticker": "NVDA",
+      "headline": "Zelenskiy Says Gulf Offers Kyiv Fuel Aid for Anti-Drone Support",
+      "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-09 19:00:09"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-10 07:00:10"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Trump Demands Reopening of Hormuz as US-Iran Peace Talks Near",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-10 07:00:10"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "UK Gives £380 Million Subsidy to Tata’s Jaguar Battery Factory",
+      "headline": "Oil Futures Set for Biggest Weekly Loss Since June",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-09 19:00:08"
+      "ts": "2026-04-10 07:00:10"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran",
-        "PS1_Oil"
+        "PS2_Tanker"
       ],
-      "headline": "Iran War Erodes Exxon, Chevron Profits Even as Oil Prices Soar",
+      "headline": "What to Expect From US-Iran Talks in Pakistan",
+      "ticker": "FRO",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-10 07:00:10"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Bessent Summoned Wall Street Leaders to Discuss Anthropic's New AI",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-10 07:00:10"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "China AI Firm Discloses $92 Million of Banned Nvidia Chip Servers to Beijing",
+      "ticker": "NVDA",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_technology",
+      "ts": "2026-04-10 07:00:09"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI",
+        "PS_China"
+      ],
+      "headline": "Alibaba Claims Viral Happy Horse AI Model in Latest Breakthrough",
       "ticker": "",
       "score": 0.5,
       "direction": "bullish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 19:00:08"
+      "source": "bloomberg_technology",
+      "ts": "2026-04-10 07:00:09"
     },
     {
-      "thesis": "S1_Iran",
+      "thesis": "S3_KI",
       "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Iran War Has Changed the Middle East ‘Forever’",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 19:00:08"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Starmer Says Trump’s Iran Rhetoric Is Contrary to British Values",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 19:00:08"
-    },
-    {
-      "thesis": "S1_Iran",
-      "all_theses": [
-        "S1_Iran"
-      ],
-      "headline": "Can the US and Iran Agree to a Durable End to the War?",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-09 19:00:08"
-    },
-    {
-      "thesis": "S2_Rüstung",
-      "all_theses": [
-        "S2_Rüstung",
         "S3_KI"
       ],
-      "headline": "Meta, Amazon, X.AI Pressed by Key Senator on Child Exploitation",
+      "headline": "SoftBank Group Prices ¥418 Billion Retail Bonds at Record 4.97%",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_technology",
-      "ts": "2026-04-09 19:00:07"
+      "ts": "2026-04-10 07:00:09"
     },
     {
-      "thesis": "PS1_Oil",
+      "thesis": "S3_KI",
       "all_theses": [
-        "PS1_Oil"
+        "S3_KI"
       ],
-      "headline": "Gulf Tensions Push Oil Higher | Open Interest 4/9/2026",
+      "headline": "TSMC’s Sales Beat Estimates After War Fails to Dent AI Demand",
       "ticker": "",
-      "score": -0.3,
-      "direction": "bearish",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-09 19:00:07"
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-10 07:00:08"
     }
   ],
   "theses_hit": [
-    "S1_Iran",
     "S3_KI",
-    "PS1_Oil",
-    "S2_Rüstung"
+    "S1_Iran",
+    "PS1_Oil"
   ]
 }

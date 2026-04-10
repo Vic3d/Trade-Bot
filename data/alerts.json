@@ -614,5 +614,33 @@
     "ticker": "",
     "message": "\ud83d\udcc8 Trailing Stop f\u00e4llig: VanEck Oil Services ETF (A3D42Y) @ 29.45\u20ac | P&L: +5.6% (>5.0%) | Stop auf Breakeven (27.90\u20ac) nachziehen! [Conviction: 50/100]",
     "value": ""
+  },
+  {
+    "timestamp": "2026-04-10T06:10:50.777005+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udd34 STOP GETROFFEN: Palantir (PLTR) @ 111.61\u20ac | Stop: 127.0\u20ac | SOFORT PR\u00dcFEN! [Conviction: 65/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-10T06:10:50.778552+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\ud83d\udcca WPR-MONITORING \u2014 Novo Nordisk A/S (NOVO-B.CO): WPR Monat -96 (tief \u00fcberverkauft)\n\u2192 Noch kein Signal. Beobachten ob Umkehr aus Zone einsetzt.",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-10T07:10:50.350839+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a0\ufe0f STOP KRITISCH: Palantir (PLTR) @ 111.61\u20ac | Stop: 127.0\u20ac | Nur noch -13.8% Abstand! [Conviction: 75/100]",
+    "value": ""
+  },
+  {
+    "timestamp": "2026-04-10T08:10:51.490706+00:00",
+    "type": "GENERAL",
+    "ticker": "",
+    "message": "\u26a1 Stop-N\u00e4he: Palantir (PLTR) @ 111.64\u20ac | Stop: 127.0\u20ac | -13.8% Abstand [Conviction: 76/100]",
+    "value": ""
   }
 ]

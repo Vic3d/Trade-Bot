@@ -444,3 +444,17 @@ High-Impact: 4 | Actionable: True
   [S2_Rüstung] Meta, Amazon, X.AI Pressed by Key Senator on Child Exploitation
 High-Impact: 7 | Actionable: True
 ---
+
+## [2026-04-10 09:10] News Radar — 10 neue Headlines
+  [S3_KI] Xi Tells Taiwan's Main Opposition Chief That China Wants Peace, Unification
+  [S3_KI] Zelenskiy Says Gulf Offers Kyiv Fuel Aid for Anti-Drone Support
+  [S1_Iran] Trump Demands Reopening of Hormuz as US-Iran Peace Talks Near
+  [PS1_Oil] Oil Futures Set for Biggest Weekly Loss Since June
+  [S1_Iran] What to Expect From US-Iran Talks in Pakistan
+  [S3_KI] Bessent Summoned Wall Street Leaders to Discuss Anthropic's New AI
+  [S3_KI] China AI Firm Discloses $92 Million of Banned Nvidia Chip Servers to Beijing
+  [S3_KI] Alibaba Claims Viral Happy Horse AI Model in Latest Breakthrough
+  [S3_KI] SoftBank Group Prices ¥418 Billion Retail Bonds at Record 4.97%
+  [S3_KI] TSMC’s Sales Beat Estimates After War Fails to Dent AI Demand
+High-Impact: 3 | Actionable: True
+---

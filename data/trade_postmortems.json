@@ -1,6 +1,6 @@
 {
   "total_analyzed": 87,
-  "avg_entry_quality": 6.6,
+  "avg_entry_quality": 6.4,
   "avg_exit_quality": 5.9,
   "disposition_effect": -0.113,
   "optimal_holding_days": {
@@ -86,7 +86,7 @@
       "id": 76,
       "ticker": "EQNR.OL",
       "strategy": "PS1",
-      "entry_quality": 10.0,
+      "entry_quality": 9.0,
       "exit_quality": 2.0,
       "holding_days": 4,
       "regime": "NEUTRAL",
@@ -163,7 +163,7 @@
       "id": 74,
       "ticker": "OXY",
       "strategy": "PS1",
-      "entry_quality": 10.0,
+      "entry_quality": 9.0,
       "exit_quality": 8.0,
       "holding_days": 0,
       "regime": "NEUTRAL",
@@ -174,7 +174,7 @@
       "id": 77,
       "ticker": "FRO",
       "strategy": "PS1",
-      "entry_quality": 10.0,
+      "entry_quality": 9.0,
       "exit_quality": 10.0,
       "holding_days": 0,
       "regime": "NEUTRAL",
@@ -207,7 +207,7 @@
       "id": 78,
       "ticker": "DHT",
       "strategy": "PS1",
-      "entry_quality": 10.0,
+      "entry_quality": 9.0,
       "exit_quality": 10.0,
       "holding_days": 0,
       "regime": "NEUTRAL",
@@ -284,12 +284,12 @@
       "id": 31,
       "ticker": "EQNR.OL",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 5,
       "regime": "RISK_OFF",
       "pnl": -13.94,
-      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 66,
@@ -394,12 +394,12 @@
       "id": 57,
       "ticker": "DHT",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 8.0,
       "holding_days": 1,
       "regime": "RISK_OFF",
       "pnl": 32.98,
-      "lesson": "Solider Trade — Entry + Exit gut."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 58,
@@ -922,7 +922,7 @@
       "id": 6,
       "ticker": "HL",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 6.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
@@ -933,18 +933,18 @@
       "id": 10,
       "ticker": "TTE.PA",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
       "pnl": -1.33,
-      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 1,
       "ticker": "OXY",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 6.0,
       "holding_days": 6,
       "regime": "UNKNOWN",
@@ -955,23 +955,23 @@
       "id": 8,
       "ticker": "MOS",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 5,
       "regime": "UNKNOWN",
       "pnl": -22.7,
-      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 7,
       "ticker": "PAAS",
       "strategy": "PS1",
-      "entry_quality": 7.0,
+      "entry_quality": 6.0,
       "exit_quality": 4.0,
       "holding_days": 2,
       "regime": "UNKNOWN",
       "pnl": -4.22,
-      "lesson": "Guter Entry, schlechter Exit — Exit-Regeln überprüfen."
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     },
     {
       "id": 4,
@@ -1007,7 +1007,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-09T21:10:06",
+  "analysis_timestamp": "2026-04-10T09:10:06",
   "avg_win_holding_days": 1.9,
   "avg_loss_holding_days": 1.7
 }

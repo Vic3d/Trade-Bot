@@ -37,10 +37,10 @@
       "lag_hours": 24,
       "direction": "inverse",
       "threshold_pct": 5.0,
-      "accuracy_pct": 16.7,
-      "sample_count": 12,
+      "accuracy_pct": 15.4,
+      "sample_count": 13,
       "wins": 2,
-      "losses": 10,
+      "losses": 11,
       "description": "VIX-Spike führt Tech-Selloff um 1-2 Sessions"
     },
     "BRENT_WTI_SPREAD_EQNR": {

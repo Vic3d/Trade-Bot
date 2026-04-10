@@ -57,3 +57,12 @@
 [TREND] 2026-04-09 04:00 — 🔴 STRONG: S1 bearish_oil (7 Events in 3h): Trump's Conflicting Statements Sow Confusion on Ceasefire | Balance of Power: Late Edition 04/08/26
 [TREND] 2026-04-09 06:00 — 🔴 STRONG: S1 bullish_oil (12 Events in 3h): Oil Rises After Biggest Drop Since 2020 as Hormuz Stays Blocked
 [TREND] 2026-04-09 06:00 — 🔴 STRONG: S1 bearish_oil (5 Events in 3h): China Has Done Its Best for Mideast Peace, Expert Says
+[TREND] 2026-04-10 00:00 — 🔴 STRONG: S1 bullish_oil (20 Events in 3h): World Bank Pres. on Hormuz Disruptions, De-dollarization
+[TREND] 2026-04-10 00:00 — 🔴 STRONG: S3 bullish_oil (6 Events in 3h): Dow Jones Futures: Trump Issues Hormuz Threat Before Iran Talks; CPI Inflation, Nvidia Chipmaker Due
+[TREND] 2026-04-10 00:00 — 🔴 STRONG: S4 bullish_oil (6 Events in 3h): Dow Jones Futures: Trump Issues Hormuz Threat Before Iran Talks; CPI Inflation, Nvidia Chipmaker Due
+[TREND] 2026-04-10 02:00 — 🔴 STRONG: S1 bullish_oil (24 Events in 3h): World Bank Pres. on Hormuz Disruptions, De-dollarization
+[TREND] 2026-04-10 02:00 — 🔴 STRONG: S3 bullish_oil (6 Events in 3h): Dow Jones Futures: Trump Issues Hormuz Threat Before Iran Talks; CPI Inflation, Nvidia Chipmaker Due
+[TREND] 2026-04-10 02:00 — 🔴 STRONG: S4 bullish_oil (6 Events in 3h): Dow Jones Futures: Trump Issues Hormuz Threat Before Iran Talks; CPI Inflation, Nvidia Chipmaker Due
+[TREND] 2026-04-10 02:00 — 🔴 STRONG: S1 bearish_oil (5 Events in 3h): Oil Opens Higher With Focus on US-Iran Ceasefire: Markets Wrap
+[TREND] 2026-04-10 04:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): Xi's $270 Billion Middle East Bet Limits China Support for Iran
+[TREND] 2026-04-10 06:00 — 🔴 STRONG: S1 bullish_oil (8 Events in 3h): South Korea to Send Envoy to Iran as Hormuz Remains Blocked

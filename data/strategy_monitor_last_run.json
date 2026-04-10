@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-09T20:40:34.066123",
+  "timestamp": "2026-04-10T08:40:34.187425",
   "strategies": {
     "PS1": {
       "name": "Iran/Öl-Geopolitik",
-      "status": "STARK",
-      "score": 56,
+      "status": "NEUTRAL",
+      "score": 53,
       "momentum_avg": 0,
-      "news_score": 100,
+      "news_score": 80,
       "reasons": [
         "Preise seitwärts +0.0% (14T)",
-        "News bullish (Score +100)"
+        "News bullish (Score +80)"
       ]
     },
     "PS2": {
@@ -201,6 +201,17 @@
     }
   },
   "changes": [
+    {
+      "ps_id": "PS1",
+      "name": "Iran/Öl-Geopolitik",
+      "old_status": "STARK",
+      "new_status": "NEUTRAL",
+      "score": 53,
+      "reasons": [
+        "Preise seitwärts +0.0% (14T)",
+        "News bullish (Score +80)"
+      ]
+    },
     {
       "ps_id": "PS2",
       "name": "Tanker-Lag-These",

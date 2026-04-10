@@ -136,3 +136,17 @@ The Failing New York Times and Fake News CNN each reported a totally FAKE TEN PO
 [2026-04-09 13:02 UTC] Scan: 100 Posts, keine Signale
 
 [2026-04-09 15:02 UTC] Scan: 100 Posts, keine Signale
+
+## [2026-04-09 21:02 UTC] ESCALATION_SIGNAL (Peace:0 Esc:4)
+I know why Tucker Carlson, Megyn Kelly, Candace Owens, and Alex Jones have all been fighting me for years, especially by the fact that they think it i...
+---
+
+## [2026-04-10 04:02 UTC] PEACE_WATCH (Peace:2 Esc:0)
+Iran is doing a very poor job, dishonorable some would say, of allowing Oil to go through the Strait of Hormuz. That is not the agreement we have! Pre...
+---
+
+## [2026-04-10 04:02 UTC] ESCALATION_WATCH (Peace:0 Esc:2)
+The Wall Street Journal, one of the worst and most inaccurate “Editorial Boards” in the World, stated that I “declared premature victory in Iran.” Act...
+---
+
+[2026-04-10 06:02 UTC] Scan: 100 Posts, keine Signale
