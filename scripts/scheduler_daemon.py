@@ -36,13 +36,16 @@ PYTHON = sys.executable  # Use the same Python that's running this script
 
 SCHEDULE = [
     # Täglich
-    # ── Live Data Refresh: 5x täglich (vor jedem wichtigen Job) ──────────────
-    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             7,  0,  None),   # Morgens
+    # ── Live Data Refresh: 8x taeglich — Asien + EU + US Coverage ────────────
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             1,  0,  None),   # Asien Morgen
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             4,  0,  None),   # Asien Close
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             7,  0,  None),   # EU Pre-Market
     ('CEO Direktive',       'ceo.py',                 ['--live'],                7,  5,  [0,1,2,3,4]),  # Mo-Fr 07:05: schreibt ceo_directive.json
-    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             9,  0,  None),   # Vor Scanner
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             9,  0,  None),   # EU Open
     ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             13, 0,  None),   # Mittags
-    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             17, 0,  None),   # Nachmittags
-    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             21, 0,  None),   # Abends
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             14, 0,  None),   # US Pre-Market
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             17, 0,  None),   # US Nachmittag
+    ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             21, 0,  None),   # US Close / Abend
     # ── Watchlist Tracker: alle 30 Min während Marktzeiten ────────────────────
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        9,  0,  [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        9,  30, [0,1,2,3,4]),
@@ -70,9 +73,13 @@ SCHEDULE = [
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 30, [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        21, 0,  [0,1,2,3,4]),
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
-    # ── Overnight Events sammeln (vor Briefing!) ─────────────────────────────
-    ('Overnight Collector', 'overnight_collector.py',  [],                        7,  10, None),
-    ('Overnight Collector', 'overnight_collector.py',  [],                        8,  25, [0,1,2,3,4]),  # nochmal kurz vor Briefing
+    # ── Overnight Events sammeln — 24/7, auch Asien-Session ────────────────
+    ('Overnight Collector', 'overnight_collector.py',  [],                        1,  0,  None),   # Asien Morgen (10:00 JST)
+    ('Overnight Collector', 'overnight_collector.py',  [],                        4,  0,  None),   # Asien Close (13:00 JST)
+    ('Overnight Collector', 'overnight_collector.py',  [],                        7,  10, None),   # EU Pre-Market
+    ('Overnight Collector', 'overnight_collector.py',  [],                        8,  25, [0,1,2,3,4]),  # vor Briefing
+    ('Overnight Collector', 'overnight_collector.py',  [],                        14, 0,  [0,1,2,3,4]),  # US Opening
+    ('Overnight Collector', 'overnight_collector.py',  [],                        20, 30, [0,1,2,3,4]),  # US Close
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
@@ -86,40 +93,63 @@ SCHEDULE = [
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
-    # ── Thesis Monitoring: alle 30 Min — prüft Kill-Trigger gegen News ──────────
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             10, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             10, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             11, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             11, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             12, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             12, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             13, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             13, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             14, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             14, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             15, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             15, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             16, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             16, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             17, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             17, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             18, 0,  [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             18, 30, [0,1,2,3,4]),
-    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             21, 0,  [0,1,2,3,4]),
+    # ── Thesis Monitoring: 24/7 — Kill-Trigger kennen keine Marktzeiten ────────
+    # Asien-Session (00:00-06:00 UTC) — alle 2h
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             0,  0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             2,  0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             4,  0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             6,  0,  None),
+    # EU+US-Session (07:00-21:00 UTC) — alle 30 Min, taeglich
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             7,  30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             8,  0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             8,  30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             10, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             10, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             11, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             11, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             12, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             12, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             13, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             13, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             14, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             14, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             15, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             15, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             16, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             16, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             17, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             17, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             18, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             18, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             19, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             19, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             20, 0,  None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             20, 30, None),
+    ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             21, 0,  None),
     # ─────────────────────────────────────────────────────────────────────────
-    ('CEO Radar Nacht',     'news_ceo_radar.py',       [],                        2,  0,  None),
+    # ── News Pipeline: 8x taeglich — Asien + EU + US Coverage ─────────────────
+    # Asien-Session
+    ('CEO Radar Nacht',     'news_ceo_radar.py',       [],                        1,  0,  None),   # Asien Morgen
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        1,  0,  None),
+    ('CEO Radar Asien',     'news_ceo_radar.py',       [],                        4,  0,  None),   # Asien Close
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        4,  0,  None),
+    # EU Pre-Market
     ('CEO Radar Morgen',    'news_ceo_radar.py',       [],                        7,  0,  None),
+    ('Newswire Analyst',    'newswire_analyst.py',     [],                        7,  0,  None),
+    # EU Session
     ('Newswire Analyst',    'newswire_analyst.py',     [],                        9,  0,  None),
     ('News Gate Update',    'news_gate_updater.py',    [],                        9,  5,  None),
     ('CEO Radar',           'news_ceo_radar.py',       [],                        9,  10, None),
     ('Newswire Analyst',    'newswire_analyst.py',     [],                        13, 0,  None),
     ('News Gate Update',    'news_gate_updater.py',    [],                        13, 5,  None),
     ('CEO Radar',           'news_ceo_radar.py',       [],                        13, 10, None),
+    # US Session
     ('Newswire Analyst',    'newswire_analyst.py',     [],                        17, 0,  None),
     ('News Gate Update',    'news_gate_updater.py',    [],                        17, 5,  None),
     ('CEO Radar',           'news_ceo_radar.py',       [],                        17, 10, None),
+    # Abend / US Close
     ('Newswire Analyst',    'newswire_analyst.py',     [],                        21, 0,  None),
     ('News Gate Update',    'news_gate_updater.py',    [],                        21, 5,  None),
     ('CEO Radar',           'news_ceo_radar.py',       [],                        21, 10, None),
@@ -129,10 +159,9 @@ SCHEDULE = [
     ('Strategy DNA',        'strategy_dna.py',         [],                        12, 0,  [5]),   # Sa
     ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
-    # ── Phase 6: Autonome Thesen-Entdeckung ──────────────────────────────────
-    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [6]),   # So 07:00 UTC
-    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [2]),   # Mi 07:00 UTC (mid-week)
-    # ── Autonomous Scanner: alle 30 Min Mo-Fr 08:00–16:30 UTC (09:00–17:30 CET) ──
+    # ── Phase 6: Autonome Thesen-Entdeckung — taeglich ─────────────────────
+    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              5,  0,  None),   # Taeglich 05:00 UTC (vor EU-Open)
+    # ── Autonomous Scanner: Mo-Fr 08:00–19:30 UTC (Xetra 08-16 + US 13:30-20) ──
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  0,  [0,1,2,3,4]),
@@ -151,7 +180,13 @@ SCHEDULE = [
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 30, [0,1,2,3,4]),
-    # ── Lab Scanner: stündlich Mo-Fr 08:45–16:45 UTC (versetzt zum Hauptscanner) ─
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 0,  [0,1,2,3,4]),   # US Nachmittag
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   18, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   18, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 30, [0,1,2,3,4]),   # US letzte Stunde
+    # ── Lab Scanner: stuendlich Mo-Fr 08:45–19:45 UTC ────────────────────────
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  8,  45, [0,1,2,3,4]),
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  9,  45, [0,1,2,3,4]),
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  10, 45, [0,1,2,3,4]),
@@ -161,6 +196,9 @@ SCHEDULE = [
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  14, 45, [0,1,2,3,4]),
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  15, 45, [0,1,2,3,4]),
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  16, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  17, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  18, 45, [0,1,2,3,4]),
+    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  19, 45, [0,1,2,3,4]),
     # ── Backtest v2: jeden Sonntag 08:00 UTC (nach Thesis Discovery 07:00) ──────
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 UTC
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 UTC (Mid-Week Refresh)

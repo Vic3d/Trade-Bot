@@ -198,6 +198,21 @@ UNIVERSE = [
     ('XLP',     'PS20', 'Consumer Staples ETF — Defensiv'),
     ('XLU',     'PS20', 'Utilities ETF — AI Power Demand + Defensiv'),
     ('JNJ',     'PS20', 'Johnson und Johnson — Qualitaet Defensiv'),
+    # ── Japan / Asien — Fruehindikatoren + Eigenstaendige Thesen ────────────
+    ('8306.T',  'JP',   'Mitsubishi UFJ — Japans groesste Bank, BOJ-Zinswende'),
+    ('7203.T',  'JP',   'Toyota — Japans Exportbarometer, Yen-Sensitivity'),
+    ('8035.T',  'JP',   'Tokyo Electron — Halbleiter-Ausruestung, Tech-Bellwether Asia'),
+    ('6758.T',  'JP',   'Sony — Consumer Tech + Gaming, Globaler Sentiment'),
+    ('9984.T',  'JP',   'SoftBank — Tech-VC Barometer, AI-Exposure'),
+    # Asien-Indices als Signalgeber (nicht zum Traden, aber fuer Thesen)
+    ('EWJ',     'JP',   'iShares Japan ETF — Nikkei-Proxy fuer US-Handel'),
+    ('FXI',     'CN',   'iShares China Large-Cap — China-Sentiment Proxy'),
+    # ── US Large Cap (bisher fehlend, wichtig fuer Gesamtbild) ──────────────
+    ('NVDA',    'TECH', 'Nvidia — AI-Bellwether'),
+    ('MSFT',    'TECH', 'Microsoft — AI + Cloud Marktfuehrer'),
+    ('AAPL',    'TECH', 'Apple — Consumer Tech Barometer'),
+    ('AMZN',    'TECH', 'Amazon — E-Commerce + Cloud'),
+    ('GOOGL',   'TECH', 'Alphabet — Search + AI'),
 ]
 
 

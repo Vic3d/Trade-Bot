@@ -35,8 +35,10 @@ _sys.path.insert(0, str(WS / 'scripts' / 'core'))
 # ── P9: SECTOR → STRATEGY MAP ──────────────────────────────────────────────
 SECTOR_STRATEGY_MAP = {
     "oil": ["PS1", "S1"], "defense": ["PS3", "S2", "PS11"],
-    "tech": ["S3", "PS17"], "metals": ["PS4", "S4"],
+    "tech": ["S3", "PS17", "TECH"], "metals": ["PS4", "S4"],
     "airlines": ["PS10", "S10"],
+    "japan": ["JP"], "china": ["CN"], "asia": ["JP", "CN"],
+    "semiconductor": ["JP", "TECH"], "nuclear": ["PS16"],
 }
 
 
@@ -129,6 +131,22 @@ IMPACT_RULES = [
     # Airlines nur bei spezifischen Kerosin/Treibstoff-Keywords
     (["kerosene", "kerosin", "jet fuel", "aviation fuel"],
                                               [],                       ["S10"],      "bearish_airlines",       0.70),
+    # ── Asien / Japan / China — Fruehindikatoren ────────────────────────────
+    (["BOJ", "Bank of Japan", "yen", "Yen"],  [],                       ["JP"],       "japan_monetary",         0.75),
+    (["Nikkei", "TOPIX", "Tokyo Stock"],      [],                       ["JP"],       "japan_market",           0.70),
+    (["China tariff", "China trade", "PBOC", "yuan", "Yuan"],
+                                              [],                       ["CN"],       "china_macro",            0.75),
+    (["Hang Seng", "Shanghai", "SSE"],        [],                       ["CN"],       "china_market",           0.65),
+    (["Taiwan", "TSMC", "semiconductor ban", "chip export"],
+                                              [],                       ["JP", "TECH"], "asia_tech_risk",       0.80),
+    (["North Korea", "Nordkorea", "Kim Jong"], [],                      ["JP"],       "geopolitical_asia",      0.80),
+    (["South China Sea", "Suedchinesisches Meer"],
+                                              [],                       ["CN"],       "geopolitical_asia",      0.75),
+    # ── Globale Makro-Events ────────────────────────────────────────────────
+    (["recession", "Rezession", "GDP contraction"],
+                                              [],                       ["PS20"],     "macro_bearish",          0.80),
+    (["VIX spike", "volatility surge", "market crash", "flash crash"],
+                                              [],                       ["PS20"],     "volatility_event",       0.90),
 ]
 
 
