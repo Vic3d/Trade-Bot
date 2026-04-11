@@ -123,6 +123,65 @@ def match_tier3_meta(headline: str, rules: dict) -> bool:
     return any(kw.lower() in headline.lower() for kw in tier3)
 
 
+def update_relevance_rules():
+    """
+    Generiert tier2_strategy_keywords aus strategies.json automatisch.
+    Neue Strategien (PS_Lithium, PS_Helium etc.) werden automatisch aufgenommen.
+    Schreibt in data/night_relevance_rules.json.
+    """
+    strategies_file = WS / 'data/strategies.json'
+    if not strategies_file.exists():
+        return
+
+    try:
+        strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
+    except Exception:
+        return
+
+    tier2 = {}
+    for sid, s in strategies.items():
+        if isinstance(s, dict) and s.get('status', 'active').lower() in ('active', 'evaluating', 'watching'):
+            # Keywords aus thesis + entry_trigger + name extrahieren
+            text_parts = [
+                s.get('thesis', ''),
+                s.get('entry_trigger', ''),
+                s.get('name', ''),
+            ]
+            raw_text = ' '.join(text_parts)
+            # Bedeutsame Wörter extrahieren (>= 5 Zeichen, keine Stoppwörter)
+            import re as _re
+            STOPWORDS_KW = {'einen', 'durch', 'nicht', 'oder', 'oder', 'werden', 'unter',
+                            'über', 'sowie', 'beim', 'nach', 'bereits', 'weiter', 'steigt',
+                            'sinkt', 'bricht', 'falls', 'wenn', 'bereits', 'immer'}
+            words = _re.findall(r'\b[A-Za-z\u00c0-\u017e]{5,}\b', raw_text)
+            kws = list(dict.fromkeys([
+                w.lower() for w in words
+                if w.lower() not in STOPWORDS_KW and len(w) >= 5
+            ]))[:20]
+
+            # Ticker auch als Keywords
+            for ticker in s.get('tickers', []):
+                if ticker and ticker not in kws:
+                    kws.insert(0, ticker.lower())
+
+            if kws:
+                tier2[sid] = kws
+
+    rules = {
+        'tier2_strategy_keywords': tier2,
+        'tier3_meta_always_flag': [
+            'earnings', 'catalyst', 'acquisition', 'merger', 'buyout',
+            'bankruptcy', 'chapter 11', 'FDA approval', 'Zulassung',
+            'Quartalsbericht', 'Gewinn', 'Verlust'
+        ],
+        'generated_at': datetime.now().isoformat(),
+    }
+
+    RULES_FILE.write_text(json.dumps(rules, indent=2, ensure_ascii=False))
+    n_strats = len(tier2)
+    print(f"  Relevance Rules aktualisiert: {n_strats} Strategien")
+
+
 def run_news_pipeline():
     """Führt news_pipeline.py aus um frische News zu laden."""
     try:
@@ -143,13 +202,47 @@ def run_news_pipeline():
 def collect():
     print(f"🌙 overnight_collector.py — {datetime.now().strftime('%Y-%m-%d %H:%M')} MEZ")
 
+    # -1. Relevance Rules aus strategies.json aktualisieren
+    try:
+        update_relevance_rules()
+    except Exception as e:
+        print(f"⚠️  Relevance Rules Update Fehler: {e}")
+
     # 0. Feedback-Loop: ausstehende Preis-Checks + Kalibrierung
     try:
         sys.path.insert(0, str(WS / 'scripts'))
         from feedback_loop import run_feedback_loop
-        run_feedback_loop()
+        fb_report = run_feedback_loop()
+        if fb_report:
+            fb_str = fb_report if isinstance(fb_report, str) else str(fb_report)
+            if len(fb_str) > 20:
+                print(f"  Feedback: {fb_str[:200]}")
     except Exception as e:
         print(f"⚠️  Feedback-Loop Fehler: {e}")
+
+    # 0b. Alternative Data laden — enrichiert Thesis-Kontext
+    _alt_data_context = {}
+    try:
+        alt_data_file = WS / 'data/alternative_data.json'
+        if alt_data_file.exists():
+            _alt_data = json.loads(alt_data_file.read_text(encoding='utf-8'))
+            # EIA Öl-Lager → relevant für PS1/PS2
+            eia = _alt_data.get('eia_petroleum', {})
+            if eia.get('crude_inventory_change_mmbbl') is not None:
+                chg = eia['crude_inventory_change_mmbbl']
+                _alt_data_context['eia_crude_draw'] = chg < 0  # True = Lager sinken = bullish
+                print(f"  Alt-Data EIA: {eia.get('note','')}")
+            # Shipping-Meldungen → relevant für Hormuz-Thesen
+            shipping = _alt_data.get('shipping_news', [])
+            if shipping:
+                _alt_data_context['shipping_alerts'] = len(shipping)
+                print(f"  Alt-Data Shipping: {len(shipping)} relevante Meldungen")
+            # USDA Aussaat → relevant für PS_FertilizerShock
+            usda = _alt_data.get('usda_planting', {})
+            if usda.get('corn_planted_pct'):
+                _alt_data_context['corn_planted_pct'] = usda['corn_planted_pct']
+    except Exception as e:
+        print(f"  Alt-Data Laden Fehler: {e}")
 
     # 1. News Pipeline ausführen
     run_news_pipeline()
@@ -403,6 +496,24 @@ def collect():
                             pass
             except Exception:
                 pass  # VIX-Kontext ist optional — kein Crash
+
+            # thesis_checks befüllen — damit conviction_scorer Daten hat
+            if strategies:
+                try:
+                    direction_for_check = impact_direction
+                    is_kill = 1 if 'bearish' in impact_direction else 0
+                    for s_id in strategies:
+                        conn.execute("""
+                            INSERT INTO thesis_checks
+                                (thesis_id, checked_at, news_headline, direction,
+                                 kill_trigger_match, action_taken)
+                            VALUES (?, datetime('now'), ?, ?, ?, ?)
+                        """, (
+                            s_id, headline[:500], direction_for_check,
+                            is_kill, f'overnight_collector: {impact_direction}'
+                        ))
+                except Exception:
+                    pass  # thesis_checks ist optional — nicht crashen
 
             new_count += 1
             existing_ids.add(event_id)  # Prevent duplicates within same run

@@ -68,6 +68,8 @@ def _get_current_regime(conn=None) -> str:
 def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
@@ -432,9 +434,93 @@ def _score_market_context(strategy: str) -> tuple[int, str]:
     except Exception:
         pass
 
-    score = min(15, vix_score + regime_bonus)
+    # CRASH hard block — kein Trading in Crash-Regimen
+    if regime and 'CRASH' in regime.upper():
+        return (-999, f'BLOCK: Crash-Regime ({regime}) — Trading gesperrt')
+
+    # BEAR regime: Conviction-Abzug
+    bear_penalty = 0
+    if regime and regime.upper() in ('BEAR', 'BEARISH', 'RISK_OFF'):
+        bear_penalty = -5
+
+    score = min(15, max(0, vix_score + regime_bonus + bear_penalty))
     bonus_str = f' +{regime_bonus}regime_fit' if regime_bonus else ''
-    return (score, f'{vix_str}{bonus_str} → {score}/15')
+    bear_str  = f' {bear_penalty}bear' if bear_penalty else ''
+    return (score, f'{vix_str}{bonus_str}{bear_str} → {score}/15')
+
+
+# ─── Factor 5: Priced-In Check (-20 to +5) ───────────────────────────────────
+
+def _score_priced_in(ticker: str, entry_price: float | None = None) -> tuple[int, str]:
+    """
+    Variant Perception Gate: Has the market already priced in this thesis?
+
+    Checks distance from 52-week high and 6-month momentum.
+    A thesis on a stock at 52W-high = zero edge. The market already knows.
+
+    Scoring (penalty modifier):
+      <5%  from 52W high:  -20 pts  (thesis fully priced in — everyone knows)
+      5-15% from 52W high: -10 pts  (partially priced in)
+      15-30% from 52W high:  0 pts  (neutral)
+      >30% from 52W high:   +5 pts  (beaten down — market may NOT know yet)
+
+    Additional 6M momentum penalty:
+      6M return >50%: -5 pts (thesis has already run)
+      6M return >30%: -3 pts (running hot)
+
+    Returns: (modifier: int, reason: str)
+    """
+    try:
+        conn = get_db()
+        # Last 252 trading days (~1 year)
+        rows = conn.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 252",
+            (ticker,)
+        ).fetchall()
+        conn.close()
+
+        closes = [r['close'] for r in rows if r['close'] is not None]
+        if len(closes) < 20:
+            return (0, 'priced_in=n/a (no data)')
+
+        current = entry_price if entry_price else closes[0]
+        high_52w = max(closes[:min(252, len(closes))])
+
+        # Distance from 52W high (negative = below high)
+        dist_pct = (current - high_52w) / high_52w  # e.g. -0.05 = 5% below high
+
+        if dist_pct >= -0.05:  # within 5% of 52W high
+            dist_penalty = -20
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=-20'
+        elif dist_pct >= -0.15:  # 5-15% below high
+            dist_penalty = -10
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=-10'
+        elif dist_pct >= -0.30:  # 15-30% below high
+            dist_penalty = 0
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=0'
+        else:  # >30% below high — beaten down
+            dist_penalty = 5
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=+5'
+
+        # 6M momentum check (~126 trading days)
+        mom_penalty = 0
+        mom_str = ''
+        if len(closes) >= 126:
+            price_6m_ago = closes[125]
+            if price_6m_ago > 0:
+                return_6m = (current - price_6m_ago) / price_6m_ago
+                if return_6m > 0.50:
+                    mom_penalty = -5
+                    mom_str = f' +6M_run({return_6m*100:.0f}%)=-5'
+                elif return_6m > 0.30:
+                    mom_penalty = -3
+                    mom_str = f' +6M_run({return_6m*100:.0f}%)=-3'
+
+        total_modifier = dist_penalty + mom_penalty
+        return (total_modifier, f'priced_in: {dist_str}{mom_str} → {total_modifier:+d}')
+
+    except Exception as e:
+        return (0, f'priced_in=n/a ({e})')
 
 
 # ─── Position Sizing ──────────────────────────────────────────────────────────
@@ -549,8 +635,65 @@ def calculate_conviction(
     # ── Factor 4: Market Context ──────────────────────────────────────────
     mkt_score, mkt_reason = _score_market_context(strategy)
 
-    # ── Total Score (4 factors) ───────────────────────────────────────────
-    total = thesis_score + tech_score + rr_score + mkt_score
+    # Hard block: CRASH regime
+    if mkt_score == -999:
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': mkt_reason,
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength':    thesis_score,
+                'technical_alignment': tech_score,
+                'risk_reward_quality': rr_score,
+                'market_context':     0,
+            },
+            'factor_reasons': {
+                'thesis_strength':    thesis_reason,
+                'technical_alignment': tech_reason,
+                'risk_reward_quality': rr_reason,
+                'market_context':     mkt_reason,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+            'vix_block': False,
+            'vix_block_reason': None,
+        }
+
+    # ── Factor 5: Priced-In Check ─────────────────────────────────────────
+    priced_in_mod, priced_in_reason = _score_priced_in(ticker, entry_price)
+
+    # Hard block: thesis already fully priced in (within 5% of 52W high)
+    if priced_in_mod <= -20:
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': f'Fully priced in — {priced_in_reason}',
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength':    thesis_score,
+                'technical_alignment': tech_score,
+                'risk_reward_quality': rr_score,
+                'market_context':     mkt_score,
+                'priced_in_modifier': priced_in_mod,
+            },
+            'factor_reasons': {
+                'thesis_strength':    thesis_reason,
+                'technical_alignment': tech_reason,
+                'risk_reward_quality': rr_reason,
+                'market_context':     mkt_reason,
+                'priced_in_modifier': priced_in_reason,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+            'vix_block': False,
+            'vix_block_reason': None,
+        }
+
+    # ── Total Score (4 factors + priced-in modifier) ──────────────────────
+    total = thesis_score + tech_score + rr_score + mkt_score + priced_in_mod
 
     # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
     crowd_mod = 0
@@ -612,6 +755,7 @@ def calculate_conviction(
             'technical_alignment': tech_score,
             'risk_reward_quality': rr_score,
             'market_context':      mkt_score,
+            'priced_in_modifier':  priced_in_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
         },
         'factor_reasons': {
@@ -619,6 +763,7 @@ def calculate_conviction(
             'technical_alignment': tech_reason,
             'risk_reward_quality': rr_reason,
             'market_context':      mkt_reason,
+            'priced_in_modifier':  priced_in_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
         },
         'position_sizing': sizing,

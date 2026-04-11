@@ -76,6 +76,8 @@ SCHEDULE = [
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
+    ('Alt-Data Scrape',     'intelligence/alternative_data.py', [],               6,  0,  None),   # Morgens vor allem anderen
+    ('Alt-Data Scrape',     'intelligence/alternative_data.py', ['--source', 'shipping'], 12, 0, None),  # Mittags Shipping-Update
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
     # ── Thesis Monitoring: alle 30 Min — prüft Kill-Trigger gegen News ──────────
@@ -158,6 +160,34 @@ def notify(msg: str):
 
 # ── Job Runner ────────────────────────────────────────────────────────────────
 
+HEARTBEAT_FILE = WS / 'data/scheduler_heartbeat.txt'
+
+
+def write_heartbeat():
+    """Schreibt aktuellen Timestamp als Heartbeat-Signal."""
+    try:
+        HEARTBEAT_FILE.write_text(datetime.now(timezone.utc).isoformat())
+    except Exception:
+        pass
+
+
+def check_heartbeat_age() -> tuple[bool, str]:
+    """Prüft ob Heartbeat frisch ist. Gibt (ok, reason) zurück."""
+    try:
+        if not HEARTBEAT_FILE.exists():
+            return False, 'Kein Heartbeat-File'
+        last = datetime.fromisoformat(HEARTBEAT_FILE.read_text().strip())
+        # timezone-aware vergleich
+        if last.tzinfo is None:
+            last = last.replace(tzinfo=timezone.utc)
+        age_sec = (datetime.now(timezone.utc) - last).total_seconds()
+        if age_sec > 300:  # > 5 Minuten
+            return False, f'Heartbeat veraltet: {age_sec:.0f}s'
+        return True, f'OK ({age_sec:.0f}s)'
+    except Exception as e:
+        return False, f'Heartbeat-Fehler: {e}'
+
+
 def run_job(name: str, script: str, args: list[str], discord: bool = False) -> bool:
     """Führt ein Script aus. Bei discord=True wird stdout an Victor gesendet."""
     script_path = SCRIPTS / script
@@ -182,7 +212,15 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
             return True
         else:
             log(f'❌ {name}: Fehler (code {result.returncode})')
-            log(f'   STDERR: {result.stderr[-300:]}')
+            # Vollständiges STDERR in Error-Log speichern (nicht nur 300 Zeichen)
+            try:
+                error_dir = LOG_FILE.parent / 'errors'
+                error_dir.mkdir(exist_ok=True)
+                err_file = error_dir / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}__{name.replace(' ', '_')}.log"
+                err_file.write_text(result.stderr)
+                log(f'   STDERR gespeichert: {err_file.name}')
+            except Exception:
+                log(f'   STDERR: {result.stderr[-500:]}')
             return False
     except subprocess.TimeoutExpired:
         log(f'⏱️  {name}: Timeout')
@@ -275,9 +313,12 @@ def scheduler_loop():
 
                 success = run_job(name, script, args, discord=discord_send)
 
-                # Bestimmte Jobs senden Discord-Notification bei Fehler
+                # Discord-Notification bei Fehler
                 if not success:
                     notify(f'⚠️ **Scheduler:** {name} fehlgeschlagen — Logs: data/scheduler.log')
+
+        # Heartbeat nach jeder Minute schreiben
+        write_heartbeat()
 
         # Genau auf nächste Minute warten
         sleep_secs = 60 - datetime.now().second

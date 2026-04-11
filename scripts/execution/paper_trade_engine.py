@@ -44,6 +44,8 @@ FEE_PER_TRADE = 1.0      # Trade Republic Gebühr
 def get_db():
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
@@ -304,6 +306,35 @@ def execute_paper_entry(
             'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 2.0:1 Minimum',
             'blocked_by': 'crv_minimum',
         }
+
+    # ── Guard 0: CEO Directive Check ────────────────────────────────────
+    # CEO schreibt täglich sein Marktbild in ceo_directive.json.
+    # Bei BEARISH oder HALT wird hier geblockt.
+    try:
+        ceo_file = WORKSPACE / 'data' / 'ceo_directive.json'
+        if ceo_file.exists():
+            ceo_d = json.loads(ceo_file.read_text(encoding='utf-8'))
+            ceo_bias = ceo_d.get('market_bias', 'NEUTRAL').upper()
+            ceo_halt = ceo_d.get('trading_halt', False)
+            if ceo_halt:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'❌ CEO Trading Halt aktiv: {ceo_d.get("halt_reason", "kein Grund angegeben")}',
+                    'blocked_by': 'ceo_halt',
+                }
+            if ceo_bias == 'BEARISH':
+                # Im Bärenmarkt: nur Thesis-Plays mit hoher Conviction erlaubt
+                is_thesis = strategy.startswith(('PS_', 'PS', 'DT'))
+                if not is_thesis:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': f'❌ CEO Bias BEARISH — nur Thesis-Plays erlaubt, kein {strategy}',
+                        'blocked_by': 'ceo_bearish_bias',
+                    }
+    except Exception:
+        pass  # CEO Direktive ist optional — bei Fehler weiter
 
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
@@ -692,6 +723,95 @@ def scan_and_execute_watchlist():
     return results
 
 
+# ─── Trade Close mit PnL-Berechnung ─────────────────────────────────
+
+def close_trade(trade_id: int, exit_price: float, exit_reason: str = 'manual') -> dict:
+    """
+    Schliesst einen offenen Paper Trade und berechnet PnL.
+
+    Berechnet:
+      pnl_eur  = (exit_price - entry_price) * shares - 2 * FEE_PER_TRADE
+      pnl_pct  = pnl_eur / (entry_price * shares)
+      status   = WIN (pnl_eur > 10) | LOSS (pnl_eur < -10) | CLOSED (break-even)
+
+    Returns dict mit success, pnl_eur, pnl_pct, status.
+    """
+    conn = get_db()
+    try:
+        trade = conn.execute(
+            "SELECT * FROM paper_portfolio WHERE id=? AND status='OPEN'",
+            (trade_id,)
+        ).fetchone()
+        if not trade:
+            return {'success': False, 'message': f'Trade {trade_id} nicht gefunden oder bereits geschlossen'}
+
+        entry_price = trade['entry_price']
+        shares      = trade['shares']
+        strategy    = trade['strategy'] or 'UNKNOWN'
+        ticker      = trade['ticker']
+
+        if not entry_price or not shares or shares <= 0:
+            return {'success': False, 'message': 'Ungueltige Trade-Daten (entry_price oder shares fehlt)'}
+
+        entry_cost = entry_price * shares
+        exit_value = exit_price * shares
+        fees = FEE_PER_TRADE * 2  # entry + exit
+        pnl_eur = exit_value - entry_cost - fees
+        pnl_pct = (pnl_eur / entry_cost * 100) if entry_cost > 0 else 0.0
+
+        if pnl_eur > 10:
+            new_status = 'WIN'
+        elif pnl_eur < -10:
+            new_status = 'LOSS'
+        else:
+            new_status = 'CLOSED'
+
+        now = datetime.now(timezone.utc).isoformat()
+        conn.execute(
+            """
+            UPDATE paper_portfolio
+            SET status=?, exit_price=?, close_date=?, pnl_eur=?, pnl_pct=?, exit_type=?
+            WHERE id=?
+            """,
+            (new_status, exit_price, now, round(pnl_eur, 2), round(pnl_pct, 2), exit_reason, trade_id)
+        )
+        conn.commit()
+
+        # Cash zurueck in paper_fund
+        try:
+            conn.execute(
+                "UPDATE paper_fund SET value = value + ? WHERE key='current_cash'",
+                (exit_value - FEE_PER_TRADE,)
+            )
+            conn.commit()
+        except Exception:
+            pass  # paper_fund optional
+
+        icon = 'WIN' if new_status == 'WIN' else ('LOSS' if new_status == 'LOSS' else 'CLOSED')
+        msg = (
+            f"[{icon}] {ticker} | {strategy} | "
+            f"Entry {entry_price:.2f} -> Exit {exit_price:.2f} | "
+            f"PnL: {pnl_eur:+.2f} EUR ({pnl_pct:+.1f}%) | Grund: {exit_reason}"
+        )
+        queue_alert(msg)
+
+        return {
+            'success':    True,
+            'trade_id':   trade_id,
+            'ticker':     ticker,
+            'strategy':   strategy,
+            'pnl_eur':    round(pnl_eur, 2),
+            'pnl_pct':    round(pnl_pct, 2),
+            'status':     new_status,
+            'exit_price': exit_price,
+            'message':    msg,
+        }
+    except Exception as e:
+        return {'success': False, 'message': f'close_trade Fehler: {e}'}
+    finally:
+        conn.close()
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────
 
 def main():
@@ -739,6 +859,16 @@ def main():
             else:
                 print(f"  ⚪ {ticker}: {r}")
     
+    elif cmd == 'close' and len(sys.argv) >= 4:
+        trade_id   = int(sys.argv[2])
+        exit_price = float(sys.argv[3])
+        reason     = sys.argv[4] if len(sys.argv) > 4 else 'manual'
+        result = close_trade(trade_id, exit_price, reason)
+        if result['success']:
+            print(f"[{result['status']}] Trade #{trade_id} geschlossen: {result['pnl_eur']:+.2f} EUR ({result['pnl_pct']:+.1f}%)")
+        else:
+            print(f"Fehler: {result['message']}")
+
     elif cmd == 'propose' and len(sys.argv) >= 7:
         ticker   = sys.argv[2]
         strategy = sys.argv[3]

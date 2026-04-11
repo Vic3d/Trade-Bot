@@ -2033,7 +2033,13 @@
     "thesis": "Schwächelnder USD durch US-Haushaltsdefizit und Rezessionsängste stärkt Emerging Markets und Rohstoffwährungen",
     "entry_trigger": "DXY unter 100 ODER Fed Pivot Erwartung steigt ODER US-Rezessionsdaten schwächer als erwartet",
     "kill_trigger": "DXY steigt über 105 ODER Fed hawkish überraschung ODER US-Wirtschaft überraschend stark",
-    "tickers": ["EEM", "VWO", "FXI", "EWZ", "GDX"],
+    "tickers": [
+      "EEM",
+      "VWO",
+      "FXI",
+      "EWZ",
+      "GDX"
+    ],
     "direction": "LONG",
     "timeframe": "4-8 Wochen",
     "preferred_regime": "BULL_QUIET",
@@ -2046,11 +2052,179 @@
     "thesis": "Steigende US-Rezessionswahrscheinlichkeit treibt Rotation in defensive Sektoren: Healthcare, Utilities, Consumer Staples",
     "entry_trigger": "ISM Manufacturing unter 48 ODER US Jobless Claims steigen über 250k ODER Yield Curve invertiert stärker",
     "kill_trigger": "US BIP-Wachstum überraschend stark ODER Fed senkt aggressiv ODER Soft Landing bestätigt",
-    "tickers": ["XLP", "XLU", "XLV", "VDC", "KO", "PG", "JNJ"],
+    "tickers": [
+      "XLP",
+      "XLU",
+      "XLV",
+      "VDC",
+      "KO",
+      "PG",
+      "JNJ"
+    ],
     "direction": "LONG defensive",
     "timeframe": "4-8 Wochen",
     "preferred_regime": "BEAR_QUIET",
     "added_by": "victor",
     "added_at": "2026-04-10"
+  },
+  "PS_PowerGrid": {
+    "name": "Prysmian — KI-Stromnetz-Engpass (Picks & Shovels der KI-Revolution)",
+    "status": "active",
+    "conviction": 4,
+    "sector": "industrials",
+    "thesis": "Alle kaufen NVIDIA. Niemand kauft das Stromnetz. KI Data Center brauchen 10x mehr Strom pro Server als klassische Rechenzentren. Das Hochspannungsnetz kann physisch nicht schnell genug ausgebaut werden — Hochspannungskabel haben 3-5 Jahre Lieferrueckstand weltweit. Prysmian (weltgroesster Kabelhersteller, nach Fusion mit General Cable 2018) ist der strukturelle Engpass-Profiteur: (1) KI Data Center Stromversorgung in USA + Europa, (2) Offshore-Wind Netzanbindung (Europa: +300 GW bis 2030), (3) EU Stromnetz-Modernisierung (584 Mrd EUR bis 2030 — REPowerEU + EU Green Deal). Prysmian hat Preissetzungsmacht durch Kapazitaetsknappheit. Auftragsbestand waechst schneller als Kapazitaet. Lars Erichsen (Rendite Spezialisten, 30.03.2026): Kaufzone explizit 73-78 EUR. Aktie korrigiert von 120+ EUR auf diese Zone nach Marktkorrektur (VIX > 30). Nexans (Paris) als zweiter Kabelhersteller mit gleicher Marktstruktur.",
+    "variant_perception": "Konsensus kauft NVIDIA als KI-Infrastruktur-Play. Der Markt preist NICHT ein: physische Kapazitaetsengpaesse bei Hochspannungskabeln. Prysmian hat 3-5 Jahre Backlog — keine neue Konkurrenz kann schnell skalieren. EU-Regulierung (REPowerEU, Fit for 55) zwingt Netzbetreiber zu Investitionen unabhaengig von Energiepreisen.",
+    "entry_trigger": "PRY.MI erreicht Kaufzone 73-78 EUR (Erichsen-Level), ODER PRY.MI bounced ueber EMA20 nach Marktkorrektur, ODER Q1 2026 Quartalsbericht zeigt wachsenden Auftragsbestand und hoehere Margen",
+    "kill_trigger": "KI-Hyperscaler (Microsoft, Google, Amazon) senken CapEx um mehr als 30%, ODER EU verschiebt REPowerEU-Foerdergelder um mehr als 3 Jahre, ODER Chinesische Kabelhersteller erhalten EU-Marktzugang und unterbieten massiv",
+    "tickers": [
+      "PRY.MI",
+      "NEXANS.PA",
+      "ABB"
+    ],
+    "direction": "LONG",
+    "timeframe": "12-36 Monate",
+    "position_size_eur": 1200,
+    "stop_pct": 0.09,
+    "target_pct": 0.35,
+    "created_at": "2026-04-11",
+    "source": "Transcript: erichsen_2026-03-30 + AI Power Grid Research 2026-04-11"
+  },
+  "PS_FertilizerShock": {
+    "name": "Duengemittelkrise 2026 — Hormuz als Nahrungsmittel-Schock (Zweite Welle)",
+    "status": "active",
+    "conviction": 4,
+    "sector": "materials",
+    "thesis": "Der Markt hat den Hormuz-Konflikt als Oel-Schock eingepreist. Die zweite Welle ist bisher unterschaetzt: ca. 1/3 des globalen Duengemittelhandels transits durch den Hormuz — Harnstoff (Urea) stieg von ~500 USD/t auf 650-800 USD/t (+30-50% seit Maerz 2026, Fitch hat Preisprognose +25% angehoben). Kritisch: Der Schock trifft genau zur Fruehjahrs-Aussaatsaison 2026, wenn Bauern die Duenger kaufen MUESSEN — nachfrageseitig vollstaendig unelastisch. Yara International (weltgroesster Ammoniak-Produzent, Norwegen) hat keine Hormuz-Abhaengigkeit bei der Produktion (Erdgas-basiert via europaeisches Pipeline-Netz), profitiert aber maximal vom globalen Urea-Preisanstieg. K+S AG (Deutschland, Kali/Salz) als ergaenzender Kali-Produzent — Europa-basierte Produktion, kein Geopolitik-Exposure. Russland hat parallele Duengemittelexporte ausgesetzt (Seeking Alpha, April 2026) — doppelt tightening global supply. DOJ-Untersuchung gegen US-Konkurrenten (CF, Nutrien, Mosaic) ist Risiko fuer US-Werte, aber NICHT fuer Yara/K+S.",
+    "variant_perception": "Der Konsensus fokussiert auf Oel- und Energiepreise aus dem Hormuz-Konflikt. Uneingepreist: Duengemittel-Knappheit zur Aussaatsaison = strukturell inelastische Nachfrage. US-Produzenten (CF Industries, Nutrien, Mosaic) stehen unter DOJ-Ermittlung wegen Preisabsprache — EU-Produzenten (Yara, K+S) profitieren ohne regulatorisches Risiko. Russlands parallele Exportaussetzung schafft zweite Angebotswelle. Nahrungsmittelpreise folgen Duengemittelpreisen mit 4-6 Monat Lag — politischer Druck = Regierungen werden Bauern subventionieren = kuenstliche Nachfrage haelt Preise hoch.",
+    "entry_trigger": "Yara Q1 2026 Quartalsbericht zeigt Umsatz/Margen-Anstieg durch Urea-Preise, ODER Nahrungsmittelpreisindex FAO steigt ueber Vormonat, ODER neue Hormuz-Eskalation ohne Ceasefire-Signal, ODER SDF.DE (K+S) korrigiert auf langfristigen Support",
+    "kill_trigger": "Hormuz-Oeffnung + Frieden Iran, ODER Russland gibt Duengemittelexporte wieder frei, ODER US-Regierung subventioniert Duengemittelimporte aus alternativen Quellen, ODER Yara-Kurs steigt >30% (profit-taking-Zone)",
+    "tickers": [
+      "YARA.OL",
+      "SDF.DE",
+      "ICL"
+    ],
+    "direction": "LONG",
+    "timeframe": "3-9 Monate",
+    "position_size_eur": 1000,
+    "stop_pct": 0.1,
+    "target_pct": 0.3,
+    "keywords_bullish": [
+      "fertilizer shortage",
+      "urea price",
+      "fertilizer spike",
+      "nitrogen price",
+      "hormuz fertilizer",
+      "yara",
+      "k+s",
+      "duengemittel",
+      "harnstoff",
+      "food prices surge",
+      "fertilizer supply",
+      "ammonia shortage",
+      "planting season",
+      "crop input",
+      "russia fertilizer export"
+    ],
+    "keywords_bearish": [
+      "hormuz open",
+      "iran ceasefire",
+      "fertilizer glut",
+      "urea surplus",
+      "russia resumes fertilizer",
+      "DOJ settlement fertilizer",
+      "yara profit warning",
+      "k+s results miss"
+    ],
+    "genesis": {
+      "created": "2026-04-11",
+      "method": "AUTONOMOUS_WEB_RESEARCH",
+      "data_points_used": [
+        "Urea: ~500 USD/t vor Krise -> 650-800 USD/t April 2026 (+30-50%)",
+        "Fitch: Ammonia/Urea Preisprognose +25% angehoben",
+        "ca. 1/3 des globalen Seefracht-Duengemittels transit Hormuz",
+        "Russland hat parallele Duengemittelexporte ausgesetzt (Seeking Alpha)",
+        "US-DOJ Untersuchung gegen CF Industries, Nutrien, Mosaic, Koch, Yara International",
+        "CF Industries Aktie all-time-high ~137 USD (March 2026) = eingepreist",
+        "Mosaic: -250 Mio USD EBITDA-Hit durch Schwefelkosten = margin squeeze",
+        "Fruehjahrs-Aussaatsaison 2026 = maximaler Preisdruck auf Bauern",
+        "Yara: weltgroesster Ammoniak-Produzent, Europa-Produktion, kein Hormuz-Exposure"
+      ],
+      "sources": [
+        "farmdocdaily.illinois.edu (2026-03-XX)",
+        "financialcontent.com/marketminute (2026-04-09)",
+        "freshfruitportal.com (2026-04-07)",
+        "prospect.org (2026-04-01)",
+        "carnegieendowment.org/emissary",
+        "gurufocus.com (Mosaic/CF Industries)",
+        "seekingalpha.com (Russia fertilizer)",
+        "investing.com (DOJ investigation CF)",
+        "Fitch Ratings 2026"
+      ],
+      "conviction_reasoning": "4/5: Starke Faktenlage (Urea-Preisdaten, Fitch-Prognose, DOJ-Ermittlung bekannt), Yara und K+S nicht at ATH (anders als CF/Nutrien), Inelastische Nachfrage zur Aussaatsaison ist strukturell bullish. Risiko: Hormuz-Oeffnung koennte schnell kommen (Iran-Verhandlungen). Abzug: Thesis noch nicht mit aktuellen Yara-Chartdaten verifiziert."
+    },
+    "created_at": "2026-04-11",
+    "source": "Autonome Web-Recherche 2026-04-11 (farmdoc, FreshFruitPortal, Seeking Alpha, Fitch, GuruFocus, Carnegie Endowment)"
+  },
+  "PS_RareEarthChip": {
+    "name": "China Seltene Erden Exportkontrolle — Yttrium 140x Preisanstieg, Chip-Equipment Risiko",
+    "status": "experimental",
+    "conviction": 3,
+    "sector": "technology",
+    "thesis": "China verhaengte Seltene-Erden-Exportkontrollen (Oktober 2025). Xi-Trump Suspension bis November 2026 gibt falsches Sicherheitsgefuehl: Case-by-case Review fuer sub-14nm Chips und naechste Generation Memory bleibt aktiv als geopolitische Waffe. Yttrium (benoetigt fuer Chip-Herstellungsanlagen, Epitaxy, Phosphore): Preis stieg 140x innerhalb eines Jahres (Digitimes, April 2026). Chip-Equipment-Hersteller (ASML, Lam Research, Applied Materials) haben undisclosed Supply Chain Exposure. Die Suspension gibt ihnen Zeit fuer Diversifizierung, aber 14nm+ Alternativen zu China-Yttrium existieren noch nicht in industriellem Massstab. US Defense Supply Chain Risiko ist offiziell bestaetigt (CSIS, IEA). Long-Thesis: Rare Earth Mining und Recycling ausserhalb Chinas sind die strategischen Gewinner — MP Materials (USA), Lynas Rare Earths (Australien).",
+    "variant_perception": "Konsensus: Xi-Trump Deal = Problem geloest, Exportkontrollen ausgesetzt bis November 2026. Nicht eingepreist: Case-by-case Review fuer advanced chips bleibt aktiv. Yttrium 140x-Preisanstieg ist KEIN Marktsignal das breite Medien abdecken. ASML/AMAT/LRCX haben kein Quartalsbericht-Disclosure zu Yttrium-Exposure. Strategische Antwort (US IRA, EU Critical Materials Act) bevorzugt MP Materials und Lynas ueber chinesische Alternativen — struktureller Tailwind.",
+    "entry_trigger": "MP Materials (MP) bricht ueber 52W-Hoch mit Volumen, ODER neues Case-by-Case Review Denial bei US Chip-Equipment-Hersteller berichtet, ODER EU Critical Materials Act Foerderprogramm fuer Yttrium/Seltene Erden announced",
+    "kill_trigger": "China hebt alle Exportkontrollen vollstaendig auf (nicht nur suspendiert), ODER synthetisches Yttrium-Substitut wird industriell verfuegbar, ODER MP Materials verliert US-Regierungs-Kontrakt",
+    "tickers": [
+      "MP",
+      "LYC.AX",
+      "UUUU"
+    ],
+    "direction": "LONG",
+    "timeframe": "6-18 Monate",
+    "position_size_eur": 800,
+    "stop_pct": 0.12,
+    "target_pct": 0.4,
+    "keywords_bullish": [
+      "rare earth",
+      "yttrium",
+      "china export controls minerals",
+      "seltene erden",
+      "mp materials",
+      "lynas",
+      "critical minerals",
+      "chip equipment shortage",
+      "IEA critical minerals",
+      "China mineral restrictions",
+      "rare earth price"
+    ],
+    "keywords_bearish": [
+      "china lifts export controls",
+      "rare earth glut",
+      "china mineral deal",
+      "synthetic yttrium",
+      "mp materials miss",
+      "lynas contract lost"
+    ],
+    "genesis": {
+      "created": "2026-04-11",
+      "method": "AUTONOMOUS_WEB_RESEARCH",
+      "data_points_used": [
+        "China rare earth export controls: Oktober 2025",
+        "Xi-Trump Suspension: bis November 10, 2026 — ABER case-by-case fuer sub-14nm",
+        "Yttrium Preis: 140x Anstieg innerhalb eines Jahres (Digitimes, April 10, 2026)",
+        "CSIS: China restrictions threaten US defense supply chains",
+        "IEA: supply concentration risks are now reality, not future scenario",
+        "Automakers + semiconductor manufacturers: license delays und production slowdown risks"
+      ],
+      "sources": [
+        "digitimes.com (2026-04-10)",
+        "csis.org critical minerals analysis",
+        "iea.org/commentaries critical minerals",
+        "movesilicon.com semiconductor impact analysis"
+      ],
+      "conviction_reasoning": "3/5 (experimental): Yttrium 140x ist extremes Preissignal, aber Suspension bis November 2026 reduziert kurzfristigen Druck. MP Materials/Lynas profitieren strukturell von US/EU-Foerderung. Risiko: Wenn November 2026 vollstaendige Aufhebung ohne Case-by-Case = Thesis faellt."
+    },
+    "created_at": "2026-04-11",
+    "source": "Autonome Web-Recherche 2026-04-11 (Digitimes, CSIS, IEA, MoveSilicon)"
   }
 }

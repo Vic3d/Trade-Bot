@@ -52,6 +52,8 @@ ROLLING_WINDOW = 10        # Trailing-Fenster für "aktuelle" Win-Rate
 def get_db():
     conn = sqlite3.connect(str(DB))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
@@ -311,15 +313,65 @@ def print_report(results: dict):
 
 # ── Integration: wird von daily_learning_cycle.py aufgerufen ─────────────────
 
+def degrade_on_decay(alerts: list[dict]) -> list[str]:
+    """
+    Degradiert Strategien mit DECAY oder SUSPEND_CANDIDATE Status automatisch.
+
+    Ruft thesis_engine.degrade_thesis() auf — damit werden:
+    - Keine neuen Entries mehr erlaubt
+    - Discord-Alert gesendet
+    - thesis_status in DB aktualisiert
+
+    Returns: Liste degradierter Strategie-IDs
+    """
+    degraded = []
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(STRATEGIES_FILE.parent.parent / 'scripts'))
+        _sys.path.insert(0, str(STRATEGIES_FILE.parent.parent / 'scripts' / 'core'))
+        from thesis_engine import degrade_thesis
+    except Exception as e:
+        print(f"[alpha_decay] thesis_engine Import fehlgeschlagen: {e}")
+        return []
+
+    for alert in alerts:
+        sid    = alert['strategy']
+        status = alert['status']
+
+        if status not in ('DECAY', 'SUSPEND_CANDIDATE'):
+            continue  # WARNING allein reicht nicht für Degradierung
+
+        ewma = alert.get('ewma_win_rate', 0)
+        n    = alert.get('n_trades', 0)
+        reason = (
+            f"Alpha Decay: EWMA Win-Rate {ewma:.0%} | Status: {status} | "
+            f"{n} Trades analysiert | Trend: {alert.get('trend', '?')}"
+        )
+
+        ok = degrade_thesis(sid, reason)
+        if ok:
+            degraded.append(sid)
+            print(f"[alpha_decay] {sid} -> DEGRADED (alpha decay)")
+        else:
+            print(f"[alpha_decay] {sid}: degrade_thesis() fehlgeschlagen")
+
+    return degraded
+
+
 def run_decay_check() -> tuple[dict, list[dict]]:
     """
     Haupteinstiegspunkt für automatische Checks.
+    Degradiert automatisch bei DECAY / SUSPEND_CANDIDATE.
     Returns: (results, alerts)
     """
     results = run_all()
     alerts = get_alerts(results)
     if alerts:
         update_strategy_changelog(alerts)
+        # Automatische Degradierung bei nachgewiesenem Alpha-Verlust
+        degraded = degrade_on_decay(alerts)
+        if degraded:
+            print(f"[alpha_decay] {len(degraded)} Strategien automatisch degradiert: {degraded}")
     return results, alerts
 
 

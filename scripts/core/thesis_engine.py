@@ -41,6 +41,8 @@ VALID_STATUSES = {'ACTIVE', 'DEGRADED', 'INVALIDATED', 'PAUSED', 'WATCHING', 'EV
 def _get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
@@ -409,22 +411,50 @@ def run_monitoring_cycle() -> dict:
 
     results['theses_checked'] = len(active_theses)
 
+    strategies = _load_strategies()
+
     for thesis_id in active_theses:
         try:
+            # ── Kill-Trigger prüfen ────────────────────────────────────
             triggered, match_text = check_thesis_kill_trigger(thesis_id, recent_news)
             if triggered:
                 results['triggers_fired'].append({'thesis_id': thesis_id, 'match': match_text})
-                # Bei Kill-Trigger: degradieren (nicht sofort invalidieren — manuelle Bestätigung)
                 degrade_thesis(thesis_id, f"Kill-Trigger in News: '{match_text}'")
                 results['degraded'].append(thesis_id)
+
+            # ── Entry-Trigger prüfen (positiver Match → thesis_checks) ─
+            # Damit conviction_scorer._check_entry_trigger_bonus() Daten hat
+            strategy_cfg = strategies.get(thesis_id, {})
+            entry_trigger = strategy_cfg.get('entry_trigger', '')
+            if entry_trigger and not triggered:
+                import re as _re
+                entry_kws = [
+                    k.strip().lower() for k in
+                    _re.split(r'[,;|]|\bOR\b|\bODER\b', entry_trigger, flags=_re.IGNORECASE)
+                    if len(k.strip()) >= 5
+                ]
+                combined = ' '.join(recent_news).lower()
+                entry_matches = [kw for kw in entry_kws if kw in combined]
+                if entry_matches:
+                    for match_kw in entry_matches[:3]:
+                        matching_headline = next(
+                            (h for h in recent_news if match_kw in h.lower()),
+                            recent_news[0] if recent_news else ''
+                        )
+                        _log_thesis_check(
+                            thesis_id=thesis_id,
+                            news_headline=matching_headline,
+                            direction='bullish',
+                            kill_trigger_match=0,
+                            action_taken=f"Entry-Trigger bestaetigt: '{match_kw}'"
+                        )
+                    results.setdefault('entry_confirmed', []).append(thesis_id)
 
             # last_checked aktualisieren
             try:
                 conn = _get_db()
                 conn.execute(
-                    """
-                    UPDATE thesis_status SET last_checked = ? WHERE thesis_id = ?
-                    """,
+                    "UPDATE thesis_status SET last_checked = ? WHERE thesis_id = ?",
                     (now, thesis_id)
                 )
                 conn.commit()
