@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Alpha Decay Detector — Phase 3 des ML-Bauplans
 ===============================================
@@ -20,9 +20,9 @@ Ausgabe:
   - data/alpha_decay.json (wird von CEO + Learning Cycle gelesen)
 
 Usage:
-  python3.13 alpha_decay.py              # Vollständige Analyse
-  python3.13 alpha_decay.py --quick      # Nur Warnungen ausgeben
-  python3.13 alpha_decay.py --watch PS1  # Einzelstrategie tracken
+  python3.14 alpha_decay.py              # Vollständige Analyse
+  python3.14 alpha_decay.py --quick      # Nur Warnungen ausgeben
+  python3.14 alpha_decay.py --watch PS1  # Einzelstrategie tracken
 """
 
 import json

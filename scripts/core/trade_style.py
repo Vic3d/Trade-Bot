@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 trade_style.py — Zentrale Definitionen für Day Trade vs Swing Trade
 ====================================================================

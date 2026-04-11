@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 price_monitor.py — Echtzeit-Preisüberwachung für offene Positionen
 ===================================================================
@@ -11,7 +11,7 @@ Läuft dauerhaft im Hintergrund. Prüft alle 60 Sekunden:
 Sendet sofort Discord-Alert bei Treffern.
 Nur während Marktzeiten aktiv. Nachts/Wochenende: schläft 5 Min.
 
-Start: python3.13 price_monitor.py
+Start: python3.14 price_monitor.py
 Daemon: wird von scheduler_daemon.py gestartet (background thread)
 """
 

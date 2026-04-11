@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 crowd_reaction.py — Leichtgewichtige Crowd-Reaktions-Simulation
 ===============================================================

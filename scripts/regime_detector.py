@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Regime Detector — Phase 5 des ML-Bauplans
 ==========================================
@@ -22,10 +22,10 @@ Zustände (automatisch aus Daten gelernt, nicht manuell definiert):
     CRASH    (extreme Vola, starke negative Rendite)
 
 Usage:
-  python3.13 regime_detector.py                  # Aktuelles Regime
-  python3.13 regime_detector.py --train          # HMM (neu) trainieren
-  python3.13 regime_detector.py --history 30     # Letzten 30 Tage Regime-History
-  python3.13 regime_detector.py --integrate      # In CEO-Direktive einbauen
+  python3.14 regime_detector.py                  # Aktuelles Regime
+  python3.14 regime_detector.py --train          # HMM (neu) trainieren
+  python3.14 regime_detector.py --history 30     # Letzten 30 Tage Regime-History
+  python3.14 regime_detector.py --integrate      # In CEO-Direktive einbauen
 """
 
 import json

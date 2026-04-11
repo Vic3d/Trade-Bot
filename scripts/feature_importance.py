@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Feature Importance — Phase 6 des ML-Bauplans
 =============================================
@@ -21,10 +21,10 @@ Output:
   - Empfehlungen                  — welche Features stark/schwach/redundant sind
 
 Usage:
-  python3.13 feature_importance.py              # Standard-Run
-  python3.13 feature_importance.py --real-only  # Nur echte Trades (evtl. zu wenig)
-  python3.13 feature_importance.py --bootstrap  # Explizit Backtest-Daten
-  python3.13 feature_importance.py --quick      # Nur Top-Features, kein Plot
+  python3.14 feature_importance.py              # Standard-Run
+  python3.14 feature_importance.py --real-only  # Nur echte Trades (evtl. zu wenig)
+  python3.14 feature_importance.py --bootstrap  # Explizit Backtest-Daten
+  python3.14 feature_importance.py --quick      # Nur Top-Features, kein Plot
 """
 
 import json

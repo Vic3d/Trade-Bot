@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Feature Collector — Phase 1 des ML-Bauplans
 =============================================
@@ -29,7 +29,7 @@ import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-PYTHON = "/usr/local/bin/python3.13"
+PYTHON = "/usr/local/bin/python3.14"
 WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data/trading.db'
 

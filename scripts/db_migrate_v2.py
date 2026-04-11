@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 db_migrate_v2.py — TradeMind v2 Schema-Migration
 =================================================
@@ -10,7 +10,7 @@ Fügt neue Tabellen hinzu (falls nicht vorhanden):
 Sicher: CREATE TABLE IF NOT EXISTS — keine Daten werden gelöscht.
 
 Aufruf:
-  python3.13 scripts/db_migrate_v2.py
+  python3.14 scripts/db_migrate_v2.py
 """
 
 import sqlite3

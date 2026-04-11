@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 TradeMind Scheduler Daemon — Phase 8 / Kostenoptimierung
 =========================================================
@@ -6,9 +6,9 @@ Läuft 24/7 als Hintergrundprozess.
 Ersetzt alle OpenClaw agentTurn-Crons durch direkte Python-Aufrufe.
 Kein LLM, keine Token-Kosten, kein Overhead.
 
-Starten:  python3.13 scheduler_daemon.py &
-Status:   python3.13 scheduler_daemon.py --status
-Stoppen:  python3.13 scheduler_daemon.py --stop
+Starten:  python3.14 scheduler_daemon.py &
+Status:   python3.14 scheduler_daemon.py --status
+Stoppen:  python3.14 scheduler_daemon.py --stop
 """
 
 import json
@@ -199,7 +199,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
     log(f'▶️  {name}: Start')
     try:
         result = subprocess.run(
-            ['python3.13', str(script_path)] + args,
+            ['python3.14', str(script_path)] + args,
             capture_output=True, text=True, timeout=3600,
             cwd=str(WS)
         )
@@ -250,7 +250,7 @@ def start_price_monitor():
             pass  # PID tot → neu starten
 
     proc = _sp.Popen(
-        ['python3.13', str(WS / 'scripts/price_monitor.py')],
+        ['python3.14', str(WS / 'scripts/price_monitor.py')],
         start_new_session=True,
         stdout=open(str(WS / 'data/price_monitor.log'), 'a'),
         stderr=_sp.STDOUT,
@@ -353,7 +353,7 @@ if __name__ == '__main__':
                     print(f'  {l}')
         else:
             print('❌ Scheduler läuft NICHT')
-            print('   Starte mit: python3.13 scheduler_daemon.py &')
+            print('   Starte mit: python3.14 scheduler_daemon.py &')
 
     elif '--stop' in args:
         pid = read_pid()

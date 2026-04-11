@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 watchlist_tracker.py — Preis-Snapshots für alle Watchlist-Ticker
 =================================================================
@@ -6,7 +6,7 @@ Läuft alle 30 Minuten während Marktzeiten.
 Speichert für jeden Ticker: Kurs, RSI, MA20/50/200, Volumen, ATR.
 Prüft pending_setups auf ausgelöste Trigger.
 
-Start: python3.13 watchlist_tracker.py
+Start: python3.14 watchlist_tracker.py
 """
 
 import sqlite3

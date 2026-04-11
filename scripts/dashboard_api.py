@@ -1,9 +1,9 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 TradeMind Dashboard API
 ========================
 Liefert JSON-Daten für das Dashboard (dashboard/index.html).
-Kann als einfacher HTTP-Server laufen: python3.13 dashboard_api.py
+Kann als einfacher HTTP-Server laufen: python3.14 dashboard_api.py
 """
 
 import json

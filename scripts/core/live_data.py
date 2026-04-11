@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 live_data.py — Single Source of Truth für alle Live-Marktdaten
 ===============================================================
@@ -432,6 +432,6 @@ if __name__ == '__main__':
 
     else:
         print("Usage:")
-        print("  python3.13 live_data.py --snapshot     # VIX + EURUSD + Regime")
-        print("  python3.13 live_data.py --refresh      # Alle Daten aktualisieren")
-        print("  python3.13 live_data.py EQNR.OL        # Einzelner Ticker")
+        print("  python3.14 live_data.py --snapshot     # VIX + EURUSD + Regime")
+        print("  python3.14 live_data.py --refresh      # Alle Daten aktualisieren")
+        print("  python3.14 live_data.py EQNR.OL        # Einzelner Ticker")

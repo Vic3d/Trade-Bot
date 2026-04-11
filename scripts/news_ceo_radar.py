@@ -65,7 +65,7 @@ def run_ceo_report() -> str:
     """CEO live-Report als String zurückgeben."""
     try:
         r = subprocess.run(
-            ['python3.13', str(WS / 'scripts/ceo.py'), '--live', '--report'],
+            ['python3.14', str(WS / 'scripts/ceo.py'), '--live', '--report'],
             capture_output=True, text=True, timeout=90, cwd=str(WS)
         )
         return r.stdout.strip()[-1200:] if r.stdout else ''

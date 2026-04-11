@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 morning_ping.py — 07:00 Uhr Morgen-Briefing für Victor
 Aktuelle Nachrichten + Portfolio-Stand + Backtest-Status

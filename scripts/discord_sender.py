@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Discord Sender — Direkter Bot-API-Zugriff ohne OpenClaw-Agent.
 Liest Bot-Token aus OpenClaw-Config → sendet Nachrichten via HTTP.

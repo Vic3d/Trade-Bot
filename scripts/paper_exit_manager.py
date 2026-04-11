@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Paper Exit Manager v2 — Tranche-based Partial Exits + ATR Trailing
 ===================================================================

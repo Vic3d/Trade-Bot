@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 backtest_engine_v2.py — Backtester für das neue Dual-Gate System
 =================================================================

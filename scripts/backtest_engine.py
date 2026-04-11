@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Backtest Engine — Phase 2 des ML-Bauplans
 ==========================================
@@ -22,10 +22,10 @@ Ausstiegsregeln:
   - Time Exit: nach max_hold_days ohne +3% Move
 
 Usage:
-  python3.13 backtest_engine.py                    # Alle Strategien
-  python3.13 backtest_engine.py --strategy PS1     # Einzelne Strategie
-  python3.13 backtest_engine.py --ticker EQNR      # Einzelner Ticker
-  python3.13 backtest_engine.py --quick            # Nur Top-5 Strategien
+  python3.14 backtest_engine.py                    # Alle Strategien
+  python3.14 backtest_engine.py --strategy PS1     # Einzelne Strategie
+  python3.14 backtest_engine.py --ticker EQNR      # Einzelner Ticker
+  python3.14 backtest_engine.py --quick            # Nur Top-5 Strategien
 """
 
 import json

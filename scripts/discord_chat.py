@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 discord_chat.py — Albert, AI-CEO von TradeMind, als Discord-Chatbot.
 Pollt den Discord-DM-Kanal alle 30 Sekunden auf neue Nachrichten von Victor,

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Online Learning Model — Phase 4 des ML-Bauplans
 =================================================
@@ -19,10 +19,10 @@ Bootstrapping:
   Backtest liefert RSI, VIX, Volume für 622 historische Trades.
 
 Usage:
-  python3.13 online_model.py                   # Status + Metriken
-  python3.13 online_model.py --bootstrap       # Vortraining auf Backtest-Daten
-  python3.13 online_model.py --predict NVDA    # Win-Wahrscheinlichkeit für Ticker
-  python3.13 online_model.py --learn <json>    # Manuell einen Trade einlernen
+  python3.14 online_model.py                   # Status + Metriken
+  python3.14 online_model.py --bootstrap       # Vortraining auf Backtest-Daten
+  python3.14 online_model.py --predict NVDA    # Win-Wahrscheinlichkeit für Ticker
+  python3.14 online_model.py --learn <json>    # Manuell einen Trade einlernen
 """
 
 import json

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Strategy DNA — Phase 7 des ML-Bauplans
 =======================================
@@ -24,10 +24,10 @@ Integration:
   - Alert bei DNA-Verletzung (du tradest gegen dein eigenes Edge)
 
 Usage:
-  python3.13 strategy_dna.py                    # Alle DNAs berechnen + speichern
-  python3.13 strategy_dna.py --show PS1         # DNA für eine Strategie
-  python3.13 strategy_dna.py --check PS1 53 25  # DNA-Check: RSI=53, VIX=25
-  python3.13 strategy_dna.py --gate-check       # Alle aktuellen Positionen prüfen
+  python3.14 strategy_dna.py                    # Alle DNAs berechnen + speichern
+  python3.14 strategy_dna.py --show PS1         # DNA für eine Strategie
+  python3.14 strategy_dna.py --check PS1 53 25  # DNA-Check: RSI=53, VIX=25
+  python3.14 strategy_dna.py --gate-check       # Alle aktuellen Positionen prüfen
 """
 
 import json
@@ -604,7 +604,7 @@ if __name__ == '__main__':
             else:
                 print(f"❌ Keine DNA für {strat} — verfügbar: {list(all_dna.keys())}")
         else:
-            print("Erst: python3.13 strategy_dna.py (ohne Argumente)")
+            print("Erst: python3.14 strategy_dna.py (ohne Argumente)")
 
     elif '--check' in args:
         idx = args.index('--check')

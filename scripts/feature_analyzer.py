@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 Feature Analyzer — Phase 1 Auswertung
 ======================================
@@ -6,8 +6,8 @@ Analysiert welche Features mit Trade-Outcomes korrelieren.
 Läuft wöchentlich ab 50+ Trades mit Feature-Daten.
 
 Usage:
-  python3.13 feature_analyzer.py           # Vollständige Analyse
-  python3.13 feature_analyzer.py --quick   # Kurze Übersicht
+  python3.14 feature_analyzer.py           # Vollständige Analyse
+  python3.14 feature_analyzer.py --quick   # Kurze Übersicht
 """
 
 import sqlite3

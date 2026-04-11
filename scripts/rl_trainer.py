@@ -1,15 +1,15 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 RL Trainer — Phase 8
 ====================
 Trainingssteuerung, Evaluation und Status-Reports für den PPO-Agenten.
 
 Usage:
-  python3.13 rl_trainer.py                    # Status + Evaluation
-  python3.13 rl_trainer.py --train 50000      # 50k Steps trainieren
-  python3.13 rl_trainer.py --train 10000 --quick   # Schneller Test-Run
-  python3.13 rl_trainer.py --eval 20          # 20 Episoden Evaluation
-  python3.13 rl_trainer.py --status           # Nur Status
+  python3.14 rl_trainer.py                    # Status + Evaluation
+  python3.14 rl_trainer.py --train 50000      # 50k Steps trainieren
+  python3.14 rl_trainer.py --train 10000 --quick   # Schneller Test-Run
+  python3.14 rl_trainer.py --eval 20          # 20 Episoden Evaluation
+  python3.14 rl_trainer.py --status           # Nur Status
 """
 
 import json
@@ -35,7 +35,7 @@ def status_report():
 
     if not METRICS_FILE.exists():
         print("  ⏳ Noch kein Training durchgeführt")
-        print("     Starte mit: python3.13 rl_trainer.py --train 10000")
+        print("     Starte mit: python3.14 rl_trainer.py --train 10000")
         return
 
     m = json.loads(METRICS_FILE.read_text())

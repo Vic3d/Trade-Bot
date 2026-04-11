@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 advisory_layer.py — KI erklärt jeden Trade in natürlicher Sprache
 ==================================================================

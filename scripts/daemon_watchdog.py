@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 import subprocess
 from pathlib import Path
 
@@ -11,8 +11,8 @@ if pid_file.exists():
         os.kill(pid, 0)
         print('KEIN_SIGNAL')
     except ProcessLookupError:
-        subprocess.Popen(['python3.13', '/data/.openclaw/workspace/scripts/scheduler_daemon.py'], start_new_session=True)
+        subprocess.Popen(['python3.14', '/data/.openclaw/workspace/scripts/scheduler_daemon.py'], start_new_session=True)
         print('Daemon neugestartet')
 else:
-    subprocess.Popen(['python3.13', '/data/.openclaw/workspace/scripts/scheduler_daemon.py'], start_new_session=True)
+    subprocess.Popen(['python3.14', '/data/.openclaw/workspace/scripts/scheduler_daemon.py'], start_new_session=True)
     print('Daemon gestartet (kein PID gefunden)')

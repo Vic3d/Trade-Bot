@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3.14
 """
 thesis_engine.py — Thesen-Lifecycle-Management
 ===============================================
@@ -539,8 +539,8 @@ if __name__ == '__main__':
 
     else:
         print("Usage:")
-        print("  python3.13 thesis_engine.py --active")
-        print("  python3.13 thesis_engine.py --status S2")
-        print("  python3.13 thesis_engine.py --monitor")
-        print("  python3.13 thesis_engine.py --degrade PS17 'Grund'")
-        print("  python3.13 thesis_engine.py --invalidate PS1 'Kill-Trigger: Iran Deal'")
+        print("  python3.14 thesis_engine.py --active")
+        print("  python3.14 thesis_engine.py --status S2")
+        print("  python3.14 thesis_engine.py --monitor")
+        print("  python3.14 thesis_engine.py --degrade PS17 'Grund'")
+        print("  python3.14 thesis_engine.py --invalidate PS1 'Kill-Trigger: Iran Deal'")
