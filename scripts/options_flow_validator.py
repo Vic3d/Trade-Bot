@@ -20,7 +20,11 @@ import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WORKSPACE    = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 LAG_DB_PATH  = WORKSPACE / 'data/lag_knowledge.json'
 SIGNALS_PATH = WORKSPACE / 'data/signals.json'
 

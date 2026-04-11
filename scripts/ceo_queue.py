@@ -26,7 +26,11 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 QUEUE_PATH = WS / 'data/ceo_trigger_queue.json'
 
 
@@ -92,7 +96,7 @@ def summary() -> str:
 def _read_raw() -> list:
     try:
         if QUEUE_PATH.exists():
-            return json.loads(QUEUE_PATH.read_text())
+            return json.loads(QUEUE_PATH.read_text(encoding="utf-8"))
     except Exception:
         pass
     return []

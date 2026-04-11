@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Backtest Engine — Phase 2 des ML-Bauplans
 ==========================================
@@ -22,10 +22,10 @@ Ausstiegsregeln:
   - Time Exit: nach max_hold_days ohne +3% Move
 
 Usage:
-  python3.14 backtest_engine.py                    # Alle Strategien
-  python3.14 backtest_engine.py --strategy PS1     # Einzelne Strategie
-  python3.14 backtest_engine.py --ticker EQNR      # Einzelner Ticker
-  python3.14 backtest_engine.py --quick            # Nur Top-5 Strategien
+  python3 backtest_engine.py                    # Alle Strategien
+  python3 backtest_engine.py --strategy PS1     # Einzelne Strategie
+  python3 backtest_engine.py --ticker EQNR      # Einzelner Ticker
+  python3 backtest_engine.py --quick            # Nur Top-5 Strategien
 """
 
 import json
@@ -37,7 +37,11 @@ from pathlib import Path
 import yfinance as yf
 import numpy as np
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 STRATEGIES_FILE = WS / 'data/strategies.json'
 RESULTS_FILE = WS / 'data/backtest_results.json'
@@ -70,7 +74,7 @@ def download_data(ticker: str, years: int = 3) -> dict | None:
     if cache_file.exists():
         age_h = (datetime.now().timestamp() - cache_file.stat().st_mtime) / 3600
         if age_h < 12:
-            return json.loads(cache_file.read_text())
+            return json.loads(cache_file.read_text(encoding="utf-8"))
 
     try:
         df = yf.download(ticker, period=f"{years}y", interval="1d",
@@ -590,7 +594,7 @@ def generate_report(all_results: dict) -> str:
 
 def main():
     args = sys.argv[1:]
-    strategies = json.loads(STRATEGIES_FILE.read_text())
+    strategies = json.loads(STRATEGIES_FILE.read_text(encoding="utf-8"))
 
     # VIX Historisch laden
     print("[Backtest Engine] Lade VIX-Daten...")
@@ -647,7 +651,7 @@ def main():
 
     # Report generieren
     report = generate_report(all_results)
-    REPORT_FILE.write_text(report)
+    REPORT_FILE.write_text(report, encoding="utf-8")
     print(f"✅ Report: {REPORT_FILE}")
 
     # Kurze Zusammenfassung

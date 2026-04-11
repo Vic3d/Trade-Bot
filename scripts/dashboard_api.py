@@ -1,9 +1,9 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 TradeMind Dashboard API
 ========================
 Liefert JSON-Daten für das Dashboard (dashboard/index.html).
-Kann als einfacher HTTP-Server laufen: python3.14 dashboard_api.py
+Kann als einfacher HTTP-Server laufen: python3 dashboard_api.py
 """
 
 import json
@@ -12,7 +12,11 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
-WS   = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB   = WS / 'data/trading.db'
 DATA = WS / 'data'
 PORT = 8765
@@ -87,7 +91,7 @@ def build_dashboard_data() -> dict:
     active_theses = []
     news_hits = []
     try:
-        gate = json.loads((DATA / 'news_gate.json').read_text())
+        gate = json.loads((DATA / 'news_gate.json').read_text(encoding="utf-8"))
         news_relevant = gate.get('relevant', False)
         for thesis_id in gate.get('theses_hit', []):
             active_theses.append({'id': thesis_id, 'name': thesis_id, 'active': True})

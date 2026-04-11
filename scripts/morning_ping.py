@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 morning_ping.py — 07:00 Uhr Morgen-Briefing für Victor
 Aktuelle Nachrichten + Portfolio-Stand + Backtest-Status
@@ -12,12 +12,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
-WS = Path('/data/.openclaw/workspace')
-
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 def send_discord(msg: str):
     cfg = Path('/data/.openclaw/openclaw.json')
-    token = json.loads(cfg.read_text())['channels']['discord']['token']
+    token = json.loads(cfg.read_text(encoding="utf-8"))['channels']['discord']['token']
     channel = '1492225799062032484'
     chunks = [msg[i:i+1900] for i in range(0, len(msg), 1900)]
     for chunk in chunks:
@@ -148,13 +150,13 @@ def get_backtest_section() -> str:
     if result.returncode == 0:
         last = ''
         if bt_log.exists():
-            lines = bt_log.read_text().strip().split('\n')
+            lines = bt_log.read_text(encoding="utf-8").strip().split('\n')
             last = lines[-1][:80] if lines else ''
         return f'⏳ **Backtest läuft noch...**\n  Zuletzt: {last}'
 
     if bt_file.exists():
         try:
-            data = json.loads(bt_file.read_text())
+            data = json.loads(bt_file.read_text(encoding="utf-8"))
             total = data.get('total_trades', '?')
             wr    = data.get('win_rate_pct', 0)
             pf    = data.get('profit_factor', 0)
@@ -169,7 +171,7 @@ def get_backtest_section() -> str:
             pass
 
     if bt_log.exists():
-        last = bt_log.read_text().strip().split('\n')[-1][:100]
+        last = bt_log.read_text(encoding="utf-8").strip().split('\n')[-1][:100]
         return f'📊 Backtest-Log: {last}'
 
     return '📊 Backtest: noch keine Daten'

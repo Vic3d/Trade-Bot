@@ -208,7 +208,7 @@ def main():
     sp500_ma   = '?'
     if REGIME_FILE.exists():
         try:
-            rm = json.loads(REGIME_FILE.read_text())
+            rm = json.loads(REGIME_FILE.read_text(encoding="utf-8"))
             regime   = rm.get('regime', 'UNKNOWN')
             factors  = rm.get('factors', {})
             vix      = factors.get('vix', '?')
@@ -218,7 +218,7 @@ def main():
             pass
 
     allowed_sectors = REGIME_SECTORS.get(regime, REGIME_SECTORS['UNKNOWN'])
-    universe        = json.loads(UNIVERSE.read_text())
+    universe        = json.loads(UNIVERSE.read_text(encoding="utf-8"))
 
     print(f"🌍 Wöchentlicher Sektor-Scan KW{kw} — Regime: {regime} | VIX: {vix}")
     print(f"   Erlaubte Sektoren: {', '.join(allowed_sectors)}")

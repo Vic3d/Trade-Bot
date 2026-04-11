@@ -46,7 +46,11 @@ from datetime import datetime, timedelta
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
-WS = Path("/data/.openclaw/workspace")
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CONFIG_PATH = WS / "trading_config.json"
 DB_PATH = WS / "data" / "trading.db"
 
@@ -64,7 +68,7 @@ def sync_config_from_github():
         })
         d = json.loads(urllib.request.urlopen(req, timeout=8).read())
         content = base64.b64decode(d['content']).decode()
-        CONFIG_PATH.write_text(content)
+        CONFIG_PATH.write_text(content, encoding="utf-8")
         return True
     except Exception as e:
         return False
@@ -79,7 +83,7 @@ def _load_strategies_json():
     if not STRATEGIES_PATH.exists():
         return {}
     try:
-        data = json.loads(STRATEGIES_PATH.read_text())
+        data = json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
         # Entferne emerging_themes — das ist kein Strategie-Eintrag
         data.pop("emerging_themes", None)
         return data
@@ -196,7 +200,7 @@ class Portfolio:
         if not CONFIG_PATH.exists():
             return
         try:
-            config = json.loads(CONFIG_PATH.read_text())
+            config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
             positions = config.get("positions", {})
             if isinstance(positions, dict):
                 items = positions.items()
@@ -261,7 +265,7 @@ class Portfolio:
         if not EVENTS_PATH.exists():
             return
         try:
-            data = json.loads(EVENTS_PATH.read_text())
+            data = json.loads(EVENTS_PATH.read_text(encoding="utf-8"))
             self._events = [
                 Event(
                     timestamp=e.get("timestamp", ""),
@@ -454,7 +458,7 @@ def close_real_position(ticker, exit_price=None, reason=""):
     if not CONFIG_PATH.exists():
         return False, "trading_config.json nicht gefunden"
 
-    config = json.loads(CONFIG_PATH.read_text())
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     positions = config.get("positions", {})
 
     if ticker not in positions:
@@ -487,7 +491,7 @@ def close_real_position(ticker, exit_price=None, reason=""):
 
 def add_to_watchlist(ticker, name="", strategy="", notes=""):
     """Fügt Ticker zur Watchlist in trading_config.json hinzu."""
-    config = json.loads(CONFIG_PATH.read_text()) if CONFIG_PATH.exists() else {}
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8")) if CONFIG_PATH.exists() else {}
     positions = config.setdefault("positions", {})
 
     positions[ticker] = {
@@ -504,7 +508,7 @@ def remove_from_watchlist(ticker):
     """Entfernt Ticker von der Watchlist."""
     if not CONFIG_PATH.exists():
         return False
-    config = json.loads(CONFIG_PATH.read_text())
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     positions = config.get("positions", {})
     if ticker in positions and positions[ticker].get("status") == "WATCHLIST":
         del positions[ticker]

@@ -7,7 +7,11 @@ import urllib.request, urllib.parse, re, json, time, hashlib
 from pathlib import Path
 from datetime import datetime
 
-WORKSPACE = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 STATE_FILE = WORKSPACE / 'data/iran_peace_watch_state.json'
 
 PEACE_KEYWORDS = [
@@ -30,7 +34,7 @@ QUERIES = [
 
 def load_state():
     if STATE_FILE.exists():
-        return json.loads(STATE_FILE.read_text())
+        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
     return {'seen_hashes': [], 'last_run': None}
 
 def save_state(state):

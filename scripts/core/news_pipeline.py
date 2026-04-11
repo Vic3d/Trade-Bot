@@ -23,11 +23,17 @@ MAX_NEWS_AGE_HOURS = int(__import__('os').getenv('MAX_NEWS_AGE_HOURS', '4'))
 
 # news_fetcher importieren (bestehender Code)
 sys.path.insert(0, str(Path(__file__).parent.parent))
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
 from news_fetcher import (
     bloomberg, google_news, finnhub_company as finnhub_company_news, polygon_company as polygon_news
 )
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+DB_PATH = WS / 'data/trading.db'
 
 # ─── Ticker-Alias Map ─────────────────────────────────────────────────
 TICKER_ALIASES = {

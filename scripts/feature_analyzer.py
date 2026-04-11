@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Feature Analyzer — Phase 1 Auswertung
 ======================================
@@ -6,8 +6,8 @@ Analysiert welche Features mit Trade-Outcomes korrelieren.
 Läuft wöchentlich ab 50+ Trades mit Feature-Daten.
 
 Usage:
-  python3.14 feature_analyzer.py           # Vollständige Analyse
-  python3.14 feature_analyzer.py --quick   # Kurze Übersicht
+  python3 feature_analyzer.py           # Vollständige Analyse
+  python3 feature_analyzer.py --quick   # Kurze Übersicht
 """
 
 import sqlite3
@@ -16,7 +16,11 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 REPORT_FILE = WS / 'memory/feature-analysis.md'
 MIN_TRADES_FOR_ANALYSIS = 30  # Unter diesem Wert: zu wenig Daten
@@ -264,7 +268,7 @@ if __name__ == '__main__':
                 print(f"    {feat}: {corr:+.3f}")
     else:
         report = generate_report(result)
-        REPORT_FILE.write_text(report)
+        REPORT_FILE.write_text(report, encoding="utf-8")
         print(f"  ✅ Report geschrieben: {REPORT_FILE}")
         if result['status'] == 'ok':
             print(f"  Top Predictoren: {', '.join(result['top_predictors'])}")

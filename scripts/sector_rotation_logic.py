@@ -22,7 +22,11 @@ import json
 from pathlib import Path
 from datetime import datetime, timedelta
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 OUTPUT = WS / 'data/sector_rotation_state.json'
 

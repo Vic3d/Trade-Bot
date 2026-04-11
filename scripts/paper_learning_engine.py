@@ -17,7 +17,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from collections import defaultdict
 
-WORKSPACE = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB_PATH   = WORKSPACE / 'data/trading.db'
 STRATEGIES_JSON = WORKSPACE / 'data/strategies.json'
 LEARNINGS_JSON  = WORKSPACE / 'data/trading_learnings.json'
@@ -369,7 +373,7 @@ def update_strategy_scores() -> list:
         print("  ⚠️ strategies.json nicht gefunden — skip score update")
         return changes
 
-    strategies = json.loads(STRATEGIES_JSON.read_text())
+    strategies = json.loads(STRATEGIES_JSON.read_text(encoding="utf-8"))
 
     for strat_id, analysis in strategy_analysis.items():
         rec = get_recommendation(analysis['win_rate'], analysis['trades'])
@@ -659,7 +663,7 @@ def generate_weekly_report():
     benchmark_path = WORKSPACE / 'data/benchmark_history.json'
     if benchmark_path.exists():
         try:
-            bench_data = json.loads(benchmark_path.read_text())
+            bench_data = json.loads(benchmark_path.read_text(encoding="utf-8"))
             if bench_data:
                 sorted_dates = sorted(bench_data.keys())
                 # Letzte Woche: letzte 7 Einträge

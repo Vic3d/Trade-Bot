@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Online Learning Model — Phase 4 des ML-Bauplans
 =================================================
@@ -19,10 +19,10 @@ Bootstrapping:
   Backtest liefert RSI, VIX, Volume für 622 historische Trades.
 
 Usage:
-  python3.14 online_model.py                   # Status + Metriken
-  python3.14 online_model.py --bootstrap       # Vortraining auf Backtest-Daten
-  python3.14 online_model.py --predict NVDA    # Win-Wahrscheinlichkeit für Ticker
-  python3.14 online_model.py --learn <json>    # Manuell einen Trade einlernen
+  python3 online_model.py                   # Status + Metriken
+  python3 online_model.py --bootstrap       # Vortraining auf Backtest-Daten
+  python3 online_model.py --predict NVDA    # Win-Wahrscheinlichkeit für Ticker
+  python3 online_model.py --learn <json>    # Manuell einen Trade einlernen
 """
 
 import json
@@ -34,7 +34,11 @@ from pathlib import Path
 
 from river import compose, linear_model, preprocessing, tree, metrics, ensemble
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 MODEL_FILE = WS / 'data/river_model.pkl'
 METRICS_FILE = WS / 'data/model_metrics.json'
@@ -98,7 +102,7 @@ def load_model() -> tuple:
 
     # Metriken laden
     if METRICS_FILE.exists():
-        metrics_data = json.loads(METRICS_FILE.read_text())
+        metrics_data = json.loads(METRICS_FILE.read_text(encoding="utf-8"))
     else:
         metrics_data = {
             'n_trained': 0,
@@ -140,7 +144,7 @@ def extract_backtest_samples() -> list[dict]:
         print("  ⚠️  Backtest-Datei nicht gefunden — kein Bootstrap möglich")
         return samples
 
-    backtest = json.loads(BACKTEST_FILE.read_text())
+    backtest = json.loads(BACKTEST_FILE.read_text(encoding="utf-8"))
 
     # Für jede Strategie: Ticker-Backtest-Ergebnisse mit Trade-Details aus Cache
     for sid, result in backtest.items():
@@ -155,7 +159,7 @@ def extract_backtest_samples() -> list[dict]:
             if not cache_file.exists():
                 continue
 
-            bars = json.loads(cache_file.read_text())
+            bars = json.loads(cache_file.read_text(encoding="utf-8"))
             dates = sorted(bars.keys())
             closes = [bars[d]['c'] for d in dates]
             volumes = [bars[d]['v'] for d in dates]

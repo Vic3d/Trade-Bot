@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 crowd_reaction.py — Leichtgewichtige Crowd-Reaktions-Simulation
 ===============================================================
@@ -16,7 +16,11 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 STRATEGIES_PATH = WS / 'data' / 'strategies.json'
 CACHE_PATH      = WS / 'data' / 'crowd_cache.json'
 

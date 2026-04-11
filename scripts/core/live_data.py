@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 live_data.py — Single Source of Truth für alle Live-Marktdaten
 ===============================================================
@@ -28,8 +28,15 @@ import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-DB_PATH  = Path('/data/.openclaw/workspace/data/trading.db')
-GATE_PATH = Path('/data/.openclaw/workspace/data/news_gate.json')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH  = WS / 'data/trading.db'
+GATE_PATH = WS / 'data/news_gate.json'
 
 # Wie alt dürfen Daten maximal sein bevor auto-refresh
 MAX_PRICE_AGE_MINUTES = 20    # Preise: 20 Min (Intraday-Modus)
@@ -432,6 +439,6 @@ if __name__ == '__main__':
 
     else:
         print("Usage:")
-        print("  python3.14 live_data.py --snapshot     # VIX + EURUSD + Regime")
-        print("  python3.14 live_data.py --refresh      # Alle Daten aktualisieren")
-        print("  python3.14 live_data.py EQNR.OL        # Einzelner Ticker")
+        print("  python3 live_data.py --snapshot     # VIX + EURUSD + Regime")
+        print("  python3 live_data.py --refresh      # Alle Daten aktualisieren")
+        print("  python3 live_data.py EQNR.OL        # Einzelner Ticker")

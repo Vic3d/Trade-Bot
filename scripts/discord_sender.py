@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Discord Sender — Direkter Bot-API-Zugriff ohne OpenClaw-Agent.
 Liest Bot-Token aus OpenClaw-Config → sendet Nachrichten via HTTP.
@@ -12,9 +12,40 @@ from pathlib import Path
 OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
 VICTOR_DM = '1492225799062032484'   # Victor DM Channel
 
+# Fallback Token-Pfade für lokale Entwicklung
+_LOCAL_TOKEN_FILE = Path(__file__).resolve().parent.parent / 'deploy' / '.env'
+
 def _get_token() -> str:
-    cfg = json.loads(OPENCLAW_CFG.read_text())
-    return cfg['channels']['discord']['token']
+    # 1. Server-Pfad (OpenClaw)
+    if OPENCLAW_CFG.exists():
+        cfg = json.loads(OPENCLAW_CFG.read_text(encoding="utf-8"))
+        return cfg['channels']['discord']['token']
+    # 2. Environment Variable
+    import os
+    token = os.environ.get('DISCORD_BOT_TOKEN', '')
+    if token:
+        return token
+    # 3. Lokale .env Datei
+    if _LOCAL_TOKEN_FILE.exists():
+        for line in _LOCAL_TOKEN_FILE.read_text(encoding="utf-8").splitlines():
+            if line.startswith('DISCORD_BOT_TOKEN=') and len(line) > 19:
+                return line.split('=', 1)[1].strip()
+    raise FileNotFoundError('Discord Bot Token nicht gefunden (weder OpenClaw, ENV, noch deploy/.env)')
+
+def _log_outgoing(message: str) -> None:
+    """Loggt ausgehende Bot-Nachrichten ins Chat-Log für Claude Code."""
+    from datetime import datetime
+    log_path = Path(__file__).resolve().parent.parent / 'data' / 'discord_chat_log.jsonl'
+    try:
+        entry = json.dumps({
+            'ts': datetime.now().isoformat(),
+            'role': 'system',  # Scheduler-Notifications, keine Albert-Antwort
+            'content': message,
+        }, ensure_ascii=False)
+        with open(log_path, 'a', encoding='utf-8') as f:
+            f.write(entry + '\n')
+    except Exception:
+        pass
 
 def send(message: str, channel_id: str = VICTOR_DM) -> bool:
     """Sendet Discord-Nachricht direkt via Bot API. Gibt True bei Erfolg zurück."""
@@ -33,7 +64,10 @@ def send(message: str, channel_id: str = VICTOR_DM) -> bool:
             method='POST',
         )
         with urllib.request.urlopen(req, timeout=10) as resp:
-            return resp.status in (200, 201)
+            ok = resp.status in (200, 201)
+            if ok:
+                _log_outgoing(message)
+            return ok
     except Exception as e:
         print(f'Discord send error: {e}')
         return False

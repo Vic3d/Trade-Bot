@@ -40,7 +40,7 @@ HIGH_IMPACT_THESES = {'S1_Iran', 'PS1_Oil', 'S11_Steel', 'S12_Rüstung'}
 def load_state() -> dict:
     if STATE_FILE.exists():
         try:
-            return json.loads(STATE_FILE.read_text())
+            return json.loads(STATE_FILE.read_text(encoding="utf-8"))
         except Exception:
             pass
     return {'seen_headlines': [], 'last_run': None, 'last_alert_ts': None}
@@ -65,7 +65,7 @@ def run_ceo_report() -> str:
     """CEO live-Report als String zurückgeben."""
     try:
         r = subprocess.run(
-            ['python3.14', str(WS / 'scripts/ceo.py'), '--live', '--report'],
+            [sys.executable, str(WS / 'scripts/ceo.py'), '--live', '--report'],
             capture_output=True, text=True, timeout=90, cwd=str(WS)
         )
         return r.stdout.strip()[-1200:] if r.stdout else ''
@@ -114,7 +114,7 @@ def main():
     # Auch news_gate.json einbeziehen (falls bereits geschrieben)
     if GATE_FILE.exists():
         try:
-            gate = json.loads(GATE_FILE.read_text())
+            gate = json.loads(GATE_FILE.read_text(encoding="utf-8"))
             for h in gate.get('top_hits', []):
                 key = h.get('headline', '')[:70]
                 if key and key not in seen:

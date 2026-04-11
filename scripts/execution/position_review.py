@@ -24,7 +24,12 @@ import sqlite3, json, sys, urllib.request, time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WS  = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB  = WS / 'data' / 'trading.db'
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
@@ -128,7 +133,7 @@ def queue_alert(msg: str):
     q = []
     if ALERT_QUEUE.exists():
         try:
-            q = json.loads(ALERT_QUEUE.read_text())
+            q = json.loads(ALERT_QUEUE.read_text(encoding="utf-8"))
         except Exception:
             q = []
     q.append({'message': msg, 'target': '452053147620343808',

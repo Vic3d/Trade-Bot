@@ -13,7 +13,14 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from price_db import get_closes, get_rsi, init_tables
 
-DATA_DIR = Path("/data/.openclaw/workspace/data")
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DATA_DIR = WS / 'data'
 
 SECTORS = {
     'Energy': ['OXY', 'TTE.PA', 'EQNR.OL', 'SHEL.L', 'ENI.MI'],

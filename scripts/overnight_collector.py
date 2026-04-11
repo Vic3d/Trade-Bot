@@ -19,10 +19,96 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 RULES_FILE = WS / 'data/night_relevance_rules.json'
 NEWS_PIPELINE = WS / 'scripts/news_pipeline.py'
+STRATEGIES_JSON = WS / 'data/strategies.json'
+
+import sys as _sys
+_sys.path.insert(0, str(WS / 'scripts' / 'core'))
+
+# ── P9: SECTOR → STRATEGY MAP ──────────────────────────────────────────────
+SECTOR_STRATEGY_MAP = {
+    "oil": ["PS1", "S1"], "defense": ["PS3", "S2", "PS11"],
+    "tech": ["S3", "PS17"], "metals": ["PS4", "S4"],
+    "airlines": ["PS10", "S10"],
+}
+
+
+def _load_strategies_cfg() -> dict:
+    """Lädt strategies.json einmal — gibt leeres Dict bei Fehler."""
+    try:
+        return json.loads(STRATEGIES_JSON.read_text(encoding='utf-8'))
+    except Exception as e:
+        print(f"  [KILL-CHAIN] strategies.json nicht geladen: {e}")
+        return {}
+
+
+def _check_kill_triggers(strategies_affected: list, headline: str, strategies_cfg: dict):
+    """
+    Kill-Chain: Prüft ob eine Headline einen kill_trigger einer Strategie matcht.
+    Falls ja: degrade_thesis aufrufen.
+    """
+    import re
+    try:
+        from thesis_engine import degrade_thesis
+    except ImportError:
+        return  # thesis_engine nicht verfügbar — leise abbrechen
+
+    headline_lower = headline.lower()
+    for sid in strategies_affected:
+        try:
+            strat = strategies_cfg.get(sid, {})
+            kill_trigger = strat.get("kill_trigger", "")
+            if not kill_trigger:
+                continue
+            # Split on ODER / OR / | / ;
+            parts = re.split(r'\s+ODER\s+|\s+OR\s+|\||\;', kill_trigger)
+            for part in parts:
+                kw = part.strip()
+                if len(kw) < 4:
+                    continue
+                if kw.lower() in headline_lower:
+                    reason = f"Kill-Trigger Match: '{kw}' in Headline: {headline[:80]}"
+                    try:
+                        degrade_thesis(sid, reason)
+                        print(f"  [KILL-TRIGGER] {sid} degradiert: {reason}")
+                    except Exception as e_deg:
+                        print(f"  [KILL-TRIGGER] {sid} degrade_thesis Fehler: {e_deg}")
+        except Exception as e_inner:
+            print(f"  [KILL-TRIGGER] Fehler bei {sid}: {e_inner}")
+
+
+def _check_sector_bearish(impact_direction: str, headline: str, strategies_cfg: dict):
+    """
+    P9: Wenn impact_direction mit 'bearish_' beginnt, extrahiere Sektor,
+    schlage betroffene Strategien nach und degradiere diese.
+    """
+    try:
+        from thesis_engine import degrade_thesis
+    except ImportError:
+        return
+
+    if not impact_direction or not impact_direction.startswith("bearish_"):
+        return
+
+    sector = impact_direction.replace("bearish_", "").strip().lower()
+    strat_ids = SECTOR_STRATEGY_MAP.get(sector, [])
+    if not strat_ids:
+        return
+
+    for sid in strat_ids:
+        try:
+            reason = f"P9 Bearish-Sector '{sector}' via Headline: {headline[:80]}"
+            degrade_thesis(sid, reason)
+            print(f"  [KILL-TRIGGER/P9] {sid} degradiert (sector={sector})")
+        except Exception as e:
+            print(f"  [KILL-TRIGGER/P9] {sid} Fehler: {e}")
 
 # ── IMPACT RULES ────────────────────────────────────────────────────────────
 # Format: (pos_keywords, neg_keywords, strategies, impact_direction, base_novelty)
@@ -36,7 +122,13 @@ IMPACT_RULES = [
     (["NATO", "defense", "Rüstung"],          [],                       ["S2"],       "bullish_defense",        0.70),
     (["Fed", "cut", "Zinssenkung"],           [],                       ["S3"],       "bullish_tech",           0.75),
     (["silver", "Silber"],                    [],                       ["S4"],       "bullish_metals",         0.70),
-    (["oil", "kerosin"],                      [],                       ["S10", "S11"], "bearish_airlines",     0.70),
+    # Oil-Supply/Preis Events → S1 (Energy), NICHT Airlines
+    (["oil discovery", "oil production", "oil supply", "oil output", "crude price",
+      "brent surge", "oil shock", "Ölpreis"],
+                                              [],                       ["S1"],       "watchlist_oil",          0.65),
+    # Airlines nur bei spezifischen Kerosin/Treibstoff-Keywords
+    (["kerosene", "kerosin", "jet fuel", "aviation fuel"],
+                                              [],                       ["S10"],      "bearish_airlines",       0.70),
 ]
 
 
@@ -142,6 +234,9 @@ def run_news_pipeline():
 
 def collect():
     print(f"🌙 overnight_collector.py — {datetime.now().strftime('%Y-%m-%d %H:%M')} MEZ")
+
+    # Load strategies.json ONCE for kill-chain checks
+    strategies_cfg = _load_strategies_cfg()
 
     # 0. Feedback-Loop: ausstehende Preis-Checks + Kalibrierung
     try:
@@ -403,6 +498,14 @@ def collect():
                             pass
             except Exception:
                 pass  # VIX-Kontext ist optional — kein Crash
+
+            # ── Kill-Chain Acceleration ──────────────────────────────
+            try:
+                if strategies and strategies_cfg:
+                    _check_kill_triggers(strategies, headline, strategies_cfg)
+                    _check_sector_bearish(impact_direction, headline, strategies_cfg)
+            except Exception as e_kc:
+                print(f"  [KILL-CHAIN] Fehler (non-fatal): {e_kc}")
 
             new_count += 1
             existing_ids.add(event_id)  # Prevent duplicates within same run

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Feature Collector — Phase 1 des ML-Bauplans
 =============================================
@@ -23,14 +23,19 @@ Usage:
 """
 
 import sqlite3
+import sys
 import json
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-PYTHON = "/usr/local/bin/python3.14"
-WS = Path('/data/.openclaw/workspace')
+PYTHON = sys.executable
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 
 # Sektor-ETF Mapping (Ticker → Sektor-ETF)

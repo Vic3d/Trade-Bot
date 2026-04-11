@@ -14,6 +14,13 @@ import os
 import hashlib
 from datetime import datetime
 
+from pathlib import Path
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
+
+
 # Zugangsdaten
 ACCOUNTS = [
     {"name": "INFO2",    "user": r"phx-hosting\info2",    "pass": "*8166Belinea",  "relevant": True},
@@ -25,9 +32,9 @@ ACCOUNTS = [
 OWA_BASE = "https://mail.phx-hosting.de"
 OWA_LOGIN = f"{OWA_BASE}/owa/auth.owa"
 OWA_INBOX = f"{OWA_BASE}/owa/"
-DASHBOARD_FILE = "/data/.openclaw/workspace/dashboard/email-dashboard.html"
-STATE_FILE  = "/data/.openclaw/workspace/memory/email-state.json"
-LOG_FILE    = "/data/.openclaw/workspace/memory/email-log.md"
+DASHBOARD_FILE = str(WS / 'dashboard/email-dashboard.html')
+STATE_FILE  = str(WS / 'memory/email-state.json')
+LOG_FILE    = str(WS / 'memory/email-log.md')
 
 # Keywords für Kundenanfragen
 INQUIRY_KEYWORDS = [

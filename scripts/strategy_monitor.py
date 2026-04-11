@@ -18,10 +18,17 @@ import sys, json, re
 from pathlib import Path
 from datetime import datetime, timedelta
 
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
 sys.path.insert(0, str(Path(__file__).parent))
 
-DATA_DIR = Path("/data/.openclaw/workspace/data")
-MEM_DIR  = Path("/data/.openclaw/workspace/memory")
+DATA_DIR = WS / 'data'
+MEM_DIR  = WS / 'memory'
 STRATEGIES_PATH = DATA_DIR / "strategies.json"
 
 
@@ -40,7 +47,7 @@ def load_strategies():
     if not STRATEGIES_PATH.exists():
         raise FileNotFoundError(f"strategies.json nicht gefunden: {STRATEGIES_PATH}")
 
-    data = json.loads(STRATEGIES_PATH.read_text())
+    data = json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
 
     # Emerging themes sind ein spezieller Top-Level-Key
     emerging_themes = data.pop("emerging_themes", {})
@@ -61,7 +68,7 @@ def save_health_update(strategy_id, new_health):
     """
     if not STRATEGIES_PATH.exists():
         return
-    data = json.loads(STRATEGIES_PATH.read_text())
+    data = json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
     if strategy_id in data:
         data[strategy_id]["health"] = new_health
         STRATEGIES_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False))
@@ -239,7 +246,7 @@ def load_current_statuses(strategy_ids):
     if not changelog.exists():
         return {}
 
-    content = changelog.read_text()
+    content = changelog.read_text(encoding="utf-8")
     statuses = {}
     for ps_id in strategy_ids:
         pattern = rf'{ps_id}.*?(STARK|NEUTRAL|GESCHWÄCHT)'
@@ -267,10 +274,10 @@ def update_changelog(changes):
         new_entries += f"**Gründe:** {' | '.join(ch['reasons'])}\n\n"
 
     if changelog.exists():
-        existing = changelog.read_text()
-        changelog.write_text(existing + new_entries)
+        existing = changelog.read_text(encoding="utf-8")
+        changelog.write_text(existing + new_entries, encoding="utf-8")
     else:
-        changelog.write_text(f"# Strategy Changelog\n{new_entries}")
+        changelog.write_text(f"# Strategy Changelog\n{new_entries}", encoding="utf-8")
 
 
 # ──────────────────────────────────────────────────────────────

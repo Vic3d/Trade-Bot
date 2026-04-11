@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Strategy DNA — Phase 7 des ML-Bauplans
 =======================================
@@ -24,10 +24,10 @@ Integration:
   - Alert bei DNA-Verletzung (du tradest gegen dein eigenes Edge)
 
 Usage:
-  python3.14 strategy_dna.py                    # Alle DNAs berechnen + speichern
-  python3.14 strategy_dna.py --show PS1         # DNA für eine Strategie
-  python3.14 strategy_dna.py --check PS1 53 25  # DNA-Check: RSI=53, VIX=25
-  python3.14 strategy_dna.py --gate-check       # Alle aktuellen Positionen prüfen
+  python3 strategy_dna.py                    # Alle DNAs berechnen + speichern
+  python3 strategy_dna.py --show PS1         # DNA für eine Strategie
+  python3 strategy_dna.py --check PS1 53 25  # DNA-Check: RSI=53, VIX=25
+  python3 strategy_dna.py --gate-check       # Alle aktuellen Positionen prüfen
 """
 
 import json
@@ -41,7 +41,11 @@ from collections import defaultdict
 import numpy as np
 from scipy import stats
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 BOOTSTRAP_FILE = WS / 'data/bootstrap_samples.json'
 BACKTEST_FILE = WS / 'data/backtest_results.json'
@@ -68,7 +72,7 @@ def load_strategy_samples() -> dict[str, list]:
 
     # Bootstrap-Samples
     if BOOTSTRAP_FILE.exists():
-        samples = json.loads(BOOTSTRAP_FILE.read_text())
+        samples = json.loads(BOOTSTRAP_FILE.read_text(encoding="utf-8"))
         for s in samples:
             # source = 'backtest_PS1_OXY' → Strategie = 'PS1'
             parts = s['source'].split('_')
@@ -105,7 +109,7 @@ def load_strategy_samples() -> dict[str, list]:
 def load_backtest_results() -> dict:
     if not BACKTEST_FILE.exists():
         return {}
-    return json.loads(BACKTEST_FILE.read_text())
+    return json.loads(BACKTEST_FILE.read_text(encoding="utf-8"))
 
 
 # ── DNA-Berechnung ────────────────────────────────────────────────────────────
@@ -401,7 +405,7 @@ def check_dna_gate(strategy_id: str, features: dict) -> dict:
     if not DNA_FILE.exists():
         return {'score': 50, 'violations': [], 'status': 'NO_DNA'}
 
-    all_dna = json.loads(DNA_FILE.read_text())
+    all_dna = json.loads(DNA_FILE.read_text(encoding="utf-8"))
     if strategy_id not in all_dna:
         return {'score': 50, 'violations': [], 'status': 'NO_DNA_FOR_STRATEGY'}
 
@@ -598,13 +602,13 @@ if __name__ == '__main__':
         idx = args.index('--show')
         strat = args[idx + 1] if len(args) > idx + 1 else None
         if strat and DNA_FILE.exists():
-            all_dna = json.loads(DNA_FILE.read_text())
+            all_dna = json.loads(DNA_FILE.read_text(encoding="utf-8"))
             if strat in all_dna:
                 print_dna(all_dna[strat])
             else:
                 print(f"❌ Keine DNA für {strat} — verfügbar: {list(all_dna.keys())}")
         else:
-            print("Erst: python3.14 strategy_dna.py (ohne Argumente)")
+            print("Erst: python3 strategy_dna.py (ohne Argumente)")
 
     elif '--check' in args:
         idx = args.index('--check')

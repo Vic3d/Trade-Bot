@@ -22,7 +22,10 @@ import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WORKSPACE    = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 CONFIG_FILE  = WORKSPACE / 'trading_config.json'
 OUTPUT_FILE  = WORKSPACE / 'memory/flow-scanner-data.json'
 DB_FILE      = WORKSPACE / 'data/trading.db'

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 price_monitor.py — Echtzeit-Preisüberwachung für offene Positionen
 ===================================================================
@@ -11,7 +11,7 @@ Läuft dauerhaft im Hintergrund. Prüft alle 60 Sekunden:
 Sendet sofort Discord-Alert bei Treffern.
 Nur während Marktzeiten aktiv. Nachts/Wochenende: schläft 5 Min.
 
-Start: python3.14 price_monitor.py
+Start: python3 price_monitor.py
 Daemon: wird von scheduler_daemon.py gestartet (background thread)
 """
 
@@ -22,7 +22,10 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 PID_FILE = WS / 'data/price_monitor.pid'
 

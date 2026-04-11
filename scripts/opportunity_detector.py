@@ -28,7 +28,11 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import date
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 PROFILES_PATH = WS / 'data/opportunity_profiles.json'
 STRATEGIES_PATH = WS / 'data/strategies.json'
 DB_PATH = WS / 'data/trading.db'
@@ -39,17 +43,17 @@ PAPER_CAPITAL = 5000  # € pro Trade
 
 
 def load_profiles():
-    return json.loads(PROFILES_PATH.read_text())
+    return json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
 
 
 def load_strategies():
-    return json.loads(STRATEGIES_PATH.read_text())
+    return json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
 
 
 def load_opp_cache():
     if OPP_CACHE_PATH.exists():
         try:
-            return json.loads(OPP_CACHE_PATH.read_text())
+            return json.loads(OPP_CACHE_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
     return {}

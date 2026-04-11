@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 PPO Agent — Phase 8 des ML-Bauplans
 =====================================
@@ -34,7 +34,11 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.distributions import Categorical
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CHECKPOINT_DIR = WS / 'data/rl_checkpoints'
 BEST_MODEL_FILE = WS / 'data/rl_best_model.pt'
 METRICS_FILE = WS / 'data/rl_metrics.json'
@@ -136,7 +140,7 @@ class PPOTrainer:
 
     def _load_metrics(self) -> dict:
         if METRICS_FILE.exists():
-            return json.loads(METRICS_FILE.read_text())
+            return json.loads(METRICS_FILE.read_text(encoding="utf-8"))
         return {
             'total_steps': 0, 'total_episodes': 0, 'best_episode_reward': -999,
             'episode_history': [], 'training_history': [],

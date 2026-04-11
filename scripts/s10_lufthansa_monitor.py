@@ -17,8 +17,11 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-WORKSPACE = Path('/data/.openclaw/workspace')
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 # ── Konfiguration ───────────────────────────────────────────────────────────
 S10 = {
     'ticker':       'LHA.DE',

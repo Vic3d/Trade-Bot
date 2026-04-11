@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 RL Trading Environment — Phase 8 des ML-Bauplans
 =================================================
@@ -40,7 +40,11 @@ from datetime import datetime
 
 import numpy as np
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CACHE = WS / 'data/price_cache'
 
 STATE_DIM = 12
@@ -96,15 +100,15 @@ class TradingEnv:
         f = CACHE / f"{ticker.replace('/', '_').replace('^', 'IX')}.json"
         if not f.exists():
             raise FileNotFoundError(f"Kein Cache für {ticker}")
-        return json.loads(f.read_text())
+        return json.loads(f.read_text(encoding="utf-8"))
 
     def _load_vix(self) -> dict:
         f = CACHE / 'IXVIX.json'
-        return json.loads(f.read_text()) if f.exists() else {}
+        return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
 
     def _load_spy(self) -> dict:
         f = CACHE / 'SPY.json'
-        return json.loads(f.read_text()) if f.exists() else {}
+        return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
 
     @staticmethod
     def _calc_rsi(closes: np.ndarray, period: int = 14) -> np.ndarray:

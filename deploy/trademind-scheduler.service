@@ -8,7 +8,7 @@ Type=simple
 User=trademind
 Group=trademind
 WorkingDirectory=/opt/trademind
-ExecStart=/opt/trademind/venv/bin/python3.13 scripts/scheduler_daemon.py
+ExecStart=/opt/trademind/venv/bin/python3 scripts/scheduler_daemon.py
 Restart=always
 RestartSec=10
 StartLimitBurst=5
@@ -16,6 +16,8 @@ StartLimitIntervalSec=60
 
 # Environment
 EnvironmentFile=/opt/trademind/deploy/.env
+Environment=PYTHONIOENCODING=utf-8
+Environment=TRADEMIND_HOME=/opt/trademind
 
 # Logging
 StandardOutput=append:/opt/trademind/data/scheduler-systemd.log
@@ -24,7 +26,7 @@ StandardError=append:/opt/trademind/data/scheduler-systemd.log
 # Sicherheit
 NoNewPrivileges=true
 ProtectSystem=strict
-ReadWritePaths=/opt/trademind/data /opt/trademind/memory
+ReadWritePaths=/opt/trademind/data /opt/trademind/memory /opt/trademind/transcripts /data/.openclaw
 PrivateTmp=true
 
 [Install]

@@ -15,8 +15,15 @@ from datetime import datetime
 from pathlib import Path
 from collections import defaultdict
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
-RESULTS_PATH = Path('/data/.openclaw/workspace/data/backtest_results.json')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH = WS / 'data/trading.db'
+RESULTS_PATH = WS / 'data/backtest_results.json'
 
 # Trade Republic Kosten
 FEES_PER_TRADE = 1.0  # EUR

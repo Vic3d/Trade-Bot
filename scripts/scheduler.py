@@ -19,7 +19,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 RUNNER = str(WS / 'scripts/cron_runner.sh')
 LOG = WS / 'data/scheduler.log'
 PID_FILE = Path('/tmp/scheduler.pid')
@@ -119,7 +122,7 @@ def log(msg: str):
             f.write(line)
         # Log rotieren wenn > 100KB
         if LOG.stat().st_size > 100_000:
-            lines = LOG.read_text().splitlines()[-200:]
+            lines = LOG.read_text(encoding="utf-8").splitlines()[-200:]
             LOG.write_text('\n'.join(lines) + '\n')
     except:
         pass

@@ -16,9 +16,15 @@ import hashlib
 from pathlib import Path
 from datetime import datetime
 
-TRANSCRIPT_DIR = Path("/data/.openclaw/workspace/memory/transcripts")
-STATE_FILE = Path("/data/.openclaw/workspace/memory/transcript_processing_state.json")
-TRADINGTOOL_FILE = Path("/data/.openclaw/workspace/memory/projekt-tradingtool.md")
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+TRANSCRIPT_DIR = WS / 'memory/transcripts'
+STATE_FILE = WS / 'memory/transcript_processing_state.json'
+TRADINGTOOL_FILE = WS / 'memory/projekt-tradingtool.md'
 
 def get_file_hash(filepath):
     """Berechne SHA256 Hash einer Datei."""

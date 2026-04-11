@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Market Hours — Exchange-spezifische Öffnungszeiten + Feiertage
 ==============================================================

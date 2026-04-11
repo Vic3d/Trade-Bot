@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 evening_report.py — Tägliches Abend-Briefing für Victor
 ========================================================
@@ -14,7 +14,10 @@ import os
 from datetime import datetime, timezone, date
 from pathlib import Path
 
-WS  = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 DB  = WS / 'data' / 'trading.db'
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'core'))
@@ -225,6 +228,48 @@ def _win_rate_section(conn) -> str:
     )
 
 
+def _format_source_name(raw_source: str) -> str:
+    """Formatiert rohe Source-IDs zu lesbaren Namen.
+
+    Beispiele:
+        bloomberg_markets → Bloomberg Markets
+        yahoo_EQNR       → Yahoo EQNR
+        google_news       → Google News
+    """
+    if not raw_source:
+        return "Unbekannt"
+    return raw_source.replace('_', ' ').title()
+
+
+def _news_section(conn) -> str:
+    """Zeigt die wichtigsten News-Headlines des Tages mit Quelle und Datum."""
+    try:
+        rows = conn.execute("""
+            SELECT headline, source, published_at, sentiment_label
+            FROM news_events
+            WHERE created_at >= date('now', '-1 day')
+            ORDER BY relevance_score DESC, created_at DESC
+            LIMIT 10
+        """).fetchall()
+    except Exception:
+        return ""
+
+    if not rows:
+        return ""
+
+    lines = ["📰 **TOP NEWS HEUTE:**"]
+    sentiment_icon = {"bullish": "🟢", "bearish": "🔴", "neutral": "〰️"}
+    for r in rows:
+        headline = r['headline']
+        source = _format_source_name(r['source'])
+        pub = str(r['published_at'] or '')[:16]
+        icon = sentiment_icon.get(r['sentiment_label'], "〰️")
+        lines.append(f"  {icon} {headline}")
+        lines.append(f"    [{source}, {pub}]")
+
+    return "\n".join(lines)
+
+
 def _active_theses_section(conn) -> str:
     """Aktive Thesen aus thesis_status."""
     try:
@@ -265,6 +310,7 @@ def build_report() -> str:
     portfolio_text = _portfolio_section(conn, fx)
     closed_text    = _closed_today_section(conn)
     stats_text     = _win_rate_section(conn)
+    news_text      = _news_section(conn)
     theses_text    = _active_theses_section(conn)
 
     conn.close()
@@ -279,6 +325,9 @@ def build_report() -> str:
         sep,
         stats_text,
     ]
+
+    if news_text:
+        sections += [sep, news_text]
 
     if theses_text:
         sections += [sep, theses_text]

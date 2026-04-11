@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 watchlist_tracker.py — Preis-Snapshots für alle Watchlist-Ticker
 =================================================================
@@ -6,7 +6,7 @@ Läuft alle 30 Minuten während Marktzeiten.
 Speichert für jeden Ticker: Kurs, RSI, MA20/50/200, Volumen, ATR.
 Prüft pending_setups auf ausgelöste Trigger.
 
-Start: python3.14 watchlist_tracker.py
+Start: python3 watchlist_tracker.py
 """
 
 import sqlite3
@@ -16,7 +16,10 @@ import os
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 CONFIG = WS / 'trading_config.json'
 
@@ -49,7 +52,7 @@ def get_all_tracked_tickers() -> list:
     # Config-Watchlist
     if CONFIG.exists():
         try:
-            cfg = json.loads(CONFIG.read_text())
+            cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
             for w in cfg.get('watchlist', []):
                 t = w.get('yahoo') or w.get('ticker')
                 if t:

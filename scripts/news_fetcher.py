@@ -1,12 +1,20 @@
 """
 news_fetcher.py — Zentraler News-Aggregator für Albert
 Quellen: Bloomberg RSS, Finnhub, Polygon, Google News RSS
-Verwendung: exec('open("/data/.openclaw/workspace/scripts/news_fetcher.py").read()')
-oder: exec(open('/data/.openclaw/workspace/scripts/news_fetcher.py').read())
+Verwendung: exec('open(str(WS / 'scripts/news_fetcher.py')).read()')
+oder: exec(open(str(WS / 'scripts/news_fetcher.py')).read())
 """
 import urllib.request, json, xml.etree.ElementTree as ET, urllib.parse, os, time
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
+
+from pathlib import Path
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
 
 def _age_hours(date_str) -> float | None:
     """Alter eines Datums-Strings in Stunden. None wenn nicht parsebar."""

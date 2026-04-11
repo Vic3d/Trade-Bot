@@ -7,8 +7,11 @@ import json, time, urllib.request
 from pathlib import Path
 from datetime import datetime
 
-WS = Path('/data/.openclaw/workspace')
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 def yahoo(ticker, timeout=8):
     url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=5m&range=1d'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -73,7 +76,7 @@ def main():
     # CEO Direktive
     ceo = {}
     try:
-        ceo = json.loads((WS/'data/ceo_directive.json').read_text())
+        ceo = json.loads((WS/'data/ceo_directive.json').read_text(encoding="utf-8"))
     except:
         pass
 

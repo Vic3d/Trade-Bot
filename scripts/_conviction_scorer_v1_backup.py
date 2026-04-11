@@ -23,7 +23,14 @@ import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+WS = Path(str(WS))
 
 
 # ── These-Taxonomie ──────────────────────────────────────────────────────────
@@ -67,7 +74,7 @@ def load_news_gate() -> dict:
     try:
         path = WS / 'data/news_gate.json'
         if path.exists():
-            return json.loads(path.read_text())
+            return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         pass
     return {'relevant': False, 'theses_hit': [], 'hit_count': 0}
@@ -78,7 +85,7 @@ def load_ceo_directive() -> dict:
     try:
         path = WS / 'data/ceo_directive.json'
         if path.exists():
-            return json.loads(path.read_text())
+            return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         pass
     return {'mode': 'NEUTRAL', 'regime': 'NEUTRAL', 'vix': 20.0, 'geo_score': 0}

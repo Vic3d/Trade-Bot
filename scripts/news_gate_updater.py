@@ -14,8 +14,11 @@ import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 # ── Thesis-Keywords pro Strategie ──────────────────────────────────────────────
 THESIS_KEYWORDS = {
     # ── Bestehende Thesen ──────────────────────────────────────────────────────
@@ -54,7 +57,7 @@ ACTIVE_STRATEGIES = {
 def load_strategies():
     """Lade Ticker-Listen aus strategies.json für erweiterte Keyword-Generierung."""
     try:
-        strats = json.loads((WS / 'data/strategies.json').read_text())
+        strats = json.loads((WS / 'data/strategies.json').read_text(encoding="utf-8"))
         return strats
     except Exception:
         return {}

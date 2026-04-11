@@ -6,7 +6,8 @@
 set -e
 
 TRADEMIND_HOME="/opt/trademind"
-VENV="$TRADEMIND_HOME/venv/bin/python3.13"
+VENV="$TRADEMIND_HOME/venv/bin/python3"
+export PYTHONIOENCODING=utf-8
 DATA="$TRADEMIND_HOME/data"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 

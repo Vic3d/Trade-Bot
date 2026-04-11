@@ -16,12 +16,17 @@ import sqlite3, json, urllib.request, os
 from datetime import datetime, timedelta, date
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data' / 'trading.db'
 
 # Finnhub Key
 try:
-    for line in (WS / '.env').read_text().splitlines():
+    for line in (WS / '.env').read_text(encoding="utf-8").splitlines():
         if line.startswith('FINNHUB_KEY='):
             FINNHUB_KEY = line.split('=', 1)[1].strip()
             break
@@ -219,7 +224,7 @@ def load_watchlist_config() -> dict:
     """Lädt trading_config.json und gibt Ticker→Thesis-Config zurück."""
     cfg_path = WS / 'trading_config.json'
     try:
-        cfg = json.loads(cfg_path.read_text())
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
         return {w['ticker']: w for w in cfg.get('watchlist', [])}
     except Exception:
         return {}

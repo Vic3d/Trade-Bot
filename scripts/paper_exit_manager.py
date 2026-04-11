@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Paper Exit Manager v2 — Tranche-based Partial Exits + ATR Trailing
 ===================================================================
@@ -31,7 +31,11 @@ import json
 from datetime import datetime, date, timedelta
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data' / 'trading.db'
 
 # ─── Thesis-aware hold times (min_days, max_days) ────────────────────────────
@@ -247,7 +251,7 @@ def send_alert(message: str) -> None:
         queue = []
         if alert_queue.exists():
             try:
-                queue = json.loads(alert_queue.read_text())
+                queue = json.loads(alert_queue.read_text(encoding="utf-8"))
             except Exception:
                 queue = []
         queue.append({

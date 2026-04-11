@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 backtest_engine_v2.py — Backtester für das neue Dual-Gate System
 =================================================================
@@ -17,7 +17,11 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data' / 'trading.db'
 RESULTS_JSON = WS / 'data' / 'backtest_v2_results.json'
 

@@ -13,11 +13,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 import sys
 
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
 sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'core'))
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
-PROPOSALS_PATH = Path('/data/.openclaw/workspace/data/proposals.json')
+DB_PATH = WS / 'data/trading.db'
+PROPOSALS_PATH = WS / 'data/proposals.json'
 
 
 def get_db():
@@ -77,9 +84,9 @@ def generate_proposal(ticker, strategy, direction, entry_price, stop, target,
     # TRA-143: Position Sizing
     # size_eur = (portfolio × 0.02) / ((entry - stop) / entry)
     # Lese Startkapital aus trading_config.json wenn verfügbar
-    config_path = Path('/data/.openclaw/workspace/trading_config.json')
+    config_path = WS / 'trading_config.json'
     try:
-        cfg = json.loads(config_path.read_text())
+        cfg = json.loads(config_path.read_text(encoding="utf-8"))
         portfolio_value = cfg.get('settings', {}).get('start_capital', 10000)
     except:
         portfolio_value = 10000
@@ -110,7 +117,7 @@ def generate_proposal(ticker, strategy, direction, entry_price, stop, target,
     conn.close()
     
     # Proposal-ID (fortlaufend)
-    proposals = json.loads(PROPOSALS_PATH.read_text()) if PROPOSALS_PATH.exists() else []
+    proposals = json.loads(PROPOSALS_PATH.read_text(encoding="utf-8")) if PROPOSALS_PATH.exists() else []
     proposal_id = f"TP-{len(proposals) + 1}"
     
     proposal = {
@@ -191,7 +198,7 @@ def format_discord_proposal(p):
 
 def approve_proposal(proposal_id):
     """Genehmigt einen Proposal und loggt den Trade."""
-    proposals = json.loads(PROPOSALS_PATH.read_text()) if PROPOSALS_PATH.exists() else []
+    proposals = json.loads(PROPOSALS_PATH.read_text(encoding="utf-8")) if PROPOSALS_PATH.exists() else []
     
     for p in proposals:
         if p['id'] == proposal_id and p['status'] == 'PENDING':
@@ -214,7 +221,7 @@ def approve_proposal(proposal_id):
 
 def reject_proposal(proposal_id, reason=''):
     """Lehnt einen Proposal ab."""
-    proposals = json.loads(PROPOSALS_PATH.read_text()) if PROPOSALS_PATH.exists() else []
+    proposals = json.loads(PROPOSALS_PATH.read_text(encoding="utf-8")) if PROPOSALS_PATH.exists() else []
     
     for p in proposals:
         if p['id'] == proposal_id and p['status'] == 'PENDING':

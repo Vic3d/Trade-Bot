@@ -16,11 +16,15 @@ import json, sys, subprocess
 from pathlib import Path
 from datetime import date
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CFG = WS / 'trading_config.json'
 SSH = 'ssh -i ~/.ssh/id_ed25519_vic3d -o StrictHostKeyChecking=no'
 
-def load(): return json.loads(CFG.read_text())
+def load(): return json.loads(CFG.read_text(encoding="utf-8"))
 def save(cfg):
     CFG.write_text(json.dumps(cfg, ensure_ascii=False, indent=2))
 

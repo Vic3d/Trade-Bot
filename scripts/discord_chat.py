@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 discord_chat.py — Albert, AI-CEO von TradeMind, als Discord-Chatbot.
 Pollt den Discord-DM-Kanal alle 30 Sekunden auf neue Nachrichten von Victor,
@@ -19,7 +19,10 @@ from pathlib import Path
 
 # ── Pfade ─────────────────────────────────────────────────────────────────────
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 if not WS.exists():
     WS = Path(__file__).resolve().parent.parent
 
@@ -29,6 +32,7 @@ SCRIPTS = WS / 'scripts'
 
 OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
 STATE_FILE = DATA / 'discord_last_message.json'
+CHAT_LOG = DATA / 'discord_chat_log.jsonl'  # Persistentes Chat-Log für Claude Code
 
 # Discord-Konstanten
 CHANNEL_ID    = '1492225799062032484'   # Victors DM-Kanal für Albert-Chat
@@ -42,9 +46,22 @@ CLAUDE_MODEL = 'claude-opus-4-5'
 # ── Token & Hilfsfunktionen ───────────────────────────────────────────────────
 
 def _get_bot_token() -> str:
-    """Liest Bot-Token aus OpenClaw-Config."""
-    cfg = json.loads(OPENCLAW_CFG.read_text())
-    return cfg['channels']['discord']['token']
+    """Liest Bot-Token aus OpenClaw-Config, ENV oder lokaler .env."""
+    # 1. Server-Pfad
+    if OPENCLAW_CFG.exists():
+        cfg = json.loads(OPENCLAW_CFG.read_text(encoding="utf-8"))
+        return cfg['channels']['discord']['token']
+    # 2. Environment Variable
+    token = os.environ.get('DISCORD_BOT_TOKEN', '')
+    if token:
+        return token
+    # 3. Lokale deploy/.env
+    _env = WS / 'deploy' / '.env'
+    if _env.exists():
+        for line in _env.read_text(encoding="utf-8").splitlines():
+            if line.startswith('DISCORD_BOT_TOKEN=') and len(line) > 19:
+                return line.split('=', 1)[1].strip()
+    raise FileNotFoundError('Discord Bot Token nicht gefunden')
 
 
 def _discord_request(method: str, endpoint: str, payload: dict | None = None) -> dict | None:
@@ -117,7 +134,7 @@ def _load_state() -> dict:
     """Lädt den zuletzt verarbeiteten Message-ID State."""
     try:
         if STATE_FILE.exists():
-            return json.loads(STATE_FILE.read_text())
+            return json.loads(STATE_FILE.read_text(encoding="utf-8"))
     except Exception:
         pass
     return {'last_message_id': None}
@@ -142,23 +159,25 @@ def load_context() -> str:
     now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     parts.append(f'=== AKTUELLER KONTEXT (Stand: {now_str}) ===\n')
 
-    # 1. Markt-Regime
+    # 1. Markt-Regime (current_regime.json ODER market-regime.json)
     try:
-        regime_file = DATA / 'market-regime.json'
+        regime_file = DATA / 'current_regime.json'
+        if not regime_file.exists():
+            regime_file = DATA / 'market-regime.json'
         if regime_file.exists():
-            regime = json.loads(regime_file.read_text())
+            regime = json.loads(regime_file.read_text(encoding='utf-8'))
             parts.append('--- MARKT-REGIME ---')
             parts.append(json.dumps(regime, indent=2, ensure_ascii=False))
         else:
-            parts.append('--- MARKT-REGIME ---\n[Datei nicht gefunden]')
+            parts.append('--- MARKT-REGIME ---\nKeine Regime-Daten verfügbar.')
     except Exception as e:
-        parts.append(f'--- MARKT-REGIME ---\n[Ladefehler: {e}]')
+        parts.append(f'--- MARKT-REGIME ---\nKeine Regime-Daten verfügbar ({e})')
 
     # 2. CEO-Direktive
     try:
         directive_file = DATA / 'ceo_directive.json'
         if directive_file.exists():
-            directive = json.loads(directive_file.read_text())
+            directive = json.loads(directive_file.read_text(encoding="utf-8"))
             parts.append('\n--- CEO DIREKTIVE / MODUS ---')
             parts.append(json.dumps(directive, indent=2, ensure_ascii=False))
         else:
@@ -173,11 +192,13 @@ def load_context() -> str:
             conn = sqlite3.connect(str(db_file))
             conn.row_factory = sqlite3.Row
             try:
+                # Offene Positionen
                 cursor = conn.execute(
-                    '''SELECT ticker, entry_price, stop_loss, target_price,
-                              conviction, unrealized_pnl, strategy_id,
-                              entry_date, shares
+                    '''SELECT ticker, entry_price, stop_price, target_price,
+                              conviction, pnl_pct, strategy,
+                              entry_date, shares, status
                        FROM paper_portfolio
+                       WHERE status = 'OPEN'
                        ORDER BY entry_date DESC'''
                 )
                 rows = cursor.fetchall()
@@ -185,16 +206,23 @@ def load_context() -> str:
                 if rows:
                     for row in rows:
                         d = dict(row)
-                        pnl = d.get('unrealized_pnl', 0) or 0
-                        pnl_str = f'+{pnl:.2f}' if pnl >= 0 else f'{pnl:.2f}'
+                        pnl = d.get('pnl_pct', 0) or 0
+                        pnl_str = f'+{pnl:.1f}%' if pnl >= 0 else f'{pnl:.1f}%'
                         parts.append(
                             f"  {d.get('ticker','?'):10s} | Entry: {d.get('entry_price','?')} "
-                            f"| Stop: {d.get('stop_loss','?')} | Target: {d.get('target_price','?')} "
+                            f"| Stop: {d.get('stop_price','?')} | Target: {d.get('target_price','?')} "
                             f"| Conviction: {d.get('conviction','?')} | PnL: {pnl_str} "
-                            f"| Strategie: {d.get('strategy_id','?')} | Einstieg: {d.get('entry_date','?')}"
+                            f"| Strategie: {d.get('strategy','?')} | Einstieg: {d.get('entry_date','?')}"
                         )
                 else:
-                    parts.append('  [Keine offenen Positionen]')
+                    parts.append('  Keine offenen Positionen.')
+
+                # Fund-Status
+                fund_rows = conn.execute('SELECT key, value FROM paper_fund').fetchall()
+                if fund_rows:
+                    parts.append('\n--- PAPER FUND ---')
+                    for row in fund_rows:
+                        parts.append(f"  {row['key']}: {row['value']}")
             except sqlite3.OperationalError as e:
                 parts.append(f'  [DB-Fehler: {e}]')
             finally:
@@ -237,7 +265,7 @@ def load_context() -> str:
     try:
         strategies_file = DATA / 'strategies.json'
         if strategies_file.exists():
-            strategies = json.loads(strategies_file.read_text())
+            strategies = json.loads(strategies_file.read_text(encoding="utf-8"))
             parts.append('\n--- AKTIVE STRATEGIEN ---')
             # Nur Name und Beschreibung extrahieren — nicht die gesamten Daten
             if isinstance(strategies, list):
@@ -262,6 +290,37 @@ def load_context() -> str:
     except Exception as e:
         parts.append(f'\n--- AKTIVE STRATEGIEN ---\n[Fehler: {e}]')
 
+    # 7. Letzte Nachrichten aus news_events (mit Quelle + Datum)
+    try:
+        db_file = DATA / 'trading.db'
+        if db_file.exists():
+            conn = sqlite3.connect(str(db_file))
+            conn.row_factory = sqlite3.Row
+            try:
+                news_rows = conn.execute(
+                    '''SELECT headline, source, published_at, sentiment_label, sector
+                       FROM news_events
+                       ORDER BY published_at DESC
+                       LIMIT 15'''
+                ).fetchall()
+                if news_rows:
+                    parts.append('\n--- AKTUELLE NACHRICHTEN (letzte 15) ---')
+                    for nr in news_rows:
+                        d = dict(nr)
+                        src = (d.get('source') or 'unbekannt').replace('_', ' ').title()
+                        pub = (d.get('published_at') or '?')[:16]
+                        sent = d.get('sentiment_label') or ''
+                        sector = d.get('sector') or ''
+                        headline = d.get('headline') or '?'
+                        parts.append(f"  • {headline}")
+                        parts.append(f"    [{src}, {pub}] {sent} {sector}")
+            except Exception:
+                pass
+            finally:
+                conn.close()
+    except Exception:
+        pass
+
     return '\n'.join(parts)
 
 
@@ -272,7 +331,6 @@ ALBERT_PERSONA = """Du bist Albert, CEO & Head of Research bei TradeMind — ein
 PERSÖNLICHKEIT:
 - Präzise, direkt, datengetrieben. Kein Bullshit.
 - Sprichst wie ein erfahrener Hedgefonds-Manager mit 20+ Jahren Erfahrung.
-- Du kennst alle offenen Positionen, das aktuelle Marktregime und die Performance-Daten.
 - Du analysierst kühl, aber mit klarem Urteil.
 - Antwortest IMMER auf Deutsch, egal in welcher Sprache die Frage gestellt wird.
 
@@ -284,16 +342,22 @@ DEINE FÄHIGKEITEN:
 - Strategiebegründungen und Backtesting-Insights
 - Performance-Analyse und Lernzyklen
 
-EINSCHRÄNKUNGEN:
-- Du kannst KEINE Trades direkt ausführen — du gibst Empfehlungen, was zu tun wäre.
-- Wenn du Handlungen empfiehlst, sagst du explizit "Ich würde..." oder "Empfehlung:".
-- Du referenzierst echte Daten aus dem Kontext (konkrete PnL-Zahlen, Regime-Status, etc.).
+KRITISCHE REGELN — LIES DAS SORGFÄLTIG:
+1. Du arbeitest NUR mit den Daten, die dir im Kontext mitgegeben werden. ERFINDE NIEMALS Dateinamen, Verzeichnisse oder Code-Strukturen.
+2. Wenn Daten fehlen oder eine Datei nicht gefunden wurde, sage klar: "Diese Daten liegen mir nicht vor." HALLUZINIERE NICHT.
+3. Du kannst KEINE Dateien lesen, keinen Code ändern, keine Shell-Befehle ausführen. Du bist ein Chat-Interface, kein Code-Editor.
+4. Bei Nachrichten: Nenne IMMER die Quelle und das Veröffentlichungsdatum aus dem Kontext. Ohne Quelle → nicht referenzieren.
+5. Du kannst KEINE Trades direkt ausführen — du gibst Empfehlungen.
+6. Wenn Victor nach Code-Änderungen, Bug-Fixes, Script-Anpassungen oder System-Problemen fragt:
+   → Sage: "Das muss in Claude Code gemacht werden. Ich leite die Anfrage weiter."
+   → Schreibe NICHT eigenen Code oder Pseudo-Lösungen.
 
 KOMMUNIKATIONSSTIL:
 - Kurze, präzise Sätze. Keine Füllwörter.
 - Zahlen immer mit 2 Dezimalstellen für Preise, 1 für Prozent.
 - Bei Positionen: Ticker, aktueller Status, Risiko in einem Satz.
 - Bei Marktanalyse: Regime → These → Konsequenz.
+- Bei Nachrichten: Immer mit [Quelle, Datum] angeben.
 - Emojis nur sparsam, wenn sie Signal-Wert haben (z.B. 🔴 für kritisches Risiko).
 """
 
@@ -304,10 +368,18 @@ def ask_albert(message: str) -> str:
     Gibt Alberts Antwort zurück (oder Fallback-Nachricht).
     """
     api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    # Fallback: aus deploy/.env laden
+    if not api_key:
+        _env = WS / 'deploy' / '.env'
+        if _env.exists():
+            for _line in _env.read_text(encoding="utf-8").splitlines():
+                if _line.startswith('ANTHROPIC_API_KEY=') and len(_line) > 19:
+                    api_key = _line.split('=', 1)[1].strip()
+                    break
     if not api_key:
         return (
             '⚠️ **Albert offline** — ANTHROPIC_API_KEY nicht gesetzt. '
-            'Bitte Umgebungsvariable konfigurieren.'
+            'Bitte in deploy/.env oder als Umgebungsvariable konfigurieren.'
         )
 
     try:
@@ -410,7 +482,7 @@ def _handle_thesis_suggestion(content: str) -> None:
 
     directive_path = DATA / 'ceo_directive.json'
     try:
-        directive = _json.loads(directive_path.read_text()) if directive_path.exists() else {}
+        directive = _json.loads(directive_path.read_text(encoding="utf-8")) if directive_path.exists() else {}
     except Exception:
         directive = {}
 
@@ -428,6 +500,24 @@ def _handle_thesis_suggestion(content: str) -> None:
         print(f'[Albert] Thesis suggestion stored: {content[:80]}', flush=True)
     except Exception as e:
         print(f'[Albert] Failed to store thesis suggestion: {e}', flush=True)
+
+
+# ── Chat-Log (persistent für Claude Code) ────────────────────────────────────
+
+def _log_chat(role: str, content: str, ts: str | None = None) -> None:
+    """Schreibt eine Nachricht ins persistente Chat-Log (JSONL).
+    Damit kann Claude Code die Discord-Konversation nachlesen."""
+    import json as _j
+    entry = {
+        'ts': ts or datetime.now().isoformat(),
+        'role': role,   # 'victor' oder 'albert'
+        'content': content,
+    }
+    try:
+        with open(CHAT_LOG, 'a', encoding='utf-8') as f:
+            f.write(_j.dumps(entry, ensure_ascii=False) + '\n')
+    except Exception:
+        pass
 
 
 # ── Polling-Logik ─────────────────────────────────────────────────────────────
@@ -468,6 +558,7 @@ def poll_once() -> None:
             continue
 
         print(f'[Albert] Neue Nachricht von Victor: {content[:80]}', flush=True)
+        _log_chat('victor', content, ts=msg.get('timestamp', ''))
 
         # ── Phase 6: Thesis stop (manual override) ────────────────────────
         # Victor can stop an active thesis: "Stopp: PS21" or "Stopp PS21"
@@ -499,11 +590,33 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Eskalation an Claude Code bei System/Code-Anfragen ────────
+        _code_keywords = ('fix', 'code', 'script', 'bug', 'fehler im system',
+                          'anpassen', 'ändern', 'änder', 'umbauen', 'cron',
+                          'pfad', 'path', 'deploy', 'scheduler', 'updaten')
+        is_code_request = any(kw in content_lower for kw in _code_keywords)
+        if is_code_request:
+            try:
+                _req_file = DATA / 'claude_code_requests.jsonl'
+                _req = json.dumps({
+                    'ts': datetime.now().isoformat(),
+                    'from': 'victor_via_discord',
+                    'message': content,
+                    'status': 'pending',
+                }, ensure_ascii=False)
+                with open(_req_file, 'a', encoding='utf-8') as _f:
+                    _f.write(_req + '\n')
+            except Exception:
+                pass
+
         # Typing-Indikator senden
         _send_typing(CHANNEL_ID)
 
         # Antwort von Albert holen
         response = ask_albert(content)
+
+        # Antwort loggen
+        _log_chat('albert', response)
 
         # Antwort senden (bei langen Antworten in Chunks aufteilen)
         if len(response) <= 2000:

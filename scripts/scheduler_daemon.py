@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 TradeMind Scheduler Daemon — Phase 8 / Kostenoptimierung
 =========================================================
@@ -6,9 +6,9 @@ Läuft 24/7 als Hintergrundprozess.
 Ersetzt alle OpenClaw agentTurn-Crons durch direkte Python-Aufrufe.
 Kein LLM, keine Token-Kosten, kein Overhead.
 
-Starten:  python3.14 scheduler_daemon.py &
-Status:   python3.14 scheduler_daemon.py --status
-Stoppen:  python3.14 scheduler_daemon.py --stop
+Starten:  python3 scheduler_daemon.py &
+Status:   python3 scheduler_daemon.py --status
+Stoppen:  python3 scheduler_daemon.py --stop
 """
 
 import json
@@ -21,10 +21,14 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 SCRIPTS = WS / 'scripts'
 PID_FILE = WS / 'data/scheduler.pid'
 LOG_FILE = WS / 'data/scheduler.log'
+PYTHON = sys.executable  # Use the same Python that's running this script
 
 # ── Zeitplan ──────────────────────────────────────────────────────────────────
 # Format: (name, script, args, stunde, minute, wochentage)
@@ -34,6 +38,7 @@ SCHEDULE = [
     # Täglich
     # ── Live Data Refresh: 5x täglich (vor jedem wichtigen Job) ──────────────
     ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             7,  0,  None),   # Morgens
+    ('CEO Direktive',       'ceo.py',                 ['--live'],                7,  5,  [0,1,2,3,4]),  # Mo-Fr 07:05: schreibt ceo_directive.json
     ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             9,  0,  None),   # Vor Scanner
     ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             13, 0,  None),   # Mittags
     ('Live Data Refresh',   'core/live_data.py',      ['--refresh'],             17, 0,  None),   # Nachmittags
@@ -65,6 +70,9 @@ SCHEDULE = [
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 30, [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        21, 0,  [0,1,2,3,4]),
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
+    # ── Overnight Events sammeln (vor Briefing!) ─────────────────────────────
+    ('Overnight Collector', 'overnight_collector.py',  [],                        7,  10, None),
+    ('Overnight Collector', 'overnight_collector.py',  [],                        8,  25, [0,1,2,3,4]),  # nochmal kurz vor Briefing
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
@@ -155,6 +163,7 @@ SCHEDULE = [
     ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  16, 45, [0,1,2,3,4]),
     # ── Backtest v2: jeden Sonntag 08:00 UTC (nach Thesis Discovery 07:00) ──────
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 UTC
+    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 UTC (Mid-Week Refresh)
 ]
 
 
@@ -163,14 +172,17 @@ SCHEDULE = [
 def log(msg: str):
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
-    print(line, flush=True)
-    with open(LOG_FILE, 'a') as f:
+    try:
+        print(line, flush=True)
+    except UnicodeEncodeError:
+        print(line.encode('ascii', errors='replace').decode('ascii'), flush=True)
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
         f.write(line + '\n')
     # Log auf 5000 Zeilen begrenzen
     try:
-        lines = LOG_FILE.read_text().splitlines()
+        lines = LOG_FILE.read_text(encoding='utf-8').splitlines()
         if len(lines) > 5000:
-            LOG_FILE.write_text('\n'.join(lines[-4000:]) + '\n')
+            LOG_FILE.write_text('\n'.join(lines[-4000:]) + '\n', encoding='utf-8')
     except Exception:
         pass
 
@@ -199,7 +211,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
     log(f'▶️  {name}: Start')
     try:
         result = subprocess.run(
-            ['python3.14', str(script_path)] + args,
+            [PYTHON, str(script_path)] + args,
             capture_output=True, text=True, timeout=3600,
             cwd=str(WS)
         )
@@ -243,14 +255,14 @@ def start_price_monitor():
     # Prüfen ob bereits läuft
     if monitor_pid_file.exists():
         try:
-            pid = int(monitor_pid_file.read_text().strip())
-            os.kill(pid, 0)  # 0 = nur prüfen ob läuft
-            return  # Läuft schon
-        except (ProcessLookupError, ValueError):
+            pid = int(monitor_pid_file.read_text(encoding="utf-8").strip())
+            if is_running(pid):
+                return  # Läuft schon
+        except (ValueError, Exception):
             pass  # PID tot → neu starten
 
     proc = _sp.Popen(
-        ['python3.14', str(WS / 'scripts/price_monitor.py')],
+        [PYTHON, str(WS / 'scripts/price_monitor.py')],
         start_new_session=True,
         stdout=open(str(WS / 'data/price_monitor.log'), 'a'),
         stderr=_sp.STDOUT,
@@ -265,9 +277,9 @@ def scheduler_loop():
     # Startup-Nachricht nur einmal pro Tag — nicht bei jedem Watchdog-Neustart
     startup_flag = WS / 'data/scheduler_started_today.txt'
     today_str = datetime.now().strftime('%Y-%m-%d')
-    if not startup_flag.exists() or startup_flag.read_text().strip() != today_str:
+    if not startup_flag.exists() or startup_flag.read_text(encoding="utf-8").strip() != today_str:
         notify('🤖 **TradeMind** online')
-        startup_flag.write_text(today_str)
+        startup_flag.write_text(today_str, encoding="utf-8")
 
     # Price Monitor sofort starten
     start_price_monitor()
@@ -324,7 +336,7 @@ def read_pid() -> int | None:
     if not PID_FILE.exists():
         return None
     try:
-        return int(PID_FILE.read_text().strip())
+        return int(PID_FILE.read_text(encoding="utf-8").strip())
     except Exception:
         return None
 
@@ -334,6 +346,14 @@ def is_running(pid: int) -> bool:
         return True
     except (ProcessLookupError, PermissionError):
         return False
+    except OSError:
+        # Windows: os.kill(pid, 0) raises OSError — use subprocess instead
+        import subprocess as _sp
+        try:
+            r = _sp.run(['tasklist', '/FI', f'PID eq {pid}'], capture_output=True, text=True)
+            return str(pid) in r.stdout
+        except Exception:
+            return False
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
@@ -347,13 +367,13 @@ if __name__ == '__main__':
             print(f'✅ Scheduler läuft (PID {pid})')
             # Letzte Log-Zeilen
             if LOG_FILE.exists():
-                lines = LOG_FILE.read_text().splitlines()
+                lines = LOG_FILE.read_text(encoding='utf-8').splitlines()
                 print('\nLetzte 10 Einträge:')
                 for l in lines[-10:]:
                     print(f'  {l}')
         else:
             print('❌ Scheduler läuft NICHT')
-            print('   Starte mit: python3.14 scheduler_daemon.py &')
+            print('   Starte mit: python3 scheduler_daemon.py &')
 
     elif '--stop' in args:
         pid = read_pid()

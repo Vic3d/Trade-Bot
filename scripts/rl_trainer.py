@@ -1,15 +1,15 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 RL Trainer — Phase 8
 ====================
 Trainingssteuerung, Evaluation und Status-Reports für den PPO-Agenten.
 
 Usage:
-  python3.14 rl_trainer.py                    # Status + Evaluation
-  python3.14 rl_trainer.py --train 50000      # 50k Steps trainieren
-  python3.14 rl_trainer.py --train 10000 --quick   # Schneller Test-Run
-  python3.14 rl_trainer.py --eval 20          # 20 Episoden Evaluation
-  python3.14 rl_trainer.py --status           # Nur Status
+  python3 rl_trainer.py                    # Status + Evaluation
+  python3 rl_trainer.py --train 50000      # 50k Steps trainieren
+  python3 rl_trainer.py --train 10000 --quick   # Schneller Test-Run
+  python3 rl_trainer.py --eval 20          # 20 Episoden Evaluation
+  python3 rl_trainer.py --status           # Nur Status
 """
 
 import json
@@ -21,7 +21,11 @@ from datetime import datetime, timezone
 import numpy as np
 import torch
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CHECKPOINT_DIR = WS / 'data/rl_checkpoints'
 BEST_MODEL_FILE = WS / 'data/rl_best_model.pt'
 METRICS_FILE = WS / 'data/rl_metrics.json'
@@ -35,10 +39,10 @@ def status_report():
 
     if not METRICS_FILE.exists():
         print("  ⏳ Noch kein Training durchgeführt")
-        print("     Starte mit: python3.14 rl_trainer.py --train 10000")
+        print("     Starte mit: python3 rl_trainer.py --train 10000")
         return
 
-    m = json.loads(METRICS_FILE.read_text())
+    m = json.loads(METRICS_FILE.read_text(encoding="utf-8"))
     total_steps = m.get('total_steps', 0)
     total_eps = m.get('total_episodes', 0)
     best_reward = m.get('best_episode_reward', -999)
@@ -146,7 +150,7 @@ def run_evaluation(n_episodes: int = 20) -> dict:
 
     # In Metrics speichern
     if METRICS_FILE.exists():
-        metrics = json.loads(METRICS_FILE.read_text())
+        metrics = json.loads(METRICS_FILE.read_text(encoding="utf-8"))
         metrics['last_eval'] = {**result, 'ts': datetime.now(timezone.utc).isoformat()[:16]}
         METRICS_FILE.write_text(json.dumps(metrics, indent=2))
 
@@ -168,7 +172,7 @@ def predict_action(ticker: str, features: dict | None = None) -> dict:
 
     # Modell laden
     trainer = PPOTrainer(resume=True)
-    m = json.loads(METRICS_FILE.read_text()) if METRICS_FILE.exists() else {}
+    m = json.loads(METRICS_FILE.read_text(encoding="utf-8")) if METRICS_FILE.exists() else {}
 
     # State aus Feature-Collector
     if features is None:

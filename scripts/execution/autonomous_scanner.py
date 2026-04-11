@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Autonomous Scanner v2 — TradeMind Dual-Gate System
 ====================================================
@@ -22,7 +22,12 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data' / 'trading.db'
 
 sys.path.insert(0, str(WS / 'scripts'))
@@ -125,6 +130,37 @@ THESIS_ENTRY_CRITERIA = {
         'hold_days': (7, 30),
     },
 }
+
+
+# ─── Dynamisches Universum aus strategies.json ──────────────────────────────
+
+def load_universe_from_strategies():
+    """Loads active strategies from strategies.json and returns additional UNIVERSE entries."""
+    extra = []
+    try:
+        strats_path = WS / 'data' / 'strategies.json'
+        if not strats_path.exists():
+            return extra
+        strats = json.loads(strats_path.read_text(encoding='utf-8'))
+        if not isinstance(strats, dict):
+            return extra
+        # Existing tickers in hardcoded UNIVERSE
+        existing = {t[0] for t in UNIVERSE}
+        for sid, s in strats.items():
+            if not isinstance(s, dict):
+                continue
+            status = s.get('status', '')
+            if status not in ('active', 'experimental', 'watching'):
+                continue
+            tickers = s.get('tickers', [])
+            name = s.get('name', sid)
+            for ticker in tickers:
+                if ticker not in existing:
+                    extra.append((ticker, sid, name))
+                    existing.add(ticker)
+    except Exception as e:
+        print(f"[scanner] strategies.json load error: {e}")
+    return extra
 
 
 # ─── Universum (aktive Strategien, PS1/S1 deaktiviert) ───────────────────────
@@ -413,10 +449,79 @@ def evaluate_setup(ticker: str, strategy: str, data: dict) -> dict | None:
         return None
 
     rsi_val = data.get('rsi') or 50
+    vix_val = data.get('vix') or 20
+
+    # ── Strategy DNA Gate: Prüfe ob Entry-Bedingungen im optimalen Bereich ──
+    dna_bonus = 0
+    dna_note = ''
+    try:
+        _dna_path = WS / 'data' / 'dna.json'
+        if _dna_path.exists():
+            import json as _json
+            _dna = _json.loads(_dna_path.read_text(encoding='utf-8'))
+            _sdna = _dna.get(strategy, {})
+            if _sdna:
+                # RSI in optimalem Bereich?
+                _rsi_range = _sdna.get('optimal_rsi_range')
+                if _rsi_range and len(_rsi_range) == 2:
+                    if _rsi_range[0] <= rsi_val <= _rsi_range[1]:
+                        dna_bonus += 5
+                        dna_note += f'DNA-RSI✓ '
+                    else:
+                        dna_bonus -= 5
+                        dna_note += f'DNA-RSI✗({_rsi_range}) '
+
+                # VIX in optimalem Bereich?
+                _vix_range = _sdna.get('optimal_vix_range')
+                if _vix_range and len(_vix_range) == 2:
+                    if _vix_range[0] <= vix_val <= _vix_range[1]:
+                        dna_bonus += 3
+                        dna_note += f'DNA-VIX✓ '
+                    else:
+                        dna_bonus -= 3
+                        dna_note += f'DNA-VIX✗({_vix_range}) '
+
+                # Regime passt?
+                _best_regime = _sdna.get('best_regime')
+                _current_regime = data.get('regime', '')
+                if _best_regime and _current_regime:
+                    if _current_regime.upper() == str(_best_regime).upper():
+                        dna_bonus += 3
+                        dna_note += f'DNA-Regime✓ '
+    except Exception:
+        pass  # DNA-Check ist optional, kein Crash
+
+    # ── RL Agent Konsultation (optional) ─────────────────────────────────────
+    rl_bonus = 0
+    rl_note = ''
+    try:
+        _rl_model_path = WS / 'data' / 'rl_best_model.pt'
+        if _rl_model_path.exists():
+            from rl_agent import predict_action
+            _features = {
+                'rsi': rsi_val, 'vix': vix_val,
+                'vol_ratio': data.get('vol_ratio', 1.0),
+                'crv': crv, 'atr_pct': (atr / data['price'] * 100) if data['price'] > 0 else 2.5,
+            }
+            _action, _confidence = predict_action(strategy, _features)
+            if _action == 'BUY' and _confidence > 0.6:
+                rl_bonus = int((_confidence - 0.5) * 20)
+                rl_note = f'RL-BUY({_confidence:.0%}) '
+            elif _action == 'SKIP' and _confidence > 0.7:
+                rl_bonus = -int(_confidence * 15)
+                rl_note = f'RL-SKIP({_confidence:.0%}) '
+    except Exception:
+        pass  # RL ist optional
+
+    # ── Conviction zusammensetzen ────────────────────────────────────────────
+    total_adjustment = dna_bonus + rl_bonus
+
     reason  = (
         f"Thesis+Tech: RSI={rsi_val:.0f}, Trend-OK, "
         f"Vol={data['vol_ratio']:.1f}x, CRV={crv:.1f}:1"
     )
+    if dna_note or rl_note:
+        reason += f" | {dna_note}{rl_note}(adj={total_adjustment:+d})"
 
     return {
         'entry':     data['price'],
@@ -426,6 +531,8 @@ def evaluate_setup(ticker: str, strategy: str, data: dict) -> dict | None:
         'atr':       round(atr, 4),
         'hold_days': criteria['hold_days'],
         'reason':    reason,
+        'dna_adjustment': dna_bonus,
+        'rl_adjustment': rl_bonus,
     }
 
 
@@ -482,12 +589,44 @@ def run_scan(max_new_trades: int = MAX_NEW_TRADES_PER_RUN) -> list:
         )
         return []
 
+    # ── CEO-Modus-Enforcement ────────────────────────────────────────────
+    try:
+        import json as _json
+        _directive_path = WS / 'data' / 'ceo_directive.json'
+        if _directive_path.exists():
+            _directive = _json.loads(_directive_path.read_text(encoding='utf-8'))
+            _mode = _directive.get('mode', 'NORMAL')
+            if _mode == 'SHUTDOWN':
+                print(f"CEO-Modus: SHUTDOWN — keine neuen Trades erlaubt.")
+                return []
+            elif _mode == 'DEFENSIVE':
+                max_new_trades = min(max_new_trades, 2)
+                print(f"CEO-Modus: DEFENSIVE — max {max_new_trades} Trades pro Lauf.")
+            # Check blocked strategies
+            _rules = _directive.get('trading_rules', {})
+            _blocked = set(_rules.get('blocked_strategies', []))
+            if _blocked:
+                print(f"CEO blockiert {len(_blocked)} Strategien: {_blocked}")
+    except Exception as _e:
+        print(f"CEO-Direktive nicht lesbar: {_e} — Scanner läuft im Normalmodus.")
+
+    # Dynamic universe from strategies.json
+    dynamic_entries = load_universe_from_strategies()
+    full_universe = list(UNIVERSE) + dynamic_entries
+    if dynamic_entries:
+        print(f"[scanner] {len(dynamic_entries)} dynamische Ticker aus strategies.json geladen")
+
     results = []
     new_trades = 0
 
-    for ticker, strategy, description in UNIVERSE:
+    for ticker, strategy, description in full_universe:
         if new_trades >= max_new_trades:
             break
+
+        # CEO-blockierte Strategie überspringen
+        if '_blocked' in dir() and strategy in _blocked:
+            results.append({'ticker': ticker, 'status': 'blocked_by_ceo', 'strategy': strategy})
+            continue
 
         if has_open(ticker):
             results.append({'ticker': ticker, 'status': 'already_open'})
@@ -514,6 +653,17 @@ def run_scan(max_new_trades: int = MAX_NEW_TRADES_PER_RUN) -> list:
             time.sleep(0.3)
             continue
 
+        # DNA/RL-Adjustments auf Conviction anwenden
+        _adj = setup.get('dna_adjustment', 0) + setup.get('rl_adjustment', 0)
+        # Negativer Adjustment bei RL-SKIP → Trade überspringen
+        if _adj <= -10:
+            results.append({
+                'ticker': ticker, 'status': 'skipped_by_learning',
+                'reason': setup['reason'], 'adjustment': _adj,
+            })
+            time.sleep(0.3)
+            continue
+
         thesis = f"[v2] {description} | {setup['reason']}"
         result = execute_paper(
             ticker, strategy,
@@ -524,6 +674,7 @@ def run_scan(max_new_trades: int = MAX_NEW_TRADES_PER_RUN) -> list:
         result['strategy'] = strategy
         result['crv']      = setup['crv']
         result['reason']   = setup['reason']
+        result['learning_adj'] = _adj
         results.append(result)
 
         if result.get('success'):
@@ -643,10 +794,16 @@ def run_lab_scan() -> list:
         )
         return []
 
+    # Dynamic universe from strategies.json
+    dynamic_entries = load_universe_from_strategies()
+    full_universe = list(UNIVERSE) + dynamic_entries
+    if dynamic_entries:
+        print(f"[lab-scanner] {len(dynamic_entries)} dynamische Ticker aus strategies.json geladen")
+
     results = []
     new_trades = 0
 
-    for ticker, strategy, description in UNIVERSE:
+    for ticker, strategy, description in full_universe:
         if new_trades >= MAX_LAB_TRADES_PER_RUN:
             break
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 config.py — Zentrale Konfiguration für TradeMind
 =================================================
@@ -8,7 +8,11 @@ import os
 from pathlib import Path
 
 # Workspace Root — kann via Env-Variable überschrieben werden
-WS = Path(os.getenv('TRADEMIND_HOME', '/data/.openclaw/workspace'))
+# Fallback: Auto-Detect via Script-Pfad (scripts/ → Parent = WS)
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 
 # Datenbankpfad
 DB = WS / 'data' / 'trading.db'

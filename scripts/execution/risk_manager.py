@@ -13,7 +13,14 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH = WS / 'data/trading.db'
 
 # Ticker → Sektor Mapping
 SECTOR_MAP = {
@@ -124,11 +131,11 @@ def position_count_check(max_positions=5):
 
 def correlation_risk():
     """Portfolio-Korrelationsrisiko."""
-    corr_path = Path('/data/.openclaw/workspace/data/correlations.json')
+    corr_path = WS / 'data/correlations.json'
     if not corr_path.exists():
         return {'avg_correlation': 0, 'high_corr_pairs': []}
     
-    data = json.loads(corr_path.read_text())
+    data = json.loads(corr_path.read_text(encoding="utf-8"))
     
     conn = get_db()
     open_tickers = [r['ticker'] for r in conn.execute(

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 thesis_engine.py — Thesen-Lifecycle-Management
 ===============================================
@@ -23,7 +23,12 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
@@ -539,8 +544,8 @@ if __name__ == '__main__':
 
     else:
         print("Usage:")
-        print("  python3.14 thesis_engine.py --active")
-        print("  python3.14 thesis_engine.py --status S2")
-        print("  python3.14 thesis_engine.py --monitor")
-        print("  python3.14 thesis_engine.py --degrade PS17 'Grund'")
-        print("  python3.14 thesis_engine.py --invalidate PS1 'Kill-Trigger: Iran Deal'")
+        print("  python3 thesis_engine.py --active")
+        print("  python3 thesis_engine.py --status S2")
+        print("  python3 thesis_engine.py --monitor")
+        print("  python3 thesis_engine.py --degrade PS17 'Grund'")
+        print("  python3 thesis_engine.py --invalidate PS1 'Kill-Trigger: Iran Deal'")

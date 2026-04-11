@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 user_config.py — Multi-User Konfiguration
 ==========================================
@@ -22,7 +22,12 @@ import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+DB_PATH = WS / 'data' / 'trading.db'
 
 # Default User (Victor) — wird genutzt wenn kein user_id angegeben
 DEFAULT_USER_ID = 'user_victor'

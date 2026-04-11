@@ -24,7 +24,12 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS       = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB_PATH  = WS / 'data' / 'trading.db'
 DATA_DIR = WS / 'data'
 
@@ -69,6 +74,49 @@ def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     return conn
+
+
+# ─── Decay + DNA Modifier ────────────────────────────────────────────────────
+
+def _apply_decay_and_dna(strategy: str, score: int) -> int:
+    """Apply alpha_decay status penalty and DNA VIX-range bonus/penalty."""
+    try:
+        # Alpha Decay check
+        _decay_path = WS / 'data' / 'alpha_decay.json'
+        if _decay_path.exists():
+            _decay_data = json.loads(_decay_path.read_text(encoding='utf-8'))
+            _strat_decay = _decay_data.get(strategy, {})
+            _status = _strat_decay.get('status', '')
+            if _status in ('DECAY', 'SUSPEND_CANDIDATE'):
+                score -= 10
+            elif _status == 'WARNING':
+                score -= 5
+
+        # DNA VIX-range check
+        _dna_path = WS / 'data' / 'dna.json'
+        if _dna_path.exists():
+            _dna_data = json.loads(_dna_path.read_text(encoding='utf-8'))
+            _strat_dna = _dna_data.get(strategy, {})
+            _vix_range = _strat_dna.get('optimal_vix_range')
+            if _vix_range:
+                # Read current VIX from ceo_directive.json
+                _ceo_path = WS / 'data' / 'ceo_directive.json'
+                if _ceo_path.exists():
+                    _ceo = json.loads(_ceo_path.read_text(encoding='utf-8'))
+                    _vix = _ceo.get('vix')
+                    if _vix is not None:
+                        _vix = float(_vix)
+                        _lo = float(_vix_range[0]) if isinstance(_vix_range, (list, tuple)) and len(_vix_range) >= 2 else None
+                        _hi = float(_vix_range[1]) if isinstance(_vix_range, (list, tuple)) and len(_vix_range) >= 2 else None
+                        if _lo is not None and _hi is not None:
+                            if _lo <= _vix <= _hi:
+                                score += 5
+                            else:
+                                score -= 5
+
+        return max(0, score)
+    except Exception:
+        return score
 
 
 # ─── Factor 1: Thesis Strength (0-35 pts) ────────────────────────────────────
@@ -118,22 +166,25 @@ def _score_thesis_strength(strategy: str, ticker: str = '') -> tuple[int, str]:
     effective_status = db_status or ('ACTIVE' if json_status == 'active' else 'PAUSED')
 
     if effective_status == 'INVALIDATED':
-        return (0, 'BLOCK: thesis INVALIDATED — kill trigger fired')
+        return (_apply_decay_and_dna(strategy, 0), 'BLOCK: thesis INVALIDATED — kill trigger fired')
 
     if effective_status == 'DEGRADED':
         # Check for entry_trigger confirmation bonus (capped at 15)
         entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
         score = min(15, 10 + entry_bonus)
+        score = _apply_decay_and_dna(strategy, score)
         return (score, f'DEGRADED thesis — capped at {score}/15')
 
     if effective_status in ('ACTIVE', 'WATCHING', 'EVALUATING'):
         base = 20
         entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
         score = min(35, base + entry_bonus)
+        score = _apply_decay_and_dna(strategy, score)
         return (score, f'ACTIVE thesis — {score}/35 (bonus={entry_bonus})')
 
     # PAUSED or unknown
-    return (10, f'thesis status {effective_status} — partial credit 10/35')
+    _paused_score = _apply_decay_and_dna(strategy, 10)
+    return (_paused_score, f'thesis status {effective_status} — partial credit {_paused_score}/35')
 
 
 def _check_entry_trigger_bonus(strategy: str, strategy_cfg: dict) -> int:
@@ -393,7 +444,7 @@ def _score_market_context(strategy: str) -> tuple[int, str]:
         try:
             regime_file = DATA_DIR / 'market-regime.json'
             if regime_file.exists():
-                data = json.loads(regime_file.read_text())
+                data = json.loads(regime_file.read_text(encoding="utf-8"))
                 if vix is None:
                     vix = data.get('vix')
                 if regime == 'UNKNOWN':
@@ -511,6 +562,26 @@ def calculate_conviction(
             'vix': None,
             'regime': None,
         }
+
+    # ── CEO-Modus-Check: Score-Anpassung basierend auf CEO-Direktive ────
+    try:
+        _directive_path = DATA_DIR / 'ceo_directive.json'
+        if _directive_path.exists():
+            _directive = json.loads(_directive_path.read_text(encoding='utf-8'))
+            _ceo_mode = _directive.get('mode', 'NORMAL')
+            if _ceo_mode == 'SHUTDOWN':
+                return {
+                    'score': 0, 'recommendation': 'BLOCKED',
+                    'block_reason': 'CEO-Modus: SHUTDOWN — keine neuen Trades',
+                    'entry_allowed': False,
+                    'factors': {'thesis_strength': 0, 'technical_alignment': 0,
+                                'risk_reward_quality': 0, 'market_context': 0},
+                    'position_sizing': 'SKIP', 'vix': None, 'regime': None,
+                }
+            elif _ceo_mode == 'DEFENSIVE':
+                thesis_score = max(0, thesis_score - 5)  # Conviction reduzieren
+    except Exception:
+        pass
 
     # ── Factor 2: Technical Alignment ────────────────────────────────────
     # If not provided, try to fetch from DB

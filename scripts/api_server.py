@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 api_server.py — TradeMind REST API
 ====================================
@@ -25,7 +25,11 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 PORT = 8765
 
@@ -142,7 +146,7 @@ def api_signals() -> dict:
     gate = {}
     if gate_path.exists():
         try:
-            gate = json.loads(gate_path.read_text())
+            gate = json.loads(gate_path.read_text(encoding="utf-8"))
         except Exception:
             pass
 

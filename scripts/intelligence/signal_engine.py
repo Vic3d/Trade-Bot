@@ -17,8 +17,15 @@ import sqlite3, json, hashlib, math
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
-LAG_PATH = Path('/data/.openclaw/workspace/data/lag_knowledge.json')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH = WS / 'data/trading.db'
+LAG_PATH = WS / 'data/lag_knowledge.json'
 
 # ─── Candlestick Pattern Definitions ────────────────────────
 BULLISH_PATTERNS = {

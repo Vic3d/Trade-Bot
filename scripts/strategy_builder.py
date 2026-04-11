@@ -14,7 +14,11 @@ from pathlib import Path
 from datetime import datetime, date, timedelta
 from collections import defaultdict
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 STRAT_JSON = WS / 'data/strategies.json'
 RESEARCH_LOG = WS / 'memory/strategy-research.md'
@@ -161,7 +165,7 @@ def get_existing_strategy_names():
 def log_research(entries):
     """Schreibt Research-Log."""
     if not RESEARCH_LOG.exists():
-        RESEARCH_LOG.write_text('# Strategy Research Log — Albert\n\n')
+        RESEARCH_LOG.write_text('# Strategy Research Log — Albert\n\n', encoding="utf-8")
     
     ts = datetime.now().strftime('%Y-%m-%d %H:%M')
     with open(RESEARCH_LOG, 'a') as f:

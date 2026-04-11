@@ -22,7 +22,11 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 ACCURACY_FILE = WS / 'memory/albert-accuracy.md'
 LEARNINGS_FILE = WS / 'data/trading_learnings.json'
@@ -122,7 +126,7 @@ def build_accuracy_report() -> str:
     conviction_changes = []
     strat_file = WS / 'data/strategies.json'
     if strat_file.exists():
-        strats = json.loads(strat_file.read_text())
+        strats = json.loads(strat_file.read_text(encoding="utf-8"))
         for sid, s in strats.items():
             genesis = s.get('genesis', {})
             history = genesis.get('feedback_history', [])
@@ -135,7 +139,7 @@ def build_accuracy_report() -> str:
     # ─ Offene Hypothesen ─
     learnings = {}
     if LEARNINGS_FILE.exists():
-        learnings = json.loads(LEARNINGS_FILE.read_text())
+        learnings = json.loads(LEARNINGS_FILE.read_text(encoding="utf-8"))
 
     active_rules = learnings.get('active_rules', [])
 
@@ -192,7 +196,7 @@ def build_accuracy_report() -> str:
     ]
 
     report = '\n'.join(lines) + '\n'
-    ACCURACY_FILE.write_text(report)
+    ACCURACY_FILE.write_text(report, encoding='utf-8')
     conn.close()
     return report
 
@@ -203,8 +207,8 @@ def append_to_daily_log(summary: str):
     """Hängt Learning-Summary an heutiges Daily-Log."""
     entry = f"\n## {datetime.now().strftime('%H:%M')} — Auto-Learning Cycle\n\n{summary}\n"
     if DAILY_LOG.exists():
-        existing = DAILY_LOG.read_text()
-        DAILY_LOG.write_text(existing + entry)
+        existing = DAILY_LOG.read_text(encoding="utf-8")
+        DAILY_LOG.write_text(existing + entry, encoding='utf-8')
     # Wenn kein Daily-Log existiert → nicht anlegen (Tagesabschluss macht das)
 
 
@@ -251,7 +255,7 @@ def run_full():
     else:
         print("  ℹ️  Wöchentlich (Freitag) — heute kein Run")
 
-    print("\n[6/6] Daily Log updaten...")
+    print("\n[6/7] Daily Log updaten...")
     fi_note = f"\n- Feature Importance: {len(fi_result.get('composite_scores',{}))} Features analysiert" if fi_result else ""
     summary = (
         f"Learning Cycle abgeschlossen:\n"
@@ -262,6 +266,32 @@ def run_full():
     )
     append_to_daily_log(summary)
     print(f"  ✅ Daily Log aktualisiert")
+
+    print("\n[7/7] State Snapshot regenerieren...")
+    try:
+        import sqlite3 as _sqlite3
+        _db = _sqlite3.connect(str(WS / 'data' / 'trading.db'))
+        _positions = _db.execute(
+            'SELECT ticker, entry_price, stop_price, target_price, strategy, conviction, entry_date FROM paper_portfolio WHERE status="OPEN" ORDER BY entry_date'
+        ).fetchall()
+        _fund = dict(_db.execute('SELECT key, value FROM paper_fund').fetchall())
+        _db.close()
+        _now = datetime.now().strftime('%Y-%m-%d %H:%M UTC')
+        _lines = [
+            '# State Snapshot — Trading Bot',
+            f'**Zuletzt aktualisiert:** {_now}',
+            f'**Positionen:** {len(_positions)} | **Cash:** {float(_fund.get("current_cash", 0)):.0f}EUR',
+            '', '---', '',
+            f'## Portfolio ({len(_positions)} Positionen)', '',
+            '| Ticker | Entry | Stop | Target | Strategie | Conviction | Seit |',
+            '|---|---|---|---|---|---|---|',
+        ]
+        for p in _positions:
+            _lines.append(f'| {p[0]} | {p[1]:.2f} | {p[2] or "—"} | {p[3] or "—"} | {p[4]} | {p[5] or "—"} | {str(p[6])[:10]} |')
+        (WS / 'memory' / 'state-snapshot.md').write_text('\n'.join(_lines), encoding='utf-8')
+        print("  state-snapshot.md aktualisiert")
+    except Exception as e:
+        print(f"  Snapshot-Fehler (nicht kritisch): {e}")
 
     print(f"\n✅ Learning Cycle fertig.")
     return summary

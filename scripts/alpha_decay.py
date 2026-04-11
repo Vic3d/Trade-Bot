@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Alpha Decay Detector — Phase 3 des ML-Bauplans
 ===============================================
@@ -20,9 +20,9 @@ Ausgabe:
   - data/alpha_decay.json (wird von CEO + Learning Cycle gelesen)
 
 Usage:
-  python3.14 alpha_decay.py              # Vollständige Analyse
-  python3.14 alpha_decay.py --quick      # Nur Warnungen ausgeben
-  python3.14 alpha_decay.py --watch PS1  # Einzelstrategie tracken
+  python3 alpha_decay.py              # Vollständige Analyse
+  python3 alpha_decay.py --quick      # Nur Warnungen ausgeben
+  python3 alpha_decay.py --watch PS1  # Einzelstrategie tracken
 """
 
 import json
@@ -33,7 +33,11 @@ from pathlib import Path
 
 import numpy as np
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 DECAY_FILE = WS / 'data/alpha_decay.json'
 STRATEGIES_FILE = WS / 'data/strategies.json'
@@ -209,7 +213,7 @@ def run_all() -> dict:
         results[sid] = analyze_strategy(sid)
 
     # Speichern
-    DECAY_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+    DECAY_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding='utf-8')
     return results
 
 
@@ -240,10 +244,10 @@ def update_strategy_changelog(alerts: list[dict]):
     entry_lines.append("")
 
     if CHANGELOG.exists():
-        existing = CHANGELOG.read_text()
-        CHANGELOG.write_text(existing + '\n'.join(entry_lines))
+        existing = CHANGELOG.read_text(encoding='utf-8')
+        CHANGELOG.write_text(existing + '\n'.join(entry_lines), encoding='utf-8')
     else:
-        CHANGELOG.write_text('\n'.join(entry_lines))
+        CHANGELOG.write_text('\n'.join(entry_lines), encoding='utf-8')
 
 
 def format_bar(value: float, max_val: float = 1.0, width: int = 20) -> str:

@@ -13,7 +13,14 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path("/data/.openclaw/workspace/data/trading.db")
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH = WS / 'data/trading.db'
 
 
 def get_db():

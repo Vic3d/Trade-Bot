@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Paper Trade Engine v1 — Autonome Paper Trade Ausführung
 ========================================================
@@ -27,8 +27,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'core'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'execution'))
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
-WORKSPACE = Path('/data/.openclaw/workspace')
+DB_PATH = WS / 'data/trading.db'
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 PAPER_CFG = WORKSPACE / 'data' / 'paper_config.json'
 ALERT_QUEUE = WORKSPACE / 'memory' / 'alert-queue.json'
 
@@ -49,7 +54,7 @@ def get_db():
 
 def load_config() -> dict:
     try:
-        return json.loads(PAPER_CFG.read_text())
+        return json.loads(PAPER_CFG.read_text(encoding="utf-8"))
     except Exception:
         return {'capital': 25000, 'fee_per_trade': 1.0, 'position_sizing': {}}
 
@@ -78,7 +83,7 @@ def has_open_position(conn, ticker: str) -> bool:
 def get_sector(ticker: str) -> str:
     """Liest Sektor aus ticker_meta oder trading_config."""
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
         return cfg.get('sector_map', {}).get(ticker.upper(), 'UNKNOWN')
     except Exception:
         return 'UNKNOWN'
@@ -93,7 +98,7 @@ def get_sector_count(conn, sector: str) -> int:
 def yahoo_price(ticker: str) -> float | None:
     """→ live_data.get_price(). Alle Preise kommen aus einer Quelle."""
     import sys as _sys
-    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    _sys.path.insert(0, str(WS / 'scripts/core'))
     from live_data import get_price
     return get_price(ticker)
 
@@ -101,7 +106,7 @@ def yahoo_price(ticker: str) -> float | None:
 def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
     """→ live_data.is_price_fresh()."""
     import sys as _sys
-    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    _sys.path.insert(0, str(WS / 'scripts/core'))
     from live_data import is_price_fresh as _fresh
     return _fresh(ticker, max_days)
 
@@ -111,7 +116,7 @@ def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
 def sync_prices_for_tickers(tickers: list):
     """→ live_data.refresh_prices_bulk(). Alle Preise kommen aus einer Quelle."""
     import sys as _sys
-    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    _sys.path.insert(0, str(WS / 'scripts/core'))
     from live_data import refresh_prices_bulk
     results = refresh_prices_bulk(tickers)
     return sum(1 for v in results.values() if v is not None)
@@ -166,7 +171,7 @@ def _sync_prices_for_tickers_DEPRECATED(tickers: list):
 def sync_watchlist_prices():
     """Synct Preise für alle Watchlist-Ticker aus trading_config.json."""
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
         tickers = [w.get('yahoo') or w.get('ticker') for w in cfg.get('watchlist', []) if w.get('ticker')]
         tickers = list(set(t for t in tickers if t))
         inserted = sync_prices_for_tickers(tickers)
@@ -180,7 +185,7 @@ def sync_watchlist_prices():
 def refresh_vix_in_db():
     """→ live_data.refresh_vix(). VIX kommt aus einer Quelle."""
     import sys as _sys
-    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    _sys.path.insert(0, str(WS / 'scripts/core'))
     from live_data import refresh_vix as _rv
     vix = _rv()  # schreibt schon in DB
     if vix is None:
@@ -233,7 +238,7 @@ def queue_alert(message: str):
     queue = []
     if ALERT_QUEUE.exists():
         try:
-            queue = json.loads(ALERT_QUEUE.read_text())
+            queue = json.loads(ALERT_QUEUE.read_text(encoding="utf-8"))
         except Exception:
             queue = []
     
@@ -267,7 +272,7 @@ def execute_paper_entry(
     # ── Style automatisch aus Strategie ableiten ──────────────────────
     try:
         import sys as _sys
-        _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+        _sys.path.insert(0, str(WS / 'scripts/core'))
         from trade_style import classify_strategy, get_style_config, validate_stop_for_style, validate_crv_for_style
         if style == 'swing':  # nur überschreiben wenn default
             style = classify_strategy(strategy)
@@ -630,7 +635,7 @@ def scan_and_execute_watchlist():
     Returns: list[dict] mit Ergebnissen
     """
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
     except Exception as e:
         return [{'error': f'Config not found: {e}'}]
     

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 advisory_layer.py — KI erklärt jeden Trade in natürlicher Sprache
 ==================================================================
@@ -14,7 +14,11 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-WS  = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB  = WS / 'data/trading.db'
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts/core'))

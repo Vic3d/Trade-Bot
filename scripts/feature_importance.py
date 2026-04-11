@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Feature Importance — Phase 6 des ML-Bauplans
 =============================================
@@ -21,10 +21,10 @@ Output:
   - Empfehlungen                  — welche Features stark/schwach/redundant sind
 
 Usage:
-  python3.14 feature_importance.py              # Standard-Run
-  python3.14 feature_importance.py --real-only  # Nur echte Trades (evtl. zu wenig)
-  python3.14 feature_importance.py --bootstrap  # Explizit Backtest-Daten
-  python3.14 feature_importance.py --quick      # Nur Top-Features, kein Plot
+  python3 feature_importance.py              # Standard-Run
+  python3 feature_importance.py --real-only  # Nur echte Trades (evtl. zu wenig)
+  python3 feature_importance.py --bootstrap  # Explizit Backtest-Daten
+  python3 feature_importance.py --quick      # Nur Top-Features, kein Plot
 """
 
 import json
@@ -38,7 +38,11 @@ from datetime import datetime, timezone
 import numpy as np
 from scipy import stats
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 MODEL_FILE = WS / 'data/river_model.pkl'
 BOOTSTRAP_FILE = WS / 'data/bootstrap_samples.json'
@@ -101,7 +105,7 @@ def load_bootstrap_samples() -> tuple[list, str]:
     """Lädt Backtest-Bootstrap-Samples als Fallback."""
     if not BOOTSTRAP_FILE.exists():
         return [], 'none'
-    data = json.loads(BOOTSTRAP_FILE.read_text())
+    data = json.loads(BOOTSTRAP_FILE.read_text(encoding="utf-8"))
     return data, 'bootstrap'
 
 

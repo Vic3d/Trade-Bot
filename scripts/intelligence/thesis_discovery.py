@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 thesis_discovery.py — Autonome Thesen-Entdeckung
 =================================================
@@ -19,7 +19,11 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 sys.path.insert(0, str(WS / 'scripts'))
 
 DATA = WS / 'data'

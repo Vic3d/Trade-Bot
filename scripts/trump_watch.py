@@ -21,7 +21,11 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 STATE_FILE = WS / 'data/trump_watch_state.json'
 LOG_FILE = WS / 'memory/trump-watch-log.md'
 
@@ -66,7 +70,7 @@ def load_state() -> dict:
     """Lade den letzten bekannten Stand."""
     if STATE_FILE.exists():
         try:
-            return json.loads(STATE_FILE.read_text())
+            return json.loads(STATE_FILE.read_text(encoding="utf-8"))
         except Exception:
             pass
     return {'seen_hashes': [], 'last_check': None, 'alert_count': 0}
@@ -242,7 +246,7 @@ def log_check(posts: list, results: list):
     ts = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     
     if not LOG_FILE.exists():
-        LOG_FILE.write_text('# Trump Watch Log\n\n')
+        LOG_FILE.write_text('# Trump Watch Log\n\n', encoding="utf-8")
     
     signals = [r for r in results if r['classification']['signal'] != 'NEUTRAL']
     

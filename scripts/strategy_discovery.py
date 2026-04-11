@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 Strategy Discovery — Autonome Strategie-Entwicklung
 ====================================================
@@ -22,7 +22,11 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-WS    = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB    = WS / 'data' / 'trading.db'
 DATA  = WS / 'data'
 sys.path.insert(0, str(WS / 'scripts'))
@@ -416,10 +420,70 @@ def save_to_file(themes, patterns, sectors, report_text: str):
     entry = f"\n\n---\n## {datetime.now().strftime('%Y-%m-%d')}\n\n{report_text}\n"
 
     if log_path.exists():
-        existing = log_path.read_text()
-        log_path.write_text(existing + entry)
+        existing = log_path.read_text(encoding="utf-8")
+        log_path.write_text(existing + entry, encoding="utf-8")
     else:
-        log_path.write_text(f"# Strategy Discovery Log\n{entry}")
+        log_path.write_text(f"# Strategy Discovery Log\n{entry}", encoding="utf-8")
+
+
+def auto_create_strategies(themes: list):
+    """
+    Erstellt automatisch neue Strategien in strategies.json aus entdeckten Themes.
+    Überspringt Themes mit weniger als 10 Erwähnungen oder weniger als 3 Tickern.
+    """
+    try:
+        strats_path = DATA / 'strategies.json'
+        if strats_path.exists():
+            strats = json.loads(strats_path.read_text(encoding='utf-8'))
+            if not isinstance(strats, dict):
+                strats = {}
+        else:
+            strats = {}
+
+        created = []
+        for theme in themes:
+            count = theme.get('count', 0)
+            tickers_raw = theme.get('tickers', [])
+            # tickers can be list of (ticker, desc) tuples or plain strings
+            ticker_list = []
+            for t in tickers_raw:
+                if isinstance(t, (list, tuple)) and len(t) >= 1:
+                    ticker_list.append(t[0])
+                elif isinstance(t, str):
+                    ticker_list.append(t)
+
+            if count < 10 or len(ticker_list) < 3:
+                continue
+
+            phrase = theme.get('phrase', 'unknown')
+            sid = f"PS_Auto_{phrase[:15].replace(' ', '_').replace('-', '_')}"
+
+            if sid in strats:
+                continue
+
+            strats[sid] = {
+                'name': f"Auto: {phrase}",
+                'type': 'paper',
+                'status': 'experimental',
+                'sector': 'auto_discovered',
+                'thesis': phrase,
+                'tickers': ticker_list,
+                'genesis': {
+                    'created': datetime.now(timezone.utc).isoformat(),
+                    'source': 'strategy_discovery',
+                    'conviction_current': 2,
+                },
+            }
+            created.append(sid)
+
+        if created:
+            strats_path.write_text(json.dumps(strats, indent=2, ensure_ascii=False), encoding='utf-8')
+            print(f"[strategy_discovery] {len(created)} neue Strategien erstellt: {created}")
+        else:
+            print("[strategy_discovery] Keine neuen Strategien aus Themes erstellt.")
+
+    except Exception as e:
+        print(f"[strategy_discovery] auto_create_strategies Fehler: {e}")
 
 
 def run():
@@ -440,6 +504,9 @@ def run():
 
     report = build_report(themes, patterns, sectors)
     save_to_file(themes, patterns, sectors, report)
+
+    # Auto-create strategies from discovered themes
+    auto_create_strategies(themes)
 
     # Discord-Nachricht
     try:

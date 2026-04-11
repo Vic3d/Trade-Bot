@@ -36,6 +36,13 @@ import urllib.parse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
 # Sommerzeit-Fix: zoneinfo (Python 3.9+)
 try:
     from zoneinfo import ZoneInfo
@@ -55,7 +62,7 @@ def berlin_now() -> datetime:
 
 
 # ─── Pfade ───────────────────────────────────────────────────────────
-WORKSPACE = Path('/data/.openclaw/workspace')
+WORKSPACE = Path(str(WS))
 CONFIG_PATH = WORKSPACE / 'trading_config.json'
 STATE_PATH = WORKSPACE / 'memory' / 'trading-monitor-state.json'
 LOG_PATH = WORKSPACE / 'memory' / 'trading-monitor.log'
@@ -101,7 +108,7 @@ def log(msg: str):
             f.write(line + '\n')
         _log_counter += 1
         if _log_counter % 50 == 0:
-            lines = LOG_PATH.read_text().splitlines()
+            lines = LOG_PATH.read_text(encoding="utf-8").splitlines()
             if len(lines) > 500:
                 LOG_PATH.write_text('\n'.join(lines[-300:]) + '\n')
     except Exception:
@@ -110,7 +117,7 @@ def log(msg: str):
 
 def load_json(path: Path, default=None):
     try:
-        return json.loads(path.read_text())
+        return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return default if default is not None else {}
 
@@ -1545,7 +1552,7 @@ def main():
     ceo_directive = None
     try:
         if _ceo_directive_path.exists():
-            _d = json.loads(_ceo_directive_path.read_text())
+            _d = json.loads(_ceo_directive_path.read_text(encoding="utf-8"))
             _ts = datetime.fromisoformat(_d['timestamp'])
             if (datetime.now(timezone.utc).replace(tzinfo=None) - _ts).total_seconds() < 86400:
                 ceo_directive = _d

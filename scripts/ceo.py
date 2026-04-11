@@ -29,18 +29,20 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from collections import defaultdict
 
-WS = Path('/data/.openclaw/workspace')
-
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 # ─── Hilfsfunktionen ─────────────────────────────────────────────────────────
 
 def safe_read_json(path: Path, default=None):
     """JSON-Datei lesen — gibt default zurück wenn Datei fehlt oder kaputt ist."""
     try:
         if path.exists():
-            return json.loads(path.read_text())
-    except Exception:
-        pass
+            return json.loads(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"[CEO] Warnung: {path.name} nicht lesbar: {e}", flush=True)
     return default if default is not None else {}
 
 
@@ -48,9 +50,9 @@ def safe_read_text(path: Path, default: str = '') -> str:
     """Textdatei lesen — gibt default zurück wenn Datei fehlt."""
     try:
         if path.exists():
-            return path.read_text()
-    except Exception:
-        pass
+            return path.read_text(encoding="utf-8")
+    except Exception as e:
+        print(f"[CEO] Warnung: {path.name} nicht lesbar: {e}", flush=True)
     return default
 
 
@@ -150,7 +152,7 @@ def fetch_live_market_data() -> dict:
     # Check cache
     try:
         if MARKET_CACHE_PATH.exists():
-            cache = json.loads(MARKET_CACHE_PATH.read_text())
+            cache = json.loads(MARKET_CACHE_PATH.read_text(encoding="utf-8"))
             cache_ts = cache.get('_timestamp', 0)
             if (time.time() - cache_ts) < MARKET_CACHE_TTL:
                 print('📦 Market-Cache verwendet (< 5 Min alt)')
@@ -338,7 +340,7 @@ def load_ceo_directive() -> dict | None:
     if not path.exists():
         return None
     try:
-        d = json.loads(path.read_text())
+        d = json.loads(path.read_text(encoding="utf-8"))
         ts = datetime.fromisoformat(d['timestamp'])
         if (datetime.now() - ts).total_seconds() < 86400:
             return d
@@ -1001,7 +1003,7 @@ def _load_vix_history() -> list:
     """Loads VIX history from JSON file. Returns list of {'date': str, 'vix': float}."""
     try:
         if VIX_HISTORY_PATH.exists():
-            data = json.loads(VIX_HISTORY_PATH.read_text())
+            data = json.loads(VIX_HISTORY_PATH.read_text(encoding="utf-8"))
             if isinstance(data, list):
                 return data
     except Exception:
@@ -1066,7 +1068,7 @@ def calculate_adaptive_thresholds(conn, current_vix: float = None,
             # Fallback: aus trading.db holen
             try:
                 import sqlite3 as _sq
-                _c = _sq.connect('/data/.openclaw/workspace/data/trading.db')
+                _c = _sq.connect(str(WS / 'data/trading.db'))
                 _row = _c.execute(
                     "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
                 ).fetchone()
@@ -1451,28 +1453,32 @@ def determine_trading_mode(vix: float, geo_score: float, win_rate_7d: float,
         vix_shutdown = 40.0
         vix_defensive = 28.0
 
-    # SHUTDOWN: VIX > shutdown_threshold ODER Drawdown > 20% ODER 3+ Verlust-Tage in Folge
+    # ── SHUTDOWN-Trigger (verschärft: mind. 2 Gründe ODER 1 extremer) ──────
+    # VIX > 40 allein reicht als extremer Trigger
     if vix > vix_shutdown:
         reasons.append(f'VIX {vix:.1f} > {vix_shutdown:.0f} (adaptive SHUTDOWN)')
-    if drawdown > 0.20:
-        reasons.append(f'Drawdown {drawdown:.1%} > 20%')
-    if consecutive_loss_days >= 3:
+    # Drawdown > 25% (verschärft von 20%) allein reicht
+    if drawdown > 0.25:
+        reasons.append(f'Drawdown {drawdown:.1%} > 25%')
+    # 5+ Verlust-Tage (verschärft von 3) — nur in Kombi mit anderem Trigger
+    if consecutive_loss_days >= 5:
         reasons.append(f'{consecutive_loss_days} Verlust-Tage in Folge')
 
-    # P1.A SHUTDOWN-Trigger: Sharpe < -1.0 ODER Expectancy < 0 über 30+ Trades
+    # P1.A: Sharpe/Expectancy — nur SHUTDOWN wenn beides schlecht UND signifikant
     if risk_metrics:
         overall = risk_metrics.get('overall', {})
         sharpe = overall.get('sharpe_ratio', 0.0)
         expectancy = overall.get('expectancy', 0.0)
         total_trades = overall.get('total_trades', 0)
 
-        if total_trades >= 30:
-            if sharpe < -1.0:
-                reasons.append(f'Sharpe {sharpe:.2f} < -1.0 (30+ Trades)')
-            if expectancy < 0:
-                reasons.append(f'Expectancy €{expectancy:.2f} < 0 (30+ Trades)')
+        if total_trades >= 50:  # Erhöht von 30 — braucht mehr Daten
+            if sharpe < -1.5:  # Verschärft von -1.0
+                reasons.append(f'Sharpe {sharpe:.2f} < -1.5 (50+ Trades)')
+            # Expectancy: nur SHUTDOWN wenn signifikant negativ (>€5 Verlust pro Trade)
+            if expectancy < -5.0 and drawdown > 0.15:
+                reasons.append(f'Expectancy €{expectancy:.2f} < -5 + DD > 15%')
 
-    # P2.B: Enhanced regime triggers
+    # P2.B: Enhanced regime — CRASH allein reicht
     if regime_detail:
         overall_regime = regime_detail.get('overall', '')
         if overall_regime == 'CRASH':
@@ -1481,14 +1487,21 @@ def determine_trading_mode(vix: float, geo_score: float, win_rate_7d: float,
         if spy_vs < -20:
             reasons.append(f'SPY {spy_vs:.1f}% unter MA200')
 
-    # P3.C: ≥3 HIGH anomalies → SHUTDOWN
+    # P3.C: ≥3 HIGH anomalies
     if anomaly_result:
         high_count = anomaly_result.get('high_count', 0)
         if high_count >= 3:
             reasons.append(f'{high_count} HIGH Anomalien')
 
-    if reasons:
+    # ── SHUTDOWN nur bei extremen Einzeltriggern ODER mind. 2 Gründe ──────
+    extreme_triggers = [r for r in reasons if any(x in r for x in ['CRASH', 'VIX', 'SPY'])]
+    if len(reasons) >= 2 or extreme_triggers:
         return 'SHUTDOWN', ' + '.join(reasons)
+
+    # ── RECOVERY: Wenn Bedingungen sich verbessern, DEFENSIVE statt SHUTDOWN ──
+    # Einzelne moderate Trigger → DEFENSIVE statt SHUTDOWN
+    if reasons:
+        return 'DEFENSIVE', 'Moderate Risiken (kein SHUTDOWN): ' + ' + '.join(reasons)
 
     # DEFENSIVE: VIX > adaptive threshold ODER Geopolitik HIGH ODER Win-Rate < 25%
     def_reasons = []

@@ -12,7 +12,14 @@ import csv, json, sqlite3, io
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+DB_PATH = WS / 'data/trading.db'
 
 
 def get_db():
@@ -166,7 +173,7 @@ def import_json(json_path_or_data, trade_type='real'):
     conn = get_db()
     
     if isinstance(json_path_or_data, str) and Path(json_path_or_data).exists():
-        data = json.loads(Path(json_path_or_data).read_text())
+        data = json.loads(Path(json_path_or_data).read_text(encoding="utf-8"))
     elif isinstance(json_path_or_data, str):
         data = json.loads(json_path_or_data)
     else:

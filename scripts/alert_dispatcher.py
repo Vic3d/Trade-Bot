@@ -16,10 +16,17 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
-WS = Path('/data/.openclaw/workspace')
+WS = Path(str(WS))
 sys.path.insert(0, str(WS / 'scripts'))
 
 from ceo_queue import read_queue, mark_processed, purge_old
+
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
 
 def main():
     # Alte Einträge bereinigen

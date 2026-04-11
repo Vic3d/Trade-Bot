@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.14
+#!/usr/bin/env python3
 """
 db_migrate_v2.py — TradeMind v2 Schema-Migration
 =================================================
@@ -10,7 +10,7 @@ Fügt neue Tabellen hinzu (falls nicht vorhanden):
 Sicher: CREATE TABLE IF NOT EXISTS — keine Daten werden gelöscht.
 
 Aufruf:
-  python3.14 scripts/db_migrate_v2.py
+  python3 scripts/db_migrate_v2.py
 """
 
 import sqlite3
@@ -18,7 +18,11 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
