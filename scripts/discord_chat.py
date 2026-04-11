@@ -40,7 +40,7 @@ VICTOR_USER_ID = '452053147620343808'   # Victor — nur seine Nachrichten verar
 DISCORD_API    = 'https://discord.com/api/v10'
 
 # Claude-Modell
-CLAUDE_MODEL = 'claude-opus-4-5'
+CLAUDE_MODEL = 'claude-sonnet-4-5-20250514'
 
 
 # ── Token & Hilfsfunktionen ───────────────────────────────────────────────────

@@ -4470,6 +4470,213 @@ def _calc_data_quality(hist: dict, health: dict) -> int:
     return max(0, min(100, score))
 
 
+# ─── CEO AI-Analyse via Claude Sonnet ─────────────────────────────────────────
+
+def _ceo_ai_analysis(directive: dict) -> dict:
+    """
+    CEO AI-Analyse: Liest News + Portfolio-Daten, analysiert via Claude Sonnet.
+    Kann den regelbasierten Modus ueberschreiben wenn die Confidence hoch genug ist.
+    Fallback: regelbasierter Modus bleibt, wenn API nicht verfuegbar.
+    """
+    import os
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
+        directive['ai_analysis'] = {'status': 'skipped', 'reason': 'No ANTHROPIC_API_KEY'}
+        return directive
+
+    try:
+        import anthropic
+    except ImportError:
+        directive['ai_analysis'] = {'status': 'skipped', 'reason': 'anthropic not installed'}
+        return directive
+
+    # ── Kontext sammeln: News aus overnight_events + newswire ────────────────
+    events = []
+    try:
+        conn = sqlite3.connect(str(DB))
+        rows = conn.execute("""
+            SELECT headline, source, sector, impact_direction, timestamp
+            FROM overnight_events ORDER BY timestamp DESC LIMIT 30
+        """).fetchall()
+        events.extend([
+            {'headline': r[0], 'source': r[1], 'sector': r[2], 'impact': r[3], 'time': r[4]}
+            for r in rows
+        ])
+        conn.close()
+    except Exception:
+        pass
+
+    try:
+        nws_db = WS / 'newswire.db'
+        if nws_db.exists():
+            nconn = sqlite3.connect(str(nws_db))
+            rows = nconn.execute("""
+                SELECT headline, source, category, sector, impact_direction, timestamp
+                FROM events ORDER BY timestamp DESC LIMIT 20
+            """).fetchall()
+            events.extend([
+                {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
+                for r in rows
+            ])
+            nconn.close()
+    except Exception:
+        pass
+
+    # News Gate
+    news_gate_items = []
+    try:
+        ng_path = WS / 'data/news_gate.json'
+        if ng_path.exists():
+            ng = json.loads(ng_path.read_text(encoding='utf-8'))
+            if isinstance(ng, list):
+                news_gate_items = ng[:15]
+            elif isinstance(ng, dict):
+                news_gate_items = ng.get('items', ng.get('events', []))[:15]
+    except Exception:
+        pass
+
+    # ── Kontext aufbereiten ──────────────────────────────────────────────────
+    mode = directive['mode']
+    vix = directive['vix']
+    regime = directive['regime']
+    geo = directive.get('geo_score', 0)
+    rules = directive.get('trading_rules', {})
+    learning = directive.get('learning_status', {})
+
+    news_lines = []
+    seen = set()
+    for e in events:
+        h = (e.get('headline') or '')[:120]
+        if h and h not in seen:
+            seen.add(h)
+            news_lines.append(f"- [{e.get('time','')}] {h} (Quelle: {e.get('source','?')}, Impact: {e.get('impact','-')})")
+    for ng_item in news_gate_items:
+        h = ''
+        if isinstance(ng_item, dict):
+            h = (ng_item.get('headline') or ng_item.get('title', ''))[:120]
+        elif isinstance(ng_item, str):
+            h = ng_item[:120]
+        if h and h not in seen:
+            seen.add(h)
+            news_lines.append(f"- {h}")
+
+    news_text = "\n".join(news_lines[:40]) if news_lines else "Keine aktuellen Nachrichten verfuegbar."
+
+    # ── Strategien-Kontext ───────────────────────────────────────────────────
+    strategies_text = ""
+    try:
+        strat_path = WS / 'data/strategies.json'
+        if strat_path.exists():
+            strats = json.loads(strat_path.read_text(encoding='utf-8'))
+            active = {k: v for k, v in strats.items() if isinstance(v, dict) and v.get('status') == 'active'}
+            strat_lines = [f"- {k}: {v.get('name', k)} (Conviction: {v.get('conviction', '?')}, Sektor: {v.get('sector', '?')})"
+                           for k, v in list(active.items())[:15]]
+            strategies_text = "\n".join(strat_lines)
+    except Exception:
+        pass
+
+    # ── Claude Sonnet Call ───────────────────────────────────────────────────
+    system_prompt = """Du bist der CEO von TradeMind, einem algorithmischen Trading-System.
+Du analysierst taeglich die Marktlage, Nachrichten und Portfolio-Performance.
+
+Deine Aufgaben:
+1. Analysiere die gesammelten Nachrichten auf Risiken und Chancen fuer das Portfolio
+2. Bewerte ob der regelbasierte Modus (NORMAL/DEFENSIVE/SHUTDOWN) korrekt ist
+3. Identifiziere die 3 wichtigsten Risiken und 3 wichtigsten Chancen
+4. Gib konkrete Handlungsempfehlungen
+5. Beruecksichtige: Asien-Maerkte als Fruehindikatoren, geopolitische Risiken, Makro-Trends
+
+WICHTIG: Sei konservativ. Nur SHUTDOWN empfehlen bei echten Krisen (Crash, Krieg, extreme VIX).
+DEFENSIVE bei erhoehten Risiken. NORMAL ist der Standard.
+
+Antworte AUSSCHLIESSLICH als JSON (kein Markdown, kein Text drumherum):
+{
+  "mode_recommendation": "NORMAL|DEFENSIVE|SHUTDOWN",
+  "mode_reason": "Kurze Begruendung (1-2 Saetze)",
+  "top_risks": ["Risiko 1", "Risiko 2", "Risiko 3"],
+  "top_opportunities": ["Chance 1", "Chance 2", "Chance 3"],
+  "sector_outlook": {"defense": "bullish|neutral|bearish", "tech": "...", "china": "...", "japan": "...", "energy": "..."},
+  "action_items": ["Konkrete Empfehlung 1", "Konkrete Empfehlung 2"],
+  "market_summary": "2-3 Saetze Markt-Zusammenfassung",
+  "confidence": 0.7
+}"""
+
+    user_prompt = f"""MARKTDATEN:
+- VIX: {vix}
+- Regime: {regime}
+- Geo-Score: {geo}/100
+- Regelbasierter Modus: {mode}
+
+PORTFOLIO:
+- Offene Positionen: {learning.get('open_positions', '?')}
+- Win-Rate gesamt: {learning.get('overall_win_rate', '?')}%
+- Drawdown: {learning.get('portfolio_drawdown', '?')}%
+- Geschlossene Trades: {learning.get('total_closed_trades', '?')}
+
+AKTIVE STRATEGIEN:
+{strategies_text if strategies_text else 'Keine Strategie-Daten verfuegbar.'}
+
+AKTUELLE NACHRICHTEN (letzte 24h):
+{news_text}
+
+TRADING-RULES (regelbasiert):
+- Max neue Positionen: {rules.get('max_new_positions_today', '?')}
+- Max Positionsgroesse: {rules.get('max_position_size_eur', '?')} EUR
+- Geblockte Strategien: {rules.get('blocked_strategies', [])}
+
+Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model='claude-sonnet-4-5-20250514',
+            max_tokens=1000,
+            system=system_prompt,
+            messages=[{'role': 'user', 'content': user_prompt}],
+        )
+        raw = response.content[0].text.strip()
+
+        # JSON parsen
+        import re
+        json_match = re.search(r'\{[\s\S]*\}', raw)
+        if json_match:
+            analysis = json.loads(json_match.group())
+        else:
+            analysis = {'raw': raw[:500], 'error': 'No JSON in response'}
+
+        directive['ai_analysis'] = analysis
+
+        # Mode Override: AI kann den Modus ueberschreiben bei hoher Confidence
+        ai_mode = analysis.get('mode_recommendation')
+        ai_confidence = analysis.get('confidence', 0)
+        if ai_mode and ai_mode in ('NORMAL', 'DEFENSIVE', 'SHUTDOWN') and ai_confidence >= 0.75:
+            if ai_mode != mode:
+                print(f"[CEO] AI Override: {mode} -> {ai_mode} (Confidence: {ai_confidence:.0%})")
+                print(f"[CEO] Grund: {analysis.get('mode_reason', 'N/A')}")
+                directive['mode'] = ai_mode
+                directive['mode_reason'] = f"AI-Analyse ({ai_confidence:.0%}): {analysis.get('mode_reason', '')}"
+            else:
+                print(f"[CEO] AI bestaetigt Modus {mode} (Confidence: {ai_confidence:.0%})")
+        elif ai_mode:
+            print(f"[CEO] AI empfiehlt {ai_mode} (Confidence: {ai_confidence:.0%}) — zu niedrig fuer Override")
+
+        # Market Summary in CEO Notes einfuegen
+        if analysis.get('market_summary'):
+            existing_notes = directive.get('ceo_notes', '')
+            directive['ceo_notes'] = f"AI: {analysis['market_summary']} | {existing_notes}"
+
+        print(f"[CEO] AI-Analyse erfolgreich. Risks: {len(analysis.get('top_risks', []))}, Opps: {len(analysis.get('top_opportunities', []))}")
+
+    except json.JSONDecodeError as e:
+        print(f"[CEO] AI-Analyse JSON Parse Error: {e}")
+        directive['ai_analysis'] = {'status': 'error', 'reason': f'JSON parse: {e}'}
+    except Exception as e:
+        print(f"[CEO] AI-Analyse fehlgeschlagen (Fallback auf Regeln): {e}")
+        directive['ai_analysis'] = {'status': 'error', 'reason': str(e)}
+
+    return directive
+
+
 # ─── Discord-Report generieren (kompakt, <1900 Zeichen) ──────────────────────
 
 def generate_report(directive: dict, hist: dict) -> str:
@@ -4660,6 +4867,17 @@ def generate_report(directive: dict, hist: dict) -> str:
         st = sig_tracker
         acc_str = f"{st['accuracy']:.0f}%" if st.get('accuracy') is not None else '?'
         sections.append(f"📡 Signals: {st['total']} total | ⏳{st['pending']} | ✅{st['wins']}/{st['wins']+st['losses']} ({acc_str})")
+
+    # AI-Analyse (wenn vorhanden)
+    ai = directive.get('ai_analysis', {})
+    if ai and ai.get('market_summary'):
+        risks = ', '.join(ai.get('top_risks', [])[:2]) or 'N/A'
+        opps = ', '.join(ai.get('top_opportunities', [])[:2]) or 'N/A'
+        sections.append(
+            f'🤖 **AI:** {ai["market_summary"][:120]}\n'
+            f'⚠️ Risks: {risks[:80]}\n'
+            f'💡 Opps: {opps[:80]}'
+        )
 
     # CEO note
     ceo_notes = directive.get('ceo_notes', '')
@@ -5252,6 +5470,10 @@ def main():
             conn.close()
         except Exception:
             pass
+
+    # ── Schritt 4b: CEO AI-Analyse (Claude Sonnet) ───────────────────────────
+    print('[CEO] AI-Analyse starten (Claude Sonnet)...')
+    directive = _ceo_ai_analysis(directive)
 
     # ── Schritt 5: Report generieren ──────────────────────────────────────────
     if args.full:

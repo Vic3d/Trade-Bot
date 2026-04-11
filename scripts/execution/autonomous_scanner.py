@@ -216,7 +216,42 @@ UNIVERSE = [
     # Asien-ETFs als Signalgeber
     ('EWJ',     'JP',   'iShares Japan ETF — Nikkei-Proxy fuer US-Handel'),
     ('FXI',     'CN',   'iShares China Large-Cap — China-Sentiment Proxy'),
-    # ── US Large Cap (bisher fehlend, wichtig fuer Gesamtbild) ──────────────
+    # ── Euronext Paris (.PA) ────────────────────────────────────────────────
+    ('MC.PA',   'EU',   'LVMH — Luxus-Bellwether, China-Exposure'),
+    ('OR.PA',   'EU',   'L Oreal — Konsumgueter, Emerging Markets'),
+    ('SU.PA',   'EU',   'Schneider Electric — Energiewende + Industrie'),
+    ('BNP.PA',  'EU',   'BNP Paribas — Europas groesste Bank'),
+    # TotalEnergies (TTE.PA) ist schon ueber strategies.json dynamisch geladen
+    # ── Euronext Amsterdam (.AS) ─────────────────────────────────────────────
+    # ASML.AS ist schon im UNIVERSE (PS19)
+    ('INGA.AS', 'EU',   'ING Group — Europaeische Banken, Zins-Sensitiv'),
+    ('AD.AS',   'EU',   'Ahold Delhaize — EU Retail Defensiv'),
+    # ── London Stock Exchange (.L) ───────────────────────────────────────────
+    # BAE (BA.L) und Rio Tinto (RIO.L) sind schon im UNIVERSE
+    ('SHEL.L',  'EU',   'Shell — Europas groesstes Oelunternehmen'),
+    ('HSBA.L',  'EU',   'HSBC — Globale Bank, Asien-Exposure'),
+    ('AZN.L',   'EU',   'AstraZeneca — Pharma + Biotech EU'),
+    ('ULVR.L',  'EU',   'Unilever — Consumer Staples Defensiv'),
+    # ── Mailand (.MI) ────────────────────────────────────────────────────────
+    ('ISP.MI',  'EU',   'Intesa Sanpaolo — Italiens groesste Bank'),
+    ('RACE.MI', 'EU',   'Ferrari — Luxus + Momentum'),
+    ('ENEL.MI', 'EU',   'Enel — Europas groesster Versorger, Erneuerbare'),
+    # ── Madrid (.MC) ─────────────────────────────────────────────────────────
+    ('ITX.MC',  'EU',   'Inditex (Zara) — Fast Fashion, EU Consumer'),
+    ('SAN.MC',  'EU',   'Banco Santander — EU + Latam Banken'),
+    ('IBE.MC',  'EU',   'Iberdrola — Erneuerbare Energie EU'),
+    # ── Nordics ──────────────────────────────────────────────────────────────
+    # SAAB-B.ST und EQNR.OL sind schon ueber strategies.json
+    ('ERIC-B.ST', 'EU', 'Ericsson — 5G/Telecom, Infrastruktur'),
+    ('ATCO-A.ST', 'EU', 'Atlas Copco — Industrie-Kompressoren, Konjunktur-Barometer'),
+    ('NOKIA.HE',  'EU', 'Nokia — 5G + Defense Networks'),
+    ('NESTE.HE',  'EU', 'Neste — Nachhaltiger Treibstoff, Green Economy'),
+    ('NOVO-B.CO', 'EU', 'Novo Nordisk — Diabetes/Ozempic, Pharma-Leader'),
+    # ── Schweiz (.SW) ────────────────────────────────────────────────────────
+    ('NESN.SW', 'EU',   'Nestle — Konsumgueter-Weltmarktfuehrer'),
+    ('NOVN.SW', 'EU',   'Novartis — Pharma Global'),
+    ('ABBN.SW', 'EU',   'ABB — Industrieautomation + E-Mobility'),
+    # ── US Large Cap ─────────────────────────────────────────────────────────
     ('NVDA',    'TECH', 'Nvidia — AI-Bellwether'),
     ('MSFT',    'TECH', 'Microsoft — AI + Cloud Marktfuehrer'),
     ('AAPL',    'TECH', 'Apple — Consumer Tech Barometer'),

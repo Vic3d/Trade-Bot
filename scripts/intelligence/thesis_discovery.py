@@ -298,7 +298,7 @@ Regeln:
     try:
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
-            model='claude-opus-4-5',
+            model='claude-haiku-4-5-20241022',
             max_tokens=2000,
             system=system_prompt,
             messages=[{'role': 'user', 'content': user_prompt}],
