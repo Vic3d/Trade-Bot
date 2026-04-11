@@ -204,7 +204,16 @@ UNIVERSE = [
     ('8035.T',  'JP',   'Tokyo Electron — Halbleiter-Ausruestung, Tech-Bellwether Asia'),
     ('6758.T',  'JP',   'Sony — Consumer Tech + Gaming, Globaler Sentiment'),
     ('9984.T',  'JP',   'SoftBank — Tech-VC Barometer, AI-Exposure'),
-    # Asien-Indices als Signalgeber (nicht zum Traden, aber fuer Thesen)
+    # ── China / Hongkong — Direkte Positionen + Signalgeber ────────────────
+    ('9988.HK', 'CN',   'Alibaba HK — E-Commerce + Cloud, China Consumer Barometer'),
+    ('0700.HK', 'CN',   'Tencent — Gaming + Fintech + AI, Chinas wertvollste Tech-Firma'),
+    ('2318.HK', 'CN',   'Ping An Insurance — China Financials Bellwether'),
+    ('3690.HK', 'CN',   'Meituan — China Local Services, Consumer Spending'),
+    ('BABA',    'CN',   'Alibaba US-ADR — Liquidester China-Trade fuer US-Session'),
+    ('PDD',     'CN',   'PDD Holdings (Temu) — China Export-Consumer, Wachstum'),
+    ('JD',      'CN',   'JD.com — China E-Commerce #2, Logistik'),
+    ('KWEB',    'CN',   'KraneShares China Internet ETF — Breitester China-Tech-Proxy'),
+    # Asien-ETFs als Signalgeber
     ('EWJ',     'JP',   'iShares Japan ETF — Nikkei-Proxy fuer US-Handel'),
     ('FXI',     'CN',   'iShares China Large-Cap — China-Sentiment Proxy'),
     # ── US Large Cap (bisher fehlend, wichtig fuer Gesamtbild) ──────────────
