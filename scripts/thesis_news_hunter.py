@@ -294,7 +294,7 @@ def save_to_db(thesis_id: str, assessment: dict, articles: list[dict], dry_run: 
             headline = headlines[0] if headlines else key_finding[:100]
             conn.execute("""
                 INSERT OR IGNORE INTO overnight_events
-                    (headline, impact_direction, strategies_affected, created_at)
+                    (headline, impact_direction, strategies_affected, timestamp)
                 VALUES (?, ?, ?, ?)
             """, (
                 f'[HUNTER:{thesis_id}] {headline}'[:200],

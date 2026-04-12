@@ -153,10 +153,10 @@ def build_context() -> str:
         conn.row_factory = sqlite3.Row
         candidates = conn.execute("""
             SELECT ticker, strategy, conviction, entry_trigger, current_price,
-                   stop_suggestion, target_suggestion, notes, created_at
+                   stop_suggestion, target_suggestion, notes
             FROM pending_setups
             WHERE status='WATCHING'
-            ORDER BY conviction DESC, created_at DESC
+            ORDER BY conviction DESC
             LIMIT 15
         """).fetchall()
         conn.close()
@@ -184,10 +184,10 @@ def build_context() -> str:
         conn = sqlite3.connect(str(db_path))
         conn.row_factory = sqlite3.Row
         news = conn.execute("""
-            SELECT ticker, headline, impact_direction, strategies_affected, created_at
+            SELECT headline, impact_direction, strategies_affected, timestamp
             FROM overnight_events
-            WHERE created_at >= datetime('now', '-8 hours')
-            ORDER BY created_at DESC
+            WHERE timestamp >= datetime('now', '-8 hours')
+            ORDER BY timestamp DESC
             LIMIT 20
         """).fetchall()
         conn.close()

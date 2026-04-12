@@ -359,16 +359,16 @@ def correlate_news_to_trades() -> dict:
 
     # Events der letzten 7 Tage
     events = conn.execute("""
-        SELECT id, ticker, headline, impact_direction, strategies_affected, created_at
+        SELECT id, headline, impact_direction, strategies_affected, timestamp
         FROM overnight_events
-        WHERE created_at >= datetime('now', '-7 days')
-        ORDER BY created_at DESC
+        WHERE timestamp >= datetime('now', '-7 days')
+        ORDER BY timestamp DESC
         LIMIT 300
     """).fetchall()
 
     correlations = []
     for ev in events:
-        ev_time = ev['created_at']
+        ev_time = ev['timestamp']
         strategies_raw = ev['strategies_affected'] or '[]'
         try:
             strategies = json.loads(strategies_raw)

@@ -234,10 +234,10 @@ def load_context() -> str:
             conn.row_factory = sqlite3.Row
             news = conn.execute("""
                 SELECT headline, impact_direction, strategies_affected,
-                       created_at, actual_direction
+                       timestamp, actual_direction
                 FROM overnight_events
-                WHERE created_at >= datetime('now', '-12 hours')
-                ORDER BY created_at DESC
+                WHERE timestamp >= datetime('now', '-12 hours')
+                ORDER BY timestamp DESC
                 LIMIT 30
             """).fetchall()
             conn.close()
