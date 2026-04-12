@@ -344,14 +344,38 @@ def detect_patterns() -> dict:
     }
 
 
-def get_recommendation(win_rate: float, trades: int) -> str:
-    """Gibt Empfehlung basierend auf Win-Rate und Trade-Anzahl."""
+def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0) -> str:
+    """
+    Gibt Empfehlung basierend auf Win-Rate, Anzahl Trades UND realem P&L.
+
+    BUG FIX: Vorher nur Win-Rate → DT2 (41% WR, -579€) und DT4 (40% WR, -858€)
+    bekamen 'KEEP' obwohl sie dauerhaft Geld verlieren. Jetzt wird P&L mitgewichtet.
+
+    Logik:
+    - SUSPEND: Win-Rate < 30% ODER (Win-Rate < 45% UND P&L negativ mit 15+ Trades)
+    - REDUCE:  Win-Rate 30-45% UND P&L negativ (genug Daten aber kein Edge)
+    - ELEVATE: Win-Rate > 60% UND P&L positiv
+    - KEEP:    Alles dazwischen
+    """
     if trades < 10:
         return 'INSUFFICIENT_DATA'
+
+    # Harte SUSPEND-Bedingungen
     if win_rate < 0.30:
         return 'SUSPEND'
-    if win_rate > 0.60:
+
+    # P&L-gewichtete SUSPEND: Strategie verliert Geld trotz moderater Win-Rate
+    if trades >= 15 and win_rate < 0.45 and total_pnl_eur < -200:
+        return 'SUSPEND'
+
+    # REDUCE: Positiver Ansatz aber negatives Ergebnis — Conviction runter
+    if trades >= 10 and total_pnl_eur < -100 and win_rate < 0.50:
+        return 'REDUCE'
+
+    # ELEVATE: Nur wenn sowohl Win-Rate als auch P&L gut
+    if win_rate > 0.60 and total_pnl_eur > 0:
         return 'ELEVATE'
+
     return 'KEEP'
 
 
@@ -372,7 +396,11 @@ def update_strategy_scores() -> list:
     strategies = json.loads(STRATEGIES_JSON.read_text())
 
     for strat_id, analysis in strategy_analysis.items():
-        rec = get_recommendation(analysis['win_rate'], analysis['trades'])
+        rec = get_recommendation(
+            analysis['win_rate'],
+            analysis['trades'],
+            analysis.get('total_pnl_eur', 0.0)  # P&L jetzt miteinbezogen
+        )
         if rec == 'INSUFFICIENT_DATA':
             continue
 
@@ -383,35 +411,52 @@ def update_strategy_scores() -> list:
         genesis = strat.get('genesis', {})
         current_conv = genesis.get('conviction_current', genesis.get('conviction_at_start', 3))
 
-        if rec == 'SUSPEND' and current_conv > 1:
+        if rec in ('SUSPEND', 'REDUCE') and current_conv > 1:
             new_conv = max(1, current_conv - 1)
             genesis['conviction_current'] = new_conv
             genesis['auto_adjusted'] = True
             genesis['last_updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            pnl_val = analysis.get('total_pnl_eur', 0)
+            reason = (
+                f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades < 30%'
+                if rec == 'SUSPEND' and analysis['win_rate'] < 0.30
+                else f'Win-Rate {analysis["win_rate"]:.0%} + P&L {pnl_val:+.0f}€ — kein Edge'
+            )
             genesis.setdefault('feedback_history', []).append({
                 'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
                 'action': 'conviction_decreased',
-                'reason': f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades < 30%',
+                'reason': reason,
                 'old_conviction': current_conv,
-                'new_conviction': new_conv
+                'new_conviction': new_conv,
+                'total_pnl_eur': round(pnl_val, 2),
+                'win_rate': round(analysis['win_rate'], 3),
             })
             strategies[strat_id]['genesis'] = genesis
-            changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
+            changes.append(
+                f"{strat_id}: conviction {current_conv} → {new_conv} "
+                f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, {rec})"
+            )
 
         elif rec == 'ELEVATE' and current_conv < 5:
             new_conv = min(5, current_conv + 1)
             genesis['conviction_current'] = new_conv
             genesis['auto_adjusted'] = True
             genesis['last_updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            pnl_val = analysis.get('total_pnl_eur', 0)
             genesis.setdefault('feedback_history', []).append({
                 'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
                 'action': 'conviction_increased',
-                'reason': f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades > 60%',
+                'reason': f'Win-Rate {analysis["win_rate"]:.0%} + P&L {pnl_val:+.0f}€ > 60% WR',
                 'old_conviction': current_conv,
-                'new_conviction': new_conv
+                'new_conviction': new_conv,
+                'total_pnl_eur': round(pnl_val, 2),
+                'win_rate': round(analysis['win_rate'], 3),
             })
             strategies[strat_id]['genesis'] = genesis
-            changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
+            changes.append(
+                f"{strat_id}: conviction {current_conv} → {new_conv} "
+                f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, ELEVATE)"
+            )
 
     STRATEGIES_JSON.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
     return changes
@@ -454,7 +499,11 @@ def close_feedback_loop() -> dict:
     active_rules = []
 
     for strat_id, analysis in strategy_analysis.items():
-        rec = get_recommendation(analysis['win_rate'], analysis['trades'])
+        rec = get_recommendation(
+            analysis['win_rate'],
+            analysis['trades'],
+            analysis.get('total_pnl_eur', 0.0)
+        )
         strategy_scores[strat_id] = {
             'win_rate': analysis['win_rate'],
             'avg_pnl_pct': analysis['avg_pnl_pct'],
@@ -466,9 +515,11 @@ def close_feedback_loop() -> dict:
         }
 
         # Active Rules generieren
-        if rec == 'SUSPEND':
+        if rec in ('SUSPEND', 'REDUCE'):
+            pnl_str = f", PnL {analysis.get('total_pnl_eur', 0):+.0f}€" if analysis.get('total_pnl_eur') else ''
             active_rules.append(
-                f"{strat_id} suspended: {analysis['win_rate']:.0%} win rate after {analysis['trades']} trades"
+                f"{strat_id} {rec.lower()}: {analysis['win_rate']:.0%} win rate"
+                f"{pnl_str} after {analysis['trades']} trades"
             )
         elif rec == 'ELEVATE':
             active_rules.append(

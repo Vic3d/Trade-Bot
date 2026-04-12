@@ -281,6 +281,31 @@ def execute_paper_entry(
     except Exception:
         style_cfg = None
 
+    # ── Guard 0a: Entry-Zeitfenster ──────────────────────────────────────────────
+    # Daten: Morgen-Entries (07-11h) haben 0% Win-Rate über 10 Trades.
+    # Abend-Entries (17-22h) haben 51% Win-Rate → nur in diesem Fenster.
+    # Ausnahme: source='manual' darf immer (Victor handelt manuell), oder
+    #           wenn explizit für Backtests aufgerufen.
+    try:
+        import zoneinfo as _zi
+        _now_cet = datetime.now(_zi.ZoneInfo('Europe/Berlin'))
+        _hour = _now_cet.hour
+        _is_autonomous = source not in ('manual', 'backtest', 'cli', 'victor')
+        # Morgen-Block: 06-11h mit 0% Win-Rate → hart blocken für autonome Entries
+        if _is_autonomous and 6 <= _hour < 11:
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Morgen-Block: Entries 06-11h CET haben 0% Win-Rate (10 Trades Datenbasis). '
+                    f'Jetzt {_hour}:xx Uhr. Warte auf Abend-Fenster 17-22h.'
+                ),
+                'blocked_by': 'morning_block',
+            }
+        # Generelles Außerhalb-Fenster: 11-17h hat nur 34% WR → weiche Warnung, kein Block
+    except Exception:
+        pass  # Zeitcheck nicht kritisch
+
     # ── Guard 0: Preis-Frische ────────────────────────────────────────
     if not is_price_fresh(ticker, max_days=3):
         return {
@@ -339,6 +364,73 @@ def execute_paper_entry(
                     }
     except Exception:
         pass  # CEO Direktive ist optional — bei Fehler weiter
+
+    # ── Guard 0c2: Deep Dive Verdict Gate ───────────────────────────────────────
+    # Philosophie: Der Deep Dive IST das Gate. Wenn eine Aktie interessant ist,
+    # zuerst Deep Dive durchführen. Wenn Verdict = KAUFEN → Trade erlaubt.
+    # Kein Verdict oder WARTEN/NICHT KAUFEN → Block für autonome Entries.
+    # Victor kann mit source='manual' immer manuell übersteuern.
+    _is_autonomous_entry = source not in ('manual', 'victor', 'cli')
+    if _is_autonomous_entry:
+        try:
+            _verdicts_file = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
+            _verdict_data = {}
+            if _verdicts_file.exists():
+                _verdict_data = json.loads(_verdicts_file.read_text(encoding='utf-8'))
+
+            _ticker_verdict = _verdict_data.get(ticker.upper(), {})
+            _verdict = _ticker_verdict.get('verdict', '')
+            _verdict_date = _ticker_verdict.get('date', '')
+
+            # Deep Dive veraltet wenn älter als 14 Tage
+            _dd_fresh = False
+            if _verdict_date:
+                try:
+                    _dd_age = (datetime.now() - datetime.fromisoformat(_verdict_date)).days
+                    _dd_fresh = _dd_age <= 14
+                except Exception:
+                    pass
+
+            if not _verdict or not _dd_fresh:
+                # Kein Deep Dive → blocken und Anweisung ausgeben
+                _age_hint = f'(letzter: {_verdict_date}, {_dd_age}d alt)' if _verdict_date else '(noch keiner)'
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Pflicht-Gate: Kein aktuelles Deep Dive Verdict für {ticker} {_age_hint}. '
+                        f'In Discord eingeben: "Deep Dive {ticker}" '
+                        f'→ Wenn Verdict = KAUFEN, wird Trade automatisch freigegeben.'
+                    ),
+                    'blocked_by': 'no_deep_dive_verdict',
+                }
+
+            if _verdict == 'NICHT_KAUFEN':
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Verdict: {ticker} = NICHT KAUFEN (vom {_verdict_date}). '
+                        f'Deep Dive hat diesen Trade abgelehnt. '
+                        f'Neue Analyse wenn sich Lage ändert: "Deep Dive {ticker}"'
+                    ),
+                    'blocked_by': 'deep_dive_nicht_kaufen',
+                }
+
+            if _verdict == 'WARTEN':
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Verdict: {ticker} = WARTEN (vom {_verdict_date}). '
+                        f'Kein Entry bis sich die Situation klärt. '
+                        f'Trigger-Bedingung erfüllt? Dann: "Deep Dive {ticker}" erneut.'
+                    ),
+                    'blocked_by': 'deep_dive_warten',
+                }
+            # KAUFEN: Trade freigegeben — weiter
+        except Exception:
+            pass  # Fehler im Gate → defensiv durchlassen (lieber kein Block als Blockade)
 
     # ── Guard 0d: Deep Dive Pre-Trade Gate ──────────────────────────────
     # Implementiert die Pflichtregeln aus deepdive-protokoll.md.

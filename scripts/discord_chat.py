@@ -551,7 +551,43 @@ Wo Daten fehlen: sage "Daten fehlen — manuell prüfen: [Quelle]" statt zu hall
 Schritt 4 (Leiche im Keller): Alle 8 Fragen explizit beantworten.
 Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
 
-    return ask_albert(prompt)
+    response = ask_albert(prompt)
+
+    # ── Verdict extrahieren und speichern ─────────────────────────────────────
+    # Damit conviction_scorer.py prüfen kann ob ein Deep Dive für diesen Ticker
+    # durchgeführt wurde — und was das Ergebnis war (KAUFEN / WARTEN / NICHT KAUFEN).
+    try:
+        verdict = 'UNBEKANNT'
+        resp_upper = response.upper() if response else ''
+        # Suche nach dem Trading-Verdict Block
+        if 'NICHT KAUFEN' in resp_upper or 'NOT BUY' in resp_upper:
+            verdict = 'NICHT_KAUFEN'
+        elif 'KAUFEN' in resp_upper and 'NICHT' not in resp_upper.split('KAUFEN')[0][-20:]:
+            verdict = 'KAUFEN'
+        elif 'WARTEN' in resp_upper or 'WAIT' in resp_upper:
+            verdict = 'WARTEN'
+        elif 'KAUFEN' in resp_upper:
+            verdict = 'KAUFEN'
+
+        verdicts_file = DATA / 'deep_dive_verdicts.json'
+        verdicts = {}
+        if verdicts_file.exists():
+            try:
+                verdicts = json.loads(verdicts_file.read_text(encoding='utf-8'))
+            except Exception:
+                verdicts = {}
+
+        verdicts[ticker.upper()] = {
+            'verdict':   verdict,
+            'timestamp': datetime.now().isoformat(),
+            'date':      datetime.now().strftime('%Y-%m-%d'),
+        }
+        verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
+        print(f'[Albert] Deep Dive {ticker}: Verdict={verdict} gespeichert', flush=True)
+    except Exception as _e:
+        print(f'[Albert] Deep Dive Verdict-Speicherung fehlgeschlagen: {_e}', flush=True)
+
+    return response
 
 
 # ── Polling-Logik ─────────────────────────────────────────────────────────────

@@ -173,20 +173,58 @@ def get_trade_tranches(conn: sqlite3.Connection, trade_id: int) -> list[dict]:
     return []  # No tranches → handled by caller as legacy single-tranche
 
 
+def _ensure_tranche_table(conn: sqlite3.Connection) -> bool:
+    """
+    Erstellt trade_tranches Tabelle falls sie nicht existiert.
+    Kritisch: Wenn diese Tabelle fehlt, fallen ALLE Trades in Legacy-Modus
+    und die Tranche-Exits (+5%/+10%) feuern nie.
+    Returns True wenn Tabelle vorhanden oder erstellt.
+    """
+    try:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS trade_tranches (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                trade_id      INTEGER NOT NULL,
+                tranche_num   INTEGER NOT NULL,   -- 1, 2, oder 3
+                shares        REAL    NOT NULL,
+                status        TEXT    DEFAULT 'OPEN',  -- OPEN / CLOSED
+                exit_price    REAL,
+                exit_date     TEXT,
+                exit_type     TEXT,
+                notes         TEXT,
+                created_at    TEXT    DEFAULT (datetime('now'))
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_tranches_trade ON trade_tranches(trade_id, status)"
+        )
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"[exit_manager] trade_tranches table error: {e}")
+        return False
+
+
 def ensure_tranches_exist(conn: sqlite3.Connection, trade_id: int, total_shares: float) -> bool:
     """
     Creates 3 tranche records for a trade if none exist.
     Splits shares into 3 roughly equal thirds.
     Returns True if created, False if already existed.
+
+    BUG FIX: Stellt sicher dass Tabelle existiert bevor COUNT ausgeführt wird.
+    Vorher: fehlende Tabelle → Exception → return False → Legacy-Modus für alle Trades.
     """
-    existing = conn.execute(
-        "SELECT COUNT(*) FROM trade_tranches WHERE trade_id = ?",
-        (trade_id,)
-    ).fetchone()[0]
-    if existing > 0:
-        return False
+    # Sicherstellen dass Tabelle existiert (kritischer Fix)
+    _ensure_tranche_table(conn)
 
     try:
+        existing = conn.execute(
+            "SELECT COUNT(*) FROM trade_tranches WHERE trade_id = ?",
+            (trade_id,)
+        ).fetchone()[0]
+        if existing > 0:
+            return False
+
         tranche1 = round(total_shares / 3, 4)
         tranche2 = round(total_shares / 3, 4)
         tranche3 = round(total_shares - tranche1 - tranche2, 4)
@@ -345,6 +383,9 @@ def run() -> tuple[list, list]:
         return [], []
 
     conn = get_db()
+
+    # Sicherstellen dass trade_tranches Tabelle existiert (einmaliger Fix beim Start)
+    _ensure_tranche_table(conn)
 
     open_trades = conn.execute(
         """
