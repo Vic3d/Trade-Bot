@@ -109,51 +109,94 @@ def fetch_google_news(query: str, hours: int = 8, max_results: int = 8) -> list[
     return articles
 
 
+def _get_sector_macro_queries(strategy: dict) -> list[str]:
+    """
+    Gibt sektor-spezifische Makro-Queries zurück die NICHT in kill_trigger stehen.
+    Fängt geopolitische Events auf die strukturell relevant sind aber nicht explizit
+    als Keywords definiert wurden (z.B. "Vance bricht Iran-Gespräche ab").
+    """
+    sector   = strategy.get('sector', '').lower()
+    thesis   = strategy.get('thesis', '').lower()
+    name     = strategy.get('name', '').lower()
+    combined = f'{sector} {thesis} {name}'
+
+    queries = []
+
+    # ── Energie / Öl / Gas ───────────────────────────────────────────────────
+    if any(w in combined for w in ['energy', 'oil', 'öl', 'gas', 'iran', 'opec', 'hormuz']):
+        queries += ['Iran oil sanctions latest', 'OPEC production decision', 'Middle East oil supply']
+
+    # ── Geopolitik / Verteidigung ────────────────────────────────────────────
+    if any(w in combined for w in ['defense', 'verteidigung', 'rüstung', 'war', 'ukraine', 'nato']):
+        queries += ['NATO defense spending news', 'Ukraine war latest', 'European defense budget']
+
+    # ── Pharma / Biotech / Health ─────────────────────────────────────────────
+    if any(w in combined for w in ['pharma', 'biotech', 'drug', 'fda', 'health', 'medic']):
+        queries += ['FDA drug approval news', 'Trump pharma price deal', 'Medicare drug pricing']
+
+    # ── Tech / AI / Chips ────────────────────────────────────────────────────
+    if any(w in combined for w in ['tech', 'ai', 'chip', 'semiconductor', 'nvidia', 'taiwan']):
+        queries += ['AI chip export controls', 'semiconductor supply chain', 'Taiwan strait news']
+
+    # ── Banken / Finanzen ────────────────────────────────────────────────────
+    if any(w in combined for w in ['bank', 'finance', 'finanz', 'credit', 'rates', 'fed', 'ecb']):
+        queries += ['Federal Reserve interest rate news', 'ECB monetary policy', 'banking crisis']
+
+    # ── Luxus / Konsum / China ───────────────────────────────────────────────
+    if any(w in combined for w in ['luxury', 'luxus', 'consumer', 'china', 'retail']):
+        queries += ['China consumer demand news', 'luxury goods China', 'Xi Jinping economy']
+
+    # ── Shipping / Logistik ──────────────────────────────────────────────────
+    if any(w in combined for w in ['shipping', 'tanker', 'freight', 'logistics']):
+        queries += ['Red Sea shipping disruption', 'freight rates news', 'container shipping']
+
+    return queries[:3]  # Max 3 Makro-Queries
+
+
 def build_search_queries(thesis_id: str, strategy: dict) -> list[str]:
     """
     Baut gezielte Suchanfragen aus der Strategie-Konfiguration.
-    Kombiniert: keywords_bullish + kill_trigger + entry_trigger + Ticker
+    Kombiniert: keywords_bullish + kill_trigger + Ticker + Sektor-Makro-Queries.
+    Die Sektor-Makro-Queries fangen geopolitische Events auf die nicht explizit
+    als Keywords definiert sind (z.B. Vance/Iran, Trump-Deals, etc.)
     """
     queries = []
     name    = strategy.get('name', thesis_id)
 
-    # 1. Haupt-Suche: Thesis-Name + aktuelle Lage
-    thesis_text = strategy.get('thesis', '')
-    trigger     = strategy.get('entry_trigger', '')
-
     # Keywords aus der Strategie
     kw_bullish  = strategy.get('keywords_bullish', [])
-    kw_bearish  = strategy.get('keywords_bearish', [])
     kill        = strategy.get('kill_trigger', '')
     tickers     = strategy.get('tickers', [])
 
-    # Spezifische Queries aus Kill-Trigger Begriffen
+    # 1. Kill-Trigger Schlüsselbegriffe (höchste Priorität)
     if kill:
-        # Kill-Trigger Schlüsselbegriffe extrahieren
         kill_words = [w.strip() for w in kill.replace('ODER', 'OR').split('OR')
                       if len(w.strip()) > 4]
         for kw in kill_words[:2]:
-            # Bereinigen: nur erste 3 Wörter
             clean = ' '.join(kw.split()[:4]).strip('*').strip()
             if clean:
                 queries.append(clean)
 
-    # Queries aus bullish keywords (erste 3)
+    # 2. Bullish keywords (Kernthema)
     if kw_bullish:
         core = ' '.join(kw_bullish[:3])
         queries.append(core)
 
-    # Ticker-spezifische Suche (erste 2)
+    # 3. Ticker-spezifische Suche (erste 2)
     for ticker in tickers[:2]:
-        # Xetra/Oslo Suffix entfernen für bessere Suche
         clean_ticker = ticker.replace('.DE', '').replace('.PA', '').replace('.OL', '').replace('.L', '')
         queries.append(f'{clean_ticker} stock news')
+
+    # 4. Sektor-Makro-Queries: fängt geopolitische Events die NICHT in keywords stehen
+    #    (z.B. "Vance bricht Iran-Gespräche ab" → trifft PS1/Oil)
+    macro_queries = _get_sector_macro_queries(strategy)
+    queries.extend(macro_queries)
 
     # Fallback: Thesis-Name
     if not queries:
         queries.append(name)
 
-    return list(dict.fromkeys(queries))[:4]  # Max 4 Queries, keine Duplikate
+    return list(dict.fromkeys(queries))[:6]  # Max 6 Queries, keine Duplikate
 
 
 # ── Aktuellen Preis holen ────────────────────────────────────────────────────
