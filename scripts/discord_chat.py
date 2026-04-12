@@ -341,7 +341,32 @@ def load_context() -> str:
     except Exception as e:
         parts.append(f'\n--- STRATEGIEN ---\n[Fehler: {e}]')
 
-    # 7. PERFORMANCE-REPORT (kompakt)
+    # 7. THESIS HUNTER FINDINGS (neueste KI-Analyse der Nachrichtenlage)
+    try:
+        hunter_file = DATA / 'thesis_hunter_summary.json'
+        if hunter_file.exists():
+            hunter = json.loads(hunter_file.read_text())
+            findings = hunter.get('findings', [])
+            updated  = hunter.get('updated_at', '')[:16]
+            if findings:
+                parts.append(f'\n--- THESIS NEWS HUNTER (Stand: {updated}) ---')
+                for f in findings:
+                    impact = f.get('impact', '')
+                    icon   = {'STRENGTHENED': '🟢', 'WEAKENED': '🔴',
+                              'KILL_TRIGGER_NEAR': '🚨'}.get(impact, '⚪')
+                    new_flag = ' [NEU]' if f.get('new_info') else ''
+                    parts.append(
+                        f"  {icon} {f['thesis_id']:12s} | {impact}{new_flag}"
+                    )
+                    parts.append(f"     {f.get('key_finding','')[:110]}")
+                    if f.get('priced_in'):
+                        parts.append(f"     Eingepreist: {f['priced_in'][:90]}")
+                    if f.get('action') and f['action'] != 'NONE':
+                        parts.append(f"     ⚡ Action: {f['action']}")
+    except Exception:
+        pass
+
+    # 8. PERFORMANCE-REPORT (kompakt)
     try:
         accuracy_file = MEMORY / 'albert-accuracy.md'
         if accuracy_file.exists():

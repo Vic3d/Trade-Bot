@@ -127,6 +127,11 @@ SCHEDULE = [
     # ── Phase 6: Autonome Thesen-Entdeckung ──────────────────────────────────
     ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [6]),   # So 07:00 UTC
     ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [2]),   # Mi 07:00 UTC (mid-week)
+    # ── Thesis News Hunter: Aktive Suche alle 4h ─────────────────────────────
+    ('Thesis Hunter',      'thesis_news_hunter.py',          [],               9,  0,  [0,1,2,3,4]),  # 09:00 CET
+    ('Thesis Hunter',      'thesis_news_hunter.py',          [],               13, 0,  [0,1,2,3,4]),  # 13:00 CET
+    ('Thesis Hunter',      'thesis_news_hunter.py',          [],               17, 0,  [0,1,2,3,4]),  # 17:00 CET
+    ('Thesis Hunter',      'thesis_news_hunter.py',          [],               21, 0,  [0,1,2,3,4]),  # 21:00 CET
     # ── Autonomous CEO: KI-Gehirn läuft alle 2h während Marktzeiten ──────────
     ('Autonomous CEO',     'autonomous_ceo.py',               [],               9,  30, [0,1,2,3,4]),  # 09:30 CET
     ('Autonomous CEO',     'autonomous_ceo.py',               [],               11, 30, [0,1,2,3,4]),  # 11:30 CET
