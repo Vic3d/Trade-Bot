@@ -29,7 +29,15 @@
     "OPEC", "Brent", "WTI",
     "geopolitical", "geopolitisch", "escalation", "Eskalation",
     "war", "Krieg", "ceasefire", "Waffenstillstand",
-    "explosion", "Explosion", "attack", "Anschlag"
+    "explosion", "Explosion", "attack", "Anschlag",
+    "executive order", "tariff", "trade war", "Handelskrieg",
+    "blockade", "Blockade", "Hormuz", "strait",
+    "diplomatic", "Diplomatie", "negotiations", "Verhandlungen",
+    "peace deal", "Friedensabkommen",
+    "military deployment", "carrier strike", "aircraft carrier",
+    "ultimatum", "retaliation", "Vergeltung",
+    "nuclear deal", "Atomabkommen",
+    "policy change", "decree", "Dekret"
   ],
 
   "min_score_for_night_log": 20,

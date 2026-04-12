@@ -121,6 +121,21 @@ IMPACT_RULES = [
     (["tanker", "Tanker"],                    [],                       ["S1", "S8"], "watchlist",              0.65),
     (["Cuba", "Kuba"],                        [],                       ["S9"],       "watchlist_S9",           0.80),
     (["Trump", "sanction"],                   [],                       ["S1", "S9"], "geopolitical_watchlist", 0.60),
+    # ── Trump Policy / Diplomacy — breit fangen ────────────────────────
+    (["Trump", "Iran"],                       [],                       ["S1"],       "trump_iran_policy",      0.75),
+    (["Trump", "Hormuz"],                     [],                       ["S1"],       "trump_hormuz",           0.80),
+    (["Trump", "tariff"],                     [],                       ["PS20"],     "trump_trade_policy",     0.70),
+    (["Trump", "trade war"],                  [],                       ["PS20", "CN"], "trump_trade_war",      0.75),
+    (["Trump", "deal"],                       [],                       ["PS20"],     "trump_deal",             0.65),
+    (["Trump", "executive order"],            [],                       ["PS20"],     "trump_executive",        0.70),
+    (["Trump", "military"],                   [],                       ["S2"],       "trump_military",         0.70),
+    (["Trump", "China"],                      [],                       ["CN"],       "trump_china_policy",     0.70),
+    (["Trump", "oil"],                        [],                       ["S1"],       "trump_oil_policy",       0.70),
+    (["Trump", "peace"],                      [],                       ["S1"],       "trump_peace",            0.75),
+    (["Trump", "Middle East"],                [],                       ["S1"],       "trump_mideast",          0.75),
+    (["Trump", "nuclear"],                    [],                       ["S1"],       "trump_nuclear",          0.80),
+    (["Trump", "blockade"],                   [],                       ["S1"],       "trump_blockade",         0.85),
+    (["Trump", "Navy"],                       [],                       ["S1", "S2"], "trump_navy",             0.75),
     (["NATO", "defense", "Rüstung"],          [],                       ["S2"],       "bullish_defense",        0.70),
     (["Fed", "cut", "Zinssenkung"],           [],                       ["S3"],       "bullish_tech",           0.75),
     (["silver", "Silber"],                    [],                       ["S4"],       "bullish_metals",         0.70),
@@ -151,6 +166,25 @@ IMPACT_RULES = [
     (["North Korea", "Nordkorea", "Kim Jong"], [],                      ["JP"],       "geopolitical_asia",      0.80),
     (["South China Sea", "Suedchinesisches Meer"],
                                               [],                       ["CN"],       "geopolitical_asia",      0.75),
+    # ── Breite Geopolitik (Policy-Signale, nicht nur Krisen) ──────────────
+    (["Hormuz", "strait", "passage", "warship", "Navy"],
+                                              [],                       ["S1"],       "hormuz_situation",       0.80),
+    (["Iran", "negotiation", "talks", "diplomacy", "deal"],
+                                              [],                       ["S1"],       "iran_diplomacy",         0.75),
+    (["Iran", "threat", "warn", "ultimatum", "retaliation"],
+                                              [],                       ["S1"],       "iran_escalation",        0.80),
+    (["US", "Iran", "policy"],                [],                       ["S1"],       "us_iran_policy",         0.70),
+    (["sanctions", "lifted", "eased", "waiver"],
+                                              [],                       ["S1"],       "sanctions_easing",       0.75),
+    (["sanctions", "imposed", "new sanctions", "tightened"],
+                                              [],                       ["S1", "S9"], "sanctions_tightening",   0.75),
+    (["trade war", "tariff", "retaliatory"],  [],                       ["PS20", "CN"], "trade_war",            0.75),
+    (["executive order", "presidential decree", "White House"],
+                                              [],                       ["PS20"],     "executive_action",       0.65),
+    (["Pentagon", "CENTCOM", "military deployment", "aircraft carrier", "carrier strike"],
+                                              [],                       ["S1", "S2"], "military_deployment",    0.75),
+    (["peace deal", "peace agreement", "diplomatic breakthrough"],
+                                              [],                       ["S1"],       "peace_signal",           0.80),
     # ── Globale Makro-Events ────────────────────────────────────────────────
     (["recession", "Rezession", "GDP contraction"],
                                               [],                       ["PS20"],     "macro_bearish",          0.80),
@@ -412,24 +446,69 @@ def collect():
         # Source Tier
         source_tier = rank_source(source)
 
-        # Impact Rules
-        strategies, impact_direction, base_novelty = match_impact_rules(headline)
+        # ── NEU: LLM-Klassifikation als primäre Quelle ─────────────────
+        # Prüfe ob diese Headline bereits per LLM klassifiziert wurde
+        llm_classification = None
+        try:
+            llm_row = conn.execute("""
+                SELECT relevant, relevance_score, strategies, impact, category, urgency
+                FROM headline_classifications
+                WHERE headline = ? AND relevant = 1
+            """, (headline,)).fetchone()
+            if llm_row:
+                llm_classification = {
+                    'relevant': bool(llm_row[0]),
+                    'relevance_score': llm_row[1],
+                    'strategies': json.loads(llm_row[2]) if llm_row[2] else [],
+                    'impact': llm_row[3],
+                    'category': llm_row[4],
+                    'urgency': llm_row[5],
+                }
+        except Exception:
+            pass  # Tabelle existiert evtl. noch nicht
+
+        # ── Keyword-basierte Klassifikation (Fallback + Ergänzung) ──────
+        # Impact Rules (bleiben als schneller Fallback wenn LLM nicht verfügbar)
+        kw_strategies, impact_direction, base_novelty = match_impact_rules(headline)
 
         # Tier 2 Keyword Matching (ergänzend)
         tier2_strategies = match_tier2_keywords(headline, rules)
         for s in tier2_strategies:
-            if s not in strategies:
-                strategies.append(s)
+            if s not in kw_strategies:
+                kw_strategies.append(s)
 
         # Tier 3 Meta Check
         tier3_hit = match_tier3_meta(headline, rules)
 
-        # Nur relevante Events speichern
-        if not strategies and not tier3_hit:
+        # ── MERGE: LLM + Keyword-Ergebnisse kombinieren ─────────────────
+        strategies = list(kw_strategies)  # Start mit Keyword-Matches
+
+        if llm_classification:
+            # LLM hat diese Headline als relevant markiert
+            for s in llm_classification['strategies']:
+                if s not in strategies:
+                    strategies.append(s)
+            # LLM-Impact übernehmen wenn Keyword keinen hat
+            if impact_direction == "neutral" and llm_classification['impact'] != "neutral":
+                impact_direction = llm_classification['impact']
+            # Novelty aus LLM-Score ableiten
+            if llm_classification['relevance_score'] > base_novelty:
+                base_novelty = llm_classification['relevance_score']
+
+        # ── Filter-Entscheidung (jetzt viel breiter) ────────────────────
+        # ALT: Nur Keywords + Tier3 → alles andere verworfen
+        # NEU: Keywords ODER LLM ODER Tier3 → deutlich weniger verpasst
+        has_llm_relevance = llm_classification is not None
+        if not strategies and not tier3_hit and not has_llm_relevance:
             continue
 
-        # Novelty Score (Basis aus Impact Rules oder 0.5 für Tier3-only)
+        # Novelty Score
         novelty_score = base_novelty if base_novelty > 0 else (0.5 if tier3_hit else 0.5)
+        if has_llm_relevance and not strategies:
+            # LLM sagt relevant, aber keine Strategie-Zuordnung → Watchlist
+            novelty_score = max(novelty_score, llm_classification['relevance_score'] * 0.7)
+            if not strategies:
+                strategies = llm_classification.get('strategies', ['WATCH'])
 
         # Semantische Dedup: novelty_score deckeln wenn Duplikat
         if dup_novelty_override is not None:

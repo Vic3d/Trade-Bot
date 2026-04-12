@@ -184,9 +184,11 @@ def finnhub_company(symbol, days_back=2, n=3):
     except: return []
 
 def finnhub_market(keywords=None, n=5):
-    """General market news from Finnhub, filtered by keywords."""
-    if keywords is None:
-        keywords = ['oil','iran','hormuz','nvidia','palantir','rheinmetall','rio tinto','bayer','equinor','silver','gold','copper']
+    """
+    General market news from Finnhub.
+    keywords=None → ALLE News (ungefiltert, für Firehose-Ansatz).
+    keywords=[...] → nur Headlines die mindestens ein Keyword enthalten.
+    """
     url = f'https://finnhub.io/api/v1/news?category=general&token={FINNHUB}'
     raw = _get(url)
     if not raw: return []
@@ -194,10 +196,18 @@ def finnhub_market(keywords=None, n=5):
         data = json.loads(raw)
         results = []
         for a in data:
-            text = (a.get('headline','') + ' ' + a.get('summary','')).lower()
-            if any(k in text for k in keywords):
-                results.append({'source': a.get('source','Finnhub'), 'title': a.get('headline',''), 'date': ''})
-                if len(results) >= n: break
+            if keywords is not None:
+                text = (a.get('headline','') + ' ' + a.get('summary','')).lower()
+                if not any(k in text for k in keywords):
+                    continue
+            results.append({
+                'source': a.get('source','Finnhub'),
+                'title': a.get('headline',''),
+                'date': '',
+                'url': a.get('url', ''),
+            })
+            if len(results) >= n:
+                break
         return results
     except: return []
 
@@ -235,6 +245,101 @@ def google_news(query, lang='de', n=3, max_age_hours=6):
             })
         return results
     except: return []
+
+# ── Kostenlose RSS-Feeds (kein API-Key nötig) ────────────────────────────────
+# Alle komplett gratis, keine Registrierung, keine Limits
+FREE_RSS_FEEDS = {
+    # Englisch — Nachrichten & Geopolitik
+    'AP_Top':         'https://feeds.apnews.com/rss/apf-topnews',
+    'AP_World':       'https://feeds.apnews.com/rss/apf-intlnews',
+    'AP_Politics':    'https://feeds.apnews.com/rss/apf-politics',
+    'BBC_Top':        'http://feeds.bbci.co.uk/news/rss.xml',
+    'BBC_World':      'http://feeds.bbci.co.uk/news/world/rss.xml',
+    'BBC_Business':   'http://feeds.bbci.co.uk/news/business/rss.xml',
+    'AlJazeera':      'https://www.aljazeera.com/xml/rss/all.xml',
+    'CNBC_World':     'https://www.cnbc.com/id/100003114/device/rss/rss.html',
+    'CNBC_Finance':   'https://www.cnbc.com/id/10000664/device/rss/rss.html',
+    'Guardian_World': 'https://www.theguardian.com/world/rss',
+    'Guardian_Biz':   'https://www.theguardian.com/business/rss',
+    'NPR_World':      'https://feeds.npr.org/1004/rss.xml',
+    # Deutsch — für DE-Markt Signale
+    'Spiegel':        'https://www.spiegel.de/schlagzeilen/tops/index.rss',
+    'Tagesschau':     'https://www.tagesschau.de/infoservices/alle-meldungen-100~rss2.xml',
+    'Zeit_Politik':   'https://newsfeed.zeit.de/politik/index',
+    # Finanz-spezifisch
+    'MarketWatch':    'https://feeds.marketwatch.com/marketwatch/topstories/',
+    'Seeking_Alpha':  'https://seekingalpha.com/market_currents.xml',
+    'Yahoo_Finance':  'https://finance.yahoo.com/news/rssindex',
+}
+
+def free_rss(feeds=None, n_per_feed=8, max_age_hours=12):
+    """
+    Holt Nachrichten aus kostenlosen RSS-Feeds — kein API-Key benötigt.
+    feeds=None → alle FREE_RSS_FEEDS nutzen.
+    Gibt alle Artikel zurück, KEINE Keyword-Vorfilterung.
+    """
+    if feeds is None:
+        feeds = FREE_RSS_FEEDS
+    results = []
+    for name, url in feeds.items():
+        raw = _get(url, timeout=8)
+        if not raw:
+            continue
+        try:
+            root = ET.fromstring(raw)
+            count = 0
+            for item in root.findall('.//item'):
+                if count >= n_per_feed:
+                    break
+                title = item.findtext('title', '').strip()
+                if not title:
+                    continue
+                pub = item.findtext('pubDate', '')
+                age = _age_hours(pub)
+                if age is not None and age > max_age_hours:
+                    continue
+                link = item.findtext('link', '')
+                results.append({
+                    'source': name,
+                    'title': title,
+                    'date': pub[:16] if pub else '',
+                    'url': link,
+                })
+                count += 1
+        except Exception:
+            continue
+    return results
+
+
+# ── Google News Top Headlines (kein Keyword nötig) ────────────────────────────
+def google_news_top(lang='en', geo='US', n=20, max_age_hours=12):
+    """
+    Google News RSS Top-Stories — ALLE Schlagzeilen, ungefiltert.
+    Das ist der 'Firehose-Light' Ansatz: Erst alles holen, dann LLM filtert.
+    """
+    url = f'https://news.google.com/rss?hl={lang}&gl={geo}&ceid={geo}:{lang}'
+    raw = _get(url, timeout=10)
+    if not raw:
+        return []
+    try:
+        root = ET.fromstring(raw)
+        results = []
+        for item in root.findall('.//item'):
+            if len(results) >= n:
+                break
+            pub = item.findtext('pubDate', '')
+            age = _age_hours(pub)
+            if age is not None and age > max_age_hours:
+                continue
+            results.append({
+                'source': item.findtext('source', 'Google'),
+                'title': item.findtext('title', ''),
+                'date': pub[:16] if pub else '',
+            })
+        return results
+    except Exception:
+        return []
+
 
 # ── Kombiniert: alle Quellen für ein Ticker-Set ────────────────────────────────
 def news_for_portfolio(us_tickers=None, extra_queries=None, bloomberg_cats=None):

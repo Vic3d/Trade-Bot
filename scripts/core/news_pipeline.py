@@ -30,7 +30,8 @@ if not Path(_default_ws).exists():
 WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 
 from news_fetcher import (
-    bloomberg, google_news, finnhub_company as finnhub_company_news, polygon_company as polygon_news
+    bloomberg, google_news, finnhub_company as finnhub_company_news, polygon_company as polygon_news,
+    reuters, finnhub_market, free_rss, google_news_top,
 )
 
 DB_PATH = WS / 'data/trading.db'
@@ -289,42 +290,112 @@ def ingest_articles(articles, source_name='unknown', max_age_hours=None):
 
 
 def run_full_pipeline():
-    """Führt komplette News-Pipeline aus: alle Quellen → Dedup → DB."""
-    print(f"[{datetime.now(timezone.utc).strftime('%H:%M UTC')}] News Pipeline läuft...")
-    
+    """
+    News Pipeline v2 — "Firehose Light"
+    =====================================
+    Architektur-Prinzip: ERST alles reinholen, DANN per LLM klassifizieren.
+
+    Phase 1: Breit sammeln (alle Quellen, keine Keyword-Vorfilterung)
+    Phase 2: LLM-Klassifikation (Haiku bewertet jede Headline)
+
+    So wird NICHTS mehr verpasst — auch Trump-Policy-Signale,
+    diplomatische Andeutungen und Black Swans werden gefangen.
+    """
+    print(f"[{datetime.now(timezone.utc).strftime('%H:%M UTC')}] News Pipeline v2 (Firehose Light) läuft...")
+
     total = {'inserted': 0, 'skipped_url': 0, 'skipped_similar': 0, 'skipped_stale': 0}
-    
-    # Bloomberg RSS
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # PHASE 1: BREIT SAMMELN — Keine Keyword-Vorfilterung
+    # ══════════════════════════════════════════════════════════════════════════
+
+    # ── 1a. Google News Top Headlines (UNGEFILTERT — komplett kostenlos) ────────
+    # Das ist der Game-Changer: Alle Top-Stories, nicht nur Thesis-Keywords.
+    # Kein API-Key nötig. Hat im Test sofort "Trump blockiert Hormuz" gefunden.
+    google_top_count = 0
+    for geo, lang in [('US', 'en'), ('DE', 'de'), ('GB', 'en')]:
+        articles = google_news_top(lang=lang, geo=geo, n=25, max_age_hours=12)
+        result = ingest_articles(articles, f'google_top_{geo}', max_age_hours=12)
+        google_top_count += result['inserted']
+        for k in total: total[k] += result[k]
+    print(f"  Google Top Headlines (US+DE+GB): +{google_top_count}")
+
+    # ── 1b. Kostenlose RSS-Feeds (Primärquellen, kein API-Key nötig) ──────────
+    # AP, BBC, Al Jazeera, CNBC, Guardian, NPR, Spiegel, Tagesschau, MarketWatch
+    rss_articles = free_rss(n_per_feed=10, max_age_hours=12)
+    result = ingest_articles(rss_articles, 'free_rss', max_age_hours=12)
+    rss_count = result['inserted']
+    for k in total: total[k] += result[k]
+    print(f"  Free RSS (AP/BBC/CNBC/AlJazeera/Spiegel/...): +{rss_count}")
+
+    # ── 1c. Bloomberg RSS (breit, alle Kategorien) ────────────────────────────
     for cat in ['markets', 'energy', 'technology', 'politics']:
-        articles = bloomberg(categories=[cat], n=10)
-        result = ingest_articles(articles, f'bloomberg_{cat}')
+        articles = bloomberg(categories=[cat], n=15, max_age_hours=12)
+        result = ingest_articles(articles, f'bloomberg_{cat}', max_age_hours=12)
         for k in total: total[k] += result[k]
-        print(f"  Bloomberg/{cat}: +{result['inserted']} (skip: {result['skipped_url']} url, {result['skipped_similar']} similar)")
-    
-    # Google News (Portfolio-relevante Queries)
-    for query in ['Ölpreis OPEC Iran', 'Nvidia NVDA', 'Palantir PLTR', 'Gold Silber Aktien',
-                   'NATO Rüstung Europa', 'Federal Reserve Zinsen']:
-        articles = google_news(query, n=5)
-        result = ingest_articles(articles, 'google_news')
+        print(f"  Bloomberg/{cat}: +{result['inserted']}")
+
+    # ── 1d. Reuters RSS (bisher nicht aktiv gewesen!) ─────────────────────────
+    reuters_count = 0
+    for cat in ['markets', 'energy', 'mining', 'metals']:
+        articles = reuters(categories=[cat], n=10, max_age_hours=12)
+        result = ingest_articles(articles, f'reuters_{cat}', max_age_hours=12)
+        reuters_count += result['inserted']
         for k in total: total[k] += result[k]
-    print(f"  Google News: +{total['inserted']} gesamt")
-    
-    # Finnhub (Company News für aktive Positionen)
+    print(f"  Reuters: +{reuters_count}")
+
+    # ── 1e. Finnhub Market News (breit, KEINE Keyword-Filter) ─────────────────
+    market_articles = finnhub_market(keywords=None, n=25)
+    result = ingest_articles(market_articles, 'finnhub_market', max_age_hours=12)
+    for k in total: total[k] += result[k]
+    print(f"  Finnhub Market (ungefiltert): +{result['inserted']}")
+
+    # ── 1f. Google News Thesis-Queries (zusätzlich, nicht als Hauptquelle) ────
+    thesis_queries = [
+        'Ölpreis OPEC Iran', 'Nvidia NVDA', 'Palantir PLTR',
+        'Gold Silber Aktien', 'NATO Rüstung Europa', 'Federal Reserve Zinsen',
+    ]
+    for query in thesis_queries:
+        articles = google_news(query, n=5, max_age_hours=8)
+        result = ingest_articles(articles, 'google_thesis')
+        for k in total: total[k] += result[k]
+
+    # ── 1g. Finnhub Company News (aktive Positionen) ──────────────────────────
     for ticker in ['EQNR', 'PLTR', 'OXY']:
         articles = finnhub_company_news(ticker, days_back=2, n=5)
         result = ingest_articles(articles, f'finnhub_{ticker}')
         for k in total: total[k] += result[k]
-    
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # PHASE 2: LLM-KLASSIFIKATION — Haiku bewertet JEDE Headline
+    # ══════════════════════════════════════════════════════════════════════════
+    llm_total, llm_relevant = 0, 0
+    try:
+        _sys_path_bak = list(sys.path)
+        sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
+        from headline_classifier import classify_and_store
+
+        conn = sqlite3.connect(str(DB_PATH))
+        llm_total, llm_relevant = classify_and_store(conn, lookback_minutes=90)
+        conn.close()
+        print(f"  🧠 LLM-Klassifikation: {llm_total} bewertet, {llm_relevant} relevant")
+        sys.path = _sys_path_bak
+    except ImportError as e:
+        print(f"  ⚠️ LLM-Klassifikation nicht verfügbar: {e}")
+    except Exception as e:
+        print(f"  ⚠️ LLM-Klassifikation Fehler: {e}")
+
     # Stats
     conn = sqlite3.connect(str(DB_PATH))
     total_events = conn.execute("SELECT COUNT(*) FROM news_events").fetchone()[0]
     today_events = conn.execute("SELECT COUNT(*) FROM news_events WHERE created_at > date('now')").fetchone()[0]
     conn.close()
-    
-    print(f"\n  ═══ Pipeline komplett ═══")
-    print(f"  Neu: {total['inserted']} | Skip URL: {total['skipped_url']} | Skip Similar: {total['skipped_similar']} | Skip Stale (>{MAX_NEWS_AGE_HOURS}h): {total.get('skipped_stale', 0)}")
+
+    print(f"\n  ═══ Pipeline v2 komplett ═══")
+    print(f"  Gesammelt: {total['inserted']} neu | Skip: {total['skipped_url']} URL, {total['skipped_similar']} similar, {total.get('skipped_stale', 0)} stale")
+    print(f"  LLM: {llm_total} klassifiziert, {llm_relevant} relevant")
     print(f"  DB gesamt: {total_events} Events | Heute: {today_events}")
-    
+
     return total
 
 
