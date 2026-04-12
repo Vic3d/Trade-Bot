@@ -336,6 +336,74 @@ def execute_paper_entry(
     except Exception:
         pass  # CEO Direktive ist optional — bei Fehler weiter
 
+    # ── Guard 0d: Deep Dive Pre-Trade Gate ──────────────────────────────
+    # Implementiert die Pflichtregeln aus deepdive-protokoll.md.
+    # Verhindert "Falling Knife", "kein frischer Katalysator", "Aktie läuft
+    # gegen eigenen Sektor"-Käufe — die häufigsten Bot-Fehler.
+    try:
+        conn_gate = get_db()
+        rows_gate = conn_gate.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 126",
+            (ticker,)
+        ).fetchall()
+        conn_gate.close()
+        closes_gate = [r['close'] for r in rows_gate if r['close']]
+
+        if len(closes_gate) >= 50:
+            current_gate = entry_price or closes_gate[0]
+            ma50_gate    = sum(closes_gate[:50]) / 50
+
+            # Block 1: Aktie unter MA50 UND 3M-Downtrend > 10%
+            if current_gate < ma50_gate and len(closes_gate) >= 63:
+                trend_3m = (closes_gate[0] - closes_gate[62]) / closes_gate[62]
+                if trend_3m < -0.10:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Deep Dive Gate: Falling Knife — {ticker} unter MA50 '
+                            f'({current_gate:.2f} < {ma50_gate:.2f}) '
+                            f'UND 3M-Trend {trend_3m*100:.1f}%. '
+                            f'Führe zuerst "Deep Dive {ticker}" durch.'
+                        ),
+                        'blocked_by': 'deepdive_gate_downtrend',
+                    }
+
+            # Block 2: Aktie >40% unter 52W-Hoch ohne dokumentierten Erholungs-Katalysator
+            high_52w_gate = max(closes_gate[:min(252, len(closes_gate))])
+            dist_52w = (current_gate - high_52w_gate) / high_52w_gate
+            if dist_52w < -0.40:
+                # Prüfe ob Strategie einen frischen Katalysator hat (≤30 Tage)
+                has_catalyst = False
+                try:
+                    _strats = json.loads(
+                        (WORKSPACE / 'data' / 'strategies.json').read_text(encoding='utf-8')
+                    )
+                    if strategy in _strats:
+                        import re as _re
+                        last_upd = _strats[strategy].get('genesis', {}).get('created', '') or \
+                                   _strats[strategy].get('created_at', '')
+                        if last_upd:
+                            from datetime import timedelta
+                            upd_date = datetime.fromisoformat(str(last_upd)[:10])
+                            has_catalyst = (datetime.now() - upd_date).days <= 30
+                except Exception:
+                    has_catalyst = True  # Kein Block wenn Daten fehlen
+                if not has_catalyst:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Deep Dive Gate: {ticker} ist {abs(dist_52w)*100:.0f}% '
+                            f'unter 52W-Hoch ohne frischen Katalysator (≤30 Tage). '
+                            f'Strategie {strategy}: Thesis veraltet? '
+                            f'Führe "Deep Dive {ticker}" durch und aktualisiere die Thesis.'
+                        ),
+                        'blocked_by': 'deepdive_gate_no_catalyst',
+                    }
+    except Exception:
+        pass  # Gate ist defensiv — bei Fehler lieber einlassen als blocken
+
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
     # Hard blocks are: thesis INVALIDATED or CRV < 2.0

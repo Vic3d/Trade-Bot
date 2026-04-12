@@ -430,6 +430,130 @@ def _handle_thesis_suggestion(content: str) -> None:
         print(f'[Albert] Failed to store thesis suggestion: {e}', flush=True)
 
 
+# ── Deep Dive ─────────────────────────────────────────────────────────────────
+
+def _handle_deep_dive(ticker: str) -> str:
+    """
+    Vollständiger 6-Schritt Deep Dive nach deepdive-protokoll.md.
+    Victor: "Deep Dive RHM.DE" → strukturierte Analyse mit Leiche-im-Keller-Check.
+
+    Schritt 1: Technisches Bild (Kurs, MA, RSI, 52W)
+    Schritt 2: Fundamentals (DB oder Fallback-Hinweis)
+    Schritt 3: Analyst-Konsens (News-DB letzte 30 Tage)
+    Schritt 4: Leiche im Keller (8 Pflichtfragen)
+    Schritt 5: Makro & Sektor
+    Schritt 6: Trading-Verdict (KAUFEN / WARTEN / NICHT KAUFEN)
+    """
+    # ── Technische Daten holen ────────────────────────────────────────────
+    tech = {}
+    try:
+        sys_path_backup = None
+        import sys as _sys
+        _sys.path.insert(0, str(SCRIPTS))
+        from core.live_data import get_price_eur  # type: ignore
+        price = get_price_eur(ticker)
+        if price:
+            tech['price'] = price
+    except Exception:
+        pass
+
+    try:
+        conn = sqlite3.connect(str(DATA / 'trading.db'))
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT close, date FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 252",
+            (ticker,)
+        ).fetchall()
+        conn.close()
+        closes = [r['close'] for r in rows if r['close']]
+        if closes:
+            tech['current_db'] = closes[0]
+            tech['high_52w']   = max(closes[:min(252, len(closes))])
+            tech['low_52w']    = min(closes[:min(252, len(closes))])
+            tech['dist_52wh']  = (closes[0] - tech['high_52w']) / tech['high_52w'] * 100
+            # MA50 / MA200
+            if len(closes) >= 50:
+                tech['ma50']  = round(sum(closes[:50]) / 50, 2)
+            if len(closes) >= 200:
+                tech['ma200'] = round(sum(closes[:200]) / 200, 2)
+            # RSI(14)
+            if len(closes) >= 15:
+                gains = [max(closes[i-1] - closes[i], 0) for i in range(1, 15)]
+                losses = [max(closes[i] - closes[i-1], 0) for i in range(1, 15)]
+                ag = sum(gains) / 14 or 0.001
+                al = sum(losses) / 14 or 0.001
+                tech['rsi'] = round(100 - 100 / (1 + ag / al), 1)
+            # 3M / 6M performance
+            if len(closes) >= 63:
+                tech['perf_3m'] = round((closes[0] - closes[62]) / closes[62] * 100, 1)
+            if len(closes) >= 126:
+                tech['perf_6m'] = round((closes[0] - closes[125]) / closes[125] * 100, 1)
+            # Trend-Urteil
+            ma50 = tech.get('ma50')
+            c = tech.get('price') or tech.get('current_db', 0)
+            tech['above_ma50'] = c > ma50 if ma50 else None
+    except Exception:
+        pass
+
+    # ── Analyst-News letzte 30 Tage ──────────────────────────────────────
+    recent_news = []
+    try:
+        conn = sqlite3.connect(str(DATA / 'trading.db'))
+        rows = conn.execute("""
+            SELECT title, source, published_at FROM overnight_events
+            WHERE (ticker = ? OR headline LIKE ?)
+              AND published_at >= date('now', '-30 days')
+            ORDER BY published_at DESC LIMIT 8
+        """, (ticker, f'%{ticker}%')).fetchall()
+        conn.close()
+        recent_news = [(r[0] or '')[:120] + f' [{r[1]}, {str(r[2])[:10]}]' for r in rows]
+    except Exception:
+        pass
+
+    # ── Strategie in strategies.json bekannt? ────────────────────────────
+    known_strategy = None
+    try:
+        strategies = json.loads((DATA / 'strategies.json').read_text(encoding='utf-8'))
+        for sid, s in strategies.items():
+            if isinstance(s, dict) and ticker in s.get('tickers', []):
+                known_strategy = {'id': sid, 'name': s.get('name', ''), 'thesis': s.get('thesis', '')[:300]}
+                break
+    except Exception:
+        pass
+
+    # ── Deepdive-Protokoll als Claude-Prompt ─────────────────────────────
+    deepdive_protocol = (MEMORY / 'deepdive-protokoll.md').read_text(encoding='utf-8') \
+        if (MEMORY / 'deepdive-protokoll.md').exists() else ''
+
+    tech_summary = '\n'.join(f'  {k}: {v}' for k, v in tech.items())
+    news_summary = '\n'.join(f'  - {n}' for n in recent_news) if recent_news else '  Keine News in DB gefunden.'
+    strat_info   = f"Bekannte Strategie: {known_strategy}" if known_strategy else "Keine Strategie in strategies.json für diesen Ticker."
+
+    prompt = f"""Victor hat "Deep Dive {ticker}" angefordert.
+Führe jetzt den vollständigen 6-Schritt Deep Dive durch — EXAKT nach dem Protokoll unten.
+Kein Schritt darf übersprungen werden. Schritt 4 (Leiche im Keller) ist Pflicht.
+Ende immer mit dem Trading-Verdict Block.
+
+TECHNISCHE DATEN (aus DB/Live):
+{tech_summary if tech_summary.strip() else '  Keine technischen Daten in DB verfügbar.'}
+
+RECENT NEWS (letzte 30 Tage):
+{news_summary}
+
+STRATEGIE-INFO:
+{strat_info}
+
+DEEP DIVE PROTOKOLL (befolge dies exakt):
+{deepdive_protocol[:3000]}
+
+Führe jetzt den Deep Dive durch. Nutze die oben gegebenen Daten als Basis.
+Wo Daten fehlen: sage "Daten fehlen — manuell prüfen: [Quelle]" statt zu halluzinieren.
+Schritt 4 (Leiche im Keller): Alle 8 Fragen explizit beantworten.
+Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
+
+    return ask_albert(prompt)
+
+
 # ── Polling-Logik ─────────────────────────────────────────────────────────────
 
 def poll_once() -> None:
@@ -485,6 +609,29 @@ def poll_once() -> None:
             if thesis_id:
                 _stop_thesis(thesis_id)
                 # Update state and continue (no Albert LLM call needed)
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+
+        # ── Deep Dive Command ─────────────────────────────────────────────
+        # Victor: "Deep Dive RHM.DE" oder "deep dive AAPL"
+        # → Vollständige 6-Schritt-Analyse nach deepdive-protokoll.md
+        deep_dive_prefixes = ('deep dive ', 'deepdive ', 'deep-dive ')
+        matched_dd = next(
+            (p for p in deep_dive_prefixes if content_lower.startswith(p)), None
+        )
+        if matched_dd:
+            ticker_raw = content_stripped[len(matched_dd):].strip().upper()
+            if ticker_raw:
+                _send_typing(CHANNEL_ID)
+                response = _handle_deep_dive(ticker_raw)
+                if len(response) <= 2000:
+                    _send_message(response, CHANNEL_ID)
+                else:
+                    for i in range(0, len(response), 1900):
+                        _send_message(response[i:i + 1900], CHANNEL_ID)
+                        time.sleep(0.5)
                 state['last_message_id'] = highest_id
                 state['last_poll'] = datetime.now().isoformat()
                 _save_state(state)
