@@ -135,132 +135,221 @@ def _save_state(state: dict) -> None:
 
 def load_context() -> str:
     """
-    Lädt alle verfügbaren Datenquellen und formatiert sie als String
-    für Alberts System-Prompt.
+    Lädt alle verfügbaren Datenquellen für Alberts System-Prompt.
+    Enthält: Regime, Direktive, Positionen, Performance, News (12h),
+             Thesen-Status, Alpha Decay, Strategies.
     """
     parts: list[str] = []
     now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
-    parts.append(f'=== AKTUELLER KONTEXT (Stand: {now_str}) ===\n')
+    parts.append(f'=== ALBERT KONTEXT (Stand: {now_str}) ===\n')
 
-    # 1. Markt-Regime
+    db_file = DATA / 'trading.db'
+
+    # 1. MARKT-REGIME + CEO-DIREKTIVE
     try:
         regime_file = DATA / 'market-regime.json'
         if regime_file.exists():
             regime = json.loads(regime_file.read_text())
-            parts.append('--- MARKT-REGIME ---')
-            parts.append(json.dumps(regime, indent=2, ensure_ascii=False))
-        else:
-            parts.append('--- MARKT-REGIME ---\n[Datei nicht gefunden]')
-    except Exception as e:
-        parts.append(f'--- MARKT-REGIME ---\n[Ladefehler: {e}]')
+            vix = regime.get('vix', '?')
+            reg = regime.get('current_regime', regime.get('regime', '?'))
+            parts.append(f'--- MARKT ---\nRegime: {reg} | VIX: {vix}')
+    except Exception:
+        parts.append('--- MARKT ---\n[nicht verfügbar]')
 
-    # 2. CEO-Direktive
     try:
         directive_file = DATA / 'ceo_directive.json'
         if directive_file.exists():
-            directive = json.loads(directive_file.read_text())
-            parts.append('\n--- CEO DIREKTIVE / MODUS ---')
-            parts.append(json.dumps(directive, indent=2, ensure_ascii=False))
-        else:
-            parts.append('\n--- CEO DIREKTIVE / MODUS ---\n[Datei nicht gefunden]')
-    except Exception as e:
-        parts.append(f'\n--- CEO DIREKTIVE / MODUS ---\n[Ladefehler: {e}]')
+            d = json.loads(directive_file.read_text())
+            bias  = d.get('market_bias', d.get('mode', 'NEUTRAL'))
+            focus = d.get('focus_sector', '')
+            wlim  = d.get('weekly_trade_limit', 3)
+            parts.append(f'Bias: {bias} | Fokus: {focus or "alle"} | Max {wlim} Trades/Woche')
+            if d.get('updated_by') == 'albert_discord':
+                parts.append('⚠️ Victor-Anweisung aktiv')
+    except Exception:
+        pass
 
-    # 3. Offene Positionen aus DB
+    # 2. PORTFOLIO (Cash + offene Positionen + letzte Trades)
     try:
-        db_file = DATA / 'trading.db'
         if db_file.exists():
             conn = sqlite3.connect(str(db_file))
             conn.row_factory = sqlite3.Row
-            try:
-                cursor = conn.execute(
-                    '''SELECT ticker, entry_price, stop_loss, target_price,
-                              conviction, unrealized_pnl, strategy_id,
-                              entry_date, shares
-                       FROM paper_portfolio
-                       ORDER BY entry_date DESC'''
-                )
-                rows = cursor.fetchall()
-                parts.append('\n--- OFFENE POSITIONEN (paper_portfolio) ---')
-                if rows:
-                    for row in rows:
-                        d = dict(row)
-                        pnl = d.get('unrealized_pnl', 0) or 0
-                        pnl_str = f'+{pnl:.2f}' if pnl >= 0 else f'{pnl:.2f}'
-                        parts.append(
-                            f"  {d.get('ticker','?'):10s} | Entry: {d.get('entry_price','?')} "
-                            f"| Stop: {d.get('stop_loss','?')} | Target: {d.get('target_price','?')} "
-                            f"| Conviction: {d.get('conviction','?')} | PnL: {pnl_str} "
-                            f"| Strategie: {d.get('strategy_id','?')} | Einstieg: {d.get('entry_date','?')}"
-                        )
-                else:
-                    parts.append('  [Keine offenen Positionen]')
-            except sqlite3.OperationalError as e:
-                parts.append(f'  [DB-Fehler: {e}]')
-            finally:
-                conn.close()
-        else:
-            parts.append('\n--- OFFENE POSITIONEN ---\n[DB nicht gefunden]')
-    except Exception as e:
-        parts.append(f'\n--- OFFENE POSITIONEN ---\n[Fehler: {e}]')
 
-    # 4. Performance-Statistiken
+            cash_row = conn.execute(
+                "SELECT value FROM paper_fund WHERE key='current_cash' OR key='cash' LIMIT 1"
+            ).fetchone()
+            cash = float(cash_row[0]) if cash_row else 0.0
+
+            positions = conn.execute("""
+                SELECT ticker, strategy, entry_price, stop_price, target_price,
+                       shares, entry_date, conviction, pnl_eur
+                FROM paper_portfolio WHERE status='OPEN'
+                ORDER BY entry_date DESC
+            """).fetchall()
+
+            closed = conn.execute("""
+                SELECT ticker, strategy, pnl_eur, pnl_pct, exit_date
+                FROM paper_portfolio
+                WHERE status IN ('WIN','LOSS','CLOSED')
+                ORDER BY exit_date DESC LIMIT 8
+            """).fetchall()
+
+            conn.close()
+
+            parts.append(f'\n--- PORTFOLIO ---')
+            parts.append(f'Cash: {cash:,.0f}€ | Offene Positionen: {len(positions)}')
+
+            if positions:
+                for p in positions:
+                    risk = (p['entry_price'] or 0) - (p['stop_price'] or 0)
+                    crv  = ((p['target_price'] or 0) - (p['entry_price'] or 0)) / risk if risk > 0 else 0
+                    pnl  = p['pnl_eur'] or 0
+                    parts.append(
+                        f"  {p['ticker']:8s} | {p['strategy']:10s} | "
+                        f"Entry {p['entry_price']:.2f}€ → Ziel {p['target_price']:.2f}€ "
+                        f"(Stop {p['stop_price']:.2f}€, CRV {crv:.1f}) | "
+                        f"PnL {pnl:+.0f}€ | seit {str(p['entry_date'])[:10]}"
+                    )
+            else:
+                parts.append('  Keine offenen Positionen')
+
+            if closed:
+                wins  = sum(1 for t in closed if (t['pnl_eur'] or 0) > 0)
+                total_pnl = sum(t['pnl_eur'] or 0 for t in closed)
+                parts.append(f'\nLetzte {len(closed)} Trades: {wins}W/{len(closed)-wins}L | P&L {total_pnl:+.0f}€')
+                for t in closed[:5]:
+                    icon = '✅' if (t['pnl_eur'] or 0) > 0 else '❌'
+                    parts.append(
+                        f"  {icon} {t['ticker']} ({t['strategy']}) "
+                        f"{t['pnl_eur']:+.0f}€ ({t['pnl_pct']:+.1f}%) | {str(t['exit_date'])[:10]}"
+                    )
+    except Exception as e:
+        parts.append(f'\n--- PORTFOLIO ---\n[Fehler: {e}]')
+
+    # 3. NACHRICHTEN (letzte 12h) — DAS IST DER KERN FÜR OVERNIGHT-FRAGEN
+    try:
+        if db_file.exists():
+            conn = sqlite3.connect(str(db_file))
+            conn.row_factory = sqlite3.Row
+            news = conn.execute("""
+                SELECT headline, ticker, impact_direction, strategies_affected,
+                       created_at, actual_direction, prediction_correct
+                FROM overnight_events
+                WHERE created_at >= datetime('now', '-12 hours')
+                ORDER BY created_at DESC
+                LIMIT 30
+            """).fetchall()
+            conn.close()
+
+            parts.append(f'\n--- NACHRICHTEN (letzte 12h) ---')
+            if news:
+                # Nach Impact-Direction gruppieren
+                bullish = [n for n in news if n['impact_direction'] and 'bullish' in n['impact_direction']]
+                bearish = [n for n in news if n['impact_direction'] and 'bearish' in n['impact_direction']]
+                neutral = [n for n in news if n not in bullish and n not in bearish]
+
+                if bullish:
+                    parts.append(f'🟢 BULLISH ({len(bullish)}):')
+                    for n in bullish[:6]:
+                        strats = n['strategies_affected'] or '[]'
+                        parts.append(f"  [{n['impact_direction']}] {(n['headline'] or '')[:90]}")
+
+                if bearish:
+                    parts.append(f'🔴 BEARISH ({len(bearish)}):')
+                    for n in bearish[:6]:
+                        parts.append(f"  [{n['impact_direction']}] {(n['headline'] or '')[:90]}")
+
+                if neutral:
+                    parts.append(f'⚪ SONSTIGE ({len(neutral)}):')
+                    for n in neutral[:4]:
+                        parts.append(f"  {(n['headline'] or '')[:80]}")
+            else:
+                parts.append('  Keine neuen Ereignisse in den letzten 12h')
+    except Exception as e:
+        parts.append(f'\n--- NACHRICHTEN ---\n[Fehler: {e}]')
+
+    # 4. THESEN-STATUS (aus DB + strategies.json)
+    try:
+        if db_file.exists():
+            conn = sqlite3.connect(str(db_file))
+            conn.row_factory = sqlite3.Row
+            thesis_status = conn.execute("""
+                SELECT thesis_id, status, health_score, last_checked
+                FROM thesis_status
+                ORDER BY last_checked DESC LIMIT 15
+            """).fetchall()
+
+            recent_checks = conn.execute("""
+                SELECT thesis_id, news_headline, direction, kill_trigger_match, checked_at
+                FROM thesis_checks
+                WHERE checked_at >= datetime('now', '-24 hours')
+                ORDER BY checked_at DESC LIMIT 10
+            """).fetchall()
+            conn.close()
+
+            if thesis_status:
+                parts.append('\n--- THESEN-STATUS ---')
+                for t in thesis_status:
+                    health = t['health_score'] or 100
+                    icon   = '✅' if t['status'] == 'ACTIVE' else ('⚠️' if t['status'] == 'DEGRADED' else '🔴')
+                    parts.append(f"  {icon} {t['thesis_id']:12s} | {t['status']:12s} | Health: {health}%")
+
+            if recent_checks:
+                parts.append('\nThesen-Checks (24h):')
+                for c in recent_checks:
+                    kill = ' ⚠️KILL-TRIGGER' if c['kill_trigger_match'] else ''
+                    parts.append(
+                        f"  {c['thesis_id']}: {c['direction'] or '?'}{kill} — "
+                        f"{(c['news_headline'] or '')[:70]}"
+                    )
+    except Exception:
+        pass
+
+    # 5. ALPHA DECAY (Strategie-Trends)
+    try:
+        decay_file = DATA / 'alpha_decay.json'
+        if decay_file.exists():
+            decay = json.loads(decay_file.read_text())
+            parts.append('\n--- STRATEGIE-TRENDS (Alpha Decay) ---')
+            for sid, d in list(decay.items())[:10]:
+                trend  = d.get('trend', '?')
+                wr     = d.get('raw_win_rate', 0)
+                n      = d.get('n_trades', 0)
+                icon   = '📈' if trend == 'IMPROVING' else ('📉' if trend == 'DECAYING' else '➡️')
+                parts.append(f'  {icon} {sid:12s} | WR {wr:.0%} | {n} Trades | {trend}')
+    except Exception:
+        pass
+
+    # 6. AKTIVE STRATEGIEN (kompakt)
+    try:
+        strategies_file = DATA / 'strategies.json'
+        if strategies_file.exists():
+            strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
+            parts.append('\n--- AKTIVE STRATEGIEN ---')
+            if isinstance(strategies, dict):
+                for key, val in strategies.items():
+                    if not isinstance(val, dict):
+                        continue
+                    status     = val.get('status', 'active')
+                    conviction = val.get('conviction', '?')
+                    name       = val.get('name', key)
+                    if status in ('inactive', 'blocked'):
+                        continue
+                    icon = '⏸️' if status == 'paused' else '▶️'
+                    parts.append(f'  {icon} {key:12s} | Conv {conviction} | {name[:40]}')
+    except Exception as e:
+        parts.append(f'\n--- STRATEGIEN ---\n[Fehler: {e}]')
+
+    # 7. PERFORMANCE-REPORT (kompakt)
     try:
         accuracy_file = MEMORY / 'albert-accuracy.md'
         if accuracy_file.exists():
             content = accuracy_file.read_text(encoding='utf-8')
-            # Auf max. 1500 Zeichen begrenzen um Token zu sparen
-            if len(content) > 1500:
-                content = content[:1500] + '\n...[gekürzt]'
-            parts.append('\n--- PERFORMANCE / GENAUIGKEIT ---')
-            parts.append(content)
-        else:
-            parts.append('\n--- PERFORMANCE / GENAUIGKEIT ---\n[Datei nicht gefunden]')
-    except Exception as e:
-        parts.append(f'\n--- PERFORMANCE / GENAUIGKEIT ---\n[Fehler: {e}]')
-
-    # 5. System-Snapshot
-    try:
-        snapshot_file = MEMORY / 'state-snapshot.md'
-        if snapshot_file.exists():
-            content = snapshot_file.read_text(encoding='utf-8')
-            if len(content) > 1500:
-                content = content[:1500] + '\n...[gekürzt]'
-            parts.append('\n--- SYSTEM-SNAPSHOT ---')
-            parts.append(content)
-        else:
-            parts.append('\n--- SYSTEM-SNAPSHOT ---\n[Datei nicht gefunden]')
-    except Exception as e:
-        parts.append(f'\n--- SYSTEM-SNAPSHOT ---\n[Fehler: {e}]')
-
-    # 6. Aktive Strategien (nur Name + Beschreibung)
-    try:
-        strategies_file = DATA / 'strategies.json'
-        if strategies_file.exists():
-            strategies = json.loads(strategies_file.read_text())
-            parts.append('\n--- AKTIVE STRATEGIEN ---')
-            # Nur Name und Beschreibung extrahieren — nicht die gesamten Daten
-            if isinstance(strategies, list):
-                for s in strategies:
-                    name = s.get('name') or s.get('id') or '?'
-                    desc = s.get('description') or s.get('desc') or ''
-                    active = s.get('active', True)
-                    status = 'aktiv' if active else 'inaktiv'
-                    parts.append(f'  [{status}] {name}: {desc}')
-            elif isinstance(strategies, dict):
-                for key, val in strategies.items():
-                    if isinstance(val, dict):
-                        name = val.get('name') or key
-                        desc = val.get('description') or val.get('desc') or ''
-                        active = val.get('active', True)
-                        status = 'aktiv' if active else 'inaktiv'
-                        parts.append(f'  [{status}] {name}: {desc}')
-                    else:
-                        parts.append(f'  {key}: {val}')
-        else:
-            parts.append('\n--- AKTIVE STRATEGIEN ---\n[Datei nicht gefunden]')
-    except Exception as e:
-        parts.append(f'\n--- AKTIVE STRATEGIEN ---\n[Fehler: {e}]')
+            # Nur die ersten 800 Zeichen — Tabellen-Zusammenfassung
+            parts.append('\n--- PERFORMANCE ---')
+            parts.append(content[:800] + ('...' if len(content) > 800 else ''))
+    except Exception:
+        pass
 
     return '\n'.join(parts)
 
