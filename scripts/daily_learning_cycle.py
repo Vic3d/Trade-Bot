@@ -263,6 +263,87 @@ def run_full():
     append_to_daily_log(summary)
     print(f"  ✅ Daily Log aktualisiert")
 
+    print("\n[7/7] State Snapshot regenerieren...")
+    try:
+        import sqlite3 as _sql
+        _db = WS / 'data/trading.db'
+        _snap_path = WS / 'memory/state-snapshot.md'
+        _conn = _sql.connect(str(_db))
+        _conn.row_factory = _sql.Row
+        _now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+
+        # Offene Positionen
+        _positions = _conn.execute(
+            "SELECT ticker, strategy, entry_price, shares, stop_price, target_price, "
+            "entry_date, conviction FROM paper_portfolio WHERE status='OPEN' ORDER BY entry_date DESC"
+        ).fetchall()
+
+        # Cash
+        _cash_row = _conn.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+        _cash = _cash_row[0] if _cash_row else 0.0
+
+        # Letzte 5 abgeschlossene Trades
+        _closed = _conn.execute(
+            "SELECT ticker, strategy, entry_price, exit_price, pnl_eur, exit_date "
+            "FROM paper_portfolio WHERE status='CLOSED' ORDER BY exit_date DESC LIMIT 5"
+        ).fetchall()
+
+        # Aktive Strategien aus strategies.json
+        _strats_file = WS / 'data/strategies.json'
+        _active_strats = []
+        try:
+            _strats = json.loads(_strats_file.read_text())
+            _active_strats = [k for k, v in _strats.items()
+                              if isinstance(v, dict) and v.get('status') not in ('inactive', 'blocked')]
+        except Exception:
+            pass
+
+        _conn.close()
+
+        # Snapshot schreiben
+        _lines = [
+            f"# State Snapshot — Zuletzt aktualisiert: {_now_str}\n",
+            f"*Auto-generiert durch daily_learning_cycle.py [7/7]*\n\n",
+            f"## Cash\n",
+            f"**Verfügbares Cash:** {_cash:,.0f}€\n\n",
+            f"## Offene Positionen ({len(_positions)})\n",
+        ]
+        if _positions:
+            _lines.append("| Ticker | Strategie | Entry | Stop | Target | Conviction | Datum |\n")
+            _lines.append("|--------|-----------|-------|------|--------|------------|-------|\n")
+            for _p in _positions:
+                _lines.append(
+                    f"| {_p['ticker']} | {_p['strategy']} | {_p['entry_price']:.2f}€ "
+                    f"| {_p['stop_price']:.2f}€ | {_p['target_price']:.2f}€ "
+                    f"| {_p['conviction'] or '—'} | {str(_p['entry_date'])[:10]} |\n"
+                )
+        else:
+            _lines.append("*Keine offenen Positionen*\n")
+
+        _lines.append(f"\n## Letzte 5 geschlossene Trades\n")
+        if _closed:
+            _lines.append("| Ticker | Strategie | Entry | Exit | PnL | Datum |\n")
+            _lines.append("|--------|-----------|-------|------|-----|-------|\n")
+            for _c in _closed:
+                _pnl = _c['pnl_eur'] or 0
+                _pnl_str = f"+{_pnl:.0f}€" if _pnl >= 0 else f"{_pnl:.0f}€"
+                _lines.append(
+                    f"| {_c['ticker']} | {_c['strategy']} | {_c['entry_price']:.2f}€ "
+                    f"| {(_c['exit_price'] or 0):.2f}€ | {_pnl_str} "
+                    f"| {str(_c['exit_date'])[:10]} |\n"
+                )
+        else:
+            _lines.append("*Keine abgeschlossenen Trades*\n")
+
+        _lines.append(f"\n## Aktive Strategien ({len(_active_strats)})\n")
+        for _s in _active_strats:
+            _lines.append(f"- {_s}\n")
+
+        _snap_path.write_text(''.join(_lines), encoding='utf-8')
+        print(f"  ✅ memory/state-snapshot.md aktualisiert ({len(_positions)} Positionen, {_cash:,.0f}€ Cash)")
+    except Exception as _e:
+        print(f"  ⚠️  State Snapshot Fehler (nicht kritisch): {_e}")
+
     print(f"\n✅ Learning Cycle fertig.")
     return summary
 

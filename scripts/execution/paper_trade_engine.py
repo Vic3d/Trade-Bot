@@ -459,6 +459,36 @@ def execute_paper_entry(
     
     conn = get_db()
     
+    # ── Guard 2b: Wöchentliches Trade-Limit ─────────────────────────
+    # Regel: max 2-3 neue Positionen pro Woche (aus paper-strategien.md)
+    # Mehr Trades = schlechtere Qualität, Overtrading, emotionale Entscheidungen.
+    MAX_TRADES_PER_WEEK = 3
+    try:
+        from datetime import timedelta
+        # ISO-Woche: Montag 00:00 bis Sonntag 23:59
+        today = datetime.now(timezone.utc)
+        days_since_monday = today.weekday()  # 0=Mo, 6=So
+        monday = today - timedelta(days=days_since_monday)
+        monday_str = monday.strftime('%Y-%m-%d')
+        weekly_count = conn.execute(
+            "SELECT COUNT(*) FROM paper_portfolio WHERE entry_date >= ? AND status != 'CANCELLED'",
+            (monday_str,)
+        ).fetchone()[0]
+        if weekly_count >= MAX_TRADES_PER_WEEK:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Wöchentliches Trade-Limit erreicht: {weekly_count}/{MAX_TRADES_PER_WEEK} '
+                    f'Trades diese Woche (seit {monday_str}). '
+                    f'Mehr Trades = schlechtere Qualität. Warte auf nächste Woche oder erhöhe Qualität der Setups.'
+                ),
+                'blocked_by': 'weekly_trade_limit',
+            }
+    except Exception:
+        pass  # Limit nicht kritisch — bei Fehler weiter
+
     # ── Guard 3: Max Positionen ──────────────────────────────────────
     open_count = get_open_count(conn)
     if open_count >= MAX_POSITIONS:
@@ -584,6 +614,43 @@ def execute_paper_entry(
             'message': f'❌ Nicht genug Cash: {free_cash:.0f}€ verfügbar, {position_eur:.0f}€ benötigt',
             'blocked_by': 'cash',
         }
+
+    # ── Guard 6b: Position <15% vom Fund (Trade-Vor-Checkliste Regel 8) ───────
+    # Verhindert Überkonzentration in einer einzelnen Position.
+    # Hard Cap 1500€ löst das meist, aber als explizite Regel auch hier prüfen.
+    try:
+        total_capital_est = cfg.get('capital', 25000)
+        position_pct = position_eur / total_capital_est
+        if position_pct > 0.15:
+            # Trim auf 15% statt blocken (freundlichere Behandlung)
+            max_allowed_eur = total_capital_est * 0.15
+            shares_from_risk = int(max_allowed_eur / entry_price)
+            position_eur = shares_from_risk * entry_price
+    except Exception:
+        pass
+
+    # ── Guard 6c: Cash nach Trade muss >10% bleiben (Trade-Vor-Checkliste) ──
+    # Regel 7 der Checkliste: "Cash nach Trade noch >10% vom Fund?"
+    total_capital_est = cfg.get('capital', 25000)  # für unten
+    # Verhindert illiquide Situationen wo wir nicht mehr auf Chancen reagieren können.
+    MIN_CASH_RESERVE_PCT = 0.10
+    try:
+        remaining_cash_after = free_cash - position_eur
+        if remaining_cash_after < total_capital_est * MIN_CASH_RESERVE_PCT:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Cash-Reserve-Regel verletzt: nach diesem Trade nur noch '
+                    f'{remaining_cash_after:.0f}€ ({remaining_cash_after/total_capital_est*100:.1f}%) übrig. '
+                    f'Mindest-Reserve: 10% = {total_capital_est*MIN_CASH_RESERVE_PCT:.0f}€. '
+                    f'Position verkleinern oder anderen Trade schließen.'
+                ),
+                'blocked_by': 'cash_reserve',
+            }
+    except Exception:
+        pass  # Reserve-Check nicht kritisch
 
     shares = float(shares_from_risk)
     fees = FEE_PER_TRADE

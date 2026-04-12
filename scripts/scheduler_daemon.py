@@ -120,6 +120,7 @@ SCHEDULE = [
     # Mo-Fr
     ('Feature Analyzer',    'feature_analyzer.py',     ['--quick'],               11, 30, [5]),   # Sa
     ('Backtest Engine',     'backtest_engine.py',      ['--quick'],               9,  0,  [6]),   # So
+    ('Backtest v2',         'backtest_engine_v2.py',   [],                        8,  0,  [2]),   # Mi — Mid-Week Validierung
     ('Strategy DNA',        'strategy_dna.py',         [],                        12, 0,  [5]),   # Sa
     ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr

@@ -6,6 +6,31 @@ Pflicht-Validierung vor jedem Paper Trade.
 import sqlite3, json, re, os
 from datetime import datetime
 
+# ─── Permanent Blocked Strategies (NIEMALS traden) ────────────────────────────
+# DT1-DT5: Day-Trade Strategien — Paper Fund macht keine Day Trades
+# AR-AGRA: Blockiert nach Verlust-Serie (albert-accuracy.md)
+# AR-HALB: Blockiert — Halbleiter-Momentum-Chasing, kein Edge gefunden
+PERMANENTLY_BLOCKED_STRATEGIES = {
+    'DT1', 'DT2', 'DT3', 'DT4', 'DT5',
+    'AR-AGRA', 'AR-HALB',
+}
+
+# ─── Block 4b: Politisches/Regulatorisches Risiko Keywords ────────────────────
+# Eingeführt 29.03.2026 nach NVO-Fehler (Trump-Preisdeal übersehen).
+# Sektoren mit erhöhtem politischen Risiko → Advisory Warning (kein Hard Block, da
+# manchmal trotzdem gute Trades, aber IMMER explizit im Discord warnen).
+POLITICAL_RISK_SECTORS = {
+    'pharma', 'drug', 'medicine', 'biotech', 'glp-1', 'insulin', 'medicare',
+    'health', 'hospital',
+}
+POLITICAL_RISK_KEYWORDS = [
+    'executive order', 'price cap', 'price control', 'price regulation',
+    'government deal', 'mfn pricing', 'ira pricing', 'tariff impact',
+    'nationalization', 'state intervention', 'medicare negotiation',
+    'drug pricing', 'price freeze', 'windfall tax', 'windfall profit',
+    'sanctions', 'export ban', 'import ban', 'trade restriction',
+]
+
 GARBAGE_SOURCES = [
     'usgs.gov', 'usgs', 'geological survey', '富途', 'futu', 'futubull',
     'reddit.com', 'reddit', 'stocktwits', 'weather.com', 'noaa.gov', 'noaa',
@@ -135,6 +160,19 @@ class EntryGate:
         warnings = []
         headline_l = (news_headline or '').lower()
         source_l = (news_source or '').lower()
+        strategy_upper = (strategy or '').upper()  # benötigt in Gate 0 + Gate 3
+
+        # ─── Gate 0: Permanent Blocked Strategies ──────────────────────
+        # DT1-DT5, AR-AGRA, AR-HALB sind NIEMALS erlaubt (kein Regime-Check nötig)
+        if strategy_upper in PERMANENTLY_BLOCKED_STRATEGIES:
+            reason = (
+                f"Strategie '{strategy}' ist PERMANENT BLOCKIERT. "
+                f"Blockierte Strategien: {', '.join(sorted(PERMANENTLY_BLOCKED_STRATEGIES))}. "
+                f"Neue These statt gesperrter Strategie erstellen."
+            )
+            self._log_blocked(ticker, strategy, 'GATE0_PERMANENTLY_BLOCKED', reason,
+                               news_headline, news_source, regime, vix)
+            return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': None}
 
         # ─── Gate 1: Duplikat (ticker bereits OPEN?) ───────────────────
         if self._is_ticker_open(ticker):
@@ -175,9 +213,28 @@ class EntryGate:
         if tier is None and news_source:
             warnings.append(f"Unbekannte Quelle '{news_source}' — Qualität nicht verifiziert")
 
+        # ─── Gate 2b: Block 4b — Politisches/Regulatorisches Risiko ───────
+        # Pflicht seit 29.03.2026: Ticker in Pharma/Healthcare IMMER warnen.
+        # Wenn politische Keywords in Headline → Warning (kein Hard Block, aber
+        # wird in Discord sichtbar gemacht damit Victor entscheiden kann).
+        ticker_l = ticker.lower()
+        _pol_sector = any(s in ticker_l or s in headline_l for s in POLITICAL_RISK_SECTORS)
+        _pol_kw_match = next((kw for kw in POLITICAL_RISK_KEYWORDS if kw in headline_l), None)
+        if _pol_kw_match:
+            warnings.append(
+                f"⚠️ Block 4b: Politisches Risiko erkannt — '{_pol_kw_match}' in Headline. "
+                f"Explizit prüfen: Preisregulierung, Staatliche Eingriffe, Zölle. "
+                f"Erst wenn Block 4b sauber ist → Trade erlaubt."
+            )
+        elif _pol_sector:
+            warnings.append(
+                f"⚠️ Block 4b: Pharma/Healthcare-Ticker '{ticker}' — politisches Risiko "
+                f"immer prüfen (IRA, MFN-Pricing, Trump-Deals). Deepdive-Protokoll Schritt 4b."
+            )
+
         # ─── Gate 3: Regime Compatibility ──────────────────────────────
         regime_upper = (regime or '').upper()
-        strategy_upper = (strategy or '').upper()
+        # strategy_upper bereits am Anfang von check() definiert
 
         if strategy_upper.startswith('DT-'):
             reason = f"DT-Strategie '{strategy}' ist im Paper Trading immer blockiert"

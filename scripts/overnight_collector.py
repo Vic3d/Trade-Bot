@@ -36,7 +36,13 @@ IMPACT_RULES = [
     (["NATO", "defense", "Rüstung"],          [],                       ["S2"],       "bullish_defense",        0.70),
     (["Fed", "cut", "Zinssenkung"],           [],                       ["S3"],       "bullish_tech",           0.75),
     (["silver", "Silber"],                    [],                       ["S4"],       "bullish_metals",         0.70),
-    (["oil", "kerosin"],                      [],                       ["S10", "S11"], "bearish_airlines",     0.70),
+    # BUG FIX: "oil" war zu generisch → jede Oil-Headline wurde Airlines zugeordnet.
+    # Fix: Airlines nur wenn Aviation-spezifische Kraftstoff-Keywords treffen.
+    # Neue S1-Regel fängt generische Oil-Headlines VOR Airlines-Regel ab.
+    (["oil supply", "oil price", "crude price", "oil discovery", "oil production",
+      "WTI", "Brent", "crude oil", "OPEC"],   [],                       ["S1"],       "watchlist_oil",           0.65),
+    (["kerosene", "kerosin", "jet fuel", "aviation fuel", "airline fuel cost",
+      "fuel surcharge"],                        [],                       ["S10", "S11"], "bearish_airlines",    0.70),
 ]
 
 
