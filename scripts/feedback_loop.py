@@ -345,6 +345,99 @@ def generate_calibration_report(conn: sqlite3.Connection) -> str:
     return "\n".join(lines)
 
 
+# ── P6: NEWS-TRADE-KORRELATION ────────────────────────────────────────────────
+
+def correlate_news_to_trades() -> dict:
+    """
+    Verknüpft overnight_events mit paper_portfolio Trades.
+    Zeitfenster: Trades die 0-4h nach dem Event eröffnet wurden.
+    Schreibt data/news_trade_correlation.json.
+    Returns: dict mit Korrelations-Statistiken.
+    """
+    conn = sqlite3.connect(str(DB))
+    conn.row_factory = sqlite3.Row
+
+    # Events der letzten 7 Tage
+    events = conn.execute("""
+        SELECT id, ticker, headline, impact_direction, strategies_affected, created_at
+        FROM overnight_events
+        WHERE created_at >= datetime('now', '-7 days')
+        ORDER BY created_at DESC
+        LIMIT 300
+    """).fetchall()
+
+    correlations = []
+    for ev in events:
+        ev_time = ev['created_at']
+        strategies_raw = ev['strategies_affected'] or '[]'
+        try:
+            strategies = json.loads(strategies_raw)
+        except Exception:
+            strategies = []
+
+        if not strategies:
+            continue
+
+        # Trades die 0–4h nach dem Event eröffnet wurden, mit passender Strategie
+        placeholders = ','.join(['?' for _ in strategies])
+        trades = conn.execute(f"""
+            SELECT id, ticker, strategy, entry_price, pnl_eur, pnl_pct,
+                   entry_date, status
+            FROM paper_portfolio
+            WHERE entry_date >= ?
+              AND entry_date <= datetime(?, '+4 hours')
+              AND strategy IN ({placeholders})
+        """, [ev_time, ev_time] + strategies).fetchall()
+
+        for t in trades:
+            correlations.append({
+                'event_id':       ev['id'],
+                'headline':       (ev['headline'] or '')[:120],
+                'impact_direction': ev['impact_direction'],
+                'trade_id':       t['id'],
+                'ticker':         t['ticker'],
+                'strategy':       t['strategy'],
+                'pnl_eur':        t['pnl_eur'],
+                'pnl_pct':        t['pnl_pct'],
+                'trade_status':   t['status'],
+                'event_time':     ev_time,
+                'trade_time':     t['entry_date'],
+            })
+
+    conn.close()
+
+    # Aggregierte Statistiken
+    closed = [c for c in correlations if c['trade_status'] in ('WIN', 'LOSS', 'CLOSED')]
+    profitable = sum(1 for c in closed if (c['pnl_eur'] or 0) > 0)
+    losing     = sum(1 for c in closed if (c['pnl_eur'] or 0) < 0)
+    avg_pnl    = (sum(c['pnl_eur'] or 0 for c in closed) / len(closed)) if closed else 0.0
+
+    # Beste/schlechteste Impact-Directions nach Ergebnis
+    direction_stats: dict[str, dict] = {}
+    for c in closed:
+        d = c['impact_direction'] or 'unknown'
+        if d not in direction_stats:
+            direction_stats[d] = {'trades': 0, 'wins': 0, 'pnl': 0.0}
+        direction_stats[d]['trades'] += 1
+        direction_stats[d]['wins']   += 1 if (c['pnl_eur'] or 0) > 0 else 0
+        direction_stats[d]['pnl']    += (c['pnl_eur'] or 0)
+
+    stats = {
+        'total_correlations': len(correlations),
+        'closed_trades':      len(closed),
+        'profitable':         profitable,
+        'losing':             losing,
+        'avg_pnl_eur':        round(avg_pnl, 2),
+        'direction_stats':    direction_stats,
+        'updated_at':         datetime.now(timezone.utc).isoformat(),
+        'correlations':       correlations[:100],  # Letzte 100 Matches
+    }
+
+    output_file = WS / 'data' / 'news_trade_correlation.json'
+    output_file.write_text(json.dumps(stats, indent=2, ensure_ascii=False))
+    return stats
+
+
 # ── HAUPTFUNKTION ─────────────────────────────────────────────────────────────
 
 def run_feedback_loop() -> str:
@@ -366,6 +459,15 @@ def run_feedback_loop() -> str:
 
     if updated > 0 or calibrated > 0:
         print(f"  🔁 Feedback-Loop: {updated} Preise aktualisiert, {calibrated} Events kalibriert")
+
+    # ── P6: News-Trade-Korrelation ─────────────────────────────────────
+    try:
+        corr = correlate_news_to_trades()
+        if corr['total_correlations'] > 0:
+            print(f"  🔗 News-Trade-Korrelation: {corr['total_correlations']} Matches, "
+                  f"{corr['closed_trades']} abgeschl., avg P&L {corr['avg_pnl_eur']:+.2f}€")
+    except Exception as e:
+        print(f"  ⚠️  News-Trade-Korrelation Fehler: {e}")
 
     return report
 

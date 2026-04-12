@@ -151,6 +151,124 @@ def get_free_cash() -> float:
     conn.close()
     return r['value'] if r else 5000.0
 
+# ─── P3: Dynamisches Universum aus strategies.json ──────────────────
+
+def load_universe_from_strategies() -> dict:
+    """
+    Lädt aktive Strategien aus strategies.json und ordnet sie nach Conviction in Tiers.
+    Conviction >= 3 → Tier A, >= 2 → Tier B, experimental → Tier C.
+    Gibt nur Tickers zurück, die noch nicht im hardcoded UNIVERSE sind.
+    """
+    result: dict[str, list] = {'TIER_A': [], 'TIER_B': [], 'TIER_C': []}
+    try:
+        strats_file = WS / 'data' / 'strategies.json'
+        if not strats_file.exists():
+            return result
+        strats = json.loads(strats_file.read_text(encoding='utf-8'))
+
+        # Alle bereits bekannten Ticker aus UNIVERSE sammeln
+        known: set[str] = set()
+        for items in UNIVERSE.values():
+            for ticker, _, _ in items:
+                known.add(ticker.upper())
+
+        for sid, s in strats.items():
+            if not isinstance(s, dict):
+                continue
+            status = s.get('status', 'active').lower()
+            if status in ('inactive', 'blocked', 'suspended', 'invalidated'):
+                continue
+
+            # Conviction auslesen (int oder "3/5"-Format)
+            raw_conv = s.get('conviction', 2)
+            try:
+                conviction = int(str(raw_conv).split('/')[0])
+            except Exception:
+                conviction = 2
+
+            # Ticker aus watchlist-Feld extrahieren
+            tickers_raw = s.get('tickers', s.get('watchlist', []))
+            if isinstance(tickers_raw, str):
+                tickers_list = [t.strip() for t in tickers_raw.split(',') if t.strip()]
+            else:
+                tickers_list = list(tickers_raw or [])
+
+            if not tickers_list:
+                continue
+
+            # Tier-Zuordnung
+            if status == 'experimental':
+                tier = 'TIER_C'
+            elif conviction >= 3:
+                tier = 'TIER_A'
+            elif conviction >= 2:
+                tier = 'TIER_B'
+            else:
+                tier = 'TIER_C'
+
+            strategy_name = str(s.get('name', sid))[:35]
+            for ticker in tickers_list:
+                ticker_upper = ticker.upper()
+                if ticker_upper not in known:
+                    result[tier].append((ticker_upper, sid, f'{strategy_name} [dyn]'))
+                    known.add(ticker_upper)
+
+    except Exception as e:
+        print(f"  ⚠️  load_universe_from_strategies Fehler: {e}")
+
+    return result
+
+
+# ─── P8: RL-Agent Confidence ─────────────────────────────────────────
+
+def _get_rl_confidence(data: dict, entry: float, stop: float,
+                       target: float, tier: str) -> float:
+    """
+    Holt RL-Agent-Konfidenz (Action=BUY Wahrscheinlichkeit) für dieses Setup.
+    State-Vektor: 12 Features aus Preisdaten + CRV + Tier.
+    Returns: float 0.0–1.0 (0.5 = neutral/kein Modell vorhanden)
+    """
+    try:
+        import torch
+        import numpy as np
+        best_model = WS / 'data' / 'rl_best_model.pt'
+        if not best_model.exists():
+            return 0.5
+
+        sys.path.insert(0, str(WS / 'scripts'))
+        from rl_agent import ActorCritic
+
+        net = ActorCritic()
+        ckpt = torch.load(str(best_model), map_location='cpu', weights_only=False)
+        net.load_state_dict(ckpt['model_state'])
+        net.eval()
+
+        p     = data['price']
+        rsi   = min(max((data.get('rsi') or 50.0), 0.0), 100.0) / 100.0
+        ema20 = data.get('ema20') or p
+        ema50 = data.get('ema50') or p
+        vol_r = min((data.get('vol_ratio') or 1.0), 4.0) / 4.0
+        f_hi  = max(min((data.get('from_high') or 0.0) / 100.0, 0.0), -1.0)
+        risk  = max(entry - stop, 0.001)
+        crv   = min((target - entry) / risk, 5.0) / 5.0
+        tier_v = {'TIER_A': 1.0, 'TIER_B': 0.66, 'TIER_C': 0.33}.get(tier, 0.5)
+        ema20r = max(min((p / ema20 - 1.0) * 10.0, 1.0), -1.0) if ema20 > 0 else 0.0
+        ema50r = max(min((p / ema50 - 1.0) * 10.0, 1.0), -1.0) if ema50 > 0 else 0.0
+        chg    = max(min((data.get('change') or 0.0) / 10.0, 1.0), -1.0)
+        state  = [rsi, ema20r, ema50r, vol_r, f_hi, crv, tier_v, chg, 0.0, 0.0, 0.0, 0.0]
+
+        with torch.no_grad():
+            s     = torch.FloatTensor(state).unsqueeze(0)
+            logits, _ = net(s)
+            probs = torch.softmax(logits, dim=-1).squeeze().tolist()
+
+        # Action 0 = BUY (rl_env.py Konvention)
+        return float(probs[0]) if probs else 0.5
+
+    except Exception:
+        return 0.5  # Neutral fallback wenn Modell nicht vorhanden/geladen
+
+
 # ─── Preis + Technische Analyse ─────────────────────────────────────
 
 def fetch_data(ticker: str, days: int = 90) -> dict | None:
@@ -548,11 +666,20 @@ def run_scan(max_new_trades: int = 5) -> list:
 
     from paper_trade_engine import sync_prices_for_tickers
 
-    # Alle Ticker aus dem Universum sammeln
+    # ── P3: Dynamisches Universum aus strategies.json laden ──────────
+    dynamic = load_universe_from_strategies()
+    merged_universe: dict[str, list] = {}
+    for _tier in ('TIER_A', 'TIER_B', 'TIER_C'):
+        _extra = dynamic.get(_tier, [])
+        merged_universe[_tier] = list(UNIVERSE.get(_tier, [])) + _extra
+        if _extra:
+            print(f"  ✅ {_tier}: +{len(_extra)} Ticker aus strategies.json")
+
+    # Alle Ticker aus dem (erweiterten) Universum sammeln
     all_tickers = (
-        [t for t, _, _ in UNIVERSE['TIER_A']] +
-        [t for t, _, _ in UNIVERSE['TIER_B']] +
-        [t for t, _, _ in UNIVERSE['TIER_C']]
+        [t for t, _, _ in merged_universe['TIER_A']] +
+        [t for t, _, _ in merged_universe['TIER_B']] +
+        [t for t, _, _ in merged_universe['TIER_C']]
     )
     # Preisdaten aktualisieren (via live_data)
     sync_prices_for_tickers(all_tickers)
@@ -561,7 +688,7 @@ def run_scan(max_new_trades: int = 5) -> list:
     new_trades = 0
     pending_added = 0
 
-    for tier, items in UNIVERSE.items():
+    for tier, items in merged_universe.items():
         if new_trades >= max_new_trades:
             break
 
@@ -618,9 +745,16 @@ def run_scan(max_new_trades: int = 5) -> list:
                 continue
             # ── Ende Entry-Zone-Check ──────────────────────────────────
 
-            full_thesis = f"{description} | {reason} | {zone_reason}"
+            # ── P8: RL-Agent Confidence ───────────────────────────────
+            rl_conf = _get_rl_confidence(data, entry, stop, target, tier)
+            rl_mult = round(0.5 + rl_conf, 2)  # 0.5 (low) … 1.5 (high)
+            rl_note = f'RL={rl_conf:.2f}×{rl_mult}'
+
+            full_thesis = f"{description} | {reason} | {zone_reason} | {rl_note}"
 
             result = execute_paper(ticker, strategy, entry, stop, target, full_thesis, tier)
+            result['rl_confidence'] = rl_conf
+            result['rl_multiplier'] = rl_mult
             result['ticker'] = ticker
             result['tier'] = tier
             result['reason'] = reason

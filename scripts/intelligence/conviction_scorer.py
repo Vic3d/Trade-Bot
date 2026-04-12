@@ -523,6 +523,63 @@ def _score_priced_in(ticker: str, entry_price: float | None = None) -> tuple[int
         return (0, f'priced_in=n/a ({e})')
 
 
+# ─── Factor 6: Alpha Decay + DNA ──────────────────────────────────────────────
+
+def _apply_decay_and_dna(strategy: str) -> tuple[int, str]:
+    """
+    Modifier basierend auf Alpha-Decay-Trend + DNA-Kill-Warning.
+
+    Alpha Decay (data/alpha_decay.json):
+      trend == 'DECAYING'  → -10 (Strategie verliert Edge)
+      trend == 'IMPROVING' → +5  (Strategie gewinnt Edge)
+
+    DNA (data/dna.json):
+      kill_warning = True  → -5  (Strategie auf der Abschuss-Liste)
+      win_rate > 0.60      → +5  (Strategie überperformt)
+
+    Returns: (modifier: int, reason: str)
+    """
+    modifier = 0
+    parts = []
+
+    # ── Alpha Decay Check ──────────────────────────────────────────────
+    try:
+        decay_file = DATA_DIR / 'alpha_decay.json'
+        if decay_file.exists():
+            decay_data = json.loads(decay_file.read_text(encoding='utf-8'))
+            s_decay = decay_data.get(strategy, {})
+            trend  = s_decay.get('trend', '')
+            status = s_decay.get('status', '')
+            if trend == 'DECAYING' or status == 'DECAYING':
+                modifier -= 10
+                parts.append('alpha_decay=-10')
+            elif trend == 'IMPROVING':
+                modifier += 5
+                parts.append('alpha_improving=+5')
+    except Exception:
+        pass
+
+    # ── DNA Check: Strategie-Performance-Warnung ───────────────────────
+    try:
+        dna_file = DATA_DIR / 'dna.json'
+        if dna_file.exists():
+            dna = json.loads(dna_file.read_text(encoding='utf-8'))
+            for s in dna.get('strategies', []):
+                if s.get('id') == strategy or s.get('strategy') == strategy:
+                    if s.get('kill_warning'):
+                        modifier -= 5
+                        parts.append('dna_kill=-5')
+                    elif (s.get('win_rate') or 0) > 0.60:
+                        modifier += 5
+                        parts.append('dna_wr=+5')
+                    break
+    except Exception:
+        pass
+
+    reason = ' | '.join(parts) if parts else 'decay+dna=0'
+    return (modifier, reason)
+
+
 # ─── Position Sizing ──────────────────────────────────────────────────────────
 
 def get_position_size(
@@ -743,6 +800,10 @@ def calculate_conviction(
     # ── Total Score (4 factors + priced-in modifier) ──────────────────────
     total = thesis_score + tech_score + rr_score + mkt_score + priced_in_mod
 
+    # ── Factor 6: Alpha Decay + DNA Modifier ─────────────────────────────
+    decay_dna_mod, decay_dna_reason = _apply_decay_and_dna(strategy)
+    total = max(0, min(100, total + decay_dna_mod))
+
     # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
     crowd_mod = 0
     if total >= 40:
@@ -804,6 +865,7 @@ def calculate_conviction(
             'risk_reward_quality': rr_score,
             'market_context':      mkt_score,
             'priced_in_modifier':  priced_in_mod,
+            'decay_dna_modifier':  decay_dna_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
         },
         'factor_reasons': {
@@ -812,6 +874,7 @@ def calculate_conviction(
             'risk_reward_quality': rr_reason,
             'market_context':      mkt_reason,
             'priced_in_modifier':  priced_in_reason,
+            'decay_dna':           decay_dna_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
         },
         'position_sizing': sizing,
