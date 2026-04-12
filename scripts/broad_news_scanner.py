@@ -56,14 +56,15 @@ def log(msg: str):
 # ── Breaking News Quellen ─────────────────────────────────────────────────────
 
 BREAKING_FEEDS = [
-    ('AP Top',       'https://feeds.apnews.com/rss/apf-topnews'),
-    ('AP World',     'https://feeds.apnews.com/rss/apf-intlnews'),
-    ('AP Business',  'https://feeds.apnews.com/rss/apf-business'),
-    ('CNBC Top',     'https://www.cnbc.com/id/100003114/device/rss/rss.html'),
-    ('BBC Business', 'https://feeds.bbci.co.uk/news/business/rss.xml'),
-    ('Al Jazeera',   'https://www.aljazeera.com/xml/rss/all.xml'),
-    ('Reuters',      'https://feeds.reuters.com/reuters/businessNews'),
-    ('MarketWatch',  'https://feeds.marketwatch.com/marketwatch/topstories/'),
+    # Getestet & funktional auf Hetzner VPS (April 2026)
+    ('WSJ Markets',    'https://feeds.a.dj.com/rss/RSSMarketsMain.xml'),
+    ('NYT Business',   'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml'),
+    ('Sky News World', 'https://feeds.skynews.com/feeds/rss/world.xml'),         # Geopolitik
+    ('Al Jazeera',     'https://www.aljazeera.com/xml/rss/all.xml'),              # Nahost-Fokus
+    ('Investing.com',  'https://www.investing.com/rss/news.rss'),
+    ('MarketWatch',    'https://feeds.content.dowjones.io/public/rss/mw_topstories'),
+    ('Fortune',        'https://fortune.com/feed/'),
+    ('Handelsblatt',   'https://www.handelsblatt.com/contentexport/feed/top-themen'),  # DE
 ]
 
 

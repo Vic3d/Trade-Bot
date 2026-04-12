@@ -6,8 +6,11 @@ Lädt täglich relevante Events (Fed, OPEC, Earnings, Makro-Daten)
 und speichert sie in data/upcoming_events.json.
 
 Quellen:
-  - Finnhub Economic Calendar (kostenlos)
-  - Finnhub Earnings Calendar (kostenlos)
+  - Google News RSS: Suche nach bevorstehenden Makro-Events (kostenlos, kein API-Key)
+  - Finnhub Earnings Calendar (kostenlos, Free-Plan)
+
+Hinweis: Finnhub Economic Calendar erfordert paid plan (403 auf Free).
+         Ersatz: Google News Suche nach Event-Namen + "this week"/"preview".
 
 thesis_news_hunter liest upcoming_events.json um event-bewusste
 Suchanfragen zu bauen (z.B. "FOMC meeting expectations" am Tag vor Fed-Entscheid).
@@ -17,11 +20,14 @@ Läuft täglich 07:30 CET.
 
 import json
 import os
+import re
 import time
 import urllib.request
 import urllib.parse
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from email.utils import parsedate_to_datetime
 
 WS   = Path('/data/.openclaw/workspace')
 DATA = WS / 'data'
@@ -52,64 +58,84 @@ def _get(url: str) -> bytes | None:
         return None
 
 
-# ── Finnhub Economic Calendar ────────────────────────────────────────────────
-
-# Events die für unser Portfolio wichtig sind
-HIGH_IMPORTANCE_EVENTS = [
-    'fed', 'fomc', 'interest rate', 'ecb', 'bank of england', 'boe',
-    'opec', 'oil', 'gdp', 'cpi', 'inflation', 'unemployment', 'nonfarm',
-    'payroll', 'pmi', 'ism', 'retail sales', 'housing', 'earnings',
+# ── Makro-Event-Suche via Google News ────────────────────────────────────────
+#
+# Finnhub Economic Calendar erfordert Paid Plan (gibt 403 auf Free).
+# Ersatz: Für jedes wichtige Makro-Thema Google News RSS durchsuchen.
+# Wenn aktuelle Artikel zum Event gefunden werden → Event ist "upcoming".
+#
+# Themen mit hohem Trading-Impact für unser Portfolio:
+MACRO_EVENT_QUERIES = [
+    # Name (für Output),  Suchanfrage,                                    Sektor
+    ('FOMC Meeting',      'FOMC Federal Reserve interest rate decision',   'macro'),
+    ('ECB Rate Decision', 'ECB European Central Bank rate decision',        'macro'),
+    ('OPEC Meeting',      'OPEC oil production meeting decision',           'energy'),
+    ('US NFP Jobs',       'nonfarm payroll jobs report this week',          'macro'),
+    ('US CPI Inflation',  'US CPI inflation data release this week',        'macro'),
+    ('US GDP Data',       'US GDP data release economic growth',            'macro'),
+    ('Iran Sanctions',    'Iran oil sanctions decision US Treasury',        'energy'),
+    ('Trump Tariffs',     'Trump tariffs trade war announcement',           'macro'),
+    ('Earnings Season',   'earnings season preview S&P 500',               'equities'),
 ]
 
 
-def fetch_economic_calendar(days_ahead: int = 7) -> list[dict]:
-    """Lädt Finnhub Economic Calendar für die nächsten N Tage."""
-    now  = datetime.now(timezone.utc)
-    from_dt = now.strftime('%Y-%m-%d')
-    to_dt   = (now + timedelta(days=days_ahead)).strftime('%Y-%m-%d')
+def fetch_economic_events_via_news(days_window: int = 3) -> list[dict]:
+    """
+    Sucht via Google News RSS nach bevorstehenden Makro-Events.
+    Gibt eine Liste von Events zurück die in den nächsten days_window Tagen relevant sind.
+    """
+    results = []
+    cutoff  = datetime.now(timezone.utc) - timedelta(hours=48)  # Artikel der letzten 48h
 
-    url = f'https://finnhub.io/api/v1/calendar/economic?from={from_dt}&to={to_dt}&token={FINNHUB_KEY}'
-    raw = _get(url)
-    if not raw:
-        return []
-
-    try:
-        data = json.loads(raw)
-        events = data.get('economicCalendar', [])
-    except Exception:
-        return []
-
-    result = []
-    for ev in events:
-        event_name = ev.get('event', '').lower()
-        impact     = ev.get('impact', '').lower()  # 'high', 'medium', 'low'
-        country    = ev.get('country', '')
-        date_str   = ev.get('time', ev.get('date', ''))
-
-        # Nur wichtige Events (high impact ODER keyword match)
-        is_important = (
-            impact == 'high' or
-            any(kw in event_name for kw in HIGH_IMPORTANCE_EVENTS)
-        )
-        if not is_important:
+    for event_name, query, sector in MACRO_EVENT_QUERIES:
+        encoded = urllib.parse.quote(query)
+        url = f'https://news.google.com/rss/search?q={encoded}&hl=en&gl=US&ceid=US:en'
+        raw = _get(url)
+        if not raw:
+            time.sleep(0.3)
             continue
 
-        # Nur relevante Länder
-        if country not in ('US', 'EU', 'DE', 'GB', 'JP', 'CN', 'OPEC', ''):
-            continue
+        try:
+            root  = ET.fromstring(raw)
+            items = root.findall('.//item')
+            fresh_articles = 0
+            latest_title   = ''
 
-        result.append({
-            'type':    'economic',
-            'name':    ev.get('event', ''),
-            'date':    date_str[:10],
-            'time':    date_str,
-            'country': country,
-            'impact':  impact,
-            'actual':  ev.get('actual', ''),
-            'forecast': ev.get('estimate', ''),
-        })
+            for item in items[:5]:
+                title = item.findtext('title', '')
+                pub   = item.findtext('pubDate', '')
+                try:
+                    pub_dt = parsedate_to_datetime(pub)
+                    if pub_dt.tzinfo is None:
+                        pub_dt = pub_dt.replace(tzinfo=timezone.utc)
+                    if pub_dt > cutoff:
+                        fresh_articles += 1
+                        if not latest_title:
+                            latest_title = title
+                except Exception:
+                    pass
 
-    return result
+            # Wenn aktuelle Artikel zum Thema gefunden → Event ist "im Gange" oder "upcoming"
+            if fresh_articles >= 2:
+                today = datetime.now().strftime('%Y-%m-%d')
+                results.append({
+                    'type':     'economic',
+                    'name':     event_name,
+                    'date':     today,
+                    'country':  'US',
+                    'impact':   'high',
+                    'sector':   sector,
+                    'headline': latest_title[:120],
+                    'articles': fresh_articles,
+                })
+                log(f'  ✓ {event_name}: {fresh_articles} aktuelle Artikel gefunden')
+
+        except Exception as e:
+            log(f'  Fehler bei {event_name}: {e}')
+
+        time.sleep(0.5)  # Rate-Limit Google News
+
+    return results
 
 
 def fetch_earnings_calendar(days_ahead: int = 5) -> list[dict]:
@@ -170,8 +196,8 @@ def fetch_earnings_calendar(days_ahead: int = 5) -> list[dict]:
 def run() -> dict:
     log('=== Event Calendar Update ===')
 
-    economic = fetch_economic_calendar(days_ahead=7)
-    log(f'Economic Calendar: {len(economic)} wichtige Events (nächste 7 Tage)')
+    economic = fetch_economic_events_via_news(days_window=3)
+    log(f'Makro-Events via News: {len(economic)} aktive Events erkannt')
 
     time.sleep(0.5)
 

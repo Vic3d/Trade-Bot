@@ -287,17 +287,17 @@ def format_news(news_dict, max_per_source=2):
 # ── Additional Breaking News Sources ─────────────────────────────────────────
 
 EXTRA_FEEDS = {
-    'ap_topnews':    'https://feeds.apnews.com/rss/apf-topnews',
-    'ap_business':   'https://feeds.apnews.com/rss/apf-business',
-    'ap_world':      'https://feeds.apnews.com/rss/apf-intlnews',
-    'cnbc_top':      'https://www.cnbc.com/id/100003114/device/rss/rss.html',
-    'cnbc_world':    'https://www.cnbc.com/id/100727362/device/rss/rss.html',
-    'bbc_business':  'https://feeds.bbci.co.uk/news/business/rss.xml',
-    'aljazeera':     'https://www.aljazeera.com/xml/rss/all.xml',
-    'marketwatch':   'https://feeds.marketwatch.com/marketwatch/topstories/',
-    'handelsblatt':  'https://www.handelsblatt.com/contentexport/feed/top-themen',
-    'nikkei_asia':   'https://asia.nikkei.com/rss/feed/nar',
-    'ft_markets':    'https://www.ft.com/rss/home/uk',
+    # ── Getestet & funktional auf Hetzner VPS ────────────────────────────────
+    'wsj_markets':   'https://feeds.a.dj.com/rss/RSSMarketsMain.xml',         # Wall Street Journal
+    'nyt_business':  'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml',  # NYT Business
+    'skynews_world': 'https://feeds.skynews.com/feeds/rss/world.xml',          # Sky News World (geopolitik)
+    'investing_news':'https://www.investing.com/rss/news.rss',                 # Investing.com (breit)
+    'fortune':       'https://fortune.com/feed/',                               # Fortune
+    'aljazeera':     'https://www.aljazeera.com/xml/rss/all.xml',              # Al Jazeera (Nahost)
+    'marketwatch':   'https://feeds.content.dowjones.io/public/rss/mw_topstories',  # MarketWatch
+    'handelsblatt':  'https://www.handelsblatt.com/contentexport/feed/top-themen',  # Handelsblatt (DE)
+    'nikkei_asia':   'https://asia.nikkei.com/rss/feed/nar',                   # Nikkei Asia (JP/Asia)
+    'ft_markets':    'https://www.ft.com/rss/home/uk',                         # Financial Times
 }
 
 def extra_news(sources=None, n=5, max_age_hours=4):
