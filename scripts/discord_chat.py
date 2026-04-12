@@ -14,7 +14,7 @@ import sqlite3
 import time
 import urllib.request
 import urllib.error
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 # ── Pfade ─────────────────────────────────────────────────────────────────────
@@ -873,8 +873,8 @@ Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
     # ── Verdict extrahieren und speichern ─────────────────────────────────────
     # Damit conviction_scorer.py prüfen kann ob ein Deep Dive für diesen Ticker
     # durchgeführt wurde — und was das Ergebnis war (KAUFEN / WARTEN / NICHT KAUFEN).
+    verdict = 'UNBEKANNT'
     try:
-        verdict = 'UNBEKANNT'
         resp_upper = response.upper() if response else ''
         # Suche nach dem Trading-Verdict Block
         if 'NICHT KAUFEN' in resp_upper or 'NOT BUY' in resp_upper:
@@ -904,7 +904,113 @@ Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
     except Exception as _e:
         print(f'[Albert] Deep Dive Verdict-Speicherung fehlgeschlagen: {_e}', flush=True)
 
+    # ── CEO-Entscheidung am Ende jedes Deep Dives ─────────────────────────────
+    ceo_block = _ceo_decision_after_deep_dive(ticker, verdict, known_strategy)
+    response = response + '\n\n' + ceo_block
+
     return response
+
+
+def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dict | None) -> str:
+    """
+    Trifft nach jedem Deep Dive eine konkrete CEO-Entscheidung und schreibt sie
+    in ceo_directive.json (strategy_overrides-Sektion).
+
+    Logik:
+      KAUFEN       → Strategie freigeben, max_position_size auf 1.000–1.500 EUR setzen,
+                     Gesamtmodus ggf. auf NEUTRAL/BULLISH heben wenn vorher SHUTDOWN
+      WARTEN       → Alert-Trigger setzen, Strategie auf ALERT, keine neuen Entries
+      NICHT_KAUFEN → Strategie für 14 Tage auf BLOCKED, keine Entries
+    """
+    directive_file = DATA / 'ceo_directive.json'
+    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+
+    try:
+        directive = json.loads(directive_file.read_text(encoding='utf-8')) if directive_file.exists() else {}
+    except Exception:
+        directive = {}
+
+    strategy_id = known_strategy['id'] if known_strategy else None
+    strategy_name = known_strategy['name'] if known_strategy else ticker
+
+    # ── Strategie-Override aktualisieren ──────────────────────────────────────
+    overrides = directive.setdefault('strategy_overrides', {})
+
+    if verdict == 'KAUFEN':
+        overrides[ticker] = {
+            'status':           'APPROVED',
+            'max_position_eur': 1200,
+            'entry_active':     True,
+            'reason':           f'Deep Dive {now_str}: KAUFEN-Verdict',
+            'valid_until':      (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d'),
+        }
+        # Gesamtmodus: falls SHUTDOWN → auf NEUTRAL heben, damit Guard 0c2 nicht blockt
+        if directive.get('mode') == 'SHUTDOWN':
+            directive['mode'] = 'NEUTRAL'
+            directive['mode_reason'] = f'Deep Dive {ticker} KAUFEN → Phase 2 Entry freigegeben'
+        # Allowed-strategies erweitern
+        allowed = directive.get('trading_rules', {}).get('allowed_strategies', [])
+        if strategy_id and strategy_id not in allowed:
+            allowed.append(strategy_id)
+            directive.setdefault('trading_rules', {})['allowed_strategies'] = allowed
+        # Aus blocked entfernen
+        blocked = directive.get('trading_rules', {}).get('blocked_strategies', [])
+        if strategy_id and strategy_id in blocked:
+            blocked.remove(strategy_id)
+        if ticker in blocked:
+            blocked.remove(ticker)
+        ceo_action  = '✅ ENTRY FREIGEGEBEN'
+        ceo_detail  = f'Strategie {strategy_id or ticker} auf APPROVED. Max Position: 1.200 EUR. Gültig 14 Tage.'
+
+    elif verdict == 'WARTEN':
+        overrides[ticker] = {
+            'status':           'ALERT',
+            'max_position_eur': 0,
+            'entry_active':     False,
+            'reason':           f'Deep Dive {now_str}: WARTEN — Trigger noch nicht erfüllt',
+            'valid_until':      (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d'),
+        }
+        ceo_action = '⏳ KEIN ENTRY — WATCHLIST'
+        ceo_detail = f'{ticker} auf Watchlist. Kein Kapital allokiert. Wartet auf Entry-Trigger.'
+
+    else:  # NICHT_KAUFEN oder UNBEKANNT
+        overrides[ticker] = {
+            'status':           'BLOCKED',
+            'max_position_eur': 0,
+            'entry_active':     False,
+            'reason':           f'Deep Dive {now_str}: NICHT_KAUFEN — 14-Tage-Block',
+            'valid_until':      (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d'),
+        }
+        # Zu blocked hinzufügen falls nicht drin
+        blocked = directive.get('trading_rules', {}).get('blocked_strategies', [])
+        if strategy_id and strategy_id not in blocked:
+            blocked.append(strategy_id)
+            directive.setdefault('trading_rules', {})['blocked_strategies'] = blocked
+        ceo_action = '🚫 GEBLOCKT (14 Tage)'
+        ceo_detail = f'{ticker} für 14 Tage gesperrt. Kein Entry bis neuer Deep Dive.'
+
+    # CEO-Notes aktualisieren
+    existing_notes = directive.get('ceo_notes', '')
+    directive['ceo_notes'] = f'[{now_str}] Deep Dive {ticker}: {verdict} → {ceo_action} | ' + existing_notes[:200]
+    directive['last_deep_dive'] = {'ticker': ticker, 'verdict': verdict, 'timestamp': now_str}
+
+    # Zurückschreiben
+    try:
+        directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+        print(f'[Albert] CEO-Direktive nach Deep Dive {ticker} aktualisiert: {ceo_action}', flush=True)
+    except Exception as e:
+        print(f'[Albert] CEO-Direktive konnte nicht gespeichert werden: {e}', flush=True)
+
+    # ── Formatierter CEO-Block für Discord-Ausgabe ────────────────────────────
+    return (
+        f'---\n'
+        f'## 🏛️ CEO-Entscheidung — {ticker}\n\n'
+        f'**Handlung:** {ceo_action}\n'
+        f'**Strategie:** {strategy_name} ({strategy_id or "–"})\n'
+        f'**Detail:** {ceo_detail}\n'
+        f'**Zeitpunkt:** {now_str}\n'
+        f'**Gültig bis:** {overrides[ticker]["valid_until"]}\n'
+    )
 
 
 # ── Polling-Logik ─────────────────────────────────────────────────────────────

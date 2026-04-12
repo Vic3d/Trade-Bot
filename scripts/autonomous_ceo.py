@@ -682,6 +682,149 @@ def save_decision_log(analysis: str, decisions: list, results: list):
         log(f'Decision-Log Fehler: {e}', 'WARN')
 
 
+# ── Reaktiver CEO — Event-getriggert ─────────────────────────────────────────
+
+_LAST_REACTIVE_CALL = None  # Rate-Limit Tracking
+
+def trigger_reactive_ceo(event_data: dict) -> dict | None:
+    """
+    Entry Point für broad_news_scanner: Triggert reaktiven CEO-Call.
+    Rate-Limit: max 1 Call pro 15 Minuten.
+
+    event_data: {'headline': str, 'score': int, 'thesis_ids': list, 'is_kill': bool}
+    """
+    global _LAST_REACTIVE_CALL
+    now = datetime.now(timezone.utc)
+
+    if _LAST_REACTIVE_CALL:
+        elapsed = (now - _LAST_REACTIVE_CALL).total_seconds()
+        if elapsed < 900:  # 15 Minuten
+            log(f'Reaktiver CEO: Rate-Limit ({elapsed:.0f}s < 900s) — übersprungen')
+            return None
+
+    _LAST_REACTIVE_CALL = now
+    log(f'Reaktiver CEO: Getriggert durch "{event_data.get("headline", "?")[:60]}"')
+
+    try:
+        return run_reactive(event_data)
+    except Exception as e:
+        log(f'Reaktiver CEO Fehler: {e}', 'ERROR')
+        return None
+
+
+def run_reactive(event_data: dict) -> dict:
+    """
+    Minimaler CEO-Call für Breaking News. Nur EXIT oder HOLD Entscheidungen.
+    Nutzt claude-sonnet statt opus für Kosteneffizienz (~$0.03 pro Call).
+    """
+    log(f'=== Reactive CEO Call ===')
+
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
+        log('ANTHROPIC_API_KEY nicht gesetzt', 'ERROR')
+        return {'error': 'no_api_key'}
+
+    # Minimaler Kontext: nur Event + offene Positionen
+    db_path = DATA / 'trading.db'
+    context_parts = [
+        f"BREAKING NEWS: {event_data.get('headline', 'Unbekannt')}",
+        f"Score: {event_data.get('score', '?')} | Kill-Trigger: {event_data.get('is_kill', False)}",
+        f"Betroffene Strategien: {', '.join(event_data.get('thesis_ids', []))}",
+        "",
+    ]
+
+    try:
+        conn = sqlite3.connect(str(db_path))
+        conn.row_factory = sqlite3.Row
+        positions = conn.execute("""
+            SELECT ticker, strategy, entry_price, stop_price, shares, entry_date
+            FROM paper_portfolio WHERE status='OPEN'
+        """).fetchall()
+        conn.close()
+
+        if positions:
+            context_parts.append("OFFENE POSITIONEN:")
+            for p in positions:
+                context_parts.append(
+                    f"  {p['ticker']} | {p['strategy']} | Entry {p['entry_price']:.2f} | "
+                    f"Stop {p['stop_price']:.2f} | seit {str(p['entry_date'])[:10]}"
+                )
+        else:
+            context_parts.append("Keine offenen Positionen.")
+    except Exception as e:
+        context_parts.append(f"[Portfolio-Fehler: {e}]")
+
+    reactive_prompt = """Du bist Albert — reaktiver CEO-Modus bei Breaking News.
+WICHTIG: Du darfst NUR EXIT oder HOLD entscheiden. KEINE neuen Entries.
+
+Für jede betroffene offene Position: EXIT (sofort raus) oder HOLD (halten).
+Begründe jede Entscheidung in 1 Satz.
+
+Antworte NUR mit JSON:
+{
+  "analysis": "1 Satz zur Nachricht",
+  "decisions": [
+    {"action": "EXIT_POSITION", "ticker": "XYZ", "reason": "..."},
+    {"action": "HOLD", "ticker": "ABC", "reason": "..."}
+  ]
+}"""
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model='claude-sonnet-4-20250514',  # Kosteneffizient: ~$0.03 pro Call
+            max_tokens=800,
+            system=reactive_prompt,
+            messages=[{
+                'role': 'user',
+                'content': '\n'.join(context_parts) + '\n\nEntscheide jetzt. NUR JSON.'
+            }],
+        )
+        raw = response.content[0].text.strip()
+        if raw.startswith('```'):
+            raw = raw.split('```')[1]
+            if raw.startswith('json'):
+                raw = raw[4:]
+
+        result = json.loads(raw)
+        log(f"Reaktiver CEO: {len(result.get('decisions', []))} Entscheidungen")
+
+        # Nur EXITs ausführen (keine Entries!)
+        for d in result.get('decisions', []):
+            if d.get('action', '').upper() == 'EXIT_POSITION':
+                ticker = d.get('ticker', '').upper()
+                reason = d.get('reason', 'Reactive CEO Exit')
+                execute_exit(ticker, f'[REACTIVE] {reason}')
+
+        # Log speichern
+        save_decision_log(
+            result.get('analysis', ''),
+            result.get('decisions', []),
+            [{'type': 'reactive', 'trigger': event_data.get('headline', '')}]
+        )
+
+        # Discord Alert
+        report = (
+            f"⚡ **Albert REAKTIV** — Breaking News\n"
+            f"📰 {event_data.get('headline', '')[:100]}\n"
+            f"📊 {result.get('analysis', '')[:150]}"
+        )
+        for d in result.get('decisions', []):
+            action = d.get('action', '')
+            ticker = d.get('ticker', '')
+            reason = d.get('reason', '')[:60]
+            icon = '🚨' if action == 'EXIT_POSITION' else '✅'
+            report += f"\n{icon} {action} {ticker}: {reason}"
+
+        send_discord_report(report)
+        return result
+
+    except Exception as e:
+        log(f'Reactive CEO API Fehler: {e}', 'ERROR')
+        return {'error': str(e)}
+
+
 # ── Haupt-Run ─────────────────────────────────────────────────────────────────
 
 def run(dry_run: bool = False, force: bool = False):

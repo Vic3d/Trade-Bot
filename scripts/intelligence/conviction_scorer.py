@@ -30,6 +30,10 @@ DATA_DIR = WS / 'data'
 
 ENTRY_THRESHOLD = 45  # Minimum conviction score to enter a trade
 
+# Adaptive Gewichte — werden wöchentlich aus Trade-Ergebnissen berechnet
+CONVICTION_WEIGHTS_FILE = DATA_DIR / 'conviction_weights.json'
+DEFAULT_WEIGHTS = {'thesis': 35, 'technical': 30, 'risk_reward': 20, 'market_context': 15}
+
 
 # ─── DB Helper ────────────────────────────────────────────────────────────────
 
@@ -613,6 +617,79 @@ def get_position_size(
     return min(shares, max_shares)
 
 
+# ─── Adaptive Weights + Backtest Factor ──────────────────────────────────────
+
+def _load_adaptive_weights() -> dict:
+    """
+    Lädt adaptive Gewichte aus conviction_weights.json.
+    Fallback zu DEFAULT_WEIGHTS wenn Datei fehlt, veraltet oder zu wenig Trades.
+    """
+    try:
+        if CONVICTION_WEIGHTS_FILE.exists():
+            data = json.loads(CONVICTION_WEIGHTS_FILE.read_text(encoding='utf-8'))
+            # Max 7 Tage alt
+            computed_at = data.get('computed_at', '')
+            if computed_at:
+                from datetime import timedelta
+                age = (datetime.now(timezone.utc) - datetime.fromisoformat(computed_at)).days
+                if age > 7:
+                    return DEFAULT_WEIGHTS.copy()
+            # Min 20 Trades Datenbasis
+            if data.get('trade_count', 0) < 20:
+                return DEFAULT_WEIGHTS.copy()
+            weights = data.get('weights', {})
+            # Validierung: alle Keys vorhanden und im Bereich [10, 50]
+            for key in DEFAULT_WEIGHTS:
+                if key not in weights or not (10 <= weights[key] <= 50):
+                    return DEFAULT_WEIGHTS.copy()
+            return weights
+    except Exception:
+        pass
+    return DEFAULT_WEIGHTS.copy()
+
+
+def _score_backtest_validation(strategy: str) -> tuple[int, str]:
+    """
+    Faktor 5: Backtest Validation Bonus/Malus.
+    Liest backtest_results.json und gibt +10 bis -5 Punkte.
+
+    Scoring:
+      PnL positiv UND WR >= 55%: +10
+      PnL positiv ODER WR >= 50%: +5
+      PnL negativ UND WR < 45%: -5
+      Keine Daten: 0
+    """
+    try:
+        bt_file = DATA_DIR / 'backtest_results.json'
+        if not bt_file.exists():
+            return (0, 'backtest=n/a (keine Datei)')
+
+        bt_data = json.loads(bt_file.read_text(encoding='utf-8'))
+        bt_entry = bt_data.get(strategy, {})
+        if isinstance(bt_entry, dict):
+            bt_orig = bt_entry.get('original', bt_entry)
+        else:
+            return (0, 'backtest=n/a (kein Eintrag)')
+
+        bt_trades = bt_orig.get('trades', 0)
+        bt_pnl = bt_orig.get('pnl', 0)
+        bt_wr = bt_orig.get('wr', bt_orig.get('win_rate', 0.5))
+
+        if bt_trades < 5:
+            return (0, f'backtest=n/a ({bt_trades} Trades < 5)')
+
+        if bt_pnl > 0 and bt_wr >= 0.55:
+            return (10, f'backtest_strong: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → +10')
+        elif bt_pnl > 0 or bt_wr >= 0.50:
+            return (5, f'backtest_ok: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → +5')
+        elif bt_pnl < 0 and bt_wr < 0.45:
+            return (-5, f'backtest_weak: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → -5')
+
+        return (0, f'backtest_neutral: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → 0')
+    except Exception as e:
+        return (0, f'backtest=error ({e})')
+
+
 # ─── Main Conviction Calculator ───────────────────────────────────────────────
 
 def calculate_conviction(
@@ -797,8 +874,25 @@ def calculate_conviction(
             'vix_block_reason': None,
         }
 
-    # ── Total Score (4 factors + priced-in modifier) ──────────────────────
-    total = thesis_score + tech_score + rr_score + mkt_score + priced_in_mod
+    # ── Adaptive Gewichte anwenden ────────────────────────────────────────
+    weights = _load_adaptive_weights()
+    # Skaliere Faktor-Scores proportional zu den adaptiven Gewichten
+    # (Original: thesis=35, tech=30, rr=20, mkt=15)
+    w_thesis = weights.get('thesis', 35)
+    w_tech = weights.get('technical', 30)
+    w_rr = weights.get('risk_reward', 20)
+    w_mkt = weights.get('market_context', 15)
+
+    thesis_weighted = thesis_score * (w_thesis / 35) if w_thesis != 35 else thesis_score
+    tech_weighted = tech_score * (w_tech / 30) if w_tech != 30 else tech_score
+    rr_weighted = rr_score * (w_rr / 20) if w_rr != 20 else rr_score
+    mkt_weighted = mkt_score * (w_mkt / 15) if w_mkt != 15 else mkt_score
+
+    # ── Factor 5: Backtest Validation ────────────────────────────────────
+    bt_score, bt_reason = _score_backtest_validation(strategy)
+
+    # ── Total Score (4 weighted factors + priced-in + backtest) ───────────
+    total = thesis_weighted + tech_weighted + rr_weighted + mkt_weighted + priced_in_mod + bt_score
 
     # ── Factor 6: Alpha Decay + DNA Modifier ─────────────────────────────
     decay_dna_mod, decay_dna_reason = _apply_decay_and_dna(strategy)
@@ -865,6 +959,7 @@ def calculate_conviction(
             'risk_reward_quality': rr_score,
             'market_context':      mkt_score,
             'priced_in_modifier':  priced_in_mod,
+            'backtest_validation': bt_score,
             'decay_dna_modifier':  decay_dna_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
         },
@@ -874,6 +969,7 @@ def calculate_conviction(
             'risk_reward_quality': rr_reason,
             'market_context':      mkt_reason,
             'priced_in_modifier':  priced_in_reason,
+            'backtest_validation': bt_reason,
             'decay_dna':           decay_dna_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
         },

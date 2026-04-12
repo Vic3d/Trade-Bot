@@ -365,6 +365,22 @@ def run(dry_run: bool = False):
             lines.append(f"  Quelle: {a['source']} | Keywords: {', '.join(best_match['matched'][:3])}")
         send_discord('\n'.join(lines), dry_run=dry_run)
 
+        # Reaktiver CEO für kritische Events (score >= 4 oder Kill-Trigger)
+        if not dry_run:
+            try:
+                _trigger_item = high_priority[0]  # Wichtigstes Event
+                _trigger_match = _trigger_item.get('matches', [{}])[0]
+                if _trigger_match.get('score', 0) >= 4 or _trigger_match.get('is_kill', False):
+                    from autonomous_ceo import trigger_reactive_ceo
+                    trigger_reactive_ceo({
+                        'headline': _trigger_item.get('title', '')[:200],
+                        'score': _trigger_match.get('score', 0),
+                        'thesis_ids': [_trigger_match.get('thesis_id', '')],
+                        'is_kill': _trigger_match.get('is_kill', False),
+                    })
+            except Exception as _ceo_err:
+                log(f'Reaktiver CEO Trigger Fehler (nicht kritisch): {_ceo_err}')
+
     # Unbekannte Sektoren → für thesis_discovery flaggen
     if unknown_sectors:
         unknown_file = DATA / 'broad_scanner_unknowns.json'

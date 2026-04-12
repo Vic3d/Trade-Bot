@@ -500,6 +500,47 @@ def execute_paper_entry(
     except Exception:
         pass  # Gate ist defensiv — bei Fehler lieber einlassen als blocken
 
+    # ── Guard 0e: Earnings Blackout (3 Tage vor Earnings kein Entry) ─────
+    # Warum: Earnings = binäres Event, Thesis kann perfekt sein und trotzdem
+    # -20% Gap-Down nach schlechten Zahlen. Besser: nach Earnings einsteigen.
+    # Ausnahmen: manual/paper_lab source (Victor will bewusst pre-earnings traden)
+    if source not in ('manual', 'paper_lab', 'victor', 'cli'):
+        try:
+            _events_file = WORKSPACE / 'data' / 'upcoming_events.json'
+            if _events_file.exists():
+                _events = json.loads(_events_file.read_text(encoding='utf-8'))
+                _all_events = _events.get('events', [])
+                _ticker_clean = ticker.upper().replace('.DE', '').replace('.OL', '').replace('.PA', '').replace('.L', '').replace('.AS', '').replace('.CO', '')
+
+                from datetime import timedelta as _td
+                _today = datetime.now(timezone.utc).date()
+
+                for _ev in _all_events:
+                    if _ev.get('type') != 'earnings':
+                        continue
+                    _ev_ticker = (_ev.get('ticker', '') or '').upper()
+                    if _ev_ticker != _ticker_clean and _ev_ticker not in ticker.upper():
+                        continue
+                    # Earnings gefunden — prüfe ob innerhalb 3 Tagen
+                    try:
+                        _ev_date = datetime.fromisoformat(_ev.get('date', '2000-01-01')).date()
+                        _days_until = (_ev_date - _today).days
+                        if 0 <= _days_until <= 3:
+                            return {
+                                'success': False,
+                                'trade_id': None,
+                                'message': (
+                                    f'❌ Earnings Blackout: {ticker} berichtet am {_ev.get("date")} '
+                                    f'({_days_until} Tage). Kein Entry 3 Tage vor Earnings — '
+                                    f'binäres Risiko. Nach Earnings neu bewerten.'
+                                ),
+                                'blocked_by': 'earnings_blackout',
+                            }
+                    except Exception:
+                        pass
+        except Exception:
+            pass  # Earnings-Check nicht kritisch — bei Fehler weiter
+
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
     # Hard blocks are: thesis INVALIDATED or CRV < 2.0

@@ -1,17 +1,26 @@
 {
-  "timestamp": "2026-04-10T07:05:29",
-  "mode": "SHUTDOWN",
-  "mode_reason": "Expectancy €-2.82 < 0 (30+ Trades)",
+  "timestamp": "2026-04-12T23:45:00",
+  "phase": "PHASE_2",
+  "phase_started": "2026-04-12",
+  "phase_capital": 25000,
+  "mode": "NEUTRAL",
+  "mode_reason": "Phase 2 gestartet. Frisches Kapital 25.000 EUR. Kein aktiver Trade. Warte auf Entry-Trigger aus Deep Dives.",
   "vix": 19.5,
   "regime": "RANGE_BOUND",
   "geo_alert_level": "HIGH",
   "geo_score": 75,
   "trading_rules": {
     "max_new_positions_today": 0,
-    "max_position_size_eur": 0,
-    "stop_tightening_factor": 1.5,
-    "vix_conviction_adjustment": -3,
+    "max_position_size_eur": 1200,
+    "stop_tightening_factor": 1.2,
+    "vix_conviction_adjustment": -2,
     "allowed_strategies": [],
+    "watchlist_alerts": {
+      "EQNR.OL": "< 330 NOK",
+      "LIN": "< 472 USD",
+      "YARA.OL": "< 445 NOK (nach Earnings 24.04.)",
+      "LNG": "< 257 USD"
+    },
     "blocked_strategies": [
       "AR-AGRA",
       "AR-HALB",
@@ -91,7 +100,143 @@
     "data_quality_score": 65
   },
   "top_opportunities": [],
-  "ceo_notes": "System im SHUTDOWN-Modus. Keine neuen Positionen öffnen. | Freitag — Wochenend-Risiko prüfen. RSI >75 + Wochenende = Gefahr.",
+  "strategy_overrides": {
+    "EQNR.OL": {
+      "status": "ALERT",
+      "max_position_eur": 0,
+      "entry_active": false,
+      "reason": "Deep Dive 2026-04-12: WARTEN — +66% in 3M, Kurs über Analyst-Target. Entry erst bei 310-325 NOK.",
+      "entry_trigger": "EQNR.OL < 330 NOK",
+      "entry_zone": "310-325 NOK",
+      "stop": "285 NOK",
+      "ziel": "380-420 NOK",
+      "valid_until": "2026-05-12"
+    },
+    "LIN": {
+      "status": "ALERT",
+      "max_position_eur": 0,
+      "entry_active": false,
+      "reason": "Deep Dive 2026-04-12: WARTEN — PE 34x zu teuer, Helium = nur 3-5% Umsatz. Besser: APD als Vehikel.",
+      "entry_trigger": "LIN < 472 USD",
+      "entry_zone": "460-470 USD",
+      "stop": "440 USD",
+      "ziel": "525-555 USD",
+      "ps_helium_note": "PS_Helium Thesis korrekt aber LIN falsches Vehikel. CF Industries (CF) als Alternative prüfen.",
+      "valid_until": "2026-05-12"
+    },
+    "YARA.OL": {
+      "status": "BLOCKED_UNTIL_EARNINGS",
+      "max_position_eur": 0,
+      "entry_active": false,
+      "reason": "Deep Dive 2026-04-12: WARTEN — Analyst-Target 22% unter Kurs. Earnings 24.04. abwarten. Sell-the-News-Risiko.",
+      "entry_trigger": "YARA.OL < 445 NOK NACH Earnings 24.04.",
+      "entry_zone": "420-440 NOK",
+      "stop": "390 NOK",
+      "ziel": "490-540 NOK",
+      "blocked_until": "2026-04-25",
+      "valid_until": "2026-06-12"
+    },
+    "LNG": {
+      "status": "ALERT",
+      "max_position_eur": 0,
+      "entry_active": false,
+      "reason": "Deep Dive 2026-04-12: WARTEN — Bestes Setup der 4 Kandidaten. EV/EBITDA 28% unter Historien-Median. Entry bei 250-256 USD.",
+      "entry_trigger": "LNG < 257 USD",
+      "entry_zone": "250-256 USD",
+      "stop": "232 USD",
+      "ziel_1": "293 USD (CRV 1.9:1)",
+      "ziel_2": "330 USD (CRV 3.9:1)",
+      "tranche": "50% bei 252 USD, 50% bei 245 USD",
+      "valid_until": "2026-05-26"
+    }
+  },
+  "kw16_trading_plan": {
+    "week": "KW16 2026-04-14 bis 2026-04-18",
+    "goal": "Mindestens 1 Paper-Trade pro Tag für Learning Loop",
+    "total_capital_deployed_eur": 4600,
+    "cash_reserve_after_eur": 20400,
+    "trades": [
+      {
+        "day": "Mo 14.04",
+        "ticker": "OXY",
+        "entry": "$57.50",
+        "stop": "$53.00",
+        "ziel": "$67.00",
+        "crv": 2.1,
+        "size_eur": 1000,
+        "thesis": "PS1 — Q2-Earnings-Beat erwartet bei Öl >$100 vs. Q1 realisiert $69.91",
+        "verdict": "KAUFEN"
+      },
+      {
+        "day": "Di 15.04",
+        "ticker": "RHM.DE",
+        "entry": "1460 EUR",
+        "stop": "1370 EUR",
+        "ziel": "1700 EUR",
+        "crv": 2.7,
+        "size_eur": 1000,
+        "thesis": "PS_MILTECH — Oversold (-27% ATH), RSI 33, Goldman Conviction, +39% Analyst-Upside",
+        "verdict": "KAUFEN",
+        "flag": "FALLING_KNIFE_OVERRIDE_PAPER_LAB"
+      },
+      {
+        "day": "Mi 16.04",
+        "ticker": "FRO",
+        "entry": "$34.20",
+        "stop": "$31.50",
+        "ziel": "$38.50",
+        "crv": 2.1,
+        "size_eur": 800,
+        "thesis": "PS1 — Tanker VLCC $76.9k/Tag, direkter Hormuz-Risikoaufschlag",
+        "verdict": "KAUFEN"
+      },
+      {
+        "day": "Do 17.04",
+        "ticker": "DHT",
+        "entry": "$15.50",
+        "stop": "$14.20",
+        "ziel": "$18.50",
+        "crv": 2.3,
+        "size_eur": 800,
+        "thesis": "PS1 — Tanker-Cluster mit FRO, Hormuz-Diversifikation",
+        "fallback_condition": "Falls TTE.PA auf €74.50 fällt: TTE.PA statt DHT",
+        "verdict": "KAUFEN"
+      },
+      {
+        "day": "Fr 18.04",
+        "ticker": "WPM",
+        "entry": "TBD — prüfen Do-Abend",
+        "stop": "TBD",
+        "ziel": "TBD",
+        "crv": "≥2:1 Pflicht",
+        "size_eur": 1000,
+        "thesis": "Safe Haven — Gold strukturell gestützt bei Geopolitik-Hochphase",
+        "condition": "Nur wenn WPM über MA50, RSI <65, CRV ≥2:1",
+        "verdict": "WARTEN — Kurscheck Do-Abend"
+      }
+    ],
+    "key_dates": {
+      "2026-04-24": "YARA.OL Earnings — danach Reassessment",
+      "2026-04-29": "EQNR.OL Earnings — danach Reassessment",
+      "2026-04-28": "CF Industries Shareholder Meeting"
+    }
+  },
+  "last_deep_dive_session": {
+    "date": "2026-04-12",
+    "tickers": ["EQNR.OL", "LIN", "YARA.OL", "LNG", "OXY", "RHM.DE", "FRO", "DHT"],
+    "verdicts": {
+      "EQNR.OL": "WARTEN",
+      "LIN": "WARTEN",
+      "YARA.OL": "WARTEN",
+      "LNG": "WARTEN",
+      "OXY": "KAUFEN",
+      "RHM.DE": "KAUFEN",
+      "FRO": "KAUFEN",
+      "DHT": "KAUFEN"
+    },
+    "ceo_summary": "KW16-Plan steht. 4 KAUFEN-Verdicts für Paper-Trades Mo-Do. WPM Fr TBD. 4.600 EUR geplanter Einsatz aus 25.000 EUR."
+  },
+  "ceo_notes": "[2026-04-12 23:55] KW16: OXY(Mo), RHM.DE(Di/FallingKnifeOverride), FRO(Mi), DHT(Do), WPM(Fr-TBD). Ziel: 1 Trade/Tag für Learning Loop. YARA gesperrt bis 25.04. EQNR Alert @330NOK. LNG Alert @$257.",
   "risk_metrics": {
     "overall": {
       "sharpe_ratio": -0.961,

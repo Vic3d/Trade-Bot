@@ -279,6 +279,38 @@ class EntryGate:
                                        news_headline, news_source, regime, vix)
                     return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': tier}
 
+        # ─── Gate 5b: Backtest Validation ────────────────────────────────
+        # Strategien mit negativem Backtest-Ergebnis werden geblockt.
+        # Daten kommen aus backtest_engine.py (läuft So+Mi).
+        try:
+            bt_path = os.path.join(os.path.dirname(self.db_path), 'backtest_results.json')
+            if os.path.exists(bt_path):
+                with open(bt_path, encoding='utf-8') as f:
+                    bt_data = json.load(f)
+                bt_strategy = bt_data.get(strategy, bt_data.get(strategy_upper, {}))
+                if isinstance(bt_strategy, dict):
+                    bt_orig = bt_strategy.get('original', bt_strategy)
+                    bt_trades = bt_orig.get('trades', 0)
+                    bt_pnl = bt_orig.get('pnl', 0)
+                    bt_wr = bt_orig.get('wr', bt_orig.get('win_rate', 1.0))
+                    # Hard Block: genug Trades + negativ + schlechte WR
+                    if bt_trades >= 5 and bt_pnl < 0 and bt_wr < 0.35:
+                        reason = (
+                            f"Backtest-Gate: Strategie '{strategy}' hat negative Backtest-Ergebnisse "
+                            f"({bt_trades} Trades, WR={bt_wr:.0%}, PnL={bt_pnl:+.0f}). "
+                            f"Kein Entry bis Backtest positiv."
+                        )
+                        self._log_blocked(ticker, strategy, 'GATE5B_BACKTEST_NEGATIVE', reason,
+                                           news_headline, news_source, regime, vix)
+                        return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': tier}
+                    elif bt_trades >= 5 and bt_pnl < 0:
+                        warnings.append(
+                            f"Backtest-Warnung: Strategie '{strategy}' PnL negativ "
+                            f"({bt_trades} Trades, PnL={bt_pnl:+.0f})"
+                        )
+        except Exception:
+            pass  # Backtest-Daten optional
+
         # ─── ALLE GATES BESTANDEN ────────────────────────────────────────
         reason = "OK"
         if tier:

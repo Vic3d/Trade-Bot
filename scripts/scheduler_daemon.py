@@ -64,6 +64,7 @@ SCHEDULE = [
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 0,  [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 30, [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        21, 0,  [0,1,2,3,4]),
+    ('Strategy Sync',       'core/thesis_engine.py',  ['--sync'],                 7,  3,  None),   # VOR Regime Detector
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)

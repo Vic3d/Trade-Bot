@@ -130,6 +130,39 @@ def get_atr(ticker: str, period: int = 14) -> float | None:
         return None
 
 
+# ─── Conviction-based Stop ───────────────────────────────────────────────────
+
+def _get_conviction_stop_pct(trade_id: int) -> float:
+    """
+    Dynamischer Circuit-Breaker basierend auf Conviction-Score.
+    Schwache Setups bekommen engere Stops → weniger Verlust bei Fehlsignalen.
+
+    Conviction 45-55 (niedrig): -5% Stop
+    Conviction 55-65 (mittel):  -7% Stop
+    Conviction 65+   (hoch):    -8% Stop (bestehende Logik)
+    Fallback:                   -8% wenn conviction nicht vorhanden
+    """
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT conviction FROM paper_portfolio WHERE id = ?",
+            (trade_id,)
+        ).fetchone()
+        conn.close()
+
+        if row and row['conviction'] is not None:
+            conv = row['conviction']
+            if conv < 55:
+                return -0.05   # Enge Stops für schwache Setups
+            elif conv < 65:
+                return -0.07   # Moderate Stops
+            else:
+                return -0.08   # Weite Stops für starke Setups
+    except Exception:
+        pass
+    return CIRCUIT_BREAKER_PCT  # Fallback: -8%
+
+
 # ─── Thesis status check ──────────────────────────────────────────────────────
 
 def is_thesis_invalidated(strategy: str) -> bool:
@@ -480,15 +513,16 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
-        # HARD STOP 4: Single-day circuit breaker (-8%)
+        # HARD STOP 4: Conviction-based circuit breaker (variable -5% bis -8%)
         # ══════════════════════════════════════════════════════════════════
-        if move_pct <= CIRCUIT_BREAKER_PCT:
-            pnl = close_position(conn, trade_id, price, 'CIRCUIT_BREAKER', entry, shares, fees)
+        _cb_pct = _get_conviction_stop_pct(trade_id)
+        if move_pct <= _cb_pct:
+            pnl = close_position(conn, trade_id, price, f'CIRCUIT_BREAKER_{abs(_cb_pct)*100:.0f}PCT', entry, shares, fees)
             closed_records.append(
-                f"CIRCUIT_BRK {ticker} | {move_pct:.1%} loss | PnL: {pnl:+.2f}EUR"
+                f"CIRCUIT_BRK {ticker} | {move_pct:.1%} loss (limit {_cb_pct:.0%}) | PnL: {pnl:+.2f}EUR"
             )
             send_alert(
-                f"CIRCUIT BREAKER: {ticker} -8% circuit breaker triggered.\n"
+                f"CIRCUIT BREAKER: {ticker} {_cb_pct:.0%} circuit breaker triggered.\n"
                 f"Entry={entry:.2f} | Close={price:.2f} | PnL: {pnl:+.2f}EUR"
             )
             continue

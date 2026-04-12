@@ -18,9 +18,10 @@ Albert | TradeMind v2 | 2026-04-10
 """
 
 import json
+import re
 import sqlite3
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
@@ -163,6 +164,17 @@ def check_thesis_kill_trigger(thesis_id: str, news_texts: list) -> tuple:
     for keyword in kill_keywords:
         kw_lower = keyword.strip().lower()
         if kw_lower and kw_lower in combined_text:
+            # Negations-Check: "ceasefire stalled" ≠ echte Feuerpause
+            if _has_negation_context(combined_text, kw_lower):
+                _log_thesis_check(
+                    thesis_id=thesis_id,
+                    news_headline=news_texts[0] if news_texts else '',
+                    direction='neutral',
+                    kill_trigger_match=0,
+                    action_taken=f"Kill-Trigger '{kw_lower}' NEGIERT (Kontext-Check)"
+                )
+                continue  # Nächstes Keyword prüfen
+
             # Match gefunden — in thesis_checks loggen
             _log_thesis_check(
                 thesis_id=thesis_id,
@@ -213,6 +225,71 @@ def _log_thesis_check(thesis_id: str, news_headline: str, direction: str,
         conn.close()
     except Exception as e:
         print(f"[thesis_engine] _log_thesis_check Fehler: {e}")
+
+
+def _has_negation_context(text: str, keyword: str) -> bool:
+    """
+    Prüft ob ein Kill-Trigger-Keyword im Kontext negiert wird.
+    z.B. "ceasefire talks stalled" → ceasefire ist negiert → kein Kill-Trigger.
+
+    Returns True wenn Negation gefunden (= Kill-Trigger NICHT feuern).
+    """
+    NEGATION_WORDS = {
+        'stalled', 'failed', 'rejected', 'unlikely', 'denied',
+        'not', 'no ', 'postponed', 'delayed', 'collapsed',
+        'canceled', 'cancelled', 'breaks down', 'broke down',
+        'ruled out', 'dismissed', 'abandoned', 'scrapped',
+    }
+    text_lower = text.lower()
+    kw_lower = keyword.lower()
+
+    idx = text_lower.find(kw_lower)
+    if idx < 0:
+        return False
+
+    # ±40 Zeichen Fenster um das Keyword
+    start = max(0, idx - 40)
+    end = min(len(text_lower), idx + len(kw_lower) + 40)
+    window = text_lower[start:end]
+
+    for neg in NEGATION_WORDS:
+        if neg in window:
+            return True
+    return False
+
+
+def _has_dual_source_confirmation(thesis_id: str, keyword: str, hours: int = 4) -> bool:
+    """
+    Prüft ob der Kill-Trigger von mindestens 2 verschiedenen Headlines bestätigt wird.
+    Verhindert False Positives durch einzelne sensationalistische Artikel.
+
+    Returns True wenn 2+ verschiedene Headlines matchen (= Kill-Trigger bestätigt).
+    """
+    try:
+        conn = _get_db()
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+        rows = conn.execute(
+            """
+            SELECT DISTINCT news_headline FROM thesis_checks
+            WHERE thesis_id = ? AND kill_trigger_match = 1
+              AND checked_at > ?
+            ORDER BY checked_at DESC
+            LIMIT 10
+            """,
+            (thesis_id, cutoff)
+        ).fetchall()
+        conn.close()
+
+        unique_headlines = set()
+        for row in rows:
+            headline = (row[0] or '').strip()[:80]  # Normalisieren
+            if headline:
+                unique_headlines.add(headline)
+
+        return len(unique_headlines) >= 2
+    except Exception as e:
+        print(f"[thesis_engine] _has_dual_source_confirmation Fehler: {e}")
+        return True  # Bei Fehler konservativ = bestätigt
 
 
 def get_active_theses() -> list:
@@ -419,8 +496,15 @@ def run_monitoring_cycle() -> dict:
             triggered, match_text = check_thesis_kill_trigger(thesis_id, recent_news)
             if triggered:
                 results['triggers_fired'].append({'thesis_id': thesis_id, 'match': match_text})
-                degrade_thesis(thesis_id, f"Kill-Trigger in News: '{match_text}'")
-                results['degraded'].append(thesis_id)
+                # Zwei-Quellen-Bestätigung: Erst degradieren wenn 2+ Headlines matchen
+                if _has_dual_source_confirmation(thesis_id, match_text, hours=4):
+                    degrade_thesis(thesis_id, f"Kill-Trigger in News: '{match_text}' (2+ Quellen bestätigt)")
+                    results['degraded'].append(thesis_id)
+                else:
+                    results.setdefault('pending_confirmation', []).append(
+                        {'thesis_id': thesis_id, 'match': match_text}
+                    )
+                    print(f"[thesis_engine] {thesis_id}: Kill-Trigger '{match_text}' — warte auf 2. Quelle")
 
             # ── Entry-Trigger prüfen (positiver Match → thesis_checks) ─
             # Damit conviction_scorer._check_entry_trigger_bonus() Daten hat
@@ -526,6 +610,102 @@ def _get_recent_news(hours: int = 2) -> list:
     return headlines
 
 
+# ─── Strategies/DB Sync ─────────────────────────────────────────────────────
+
+SYNC_LOG = WS / 'data' / 'sync_check.log'
+
+def sync_strategies_and_db() -> dict:
+    """
+    Synchronisiert strategies.json (Datei) mit thesis_status (SQLite).
+    Verhindert dass tote Thesen weiter gehandelt werden.
+
+    Regeln:
+      DB INVALIDATED + JSON active → JSON auf 'invalidated' setzen
+      DB DEGRADED + JSON active → JSON auf 'degraded' setzen
+      JSON invalidated + DB ACTIVE → DB auf INVALIDATED (manuelles Override)
+
+    Returns: dict mit Anzahl Korrekturen
+    """
+    result = {'corrections': 0, 'details': [], 'errors': []}
+
+    strategies = _load_strategies()
+    if not strategies:
+        result['errors'].append('strategies.json leer oder nicht lesbar')
+        return result
+
+    # Backup erstellen
+    backup_path = STRATEGIES_JSON.with_suffix('.json.bak')
+    try:
+        backup_path.write_text(STRATEGIES_JSON.read_text(encoding='utf-8'), encoding='utf-8')
+    except Exception as e:
+        result['errors'].append(f'Backup fehlgeschlagen: {e}')
+
+    modified = False
+
+    try:
+        conn = _get_db()
+        db_rows = conn.execute("SELECT thesis_id, status FROM thesis_status").fetchall()
+        conn.close()
+        db_map = {row['thesis_id']: row['status'] for row in db_rows}
+    except Exception as e:
+        result['errors'].append(f'DB-Lese-Fehler: {e}')
+        return result
+
+    for sid, strategy in strategies.items():
+        if not isinstance(strategy, dict):
+            continue
+
+        json_status = strategy.get('status', 'active').lower()
+        db_status = db_map.get(sid, '')
+
+        # DB INVALIDATED + JSON active → JSON korrigieren
+        if db_status == 'INVALIDATED' and json_status == 'active':
+            strategy['status'] = 'invalidated'
+            strategy['_sync_note'] = f'Auto-sync: DB war INVALIDATED ({_now_iso()})'
+            modified = True
+            result['corrections'] += 1
+            result['details'].append(f'{sid}: JSON active → invalidated (DB war INVALIDATED)')
+
+        # DB DEGRADED + JSON active → JSON korrigieren
+        elif db_status == 'DEGRADED' and json_status == 'active':
+            strategy['status'] = 'degraded'
+            strategy['_sync_note'] = f'Auto-sync: DB war DEGRADED ({_now_iso()})'
+            modified = True
+            result['corrections'] += 1
+            result['details'].append(f'{sid}: JSON active → degraded (DB war DEGRADED)')
+
+        # JSON invalidated + DB ACTIVE → DB korrigieren (manuelles Override)
+        elif json_status in ('invalidated', 'blocked') and db_status == 'ACTIVE':
+            set_thesis_status(sid, 'INVALIDATED', f'Sync: JSON war {json_status}')
+            result['corrections'] += 1
+            result['details'].append(f'{sid}: DB ACTIVE → INVALIDATED (JSON war {json_status})')
+
+    # Atomic Write
+    if modified:
+        try:
+            STRATEGIES_JSON.write_text(
+                json.dumps(strategies, indent=2, ensure_ascii=False),
+                encoding='utf-8'
+            )
+        except Exception as e:
+            result['errors'].append(f'JSON-Schreib-Fehler: {e}')
+
+    # Sync-Log schreiben
+    try:
+        ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        log_line = f'[{ts}] Sync: {result["corrections"]} Korrekturen'
+        if result['details']:
+            log_line += ' | ' + '; '.join(result['details'])
+        log_line += '\n'
+        with open(SYNC_LOG, 'a', encoding='utf-8') as f:
+            f.write(log_line)
+    except Exception:
+        pass
+
+    print(f"[thesis_engine] Sync: {result['corrections']} Korrekturen, {len(result['errors'])} Fehler")
+    return result
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
@@ -567,10 +747,20 @@ if __name__ == '__main__':
         ok = invalidate_thesis(tid, reason)
         print(f"invalidate_thesis({tid}): {'OK' if ok else 'FEHLER'}")
 
+    elif '--sync' in args:
+        print("Starte Strategy/DB Sync...")
+        res = sync_strategies_and_db()
+        print(f"Korrekturen: {res['corrections']}")
+        for d in res['details']:
+            print(f"  {d}")
+        if res['errors']:
+            print(f"Fehler: {res['errors']}")
+
     else:
         print("Usage:")
         print("  python3.13 thesis_engine.py --active")
         print("  python3.13 thesis_engine.py --status S2")
         print("  python3.13 thesis_engine.py --monitor")
+        print("  python3.13 thesis_engine.py --sync")
         print("  python3.13 thesis_engine.py --degrade PS17 'Grund'")
         print("  python3.13 thesis_engine.py --invalidate PS1 'Kill-Trigger: Iran Deal'")
