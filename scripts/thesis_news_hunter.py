@@ -153,6 +153,36 @@ def _get_sector_macro_queries(strategy: dict) -> list[str]:
     return queries[:3]  # Max 3 Makro-Queries
 
 
+def _get_upcoming_event_queries() -> list[str]:
+    """
+    Liest upcoming_events.json und gibt Suchanfragen für Events
+    in den nächsten 24h zurück.
+    """
+    events_file = DATA / 'upcoming_events.json'
+    if not events_file.exists():
+        return []
+
+    try:
+        data   = json.loads(events_file.read_text())
+        events = data.get('events', [])
+        today  = datetime.now().strftime('%Y-%m-%d')
+        tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+
+        queries = []
+        for ev in events:
+            if ev.get('date', '') not in (today, tomorrow):
+                continue
+            if ev.get('impact', '') != 'high':
+                continue
+            name = ev.get('name', '')
+            if name:
+                queries.append(f'{name} preview expectations')
+
+        return queries[:3]
+    except Exception:
+        return []
+
+
 def build_search_queries(thesis_id: str, strategy: dict) -> list[str]:
     """
     Baut gezielte Suchanfragen aus der Strategie-Konfiguration.
@@ -191,6 +221,10 @@ def build_search_queries(thesis_id: str, strategy: dict) -> list[str]:
     #    (z.B. "Vance bricht Iran-Gespräche ab" → trifft PS1/Oil)
     macro_queries = _get_sector_macro_queries(strategy)
     queries.extend(macro_queries)
+
+    # 5. Event-Calendar: Suchanfragen für Events in den nächsten 24h
+    event_queries = _get_upcoming_event_queries()
+    queries.extend(event_queries)
 
     # Fallback: Thesis-Name
     if not queries:

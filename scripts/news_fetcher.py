@@ -284,6 +284,76 @@ def format_news(news_dict, max_per_source=2):
             lines.append(f"  · {item['title']}{date}")
     return '\n'.join(lines)
 
+# ── Additional Breaking News Sources ─────────────────────────────────────────
+
+EXTRA_FEEDS = {
+    'ap_topnews':    'https://feeds.apnews.com/rss/apf-topnews',
+    'ap_business':   'https://feeds.apnews.com/rss/apf-business',
+    'ap_world':      'https://feeds.apnews.com/rss/apf-intlnews',
+    'cnbc_top':      'https://www.cnbc.com/id/100003114/device/rss/rss.html',
+    'cnbc_world':    'https://www.cnbc.com/id/100727362/device/rss/rss.html',
+    'bbc_business':  'https://feeds.bbci.co.uk/news/business/rss.xml',
+    'aljazeera':     'https://www.aljazeera.com/xml/rss/all.xml',
+    'marketwatch':   'https://feeds.marketwatch.com/marketwatch/topstories/',
+    'handelsblatt':  'https://www.handelsblatt.com/contentexport/feed/top-themen',
+    'nikkei_asia':   'https://asia.nikkei.com/rss/feed/nar',
+    'ft_markets':    'https://www.ft.com/rss/home/uk',
+}
+
+def extra_news(sources=None, n=5, max_age_hours=4):
+    """
+    Fetches from additional RSS sources (AP, CNBC, BBC, Al Jazeera, etc.).
+    sources: list of keys from EXTRA_FEEDS, or None for all.
+    Returns list of {source, title, date}.
+    """
+    if sources is None:
+        sources = list(EXTRA_FEEDS.keys())
+    results = []
+    for key in sources:
+        url = EXTRA_FEEDS.get(key)
+        if not url:
+            continue
+        raw = _get(url)
+        if not raw:
+            continue
+        try:
+            root = ET.fromstring(raw)
+            count = 0
+            for item in root.findall('.//item'):
+                if count >= n:
+                    break
+                title = item.findtext('title', '').strip()
+                pub   = item.findtext('pubDate', '')
+                link  = item.findtext('link', '')
+                if not title:
+                    continue
+                age = _age_hours(pub)
+                if age is not None and age > max_age_hours:
+                    continue
+                results.append({
+                    'source': key,
+                    'title':  title,
+                    'date':   pub[:22],
+                    'url':    link,
+                })
+                count += 1
+        except Exception:
+            pass
+    return results
+
+
+def breaking_news(max_age_hours=1, n=10):
+    """
+    Fast-path: only the quickest-updating sources for breaking news.
+    AP Top, CNBC, BBC Business. max_age_hours=1 for truly fresh news.
+    """
+    return extra_news(
+        sources=['ap_topnews', 'ap_world', 'cnbc_top', 'bbc_business'],
+        n=n,
+        max_age_hours=max_age_hours,
+    )
+
+
 if __name__ == '__main__':
     news = news_for_portfolio()
     print(format_news(news))

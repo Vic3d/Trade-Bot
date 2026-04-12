@@ -199,6 +199,20 @@ def save_to_db(items):
     db.close()
     return new_count
 
+def ingest_articles(articles: list, source_key: str) -> dict:
+    """Konvertiert extra_news-Format zu news_events-Format und speichert in DB."""
+    items = []
+    for a in articles:
+        items.append({
+            'headline':     a.get('title', ''),
+            'url':          a.get('url', ''),
+            'source':       source_key,
+            'published_at': a.get('date', '')[:16],
+        })
+    new = save_to_db(items)
+    return {'inserted': new, 'total': len(items)}
+
+
 def run(verbose=True):
     all_items = []
     sources = [
@@ -218,6 +232,29 @@ def run(verbose=True):
 
     new = save_to_db(all_items)
     if verbose: print(f'\n  Gesamt: {len(all_items)} Items, {new} neu in DB gespeichert')
+
+    # Extra Sources (AP, CNBC, BBC, Al Jazeera, etc.)
+    try:
+        from news_fetcher import extra_news
+        total = {'inserted': 0}
+        extra_sources = ['ap_topnews', 'ap_business', 'ap_world', 'cnbc_top',
+                         'bbc_business', 'aljazeera', 'marketwatch']
+        for source_key in extra_sources:
+            articles = extra_news(sources=[source_key], n=8)
+            result = ingest_articles(articles, source_key)
+            total['inserted'] += result['inserted']
+        if verbose: print(f'  {"Extra Sources (AP/CNBC/BBC/AlJ/MW)":25} {total["inserted"]} neu')
+
+        # International (Handelsblatt, Nikkei Asia, FT)
+        intl_total = {'inserted': 0}
+        intl_sources = ['handelsblatt', 'nikkei_asia', 'ft_markets']
+        for source_key in intl_sources:
+            articles = extra_news(sources=[source_key], n=5)
+            result = ingest_articles(articles, source_key)
+            intl_total['inserted'] += result['inserted']
+        if verbose: print(f'  {"International (HB/Nikkei/FT)":25} {intl_total["inserted"]} neu')
+    except Exception as e:
+        if verbose: print(f'  Extra Sources FEHLER: {e}')
 
     # Alte News löschen (>14 Tage)
     db = sqlite3.connect(DB)

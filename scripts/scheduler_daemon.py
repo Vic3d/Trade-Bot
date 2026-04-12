@@ -125,8 +125,9 @@ SCHEDULE = [
     ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
     # ── Phase 6: Autonome Thesen-Entdeckung ──────────────────────────────────
-    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [6]),   # So 07:00 UTC
-    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [2]),   # Mi 07:00 UTC (mid-week)
+    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              7,  0,  [0,1,2,3,4,5,6]),  # täglich 07:00
+    # ── Event Calendar: täglich 07:30 ────────────────────────────────────────
+    ('Event Calendar',     'event_calendar.py',                [],              7,  30, None),   # täglich 07:30
     # ── Thesis News Hunter: Stündlich 09-22h — max 1h Reaktionszeit ─────────
     # --hours 2: schaut nur 2h zurück → kein Duplikat-Spam, schnelle Reaktion
     ('Thesis Hunter',      'thesis_news_hunter.py', ['--hours', '2'],  9,  0,  [0,1,2,3,4]),
@@ -143,6 +144,32 @@ SCHEDULE = [
     ('Thesis Hunter',      'thesis_news_hunter.py', ['--hours', '2'],  20, 0,  [0,1,2,3,4]),
     ('Thesis Hunter',      'thesis_news_hunter.py', ['--hours', '2'],  21, 0,  [0,1,2,3,4]),
     ('Thesis Hunter',      'thesis_news_hunter.py', ['--hours', '2'],  22, 0,  [0,1,2,3,4]),
+    # ── Broad News Scanner: Breaking News alle 30min — zero API-Kosten ───────
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              9,  0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              9,  30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              10, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              10, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              11, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              11, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              12, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              12, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              13, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              13, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              14, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              14, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              15, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              15, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              16, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              16, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              17, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              17, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              18, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              18, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              19, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              19, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              20, 0,  [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              20, 30, [0,1,2,3,4]),
+    ('Broad Scanner',      'broad_news_scanner.py',            [],              21, 0,  [0,1,2,3,4]),
     # ── Autonomous CEO: KI-Gehirn läuft alle 2h während Marktzeiten ──────────
     ('Autonomous CEO',     'autonomous_ceo.py',               [],               9,  30, [0,1,2,3,4]),  # 09:30 CET
     ('Autonomous CEO',     'autonomous_ceo.py',               [],               11, 30, [0,1,2,3,4]),  # 11:30 CET
