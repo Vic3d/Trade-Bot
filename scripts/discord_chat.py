@@ -182,16 +182,17 @@ def load_context() -> str:
 
             positions = conn.execute("""
                 SELECT ticker, strategy, entry_price, stop_price, target_price,
-                       shares, entry_date, conviction, pnl_eur
+                       shares, entry_date, conviction
                 FROM paper_portfolio WHERE status='OPEN'
                 ORDER BY entry_date DESC
             """).fetchall()
 
             closed = conn.execute("""
-                SELECT ticker, strategy, pnl_eur, pnl_pct, exit_date
+                SELECT ticker, strategy, pnl_eur, pnl_pct,
+                       COALESCE(exit_date, entry_date) as exit_date
                 FROM paper_portfolio
                 WHERE status IN ('WIN','LOSS','CLOSED')
-                ORDER BY exit_date DESC LIMIT 8
+                ORDER BY COALESCE(exit_date, entry_date) DESC LIMIT 8
             """).fetchall()
 
             conn.close()
@@ -232,8 +233,8 @@ def load_context() -> str:
             conn = sqlite3.connect(str(db_file))
             conn.row_factory = sqlite3.Row
             news = conn.execute("""
-                SELECT headline, ticker, impact_direction, strategies_affected,
-                       created_at, actual_direction, prediction_correct
+                SELECT headline, impact_direction, strategies_affected,
+                       created_at, actual_direction
                 FROM overnight_events
                 WHERE created_at >= datetime('now', '-12 hours')
                 ORDER BY created_at DESC
