@@ -93,11 +93,15 @@ def get_sector_count(conn, sector: str) -> int:
 
 
 def yahoo_price(ticker: str) -> float | None:
-    """→ live_data.get_price(). Alle Preise kommen aus einer Quelle."""
+    """→ live_data.get_price_eur(). IMMER in EUR — NOK/DKK/GBp werden konvertiert.
+    
+    Behebt Currency-Bug: EQNR.OL (NOK), NOVO-B.CO (DKK), BA.L (GBp) wurden
+    vorher in Lokalwährung gespeichert, aber in EUR verglichen → Fake-Verluste.
+    """
     import sys as _sys
     _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
-    from live_data import get_price
-    return get_price(ticker)
+    from live_data import get_price_eur
+    return get_price_eur(ticker)
 
 
 def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
@@ -559,8 +563,14 @@ def execute_paper_entry(
             'blocked_by': 'sizing_zero',
         }
 
-    # Apply cash constraint
+    # Hard Cap: max 1500 EUR pro Position (verhindert Übergewichtung)
+    MAX_POSITION_EUR = 1500.0
     position_eur = shares_from_risk * entry_price
+    if position_eur > MAX_POSITION_EUR:
+        shares_from_risk = int(MAX_POSITION_EUR / entry_price)
+        position_eur = shares_from_risk * entry_price
+
+    # Apply cash constraint
     if position_eur > free_cash - 100:
         # Scale down to available cash
         shares_from_risk = int((free_cash - 100) / entry_price)
