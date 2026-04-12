@@ -246,14 +246,19 @@ def build_context() -> str:
     except Exception:
         pass
 
-    # 7. CEO DIREKTIVE
+    # 7. CEO DIREKTIVE (inkl. Victor-Anweisungen aus Discord)
     try:
         directive_file = DATA / 'ceo_directive.json'
         if directive_file.exists():
             directive = json.loads(directive_file.read_text())
-            bias = directive.get('market_bias', directive.get('mode', '?'))
+            bias         = directive.get('market_bias', directive.get('mode', 'NEUTRAL'))
+            focus        = directive.get('focus_sector', '')
+            weekly_limit = directive.get('weekly_trade_limit', 3)
+            updated_by   = directive.get('updated_by', '')
             parts.append(f'\n--- CEO DIREKTIVE ---')
-            parts.append(f'Markt-Bias: {bias}')
+            parts.append(f'Markt-Bias: {bias} | Fokus: {focus or "alle Sektoren"} | Max Trades/Woche: {weekly_limit}')
+            if updated_by == 'albert_discord':
+                parts.append(f'⚠️ Victor-Anweisung aktiv (via Discord)')
     except Exception:
         pass
 

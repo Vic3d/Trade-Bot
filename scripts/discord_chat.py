@@ -267,7 +267,7 @@ def load_context() -> str:
 
 # ── Albert-Persona & Claude-API ───────────────────────────────────────────────
 
-ALBERT_PERSONA = """Du bist Albert, CEO & Head of Research bei TradeMind — einem algorithmischen Handelsunternehmen.
+ALBERT_PERSONA = """Du bist Albert, autonomer CEO & Head of Research bei TradeMind.
 
 PERSÖNLICHKEIT:
 - Präzise, direkt, datengetrieben. Kein Bullshit.
@@ -280,14 +280,9 @@ DEINE FÄHIGKEITEN:
 - Analyse offener Positionen (PnL, Stop, Target, Conviction)
 - Marktregime-Einschätzung und deren Implikationen
 - Geopolitische Einflüsse auf Sektoren und Strategien
-- Risikomanagement-Empfehlungen
+- Risikomanagement und Exits
 - Strategiebegründungen und Backtesting-Insights
 - Performance-Analyse und Lernzyklen
-
-EINSCHRÄNKUNGEN:
-- Du kannst KEINE Trades direkt ausführen — du gibst Empfehlungen, was zu tun wäre.
-- Wenn du Handlungen empfiehlst, sagst du explizit "Ich würde..." oder "Empfehlung:".
-- Du referenzierst echte Daten aus dem Kontext (konkrete PnL-Zahlen, Regime-Status, etc.).
 
 KOMMUNIKATIONSSTIL:
 - Kurze, präzise Sätze. Keine Füllwörter.
@@ -295,6 +290,32 @@ KOMMUNIKATIONSSTIL:
 - Bei Positionen: Ticker, aktueller Status, Risiko in einem Satz.
 - Bei Marktanalyse: Regime → These → Konsequenz.
 - Emojis nur sparsam, wenn sie Signal-Wert haben (z.B. 🔴 für kritisches Risiko).
+
+PERSISTENZ — WICHTIG:
+Wenn Victor dir eine Anweisung gibt oder du eine Entscheidung triffst, die das System
+dauerhaft ändern soll, hängst du am ENDE deiner Antwort unsichtbare SAVE-Marker an.
+Diese werden automatisch verarbeitet und gespeichert — Victor sieht sie nicht.
+
+SAVE-Marker Formate (NUR am Ende, eine pro Zeile):
+[SAVE:bias:BULLISH]          → Markt-Bias setzen (BULLISH/NEUTRAL/BEARISH/HALT)
+[SAVE:bias:DEFENSIVE]        → Defensiv-Modus (nur Thesis-Plays)
+[SAVE:focus:OIL]             → Sektor-Fokus für nächste Trades
+[SAVE:strategy_pause:PS1]    → Strategie pausieren
+[SAVE:strategy_resume:PS1]   → Strategie wieder aktivieren
+[SAVE:strategy_conviction:PS1:3]  → Conviction-Level setzen (1-5)
+[SAVE:exit:TICKER]           → Position sofort schließen
+[SAVE:weekly_limit:2]        → Max Trades pro Woche ändern
+[SAVE:note:Freitext]         → Notiz ins Daily-Log
+
+Beispiele wann du SAVE-Marker setzt:
+- Victor: "Sei diese Woche konservativer" → [SAVE:bias:DEFENSIVE] + [SAVE:weekly_limit:2]
+- Victor: "Fokus auf Rüstungsaktien" → [SAVE:focus:DEFENSE]
+- Victor: "Pausiere PS3" → [SAVE:strategy_pause:PS3]
+- Victor: "Exit OXY sofort" → [SAVE:exit:OXY]
+- Victor: "Erhöhe Conviction für PS1" → [SAVE:strategy_conviction:PS1:4]
+
+Setze SAVE-Marker NUR wenn Victor explizit eine Änderung will oder du eine klare
+Entscheidung triffst. Bei reinen Fragen/Analysen keine Marker.
 """
 
 
@@ -339,6 +360,187 @@ def ask_albert(message: str) -> str:
             f'⚠️ **Albert temporär nicht verfügbar** — API-Fehler: {error_str}\n'
             f'Bitte in wenigen Minuten erneut versuchen.'
         )
+
+
+# ── Persistenz: SAVE-Marker parsen & ausführen ───────────────────────────────
+
+def _strip_save_markers(response: str) -> str:
+    """Entfernt [SAVE:...] Marker aus der Antwort bevor sie an Victor gesendet wird."""
+    import re
+    return re.sub(r'\[SAVE:[^\]]+\]\n?', '', response).strip()
+
+
+def _parse_and_persist(response: str) -> list[str]:
+    """
+    Parst [SAVE:...] Marker aus Alberts Antwort und führt sie aus.
+    Gibt Liste der ausgeführten Aktionen zurück (für Logging).
+    """
+    import re
+    markers = re.findall(r'\[SAVE:([^\]]+)\]', response)
+    if not markers:
+        return []
+
+    actions = []
+    for marker in markers:
+        parts = marker.split(':')
+        action = parts[0].lower() if parts else ''
+
+        try:
+            # ── Markt-Bias ────────────────────────────────────────────────
+            if action == 'bias' and len(parts) >= 2:
+                bias = parts[1].upper()
+                directive_file = DATA / 'ceo_directive.json'
+                directive = {}
+                if directive_file.exists():
+                    try:
+                        directive = json.loads(directive_file.read_text())
+                    except Exception:
+                        pass
+                old_bias = directive.get('market_bias', 'NEUTRAL')
+                directive['market_bias'] = bias
+                directive['updated_at']  = datetime.now().isoformat()
+                directive['updated_by']  = 'albert_discord'
+                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                actions.append(f'bias: {old_bias} → {bias}')
+
+            # ── Sektor-Fokus ──────────────────────────────────────────────
+            elif action == 'focus' and len(parts) >= 2:
+                focus = parts[1].upper()
+                directive_file = DATA / 'ceo_directive.json'
+                directive = {}
+                if directive_file.exists():
+                    try:
+                        directive = json.loads(directive_file.read_text())
+                    except Exception:
+                        pass
+                directive['focus_sector'] = focus
+                directive['updated_at']   = datetime.now().isoformat()
+                directive['updated_by']   = 'albert_discord'
+                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                actions.append(f'focus_sector → {focus}')
+
+            # ── Strategie pausieren ───────────────────────────────────────
+            elif action == 'strategy_pause' and len(parts) >= 2:
+                sid = parts[1].upper()
+                strats_file = DATA / 'strategies.json'
+                if strats_file.exists():
+                    strats = json.loads(strats_file.read_text(encoding='utf-8'))
+                    if sid in strats:
+                        strats[sid]['status'] = 'paused'
+                        strats[sid]['paused_by'] = 'albert_discord'
+                        strats[sid]['paused_at'] = datetime.now().isoformat()
+                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        actions.append(f'strategy_pause: {sid}')
+
+            # ── Strategie reaktivieren ────────────────────────────────────
+            elif action == 'strategy_resume' and len(parts) >= 2:
+                sid = parts[1].upper()
+                strats_file = DATA / 'strategies.json'
+                if strats_file.exists():
+                    strats = json.loads(strats_file.read_text(encoding='utf-8'))
+                    if sid in strats:
+                        strats[sid]['status'] = 'active'
+                        strats[sid]['resumed_at'] = datetime.now().isoformat()
+                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        actions.append(f'strategy_resume: {sid}')
+
+            # ── Conviction ändern ─────────────────────────────────────────
+            elif action == 'strategy_conviction' and len(parts) >= 3:
+                sid        = parts[1].upper()
+                conviction = int(parts[2])
+                strats_file = DATA / 'strategies.json'
+                if strats_file.exists():
+                    strats = json.loads(strats_file.read_text(encoding='utf-8'))
+                    if sid in strats:
+                        old_conv = strats[sid].get('conviction', '?')
+                        strats[sid]['conviction'] = conviction
+                        if 'genesis' not in strats[sid]:
+                            strats[sid]['genesis'] = {}
+                        history = strats[sid]['genesis'].get('feedback_history', [])
+                        history.append({
+                            'date':           datetime.now().strftime('%Y-%m-%d'),
+                            'old_conviction': old_conv,
+                            'new_conviction': conviction,
+                            'source':         'albert_discord',
+                        })
+                        strats[sid]['genesis']['feedback_history'] = history[-20:]
+                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        actions.append(f'conviction: {sid} {old_conv}→{conviction}')
+
+            # ── Position sofort schließen ─────────────────────────────────
+            elif action == 'exit' and len(parts) >= 2:
+                ticker = parts[1].upper()
+                try:
+                    import sys as _sys
+                    _sys.path.insert(0, str(SCRIPTS / 'execution'))
+                    # Aktuellen Preis holen und Position schließen
+                    import urllib.request as _req
+                    import json as _json
+                    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=1d'
+                    req = _req.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                    with _req.urlopen(req, timeout=6) as r:
+                        data = _json.load(r)
+                    price = data['chart']['result'][0]['meta'].get('regularMarketPrice')
+                    if price:
+                        db_path = DATA / 'trading.db'
+                        conn = sqlite3.connect(str(db_path))
+                        pos = conn.execute(
+                            "SELECT id, entry_price, shares FROM paper_portfolio "
+                            "WHERE ticker=? AND status='OPEN' LIMIT 1",
+                            (ticker,)
+                        ).fetchone()
+                        if pos:
+                            pnl = (price - pos[1]) * pos[2]
+                            now_str = datetime.now().isoformat()
+                            conn.execute("""
+                                UPDATE paper_portfolio
+                                SET status='CLOSED', exit_price=?, exit_date=?,
+                                    pnl_eur=?, notes=COALESCE(notes,'')||?
+                                WHERE id=?
+                            """, (price, now_str, pnl,
+                                  f'\n[ALBERT DISCORD EXIT] Victor-Anweisung', pos[0]))
+                            conn.execute(
+                                "UPDATE paper_fund SET value=value+? WHERE key='current_cash' OR key='cash'",
+                                (price * pos[2] - 1.0,)
+                            )
+                            conn.commit()
+                            actions.append(f'exit: {ticker} @ {price:.2f}€ P&L={pnl:+.0f}€')
+                        conn.close()
+                except Exception as e:
+                    actions.append(f'exit_fehler: {ticker} ({e})')
+
+            # ── Weekly Trade Limit ────────────────────────────────────────
+            elif action == 'weekly_limit' and len(parts) >= 2:
+                limit = int(parts[1])
+                directive_file = DATA / 'ceo_directive.json'
+                directive = {}
+                if directive_file.exists():
+                    try:
+                        directive = json.loads(directive_file.read_text())
+                    except Exception:
+                        pass
+                directive['weekly_trade_limit'] = limit
+                directive['updated_at'] = datetime.now().isoformat()
+                directive['updated_by'] = 'albert_discord'
+                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                actions.append(f'weekly_limit → {limit}')
+
+            # ── Notiz ins Daily-Log ───────────────────────────────────────
+            elif action == 'note' and len(parts) >= 2:
+                note_text = ':'.join(parts[1:])
+                daily_log = MEMORY / f"{datetime.now().strftime('%Y-%m-%d')}.md"
+                entry = f"\n## {datetime.now().strftime('%H:%M')} — Albert-Entscheidung\n\n{note_text}\n"
+                if daily_log.exists():
+                    daily_log.write_text(daily_log.read_text() + entry)
+                actions.append(f'note gespeichert')
+
+        except Exception as e:
+            print(f'[Albert] SAVE-Marker Fehler ({marker}): {e}', flush=True)
+
+    if actions:
+        print(f'[Albert] Persistiert: {", ".join(actions)}', flush=True)
+
+    return actions
 
 
 # ── Phase 6: Thesis Stop (manual override) ───────────────────────────────────
@@ -687,6 +889,12 @@ def poll_once() -> None:
 
         # Antwort von Albert holen
         response = ask_albert(content)
+
+        # SAVE-Marker parsen & persistieren (bevor sie aus der Antwort entfernt werden)
+        _parse_and_persist(response)
+
+        # SAVE-Marker aus Antwort entfernen bevor sie Victor angezeigt wird
+        response = _strip_save_markers(response)
 
         # Antwort senden (bei langen Antworten in Chunks aufteilen)
         if len(response) <= 2000:
