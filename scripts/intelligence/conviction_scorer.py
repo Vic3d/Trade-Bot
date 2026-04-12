@@ -664,6 +664,54 @@ def calculate_conviction(
     # ── Factor 5: Priced-In Check ─────────────────────────────────────────
     priced_in_mod, priced_in_reason = _score_priced_in(ticker, entry_price)
 
+    # ── Hard Block: Downtrend / Falling Knife ────────────────────────────
+    # Verhindert Käufe in fallende Aktien ("Catching a Falling Knife").
+    # Regel: Kein Long-Eintrag wenn Preis UNTER EMA50 UND 3-Monats-Trend negativ.
+    if entry_price and ema50 and entry_price < ema50:
+        try:
+            conn = get_db()
+            rows_3m = conn.execute(
+                "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 63",
+                (ticker,)
+            ).fetchall()
+            conn.close()
+            closes_3m = [r['close'] for r in rows_3m if r['close'] is not None]
+            if len(closes_3m) >= 20:
+                trend_3m = (closes_3m[0] - closes_3m[-1]) / closes_3m[-1]
+                if trend_3m < -0.10:  # >10% gefallen in 3 Monaten → Downtrend
+                    block_msg = (
+                        f'BLOCK: Downtrend — Preis {entry_price:.2f} unter EMA50 {ema50:.2f} '
+                        f'UND 3M-Trend {trend_3m*100:.1f}% (Falling Knife)'
+                    )
+                    return {
+                        'score': 0,
+                        'recommendation': 'BLOCKED',
+                        'block_reason': block_msg,
+                        'entry_allowed': False,
+                        'factors': {
+                            'thesis_strength':    thesis_score,
+                            'technical_alignment': tech_score,
+                            'risk_reward_quality': rr_score,
+                            'market_context':     mkt_score,
+                            'priced_in_modifier': priced_in_mod,
+                        },
+                        'factor_reasons': {
+                            'thesis_strength':    thesis_reason,
+                            'technical_alignment': tech_reason,
+                            'risk_reward_quality': rr_reason,
+                            'market_context':     mkt_reason,
+                            'priced_in_modifier': priced_in_reason,
+                            'downtrend_block':    block_msg,
+                        },
+                        'position_sizing': 'SKIP',
+                        'vix': None,
+                        'regime': None,
+                        'vix_block': False,
+                        'vix_block_reason': None,
+                    }
+        except Exception:
+            pass  # Kein Datenblock wenn Daten fehlen — lieber zu wenig als zu viel sperren
+
     # Hard block: thesis already fully priced in (within 5% of 52W high)
     if priced_in_mod <= -20:
         return {
