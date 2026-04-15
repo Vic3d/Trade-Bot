@@ -105,6 +105,47 @@ DEFAULT_TICKERS = [
 # Google News RSS base
 GNEWS_RSS = "https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en"
 
+# Domains protected by DataDome → fetch via Google Cache instead
+CACHE_DOMAINS = {'reuters.com', 'cnbc.com', 'wsj.com'}
+
+# Reuters RSS feeds — these return DIRECT reuters.com article URLs (no redirect)
+REUTERS_RSS_FEEDS = [
+    "https://feeds.reuters.com/reuters/topNews",
+    "https://feeds.reuters.com/reuters/businessNews",
+    "https://feeds.reuters.com/reuters/technologyNews",
+    "https://feeds.reuters.com/reuters/companyNews",
+]
+
+# Thematic keyword → ticker mapping (for headline-only enrichment)
+KEYWORD_TICKER_MAP: dict[str, list[str]] = {
+    'hormuz': ['OXY', 'FRO', 'DHT', 'EURN'],
+    'iran': ['OXY', 'FRO', 'DHT'],
+    'oil': ['OXY', 'XOM', 'CVX', 'TTE.PA', 'EQNR', 'SHEL.L'],
+    'tanker': ['FRO', 'DHT', 'EURN', 'TK'],
+    'lng': ['EQNR', 'CVX', 'TTE.PA'],
+    'crude': ['OXY', 'XOM', 'CVX'],
+    'opec': ['OXY', 'XOM', 'CVX', 'EQNR'],
+    'ruestung': ['RHM.DE', 'AIR.PA', 'LMT', 'RTX'],
+    'verteidigung': ['RHM.DE', 'AIR.PA', 'LMT', 'RTX'],
+    'defense': ['RHM.DE', 'LMT', 'RTX', 'NOC', 'GD'],
+    'ukraine': ['RHM.DE', 'AIR.PA'],
+    'halbleiter': ['NVDA', 'AMD', 'INTC', 'ASML', 'IFX.DE'],
+    'semiconductor': ['NVDA', 'AMD', 'INTC', 'ASML'],
+    'chip': ['NVDA', 'AMD', 'INTC', 'ASML', 'IFX.DE'],
+    'ki': ['NVDA', 'MSFT', 'GOOGL', 'META'],
+    'artificial intelligence': ['NVDA', 'MSFT', 'GOOGL', 'META', 'AMD'],
+    'pharma': ['NVO', 'LLY', 'ABBV', 'PFE', 'BAYN.DE'],
+    'trump': ['OXY', 'NVO', 'LLY'],
+    'zoll': ['BMW.DE', 'MBG.DE', 'VOW3.DE'],
+    'tariff': ['BMW.DE', 'MBG.DE', 'TSLA'],
+    'bitcoin': ['COIN', 'MSTR', 'MARA'],
+    'crypto': ['COIN', 'MSTR', 'MARA'],
+    'china': ['KWEB', 'BABA', 'JD', 'NIO'],
+    'fed': ['JPM', 'BAC', 'GS'],
+    'zinsen': ['JPM', 'BAC', 'ALV.DE'],
+    'interest rate': ['JPM', 'BAC', 'GS'],
+}
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -450,9 +491,16 @@ def fetch_stealth(url: str, ticker_list: list[str] = None) -> dict:
 def _auto_fetch(url: str, ticker_list: list[str] = None) -> dict:
     """
     Choose tier based on domain whitelist, auto-fallback to Tier 2 if Tier 1 blocked.
+    DataDome-protected sites (reuters.com, cnbc.com, wsj.com) go via Google Cache (Tier 3).
     """
     parsed = urlparse(url)
     domain = parsed.netloc.replace("www.", "")
+
+    # Tier 3: Google Cache for DataDome-protected domains
+    for cache_domain in CACHE_DOMAINS:
+        if domain.endswith(cache_domain):
+            return fetch_via_google_cache(url, ticker_list=ticker_list)
+
     # Match against known domain entries (check if any key is suffix of domain)
     preferred = 1
     for known_domain, tier in DOMAINS.items():
@@ -598,12 +646,248 @@ def search_news(
 
 
 # ---------------------------------------------------------------------------
+# Keyword-based ticker enrichment
+# ---------------------------------------------------------------------------
+
+def _enrich_tickers_from_keywords(text: str, existing: list[str]) -> list[str]:
+    """Adds tickers found via KEYWORD_TICKER_MAP to an existing ticker list."""
+    found = set(existing)
+    text_lower = text.lower()
+    for keyword, tickers in KEYWORD_TICKER_MAP.items():
+        if keyword in text_lower:
+            found.update(tickers)
+    return sorted(found)
+
+
+# ---------------------------------------------------------------------------
+# Tier 3: Google Cache (for DataDome-protected sites like Reuters/CNBC)
+# ---------------------------------------------------------------------------
+
+def fetch_via_google_cache(url: str, ticker_list: list[str] = None) -> dict:
+    """
+    Fetch a Reuters/CNBC/WSJ article via Google's cached copy.
+    Google Cache bypasses DataDome because Google's crawler is whitelisted.
+
+    Only works for URLs that Google has already indexed.
+    Falls back to empty dict if cache miss.
+    """
+    cached = get_cached(url)
+    if cached:
+        return cached
+
+    if not HAS_CURL_CFFI:
+        log.error("curl_cffi not available for Google Cache fetch of %s", url)
+        return {}
+
+    cache_url = "https://webcache.googleusercontent.com/search?q=cache:" + url
+    _rate_limit("webcache.googleusercontent.com")
+
+    try:
+        resp = cffi_requests.get(
+            cache_url,
+            impersonate="chrome124",
+            headers={
+                "User-Agent": _random_ua(),
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": "https://www.google.com/",
+            },
+            timeout=20,
+            allow_redirects=True,
+        )
+
+        if resp.status_code != 200:
+            log.warning("Google Cache HTTP %s for %s", resp.status_code, url)
+            return {}
+
+        html = resp.text
+        if len(html) < 1000:
+            log.warning("Google Cache: response too short (%d bytes) for %s", len(html), url)
+            return {}
+
+        title = _extract_title(html)
+        text = _extract_text(html)
+        published = _extract_published(html)
+
+        # Strip Google Cache banner from extracted text
+        if "This is Google's cache" in text:
+            # Remove everything up to and including the banner line
+            for sep in ["This is Google's cache", "It is a snapshot"]:
+                idx = text.find(sep)
+                if idx != -1:
+                    # Find next paragraph after banner
+                    next_nl = text.find("\n", idx + 100)
+                    if next_nl != -1:
+                        text = text[next_nl:].strip()
+                    break
+
+        tickers_found = find_tickers(text + " " + title, ticker_list)
+        tickers_found = _enrich_tickers_from_keywords(text + " " + title, tickers_found)
+
+        parsed = urlparse(url)
+        domain = parsed.netloc.replace("www.", "")
+
+        article = {
+            "url": url,
+            "title": title,
+            "text": text[:3000],  # Cap at 3KB for DB efficiency
+            "published": published,
+            "source": domain,
+            "fetched_at": datetime.now(timezone.utc).isoformat(),
+            "tickers_found": tickers_found,
+            "via_cache": True,
+        }
+        _save_cache(article)
+        log.info("Google Cache OK: %d chars for %s — tickers: %s", len(text), url, tickers_found)
+        return article
+
+    except Exception as exc:
+        log.error("fetch_via_google_cache(%s): %s", url, exc)
+        return {}
+
+
+# ---------------------------------------------------------------------------
+# Reuters RSS — direct article URLs (bypasses Google News redirect problem)
+# ---------------------------------------------------------------------------
+
+def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> list[dict]:
+    """
+    Fetch Reuters' own RSS feeds — these return direct reuters.com article URLs
+    which can then be fetched via Google Cache.
+
+    Unlike Google News RSS (which gives Google-redirect URLs blocked by consent.google.com),
+    Reuters' own RSS gives clean direct URLs.
+    """
+    import xml.etree.ElementTree as ET
+
+    all_items: list[dict] = []
+    seen_urls: set[str] = set()
+
+    for rss_url in REUTERS_RSS_FEEDS:
+        if len(all_items) >= max_items:
+            break
+        try:
+            _rate_limit("feeds.reuters.com")
+            if HAS_CURL_CFFI:
+                resp = cffi_requests.get(
+                    rss_url,
+                    impersonate="chrome124",
+                    headers={"User-Agent": _random_ua(), "Accept": "application/rss+xml,application/xml,text/xml"},
+                    timeout=15,
+                )
+                rss_text = resp.text
+            else:
+                import urllib.request
+                with urllib.request.urlopen(rss_url, timeout=15) as r:
+                    rss_text = r.read().decode("utf-8", errors="replace")
+
+            if not rss_text or "<item>" not in rss_text:
+                log.warning("Reuters RSS empty or no items: %s", rss_url)
+                continue
+
+            try:
+                root = ET.fromstring(rss_text)
+            except ET.ParseError as exc:
+                log.error("Reuters RSS parse error (%s): %s", rss_url, exc)
+                continue
+
+            cutoff = datetime.now(timezone.utc) - timedelta(days=3)
+
+            for item in root.iter("item"):
+                if len(all_items) >= max_items:
+                    break
+
+                title_el = item.find("title")
+                link_el = item.find("link")
+                pub_el = item.find("pubDate")
+                desc_el = item.find("description")
+
+                title = title_el.text.strip() if title_el is not None and title_el.text else ""
+                link = link_el.text.strip() if link_el is not None and link_el.text else ""
+                pub_raw = pub_el.text.strip() if pub_el is not None and pub_el.text else ""
+                desc_raw = desc_el.text or "" if desc_el is not None else ""
+
+                if not link or link in seen_urls:
+                    continue
+                # Only process direct reuters.com URLs
+                if "reuters.com" not in link:
+                    continue
+                seen_urls.add(link)
+
+                # Parse publish date
+                pub_dt = None
+                for fmt in ("%a, %d %b %Y %H:%M:%S %z", "%Y-%m-%dT%H:%M:%SZ"):
+                    try:
+                        pub_dt = datetime.strptime(pub_raw, fmt)
+                        if pub_dt.tzinfo is None:
+                            pub_dt = pub_dt.replace(tzinfo=timezone.utc)
+                        break
+                    except ValueError:
+                        continue
+
+                if pub_dt and pub_dt < cutoff:
+                    continue
+
+                # Clean description HTML
+                desc_clean = re.sub(r"<[^>]+>", " ", desc_raw).strip()[:500]
+
+                # Quick ticker scan of title + description
+                tickers_in_title = find_tickers(title + " " + desc_clean, ticker_list)
+                tickers_in_title = _enrich_tickers_from_keywords(
+                    title + " " + desc_clean, tickers_in_title
+                )
+
+                # Fetch full article via Google Cache
+                article = fetch_via_google_cache(link, ticker_list=ticker_list)
+                if not article:
+                    # Fallback: headline-only entry
+                    article = {
+                        "url": link,
+                        "title": title,
+                        "text": desc_clean,
+                        "published": pub_dt.isoformat() if pub_dt else pub_raw,
+                        "source": "reuters.com",
+                        "fetched_at": datetime.now(timezone.utc).isoformat(),
+                        "tickers_found": tickers_in_title,
+                    }
+                else:
+                    # Merge in RSS metadata if article fetch succeeded
+                    if not article.get("title"):
+                        article["title"] = title
+                    if not article.get("published") and pub_dt:
+                        article["published"] = pub_dt.isoformat()
+                    # Merge tickers from both headline scan and full text
+                    merged = list(set(article.get("tickers_found", []) + tickers_in_title))
+                    article["tickers_found"] = sorted(merged)
+
+                all_items.append(article)
+
+        except Exception as exc:
+            log.error("fetch_reuters_rss (%s): %s", rss_url, exc)
+            continue
+
+    log.info("fetch_reuters_rss: %d items from %d feeds", len(all_items), len(REUTERS_RSS_FEEDS))
+    return all_items
+
+
+# ---------------------------------------------------------------------------
 # Module self-test
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    import sys
     logging.basicConfig(level=logging.DEBUG)
-    print("Testing search_news for 'NVIDIA earnings' ...")
-    arts = search_news("NVIDIA earnings", tickers=["NVDA"], days=7, max_results=5)
-    for a in arts:
-        print(f"  [{a.get('published', '?')}] {a.get('title', '(no title)')} — tickers: {a.get('tickers_found')}")
+
+    if "--reuters" in sys.argv:
+        print("\n=== Testing Reuters RSS + Google Cache ===")
+        items = fetch_reuters_rss(max_items=5)
+        for a in items:
+            text_preview = (a.get('text') or '')[:120].replace('\n', ' ')
+            print(f"  [{a.get('published', '?')[:10]}] {a.get('title', '(no title)')[:80]}")
+            print(f"    Tickers: {a.get('tickers_found')} | Text: {text_preview or '(empty)'}...")
+            print()
+    else:
+        print("Testing search_news for 'NVIDIA earnings' ...")
+        arts = search_news("NVIDIA earnings", tickers=["NVDA"], days=7, max_results=5)
+        for a in arts:
+            print(f"  [{a.get('published', '?')}] {a.get('title', '(no title)')} — tickers: {a.get('tickers_found')}")
+        print("\nTip: run with --reuters to test Reuters RSS feed")
