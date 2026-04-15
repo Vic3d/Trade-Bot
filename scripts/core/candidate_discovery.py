@@ -63,31 +63,103 @@ CATALYST_KEYWORDS: list[str] = [
 
 # ─── Ticker → (Sektor, Börse) ─────────────────────────────────────────────────
 TICKER_META: dict[str, tuple[str, str]] = {
+    # US Technology
     'NVDA':     ('Technology',  'US'),
     'MU':       ('Technology',  'US'),
-    'RKLB':     ('Space',       'US'),
-    'ASTS':     ('Space',       'US'),
     'MRVL':     ('Technology',  'US'),
     'ADBE':     ('Technology',  'US'),
     'ADSK':     ('Technology',  'US'),
-    'BE':       ('CleanEnergy', 'US'),
+    'MSFT':     ('Technology',  'US'),
+    'AAPL':     ('Technology',  'US'),
+    'GOOGL':    ('Technology',  'US'),
+    'META':     ('Technology',  'US'),
+    'AMZN':     ('Technology',  'US'),
+    'ORCL':     ('Technology',  'US'),
+    'CRM':      ('Technology',  'US'),
+    'PLTR':     ('Technology',  'US'),
+    'SNOW':     ('Technology',  'US'),
+    # US Space / Defense
+    'RKLB':     ('Space',       'US'),
+    'ASTS':     ('Space',       'US'),
+    'LMT':      ('Defense',     'US'),
+    'RTX':      ('Defense',     'US'),
+    'NOC':      ('Defense',     'US'),
+    'BA':       ('Defense',     'US'),
+    # US Energy / Oil
     'OXY':      ('Energy',      'US'),
+    'XOM':      ('Energy',      'US'),
+    'CVX':      ('Energy',      'US'),
+    'PSX':      ('Energy',      'US'),
+    'DINO':     ('Energy',      'US'),
+    'MPC':      ('Energy',      'US'),
+    # US Tanker
     'FRO':      ('Tanker',      'US'),
     'DHT':      ('Tanker',      'US'),
+    'EURN':     ('Tanker',      'US'),
+    'TK':       ('Tanker',      'US'),
+    # US Finance
+    'JPM':      ('Finance',     'US'),
+    'GS':       ('Finance',     'US'),
+    'MS':       ('Finance',     'US'),
+    'BAC':      ('Finance',     'US'),
+    # US Clean Energy
+    'BE':       ('CleanEnergy', 'US'),
+    'FSLR':     ('CleanEnergy', 'US'),
+    'ENPH':     ('CleanEnergy', 'US'),
+    # US Biotech / Pharma
+    'NVO':      ('Pharma',      'US'),
+    'LLY':      ('Pharma',      'US'),
+    'PFE':      ('Pharma',      'US'),
+    'UNH':      ('Healthcare',  'US'),
+    # Frankfurt / XETRA
     'SIE.DE':   ('Industry',    'DE'),
     'SAP.DE':   ('Technology',  'DE'),
     'RHM.DE':   ('Defense',     'DE'),
     'ALV.DE':   ('Finance',     'DE'),
     'BMW.DE':   ('Auto',        'DE'),
-    'ASML.AS':  ('Technology',  'EU'),
-    'MC.PA':    ('Luxury',      'EU'),
+    'MUV2.DE':  ('Finance',     'DE'),
+    'BAS.DE':   ('Chemicals',   'DE'),
+    'IFX.DE':   ('Technology',  'DE'),
+    'DTE.DE':   ('Telecom',     'DE'),
+    'VOW3.DE':  ('Auto',        'DE'),
+    'MBG.DE':   ('Auto',        'DE'),
+    'ADS.DE':   ('Consumer',    'DE'),
+    'DBK.DE':   ('Finance',     'DE'),
+    'HEN3.DE':  ('Consumer',    'DE'),
+    # Euronext Paris / Amsterdam
     'AIR.PA':   ('Defense',     'EU'),
+    'MC.PA':    ('Luxury',      'EU'),
+    'BNP.PA':   ('Finance',     'EU'),
+    'SAN.PA':   ('Finance',     'EU'),
+    'TTE.PA':   ('Energy',      'EU'),
+    'OR.PA':    ('Consumer',    'EU'),
+    'ASML.AS':  ('Technology',  'EU'),
+    'PHIA.AS':  ('Technology',  'EU'),
+    # London
     'SHEL.L':   ('Energy',      'UK'),
     'AZN.L':    ('Pharma',      'UK'),
+    'BP.L':     ('Energy',      'UK'),
+    'HSBA.L':   ('Finance',     'UK'),
+    'VOD.L':    ('Telecom',     'UK'),
+    'RIO.L':    ('Mining',      'UK'),
+    # Norway
+    'EQNR':     ('Energy',      'NO'),
+    # Asia — Japan
     '7203.T':   ('Auto',        'JP'),
     '6758.T':   ('Technology',  'JP'),
+    '9984.T':   ('Technology',  'JP'),
+    '8306.T':   ('Finance',     'JP'),
+    # Asia — Hong Kong / China
     '9988.HK':  ('Technology',  'HK'),
     '0700.HK':  ('Technology',  'HK'),
+    '9999.HK':  ('Technology',  'HK'),
+    '2318.HK':  ('Finance',     'HK'),
+    # Canada
+    'SHOP.TO':  ('Technology',  'CA'),
+    'CNQ.TO':   ('Energy',      'CA'),
+    # Australia
+    'BHP.AX':   ('Mining',      'AU'),
+    'CBA.AX':   ('Finance',     'AU'),
 }
 
 

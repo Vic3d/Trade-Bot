@@ -547,6 +547,37 @@ def get_daily_intel_summary() -> str:
 # Module self-test
 # ---------------------------------------------------------------------------
 
+
+
+def get_db() -> 'sqlite3.Connection':
+    """Öffentlicher Alias auf _get_conn() — für Import durch discord_chat."""
+    return _get_conn()
+
+
+def store_manual_transcript(source: str, text: str, tickers: list, setups: list, channel: str = 'manual') -> None:
+    """Store a manually provided transcript (e.g. from Victor via Discord) in intelligence.db."""
+    import json as _json
+    from datetime import datetime as _dt
+    db = _get_conn()
+    db.execute(
+        """INSERT OR IGNORE INTO trader_signals
+           (source, video_id, fetched_at, channel, tickers_mentioned, setups, raw_text, summary)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (
+            source,
+            f"manual_{_dt.now().strftime('%Y%m%d_%H%M%S')}",
+            _dt.now().isoformat(),
+            channel,
+            _json.dumps(tickers),
+            _json.dumps(setups),
+            text[:8000],
+            f"Manuelles Transkript: {len(tickers)} Ticker, {len(setups)} Setups"
+        )
+    )
+    db.commit()
+    db.close()
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     print("Running all sources ...")

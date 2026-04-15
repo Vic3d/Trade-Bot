@@ -1096,6 +1096,40 @@ def poll_once() -> None:
                 _save_state(state)
                 continue
 
+        # ── Transkript-Erkennung ──────────────────────────────────────────
+        # Lange Nachrichten (>400 Zeichen) mit Trading-Keywords = YouTube/Video-Transkript
+        # Werden automatisch in intelligence.db gespeichert und von Albert analysiert
+        _transcript_keywords = ('kanal', 'willkommen', 'aktien', 'depot', 'chart',
+                                 'einstieg', 'ausbruch', 'setups', 'tagelinie', 'stopp',
+                                 'channel', 'watchlist', 'konsolidierung', 'ausbruch')
+        _is_transcript = (
+            len(content) > 400 and
+            sum(1 for kw in _transcript_keywords if kw in content_lower) >= 3
+        )
+        if _is_transcript:
+            try:
+                import sys as _sys
+                _core = str(WS / 'scripts' / 'core')
+                if _core not in _sys.path:
+                    _sys.path.insert(0, _core)
+                from trader_intel import store_manual_transcript, extract_tickers, extract_setups, get_db as _get_intel_db
+                tickers_found = extract_tickers(content)
+                setups_found  = extract_setups(content, tickers_found)
+                store_manual_transcript(
+                    source='victor_discord',
+                    text=content,
+                    tickers=tickers_found,
+                    setups=setups_found,
+                )
+                _ticker_list = ', '.join(tickers_found[:8]) if tickers_found else 'keine erkannt'
+                _send_message(
+                    f'📊 Transkript gespeichert. Erkannte Ticker: {_ticker_list}. '
+                    f'{len(setups_found)} Setups extrahiert. Fließt in nächsten CEO-Kontext ein.',
+                    CHANNEL_ID
+                )
+            except Exception as _te:
+                pass  # Transkript-Speicherung nie crashen lassen
+
         # ── Phase 4: Thesis suggestion intake ────────────────────────────
         # If Victor writes "These:", "Thesis:", or "Strategie:" → parse as thesis
         is_thesis_suggestion = any(
