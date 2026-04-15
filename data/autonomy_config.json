@@ -1,0 +1,21 @@
+{
+  "mode": "SHADOW",
+  "phase": "17",
+  "phase_description": "Shadow mode - Dry-run monitoring. Pipeline runs end-to-end but proposal_executor does not actually trade. All decisions logged to data/proposal_executor_log.json for divergence analysis vs human decisions.",
+  "shadow_started": "2026-04-15",
+  "shadow_target_days": 14,
+  "phase_17_exit_criteria": "If divergence < 10% over 14 days → promote to LIVE (Phase 18)",
+  "modes": {
+    "OFF": "Pipeline does nothing.",
+    "SHADOW": "Pipeline runs, executor logs intent but does NOT trade. Guards + verdicts still enforced on paper (checked before shadow-log).",
+    "LIVE": "Full autonomy. Proposal executor executes real paper trades. Guard 0c2 (Deep Dive Verdict) + weekly trade limit still apply."
+  },
+  "switches": {
+    "auto_deepdive_enabled": true,
+    "proposal_executor_enabled": true,
+    "position_watchdog_enabled": true,
+    "signal_learning_enabled": true,
+    "pipeline_orchestrator_enabled": true
+  },
+  "updated_at": "2026-04-15T12:00:00"
+}

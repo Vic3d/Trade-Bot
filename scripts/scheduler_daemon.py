@@ -84,6 +84,27 @@ SCHEDULE = [
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                15, 30, [0,1,2,3,4]),  # Phase 11 — US Pre-Open Update
+    # ── Phase 12: Auto Deep Dive (nightly verdict refresh, rule-based, no LLM) ──
+    ('Auto Deep Dive',      'intelligence/auto_deepdive.py',   [],                2,  30, None),  # tgl. 02:30
+    # ── Phase 14: Position Watchdog (alle 2h während Marktzeiten) ──
+    ('Position Watchdog',   'position_watchdog.py',            [],                10, 0,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                12, 0,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                14, 0,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                16, 0,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                18, 0,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                20, 0,  [0,1,2,3,4]),
+    # ── Phase 15: Proposal Executor (Entry-Fenster 17-22h CET) ──
+    ('Proposal Executor',   'proposal_executor.py',            [],                17, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                18, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                19, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                20, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                21, 15, [0,1,2,3,4]),
+    # ── Phase 13: Autonomous Pipeline Orchestrator (3x tgl Mo-Fr) ──
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11, 0,  [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                15, 0,  [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                19, 0,  [0,1,2,3,4]),
+    # ── Phase 16: Signal-Level Learning (Sonntag Vormittag) ──
+    ('Signal Learning',     'intelligence/signal_learning.py', [],                9,  30, [6]),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
     # ── Thesis Monitoring: alle 30 Min — prüft Kill-Trigger gegen News ──────────
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  0,  [0,1,2,3,4]),
