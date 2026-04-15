@@ -108,12 +108,12 @@ GNEWS_RSS = "https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US
 # Domains protected by DataDome → fetch via Google Cache instead
 CACHE_DOMAINS = {'reuters.com', 'cnbc.com', 'wsj.com'}
 
-# Reuters RSS feeds — these return DIRECT reuters.com article URLs (no redirect)
-REUTERS_RSS_FEEDS = [
-    "https://feeds.reuters.com/reuters/topNews",
-    "https://feeds.reuters.com/reuters/businessNews",
-    "https://feeds.reuters.com/reuters/technologyNews",
-    "https://feeds.reuters.com/reuters/companyNews",
+# Bing News RSS searches for Reuters — extract real reuters.com URLs from Bing redirect
+# feeds.reuters.com is discontinued; Bing News encodes actual Reuters URLs in &url= param
+REUTERS_BING_QUERIES = [
+    "site:reuters.com markets finance",
+    "site:reuters.com business economy",
+    "site:reuters.com technology",
 ]
 
 # Thematic keyword → ticker mapping (for headline-only enrichment)
@@ -663,22 +663,67 @@ def _enrich_tickers_from_keywords(text: str, existing: list[str]) -> list[str]:
 # Tier 3: Google Cache (for DataDome-protected sites like Reuters/CNBC)
 # ---------------------------------------------------------------------------
 
+def _fetch_via_wayback(url: str) -> tuple[str, str]:
+    """
+    Fetch most recent Wayback Machine snapshot of a URL.
+    Returns (html, final_url) or ("", "") on failure.
+    No EU consent wall unlike Google Cache.
+    """
+    if not HAS_CURL_CFFI:
+        return "", ""
+    try:
+        # Check for available snapshot first (CDX API)
+        cdx_url = (
+            "https://archive.org/wayback/available?url=" + url
+        )
+        _rate_limit("archive.org")
+        cdx_resp = cffi_requests.get(
+            cdx_url, impersonate="chrome124", timeout=10
+        )
+        if cdx_resp.status_code == 200:
+            import json as _j
+            cdx_data = _j.loads(cdx_resp.text)
+            snap = cdx_data.get("archived_snapshots", {}).get("closest", {})
+            if snap.get("available") and snap.get("url"):
+                snap_url = snap["url"]
+                log.info("Wayback snapshot: %s", snap_url)
+                _rate_limit("web.archive.org")
+                resp = cffi_requests.get(
+                    snap_url,
+                    impersonate="chrome124",
+                    headers={"User-Agent": _random_ua()},
+                    timeout=20,
+                    allow_redirects=True,
+                )
+                if resp.status_code == 200 and len(resp.text) > 2000:
+                    return resp.text, snap_url
+    except Exception as exc:
+        log.warning("_fetch_via_wayback(%s): %s", url, exc)
+    return "", ""
+
+
 def fetch_via_google_cache(url: str, ticker_list: list[str] = None) -> dict:
     """
-    Fetch a Reuters/CNBC/WSJ article via Google's cached copy.
-    Google Cache bypasses DataDome because Google's crawler is whitelisted.
+    Fetch a Reuters/CNBC/WSJ article bypassing DataDome.
 
-    Only works for URLs that Google has already indexed.
-    Falls back to empty dict if cache miss.
+    Strategy:
+    1. Google Cache (webcache.googleusercontent.com) — fast but shows EU consent from DE IPs
+    2. Wayback Machine (archive.org) — no consent wall, has most major Reuters articles
+
+    Falls back to empty dict if both fail.
     """
     cached = get_cached(url)
     if cached:
         return cached
 
     if not HAS_CURL_CFFI:
-        log.error("curl_cffi not available for Google Cache fetch of %s", url)
+        log.error("curl_cffi not available for cache fetch of %s", url)
         return {}
 
+    html = ""
+    fetch_source = ""
+
+    # --- Strategy 1: Google Cache with consent cookie ---
     cache_url = "https://webcache.googleusercontent.com/search?q=cache:" + url
     _rate_limit("webcache.googleusercontent.com")
 
@@ -690,35 +735,124 @@ def fetch_via_google_cache(url: str, ticker_list: list[str] = None) -> dict:
                 "User-Agent": _random_ua(),
                 "Accept-Language": "en-US,en;q=0.9",
                 "Referer": "https://www.google.com/",
+                # Bypass EU GDPR consent wall
+                "Cookie": "SOCS=CAI; CONSENT=YES+DE.en+20230811-14-0; NID=511=test",
             },
             timeout=20,
             allow_redirects=True,
         )
 
-        if resp.status_code != 200:
+        if resp.status_code == 200 and len(resp.text) > 2000:
+            # Check if we got the consent wall instead of the article
+            consent_markers = [
+                "Bevor Sie zu Google weitergehen",
+                "Before you continue to Google",
+                "consent.google.com",
+                "accounts.google.com/signin",
+                "trouble accessing Google Search",
+                "Hilfe zur Barrierefreiheit",
+                "Feedback zur Barrierefreiheit",
+                "google.com/sorry",
+            ]
+            is_consent_wall = any(m in resp.text for m in consent_markers)
+            if not is_consent_wall:
+                html = resp.text
+                fetch_source = "google_cache"
+                log.info("Google Cache OK: %d bytes for %s", len(html), url)
+            else:
+                log.info("Google Cache consent wall — trying Wayback for %s", url)
+        else:
             log.warning("Google Cache HTTP %s for %s", resp.status_code, url)
-            return {}
 
-        html = resp.text
-        if len(html) < 1000:
-            log.warning("Google Cache: response too short (%d bytes) for %s", len(html), url)
-            return {}
+    except Exception as exc:
+        log.warning("Google Cache attempt failed for %s: %s", url, exc)
 
-        title = _extract_title(html)
+    # --- Strategy 2: 12ft.io paywall proxy ---
+    if not html:
+        try:
+            proxy_url = "https://12ft.io/proxy?q=" + url
+            _rate_limit("12ft.io")
+            pr = cffi_requests.get(
+                proxy_url,
+                impersonate="chrome124",
+                headers={"User-Agent": _random_ua()},
+                timeout=20,
+                allow_redirects=True,
+            )
+            if pr.status_code == 200 and len(pr.text) > 3000:
+                # 12ft.io wraps content in an iframe or directly serves it
+                blocking_markers = [
+                    "trouble accessing", "Error", "blocked", "captcha",
+                    "Bevor Sie", "Before you continue",
+                ]
+                if not any(m.lower() in pr.text[:500].lower() for m in blocking_markers):
+                    html = pr.text
+                    fetch_source = "12ft"
+                    log.info("12ft.io OK: %d bytes for %s", len(html), url)
+        except Exception as exc:
+            log.warning("12ft.io failed for %s: %s", url, exc)
+
+    # --- Strategy 3: Wayback Machine (last resort) ---
+    if not html:
+        wb_html, wb_url = _fetch_via_wayback(url)
+        if wb_html:
+            html = wb_html
+            fetch_source = "wayback"
+            log.info("Wayback Machine OK: %d bytes for %s", len(html), url)
+
+    if not html:
+        log.warning("All cache strategies failed for %s", url)
+        return {}
+
+    try:
+        # Extract real article title — prefer og:title over <title> (which shows "cache:URL")
+        title = ""
+        if HAS_BS4:
+            try:
+                soup_t = BeautifulSoup(html, "html.parser")
+                og = soup_t.find("meta", property="og:title")
+                if og and og.get("content"):
+                    title = og["content"].strip()
+                if not title:
+                    h1 = soup_t.find("h1")
+                    if h1:
+                        title = h1.get_text(strip=True)
+            except Exception:
+                pass
+        if not title:
+            raw_title = _extract_title(html)
+            # Strip "cache:URL - Google Suche" prefix from title
+            if raw_title.startswith("cache:"):
+                raw_title = ""
+            title = raw_title
+
         text = _extract_text(html)
         published = _extract_published(html)
 
-        # Strip Google Cache banner from extracted text
-        if "This is Google's cache" in text:
-            # Remove everything up to and including the banner line
-            for sep in ["This is Google's cache", "It is a snapshot"]:
-                idx = text.find(sep)
-                if idx != -1:
-                    # Find next paragraph after banner
-                    next_nl = text.find("\n", idx + 100)
-                    if next_nl != -1:
-                        text = text[next_nl:].strip()
-                    break
+        # Strip Google Cache banner/header from text
+        # The banner appears at the very top; article content starts after it
+        # Markers (EN/DE): "Klicke hier", "It is a snapshot", "This is Google's cache"
+        for banner_marker in [
+            "It is a snapshot of the page",
+            "This is Google's cache",
+            "Klicke hier , wenn du",
+            "Click here for the current page",
+        ]:
+            idx = text.find(banner_marker)
+            if idx != -1:
+                # Skip past the banner — find next sentence/paragraph
+                end_banner = text.find("\n", idx + len(banner_marker) + 30)
+                if end_banner != -1:
+                    text = text[end_banner:].strip()
+                else:
+                    text = text[idx + len(banner_marker) + 80:].strip()
+                break
+
+        # Additional cleanup: remove leading "cache:URL" line if present
+        if text.startswith("cache:"):
+            first_nl = text.find("\n")
+            if first_nl != -1:
+                text = text[first_nl:].strip()
 
         tickers_found = find_tickers(text + " " + title, ticker_list)
         tickers_found = _enrich_tickers_from_keywords(text + " " + title, tickers_found)
@@ -737,7 +871,8 @@ def fetch_via_google_cache(url: str, ticker_list: list[str] = None) -> dict:
             "via_cache": True,
         }
         _save_cache(article)
-        log.info("Google Cache OK: %d chars for %s — tickers: %s", len(text), url, tickers_found)
+        log.info("Cache fetch OK (%s): %d chars for %s — tickers: %s",
+                 fetch_source, len(text), url, tickers_found)
         return article
 
     except Exception as exc:
@@ -751,27 +886,33 @@ def fetch_via_google_cache(url: str, ticker_list: list[str] = None) -> dict:
 
 def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> list[dict]:
     """
-    Fetch Reuters' own RSS feeds — these return direct reuters.com article URLs
-    which can then be fetched via Google Cache.
+    Fetch Reuters articles via Bing News RSS → extract direct reuters.com URLs →
+    fetch full article via Google Cache.
 
-    Unlike Google News RSS (which gives Google-redirect URLs blocked by consent.google.com),
-    Reuters' own RSS gives clean direct URLs.
+    Why Bing? feeds.reuters.com is discontinued (DNS fails). Google News RSS gives
+    Google-redirect URLs that hit consent.google.com (blocked from Hetzner).
+    Bing News RSS encodes real reuters.com URLs in the &url= query param of its
+    redirect links, which we decode directly — no HTTP redirect needed.
     """
     import xml.etree.ElementTree as ET
+    from urllib.parse import urlparse as _uparse, parse_qs as _pqs, unquote as _uq
 
     all_items: list[dict] = []
     seen_urls: set[str] = set()
 
-    for rss_url in REUTERS_RSS_FEEDS:
+    bing_rss_base = "https://www.bing.com/news/search?q={query}&format=rss"
+
+    for query in REUTERS_BING_QUERIES:
         if len(all_items) >= max_items:
             break
         try:
-            _rate_limit("feeds.reuters.com")
+            rss_url = bing_rss_base.format(query=quote_plus(query))
+            _rate_limit("www.bing.com")
             if HAS_CURL_CFFI:
                 resp = cffi_requests.get(
                     rss_url,
                     impersonate="chrome124",
-                    headers={"User-Agent": _random_ua(), "Accept": "application/rss+xml,application/xml,text/xml"},
+                    headers={"User-Agent": _random_ua()},
                     timeout=15,
                 )
                 rss_text = resp.text
@@ -781,13 +922,13 @@ def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> lis
                     rss_text = r.read().decode("utf-8", errors="replace")
 
             if not rss_text or "<item>" not in rss_text:
-                log.warning("Reuters RSS empty or no items: %s", rss_url)
+                log.warning("Bing News Reuters RSS empty: %s", query)
                 continue
 
             try:
                 root = ET.fromstring(rss_text)
             except ET.ParseError as exc:
-                log.error("Reuters RSS parse error (%s): %s", rss_url, exc)
+                log.error("Bing News RSS parse error: %s", exc)
                 continue
 
             cutoff = datetime.now(timezone.utc) - timedelta(days=3)
@@ -802,16 +943,28 @@ def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> lis
                 desc_el = item.find("description")
 
                 title = title_el.text.strip() if title_el is not None and title_el.text else ""
-                link = link_el.text.strip() if link_el is not None and link_el.text else ""
+                bing_link = link_el.text.strip() if link_el is not None and link_el.text else ""
                 pub_raw = pub_el.text.strip() if pub_el is not None and pub_el.text else ""
                 desc_raw = desc_el.text or "" if desc_el is not None else ""
 
-                if not link or link in seen_urls:
+                if not bing_link:
                     continue
-                # Only process direct reuters.com URLs
-                if "reuters.com" not in link:
+
+                # Decode real Reuters URL from Bing redirect (&url= param)
+                try:
+                    parsed_link = _uparse(bing_link)
+                    params = _pqs(parsed_link.query)
+                    real_url = params.get("url", [""])[0]
+                    if not real_url and "url=" in bing_link:
+                        real_url = _uq(bing_link.split("url=")[-1].split("&")[0])
+                except Exception:
+                    real_url = ""
+
+                if not real_url or "reuters.com" not in real_url:
                     continue
-                seen_urls.add(link)
+                if real_url in seen_urls:
+                    continue
+                seen_urls.add(real_url)
 
                 # Parse publish date
                 pub_dt = None
@@ -837,11 +990,11 @@ def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> lis
                 )
 
                 # Fetch full article via Google Cache
-                article = fetch_via_google_cache(link, ticker_list=ticker_list)
+                article = fetch_via_google_cache(real_url, ticker_list=ticker_list)
                 if not article:
                     # Fallback: headline-only entry
                     article = {
-                        "url": link,
+                        "url": real_url,
                         "title": title,
                         "text": desc_clean,
                         "published": pub_dt.isoformat() if pub_dt else pub_raw,
@@ -850,22 +1003,20 @@ def fetch_reuters_rss(max_items: int = 15, ticker_list: list[str] = None) -> lis
                         "tickers_found": tickers_in_title,
                     }
                 else:
-                    # Merge in RSS metadata if article fetch succeeded
                     if not article.get("title"):
                         article["title"] = title
                     if not article.get("published") and pub_dt:
                         article["published"] = pub_dt.isoformat()
-                    # Merge tickers from both headline scan and full text
                     merged = list(set(article.get("tickers_found", []) + tickers_in_title))
                     article["tickers_found"] = sorted(merged)
 
                 all_items.append(article)
 
         except Exception as exc:
-            log.error("fetch_reuters_rss (%s): %s", rss_url, exc)
+            log.error("fetch_reuters_rss (query=%s): %s", query, exc)
             continue
 
-    log.info("fetch_reuters_rss: %d items from %d feeds", len(all_items), len(REUTERS_RSS_FEEDS))
+    log.info("fetch_reuters_rss: %d Reuters items via Bing News", len(all_items))
     return all_items
 
 
