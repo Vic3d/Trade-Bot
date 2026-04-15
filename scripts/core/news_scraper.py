@@ -146,6 +146,35 @@ KEYWORD_TICKER_MAP: dict[str, list[str]] = {
     'interest rate': ['JPM', 'BAC', 'GS'],
 }
 
+
+def get_filtered_keyword_map() -> dict[str, list[str]]:
+    """
+    Phase 20: Gibt KEYWORD_TICKER_MAP zurück, gefiltert gegen das Universum.
+    Dormant/blocked Tickers werden aus dem Mapping entfernt — verhindert
+    dass News-Events sie immer wieder triggern.
+
+    Fallback: wenn Universum nicht ladbar → unveränderte Original-Map.
+    """
+    try:
+        import sys as _s
+        from pathlib import Path as _P
+        _scripts = _P(__file__).resolve().parent.parent
+        if str(_scripts) not in _s.path:
+            _s.path.insert(0, str(_scripts))
+        from core.universe import load_universe, SCANNABLE_STATUSES
+        u = load_universe()
+        if not u:
+            return dict(KEYWORD_TICKER_MAP)
+        allowed = {t for t, v in u.items() if v.get('status') in SCANNABLE_STATUSES}
+        filtered: dict[str, list[str]] = {}
+        for kw, tickers in KEYWORD_TICKER_MAP.items():
+            keep = [t for t in tickers if t in allowed or t not in u]
+            if keep:
+                filtered[kw] = keep
+        return filtered
+    except Exception:
+        return dict(KEYWORD_TICKER_MAP)
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -650,10 +679,13 @@ def search_news(
 # ---------------------------------------------------------------------------
 
 def _enrich_tickers_from_keywords(text: str, existing: list[str]) -> list[str]:
-    """Adds tickers found via KEYWORD_TICKER_MAP to an existing ticker list."""
+    """Adds tickers found via KEYWORD_TICKER_MAP to an existing ticker list.
+    Phase 20: Nutzt get_filtered_keyword_map() — dormant Tickers werden
+    ausgefiltert."""
     found = set(existing)
     text_lower = text.lower()
-    for keyword, tickers in KEYWORD_TICKER_MAP.items():
+    kw_map = get_filtered_keyword_map()
+    for keyword, tickers in kw_map.items():
         if keyword in text_lower:
             found.update(tickers)
     return sorted(found)

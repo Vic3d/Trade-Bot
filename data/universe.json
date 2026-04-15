@@ -1,125 +1,3315 @@
 {
-  "_info": "Trading Universe — Albert scannt diese Liste wöchentlich komplett durch. Kein manuelles Pflegen. Algo filtert auf Setups.",
-  "_count": 420,
-  "_updated": "2026-03-28",
-
-  "sectors": {
-
-    "energy": {
-      "label": "⚡ Energie",
-      "tickers": [
-        "XOM","CVX","COP","EOG","PXD","MPC","PSX","VLO","HES","DVN",
-        "OXY","HAL","SLB","BKR","NOV","TRGP","KMI","WMB","OKE","ET",
-        "EQNR","TTE.PA","BP","SHEL","ENI.MI","REPSOL.MC",
-        "DINO","FRO","DHT","STNG","TNK","INSW","ASC","NAT"
-      ]
-    },
-
-    "materials_metals": {
-      "label": "🪨 Rohstoffe & Metalle",
-      "tickers": [
-        "FCX","SCCO","TECK","AA","ALB","MP","VALE","RIO","BHP","GLEN.L",
-        "NEM","GOLD","AEM","WPM","KGC","HL","PAAS","AG","CDE","EXK",
-        "MOS","NTR","CF","IPI","ICL",
-        "CLF","STLD","NUE","X","PKX","MT",
-        "LIN","APD","DD","DOW","LYB","EMN"
-      ]
-    },
-
-    "industrials_defense": {
-      "label": "🛡️ Industrie & Rüstung",
-      "tickers": [
-        "RTX","LMT","NOC","GD","HII","KTOS","PLTR","ACHR","JOBY",
-        "RHM.DE","LDOS","SAIC","BAH","CACI","MANT",
-        "CAT","DE","EMR","ETN","PH","ROK","XYL","GNRC",
-        "UPS","FDX","EXPD","CHRW","XPO","JBHT",
-        "BA","AIR.PA","HO.PA","SAF.PA","MTU.DE","ROLLS.L"
-      ]
-    },
-
-    "technology": {
-      "label": "💻 Technologie",
-      "tickers": [
-        "NVDA","MSFT","AAPL","GOOGL","META","AMZN","AMD","INTC","QCOM","AVGO",
-        "ASML.AS","AMAT","LRCX","KLAC","MU","MRVL","ON","TXN","ADI","MCHP",
-        "SAP.DE","CRM","NOW","SNOW","DDOG","ZS","NET","CRWD","S","PANW",
-        "ORCL","IBM","HPE","DELL","WDC","STX",
-        "TSM","005930.KS","6758.T","SONY","700.HK","9988.HK"
-      ]
-    },
-
-    "healthcare": {
-      "label": "🏥 Healthcare & Biotech",
-      "tickers": [
-        "LLY","NVO","NOVO-B.CO","ABBV","MRK","PFE","BMY","AMGN","GILD","BIIB",
-        "REGN","VRTX","MRNA","BNTX","INCY","JAZZ","ALNY","RARE",
-        "UNH","CVS","CI","HUM","ELV","MOH",
-        "BAYN.DE","SAN.PA","ROG.SW","NESN.SW","AZN","GSK.L","HIK.L",
-        "TMO","DHR","A","BIO","IDXX","MTD","WAT"
-      ]
-    },
-
-    "financials": {
-      "label": "🏦 Finanzen",
-      "tickers": [
-        "JPM","BAC","WFC","GS","MS","C","USB","PNC","TFC","CFG",
-        "DB.DE","BNP.PA","SAN.MC","BBVA.MC","UCG.MI","ING","AXA.PA","CS.PA",
-        "BLK","SCHW","MS","HOOD","COIN","SQ","PYPL",
-        "ICE","CME","NDAQ","CBOE","MKTX",
-        "BRK-B","AIG","PRU","MET","AFL","TRV","CB"
-      ]
-    },
-
-    "consumer": {
-      "label": "🛒 Konsum",
-      "tickers": [
-        "AMZN","TGT","WMT","COST","HD","LOW","EBAY","ETSY","CHWY",
-        "NKE","UAA","PVH","RL","TPR","CPRI",
-        "MCD","SBUX","YUM","CMG","DPZ","QSR","DNUT",
-        "KO","PEP","MDLZ","GIS","K","CAG","SJM","CPB",
-        "PG","CL","KMB","CHD","CLX","EL","ULTA","COTY",
-        "LVMH.PA","KER.PA","RMS.PA","MC.PA","EVO.ST"
-      ]
-    },
-
-    "real_estate_utilities": {
-      "label": "🏗️ Immobilien & Versorger",
-      "tickers": [
-        "NEE","DUK","SO","AEP","EXC","PCG","ES","ED","EIX","PPL",
-        "AMT","PLD","EQIX","CCI","SBAC","DLR","IRM","O","NNN","VICI",
-        "AWK","WM","RSG","CWST","WCN"
-      ]
-    },
-
-    "emerging_markets": {
-      "label": "🌍 Emerging Markets",
-      "tickers": [
-        "VALE","PBR","ITUB","BBD","ABV","SID",
-        "BABA","JD","PDD","BIDU","NIO","LI","XPEV","BYD.HK",
-        "INFY","WIT","HDB","ICICI","RELIANCE.NS",
-        "ASEAN_IDX","VNM","EWZ","EWW","EWY","EWT","INDA","PIN",
-        "7203.T","6758.T","9984.T","6861.T","TM","HMC","SONY"
-      ]
-    },
-
-    "commodities_agri": {
-      "label": "🌾 Agrar & Soft Commodities",
-      "tickers": [
-        "MOS","NTR","CF","IPI","CTVA","FMC","BG","ADM","MDP","INGR",
-        "TSN","HRL","CAG","SJM","POST","LANC",
-        "JO","CORN","WEAT","SOYB"
-      ]
-    }
+  "OXY": {
+    "name": "OXY",
+    "sector": "Energy/Oil",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
   },
-
-  "etfs_for_regime_check": {
-    "label": "📊 ETFs für Sektor-Rotation Check",
-    "tickers": [
-      "XLE","XLB","XLI","XLK","XLV","XLF","XLP","XLU","XLY","XLRE",
-      "IWM","QQQ","SPY","DIA","MDY",
-      "EEM","EFA","VGK","EWJ","FXI",
-      "GLD","SLV","USO","UNG","PDBC",
-      "TLT","HYG","LQD","EMB"
+  "EQNR.OL": {
+    "name": "EQNR.OL",
+    "sector": "Energy/Oil",
+    "currency": "NOK",
+    "market": "no_oil",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "FRO": {
+    "name": "FRO",
+    "sector": "Shipping/Tankers",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 2,
+    "linked_thesis": "PS2",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "FCX": {
+    "name": "FCX",
+    "sector": "Copper/Mining",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "SCCO": {
+    "name": "SCCO",
+    "sector": "Copper/Mining",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "RHM.DE": {
+    "name": "RHM.DE",
+    "sector": "Defense EU",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS11",
+    "dormant_reason": "Falling Knife: 14+ Tage unter EMA50 mit 3M-Trend < -10%",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "Falling Knife: 14+ Tage unter EMA50 mit 3M-Trend < -10%"
+      }
+    ]
+  },
+  "BA.L": {
+    "name": "BA.L",
+    "sector": "Defense EU",
+    "currency": "GBP",
+    "market": "uk",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS11",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "LMT": {
+    "name": "LMT",
+    "sector": "Defense",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "XOM": {
+    "name": "XOM",
+    "sector": "Energy/Oil",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "CVX": {
+    "name": "CVX",
+    "sector": "Energy/Oil",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "TTE.PA": {
+    "name": "TTE.PA",
+    "sector": "Energy/Oil",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "PSX": {
+    "name": "PSX",
+    "sector": "Energy/Oil",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "VLO": {
+    "name": "VLO",
+    "sector": "Energy/Oil",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "RTX": {
+    "name": "RTX",
+    "sector": "Defense",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "NOC": {
+    "name": "NOC",
+    "sector": "Defense",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "KTOS": {
+    "name": "KTOS",
+    "sector": "Defense",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ],
+    "falling_knife_since": "2026-04-15"
+  },
+  "SAF.PA": {
+    "name": "SAF.PA",
+    "sector": "Defense EU",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS11",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "HO.PA": {
+    "name": "HO.PA",
+    "sector": "Defense EU",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS11",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "GLEN.L": {
+    "name": "GLEN.L",
+    "sector": "Copper/Mining",
+    "currency": "GBP",
+    "market": "uk",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "RIO.L": {
+    "name": "RIO.L",
+    "sector": "Rare Earth",
+    "currency": "GBP",
+    "market": "uk",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S5",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=strategies_json"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "low_activity (99999d no trade, 0 signals)"
+      }
+    ]
+  },
+  "BHP.L": {
+    "name": "BHP.L",
+    "sector": "Copper/Mining",
+    "currency": "GBP",
+    "market": "uk",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "TECK": {
+    "name": "TECK",
+    "sector": "Copper/Mining",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "FXI": {
+    "name": "FXI",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS19",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=strategies_json"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "low_activity (99999d no trade, 0 signals)"
+      }
+    ]
+  },
+  "KWEB": {
+    "name": "KWEB",
+    "sector": "China Recovery",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_China",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "BABA": {
+    "name": "BABA",
+    "sector": "China Recovery",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_China",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "JD": {
+    "name": "JD",
+    "sector": "China Recovery",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_China",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "MOS": {
+    "name": "MOS",
+    "sector": "Materials/Agrar",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS5",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "NTR": {
+    "name": "NTR",
+    "sector": "Materials/Agrar",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS5",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "AMAT": {
+    "name": "AMAT",
+    "sector": "AI Infrastructure",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_AIInfra",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "MU": {
+    "name": "MU",
+    "sector": "AI Infrastructure",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_AIInfra",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "VRT": {
+    "name": "VRT",
+    "sector": "AI Infrastructure",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_AIInfra",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "MSFT": {
+    "name": "MSFT",
+    "sector": "Tech/Semiconductors",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "low_activity (99999d no trade, 0 signals)"
+      }
+    ]
+  },
+  "ASML.AS": {
+    "name": "ASML.AS",
+    "sector": "Tech/Semiconductors",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "NVDA": {
+    "name": "NVDA",
+    "sector": "Tech/Semiconductors",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "low_activity (99999d no trade, 0 signals)"
+      }
+    ]
+  },
+  "CLF": {
+    "name": "CLF",
+    "sector": "EU Auto",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ],
+    "falling_knife_since": "2026-04-15"
+  },
+  "X": {
+    "name": "X",
+    "sector": "Materials/Agrar",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS5",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "AA": {
+    "name": "AA",
+    "sector": "Materials/Agrar",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS5",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "ZIM": {
+    "name": "ZIM",
+    "sector": "Shipping",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS14",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "SBLK": {
+    "name": "SBLK",
+    "sector": "Shipping",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS14",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "DHT": {
+    "name": "DHT",
+    "sector": "Shipping/Tankers",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS2",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "VALE": {
+    "name": "VALE",
+    "sector": "Copper/Mining",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Copper",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "MP": {
+    "name": "MP",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_RareEarthChip",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "CCJ": {
+    "name": "CCJ",
+    "sector": "Uranium",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Uranium",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "UUUU": {
+    "name": "UUUU",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_RareEarthChip",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "NXE": {
+    "name": "NXE",
+    "sector": "Uranium",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_Uranium",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "EWZ": {
+    "name": "EWZ",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS19",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      },
+      {
+        "date": "2026-04-15",
+        "from": "active",
+        "to": "dormant",
+        "reason": "low_activity (99999d no trade, 0 signals)"
+      }
+    ]
+  },
+  "BAYN.DE": {
+    "name": "BAYN.DE",
+    "sector": "Pharma",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S7",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "LHA.DE": {
+    "name": "LHA.DE",
+    "sector": "EU Industrials",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS17",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "SIE.DE": {
+    "name": "SIE.DE",
+    "sector": "EU Auto",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "BMW.DE": {
+    "name": "BMW.DE",
+    "sector": "EU Auto",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "SMCI": {
+    "name": "SMCI",
+    "sector": "AI Infrastructure",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "active",
+    "added_at": "2026-04-15",
+    "last_signal": "2026-04-15",
+    "last_trade": "2026-04-15",
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_AIInfra",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "active",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "VST": {
+    "name": "VST",
+    "sector": "AI Infrastructure",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "scanner_universe",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_AIInfra",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=scanner_universe"
+      }
+    ]
+  },
+  "HII": {
+    "name": "HII",
+    "sector": "Defense",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "HAG.DE": {
+    "name": "HAG.DE",
+    "sector": "Defense",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "HL": {
+    "name": "HL",
+    "sector": "Precious Metals",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS4",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "PAAS": {
+    "name": "PAAS",
+    "sector": "Precious Metals",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS4",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "EQNR": {
+    "name": "EQNR",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S1",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "PLTR": {
+    "name": "PLTR",
+    "sector": "Tech/Semiconductors",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S3",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "A2QQ9R": {
+    "name": "A2QQ9R",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S6",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "A2DWAW": {
+    "name": "A2DWAW",
+    "sector": "Pharma",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "S7",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "STLD": {
+    "name": "STLD",
+    "sector": "EU Auto",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "DAI": {
+    "name": "DAI",
+    "sector": "EU Auto",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "BYDDY": {
+    "name": "BYDDY",
+    "sector": "EU Auto",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "CMC.CN": {
+    "name": "CMC.CN",
+    "sector": "EU Auto",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS18",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "EEM": {
+    "name": "EEM",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS19",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "VWO": {
+    "name": "VWO",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS19",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "GDX": {
+    "name": "GDX",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS19",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "XLP": {
+    "name": "XLP",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "XLU": {
+    "name": "XLU",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "XLV": {
+    "name": "XLV",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "VDC": {
+    "name": "VDC",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "KO": {
+    "name": "KO",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "PG": {
+    "name": "PG",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "JNJ": {
+    "name": "JNJ",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS20",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "PRY.MI": {
+    "name": "PRY.MI",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_PowerGrid",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "NEXANS.PA": {
+    "name": "NEXANS.PA",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_PowerGrid",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "ABB": {
+    "name": "ABB",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_PowerGrid",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "YARA.OL": {
+    "name": "YARA.OL",
+    "sector": "",
+    "currency": "NOK",
+    "market": "no_oil",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_FertilizerShock",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "SDF.DE": {
+    "name": "SDF.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_FertilizerShock",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "ICL": {
+    "name": "ICL",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_FertilizerShock",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "LYC.AX": {
+    "name": "LYC.AX",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "strategies_json",
+    "news_mentions_30d": 0,
+    "linked_thesis": "PS_RareEarthChip",
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=strategies_json"
+      }
+    ]
+  },
+  "CF": {
+    "name": "CF",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "IBB": {
+    "name": "IBB",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "WPM": {
+    "name": "WPM",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "XBI": {
+    "name": "XBI",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "DINO": {
+    "name": "DINO",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "ARKG": {
+    "name": "ARKG",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "NOVO-B.CO": {
+    "name": "NOVO-B.CO",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "LRCX": {
+    "name": "LRCX",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "AG": {
+    "name": "AG",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "SAP": {
+    "name": "SAP",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "ADM": {
+    "name": "ADM",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "SAAB-B.ST": {
+    "name": "SAAB-B.ST",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "KLAC": {
+    "name": "KLAC",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "EXK": {
+    "name": "EXK",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "NUE": {
+    "name": "NUE",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "MUV2.DE": {
+    "name": "MUV2.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "watchlist",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": "2026-04-15",
+    "source": "recent_trade",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": null,
+    "dormant_since": null,
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "watchlist",
+        "reason": "migration source=recent_trade"
+      }
+    ]
+  },
+  "LIN": {
+    "name": "LIN",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "LNG": {
+    "name": "LNG",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "deep_dive_verdict",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=deep_dive_verdict"
+      }
+    ]
+  },
+  "AAPL": {
+    "name": "AAPL",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "GOOGL": {
+    "name": "GOOGL",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "AMZN": {
+    "name": "AMZN",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "META": {
+    "name": "META",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "TSLA": {
+    "name": "TSLA",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "AMD": {
+    "name": "AMD",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "INTC": {
+    "name": "INTC",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "JPM": {
+    "name": "JPM",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "BAC": {
+    "name": "BAC",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "GS": {
+    "name": "GS",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "MS": {
+    "name": "MS",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "V": {
+    "name": "V",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "MA": {
+    "name": "MA",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "PFE": {
+    "name": "PFE",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "NVO": {
+    "name": "NVO",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "LLY": {
+    "name": "LLY",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "ABBV": {
+    "name": "ABBV",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "ARM": {
+    "name": "ARM",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "ASML": {
+    "name": "ASML",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "SAP.DE": {
+    "name": "SAP.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "MBG.DE": {
+    "name": "MBG.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "ALV.DE": {
+    "name": "ALV.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "DBK.DE": {
+    "name": "DBK.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "VOW3.DE": {
+    "name": "VOW3.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "ADS.DE": {
+    "name": "ADS.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "IFX.DE": {
+    "name": "IFX.DE",
+    "sector": "",
+    "currency": "EUR",
+    "market": "eu_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "QQQ": {
+    "name": "QQQ",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "SPY": {
+    "name": "SPY",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "EWJ": {
+    "name": "EWJ",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "COIN": {
+    "name": "COIN",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "MSTR": {
+    "name": "MSTR",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
+    ]
+  },
+  "MARA": {
+    "name": "MARA",
+    "sector": "",
+    "currency": "USD",
+    "market": "us_mid",
+    "status": "dormant",
+    "added_at": "2026-04-15",
+    "last_signal": null,
+    "last_trade": null,
+    "source": "news_default",
+    "news_mentions_30d": 0,
+    "linked_thesis": null,
+    "dormant_reason": "migration: no active thesis link",
+    "dormant_since": "2026-04-15",
+    "conviction_history": [],
+    "keywords": [],
+    "status_history": [
+      {
+        "date": "2026-04-15",
+        "from": null,
+        "to": "dormant",
+        "reason": "migration source=news_default"
+      }
     ]
   }
 }

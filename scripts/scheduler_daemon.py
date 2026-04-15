@@ -91,6 +91,9 @@ SCHEDULE = [
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                15, 30, [0,1,2,3,4]),  # Phase 11 — US Pre-Open Update
+    # ── Phase 20: Universe Maintenance (vor Auto Deep Dive) ──
+    ('Universe Expander',   'intelligence/universe_expander.py', [],              1,  0,  None),  # tgl. 01:00 — News→Discovery
+    ('Universe Decay',      'intelligence/universe_decay.py',    [],              2,  0,  None),  # tgl. 02:00 — Auto-dormant
     # ── Phase 12: Auto Deep Dive (nightly verdict refresh, rule-based, no LLM) ──
     ('Auto Deep Dive',      'intelligence/auto_deepdive.py',   [],                2,  30, None),  # tgl. 02:30
     # ── Phase 14: Position Watchdog (alle 2h während Marktzeiten) ──

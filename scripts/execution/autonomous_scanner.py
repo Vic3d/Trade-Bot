@@ -675,6 +675,31 @@ def run_scan(max_new_trades: int = 5) -> list:
         if _extra:
             print(f"  ✅ {_tier}: +{len(_extra)} Ticker aus strategies.json")
 
+    # ── Phase 20: Universe-Filter — dormant/blocked rauswerfen ──────
+    # Ersetzt nicht die Tier-Logik, sondern überlagert sie: wenn der
+    # zentrale Universum-Status `dormant` oder `blocked` ist, wird der
+    # Ticker im Scan übersprungen. Das verhindert dass RHM.DE, NVDA etc.
+    # täglich wieder auftauchen nur weil sie historisch hardcoded sind.
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from core.universe import load_universe as _load_u, SCANNABLE_STATUSES
+        _u = _load_u()
+        if _u:
+            _allowed = {t for t, v in _u.items() if v.get('status') in SCANNABLE_STATUSES}
+            _skipped = 0
+            for _tier in ('TIER_A', 'TIER_B', 'TIER_C'):
+                _before = len(merged_universe[_tier])
+                merged_universe[_tier] = [
+                    item for item in merged_universe[_tier]
+                    if item[0] in _allowed or item[0] not in _u  # unknown → pass through
+                ]
+                _after = len(merged_universe[_tier])
+                _skipped += (_before - _after)
+            if _skipped > 0:
+                print(f"  🚫 Universe filter: {_skipped} dormant/blocked Ticker übersprungen")
+    except Exception as _ue:
+        print(f"  ⚠️ Universe filter skipped: {_ue}")
+
     # Alle Ticker aus dem (erweiterten) Universum sammeln
     all_tickers = (
         [t for t, _, _ in merged_universe['TIER_A']] +
@@ -718,10 +743,24 @@ def run_scan(max_new_trades: int = 5) -> list:
             if setup is None:
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'no_setup',
                                  'price': data['price'], 'rsi': data.get('rsi')})
+                # Phase 20: record signal (low conviction = no setup)
+                try:
+                    from core.universe import record_signal as _rec_sig
+                    _rec_sig(ticker, 0.0)
+                except Exception:
+                    pass
                 time.sleep(0.2)
                 continue
 
             entry, stop, target, reason = setup
+
+            # Phase 20: record signal (tier-based baseline conviction)
+            try:
+                from core.universe import record_signal as _rec_sig
+                _baseline = {'TIER_A': 60.0, 'TIER_B': 50.0, 'TIER_C': 40.0}.get(tier, 45.0)
+                _rec_sig(ticker, _baseline)
+            except Exception:
+                pass
 
             # ── NEU: Entry-Zone-Check ──────────────────────────────────
             in_zone, zone_reason = is_in_entry_zone(data, entry, stop)
@@ -762,6 +801,12 @@ def run_scan(max_new_trades: int = 5) -> list:
 
             if result.get('success'):
                 new_trades += 1
+                # Phase 20: record trade in universe
+                try:
+                    from core.universe import record_trade as _rec_trade
+                    _rec_trade(ticker)
+                except Exception:
+                    pass
 
             time.sleep(0.3)
 

@@ -132,6 +132,42 @@ def _closed_today_block() -> str:
     return '\n'.join(lines)
 
 
+def _universe_block() -> str:
+    """Phase 20: Universum-Übersicht + heute dormant/resurrected + neue Discovery."""
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from core.universe import stats as _u_stats
+        s = _u_stats()
+        by_status = s.get('by_status', {})
+        lines = [
+            f'\n🌍 **Universum** ({s["total"]} Tickers)',
+            f'  Aktiv: {by_status.get("active", 0)} | '
+            f'Watchlist: {by_status.get("watchlist", 0)} | '
+            f'Dormant: {by_status.get("dormant", 0)}',
+        ]
+
+        # Decay-Log: heute bewegte Tickers
+        decay_log = DATA / 'universe_decay_log.json'
+        if decay_log.exists():
+            try:
+                log = json.loads(decay_log.read_text(encoding='utf-8'))
+                today = date.today().isoformat()
+                today_entries = [e for e in log if e.get('date') == today]
+                if today_entries:
+                    for e in today_entries:
+                        dm = e.get('dormant_moves', [])
+                        res = e.get('resurrected', [])
+                        if dm:
+                            lines.append(f'  💤 Heute dormant: {len(dm)} ({", ".join(m["ticker"] for m in dm[:5])})')
+                        if res:
+                            lines.append(f'  🔄 Reaktiviert: {len(res)} ({", ".join(r["ticker"] for r in res[:5])})')
+            except Exception:
+                pass
+        return '\n'.join(lines)
+    except Exception as e:
+        return f'_Universum: {e}_'
+
+
 def _cost_drag_block() -> str:
     """
     Phase 19a: aggregate transaction costs of this month's closed trades.
@@ -264,6 +300,7 @@ def evening_digest() -> None:
         '',
         _portfolio_block(),
         _closed_today_block(),
+        _universe_block(),
         _cost_drag_block(),
         _learning_block(),
         '',
