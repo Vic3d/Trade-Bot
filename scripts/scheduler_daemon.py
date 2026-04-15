@@ -82,6 +82,8 @@ SCHEDULE = [
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 50, [0,1,2,3,4,5,6]),  # Phase 9 — Drawdown Circuit Input
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
+    ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.
+    ('Macro Brain',         'intelligence/macro_brain.py',     [],                15, 30, [0,1,2,3,4]),  # Phase 11 — US Pre-Open Update
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
     # ── Thesis Monitoring: alle 30 Min — prüft Kill-Trigger gegen News ──────────
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             9,  0,  [0,1,2,3,4]),
