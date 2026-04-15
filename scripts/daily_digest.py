@@ -270,6 +270,63 @@ def _autonomy_block() -> str:
     return f'{icon} Autonomie: **{mode}** (Phase {phase})'
 
 
+def _overnight_news_block() -> str:
+    """Zeigt wie viele News-Events die letzte Nacht reingekommen sind."""
+    try:
+        from datetime import datetime, timedelta
+        yesterday = (datetime.utcnow() - timedelta(hours=12)).strftime('%Y-%m-%d %H:%M')
+        c = sqlite3.connect(str(DB))
+        count = c.execute(
+            "SELECT COUNT(*) FROM news_events WHERE published_at >= ?", (yesterday,)
+        ).fetchone()[0]
+        c.close()
+        if count == 0:
+            return '📰 Keine neuen News seit Mitternacht'
+        return f'📰 **{count} neue News** seit Mitternacht verarbeitet'
+    except Exception as e:
+        return f'_News-Count: {e}_'
+
+
+def _overnight_universe_block() -> str:
+    """Zeigt was die Nacht-Jobs (Expander + Decay) gemacht haben."""
+    lines: list[str] = []
+    try:
+        from core.universe import stats as _u_stats
+        s = _u_stats()
+        by_status = s.get('by_status', {})
+        lines.append(
+            f'🌍 **Universum:** {s["total"]} Tickers — '
+            f'Aktiv: {by_status.get("active", 0)} | '
+            f'Watchlist: {by_status.get("watchlist", 0)} | '
+            f'Dormant: {by_status.get("dormant", 0)}'
+        )
+
+        # Decay-Log: vergangene Nacht
+        decay_log = DATA / 'universe_decay_log.json'
+        if decay_log.exists():
+            try:
+                log = json.loads(decay_log.read_text(encoding='utf-8'))
+                today = date.today().isoformat()
+                # Letzter Eintrag
+                if log:
+                    last = log[-1]
+                    dm = last.get('dormant_moves', [])
+                    res = last.get('resurrected', [])
+                    if dm:
+                        names = ', '.join(m['ticker'] for m in dm[:5])
+                        lines.append(f'  💤 Dormant gestellt: {len(dm)} ({names})')
+                    if res:
+                        names = ', '.join(r['ticker'] for r in res[:5])
+                        lines.append(f'  🔄 Reaktiviert: {len(res)} ({names})')
+                    if not dm and not res:
+                        lines.append('  ✅ Keine Universum-Änderungen')
+            except Exception:
+                pass
+    except Exception as e:
+        lines.append(f'_Universum: {e}_')
+    return '\n'.join(lines)
+
+
 def morning_digest() -> None:
     """08:30 CET — Morgen-Digest."""
     from discord_queue import flush_and_send, queue_size
@@ -277,8 +334,17 @@ def morning_digest() -> None:
     n = queue_size()
     header = f'🌅 **Morgen-Digest** {date.today().isoformat()}'
 
-    msg_parts = [header, '', _portfolio_block(), '', _autonomy_block()]
-    preamble = '\n'.join(msg_parts)
+    msg_parts = [
+        header,
+        '',
+        _portfolio_block(),
+        '',
+        _overnight_news_block(),
+        _overnight_universe_block(),
+        '',
+        _autonomy_block(),
+    ]
+    preamble = '\n'.join(p for p in msg_parts if p is not None)
 
     if n > 0:
         print(f'Flushing {n} queued events in morning digest...')
