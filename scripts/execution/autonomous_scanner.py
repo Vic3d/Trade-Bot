@@ -167,10 +167,17 @@ def load_universe_from_strategies() -> dict:
         strats = json.loads(strats_file.read_text(encoding='utf-8'))
 
         # Alle bereits bekannten Ticker aus UNIVERSE sammeln
+        # Phase 20: robust gegen dict[tier,list] UND flat list
         known: set[str] = set()
-        for items in UNIVERSE.values():
-            for ticker, _, _ in items:
-                known.add(ticker.upper())
+        if isinstance(UNIVERSE, dict):
+            _iter = [it for items in UNIVERSE.values() for it in items]
+        else:
+            _iter = list(UNIVERSE)
+        for it in _iter:
+            if isinstance(it, (tuple, list)) and len(it) >= 1:
+                known.add(str(it[0]).upper())
+            elif isinstance(it, str):
+                known.add(it.upper())
 
         for sid, s in strats.items():
             if not isinstance(s, dict):
