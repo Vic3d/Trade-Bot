@@ -103,7 +103,6 @@ def yahoo_price(ticker: str) -> float | None:
     from live_data import get_price_eur
     return get_price_eur(ticker)
 
-
 def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
     """→ live_data.is_price_fresh()."""
     import sys as _sys
@@ -291,17 +290,7 @@ def execute_paper_entry(
         _now_cet = datetime.now(_zi.ZoneInfo('Europe/Berlin'))
         _hour = _now_cet.hour
         _is_autonomous = source not in ('manual', 'backtest', 'cli', 'victor')
-        # Morgen-Block: 06-11h mit 0% Win-Rate → hart blocken für autonome Entries
-        if _is_autonomous and 6 <= _hour < 11:
-            return {
-                'success': False,
-                'trade_id': None,
-                'message': (
-                    f'❌ Morgen-Block: Entries 06-11h CET haben 0% Win-Rate (10 Trades Datenbasis). '
-                    f'Jetzt {_hour}:xx Uhr. Warte auf Abend-Fenster 17-22h.'
-                ),
-                'blocked_by': 'morning_block',
-            }
+        # Morning Block entfernt (Victor 15.04.2026): kein Zeitfenster-Block mehr
         # Generelles Außerhalb-Fenster: 11-17h hat nur 34% WR → weiche Warnung, kein Block
     except Exception:
         pass  # Zeitcheck nicht kritisch
@@ -380,6 +369,21 @@ def execute_paper_entry(
 
             _ticker_verdict = _verdict_data.get(ticker.upper(), {})
             _verdict = _ticker_verdict.get('verdict', '')
+
+            # Source-Validierung: nur echte Deep Dives akzeptieren
+            _verdict_source = _ticker_verdict.get('source', '')
+            _trusted_sources = {'autonomous_ceo', 'discord_deepdive'}
+            if _verdict_source and _verdict_source not in _trusted_sources:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Guard: Verdict für {ticker} hat unvertrauenswürdige Quelle '
+                        f'"{_verdict_source}". Nur autonomous_ceo oder discord_deepdive erlaubt. '
+                        f'In Discord: "Deep Dive {ticker}" für echten Deep Dive.'
+                    ),
+                    'blocked_by': 'untrusted_verdict_source',
+                }
             _verdict_date = _ticker_verdict.get('date', '')
 
             # Deep Dive veraltet wenn älter als 14 Tage
@@ -699,7 +703,37 @@ def execute_paper_entry(
             }
     except Exception:
         pass
-    
+
+    # ═══════════════════════════════════════════════════════════════════
+    # ── Guard 5p9: PHASE 9 — Portfolio Risk Management 2.0 ───────────
+    # ═══════════════════════════════════════════════════════════════════
+    # 5 Profi-Level Checks in einem Aufruf:
+    #   - Drawdown Circuit Breaker (-5% in 7d → Pause)
+    #   - Correlation / Sector Cluster (max 2 korrelierte Positionen)
+    #   - Kelly Criterion Sizing (dynamisch basierend auf Strategy-WR)
+    #   - VIX Volatility Scaling (VIX>25 → Size halbieren)
+    #   - Sector Exposure Limit (max 30% pro Sektor)
+    phase9_cap = 1500.0  # Fallback falls Risk-Modul nicht lädt
+    try:
+        import sys as _p9sys
+        if '/opt/trademind/scripts' not in _p9sys.path:
+            _p9sys.path.insert(0, '/opt/trademind/scripts')
+        from portfolio_risk import run_all_risk_checks as _p9_run
+        _p9 = _p9_run(ticker=ticker, strategy_id=strategy, base_size=1500.0)
+        if _p9.get('blocked'):
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f"❌ Phase 9 Risk-Block ({_p9.get('blocked_by')}): {_p9.get('reason')}",
+                'blocked_by': f"phase9_{_p9.get('blocked_by')}",
+            }
+        phase9_cap = float(_p9.get('final_size') or 1500.0)
+    except Exception as _p9e:
+        # Graceful degradation: wenn Risk-Modul fehlt, nicht blockieren
+        import logging as _p9log
+        _p9log.getLogger('paper_trade_engine').warning(f'Phase 9 risk check skipped: {_p9e}')
+
     # ── Guard 6: Freies Cash + Position Sizing ───────────────────────
     free_cash = get_free_cash(conn)
     cfg = load_config()
@@ -726,8 +760,8 @@ def execute_paper_entry(
             'blocked_by': 'sizing_zero',
         }
 
-    # Hard Cap: max 1500 EUR pro Position (verhindert Übergewichtung)
-    MAX_POSITION_EUR = 1500.0
+    # Phase 9: Dynamic Cap aus Kelly + VIX + Sector Check (oder 1500€ Fallback)
+    MAX_POSITION_EUR = phase9_cap
     position_eur = shares_from_risk * entry_price
     if position_eur > MAX_POSITION_EUR:
         shares_from_risk = int(MAX_POSITION_EUR / entry_price)
