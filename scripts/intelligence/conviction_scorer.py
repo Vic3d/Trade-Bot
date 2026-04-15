@@ -918,6 +918,21 @@ def calculate_conviction(
         except Exception:
             pass  # crowd reaction is optional
 
+    # ── Factor 7: Insider Signal (Phase 10, SEC EDGAR Form 4) ─────────────
+    # ±10 modifier basierend auf Insider-Käufen/-Verkäufen der letzten 30 Tage
+    insider_mod = 0
+    insider_reason = None
+    try:
+        from intelligence.sec_edgar import insider_signal  # type: ignore
+        sig = insider_signal(ticker, days=30, use_cache=True)
+        raw = int(sig.get('score', 0))  # -100..+100
+        insider_mod = max(-10, min(10, round(raw / 10)))
+        if insider_mod != 0:
+            total = max(0, min(100, total + insider_mod))
+            insider_reason = f"{sig.get('bias')} {insider_mod:+d} ({sig.get('reason', '')})"
+    except Exception:
+        pass  # insider signal is optional (non-US ticker, fetch fail, etc.)
+
     # ── Sizing recommendation ─────────────────────────────────────────────
     if total >= 60:
         sizing = 'STRONG'        # 2% risk
@@ -962,6 +977,7 @@ def calculate_conviction(
             'backtest_validation': bt_score,
             'decay_dna_modifier':  decay_dna_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
+            **({'insider_signal': insider_mod} if insider_mod != 0 else {}),
         },
         'factor_reasons': {
             'thesis_strength':     thesis_reason,
@@ -972,6 +988,7 @@ def calculate_conviction(
             'backtest_validation': bt_reason,
             'decay_dna':           decay_dna_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
+            **({'insider_signal': insider_reason} if insider_reason else {}),
         },
         'position_sizing': sizing,
         'vix': vix,
