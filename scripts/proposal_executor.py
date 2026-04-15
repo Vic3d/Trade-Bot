@@ -126,12 +126,17 @@ def _log_decision(entry: dict) -> None:
     _save(EXECUTOR_LOG, hist[-500:])
 
 
-def _notify(msg: str) -> None:
+def _notify(msg: str, priority: str = 'success') -> None:
+    """Trade-Executions → Queue (erscheinen im Abend-Digest). Kein Spam."""
     try:
-        from discord_sender import send
-        send(msg[:1900])
+        from discord_queue import queue_event
+        queue_event(priority, 'Trade Executed', msg, source='Proposal Executor')
     except Exception:
-        pass
+        try:
+            from discord_sender import send
+            send(msg[:1900])
+        except Exception:
+            pass
 
 
 def _execute(proposal: dict, mode: str) -> dict:
@@ -227,7 +232,8 @@ def run() -> dict:
             p['trade_id'] = result.get('trade_id')
             _notify(
                 f'✅ Proposal executed: {ticker} #{result.get("trade_id")} '
-                f'({p.get("strategy")})'
+                f'({p.get("strategy")})',
+                priority='success',
             )
             updated.append(p)
         else:

@@ -98,12 +98,18 @@ def _thesis_status(strategy: str) -> str:
     return str(cfg.get('status', 'active')).lower()
 
 
-def _notify(msg: str) -> None:
+def _notify(msg: str, priority: str = 'warning') -> None:
+    """CRITICAL → sofort senden. Alles andere → Queue für Daily Digest."""
     try:
-        from discord_sender import send
-        send(msg[:1900])
+        from discord_queue import queue_event
+        # Hard exits sind immer sofortige Alerts
+        queue_event(priority, 'Watchdog Alert', msg, source='Position Watchdog')
     except Exception:
-        pass
+        try:
+            from discord_sender import send
+            send(msg[:1900])
+        except Exception:
+            pass
 
 
 def _queue_auto_exit(trade_id: int, ticker: str, reason: str) -> None:
@@ -239,12 +245,12 @@ def run() -> dict:
             stats[r['status']] = stats.get(r['status'], 0) + 1
 
             if r['status'] == 'EXIT':
+                hard_reasons = '\n  '.join(a['reason'] for a in r['actions'] if a['severity'] == 'HARD')
                 msg = (
                     f'🚨 Watchdog HARD EXIT: **{r["ticker"]}** (#{r["trade_id"]})\n'
-                    f'  PnL: {r.get("pnl_pct", 0):+.1f}%\n'
-                    f'  ' + '\n  '.join(a['reason'] for a in r['actions'] if a['severity'] == 'HARD')
+                    f'  PnL: {r.get("pnl_pct", 0):+.1f}%\n  {hard_reasons}'
                 )
-                _notify(msg)
+                _notify(msg, priority='critical')  # Hard exit → sofort senden
                 log.warning(msg)
             elif r['status'] == 'WARN':
                 log.info(

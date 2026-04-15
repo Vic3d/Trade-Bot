@@ -68,11 +68,18 @@ SCHEDULE = [
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
+    # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
     ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
-    ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4], True),
-    ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4], True),
-    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4], True),
-    ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None,        True),
+    # Morgen-Digest: Portfolio-Status + gequeute Alerts aus der Nacht
+    ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,  35, [0,1,2,3,4]),
+    # Xetra/US Opening: nur noch ohne discord=True (kein extra Ping)
+    ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4]),
+    ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4]),
+    # Abend-Digest: Tages-Events + Trades + Lernloop-Summary (ersetzt rohen Abend-Report)
+    ('Abend-Digest',        'daily_digest.py',            ['evening'],           20, 0,  [0,1,2,3,4]),
+    # Abend-Report: Details (kein extra Discord-Ping mehr, nur als Log)
+    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4]),
+    ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None),
     # ─────────────────────────────────────────────────────────────────────────
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr

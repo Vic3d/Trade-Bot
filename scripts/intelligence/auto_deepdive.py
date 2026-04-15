@@ -283,14 +283,12 @@ def _log_flip(ticker: str, old: str, new: str, reasons: list[str]) -> None:
 
 
 def _notify_flip(ticker: str, old: str, new: str, reasons: list[str]) -> None:
+    """Queued — erscheint im Daily Digest, nicht sofort."""
     try:
-        from discord_sender import send
-        msg = (
-            f'🔄 Auto Deep Dive Flip: **{ticker}**\n'
-            f'  {old or "—"} → **{new}**\n'
-            f'  Grund: {"; ".join(reasons[:3])}'
-        )
-        send(msg)
+        from discord_queue import queue_event
+        body = f'{old or "—"} → **{new}** | {"; ".join(reasons[:3])}'
+        priority = 'warning' if new == 'NICHT_KAUFEN' else 'info'
+        queue_event(priority, f'Deep Dive Flip: {ticker}', body, source='Auto Deep Dive')
     except Exception:
         pass
 
