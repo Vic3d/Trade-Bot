@@ -132,6 +132,68 @@ def _closed_today_block() -> str:
     return '\n'.join(lines)
 
 
+def _cost_drag_block() -> str:
+    """
+    Phase 19a: aggregate transaction costs of this month's closed trades.
+    Surfaces the total friction drag so Victor sees if trading
+    frequency is killing the edge.
+    """
+    try:
+        from datetime import date as _date
+        today = _date.today()
+        month_prefix = today.strftime('%Y-%m')
+
+        c = sqlite3.connect(str(DB))
+        c.row_factory = sqlite3.Row
+        rows = c.execute("""
+            SELECT ticker, entry_price, close_price, shares
+            FROM paper_portfolio
+            WHERE status IN ('WIN', 'CLOSED')
+              AND close_date LIKE ?
+        """, (f'{month_prefix}%',)).fetchall()
+        c.close()
+
+        if not rows:
+            return ''
+
+        sys.path.insert(0, str(WS / 'scripts'))
+        from execution.transaction_costs import net_pnl as _net_pnl
+
+        total_cost = 0.0
+        total_gross = 0.0
+        n = 0
+        for r in rows:
+            try:
+                rt = _net_pnl(
+                    ticker=r['ticker'],
+                    entry_price=r['entry_price'] or 0,
+                    exit_price=r['close_price'] or 0,
+                    shares=r['shares'] or 0,
+                    fx_rate=1.0,
+                )
+                total_cost += rt['total_costs_eur']
+                total_gross += abs(rt['gross_pnl_eur'])
+                n += 1
+            except Exception:
+                continue
+
+        if n == 0:
+            return ''
+
+        lines = [
+            f'\n💸 **Trading-Gebühren {month_prefix}**',
+            f'  Trades geschlossen: {n}',
+            f'  Gesamtkosten: **{total_cost:.0f}€** '
+            f'({(total_cost/25000*100):.2f}% vom Startkapital)',
+        ]
+        if total_gross > 0:
+            drag_pct = total_cost / total_gross * 100
+            lines.append(f'  Kosten / Brutto-Bewegung: {drag_pct:.1f}%')
+        return '\n'.join(lines)
+    except Exception as e:
+        return f'_Cost-Drag: {e}_'
+
+
 def _learning_block() -> str:
     """Holt aktuellen Strategy-Performance-Snapshot aus trading_learnings.json."""
     lines: list[str] = []
@@ -202,6 +264,7 @@ def evening_digest() -> None:
         '',
         _portfolio_block(),
         _closed_today_block(),
+        _cost_drag_block(),
         _learning_block(),
         '',
         _autonomy_block(),

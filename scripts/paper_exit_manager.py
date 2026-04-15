@@ -362,6 +362,25 @@ def close_position(
     ).fetchone()
     ticker = ticker_row['ticker'] if ticker_row else None
 
+    # ── Phase 19a: compute NET PnL (after realistic costs) ──────────────────
+    net_note = ''
+    try:
+        from execution.transaction_costs import net_pnl as _net_pnl
+        if ticker and entry_price and close_price and shares:
+            rt = _net_pnl(
+                ticker=ticker,
+                entry_price=entry_price,
+                exit_price=close_price,
+                shares=shares,
+                fx_rate=1.0,  # already-EUR world here; sizer handles FX
+            )
+            net_note = (
+                f' [NET:{rt["net_pnl_eur"]:+.0f}€ '
+                f'drag:{rt["cost_drag_pct"]:.2f}%]'
+            )
+    except Exception as e:
+        print(f"[exit_manager] net_pnl calc failed: {e}")
+
     conn.execute(
         """
         UPDATE paper_portfolio
@@ -374,7 +393,7 @@ def close_position(
             round(close_price, 4),
             round(pnl, 2),
             round(pnl_pct, 2),
-            f' [EXIT:{exit_type} {date.today().isoformat()}]',
+            f' [EXIT:{exit_type} {date.today().isoformat()}]' + net_note,
             row_id
         )
     )

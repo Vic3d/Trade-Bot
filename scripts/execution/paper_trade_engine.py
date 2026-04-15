@@ -325,6 +325,37 @@ def execute_paper_entry(
             'blocked_by': 'crv_minimum',
         }
 
+    # ── Guard 0c3: Cost-Hurdle Gate (Phase 19a) ─────────────────────
+    # Verhindert Trades deren Edge kleiner ist als die Round-Trip-Kosten.
+    # Hintergrund: Bei ~0.75-1% Cost Drag pro Trade in US-Mid-Caps und
+    # ~1% in EU-Mid-Caps fressen 100 Trades/Jahr sonst 75-100% des
+    # Kapitals. Wir blocken Trades wo Reward-%  < 3x Round-Trip-Kosten.
+    try:
+        from execution.transaction_costs import get_profile as _tc_profile
+        _prof = _tc_profile(ticker)
+        # Round-trip cost in basis points (both sides + FX both sides if applicable)
+        _rt_bps = 2 * (_prof.spread_bps + _prof.slippage_bps)
+        if _prof.currency != 'EUR':
+            _rt_bps += 2 * _prof.fx_spread_bps
+        _rt_pct = _rt_bps / 100.0  # bps → %
+        _reward_pct = (_reward / entry_price) * 100 if entry_price else 0
+        _hurdle_pct = _rt_pct * 3.0  # need 3x cost coverage as safety margin
+        if _reward_pct < _hurdle_pct:
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ {ticker}: Edge zu klein — Reward {_reward_pct:.2f}% '
+                    f'< {_hurdle_pct:.2f}% Cost-Hurdle '
+                    f'(Round-Trip {_rt_pct:.2f}% × 3 Safety). '
+                    f'Market: {_prof.name}. Trading Gebühren würden Edge auffressen.'
+                ),
+                'blocked_by': 'cost_hurdle',
+            }
+    except Exception as _tc_e:
+        import logging as _tc_log
+        _tc_log.getLogger('paper_trade_engine').warning(f'cost-hurdle check skipped: {_tc_e}')
+
     # ── Guard 0: CEO Directive Check ────────────────────────────────────
     # CEO schreibt täglich sein Marktbild in ceo_directive.json.
     # Bei BEARISH oder HALT wird hier geblockt.
@@ -750,6 +781,37 @@ def execute_paper_entry(
             shares_from_risk = int(portfolio_value * 0.02 / risk_per_share)
         else:
             shares_from_risk = 0
+
+    # ── Phase 19b: Vol-Target Sizing (feature-flagged) ──────────────────
+    # Override conviction sizing if autonomy_config.json sets
+    #   "sizing_mode": "vol_target"
+    try:
+        import json as _json
+        _cfg_path = DB_PATH.parent / 'autonomy_config.json'
+        if _cfg_path.exists():
+            _auto = _json.loads(_cfg_path.read_text(encoding='utf-8'))
+        else:
+            _auto = {}
+        if _auto.get('sizing_mode') == 'vol_target':
+            from execution.position_sizing import size_position as _vt_size
+            _sz = _vt_size(
+                ticker=ticker,
+                entry_price=entry_price,
+                stop_price=stop_price,
+                portfolio_value_eur=portfolio_value,
+                conviction_score=int(conv_score) if conv_score else None,
+                fx_rate=1.0,
+            )
+            if not _sz.get('skip') and _sz.get('shares', 0) > 0:
+                shares_from_risk = int(_sz['shares'])
+                print(
+                    f"[sizer] vol_target: {_sz['shares']} shares "
+                    f"risk={_sz['risk_eur']}€ ({_sz['risk_pct_of_portfolio']}%) "
+                    f"reason={_sz['reason']}"
+                )
+    except Exception as _sz_e:
+        import logging as _sz_log
+        _sz_log.getLogger('paper_trade_engine').warning(f'vol_target sizing skipped: {_sz_e}')
 
     if shares_from_risk <= 0:
         conn.close()
