@@ -669,9 +669,17 @@ def run_scan(max_new_trades: int = 5) -> list:
     # ── P3: Dynamisches Universum aus strategies.json laden ──────────
     dynamic = load_universe_from_strategies()
     merged_universe: dict[str, list] = {}
+
+    # Phase 20: Adapter für unterschiedliche UNIVERSE-Formate
+    # (Dict[tier,list] in manchen Branches, flat list in anderen)
+    if isinstance(UNIVERSE, list):
+        _universe_dict = {'TIER_A': list(UNIVERSE), 'TIER_B': [], 'TIER_C': []}
+    else:
+        _universe_dict = UNIVERSE
+
     for _tier in ('TIER_A', 'TIER_B', 'TIER_C'):
-        _extra = dynamic.get(_tier, [])
-        merged_universe[_tier] = list(UNIVERSE.get(_tier, [])) + _extra
+        _extra = dynamic.get(_tier, []) if isinstance(dynamic, dict) else []
+        merged_universe[_tier] = list(_universe_dict.get(_tier, [])) + _extra
         if _extra:
             print(f"  ✅ {_tier}: +{len(_extra)} Ticker aus strategies.json")
 

@@ -94,16 +94,34 @@ SECTOR_HINTS = {
 # ── Quellen lesen ─────────────────────────────────────────────────────────────
 
 def read_scanner_universe() -> list[tuple[str, str, str]]:
-    """Liest die hardcoded TIER_A/B/C Liste aus autonomous_scanner.py."""
+    """Liest die hardcoded TIER_A/B/C Liste aus autonomous_scanner.py.
+
+    Phase 20: robust gegen beide Formate — dict[tier, list] UND flat list
+    (server hat historisch eine flat list).
+    """
     try:
         from execution.autonomous_scanner import UNIVERSE
     except Exception as e:
         print(f"[migrate] autonomous_scanner import failed: {e}")
         return []
-    result = []
-    for tier, items in UNIVERSE.items():
-        for ticker, thesis, reason in items:
-            result.append((ticker, thesis, reason))
+    result: list[tuple[str, str, str]] = []
+
+    def _emit(item):
+        # item kann (ticker, thesis, reason) oder länger sein
+        if isinstance(item, (tuple, list)) and len(item) >= 3:
+            result.append((item[0], item[1], item[2]))
+        elif isinstance(item, str):
+            result.append((item, '', 'scanner_universe'))
+
+    if isinstance(UNIVERSE, dict):
+        for tier, items in UNIVERSE.items():
+            for it in items:
+                _emit(it)
+    elif isinstance(UNIVERSE, (list, tuple)):
+        for it in UNIVERSE:
+            _emit(it)
+    else:
+        print(f"[migrate] unexpected UNIVERSE type: {type(UNIVERSE)}")
     return result
 
 
