@@ -15,6 +15,33 @@ memory/newswire.log
 memory/newswire.pid
 memory/*.pid
 
+## Runtime-State — wird vom Server gepflegt, nie committen
+## (siehe Phase 2 Audit 16.04.2026: verhindert Deploy-Kollisionen)
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+data/*.json
+data/*.log
+data/*.pid
+data/*.pkl
+data/*.html
+data/*.csv
+data/*.txt
+data/*.pt
+data/*.bak*
+data/*.lock
+data/rl_checkpoints/
+data/rl_checkpoints_archive*/
+data/errors/
+data/scheduler_errors/
+data/exports/
+data/backups/
+
+## Seed/Template-Configs DÜRFEN committed werden
+!data/seeds/
+!data/seeds/**
+
 ## OS
 .DS_Store
 Thumbs.db

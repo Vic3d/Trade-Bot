@@ -1,9 +1,0 @@
-{
-  "created": "2026-03-17T23:07:00",
-  "reason": "Strategy Monitor: PS3/PS4/PS5 alle GESCHWÄCHT (Score 28/100)",
-  "execute_at": "market_open_tomorrow",
-  "positions_to_close": ["KTOS", "HII", "HAG.DE", "HL", "PAAS", "MOS"],
-  "positions_to_keep": ["OXY", "FRO", "DHT", "TTE.PA"],
-  "decision_by": "Albert",
-  "decision_rationale": "Strategie-Regeln konsequent einhalten. PS3/PS4/PS5 Score < 30 = Exit. Keine Ausnahmen für Bauchgefühl."
-}
