@@ -30,6 +30,9 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 WS      = Path('/data/.openclaw/workspace')
 DATA    = WS / 'data'
@@ -41,7 +44,7 @@ LOG_FILE     = DATA / 'thesis_hunter.log'
 
 
 def log(msg: str):
-    ts   = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts   = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
     print(line, flush=True)
     try:
@@ -165,8 +168,8 @@ def _get_upcoming_event_queries() -> list[str]:
     try:
         data   = json.loads(events_file.read_text())
         events = data.get('events', [])
-        today  = datetime.now().strftime('%Y-%m-%d')
-        tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+        today  = datetime.now(_BERLIN).strftime('%Y-%m-%d')
+        tomorrow = (datetime.now(_BERLIN) + timedelta(days=1)).strftime('%Y-%m-%d')
 
         queries = []
         for ev in events:

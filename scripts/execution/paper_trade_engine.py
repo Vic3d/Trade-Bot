@@ -22,6 +22,9 @@ Albert 🎩 | v1.0 | 29.03.2026
 import sqlite3, json, sys, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'core'))
@@ -421,7 +424,7 @@ def execute_paper_entry(
             _dd_fresh = False
             if _verdict_date:
                 try:
-                    _dd_age = (datetime.now() - datetime.fromisoformat(_verdict_date)).days
+                    _dd_age = (datetime.now(_BERLIN).replace(tzinfo=None) - datetime.fromisoformat(_verdict_date)).days
                     _dd_fresh = _dd_age <= 14
                 except Exception:
                     pass
@@ -517,7 +520,7 @@ def execute_paper_entry(
                         if last_upd:
                             from datetime import timedelta
                             upd_date = datetime.fromisoformat(str(last_upd)[:10])
-                            has_catalyst = (datetime.now() - upd_date).days <= 30
+                            has_catalyst = (datetime.now(_BERLIN).replace(tzinfo=None) - upd_date).days <= 30
                 except Exception:
                     has_catalyst = True  # Kein Block wenn Daten fehlen
                 if not has_catalyst:

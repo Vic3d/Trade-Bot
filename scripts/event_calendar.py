@@ -28,6 +28,9 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from email.utils import parsedate_to_datetime
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 WS   = Path('/data/.openclaw/workspace')
 DATA = WS / 'data'
@@ -38,7 +41,7 @@ LOG_FILE     = DATA / 'event_calendar.log'
 
 
 def log(msg: str):
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
     print(line, flush=True)
     try:
@@ -117,7 +120,7 @@ def fetch_economic_events_via_news(days_window: int = 3) -> list[dict]:
 
             # Wenn aktuelle Artikel zum Thema gefunden → Event ist "im Gange" oder "upcoming"
             if fresh_articles >= 2:
-                today = datetime.now().strftime('%Y-%m-%d')
+                today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
                 results.append({
                     'type':     'economic',
                     'name':     event_name,
@@ -223,8 +226,8 @@ def run() -> dict:
     log(f'-> {OUTPUT_FILE.name} geschrieben ({len(all_events)} Events total)')
 
     # Wichtige Events ausgeben
-    today = datetime.now().strftime('%Y-%m-%d')
-    tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
+    tomorrow = (datetime.now(_BERLIN) + timedelta(days=1)).strftime('%Y-%m-%d')
     today_events = [e for e in all_events if e.get('date', '') in (today, tomorrow)]
     if today_events:
         log('Events heute/morgen:')
