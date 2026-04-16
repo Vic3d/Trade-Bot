@@ -178,7 +178,7 @@ def run(verbose: bool = False) -> dict:
         """).fetchall()
         for r in hist_rows:
             tkr, vd, src, date = r
-            if any(e['ticker'] == tkr and e['verdict_date'] == date[:10] for e in evals):
+            if any(e.get('ticker') == tkr and e.get('verdict_date', '') == date[:10] for e in evals):
                 continue
             e = _evaluate_verdict(conn, tkr, {
                 'verdict': vd, 'source': src, 'date': date,
