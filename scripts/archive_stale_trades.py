@@ -78,22 +78,58 @@ def setup_archive_table(conn: sqlite3.Connection) -> None:
     conn.commit()
 
 
+def _is_bulk_bug_trade(row) -> bool:
+    """
+    Erkennt Bulk-Bug-Trades aus der Anfangsphase:
+      - exit_type IS NULL (kein normaler Exit-Pfad)
+      - entry_date zwischen 07:00 und 07:30 UTC (bulk-entry direkt vor US-Pre-Market)
+      - close_date innerhalb von 2h nach entry (bulk-closure)
+    Das sind die pre-Morgen-Block-Trades die von Guard 0a nicht erfasst wurden.
+    """
+    id_, ticker, strat, status, pnl, entry_date, close_date, exit_type = row
+    if exit_type is not None and exit_type != '':
+        return False
+    if str(status).upper() != 'CLOSED':
+        return False
+    if not entry_date:
+        return False
+    # Entry-Zeit-Check: 07:00-07:30 UTC (09:00-09:30 CET = Morgen-Block)
+    ed = str(entry_date)
+    # Format kann '2026-04-02T07:15:46' oder '2026-04-02 07:15:46' sein
+    if 'T' in ed:
+        time_part = ed.split('T', 1)[1][:5]
+    elif ' ' in ed:
+        time_part = ed.split(' ', 1)[1][:5]
+    else:
+        return False
+    try:
+        hh, mm = time_part.split(':')
+        h, m = int(hh), int(mm)
+    except Exception:
+        return False
+    return h == 7 and 0 <= m <= 30  # 07:00-07:30 UTC bulk window
+
+
 def run(dry_run: bool = False) -> dict:
     conn = sqlite3.connect(str(DB))
     setup_archive_table(conn)
 
-    # Kandidaten identifizieren
+    # Kandidaten identifizieren (stale strategy OR bulk-bug)
     rows = conn.execute(
-        "SELECT id, ticker, strategy, status, pnl_eur FROM paper_portfolio"
+        "SELECT id, ticker, strategy, status, pnl_eur, entry_date, close_date, exit_type "
+        "FROM paper_portfolio"
     ).fetchall()
 
     to_archive = []
     for r in rows:
-        id_, ticker, strat, status, pnl = r
-        if _matches_stale(strat):
+        id_, ticker, strat, status, pnl, entry_date, close_date, exit_type = r
+        is_stale = _matches_stale(strat)
+        is_bulk = _is_bulk_bug_trade(r)
+        if is_stale or is_bulk:
             to_archive.append({
                 'id': id_, 'ticker': ticker, 'strategy': strat,
                 'status': status, 'pnl': pnl or 0,
+                'reason': 'stale_strategy' if is_stale else 'bulk_bug_morning',
             })
 
     stats = {
@@ -112,6 +148,16 @@ def run(dry_run: bool = False) -> dict:
     print(f'  → CLOSED (archive): {stats["closed_archived"]}')
     print(f'  → OPEN (skip):      {stats["open_skipped"]}')
     print(f'P&L removed from stats: {stats["pnl_removed"]:+.2f}€')
+
+    # Aufsplittung nach Grund
+    by_reason = {}
+    for x in to_archive:
+        by_reason.setdefault(x['reason'], []).append(x)
+    print('\nBy reason:')
+    for k, items in sorted(by_reason.items()):
+        closed = sum(1 for i in items if str(i['status']).upper()=='CLOSED')
+        pnl_sum = sum(i['pnl'] for i in items if str(i['status']).upper()=='CLOSED')
+        print(f'  {k:25} {closed:2d} closed, P&L: {pnl_sum:+8.2f}€')
 
     by_strat = {}
     for x in to_archive:
