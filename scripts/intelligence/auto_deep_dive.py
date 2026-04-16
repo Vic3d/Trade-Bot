@@ -27,7 +27,7 @@ Output-Struktur pro Ticker in deep_dive_verdicts.json:
     "verdict": "KAUFEN" | "WARTEN" | "NICHT_KAUFEN",
     "confidence": 0-100,
     "source": "AUTO_CLAUDE",
-    "model": "claude-opus-4-5",
+    "model": "claude-sonnet-4-5",
     "timestamp": "2026-04-17T..",
     "facts": {...},
     "reasoning": "...",
@@ -42,7 +42,7 @@ CLI:
 
 ENV:
   ANTHROPIC_API_KEY  (pflicht)
-  ANTHROPIC_MODEL    (optional, default claude-opus-4-5)
+  ANTHROPIC_MODEL    (optional, default claude-sonnet-4-5)
   AUTO_DD_MAX_TOKENS (optional, default 2500)
 """
 from __future__ import annotations
@@ -215,7 +215,12 @@ def collect_facts(ticker: str) -> dict:
 # ────────────────────────────────────────────────────────────────────────────
 
 
-def build_prompt(facts: dict) -> str:
+def build_prompt(facts: dict, mode: str = 'entry', position_ctx: dict | None = None) -> str:
+    """
+    mode='entry' — standard Entry-Frage (KAUFEN/WARTEN/NICHT_KAUFEN)
+    mode='hold'  — Hold-Check fuer offene Position. Gleiches Schema, aber
+                   Claude weiss: wir haben die Aktie schon. NICHT_KAUFEN = Exit-Signal.
+    """
     p = facts['price']
     if not p.get('facts_ok'):
         raise ValueError(f"Keine Fakten fuer {facts['ticker']}: {p.get('error')}")
@@ -234,10 +239,43 @@ def build_prompt(facts: dict) -> str:
         if regime else 'Markt-Regime: unbekannt'
     )
 
+    # Mode-spezifischer Kontext-Block
+    mode_header = ''
+    if mode == 'hold' and position_ctx:
+        entry_p = position_ctx.get('entry_price')
+        curr_p = p.get('latest_price')
+        try:
+            pnl_pct = ((curr_p - entry_p) / entry_p) * 100 if entry_p and curr_p else None
+        except Exception:
+            pnl_pct = None
+        days_held = position_ctx.get('days_held', '?')
+        mode_header = f"""
+### HOLD-CHECK MODUS — Position ist bereits offen!
+  Entry-Preis:       {entry_p} EUR
+  Aktueller P&L:     {pnl_pct:+.1f}% {'(im Plus)' if pnl_pct and pnl_pct > 0 else '(im Minus)' if pnl_pct else ''}
+  Tage gehalten:     {days_held}
+  Strategie:         {position_ctx.get('strategy', '?')}
+
+Deine Aufgabe: Pruefe ob die Thesis noch gueltig ist. Suche aktiv nach **Leichen im Keller**
+— Downgrades, neue Politik-Risiken, Bilanz-Probleme, Konkurrent-Moves.
+
+Verdict-Mapping fuer Hold-Check:
+  KAUFEN       = Thesis intakt → HALTEN
+  WARTEN       = Gelb, Vorsicht → Position halten, kein Aufstocken
+  NICHT_KAUFEN = **EXIT-SIGNAL** → Position schliessen (Leiche entdeckt)
+"""
+
+    task_line = (
+        f"**Hold-Verdict** fuer {facts['ticker']} — sollen wir die offene Position halten?"
+        if mode == 'hold'
+        else f"**Trading-Verdict** fuer {facts['ticker']} nach dem Deep-Dive-Protokoll."
+    )
+
     prompt = f"""Du bist Albert, der AI-CEO von TradeMind. Du machst einen Deep Dive fuer
 den Paper-Trading-Bot im Auftrag von Victor.
 
-Deine Aufgabe: **Trading-Verdict** fuer {facts['ticker']} nach dem Deep-Dive-Protokoll.
+Deine Aufgabe: {task_line}
+{mode_header}
 
 KRITISCH: Du gibst NUR ein Verdict basierend auf den Fakten unten. Keine Spekulation ueber
 Daten die du nicht hast. Wenn wichtige Infos fehlen (z.B. keine News, kein KGV), dann
@@ -310,12 +348,15 @@ DU aus den Fakten oben schliesst, nicht was du glaubst wahr sein sollte.
 # ────────────────────────────────────────────────────────────────────────────
 
 
-def call_claude(prompt: str, model: str | None = None, max_tokens: int = 2500) -> str:
-    """Ruft Anthropic API auf. Raises bei Fehler."""
+def call_claude(prompt: str, model: str | None = None, max_tokens: int = 2500) -> tuple[str, dict]:
+    """
+    Ruft Anthropic API auf. Raises bei Fehler.
+    Returns: (text, usage_dict) mit input_tokens / output_tokens / cost_usd_est
+    """
     api_key = os.environ.get('ANTHROPIC_API_KEY')
     if not api_key:
         raise RuntimeError('ANTHROPIC_API_KEY nicht gesetzt')
-    model = model or os.environ.get('ANTHROPIC_MODEL', 'claude-opus-4-5')
+    model = model or os.environ.get('ANTHROPIC_MODEL', 'claude-sonnet-4-5')
 
     try:
         import anthropic
@@ -330,7 +371,18 @@ def call_claude(prompt: str, model: str | None = None, max_tokens: int = 2500) -
     )
     # Extrahiere Text
     content = resp.content[0].text if resp.content else ''
-    return content
+
+    # Token-Kosten (opus-4-5: $15/MTok input, $75/MTok output — konservativ)
+    # sonnet: $3/MTok input, $15/MTok output
+    usage = {
+        'input_tokens': getattr(resp.usage, 'input_tokens', 0) if resp.usage else 0,
+        'output_tokens': getattr(resp.usage, 'output_tokens', 0) if resp.usage else 0,
+    }
+    if 'opus' in model.lower():
+        usage['cost_usd_est'] = (usage['input_tokens'] * 15 + usage['output_tokens'] * 75) / 1_000_000
+    else:
+        usage['cost_usd_est'] = (usage['input_tokens'] * 3 + usage['output_tokens'] * 15) / 1_000_000
+    return content, usage
 
 
 def parse_verdict(text: str) -> dict:
@@ -431,7 +483,19 @@ def save_verdict(ticker: str, verdict: dict, facts: dict, warnings: list[str], m
 # ────────────────────────────────────────────────────────────────────────────
 
 
-def run(ticker: str, *, force: bool = False, dry: bool = False) -> int:
+def run(
+    ticker: str,
+    *,
+    force: bool = False,
+    dry: bool = False,
+    mode: str = 'entry',
+    position_ctx: dict | None = None,
+) -> dict:
+    """
+    Fuehre einen Deep Dive aus.
+    Returns: {status: 'ok'|'skipped'|'error', verdict: str, confidence: int,
+              usage: dict, warnings: list, error: str | None}
+    """
     ticker = ticker.upper()
     existing = load_verdicts().get(ticker)
     if existing and not force:
@@ -445,35 +509,40 @@ def run(ticker: str, *, force: bool = False, dry: bool = False) -> int:
                 age_days = (datetime.now(timezone.utc) - last).days
                 if age_days < 14:
                     print(f"[{ticker}] Verdict noch frisch ({age_days}d) — skip (--force zum erzwingen)")
-                    return 0
+                    return {
+                        'status': 'skipped',
+                        'reason': f'fresh_{age_days}d',
+                        'verdict': existing.get('verdict'),
+                        'confidence': existing.get('confidence'),
+                    }
         except Exception:
             pass
 
     facts = collect_facts(ticker)
     if not facts['price'].get('facts_ok'):
         print(f"[{ticker}] ABBRUCH: {facts['price'].get('error')}")
-        return 2
+        return {'status': 'error', 'error': facts['price'].get('error'), 'verdict': None}
 
-    prompt = build_prompt(facts)
+    prompt = build_prompt(facts, mode=mode, position_ctx=position_ctx)
     if dry:
         print(prompt)
-        return 0
+        return {'status': 'ok', 'verdict': None, 'dry': True}
 
-    model = os.environ.get('ANTHROPIC_MODEL', 'claude-opus-4-5')
+    model = os.environ.get('ANTHROPIC_MODEL', 'claude-sonnet-4-5')
     max_tokens = int(os.environ.get('AUTO_DD_MAX_TOKENS', '2500'))
 
-    print(f"[{ticker}] Claude API call (model={model})...")
+    print(f"[{ticker}] Claude API call (mode={mode}, model={model})...")
     try:
-        response = call_claude(prompt, model=model, max_tokens=max_tokens)
+        response, usage = call_claude(prompt, model=model, max_tokens=max_tokens)
     except Exception as e:
         print(f"[{ticker}] API-Fehler: {e}")
-        return 3
+        return {'status': 'error', 'error': f'api: {e}', 'verdict': None}
 
     try:
         verdict = parse_verdict(response)
     except Exception as e:
         print(f"[{ticker}] Parse-Fehler: {e}\nRaw:\n{response[:500]}")
-        return 4
+        return {'status': 'error', 'error': f'parse: {e}', 'verdict': None, 'usage': usage}
 
     warnings = check_hallucinations(facts, verdict)
     if warnings:
@@ -488,7 +557,17 @@ def run(ticker: str, *, force: bool = False, dry: bool = False) -> int:
         final = 'WARTEN (downgraded)'
     print(f"[{ticker}] ✅ {final}  conf={verdict.get('confidence')}  "
           f"reasoning={verdict.get('reasoning','')[:120]}")
-    return 0
+    return {
+        'status': 'ok',
+        'verdict': final,
+        'raw_verdict': verdict.get('verdict'),
+        'confidence': verdict.get('confidence'),
+        'reasoning': verdict.get('reasoning'),
+        'key_risks': verdict.get('key_risks', []),
+        'warnings': warnings,
+        'usage': usage,
+        'mode': mode,
+    }
 
 
 def main():
@@ -496,8 +575,10 @@ def main():
     ap.add_argument('ticker')
     ap.add_argument('--force', action='store_true', help='Auch wenn Verdict < 14 Tage alt')
     ap.add_argument('--dry', action='store_true', help='Nur Prompt ausgeben, keine API')
+    ap.add_argument('--mode', choices=['entry', 'hold'], default='entry', help='Entry- oder Hold-Check')
     args = ap.parse_args()
-    sys.exit(run(args.ticker, force=args.force, dry=args.dry))
+    result = run(args.ticker, force=args.force, dry=args.dry, mode=args.mode)
+    sys.exit(0 if result.get('status') in ('ok', 'skipped') else 2)
 
 
 if __name__ == '__main__':

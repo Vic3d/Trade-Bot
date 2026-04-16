@@ -90,6 +90,15 @@ SCHEDULE = [
     # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
     ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00
+    # Phase 7.14 — Auto-Deep-Dive via Claude API (sonnet)
+    # Mo-Fr 07:30: full run (offene Positionen + Entry-Kandidaten)
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              7,  30, [0,1,2,3,4], True),
+    # Mo-Fr 13:30: nur offene Positionen (force refresh — Leichen im Keller intraday)
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         13, 30, [0,1,2,3,4], True),
+    # Mo-Fr 19:30: nur offene Positionen (vor Entry-Window)
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         19, 30, [0,1,2,3,4], True),
+    # So 20:00: full run (Asien-Vorschau fuer Montag)
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              20, 0,  [6],         True),
     # ─────────────────────────────────────────────────────────────────────────
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr

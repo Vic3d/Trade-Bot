@@ -28,7 +28,7 @@ Albert | TradeMind v3 | 2026-04-10
 
 import sqlite3
 import json
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 from pathlib import Path
 
 import os as _os
@@ -150,6 +150,77 @@ def is_thesis_invalidated(strategy: str) -> bool:
         return False
     except Exception:
         return False
+
+
+# ─── Auto-DD Exit-Signale (Phase 7.14) ────────────────────────────────────────
+
+def load_auto_dd_exit_signals() -> dict:
+    """
+    Liest unconsumed Exit-Signale aus data/auto_dd_exit_signals.jsonl.
+    Returns: {ticker: signal_record}
+
+    Signale werden nach Verarbeitung auf consumed=True gesetzt via mark_signal_consumed().
+    """
+    import os as _os
+    from pathlib import Path as _Path
+    ws = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind'))
+    signals_path = ws / 'data' / 'auto_dd_exit_signals.jsonl'
+    if not signals_path.exists():
+        return {}
+
+    out: dict = {}
+    try:
+        with open(signals_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except Exception:
+                    continue
+                if rec.get('consumed'):
+                    continue
+                ticker = (rec.get('ticker') or '').upper()
+                if ticker:
+                    # Neueste Signal gewinnt bei Duplikaten
+                    out[ticker] = rec
+    except Exception as e:
+        print(f"[exit_manager] Auto-DD Signale laden fehlgeschlagen: {e}")
+    return out
+
+
+def mark_auto_dd_signal_consumed(ticker: str, position_id: int | None) -> None:
+    """Markiert ein Exit-Signal als verarbeitet (in-place Rewrite der JSONL)."""
+    import os as _os
+    from pathlib import Path as _Path
+    ws = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind'))
+    signals_path = ws / 'data' / 'auto_dd_exit_signals.jsonl'
+    if not signals_path.exists():
+        return
+
+    try:
+        lines_out = []
+        with open(signals_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except Exception:
+                    lines_out.append(line)
+                    continue
+                if ((rec.get('ticker') or '').upper() == ticker.upper()
+                        and (position_id is None or rec.get('position_id') == position_id)
+                        and not rec.get('consumed')):
+                    rec['consumed'] = True
+                    rec['consumed_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+                lines_out.append(json.dumps(rec, ensure_ascii=False))
+        with open(signals_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(lines_out) + ('\n' if lines_out else ''))
+    except Exception as e:
+        print(f"[exit_manager] Auto-DD Signal mark-consumed fehlgeschlagen: {e}")
 
 
 # ─── Tranche helpers ──────────────────────────────────────────────────────────
@@ -361,6 +432,9 @@ def run() -> tuple[list, list]:
     closed_records  = []
     trailing_updates = []
 
+    # Phase 7.14: Auto-DD Exit-Signale laden (Claude hat Leiche im Keller entdeckt)
+    auto_dd_signals = load_auto_dd_exit_signals()
+
     for t in open_trades:
         ticker  = t['ticker']
         entry   = t['entry_price'] or 0
@@ -430,6 +504,27 @@ def run() -> tuple[list, list]:
                 f"THESIS KILL EXIT: {ticker} — strategy {strategy} INVALIDATED.\n"
                 f"Entry={entry:.2f} | Close={price:.2f} | PnL: {pnl:+.2f}EUR"
             )
+            continue
+
+        # ══════════════════════════════════════════════════════════════════
+        # HARD STOP 2b: Auto-DD hat Leiche im Keller entdeckt (Phase 7.14)
+        # NICHT_KAUFEN + confidence >= 75 von Claude Hold-Check
+        # ══════════════════════════════════════════════════════════════════
+        _sig = auto_dd_signals.get(ticker.upper())
+        if _sig and _sig.get('reason_code') == 'AUTO_DD_INVALIDATED':
+            _conf = int(_sig.get('confidence') or 0)
+            _reasoning = _sig.get('reasoning', '')[:200]
+            pnl = close_position(conn, trade_id, price, 'AUTO_DD_INVALIDATED', entry, shares, fees)
+            closed_records.append(
+                f"AUTO_DD_EXIT {ticker} | conf={_conf} | PnL: {pnl:+.2f}EUR | hold={hold_days}d"
+            )
+            send_alert(
+                f"🚨 AUTO-DD EXIT: **{ticker}** — Leiche im Keller entdeckt.\n"
+                f"Claude-Verdict: NICHT_KAUFEN (conf={_conf})\n"
+                f"Grund: {_reasoning}\n"
+                f"Entry={entry:.2f} | Close={price:.2f} | PnL: {pnl:+.2f}EUR"
+            )
+            mark_auto_dd_signal_consumed(ticker, trade_id)
             continue
 
         # ══════════════════════════════════════════════════════════════════

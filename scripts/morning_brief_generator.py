@@ -8,7 +8,7 @@ import sqlite3
 import json
 import urllib.request
 import urllib.parse
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 from pathlib import Path
 
 import os as _os
@@ -297,6 +297,84 @@ def get_calibration_section() -> str:
         return f"⚠️ Feedback-Loop Fehler: {e}"
 
 
+def get_auto_dd_section() -> str:
+    """Phase 7.14: Last Auto-DD run summary fuer Morgen-Briefing."""
+    import os as _os
+    from pathlib import Path as _Path
+    ws = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind'))
+    runs_log = ws / 'data' / 'auto_dd_runs.jsonl'
+    if not runs_log.exists():
+        return ''
+    try:
+        # Letzte Zeile lesen
+        with open(runs_log, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        if not lines:
+            return ''
+        last = None
+        for line in reversed(lines):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                last = json.loads(line)
+                break
+            except Exception:
+                continue
+        if not last:
+            return ''
+
+        # Nur wenn aus heute oder gestern
+        try:
+            ts = datetime.fromisoformat(last.get('ts_start', '').replace('Z', '+00:00'))
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            age_hours = (datetime.now(timezone.utc) - ts).total_seconds() / 3600
+            if age_hours > 24:
+                return ''
+        except Exception:
+            pass
+
+        verdicts = last.get('verdicts_by_type', {})
+        scope = last.get('scope', '?')
+        calls = last.get('calls_made', 0)
+        skipped = last.get('calls_skipped', 0)
+        cost = last.get('total_cost_usd', 0.0)
+        exit_signals = last.get('exit_signals', [])
+
+        # KAUFEN-Ticker extrahieren fuer Anzeige
+        kaufen_tickers = []
+        nicht_kaufen_tickers = []
+        for pt in last.get('per_ticker', []):
+            if pt.get('status') != 'ok':
+                continue
+            rv = (pt.get('raw_verdict') or '').upper()
+            conf = pt.get('confidence', 0)
+            t = pt.get('ticker', '?')
+            if rv == 'KAUFEN':
+                kaufen_tickers.append(f"{t}({conf})")
+            elif rv == 'NICHT_KAUFEN':
+                nicht_kaufen_tickers.append(f"{t}({conf})")
+
+        lines_out = [f"🔬 Auto-Deep-Dive ({scope}, {calls} Calls, {skipped} cached, ${cost:.2f}):"]
+        lines_out.append(
+            f"  ✅ KAUFEN: {verdicts.get('KAUFEN', 0)}"
+            f"  ⏸️  WARTEN: {verdicts.get('WARTEN', 0)}"
+            f"  ❌ NICHT_KAUFEN: {verdicts.get('NICHT_KAUFEN', 0)}"
+        )
+        if kaufen_tickers:
+            lines_out.append(f"  → KAUFEN: {', '.join(kaufen_tickers[:8])}")
+        if nicht_kaufen_tickers:
+            lines_out.append(f"  → NICHT_KAUFEN: {', '.join(nicht_kaufen_tickers[:8])}")
+        if exit_signals:
+            sig_tickers = [s.get('ticker', '?') for s in exit_signals]
+            lines_out.append(f"  🚨 AUTO-EXIT-SIGNALE: {', '.join(sig_tickers)}")
+
+        return '\n'.join(lines_out)
+    except Exception as e:
+        return f"🔬 Auto-Deep-Dive: (Log-Lesefehler: {e})"
+
+
 def generate_briefing() -> str:
     """Hauptfunktion: generiert den vollständigen Briefing-Text."""
     today = date.today().isoformat()
@@ -443,6 +521,10 @@ def generate_briefing() -> str:
     # ── Kalibrierungs-Sektion ─────────────────────────────────────────────────
     cal_block = f"\n━━ SIGNAL-KALIBRIERUNG ━━\n{calibration_section}\n" if calibration_section else ""
 
+    # ── Auto-Deep-Dive Sektion (Phase 7.14) ───────────────────────────────────
+    auto_dd_section = get_auto_dd_section()
+    auto_dd_block = f"\n━━ AUTO-DEEP-DIVE ━━\n{auto_dd_section}\n" if auto_dd_section else ""
+
     briefing = f"""🌅 Nacht-Briefing {date_str} — 07:00 MEZ
 ({event_count} neue Events, davon {tier1_count} Tier-1)
 
@@ -451,7 +533,7 @@ def generate_briefing() -> str:
 
 ━━ NEU SEIT 19:00 GESTERN ━━
 {chr(10).join(strategy_section_lines)}
-{geo_section}{trend_block}
+{geo_section}{trend_block}{auto_dd_block}
 ━━ MARKTKONTEXT ━━
 Brent: {brent_str} | VIX: {vix_str} | EUR/USD: {eurusd_str}
 
