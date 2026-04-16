@@ -106,7 +106,7 @@ def _db_snapshot() -> dict:
         out['null_exit_count'] = int(r[0]) if r else 0
         # Letzter Trade
         r = c.execute(
-            "SELECT MAX(COALESCE(exit_date, entry_date)) FROM paper_portfolio"
+            "SELECT MAX(COALESCE(close_date, entry_date)) FROM paper_portfolio"
         ).fetchone()
         if r and r[0]:
             try:
