@@ -89,6 +89,8 @@ SCHEDULE = [
     ('Alt-Data Scrape',     'intelligence/alternative_data.py', [],               6,  0,  None),   # Morgens vor allem anderen
     ('Alt-Data Scrape',     'intelligence/alternative_data.py', ['--source', 'shipping'], 12, 0, None),  # Mittags Shipping-Update
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
+    # ── Phase 3: State Sync (JSONs → SQL, nach Daily Learning) ──
+    ('State Sync',          'state_sync.py',           [],                        23, 5,  None),
     ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 50, [0,1,2,3,4,5,6]),  # Phase 9 — Drawdown Circuit Input
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.

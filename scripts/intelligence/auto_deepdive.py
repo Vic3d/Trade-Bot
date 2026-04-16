@@ -11,7 +11,10 @@ Decision tree:
   2) Apply Phase 10 (insider) + Phase 11 (macro) modifiers
   3) Check falling-knife + 52W-drawdown guardrails (Guard 0d logic)
   4) Emit one of: KAUFEN / WARTEN / NICHT_KAUFEN
-  5) Write to data/deep_dive_verdicts.json with source='autonomous_ceo'
+  5) Write to data/deep_dive_verdicts.json with source='auto_deepdive_rule'
+     (Phase 3: kennzeichnet regel-basierte Verdicts ehrlich, damit
+      ENTRY-Gate in autonomous_ceo.py diese NICHT als echten 6-Schritt
+      Deep Dive akzeptiert. WARTEN/NICHT_KAUFEN bleiben defensiv gültig.)
   6) Flip detection: verdict change triggers Discord alert
 
 Runs nightly 02:30 CET. Covers:
@@ -249,6 +252,15 @@ def _analyze_ticker(ticker: str) -> dict:
         result['verdict'] = 'WARTEN'
         result['reasons'].append('no active strategy → WARTEN')
 
+    # Phase 3: Rule-based analysis darf NIEMALS KAUFEN ausstellen.
+    # Ein echter 6-Schritt-Deep-Dive (Leiche im Keller, Katalysator, Bewertung etc.)
+    # ist Voraussetzung für ENTRY. Rule-Engine flaggt nur Kandidaten auf WARTEN,
+    # die dann via DEEP_DIVE-Action in autonomous_ceo vom LLM echt analysiert werden.
+    # Defensive Verdicts (NICHT_KAUFEN) bleiben erlaubt, da sie nur blockieren.
+    if result['verdict'] == 'KAUFEN':
+        result['verdict'] = 'WARTEN'
+        result['reasons'].append('rule→WARTEN (KAUFEN nur via echtem Deep Dive)')
+
     return result
 
 
@@ -261,7 +273,7 @@ def _build_verdict_entry(analysis: dict) -> dict:
         'date': now.strftime('%Y-%m-%d'),
         'updated_at': now.isoformat(timespec='seconds'),
         'expires': expires.strftime('%Y-%m-%d'),
-        'source': 'autonomous_ceo',
+        'source': 'auto_deepdive_rule',
         'analyst': 'auto_deepdive',
         'strategy': analysis.get('strategy'),
         'score': analysis['score'],
@@ -328,8 +340,9 @@ def run(force_all: bool = False) -> dict:
         if not force_all and is_fresh and exist_source == 'discord_deepdive':
             stats['skipped_fresh'] += 1
             continue
-        # Skip if autonomous + fresh
-        if not force_all and is_fresh and exist_source == 'autonomous_ceo':
+        # Skip if rule-based + fresh (accept both new 'auto_deepdive_rule'
+        # and legacy 'autonomous_ceo' marker to keep backward-compat)
+        if not force_all and is_fresh and exist_source in ('auto_deepdive_rule', 'autonomous_ceo'):
             stats['skipped_fresh'] += 1
             continue
 

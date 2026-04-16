@@ -288,6 +288,110 @@ def send_discord(msg: str, dry_run: bool = False):
         log(f'  Discord-Fehler: {e}')
 
 
+# ── Phase 3: Deep-Dive-Queue (News → Albert) ──────────────────────────────────
+
+DEEPDIVE_QUEUE_FILE = DATA / 'deepdive_requests.json'
+VERDICTS_FILE       = DATA / 'deep_dive_verdicts.json'
+
+
+def _queue_deepdives_from_news(high_priority: list[dict]) -> None:
+    """
+    Phase 3: Für Tickers in high_priority News ohne frischen KAUFEN-Verdict
+    einen Deep-Dive-Request in die Queue legen. Der autonomous_ceo liest diese
+    Queue und schlägt entsprechend DEEP_DIVE-Actions vor.
+
+    Queue-Format: list[{ticker, reason, ts, source, score, thesis_id}]
+    Auto-Purge: Einträge älter als 3 Tage oder Ticker mit frischem Verdict.
+    """
+    if not high_priority:
+        return
+
+    # Strategies laden — Tickers pro thesis_id
+    strats_file = DATA / 'strategies.json'
+    try:
+        strategies = json.loads(strats_file.read_text(encoding='utf-8'))
+    except Exception:
+        strategies = {}
+
+    # Aktuelle Verdicts laden — Ticker mit frischem KAUFEN skippen
+    try:
+        verdicts = json.loads(VERDICTS_FILE.read_text(encoding='utf-8'))
+    except Exception:
+        verdicts = {}
+
+    def _has_fresh_verdict(ticker: str) -> bool:
+        v = verdicts.get(ticker.upper(), {})
+        if not v or v.get('verdict') != 'KAUFEN':
+            return False
+        try:
+            age = (datetime.now(_BERLIN) - datetime.fromisoformat(v['date'])).days
+            return age <= 14
+        except Exception:
+            return False
+
+    # Queue laden + purgen
+    try:
+        queue = json.loads(DEEPDIVE_QUEUE_FILE.read_text(encoding='utf-8'))
+        if not isinstance(queue, list):
+            queue = []
+    except Exception:
+        queue = []
+
+    now_berlin = datetime.now(_BERLIN)
+    cutoff_3d  = (now_berlin - timedelta(days=3)).isoformat()
+    queue = [
+        q for q in queue
+        if isinstance(q, dict)
+        and q.get('ts', '') > cutoff_3d
+        and not _has_fresh_verdict(q.get('ticker', ''))
+    ]
+
+    # Bereits in Queue → kein Duplikat (pro Ticker)
+    in_queue = {q['ticker'].upper() for q in queue if q.get('ticker')}
+    added    = 0
+
+    for item in high_priority:
+        headline = item.get('title', '')[:180]
+        for m in item.get('matches', [])[:2]:
+            thesis_id = m.get('thesis_id')
+            score     = m.get('score', 0)
+            if not thesis_id:
+                continue
+            strat = strategies.get(thesis_id, {})
+            if not isinstance(strat, dict):
+                continue
+            for ticker in strat.get('tickers', []):
+                tup = ticker.upper()
+                if not tup or tup in in_queue:
+                    continue
+                if _has_fresh_verdict(tup):
+                    continue
+                queue.append({
+                    'ticker':    tup,
+                    'thesis_id': thesis_id,
+                    'reason':    headline,
+                    'source':    item.get('source', ''),
+                    'score':     score,
+                    'is_kill':   m.get('is_kill', False),
+                    'ts':        now_berlin.isoformat(timespec='seconds'),
+                })
+                in_queue.add(tup)
+                added += 1
+
+    # Atomic write — nur die 50 neuesten behalten
+    try:
+        DEEPDIVE_QUEUE_FILE.write_text(
+            json.dumps(queue[-50:], indent=2, ensure_ascii=False),
+            encoding='utf-8',
+        )
+    except Exception as e:
+        log(f'  deepdive_requests.json write failed: {e}')
+        return
+
+    if added:
+        log(f'  Deep-Dive-Queue: {added} neue Tickers (Queue-Size: {len(queue)})')
+
+
 # ── Hauptfunktion ─────────────────────────────────────────────────────────────
 
 def run(dry_run: bool = False):
@@ -382,6 +486,15 @@ def run(dry_run: bool = False):
                     })
             except Exception as _ceo_err:
                 log(f'Reaktiver CEO Trigger Fehler (nicht kritisch): {_ceo_err}')
+
+        # Phase 3: Deep-Dive-Queue für Tickers mit hochrelevantem News-Event
+        # und ohne frischen KAUFEN-Verdict. Wird vom nächsten autonomous_ceo
+        # Cycle aufgegriffen (Action=DEEP_DIVE) — kein extra LLM-Call hier.
+        if not dry_run:
+            try:
+                _queue_deepdives_from_news(high_priority)
+            except Exception as _dq_err:
+                log(f'Deep-Dive-Queue Fehler (nicht kritisch): {_dq_err}')
 
     # Unbekannte Sektoren → für thesis_discovery flaggen
     if unknown_sectors:

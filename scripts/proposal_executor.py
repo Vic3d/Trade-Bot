@@ -128,6 +128,42 @@ def _log_decision(entry: dict) -> None:
     _save(EXECUTOR_LOG, hist[-500:])
 
 
+def _persist_ceo_decision(ticker: str, action: str, reason: str,
+                          blocked_by: str | None = None,
+                          success: bool = False, trade_id: int | None = None,
+                          strategy: str | None = None) -> None:
+    """Phase 3: Proposal-Executor-Outcomes in ceo_decisions spiegeln,
+    damit der Feedback-Loop im autonomous_ceo sie sieht."""
+    try:
+        import sqlite3
+        conn = sqlite3.connect(str(DB))
+        # Tabelle sicherstellen — autonomous_ceo hat das gleiche Schema,
+        # hier defensiv replizieren falls proposal_executor solo läuft.
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS ceo_decisions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL, run_id TEXT NOT NULL, mode TEXT,
+                analysis TEXT, action TEXT NOT NULL, ticker TEXT, strategy TEXT,
+                reason TEXT, decision_json TEXT, result_success INTEGER,
+                result_reason TEXT, result_blocked_by TEXT, trade_id INTEGER)
+        """)
+        ts = datetime.now(_BERLIN).isoformat(timespec='seconds')
+        run_id = f'proposal_{datetime.now(_BERLIN).strftime("%Y%m%d_%H%M%S")}'
+        conn.execute("""
+            INSERT INTO ceo_decisions
+              (timestamp, run_id, mode, analysis, action, ticker, strategy, reason,
+               decision_json, result_success, result_reason, result_blocked_by, trade_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (ts, run_id, 'proposal_executor', '', action,
+              (ticker or '').upper() or None, strategy, reason[:1000],
+              json.dumps({'source': 'proposal_executor', 'ticker': ticker}),
+              1 if success else 0, reason[:1000], blocked_by, trade_id))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        log.debug(f'ceo_decisions persist failed: {e}')
+
+
 def _notify(msg: str, priority: str = 'success') -> None:
     """Trade-Executions → Queue (erscheinen im Abend-Digest). Kein Spam."""
     try:
@@ -210,6 +246,9 @@ def run() -> dict:
         if not ok:
             log.info(f'  {ticker}: skip — verdict {reason}')
             stats['skipped'] += 1
+            _persist_ceo_decision(ticker, 'ENTRY', f'verdict {reason}',
+                                   blocked_by='verdict_not_kaufen',
+                                   strategy=p.get('strategy'))
             updated.append(p)
             continue
 
@@ -218,6 +257,9 @@ def run() -> dict:
         if not ok:
             log.info(f'  {ticker}: skip — trigger {reason}')
             stats['skipped'] += 1
+            _persist_ceo_decision(ticker, 'ENTRY', f'trigger {reason}',
+                                   blocked_by='trigger_not_met',
+                                   strategy=p.get('strategy'))
             updated.append(p)
             continue
 
@@ -226,12 +268,20 @@ def run() -> dict:
 
         if result.get('shadow'):
             stats['shadowed'] += 1
+            _persist_ceo_decision(ticker, 'ENTRY',
+                                   f'SHADOW — would execute @ {p.get("entry_price")}',
+                                   blocked_by='shadow_mode',
+                                   strategy=p.get('strategy'))
             updated.append(p)
         elif result.get('success'):
             stats['executed'] += 1
             p['status'] = 'executed'
             p['executed_at'] = datetime.now(_BERLIN).isoformat(timespec='seconds')
             p['trade_id'] = result.get('trade_id')
+            _persist_ceo_decision(ticker, 'ENTRY',
+                                   f'executed #{result.get("trade_id")}',
+                                   success=True, trade_id=result.get('trade_id'),
+                                   strategy=p.get('strategy'))
             _notify(
                 f'✅ Proposal executed: {ticker} #{result.get("trade_id")} '
                 f'({p.get("strategy")})',
@@ -240,9 +290,12 @@ def run() -> dict:
             updated.append(p)
         else:
             stats['failed'] += 1
-            log.warning(
-                f"  {ticker}: block — {result.get('blocked_by') or result.get('message', '')[:100]}"
-            )
+            _blocked_by = result.get('blocked_by') or 'paper_trade_block'
+            _msg = (result.get('message') or result.get('reason') or '')[:200]
+            log.warning(f"  {ticker}: block — {_blocked_by}: {_msg}")
+            _persist_ceo_decision(ticker, 'ENTRY', _msg,
+                                   blocked_by=_blocked_by,
+                                   strategy=p.get('strategy'))
             updated.append(p)
 
     _save(PROPOSALS, updated)

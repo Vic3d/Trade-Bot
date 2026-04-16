@@ -264,6 +264,59 @@ def build_context() -> str:
     except Exception:
         pass
 
+    # 8. FEEDBACK LOOP — wiederholte Blocks der letzten 24h (Phase 3)
+    # Wenn ein Ticker oder ein Block-Grund 3x+ in 24h auftaucht, lernt Albert daraus.
+    try:
+        _fb_conn = sqlite3.connect(str(DATA / 'trading.db'))
+        _fb_rows = _fb_conn.execute(
+            """SELECT ticker, result_blocked_by, COUNT(*) AS cnt,
+                      GROUP_CONCAT(DISTINCT SUBSTR(result_reason, 1, 80)) AS reasons
+               FROM ceo_decisions
+               WHERE timestamp >= datetime('now', '-24 hours')
+                 AND result_success = 0
+                 AND action = 'ENTRY'
+                 AND ticker IS NOT NULL
+               GROUP BY ticker, result_blocked_by
+               HAVING COUNT(*) >= 2
+               ORDER BY cnt DESC
+               LIMIT 10""",
+        ).fetchall()
+        _fb_conn.close()
+        if _fb_rows:
+            parts.append('\n--- FEEDBACK: WIEDERHOLTE BLOCKS (24h) ---')
+            parts.append('⚠️ Diese Tickers wurden mehrfach geblockt — nicht nochmal vorschlagen ohne neuen Katalysator:')
+            for ticker, blocked_by, cnt, reasons in _fb_rows:
+                _reason_short = (reasons or '?')[:120]
+                parts.append(f'  {ticker} × {cnt}x | {blocked_by or "?"}: {_reason_short}')
+    except Exception as _e:
+        pass  # Tabelle evtl. noch nicht vorhanden bei erstem Run
+
+    # 9. DEEP DIVE REQUESTS — News-getriggerte Queue (Phase 3)
+    # broad_news_scanner füllt diese Queue bei hochrelevanten News für Tickers
+    # ohne frischen KAUFEN-Verdict. Albert soll Action=DEEP_DIVE für diese
+    # Tickers vorschlagen.
+    try:
+        _dq_file = DATA / 'deepdive_requests.json'
+        if _dq_file.exists():
+            _dq = json.loads(_dq_file.read_text(encoding='utf-8'))
+            if isinstance(_dq, list) and _dq:
+                _cutoff = (datetime.now(ZoneInfo('Europe/Berlin')) - timedelta(hours=24)).isoformat()
+                _fresh = [q for q in _dq
+                          if isinstance(q, dict) and q.get('ts', '') > _cutoff]
+                if _fresh:
+                    parts.append('\n--- DEEP-DIVE-QUEUE (News-getriggert) ---')
+                    parts.append('Für diese Tickers sind News eingegangen, aber KEIN frischer KAUFEN-Verdict vorhanden.')
+                    parts.append('→ Action=DEEP_DIVE vorschlagen (priorisiert nach Score):')
+                    _fresh.sort(key=lambda q: q.get('score', 0), reverse=True)
+                    for q in _fresh[:8]:
+                        _kill_tag = ' [KILL-TRIGGER]' if q.get('is_kill') else ''
+                        parts.append(
+                            f"  {q.get('ticker')} (Thesis {q.get('thesis_id')}, "
+                            f"Score {q.get('score')}){_kill_tag}: {q.get('reason', '')[:90]}"
+                        )
+    except Exception:
+        pass
+
     return '\n'.join(parts)
 
 
@@ -297,6 +350,16 @@ DEEP-DIVE-GATE (HART):
   gib zuerst Action=DEEP_DIVE zurück. Im nächsten Cycle (mit dem frischen
   Verdict im Context) kannst du dann ENTRY vorschlagen.
 - WARTEN und NICHT_KAUFEN Verdicts blockieren ENTRY genauso wie fehlende.
+
+FEEDBACK-LOOP (WENN VORHANDEN):
+- Im Context steht unter "FEEDBACK: WIEDERHOLTE BLOCKS" welche Tickers in
+  den letzten 24h wiederholt geblockt wurden (3x+). Diese NICHT nochmal
+  als ENTRY vorschlagen, es sei denn ein NEUER Katalysator ist erkennbar
+  (neue News, Verdict-Wechsel, Regime-Wechsel).
+- Bei wiederholten Blocks durch "verdict_missing": Action=DEEP_DIVE für
+  diesen Ticker triggern statt weiter ENTRY zu versuchen.
+- Bei Blocks durch "sector_limit"/"correlation_cluster"/"cash_reserve":
+  akzeptiere die Grenze und suche andere Sektoren/Setups.
 
 FÜR JEDEN TRADE DEN DU EINGEHST: Mach mental einen Quick-Deep-Dive:
 - Was ist die Thesis? Warum jetzt?
