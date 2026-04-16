@@ -537,32 +537,112 @@ def execute_paper(ticker: str, strategy: str, entry: float, stop: float,
 
 # ─── Main Scan ──────────────────────────────────────────────────────
 
-def is_market_open() -> bool:
-    """Prüft ob mindestens eine der gehandelten Börsen heute offen ist."""
+def is_trading_day() -> bool:
+    """Prüft ob heute überhaupt ein Handelstag ist (Wochentag)."""
+    return datetime.now(timezone.utc).weekday() < 5
+
+
+# ── Phase 18: Globale Börsen-Handelszeiten ──────────────────────────────────
+# Jede Börse hat ihre eigenen Öffnungszeiten. Albert prüft pro Ticker
+# ob die zugehörige Börse gerade offen ist.
+# Format: (open_hour, close_hour, timezone_name, weekdays)
+MARKET_HOURS: dict[str, tuple[int, int, str]] = {
+    # US Markets: NYSE/NASDAQ 09:30-16:00 ET (= 15:30-22:00 CET)
+    'US':    (9, 16, 'America/New_York'),
+    # Deutschland: Xetra 09:00-17:30 CET
+    'DE':    (9, 17, 'Europe/Berlin'),
+    # Euronext (Paris, Amsterdam, Brüssel): 09:00-17:30 CET
+    'EU':    (9, 17, 'Europe/Berlin'),
+    # London: LSE 08:00-16:30 GMT/BST
+    'UK':    (8, 16, 'Europe/London'),
+    # Norwegen: Oslo Bors 09:00-16:20 CET
+    'NO':    (9, 16, 'Europe/Berlin'),
+    # Japan: TSE 09:00-15:00 JST (Lunch 11:30-12:30)
+    'JP':    (9, 15, 'Asia/Tokyo'),
+    # Hong Kong: HKEX 09:30-16:00 HKT
+    'HK':    (9, 16, 'Asia/Hong_Kong'),
+    # Kanada: TSX 09:30-16:00 ET
+    'CA':    (9, 16, 'America/New_York'),
+    # Australien: ASX 10:00-16:00 AEST
+    'AU':    (10, 16, 'Australia/Sydney'),
+    # Schweden/Dänemark/Kopenhagen
+    'NORD':  (9, 17, 'Europe/Stockholm'),
+}
+
+
+def _ticker_to_market(ticker: str) -> str:
+    """Bestimmt den Markt anhand des Ticker-Suffix."""
+    t = ticker.upper()
+    if '.DE' in t or '.F' in t:
+        return 'DE'
+    if '.PA' in t or '.AS' in t or '.BR' in t or '.MI' in t:
+        return 'EU'
+    if '.L' in t:
+        return 'UK'
+    if '.OL' in t:
+        return 'NO'
+    if '.T' in t:
+        return 'JP'
+    if '.HK' in t:
+        return 'HK'
+    if '.TO' in t or '.V' in t:
+        return 'CA'
+    if '.AX' in t:
+        return 'AU'
+    if '.CO' in t or '.ST' in t:
+        return 'NORD'
+    return 'US'  # Default: US-Ticker haben kein Suffix
+
+
+def is_market_open(ticker: str) -> tuple[bool, str]:
+    """
+    Prüft ob die Börse für diesen Ticker gerade geöffnet ist.
+    Returns: (is_open, reason_string)
+    """
+    market = _ticker_to_market(ticker)
+    hours = MARKET_HOURS.get(market, MARKET_HOURS['US'])
+    open_h, close_h, tz_name = hours
+
     try:
-        sys.path.insert(0, str(WS / 'scripts' / 'core'))
-        from market_hours import is_any_trading_day
-        all_tickers = [t for tier in UNIVERSE.values() for t, _, _ in tier]
-        return is_any_trading_day(all_tickers)
+        from zoneinfo import ZoneInfo
+        now = datetime.now(ZoneInfo(tz_name))
     except Exception:
-        return datetime.now(timezone.utc).weekday() < 5
+        # Fallback: immer erlaubt
+        return True, f'{market} (tz fallback)'
+
+    # Wochenende: Mo=0..So=6
+    if now.weekday() >= 5:
+        return False, f'{market} Wochenende'
+
+    hour = now.hour
+    if open_h <= hour < close_h:
+        return True, f'{market} offen ({open_h}:00-{close_h}:00 {tz_name}, jetzt {now.strftime("%H:%M")})'
+    else:
+        return False, f'{market} geschlossen ({open_h}:00-{close_h}:00 {tz_name}, jetzt {now.strftime("%H:%M")})'
+
+
+def is_any_market_open() -> tuple[bool, list[str]]:
+    """Prüft ob irgendein Markt gerade offen ist. Gibt offene Märkte zurück."""
+    open_markets = []
+    for market, (open_h, close_h, tz_name) in MARKET_HOURS.items():
+        try:
+            from zoneinfo import ZoneInfo
+            now = datetime.now(ZoneInfo(tz_name))
+            if now.weekday() < 5 and open_h <= now.hour < close_h:
+                open_markets.append(market)
+        except Exception:
+            continue
+    return len(open_markets) > 0, open_markets
 
 
 def is_optimal_entry_time() -> bool:
     """
-    Daten zeigen: WR 78% bei Entries 17-22h (US Session).
-    WR nur 29-30% vor 17h.
-    → Neue Entries NUR 17:00–22:00 CET erlaubt.
-
-    Ausnahme: Tier A Thesis-Plays dürfen auch 08:30-10:00 (Xetra-Open Momentum)
+    Phase 18: Globale Börsenzeiten statt fixem 17-22h Fenster.
+    Ein Ticker darf gehandelt werden wenn seine Börse offen ist.
+    Für den Scanner-Gesamtlauf: mindestens ein Markt muss offen sein.
     """
-    try:
-        import zoneinfo
-        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
-        hour = now.hour
-        return 17 <= hour < 22  # Hauptfenster
-    except Exception:
-        return True  # Fallback: immer erlaubt
+    any_open, markets = is_any_market_open()
+    return any_open
 
 
 def is_in_entry_zone(data: dict, entry: float, stop: float) -> tuple[bool, str]:
@@ -652,17 +732,14 @@ def run_scan(max_new_trades: int = 5) -> list:
 
     NEU: Entry-Zone-Check + Pending Setups für Borderline-Conviction
     """
-    if not is_market_open():
-        print(f"📅 Markt geschlossen (heute: {datetime.now().strftime('%A')}) — kein Scan.")
+    if not is_trading_day():
+        print(f"📅 Wochenende ({datetime.now().strftime('%A')}) — kein Scan.")
         return []
 
-    # Entry-Zeit-Filter (Daten: WR 78% bei 17-22h, nur 29% davor)
-    if not is_optimal_entry_time():
-        import zoneinfo
-        now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
-        print(f"⏰ {now.strftime('%H:%M')} — Kein Entry-Fenster (optimal: 17-22h CET). "
-              f"Nur Watchlist-Snapshots und Trigger-Checks laufen.")
-        # Außerhalb Entry-Fenster: nur Watchlist aktualisieren, keine neuen Trades
+    # Phase 18: Globale Börsenzeiten — mindestens ein Markt muss offen sein
+    any_open, open_markets = is_any_market_open()
+    if not any_open:
+        print(f"⏰ Keine Börse gerade offen — kein Scan. (Nächste Öffnung abwarten)")
         try:
             sys.path.insert(0, str(WS / 'scripts'))
             from watchlist_tracker import run_snapshot
@@ -670,6 +747,7 @@ def run_scan(max_new_trades: int = 5) -> list:
         except Exception as e:
             print(f"Watchlist-Update Fehler: {e}")
         return []
+    print(f"🌍 Offene Märkte: {', '.join(open_markets)}")
 
     from paper_trade_engine import sync_prices_for_tickers
 
@@ -740,6 +818,12 @@ def run_scan(max_new_trades: int = 5) -> list:
                 break
             if has_open(ticker):
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'already_open'})
+                continue
+            # Phase 18: Per-Ticker Market-Hours-Check
+            _mkt_open, _mkt_reason = is_market_open(ticker)
+            if not _mkt_open:
+                results.append({'ticker': ticker, 'tier': tier, 'status': 'market_closed',
+                                'reason': _mkt_reason})
                 continue
             if open_count() >= 20:
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'max_positions'})

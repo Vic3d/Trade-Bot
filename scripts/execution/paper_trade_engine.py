@@ -628,9 +628,9 @@ def execute_paper_entry(
     conn = get_db()
     
     # ── Guard 2b: Wöchentliches Trade-Limit ─────────────────────────
-    # Regel: max 2-3 neue Positionen pro Woche (aus paper-strategien.md)
-    # Mehr Trades = schlechtere Qualität, Overtrading, emotionale Entscheidungen.
-    MAX_TRADES_PER_WEEK = 3
+    # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
+    # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
+    MAX_TRADES_PER_WEEK = 7
     try:
         from datetime import timedelta
         # ISO-Woche: Montag 00:00 bis Sonntag 23:59

@@ -103,16 +103,23 @@ SCHEDULE = [
     ('Position Watchdog',   'position_watchdog.py',            [],                16, 0,  [0,1,2,3,4]),
     ('Position Watchdog',   'position_watchdog.py',            [],                18, 0,  [0,1,2,3,4]),
     ('Position Watchdog',   'position_watchdog.py',            [],                20, 0,  [0,1,2,3,4]),
-    # ── Phase 15: Proposal Executor (Entry-Fenster 17-22h CET) ──
-    ('Proposal Executor',   'proposal_executor.py',            [],                17, 15, [0,1,2,3,4]),
+    # ── Phase 18: Proposal Executor (globale Börsenzeiten, alle 2h) ──
+    ('Proposal Executor',   'proposal_executor.py',            [],                 8, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                10, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                12, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                14, 15, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                16, 15, [0,1,2,3,4]),
     ('Proposal Executor',   'proposal_executor.py',            [],                18, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                19, 15, [0,1,2,3,4]),
     ('Proposal Executor',   'proposal_executor.py',            [],                20, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                21, 15, [0,1,2,3,4]),
-    # ── Phase 13: Autonomous Pipeline Orchestrator (3x tgl Mo-Fr) ──
+    ('Proposal Executor',   'proposal_executor.py',            [],                22, 15, [0,1,2,3,4]),
+    # ── Phase 18: Autonomous Pipeline (alle 2h, globale Abdeckung) ──
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                 9, 0,  [0,1,2,3,4]),
     ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11, 0,  [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                13, 0,  [0,1,2,3,4]),
     ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                15, 0,  [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                17, 0,  [0,1,2,3,4]),
     ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                19, 0,  [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                21, 0,  [0,1,2,3,4]),
     # ── Phase 16: Signal-Level Learning (Sonntag Vormittag) ──
     ('Signal Learning',     'intelligence/signal_learning.py', [],                9,  30, [6]),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
