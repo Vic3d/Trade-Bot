@@ -708,9 +708,13 @@ def execute_paper_entry(
         }
     
     # ── Guard 5: Sektor-Limit ────────────────────────────────────────
+    # Phase 21 MVP (2026-04-16): von 4 → 2 reduziert.
+    # Rationale: Korrelations-Cluster-Risiko. 3-4 Tech-Mega oder
+    # 3-4 Energy-Ticker = effektiv 1 Wette. Max 2 offene Positionen
+    # pro Sektor erzwingt Diversifikation VOR dem 30d autonomous run.
     sector = get_sector(ticker)
     sector_count = get_sector_count(conn, sector)
-    max_sector = 4  # aus paper_config
+    max_sector = 2  # Phase 21 MVP — vorher 4
     if sector_count >= max_sector:
         conn.close()
         return {
