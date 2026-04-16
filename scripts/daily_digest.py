@@ -274,7 +274,7 @@ def _overnight_news_block() -> str:
     """Zeigt wie viele News-Events die letzte Nacht reingekommen sind."""
     try:
         from datetime import datetime, timedelta
-        yesterday = (datetime.utcnow() - timedelta(hours=12)).strftime('%Y-%m-%d %H:%M')
+        yesterday = (datetime.now(timezone.utc) - timedelta(hours=12)).strftime('%Y-%m-%d %H:%M')
         c = sqlite3.connect(str(DB))
         count = c.execute(
             "SELECT COUNT(*) FROM news_events WHERE published_at >= ?", (yesterday,)

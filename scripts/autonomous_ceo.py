@@ -29,8 +29,10 @@ import os
 import sqlite3
 import sys
 import urllib.request
+import zoneinfo
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 WS      = Path('/data/.openclaw/workspace')
 DATA    = WS / 'data'
@@ -51,7 +53,7 @@ DECISIONS_LOG  = DATA / 'ceo_decisions.json'
 # ── Logging ───────────────────────────────────────────────────────────────────
 
 def log(msg: str, level: str = 'INFO'):
-    ts   = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts   = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] [{level}] {msg}'
     print(line, flush=True)
     try:
@@ -83,7 +85,7 @@ def build_context() -> str:
     Enthält: Positionen, Cash, News, Candidates, Regime, Performance, Strategien.
     """
     parts = []
-    now   = datetime.now().strftime('%Y-%m-%d %H:%M')
+    now   = datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d %H:%M')
     parts.append(f'=== ALBERT CEO KONTEXT (Stand: {now}) ===\n')
 
     db_path = DATA / 'trading.db'

@@ -7,6 +7,7 @@ Damit liest Albert beim nächsten Session-Start automatisch was gestern passiert
 
 import sqlite3, os, time
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 DB_PATH   = os.path.join(os.path.dirname(__file__), "..", "memory", "newswire.db")
 MEM_DIR   = os.path.join(os.path.dirname(__file__), "..", "memory")
@@ -15,7 +16,7 @@ def _conn():
     return sqlite3.connect(DB_PATH)
 
 def today_str():
-    return datetime.now(tz=timezone(timedelta(hours=1))).strftime("%Y-%m-%d")
+    return datetime.now(tz=ZoneInfo('Europe/Berlin')).strftime("%Y-%m-%d")
 
 def _safe_query(conn, sql, params=()):
     """Execute a query, return [] if the table doesn't exist."""

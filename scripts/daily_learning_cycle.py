@@ -20,13 +20,17 @@ import sqlite3
 import json
 import sys
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+def _berlin_now() -> datetime:
+    return datetime.now(ZoneInfo('Europe/Berlin'))
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data/trading.db'
 ACCURACY_FILE = WS / 'memory/albert-accuracy.md'
 LEARNINGS_FILE = WS / 'data/trading_learnings.json'
-DAILY_LOG = WS / f"memory/{datetime.now().strftime('%Y-%m-%d')}.md"
+DAILY_LOG = WS / f"memory/{datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d')}.md"
 
 
 def get_db():
@@ -220,7 +224,7 @@ def recalculate_conviction_weights():
       computed_at: ISO timestamp
       trade_count: N
     """
-    if datetime.now().weekday() != 6:  # Nur Sonntag
+    if _berlin_now().weekday() != 6:  # Nur Sonntag (Berliner Zeit)
         print("  ℹ️  Gewichte-Rekalibrierung nur Sonntags")
         return None
 
@@ -352,7 +356,7 @@ def run_full():
 
     print("\n[6/7] Feature Importance (weekly, Freitags)...")
     fi_result = {}
-    if datetime.now().weekday() == 4:  # Freitag
+    if _berlin_now().weekday() == 4:  # Freitag (Berliner Zeit)
         try:
             from feature_importance import run_analysis, print_report, export_feature_weights
             fi_result = run_analysis(quick=True)

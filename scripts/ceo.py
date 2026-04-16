@@ -4424,20 +4424,10 @@ def _generate_ceo_notes(mode: str, vix: float, hist: dict, regime: str) -> str:
         notes.append('Abwärtstrend aktiv — S&P unter MA200 = kein Growth-Long.')
 
     # Kontext-bewusste Notizen
-    from datetime import datetime, timezone, timedelta
-    now = datetime.now(timezone(timedelta(hours=2)))  # Berlin
+    from datetime import datetime
+    from zoneinfo import ZoneInfo as _ZI
+    now = datetime.now(_ZI('Europe/Berlin'))
     weekday = now.weekday()  # 0=Mo
-    
-    # Liberation Day (02.04.2026)
-    liberation_day = datetime(2026, 4, 2, tzinfo=timezone(timedelta(hours=2)))
-    days_to_lib = (liberation_day.date() - now.date()).days
-    if 0 <= days_to_lib <= 3:
-        if days_to_lib == 0:
-            notes.append('🚨 Liberation Day HEUTE — Trump-Zölle. Volatilität erwartet.')
-        elif days_to_lib == 1:
-            notes.append('⚠️ Liberation Day MORGEN — keine neuen Positionen eröffnen.')
-        else:
-            notes.append(f'Liberation Day in {days_to_lib} Tagen — Vorsicht bei US-Positionen.')
     
     # Wochenende
     if weekday == 4:  # Freitag

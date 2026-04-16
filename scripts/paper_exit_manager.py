@@ -28,7 +28,8 @@ Albert | TradeMind v3 | 2026-04-10
 
 import sqlite3
 import json
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
@@ -324,7 +325,7 @@ def send_alert(message: str) -> None:
         queue.append({
             'message': message,
             'target': '452053147620343808',
-            'ts': datetime.utcnow().isoformat(),
+            'ts': datetime.now(timezone.utc).isoformat(),
         })
         alert_queue.write_text(json.dumps(queue, indent=2))
     except Exception as e:
@@ -420,7 +421,7 @@ def is_market_open() -> bool:
         probe = ['AAPL', 'RHM.DE', 'EQNR.OL', 'BA.L', 'TTE.PA', 'ASML.AS']
         return is_any_trading_day(probe)
     except Exception:
-        return datetime.utcnow().weekday() < 5
+        return datetime.now(timezone.utc).weekday() < 5
 
 
 # ─── Main exit logic ──────────────────────────────────────────────────────────
@@ -431,7 +432,7 @@ def run() -> tuple[list, list]:
     Returns: (closed_records, trailing_updates)
     """
     if not is_market_open():
-        print(f"[exit_manager] Market closed ({datetime.now().strftime('%A')}) — skipping.")
+        print(f"[exit_manager] Market closed ({datetime.now(ZoneInfo('Europe/Berlin')).strftime('%A')}) — skipping.")
         return [], []
 
     conn = get_db()
