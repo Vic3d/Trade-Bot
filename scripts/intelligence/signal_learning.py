@@ -50,7 +50,7 @@ def _fetch_closed_trades() -> list[dict]:
                    pnl_pct, pnl_eur, conviction_at_entry, regime_at_entry,
                    vix_at_entry, holding_days, result, exit_type
               FROM trades
-             WHERE status = 'CLOSED' AND pnl_pct IS NOT NULL
+             WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_pct IS NOT NULL
         """).fetchall()
         c.close()
         out = [dict(r) for r in rows]

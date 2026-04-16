@@ -3942,7 +3942,7 @@ def optimize_portfolio(conn, strategies: dict, market_data: dict = None) -> dict
     try:
         closed_rows = conn.execute(
             "SELECT ticker, strategy, sector, pnl_pct "
-            "FROM paper_portfolio WHERE status = 'CLOSED' AND pnl_pct IS NOT NULL"
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_pct IS NOT NULL"
         ).fetchall()
     except Exception:
         closed_rows = []

@@ -386,7 +386,7 @@ def _get_strategy_stats(strategy_id: str) -> dict | None:
         conn = _db()
         # Alle geschlossenen Trades dieser Strategie
         rows = conn.execute(
-            "SELECT pnl_eur FROM paper_portfolio WHERE strategy=? AND status='CLOSED' AND pnl_eur IS NOT NULL",
+            "SELECT pnl_eur FROM paper_portfolio WHERE strategy=? AND status IN ('CLOSED','WIN','LOSS') AND pnl_eur IS NOT NULL",
             (strategy_id,),
         ).fetchall()
         conn.close()

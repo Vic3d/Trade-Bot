@@ -106,7 +106,7 @@ def _closed_today_block() -> str:
             SELECT ticker, strategy, entry_price, exit_price, pnl_eur, pnl_pct,
                    exit_type, holding_days, lessons
             FROM trades
-            WHERE status='CLOSED' AND exit_date LIKE ?
+            WHERE status IN ('CLOSED','WIN','LOSS') AND exit_date LIKE ?
             ORDER BY exit_date DESC
         """, (f'{today}%',)).fetchall()
         c.close()

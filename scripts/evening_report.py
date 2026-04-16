@@ -162,7 +162,7 @@ def _closed_today_section(conn) -> str:
     rows = conn.execute("""
         SELECT ticker, strategy, entry_price, close_price, pnl_eur, pnl_pct, exit_type
         FROM paper_portfolio
-        WHERE status = 'CLOSED'
+        WHERE status IN ('CLOSED','WIN','LOSS')
           AND close_date >= ?
         ORDER BY close_date DESC
     """, (today,)).fetchall()
@@ -197,7 +197,7 @@ def _win_rate_section(conn) -> str:
             AVG(CASE WHEN pnl_eur > 0 THEN pnl_eur END) as avg_win,
             AVG(CASE WHEN pnl_eur <= 0 THEN pnl_eur END) as avg_loss
         FROM paper_portfolio
-        WHERE status = 'CLOSED'
+        WHERE status IN ('CLOSED','WIN','LOSS')
           AND close_date >= date('now', '-30 days')
     """).fetchone()
 

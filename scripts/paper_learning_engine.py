@@ -37,7 +37,7 @@ def load_closed_swing_trades():
         SELECT id, ticker, strategy, entry_price, close_price, shares, fees,
                pnl_eur, pnl_pct, entry_date, close_date, notes
         FROM paper_portfolio
-        WHERE status='CLOSED'
+        WHERE status IN ('CLOSED','WIN','LOSS')
           AND entry_price IS NOT NULL
           AND close_price IS NOT NULL
           AND pnl_eur IS NOT NULL
@@ -212,7 +212,7 @@ def analyze_styles() -> dict:
             "SUM(CASE WHEN pnl_eur > 0 THEN 1 ELSE 0 END) as wins, "
             "COALESCE(SUM(pnl_eur), 0) as total_pnl, "
             "COALESCE(AVG(pnl_pct), 0) as avg_pct "
-            "FROM paper_portfolio WHERE status='CLOSED' AND style=?", (style,)).fetchone()
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') AND style=?", (style,)).fetchone()
         dt = conn.execute(
             "SELECT COUNT(*) as n, "
             "SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) as wins, "

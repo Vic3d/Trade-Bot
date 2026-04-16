@@ -99,7 +99,7 @@ def build_accuracy_report() -> str:
             SUM(CASE WHEN status='OPEN' THEN entry_price * shares ELSE 0 END) as invested,
             SUM(CASE WHEN status IN ('WIN','CLOSED','LOSS') THEN pnl_eur ELSE 0 END) as realized_pnl,
             COUNT(CASE WHEN status='WIN' THEN 1 END) as wins,
-            COUNT(CASE WHEN status='CLOSED' AND pnl_eur < 0 THEN 1 END) as losses
+            COUNT(CASE WHEN status IN ('CLOSED','LOSS') AND pnl_eur < 0 THEN 1 END) as losses
         FROM paper_portfolio
         WHERE notes NOT LIKE '%DATENFEHLER%'
     """).fetchone()
@@ -402,7 +402,7 @@ def run_full():
         _closed = _conn.execute(
             "SELECT ticker, strategy, entry_price, close_price AS exit_price, pnl_eur, "
             "close_date AS exit_date "
-            "FROM paper_portfolio WHERE status='CLOSED' ORDER BY close_date DESC LIMIT 5"
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') ORDER BY close_date DESC LIMIT 5"
         ).fetchall()
 
         # Aktive Strategien aus strategies.json
