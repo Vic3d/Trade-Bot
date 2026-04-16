@@ -40,6 +40,8 @@ STALE_STRATEGIES = {
     'AR-AGRA', 'AR-HALB', 'AR-',
     # Day Trades (permanent suspended — siehe CLAUDE.md)
     'DT1', 'DT2', 'DT3', 'DT4', 'DT5', 'DT6', 'DT7', 'DT8', 'DT9',
+    # Historische Bulk-Trade-Bugs (nicht mehr aktiv — alle exit_type=NULL)
+    'PS_STLD', 'S4',
     # Test-Runs
     'S10-TEST', 'new',
 }
