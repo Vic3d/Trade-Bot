@@ -288,6 +288,16 @@ TRADING-REGELN (ABSOLUT):
 - Bei BEARISH/CRASH-Regime: nur Thesis-Plays, keine spekulativen Entries
 - Blacklist: DT1-DT5, AR-AGRA, AR-HALB (NIEMALS aktivieren)
 
+DEEP-DIVE-GATE (HART):
+- ENTRY ist NUR möglich wenn für den Ticker ein KAUFEN-Verdict ≤14 Tage
+  aus echtem Deep Dive existiert (siehe Context → DEEP DIVE VERDICTS).
+- Du darfst dir NIEMALS selbst einen KAUFEN-Verdict ausstellen. Das Feld
+  "verdict" in der ENTRY-Decision wird ignoriert.
+- Wenn du einen Ticker traden willst für den kein KAUFEN-Verdict existiert:
+  gib zuerst Action=DEEP_DIVE zurück. Im nächsten Cycle (mit dem frischen
+  Verdict im Context) kannst du dann ENTRY vorschlagen.
+- WARTEN und NICHT_KAUFEN Verdicts blockieren ENTRY genauso wie fehlende.
+
 FÜR JEDEN TRADE DEN DU EINGEHST: Mach mental einen Quick-Deep-Dive:
 - Was ist die Thesis? Warum jetzt?
 - Was ist der Katalysator?
@@ -488,7 +498,10 @@ def execute_entry(decision: dict, dry_run: bool = False) -> dict:
     except Exception:
         pass  # Guard nicht kritisch
 
-    # Verdict in deep_dive_verdicts.json sicherstellen
+    # Verdict-Konsistenz-Check: NUR echte Deep Dives akzeptieren.
+    # Die LLM darf sich NICHT selbst einen KAUFEN-Verdict ausstellen —
+    # das untergräbt die Deep-Dive-Kern-Philosophie. Bei fehlendem frischen
+    # KAUFEN muss im nächsten Cycle erst Action=DEEP_DIVE laufen.
     verdicts_file = DATA / 'deep_dive_verdicts.json'
     verdicts = {}
     if verdicts_file.exists():
@@ -496,18 +509,38 @@ def execute_entry(decision: dict, dry_run: bool = False) -> dict:
             verdicts = json.loads(verdicts_file.read_text())
         except Exception:
             pass
-    if ticker not in verdicts or verdicts[ticker].get('verdict') != 'KAUFEN':
-        if verdict == 'KAUFEN':
-            verdicts[ticker] = {
-                'verdict':   'KAUFEN',
-                'timestamp': datetime.now(ZoneInfo('Europe/Berlin')).isoformat(),
-                'date':      datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d'),
-                'source':    'autonomous_ceo',
-                'reason':    decision.get('reason', ''),
-            }
-            verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
+
+    _VALID_VERDICT_SOURCES = ('deep_dive', 'albert_discord', 'discord_deepdive', 'Albert')
+    _existing = verdicts.get(ticker, {})
+    _existing_verdict = _existing.get('verdict')
+    _existing_source  = _existing.get('source') or _existing.get('analyst', '')
+    _existing_ts_str  = _existing.get('timestamp') or _existing.get('date', '2000-01-01')
+    try:
+        _now_berlin = datetime.now(ZoneInfo('Europe/Berlin'))
+        if 'T' in _existing_ts_str:
+            _ts = datetime.fromisoformat(_existing_ts_str)
+            if _ts.tzinfo is None:
+                _ts = _ts.replace(tzinfo=ZoneInfo('Europe/Berlin'))
         else:
-            return {'success': False, 'reason': f'Kein KAUFEN-Verdict (hat: {verdict})'}
+            _ts = datetime.strptime(_existing_ts_str, '%Y-%m-%d').replace(tzinfo=ZoneInfo('Europe/Berlin'))
+        _existing_age_days = (_now_berlin - _ts).days
+    except Exception:
+        _existing_age_days = 999
+
+    _has_valid_verdict = (
+        _existing_verdict == 'KAUFEN'
+        and _existing_age_days <= 14
+        and any(src.lower() in str(_existing_source).lower() for src in _VALID_VERDICT_SOURCES)
+    )
+
+    if not _has_valid_verdict:
+        _msg = (
+            f'{ticker} ohne gültigen Deep-Dive-KAUFEN-Verdict '
+            f'(verdict={_existing_verdict}, source={_existing_source}, age={_existing_age_days}d). '
+            f'Erst Action=DEEP_DIVE ausführen.'
+        )
+        log(f'  ⚠️  {_msg}')
+        return {'success': False, 'reason': _msg, 'blocked_by': 'verdict_missing'}
 
     try:
         from paper_trade_engine import execute_paper_entry
@@ -678,8 +711,86 @@ def send_discord_report(message: str):
 
 # ── Entscheidungs-Log ─────────────────────────────────────────────────────────
 
-def save_decision_log(analysis: str, decisions: list, results: list):
-    """Speichert alle Entscheidungen + Ergebnisse in ceo_decisions.json."""
+_CEO_DECISIONS_SCHEMA = """
+CREATE TABLE IF NOT EXISTS ceo_decisions (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp         TEXT NOT NULL,
+    run_id            TEXT NOT NULL,
+    mode              TEXT,
+    analysis          TEXT,
+    action            TEXT NOT NULL,
+    ticker            TEXT,
+    strategy          TEXT,
+    reason            TEXT,
+    decision_json     TEXT,
+    result_success    INTEGER,
+    result_reason     TEXT,
+    result_blocked_by TEXT,
+    trade_id          INTEGER
+);
+CREATE INDEX IF NOT EXISTS idx_ceo_ts     ON ceo_decisions(timestamp);
+CREATE INDEX IF NOT EXISTS idx_ceo_action ON ceo_decisions(action);
+CREATE INDEX IF NOT EXISTS idx_ceo_ticker ON ceo_decisions(ticker);
+CREATE INDEX IF NOT EXISTS idx_ceo_run    ON ceo_decisions(run_id);
+"""
+
+
+def _ensure_ceo_decisions_table():
+    """Legt SQLite-Tabelle ceo_decisions an (idempotent)."""
+    try:
+        conn = sqlite3.connect(str(DATA / 'trading.db'))
+        conn.executescript(_CEO_DECISIONS_SCHEMA)
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        log(f'ceo_decisions schema init Fehler: {e}', 'WARN')
+
+
+def _persist_decisions_sql(run_id: str, timestamp: str, analysis: str,
+                           decisions: list, results: list, mode: str):
+    """Schreibt jede einzelne Decision als strukturierte Zeile in SQLite."""
+    try:
+        conn = sqlite3.connect(str(DATA / 'trading.db'))
+        rows = []
+        for dec, res in zip(decisions, results + [{}] * (len(decisions) - len(results))):
+            res = res or {}
+            rows.append((
+                timestamp,
+                run_id,
+                mode,
+                analysis[:2000] if analysis else '',
+                dec.get('action', '?'),
+                (dec.get('ticker') or '').upper() or None,
+                dec.get('strategy') or dec.get('strategy_id'),
+                dec.get('reason', '')[:1000],
+                json.dumps(dec, ensure_ascii=False),
+                1 if res.get('success') else 0,
+                (res.get('reason') or res.get('message', ''))[:1000],
+                res.get('blocked_by'),
+                res.get('trade_id'),
+            ))
+        conn.executemany("""
+            INSERT INTO ceo_decisions
+              (timestamp, run_id, mode, analysis, action, ticker, strategy, reason,
+               decision_json, result_success, result_reason, result_blocked_by, trade_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, rows)
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        log(f'ceo_decisions SQL insert Fehler: {e}', 'WARN')
+
+
+def save_decision_log(analysis: str, decisions: list, results: list, mode: str = 'unknown'):
+    """Speichert alle Entscheidungen + Ergebnisse in ceo_decisions.json UND SQLite."""
+    _ensure_ceo_decisions_table()
+    ts      = datetime.now(ZoneInfo('Europe/Berlin')).isoformat()
+    run_id  = f"ceo_{datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y%m%d_%H%M%S')}"
+
+    # 1. SQLite (strukturiert, queryable)
+    _persist_decisions_sql(run_id, ts, analysis, decisions, results, mode)
+
+    # 2. JSON (Legacy, kompatibel)
     try:
         log_data = []
         if DECISIONS_LOG.exists():
@@ -689,7 +800,9 @@ def save_decision_log(analysis: str, decisions: list, results: list):
                 pass
 
         entry = {
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': ts,
+            'run_id':    run_id,
+            'mode':      mode,
             'analysis':  analysis,
             'decisions': decisions,
             'results':   results,
@@ -698,7 +811,7 @@ def save_decision_log(analysis: str, decisions: list, results: list):
         log_data = log_data[-100:]  # Letzte 100 Runs behalten
         DECISIONS_LOG.write_text(json.dumps(log_data, indent=2, ensure_ascii=False))
     except Exception as e:
-        log(f'Decision-Log Fehler: {e}', 'WARN')
+        log(f'Decision-Log JSON Fehler: {e}', 'WARN')
 
 
 # ── Reaktiver CEO — Event-getriggert ─────────────────────────────────────────
@@ -820,7 +933,8 @@ Antworte NUR mit JSON:
         save_decision_log(
             result.get('analysis', ''),
             result.get('decisions', []),
-            [{'type': 'reactive', 'trigger': event_data.get('headline', '')}]
+            [{'type': 'reactive', 'trigger': event_data.get('headline', '')}],
+            mode='reactive',
         )
 
         # Discord Alert
@@ -938,7 +1052,13 @@ def run(dry_run: bool = False, force: bool = False):
             report_parts.append(f'⏸️ HOLD: {reason[:80]}')
 
     # 4. Entscheidungs-Log speichern
-    save_decision_log(analysis, decisions, results)
+    _mode = 'dry_run' if dry_run else 'unknown'
+    try:
+        _cfg = json.loads((DATA / 'autonomy_config.json').read_text())
+        _mode = _cfg.get('mode', _mode) if not dry_run else 'dry_run'
+    except Exception:
+        pass
+    save_decision_log(analysis, decisions, results, mode=_mode)
 
     # 5. Discord-Report
     report = '\n'.join(report_parts)

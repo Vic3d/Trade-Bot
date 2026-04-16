@@ -205,7 +205,7 @@ def build_accuracy_report() -> str:
 
 def append_to_daily_log(summary: str):
     """Hängt Learning-Summary an heutiges Daily-Log."""
-    entry = f"\n## {datetime.now().strftime('%H:%M')} — Auto-Learning Cycle\n\n{summary}\n"
+    entry = f"\n## {_berlin_now().strftime('%H:%M')} — Auto-Learning Cycle\n\n{summary}\n"
     if DAILY_LOG.exists():
         existing = DAILY_LOG.read_text()
         DAILY_LOG.write_text(existing + entry)
@@ -324,7 +324,7 @@ def recalculate_conviction_weights():
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 
 def run_full():
-    print(f"[Daily Learning Cycle] Start — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"[Daily Learning Cycle] Start — {_berlin_now().strftime('%Y-%m-%d %H:%M')}")
 
     print("\n[1/5] Alpha Decay Check...")
     decay_alerts = run_alpha_decay()
@@ -386,7 +386,7 @@ def run_full():
         _snap_path = WS / 'memory/state-snapshot.md'
         _conn = _sql.connect(str(_db))
         _conn.row_factory = _sql.Row
-        _now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+        _now_str = _berlin_now().strftime('%Y-%m-%d %H:%M')
 
         # Offene Positionen
         _positions = _conn.execute(
@@ -400,8 +400,9 @@ def run_full():
 
         # Letzte 5 abgeschlossene Trades
         _closed = _conn.execute(
-            "SELECT ticker, strategy, entry_price, exit_price, pnl_eur, exit_date "
-            "FROM paper_portfolio WHERE status='CLOSED' ORDER BY exit_date DESC LIMIT 5"
+            "SELECT ticker, strategy, entry_price, close_price AS exit_price, pnl_eur, "
+            "close_date AS exit_date "
+            "FROM paper_portfolio WHERE status='CLOSED' ORDER BY close_date DESC LIMIT 5"
         ).fetchall()
 
         # Aktive Strategien aus strategies.json

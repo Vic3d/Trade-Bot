@@ -17,6 +17,8 @@ import json
 import hashlib
 import sys
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
@@ -206,7 +208,7 @@ def run_news_pipeline():
 
 
 def collect():
-    print(f"🌙 overnight_collector.py — {datetime.now().strftime('%Y-%m-%d %H:%M')} MEZ")
+    print(f"🌙 overnight_collector.py — {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')} MEZ")
 
     # -1. Relevance Rules aus strategies.json aktualisieren
     try:
@@ -277,7 +279,7 @@ def collect():
 
     # 3. Lese Artikel der letzten 30 Minuten
     cutoff = (datetime.now(timezone.utc) - timedelta(minutes=30)).strftime('%Y-%m-%d %H:%M:%S')
-    today = datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
 
     # Adaptive column detection
     cols = {r[1]: r[0] for r in conn.execute(f"PRAGMA table_info({news_table})").fetchall()}

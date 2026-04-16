@@ -14,7 +14,9 @@ Feld-Mapping: headline, url, source, published_at, tickers, sector, sentiment_sc
 """
 import sqlite3, json, hashlib, urllib.request, xml.etree.ElementTree as ET
 from pathlib import Path
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 import re
 
 WS = Path('/data/.openclaw/workspace')
@@ -136,7 +138,7 @@ def liveuamap_headlines(regions=None):
                     'headline': t,
                     'url': f'https://{region}.liveuamap.com/',
                     'source': f'liveuamap_{region}',
-                    'published_at': datetime.utcnow().strftime('%Y-%m-%d %H:%M')
+                    'published_at': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')
                 })
     return items
 
@@ -266,5 +268,5 @@ def run(verbose=True):
     return new
 
 if __name__ == '__main__':
-    print(f'News Pipeline v2 — {datetime.now().strftime("%Y-%m-%d %H:%M")}')
+    print(f'News Pipeline v2 — {datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")}')
     run()

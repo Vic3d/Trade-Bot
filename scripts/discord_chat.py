@@ -15,6 +15,8 @@ import time
 import urllib.request
 import urllib.error
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 # ── Pfade ─────────────────────────────────────────────────────────────────────
@@ -140,7 +142,7 @@ def load_context() -> str:
              Thesen-Status, Alpha Decay, Strategies.
     """
     parts: list[str] = []
-    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+    now_str = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
     parts.append(f'=== ALBERT KONTEXT (Stand: {now_str}) ===\n')
 
     db_file = DATA / 'trading.db'
@@ -573,7 +575,7 @@ def _parse_and_persist(response: str) -> list[str]:
                             strats[sid]['genesis'] = {}
                         history = strats[sid]['genesis'].get('feedback_history', [])
                         history.append({
-                            'date':           datetime.now().strftime('%Y-%m-%d'),
+                            'date':           datetime.now(_BERLIN).strftime('%Y-%m-%d'),
                             'old_conviction': old_conv,
                             'new_conviction': conviction,
                             'source':         'albert_discord',
@@ -643,8 +645,8 @@ def _parse_and_persist(response: str) -> list[str]:
             # ── Notiz ins Daily-Log ───────────────────────────────────────
             elif action == 'note' and len(parts) >= 2:
                 note_text = ':'.join(parts[1:])
-                daily_log = MEMORY / f"{datetime.now().strftime('%Y-%m-%d')}.md"
-                entry = f"\n## {datetime.now().strftime('%H:%M')} — Albert-Entscheidung\n\n{note_text}\n"
+                daily_log = MEMORY / f"{datetime.now(_BERLIN).strftime('%Y-%m-%d')}.md"
+                entry = f"\n## {datetime.now(_BERLIN).strftime('%H:%M')} — Albert-Entscheidung\n\n{note_text}\n"
                 if daily_log.exists():
                     daily_log.write_text(daily_log.read_text() + entry)
                 actions.append(f'note gespeichert')
@@ -897,7 +899,7 @@ Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
         verdicts[ticker.upper()] = {
             'verdict':   verdict,
             'timestamp': datetime.now().isoformat(),
-            'date':      datetime.now().strftime('%Y-%m-%d'),
+            'date':      datetime.now(_BERLIN).strftime('%Y-%m-%d'),
         }
         verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
         print(f'[Albert] Deep Dive {ticker}: Verdict={verdict} gespeichert', flush=True)
@@ -923,7 +925,7 @@ def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dic
       NICHT_KAUFEN → Strategie für 14 Tage auf BLOCKED, keine Entries
     """
     directive_file = DATA / 'ceo_directive.json'
-    now_str = datetime.now().strftime('%Y-%m-%d %H:%M')
+    now_str = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
 
     try:
         directive = json.loads(directive_file.read_text(encoding='utf-8')) if directive_file.exists() else {}
@@ -942,7 +944,7 @@ def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dic
             'max_position_eur': 1200,
             'entry_active':     True,
             'reason':           f'Deep Dive {now_str}: KAUFEN-Verdict',
-            'valid_until':      (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d'),
+            'valid_until':      (datetime.now(_BERLIN) + timedelta(days=14)).strftime('%Y-%m-%d'),
         }
         # Gesamtmodus: falls SHUTDOWN → auf NEUTRAL heben, damit Guard 0c2 nicht blockt
         if directive.get('mode') == 'SHUTDOWN':
@@ -968,7 +970,7 @@ def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dic
             'max_position_eur': 0,
             'entry_active':     False,
             'reason':           f'Deep Dive {now_str}: WARTEN — Trigger noch nicht erfüllt',
-            'valid_until':      (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d'),
+            'valid_until':      (datetime.now(_BERLIN) + timedelta(days=30)).strftime('%Y-%m-%d'),
         }
         ceo_action = '⏳ KEIN ENTRY — WATCHLIST'
         ceo_detail = f'{ticker} auf Watchlist. Kein Kapital allokiert. Wartet auf Entry-Trigger.'
@@ -979,7 +981,7 @@ def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dic
             'max_position_eur': 0,
             'entry_active':     False,
             'reason':           f'Deep Dive {now_str}: NICHT_KAUFEN — 14-Tage-Block',
-            'valid_until':      (datetime.now() + timedelta(days=14)).strftime('%Y-%m-%d'),
+            'valid_until':      (datetime.now(_BERLIN) + timedelta(days=14)).strftime('%Y-%m-%d'),
         }
         # Zu blocked hinzufügen falls nicht drin
         blocked = directive.get('trading_rules', {}).get('blocked_strategies', [])

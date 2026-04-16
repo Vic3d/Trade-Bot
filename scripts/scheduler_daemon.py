@@ -19,6 +19,8 @@ import sys
 import threading
 import time
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
@@ -228,7 +230,7 @@ SCHEDULE = [
 # ── Logging ───────────────────────────────────────────────────────────────────
 
 def log(msg: str):
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
     print(line, flush=True)
     with open(LOG_FILE, 'a') as f:
@@ -312,7 +314,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
             try:
                 error_dir = LOG_FILE.parent / 'errors'
                 error_dir.mkdir(exist_ok=True)
-                err_file = error_dir / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}__{name.replace(' ', '_')}.log"
+                err_file = error_dir / f"{datetime.now(_BERLIN).strftime('%Y%m%d_%H%M%S')}__{name.replace(' ', '_')}.log"
                 err_file.write_text(result.stderr)
                 log(f'   STDERR gespeichert: {err_file.name}')
             except Exception:
@@ -330,7 +332,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
 
 def should_run(hour: int, minute: int, weekdays) -> bool:
     """Prüft ob ein Job jetzt laufen soll (innerhalb ±30s Fenster)."""
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
     if now.hour != hour or abs(now.minute - minute) > 0:
         return False
     if weekdays is not None and now.weekday() not in weekdays:
@@ -367,7 +369,7 @@ def scheduler_loop():
 
     # Startup-Nachricht nur einmal pro Tag — nicht bei jedem Watchdog-Neustart
     startup_flag = WS / 'data/scheduler_started_today.txt'
-    today_str = datetime.now().strftime('%Y-%m-%d')
+    today_str = datetime.now(_BERLIN).strftime('%Y-%m-%d')
     if not startup_flag.exists() or startup_flag.read_text().strip() != today_str:
         notify('🤖 **TradeMind** online')
         startup_flag.write_text(today_str)
@@ -388,7 +390,7 @@ def scheduler_loop():
     last_run = {}  # Verhindert Doppel-Ausführungen
 
     while True:
-        now = datetime.now()
+        now = datetime.now(_BERLIN)
         current_key = f'{now.strftime("%Y-%m-%d %H:%M")}'
 
         for entry in SCHEDULE:
@@ -417,7 +419,7 @@ def scheduler_loop():
         write_heartbeat()
 
         # Genau auf nächste Minute warten
-        sleep_secs = 60 - datetime.now().second
+        sleep_secs = 60 - datetime.now(_BERLIN).second
         time.sleep(max(1, sleep_secs))
 
 

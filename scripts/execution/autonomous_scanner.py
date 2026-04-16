@@ -23,6 +23,8 @@ Albert 🎩 | v1.0 | 29.03.2026
 
 import json, sqlite3, sys, time, urllib.request
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
@@ -733,7 +735,7 @@ def run_scan(max_new_trades: int = 5) -> list:
     NEU: Entry-Zone-Check + Pending Setups für Borderline-Conviction
     """
     if not is_trading_day():
-        print(f"📅 Wochenende ({datetime.now().strftime('%A')}) — kein Scan.")
+        print(f"📅 Wochenende ({datetime.now(_BERLIN).strftime('%A')}) — kein Scan.")
         return []
 
     # Phase 18: Globale Börsenzeiten — mindestens ein Markt muss offen sein

@@ -382,13 +382,55 @@ def refresh_all_live_data(tickers: list[str] | None = None) -> dict:
     eurusd = refresh_eurusd()
 
     if tickers is None:
-        # Alle offenen Positionen + Watchlist aus DB
+        # Watchlist = offene Positionen + alle Ticker mit frischem Deep-Dive-Verdict
+        # (≤14 Tage) — egal ob KAUFEN/WARTEN, damit Trigger-Preise aktuell bleiben.
+        # + Ticker aus aktiven strategies.json Einträgen (primary_ticker).
         conn = _get_db()
         pos = [r[0] for r in conn.execute(
             "SELECT DISTINCT ticker FROM paper_portfolio WHERE status='OPEN'"
         ).fetchall()]
         conn.close()
-        tickers = list(set(pos))
+
+        _ws_root = Path(__file__).resolve().parents[2]
+        verdict_tickers: list[str] = []
+        try:
+            import json as _json
+            _vfile = _ws_root / 'data' / 'deep_dive_verdicts.json'
+            if _vfile.exists():
+                _verdicts = _json.loads(_vfile.read_text(encoding='utf-8'))
+                _cutoff = datetime.now(timezone.utc).timestamp() - 14 * 86400
+                for _t, _v in _verdicts.items():
+                    _ts_str = _v.get('timestamp') or _v.get('date', '')
+                    try:
+                        if 'T' in _ts_str:
+                            _ts = datetime.fromisoformat(_ts_str.replace('Z', '+00:00'))
+                        else:
+                            _ts = datetime.strptime(_ts_str, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+                        if _ts.timestamp() >= _cutoff:
+                            verdict_tickers.append(_t)
+                    except Exception:
+                        continue
+        except Exception:
+            pass
+
+        strategy_tickers: list[str] = []
+        try:
+            import json as _json
+            _sfile = _ws_root / 'data' / 'strategies.json'
+            if _sfile.exists():
+                _strats = _json.loads(_sfile.read_text(encoding='utf-8'))
+                for _sid, _s in _strats.items():
+                    if not isinstance(_s, dict):
+                        continue
+                    if _s.get('status') in ('inactive', 'blocked', 'suspended'):
+                        continue
+                    _pt = _s.get('primary_ticker') or _s.get('ticker')
+                    if _pt:
+                        strategy_tickers.append(_pt)
+        except Exception:
+            pass
+
+        tickers = sorted(set(pos) | set(verdict_tickers) | set(strategy_tickers))
 
     prices = refresh_prices_bulk(tickers)
     n_ok = sum(1 for v in prices.values() if v is not None)
