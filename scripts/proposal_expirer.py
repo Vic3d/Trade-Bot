@@ -36,6 +36,9 @@ DB = DATA / 'trading.db'
 PROPOSALS = DATA / 'proposals.json'
 VERDICTS = DATA / 'deep_dive_verdicts.json'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 
 def _load_json(p: Path, default):
     try:
@@ -159,10 +162,7 @@ def run(dry_run: bool = False) -> dict:
         updated.append(p)
 
     if not dry_run and changes:
-        PROPOSALS.write_text(
-            json.dumps(updated, indent=2, ensure_ascii=False),
-            encoding='utf-8',
-        )
+        atomic_write_json(PROPOSALS, updated)
 
     print(f'=== Proposal Expirer {"[DRY]" if dry_run else ""} ===')
     print(f'Total: {stats["total"]}')

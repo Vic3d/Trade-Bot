@@ -38,6 +38,8 @@ log = logging.getLogger('auto_deepdive')
 
 WS = Path(os.getenv('TRADEMIND_HOME', '/opt/trademind'))
 sys.path.insert(0, str(WS / 'scripts'))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from atomic_json import atomic_write_json
 
 DATA = WS / 'data'
 DB = DATA / 'trading.db'
@@ -65,7 +67,7 @@ def _load_json(p: Path, default):
 
 def _save_json(p: Path, data) -> None:
     try:
-        p.write_text(json.dumps(data, indent=2), encoding='utf-8')
+        atomic_write_json(p, data, ensure_ascii=True)
     except Exception as e:
         log.warning(f'save {p.name} failed: {e}')
 

@@ -49,6 +49,9 @@ MODEL_FILE = WS / 'data/hmm_regime.pkl'
 REGIME_FILE = WS / 'data/regime_history.json'
 CEO_FILE = WS / 'data/ceo_directive.json'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 N_STATES = 4
 REGIME_NAMES = ['BULL', 'NEUTRAL', 'RISK_OFF', 'CRASH']  # nach Training zugewiesen
 
@@ -320,7 +323,7 @@ def update_ceo_directive(regime: dict) -> bool:
         }
         # Auch das alte 'regime' Feld aktualisieren (Rückwärtskompatibilität)
         ceo['regime'] = regime['name']
-        CEO_FILE.write_text(json.dumps(ceo, indent=2, ensure_ascii=False))
+        atomic_write_json(CEO_FILE, ceo)
         return True
     except Exception as e:
         print(f"  ⚠️  CEO Update Fehler: {e}")

@@ -11,6 +11,7 @@ Läuft als Hintergrund-Thread im scheduler_daemon.
 import json
 import os
 import sqlite3
+import sys
 import time
 import urllib.request
 import urllib.error
@@ -28,6 +29,9 @@ if not WS.exists():
 DATA = WS / 'data'
 MEMORY = WS / 'memory'
 SCRIPTS = WS / 'scripts'
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 
 OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
 STATE_FILE = DATA / 'discord_last_message.json'
@@ -517,7 +521,7 @@ def _parse_and_persist(response: str) -> list[str]:
                 directive['market_bias'] = bias
                 directive['updated_at']  = datetime.now().isoformat()
                 directive['updated_by']  = 'albert_discord'
-                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                atomic_write_json(directive_file, directive)
                 actions.append(f'bias: {old_bias} → {bias}')
 
             # ── Sektor-Fokus ──────────────────────────────────────────────
@@ -533,7 +537,7 @@ def _parse_and_persist(response: str) -> list[str]:
                 directive['focus_sector'] = focus
                 directive['updated_at']   = datetime.now().isoformat()
                 directive['updated_by']   = 'albert_discord'
-                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                atomic_write_json(directive_file, directive)
                 actions.append(f'focus_sector → {focus}')
 
             # ── Strategie pausieren ───────────────────────────────────────
@@ -546,7 +550,7 @@ def _parse_and_persist(response: str) -> list[str]:
                         strats[sid]['status'] = 'paused'
                         strats[sid]['paused_by'] = 'albert_discord'
                         strats[sid]['paused_at'] = datetime.now().isoformat()
-                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        atomic_write_json(strats_file, strats)
                         actions.append(f'strategy_pause: {sid}')
 
             # ── Strategie reaktivieren ────────────────────────────────────
@@ -558,7 +562,7 @@ def _parse_and_persist(response: str) -> list[str]:
                     if sid in strats:
                         strats[sid]['status'] = 'active'
                         strats[sid]['resumed_at'] = datetime.now().isoformat()
-                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        atomic_write_json(strats_file, strats)
                         actions.append(f'strategy_resume: {sid}')
 
             # ── Conviction ändern ─────────────────────────────────────────
@@ -581,7 +585,7 @@ def _parse_and_persist(response: str) -> list[str]:
                             'source':         'albert_discord',
                         })
                         strats[sid]['genesis']['feedback_history'] = history[-20:]
-                        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+                        atomic_write_json(strats_file, strats)
                         actions.append(f'conviction: {sid} {old_conv}→{conviction}')
 
             # ── Position sofort schließen ─────────────────────────────────
@@ -639,7 +643,7 @@ def _parse_and_persist(response: str) -> list[str]:
                 directive['weekly_trade_limit'] = limit
                 directive['updated_at'] = datetime.now().isoformat()
                 directive['updated_by'] = 'albert_discord'
-                directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+                atomic_write_json(directive_file, directive)
                 actions.append(f'weekly_limit → {limit}')
 
             # ── Notiz ins Daily-Log ───────────────────────────────────────
@@ -688,10 +692,7 @@ def _stop_thesis(thesis_id: str) -> None:
             strategies = json.loads(strategies_file.read_text(encoding='utf-8'))
             if isinstance(strategies, dict) and thesis_id in strategies:
                 strategies[thesis_id]['status'] = 'inactive'
-                strategies_file.write_text(
-                    json.dumps(strategies, indent=2, ensure_ascii=False),
-                    encoding='utf-8',
-                )
+                atomic_write_json(strategies_file, strategies)
                 print(f'[Albert] {thesis_id} set inactive in strategies.json', flush=True)
     except Exception as e:
         print(f'[Albert] strategies.json update error: {e}', flush=True)
@@ -743,7 +744,7 @@ def _handle_thesis_suggestion(content: str) -> None:
     directive['thesis_suggestions'] = suggestions[-20:]  # keep last 20
 
     try:
-        directive_path.write_text(_json.dumps(directive, indent=2, ensure_ascii=False))
+        atomic_write_json(directive_path, directive)
         print(f'[Albert] Thesis suggestion stored: {content[:80]}', flush=True)
     except Exception as e:
         print(f'[Albert] Failed to store thesis suggestion: {e}', flush=True)
@@ -901,7 +902,7 @@ Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
             'timestamp': datetime.now().isoformat(),
             'date':      datetime.now(_BERLIN).strftime('%Y-%m-%d'),
         }
-        verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
+        atomic_write_json(verdicts_file, verdicts)
         print(f'[Albert] Deep Dive {ticker}: Verdict={verdict} gespeichert', flush=True)
     except Exception as _e:
         print(f'[Albert] Deep Dive Verdict-Speicherung fehlgeschlagen: {_e}', flush=True)
@@ -998,7 +999,7 @@ def _ceo_decision_after_deep_dive(ticker: str, verdict: str, known_strategy: dic
 
     # Zurückschreiben
     try:
-        directive_file.write_text(json.dumps(directive, indent=2, ensure_ascii=False))
+        atomic_write_json(directive_file, directive)
         print(f'[Albert] CEO-Direktive nach Deep Dive {ticker} aktualisiert: {ceo_action}', flush=True)
     except Exception as e:
         print(f'[Albert] CEO-Direktive konnte nicht gespeichert werden: {e}', flush=True)

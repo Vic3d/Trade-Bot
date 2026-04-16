@@ -9,7 +9,7 @@ Läuft 2x wöchentlich (Di + Fr 21:00).
 Output: neue Strategien in data/strategies.json + Log in memory/strategy-research.md
 """
 
-import sqlite3, json, urllib.request, re
+import sqlite3, json, urllib.request, re, sys
 from pathlib import Path
 from datetime import datetime, date, timedelta
 from zoneinfo import ZoneInfo
@@ -24,6 +24,9 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 STRAT_JSON = WS / 'data/strategies.json'
 RESEARCH_LOG = WS / 'memory/strategy-research.md'
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 
 def get_db():
     conn = sqlite3.connect(DB)
@@ -154,8 +157,7 @@ def propose_new_strategy(name, data):
         'pnl': 0.0
     }
     
-    with open(STRAT_JSON, 'w') as f:
-        json.dump(strats, f, indent=2)
+    atomic_write_json(STRAT_JSON, strats, ensure_ascii=True)
     
     return ps_id
 

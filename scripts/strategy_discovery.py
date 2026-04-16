@@ -33,6 +33,7 @@ DB    = WS / 'data' / 'trading.db'
 DATA  = WS / 'data'
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'core'))
+from atomic_json import atomic_write_json
 
 
 # ── Bekannte Themen → aktive Strategien (um Duplikate zu vermeiden) ────────────
@@ -481,7 +482,7 @@ def auto_create_strategies(themes: list):
             created.append(sid)
 
         if created:
-            strats_path.write_text(json.dumps(strats, indent=2, ensure_ascii=False), encoding='utf-8')
+            atomic_write_json(strats_path, strats)
             print(f"[strategy_discovery] {len(created)} neue Strategien erstellt: {created}")
         else:
             print("[strategy_discovery] Keine neuen Strategien aus Themes erstellt.")
@@ -561,7 +562,7 @@ def auto_create_strategies(themes: list) -> list:
         print(f"  [auto_create] {strategy_id} — {phrase} ({count}x, {len(ticker_list)} Ticker)")
 
     if created:
-        strategies_path.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
+        atomic_write_json(strategies_path, strategies)
         print(f"  [auto_create] {len(created)} neue Strategien gespeichert")
 
     return created

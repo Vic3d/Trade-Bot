@@ -28,6 +28,7 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 
 
 sys.path.insert(0, str(Path(__file__).parent))
+from atomic_json import atomic_write_json
 
 DATA_DIR = WS / 'data'
 MEM_DIR  = WS / 'memory'
@@ -73,7 +74,7 @@ def save_health_update(strategy_id, new_health):
     data = json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
     if strategy_id in data:
         data[strategy_id]["health"] = new_health
-        STRATEGIES_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        atomic_write_json(STRATEGIES_PATH, data)
 
 
 # ──────────────────────────────────────────────────────────────

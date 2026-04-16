@@ -36,6 +36,9 @@ _default_ws = '/data/.openclaw/workspace'
 if not Path(_default_ws).exists():
     _default_ws = str(Path(__file__).resolve().parent.parent)
 WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 # ─── Hilfsfunktionen ─────────────────────────────────────────────────────────
 
 def safe_read_json(path: Path, default=None):
@@ -5477,8 +5480,7 @@ def main():
     if not args.report:
         directive_path = WS / 'data/ceo_directive.json'
         try:
-            with open(directive_path, 'w') as f:
-                json.dump(directive, f, indent=2, ensure_ascii=False)
+            atomic_write_json(directive_path, directive)
             print(f'✅ CEO-Direktive geschrieben: {directive_path}')
         except Exception as e:
             print(f'❌ Fehler beim Schreiben der Direktive: {e}', file=sys.stderr)

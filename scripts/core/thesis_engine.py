@@ -36,6 +36,7 @@ sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
 sys.path.insert(0, str(WS / 'scripts' / 'core'))
+from atomic_json import atomic_write_json
 
 DB = WS / 'data' / 'trading.db'
 STRATEGIES_JSON = WS / 'data' / 'strategies.json'
@@ -690,10 +691,7 @@ def sync_strategies_and_db() -> dict:
     # Atomic Write
     if modified:
         try:
-            STRATEGIES_JSON.write_text(
-                json.dumps(strategies, indent=2, ensure_ascii=False),
-                encoding='utf-8'
-            )
+            atomic_write_json(STRATEGIES_JSON, strategies)
         except Exception as e:
             result['errors'].append(f'JSON-Schreib-Fehler: {e}')
 

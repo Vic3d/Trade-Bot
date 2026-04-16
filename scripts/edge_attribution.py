@@ -35,6 +35,9 @@ DB = WS / 'data' / 'trading.db'
 REC_FILE = WS / 'data' / 'edge_recommendations.json'
 LEARNINGS_FILE = WS / 'data' / 'trading_learnings.json'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 # Kriterien
 MIN_TRADES_FOR_JUDGEMENT = 5
 SUSPEND_EXPECTANCY_EUR = -10.0   # Expectancy unter -10€ → SUSPEND
@@ -210,8 +213,7 @@ def _apply_to_learnings(recommendations: dict) -> None:
         f'.bak.{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
     if LEARNINGS_FILE.exists():
         backup.write_text(LEARNINGS_FILE.read_text(encoding='utf-8'), encoding='utf-8')
-    LEARNINGS_FILE.write_text(
-        json.dumps(learnings, indent=2, ensure_ascii=False), encoding='utf-8')
+    atomic_write_json(LEARNINGS_FILE, learnings)
     print(f'\n✅ {len(changes)} Learnings-Updates applied:')
     for c in changes:
         print(f'    {c}')

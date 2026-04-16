@@ -23,6 +23,9 @@ STRATEGIES_JSON = WORKSPACE / 'data/strategies.json'
 LEARNINGS_JSON  = WORKSPACE / 'data/trading_learnings.json'
 WEEKLY_REPORT   = WORKSPACE / 'memory/paper-trading-weekly.md'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -458,7 +461,7 @@ def update_strategy_scores() -> list:
                 f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, ELEVATE)"
             )
 
-    STRATEGIES_JSON.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
+    atomic_write_json(STRATEGIES_JSON, strategies)
     return changes
 
 
@@ -542,7 +545,7 @@ def close_feedback_loop() -> dict:
         'confidence_calibration': conf_calib
     }
 
-    LEARNINGS_JSON.write_text(json.dumps(learnings, indent=2, ensure_ascii=False))
+    atomic_write_json(LEARNINGS_JSON, learnings)
     print(f"  ✅ trading_learnings.json geschrieben ({len(strategy_scores)} Strategien, {len(active_rules)} Regeln)")
     return learnings
 

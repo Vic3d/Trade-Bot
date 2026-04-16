@@ -53,6 +53,10 @@ CACHE_DIR = DATA / 'fred_cache'
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_FILE = DATA / 'macro_regime.json'
 
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from atomic_json import atomic_write_json
+
 FRED_CSV = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}'
 CACHE_TTL = 6 * 3600  # 6h
 
@@ -332,7 +336,7 @@ def run() -> dict:
             'bias': result['bias'],
             'updated_at': result['updated_at'],
         }
-        directive_file.write_text(json.dumps(directive, indent=2), encoding='utf-8')
+        atomic_write_json(directive_file, directive, ensure_ascii=True)
     except Exception as e:
         log.warning(f'ceo_directive macro-merge failed: {e}')
 

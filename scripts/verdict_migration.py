@@ -34,6 +34,9 @@ DATA = WS / 'data'
 VERDICTS_FILE = DATA / 'deep_dive_verdicts.json'
 FLIP_LOG = DATA / 'auto_deepdive_flips.json'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 
 def _load(p: Path, default):
     try:
@@ -47,7 +50,7 @@ def _save(p: Path, data):
     if p.exists():
         backup = p.with_suffix(p.suffix + f'.bak.{datetime.now().strftime("%Y%m%d_%H%M%S")}')
         backup.write_text(p.read_text(encoding='utf-8'), encoding='utf-8')
-    p.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding='utf-8')
+    atomic_write_json(p, data)
 
 
 def _is_real_deep_dive(v: dict) -> bool:

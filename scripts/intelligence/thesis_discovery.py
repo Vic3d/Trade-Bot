@@ -30,6 +30,8 @@ def _de_weekday(dt: datetime) -> str:
 
 WS = Path('/data/.openclaw/workspace')
 sys.path.insert(0, str(WS / 'scripts'))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from atomic_json import atomic_write_json
 
 DATA = WS / 'data'
 DB = DATA / 'trading.db'
@@ -386,10 +388,7 @@ def _auto_activate_thesis(thesis: dict) -> bool:
             },
         }
         strategies[thesis_id] = new_entry
-        STRATEGIES_JSON.write_text(
-            json.dumps(strategies, indent=2, ensure_ascii=False),
-            encoding='utf-8',
-        )
+        atomic_write_json(STRATEGIES_JSON, strategies)
         print(f'[thesis_discovery] {thesis_id} written to strategies.json', flush=True)
     except Exception as e:
         print(f'[thesis_discovery] strategies.json write error: {e}', flush=True)

@@ -43,6 +43,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(0, str(SCRIPTS / 'execution'))
 sys.path.insert(0, str(SCRIPTS / 'intelligence'))
 sys.path.insert(0, str(SCRIPTS / 'core'))
+from atomic_json import atomic_write_json
 
 CLAUDE_MODEL   = 'claude-opus-4-5'
 VICTOR_USER_ID = '452053147620343808'
@@ -522,7 +523,7 @@ Antworte mit: VERDICT: [KAUFEN/WARTEN/NICHT_KAUFEN]"""
             'analyst':    'Albert (autonomous_ceo LLM)',
             'reason':     reason,
         }
-        verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
+        atomic_write_json(verdicts_file, verdicts)
         log(f'Deep Dive {ticker}: {verdict}')
 
         # Phase 6.7: Queue-Cleanup — Ticker aus deepdive_requests.json entfernen
@@ -749,7 +750,7 @@ def execute_update_strategy(strategy_id: str, conviction: int | None,
         })
         strats[strategy_id]['genesis']['feedback_history'] = history[-20:]
 
-        strats_file.write_text(json.dumps(strats, indent=2, ensure_ascii=False))
+        atomic_write_json(strats_file, strats)
         log(f'  ✅ {strategy_id} aktualisiert')
     except Exception as e:
         log(f'  ❌ Strategy-Update Fehler: {e}', 'ERROR')
