@@ -18,6 +18,15 @@ import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_DE_DAYS = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+
+def _berlin_now() -> datetime:
+    return datetime.now(ZoneInfo('Europe/Berlin'))
+
+def _de_weekday(dt: datetime) -> str:
+    return _DE_DAYS[dt.weekday()]
 
 WS = Path('/data/.openclaw/workspace')
 sys.path.insert(0, str(WS / 'scripts'))
@@ -499,9 +508,11 @@ def send_discovery_report(theses: list[dict], headlines_count: int) -> bool:
     watching       = [t for t in theses if 50 <= t.get('confidence', 0) <= 64]
     proposed_only  = [t for t in theses if t.get('confidence', 0) < 50]
 
-    today = datetime.now(timezone.utc).strftime('%d.%m.%Y')
+    _now_berlin = _berlin_now()
+    today = _now_berlin.strftime('%d.%m.%Y')
+    weekday_name = _de_weekday(_now_berlin)
     lines = [
-        f'🔍 **Albert | Wöchentliche Thesen-Analyse** ({today}, Sonntag)',
+        f'🔍 **Albert | Wöchentliche Thesen-Analyse** ({today}, {weekday_name})',
         f'Analysierte Headlines: **{headlines_count}**',
         '',
     ]
