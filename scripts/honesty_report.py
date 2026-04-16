@@ -100,14 +100,14 @@ def _todays_trades(conn) -> dict:
         WHERE entry_date LIKE ? || '%'
     """, (today,)).fetchall()
     closed = conn.execute("""
-        SELECT ticker, strategy, pnl_eur, exit_reason
+        SELECT ticker, strategy, pnl_eur, exit_type
         FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED' AND exit_date LIKE ? || '%'
+        WHERE UPPER(status)='CLOSED' AND close_date LIKE ? || '%'
     """, (today,)).fetchall()
     return {
         'opened': [{'ticker': r[0], 'strategy': r[1], 'entry': r[2], 'shares': r[3]}
                    for r in opened],
-        'closed': [{'ticker': r[0], 'strategy': r[1], 'pnl': r[2], 'reason': r[3]}
+        'closed': [{'ticker': r[0], 'strategy': r[1], 'pnl': r[2], 'reason': r[3] or '?'}
                    for r in closed],
     }
 
