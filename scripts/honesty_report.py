@@ -61,7 +61,7 @@ def _winrate_stats(conn) -> dict:
     rows = conn.execute("""
         SELECT status, pnl_eur, strategy
         FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
     """).fetchall()
     total = len(rows)
     if total == 0:
@@ -102,7 +102,7 @@ def _todays_trades(conn) -> dict:
     closed = conn.execute("""
         SELECT ticker, strategy, pnl_eur, exit_type
         FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED' AND close_date LIKE ? || '%'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS') AND close_date LIKE ? || '%'
     """, (today,)).fetchall()
     return {
         'opened': [{'ticker': r[0], 'strategy': r[1], 'entry': r[2], 'shares': r[3]}

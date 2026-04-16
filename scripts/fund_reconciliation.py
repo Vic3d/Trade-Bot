@@ -75,7 +75,7 @@ def compute_truth(conn: sqlite3.Connection) -> dict:
     row = conn.execute("""
         SELECT COUNT(*), COALESCE(SUM(pnl_eur), 0), COALESCE(SUM(fees), 0)
         FROM paper_portfolio
-        WHERE UPPER(status) = 'CLOSED'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
     """).fetchone()
     closed_n, closed_pnl, closed_fees = row[0], float(row[1]), float(row[2])
 

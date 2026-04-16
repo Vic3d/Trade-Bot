@@ -91,7 +91,7 @@ def _is_bulk_bug_trade(row) -> bool:
     id_, ticker, strat, status, pnl, entry_date, close_date, exit_type = row
     if exit_type is not None and exit_type != '':
         return False
-    if str(status).upper() != 'CLOSED':
+    if str(status).upper() not in ('CLOSED','WIN','LOSS'):
         return False
     if not entry_date:
         return False
@@ -136,14 +136,14 @@ def run(dry_run: bool = False) -> dict:
 
     stats = {
         'total_candidates': len(to_archive),
-        'closed_archived':  sum(1 for x in to_archive if str(x['status']).upper()=='CLOSED'),
+        'closed_archived':  sum(1 for x in to_archive if str(x['status']).upper() in ('CLOSED','WIN','LOSS')),
         'open_skipped':     sum(1 for x in to_archive if str(x['status']).upper()=='OPEN'),
         'pnl_removed':      sum(x['pnl'] for x in to_archive
-                                if str(x['status']).upper()=='CLOSED'),
+                                if str(x['status']).upper() in ('CLOSED','WIN','LOSS')),
     }
 
     # Nur CLOSED archivieren — offene Trades nicht anfassen
-    closed_ids = [x['id'] for x in to_archive if str(x['status']).upper()=='CLOSED']
+    closed_ids = [x['id'] for x in to_archive if str(x['status']).upper() in ('CLOSED','WIN','LOSS')]
 
     print('=== Archive Stale Trades ===')
     print(f'Kandidaten total:   {stats["total_candidates"]}')

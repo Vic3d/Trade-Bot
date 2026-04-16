@@ -50,7 +50,7 @@ MIN_REGIMES = 2
 def _closed_trades_stats(conn: sqlite3.Connection) -> dict:
     rows = conn.execute("""
         SELECT pnl_eur, close_date, regime_at_entry, hmm_regime
-        FROM paper_portfolio WHERE UPPER(status)='CLOSED'
+        FROM paper_portfolio WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
         ORDER BY close_date ASC
     """).fetchall()
     n = len(rows)
@@ -94,7 +94,7 @@ def _equity_drawdown(conn: sqlite3.Connection) -> dict:
         # Fallback: aus CLOSED trades kumulativ
         trow = conn.execute("""
             SELECT close_date, pnl_eur FROM paper_portfolio
-            WHERE UPPER(status)='CLOSED' ORDER BY close_date ASC
+            WHERE UPPER(status) IN ('CLOSED','WIN','LOSS') ORDER BY close_date ASC
         """).fetchall()
         if not trow:
             return {'max_dd_pct': None, 'reason': 'no_data'}
@@ -138,7 +138,7 @@ def _stale_data_trades_30d(conn: sqlite3.Connection) -> int:
     cutoff = (datetime.now(_BERLIN) - timedelta(days=30)).strftime('%Y-%m-%d')
     row = conn.execute("""
         SELECT COUNT(*) FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
         AND close_date >= ?
         AND (exit_type LIKE '%STALE%' OR exit_type LIKE '%MANUAL%')
     """, (cutoff,)).fetchone()

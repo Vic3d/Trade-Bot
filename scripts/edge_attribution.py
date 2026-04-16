@@ -93,7 +93,7 @@ def run(dry_run: bool = False, apply_changes: bool = False) -> dict:
     rows = conn.execute("""
         SELECT strategy, ticker, pnl_eur, pnl_pct, entry_date, close_date, exit_type
         FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
         ORDER BY close_date DESC
     """).fetchall()
     conn.close()

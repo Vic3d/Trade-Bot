@@ -83,7 +83,7 @@ def run() -> dict:
     rows = conn.execute("""
         SELECT ticker, strategy, conviction, pnl_eur, pnl_pct, entry_date, close_date
         FROM paper_portfolio
-        WHERE UPPER(status)='CLOSED'
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
     """).fetchall()
     conn.close()
 

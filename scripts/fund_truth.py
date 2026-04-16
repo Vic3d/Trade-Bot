@@ -52,7 +52,7 @@ def get_truth() -> dict:
     # Closed trades — realized P&L
     row = conn.execute("""
         SELECT COALESCE(SUM(pnl_eur),0), COALESCE(SUM(fees),0), COUNT(*)
-        FROM paper_portfolio WHERE UPPER(status)='CLOSED'
+        FROM paper_portfolio WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
     """).fetchone()
     realized, closed_fees, closed_n = float(row[0]), float(row[1]), row[2]
 
