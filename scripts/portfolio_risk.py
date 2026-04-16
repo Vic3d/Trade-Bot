@@ -131,12 +131,18 @@ def _db() -> sqlite3.Connection:
 
 
 def _get_open_positions() -> list[dict]:
-    """Alle aktuell offenen Paper-Trades."""
+    """Alle aktuell offenen Paper-Trades aus paper_portfolio (Single Source of Truth).
+
+    paper_portfolio hat keine position_size_eur-Spalte — wir leiten sie aus
+    shares*entry_price ab, damit downstream-Code unverändert bleiben kann.
+    """
     try:
         conn = _db()
         rows = conn.execute(
-            "SELECT ticker, strategy, entry_price, shares, position_size_eur, entry_date "
-            "FROM trades WHERE status='OPEN'"
+            "SELECT ticker, strategy, entry_price, shares, "
+            "COALESCE(shares, 0) * COALESCE(entry_price, 0) AS position_size_eur, "
+            "entry_date, sector "
+            "FROM paper_portfolio WHERE status='OPEN'"
         ).fetchall()
         conn.close()
         return [dict(r) for r in rows]
@@ -146,10 +152,13 @@ def _get_open_positions() -> list[dict]:
 
 
 def _get_cash() -> float:
-    """Aktueller Cash-Wert aus paper_fund."""
+    """Aktueller Cash-Wert aus paper_fund (Key-Value Schema: current_cash)."""
     try:
         conn = _db()
-        row = conn.execute("SELECT value FROM paper_fund WHERE key='cash'").fetchone()
+        row = conn.execute(
+            "SELECT value FROM paper_fund WHERE key IN ('current_cash', 'cash') "
+            "ORDER BY CASE key WHEN 'current_cash' THEN 0 ELSE 1 END LIMIT 1"
+        ).fetchone()
         conn.close()
         return float(row[0]) if row else 25000.0
     except Exception:
@@ -377,7 +386,7 @@ def _get_strategy_stats(strategy_id: str) -> dict | None:
         conn = _db()
         # Alle geschlossenen Trades dieser Strategie
         rows = conn.execute(
-            "SELECT pnl_eur FROM trades WHERE strategy=? AND status='CLOSED' AND pnl_eur IS NOT NULL",
+            "SELECT pnl_eur FROM paper_portfolio WHERE strategy=? AND status='CLOSED' AND pnl_eur IS NOT NULL",
             (strategy_id,),
         ).fetchall()
         conn.close()
