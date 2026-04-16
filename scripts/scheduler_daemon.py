@@ -105,6 +105,11 @@ SCHEDULE = [
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    18, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    20, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    22, 10, None),
+    # ── Phase 7: Validierungs-Jobs (vor Honesty Report) ──
+    ('Verdict Accuracy',    'verdict_accuracy_tracker.py', [],                    21, 50, None),
+    ('Conviction Backtest', 'conviction_backtest.py',  [],                        21, 52, None),
+    ('Edge Attribution',    'edge_attribution.py',     ['--apply'],               21, 54, None),
+    ('Readiness Tracker',   'readiness_tracker.py',    [],                        21, 56, None),
     ('Honesty Report',      'honesty_report.py',       [],                        22,  5, None),
     ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 50, [0,1,2,3,4,5,6]),  # Phase 9 — Drawdown Circuit Input
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr

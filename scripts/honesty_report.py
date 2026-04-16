@@ -193,6 +193,31 @@ def build_report() -> str:
     else:
         lines.append('  ✅ Daten aktuell')
 
+    # Phase 7.4: Readiness-Block (60-Trade-Hurdle)
+    try:
+        from readiness_tracker import run as _readiness_run, render_block
+        _r = _readiness_run()
+        lines.append('')
+        lines.append(render_block(_r))
+    except Exception as _re:
+        lines.append(f'\n⚠️ Readiness-Tracker fehler: {_re}')
+
+    # Phase 7.3: Edge-Attribution-Summary
+    try:
+        _ef = DATA / 'edge_recommendations.json'
+        if _ef.exists():
+            _e = json.loads(_ef.read_text(encoding='utf-8'))
+            _s = _e.get('summary', {})
+            lines.append('')
+            lines.append(f'🧬 **Edge-Attribution:** '
+                         f'SUSPEND {_s.get("SUSPEND",0)} | '
+                         f'REDUCE {_s.get("REDUCE",0)} | '
+                         f'KEEP {_s.get("KEEP",0)} | '
+                         f'ELEVATE {_s.get("ELEVATE",0)} | '
+                         f'OBSERVE {_s.get("OBSERVE",0)}')
+    except Exception:
+        pass
+
     # Open positions detail
     if t['positions']:
         lines.append('')
