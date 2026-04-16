@@ -354,25 +354,81 @@ def _execute_paper_entry_inner(
             'blocked_by': 'crv_minimum',
         }
 
-    # ── Guard 0c2: Deep Dive Verdict Gate (Phase 7.13) ─────────────
-    # Für autonome Entries: aktuelles KAUFEN-Verdict < 14 Tage Pflicht.
-    # Akzeptiert sowohl human ("MANUAL") als auch AUTO_CLAUDE verdicts.
-    # AUTO_CLAUDE braucht confidence >= 65 (anti-hallucination).
-    # Manuelle Orders (source='manual') übergehen das Gate.
+    # ── Guard 0c2: Deep Dive Verdict Gate (Phase 7.14 — Inline Refresh) ─────────
+    # Victor-Regel: "Bevor irgendwie getrailt wird, soll immer ein Deep Dive gemacht werden."
+    #
+    # Logik:
+    #   Verdict < DEEP_DIVE_MAX_AGE_HOURS alt       -> Cache ok
+    #   Verdict >= MAX_AGE oder fehlt               -> inline Auto-DD triggern (force)
+    #   Entry auf KAUFEN (conf>=65, kein degrade)   -> durchlassen
+    #   Alles andere                                -> block
+    # Manuelle Orders (source='manual') uebergehen das Gate.
+    DEEP_DIVE_MAX_AGE_HOURS = 6
+
     if source != 'manual':
         try:
             _dd_path = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
-            _dd_data = {}
-            if _dd_path.exists():
-                _dd_data = json.loads(_dd_path.read_text(encoding='utf-8'))
-            _verdict = _dd_data.get(ticker) or _dd_data.get(ticker.upper())
-            if not _verdict:
-                return {
-                    'success': False,
-                    'trade_id': None,
-                    'message': f'❌ {ticker}: Kein Deep Dive Verdict vorhanden (autonomer Entry blockiert)',
-                    'blocked_by': 'deep_dive_missing',
-                }
+
+            def _load_verdict():
+                if not _dd_path.exists():
+                    return None
+                try:
+                    _data = json.loads(_dd_path.read_text(encoding='utf-8'))
+                except Exception:
+                    return None
+                return _data.get(ticker) or _data.get(ticker.upper())
+
+            def _verdict_age_hours(v):
+                _ts_raw = v.get('timestamp') or v.get('created_at') or ''
+                try:
+                    _ts = datetime.fromisoformat(_ts_raw.replace('Z', '+00:00'))
+                    if _ts.tzinfo is None:
+                        _ts = _ts.replace(tzinfo=timezone.utc)
+                    return (datetime.now(timezone.utc) - _ts).total_seconds() / 3600
+                except Exception:
+                    return 9999
+
+            _verdict = _load_verdict()
+            _age_h = _verdict_age_hours(_verdict) if _verdict else 9999
+            _needs_refresh = (_verdict is None) or (_age_h >= DEEP_DIVE_MAX_AGE_HOURS)
+
+            if _needs_refresh:
+                # Inline Auto-DD triggern
+                print(f"[{ticker}] Guard 0c2: Verdict stale ({_age_h:.1f}h) — inline Auto-DD...")
+                try:
+                    _intel_path = WORKSPACE / 'scripts' / 'intelligence'
+                    if str(_intel_path) not in sys.path:
+                        sys.path.insert(0, str(_intel_path))
+                    from auto_deep_dive import run as _dd_run
+                    _result = _dd_run(ticker, force=True, mode='entry')
+                    if _result.get('status') != 'ok':
+                        return {
+                            'success': False,
+                            'trade_id': None,
+                            'message': (
+                                f'❌ {ticker}: Inline Auto-DD fehlgeschlagen '
+                                f'({_result.get("error") or _result.get("status")})'
+                            ),
+                            'blocked_by': 'deep_dive_api_failed',
+                        }
+                    # Nach Refresh: Verdict neu laden
+                    _verdict = _load_verdict()
+                    if not _verdict:
+                        return {
+                            'success': False,
+                            'trade_id': None,
+                            'message': f'❌ {ticker}: Auto-DD lief, aber kein Verdict persistiert',
+                            'blocked_by': 'deep_dive_persist_failed',
+                        }
+                except Exception as _e:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': f'❌ {ticker}: Inline Auto-DD Exception: {_e}',
+                        'blocked_by': 'deep_dive_api_error',
+                    }
+
+            # Verdict jetzt auf jeden Fall frisch — prüfen
             _vd = str(_verdict.get('verdict', '')).upper()
             if _vd != 'KAUFEN':
                 return {
@@ -380,20 +436,6 @@ def _execute_paper_entry_inner(
                     'trade_id': None,
                     'message': f'❌ {ticker}: Deep Dive Verdict = {_vd or "UNBEKANNT"} (KAUFEN erforderlich)',
                     'blocked_by': 'deep_dive_not_kaufen',
-                }
-            # Alter prüfen
-            _ts_raw = _verdict.get('timestamp') or _verdict.get('created_at') or ''
-            try:
-                _ts = datetime.fromisoformat(_ts_raw.replace('Z', '+00:00'))
-                _age_days = (datetime.now(timezone.utc) - _ts).total_seconds() / 86400
-            except Exception:
-                _age_days = 999
-            if _age_days > 14:
-                return {
-                    'success': False,
-                    'trade_id': None,
-                    'message': f'❌ {ticker}: Deep Dive Verdict zu alt ({_age_days:.1f}d > 14d)',
-                    'blocked_by': 'deep_dive_stale',
                 }
             # AUTO_CLAUDE: Mindest-Confidence (anti-hallucination)
             _src = str(_verdict.get('source', 'MANUAL')).upper()
@@ -406,7 +448,6 @@ def _execute_paper_entry_inner(
                         'message': f'❌ {ticker}: AUTO_CLAUDE Verdict confidence {_conf} < 65 (Halluzinations-Schutz)',
                         'blocked_by': 'deep_dive_low_confidence',
                     }
-                # Downgrade-Flag prüfen
                 if _verdict.get('_degraded_reason'):
                     return {
                         'success': False,
@@ -415,7 +456,6 @@ def _execute_paper_entry_inner(
                         'blocked_by': 'deep_dive_degraded',
                     }
         except Exception as e:
-            # Fail-safe: Bei Fehler im Gate blocken, nicht durchlassen
             return {
                 'success': False,
                 'trade_id': None,
