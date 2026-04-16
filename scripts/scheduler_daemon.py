@@ -69,9 +69,9 @@ SCHEDULE = [
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
-    ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
-    # Morgen-Digest: Portfolio-Status + gequeute Alerts aus der Nacht
-    ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,  35, [0,1,2,3,4]),
+    ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,   0, [0,1,2,3,4], True),
+    # Morgen-Digest: Portfolio-Status + gequeute Alerts aus der Nacht (08:05)
+    ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,   5, [0,1,2,3,4]),
     # Xetra/US Opening: nur noch ohne discord=True (kein extra Ping)
     ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4]),
     ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4]),
