@@ -512,15 +512,36 @@ Antworte mit: VERDICT: [KAUFEN/WARTEN/NICHT_KAUFEN]"""
                 verdicts = json.loads(verdicts_file.read_text())
             except Exception:
                 pass
+        # Phase 6.7: source='deep_dive' — LLM-getrieben zählt als echter Deep Dive
+        # (im Gegensatz zu 'auto_deepdive_rule'). Wird von Phase 5 Protection respektiert.
         verdicts[ticker.upper()] = {
             'verdict':    verdict,
-            'timestamp':  datetime.now().isoformat(),
-            'date':       datetime.now().strftime('%Y-%m-%d'),
-            'source':     'autonomous_ceo',
+            'timestamp':  datetime.now(ZoneInfo('Europe/Berlin')).isoformat(timespec='seconds'),
+            'date':       datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d'),
+            'source':     'deep_dive',
+            'analyst':    'Albert (autonomous_ceo LLM)',
             'reason':     reason,
         }
         verdicts_file.write_text(json.dumps(verdicts, indent=2, ensure_ascii=False))
         log(f'Deep Dive {ticker}: {verdict}')
+
+        # Phase 6.7: Queue-Cleanup — Ticker aus deepdive_requests.json entfernen
+        try:
+            _q_file = DATA / 'deepdive_requests.json'
+            if _q_file.exists():
+                _q = json.loads(_q_file.read_text(encoding='utf-8'))
+                if isinstance(_q, list):
+                    _q_new = [x for x in _q
+                              if not (isinstance(x, dict)
+                                      and x.get('ticker','').upper() == ticker.upper())]
+                    if len(_q_new) != len(_q):
+                        _q_file.write_text(
+                            json.dumps(_q_new, indent=2, ensure_ascii=False),
+                            encoding='utf-8',
+                        )
+        except Exception as _qe:
+            log(f'Queue-cleanup warning: {_qe}')
+
         return verdict
 
     except Exception as e:

@@ -91,6 +91,21 @@ SCHEDULE = [
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     # ── Phase 3: State Sync (JSONs → SQL, nach Daily Learning) ──
     ('State Sync',          'state_sync.py',           [],                        23, 5,  None),
+    # ── Phase 4/5/6.7/6.9: Integrity + Truth Jobs ──
+    ('Fund Reconciliation', 'fund_reconciliation.py',  [],                        23, 15, None),   # tgl. 23:15 nach State Sync
+    ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
+    ('Proposal Expirer',    'proposal_expirer.py',     [],                        14, 30, None),   # mittags nochmal
+    ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
+    ('Archive Stale Trades','archive_stale_trades.py', [],                         3,  0, [6]),    # So nur
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     8, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    10, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    12, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    14, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    16, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    18, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    20, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    22, 10, None),
+    ('Honesty Report',      'honesty_report.py',       [],                        22,  5, None),
     ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 50, [0,1,2,3,4,5,6]),  # Phase 9 — Drawdown Circuit Input
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.

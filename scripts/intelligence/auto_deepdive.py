@@ -336,8 +336,27 @@ def run(force_all: bool = False) -> dict:
             except Exception:
                 pass
 
-        # Skip if user-authored + fresh
-        if not force_all and is_fresh and exist_source == 'discord_deepdive':
+        # Phase 5: "Echter Deep Dive" erkennen — NICHT überschreiben!
+        # Kriterien (eins reicht):
+        #   a) explizite source='discord_deepdive' / 'albert_discord' / 'deep_dive' / 'Albert'
+        #   b) analyst-Feld startet mit "Albert" (Legacy-Format)
+        #   c) key_findings-Objekt vorhanden (6-Schritt Protokoll-Signatur)
+        #   d) kompletter Trade-Plan (entry, stop, ziel_1 alle gesetzt)
+        def _is_real_deep_dive(v: dict) -> bool:
+            src = str(v.get('source', '')).lower()
+            if src in ('discord_deepdive', 'albert_discord', 'deep_dive', 'albert'):
+                return True
+            analyst = str(v.get('analyst', ''))
+            if analyst and analyst.lower().startswith('albert'):
+                return True
+            if isinstance(v.get('key_findings'), dict) and v['key_findings']:
+                return True
+            if v.get('entry') and v.get('stop') and v.get('ziel_1'):
+                return True
+            return False
+
+        # Skip if echter Deep Dive + fresh — NIEMALS überschreiben
+        if not force_all and is_fresh and _is_real_deep_dive(existing):
             stats['skipped_fresh'] += 1
             continue
         # Skip if rule-based + fresh (accept both new 'auto_deepdive_rule'
@@ -355,12 +374,14 @@ def run(force_all: bool = False) -> dict:
         new_entry = _build_verdict_entry(analysis)
         old_verdict = existing.get('verdict')
 
-        # Preserve discord_deepdive verdicts when auto only produces weaker signal
-        if exist_source == 'discord_deepdive' and not force_all:
-            # only auto-override if DD becomes NICHT_KAUFEN (protection)
-            if new_entry['verdict'] != 'NICHT_KAUFEN':
-                stats['skipped_fresh'] += 1
-                continue
+        # Preserve echte Deep-Dive-Verdicts vor Rule-Override
+        # (Ein manuell erstellter Deep Dive darf NIE von der Rule-Engine
+        # überschrieben werden — auch nicht mit NICHT_KAUFEN. Wenn die
+        # Rule-Engine etwas Besorgniserregendes findet, muss Albert neu
+        # analysieren. Protection ist hart.)
+        if _is_real_deep_dive(existing) and not force_all:
+            stats['skipped_fresh'] += 1
+            continue
 
         verdicts[ticker] = new_entry
         stats['processed'] += 1
