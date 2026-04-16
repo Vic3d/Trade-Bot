@@ -41,12 +41,12 @@ def _save_queue(q: list[dict]) -> None:
         print(f'discord_queue save failed: {e}')
 
 
-def _send_direct(msg: str) -> None:
+def _send_direct(msg: str, force: bool = False) -> None:
     try:
         import sys
         sys.path.insert(0, str(WS / 'scripts'))
         from discord_sender import send
-        send(msg[:1900])
+        send(msg[:1900], force=force)
     except Exception as e:
         print(f'discord_queue direct send failed: {e}')
 
@@ -65,7 +65,7 @@ def queue_event(
     icon = icons.get(priority, '📌')
 
     if priority in SEND_IMMEDIATELY:
-        _send_direct(f'{icon} **{title}**\n{body}')
+        _send_direct(f'{icon} **{title}**\n{body}', force=True)  # Notfälle immer sofort
         return
 
     entry = {
