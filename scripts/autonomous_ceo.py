@@ -773,7 +773,7 @@ Antworte NUR mit JSON:
         import anthropic
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
-            model='claude-sonnet-4-20250514',  # Kosteneffizient: ~$0.03 pro Call
+            model='claude-sonnet-4-5',  # Kosteneffizient: ~$0.03 pro Call
             max_tokens=800,
             system=reactive_prompt,
             messages=[{
