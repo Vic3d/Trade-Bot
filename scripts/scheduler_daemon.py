@@ -87,6 +87,9 @@ SCHEDULE = [
     ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4], True),
     ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4], True),
     ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None,        True),
+    # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
+    ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
+    ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00
     # ─────────────────────────────────────────────────────────────────────────
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
