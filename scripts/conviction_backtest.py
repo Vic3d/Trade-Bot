@@ -80,18 +80,39 @@ def _threshold_simulation(trades: list[dict], threshold: int) -> dict:
 
 def run() -> dict:
     conn = sqlite3.connect(str(DB))
-    rows = conn.execute("""
-        SELECT ticker, strategy, conviction, pnl_eur, pnl_pct, entry_date, close_date
-        FROM paper_portfolio
-        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
-    """).fetchall()
+    # score_source filter: nur Trades vom echten CONVICTION_V3-Scorer auswerten.
+    # OPPORTUNITY_TIER nutzt eine 1-10-Skala und mischt die Semantik sonst.
+    # Column existiert seit Phase 7.3 — Fallback wenn Schema alt ist.
+    has_source_col = bool(conn.execute(
+        "SELECT 1 FROM pragma_table_info('paper_portfolio') WHERE name='score_source'"
+    ).fetchone())
+
+    if has_source_col:
+        rows = conn.execute("""
+            SELECT ticker, strategy, conviction, pnl_eur, pnl_pct, entry_date, close_date,
+                   COALESCE(score_source, 'LEGACY_NONE') AS src
+            FROM paper_portfolio
+            WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
+        """).fetchall()
+    else:
+        rows = conn.execute("""
+            SELECT ticker, strategy, conviction, pnl_eur, pnl_pct, entry_date, close_date,
+                   'LEGACY_NONE' AS src
+            FROM paper_portfolio
+            WHERE UPPER(status) IN ('CLOSED','WIN','LOSS')
+        """).fetchall()
     conn.close()
 
-    trades = [{
+    all_trades = [{
         'ticker': r[0], 'strategy': r[1], 'conviction': r[2] or 0,
         'pnl': r[3] or 0, 'pnl_pct': r[4] or 0,
         'entry': r[5], 'close': r[6],
+        'source': r[7] or 'LEGACY_NONE',
     } for r in rows]
+
+    # Nur CONVICTION_V3-Trades für Threshold-Backtest verwenden.
+    # OPPORTUNITY_TIER (1-10) und LEGACY_NONE (0) würden die 0-100-Analyse verzerren.
+    trades = [t for t in all_trades if t['source'] == 'CONVICTION_V3']
 
     if not trades:
         return {'error': 'no_closed_trades'}
@@ -119,10 +140,18 @@ def run() -> dict:
         return p['expectancy'] * math.sqrt(p['n'])
     optimum = max(sims, key=score) if sims else None
 
+    # Zähle die gefilterten Sources für Transparenz
+    source_counts = {}
+    for t in all_trades:
+        source_counts[t['source']] = source_counts.get(t['source'], 0) + 1
+
     result = {
         'generated_at': datetime.now(_BERLIN).isoformat(timespec='seconds'),
         'total_trades': len(trades),
         'scored_trades': len(scored_trades),
+        'filter':       'score_source = CONVICTION_V3 only',
+        'source_counts': source_counts,
+        'trades_filtered_out': len(all_trades) - len(trades),
         'by_bucket': bucket_stats,
         'threshold_sims': sims,
         'recommended_threshold': optimum['threshold'] if optimum else None,

@@ -82,43 +82,49 @@ def _closed_trades_stats(conn: sqlite3.Connection) -> dict:
 
 
 def _equity_drawdown(conn: sqlite3.Connection) -> dict:
-    """Max Drawdown aus paper_fund_history oder equity snapshots."""
+    """Max Drawdown aus equity_history (tägliche MTM-Snapshots).
+
+    Primär: equity_history (canonical, schreibt equity_snapshot.py).
+    Fallback: CLOSED-Trade-Kumulativ (ohne unrealized — unterschätzt DD).
+    """
     try:
         rows = conn.execute("""
-            SELECT ts, truth_cash FROM paper_fund_history ORDER BY ts ASC
+            SELECT snapshot_date, total_equity, drawdown_pct
+            FROM equity_history ORDER BY snapshot_date ASC
         """).fetchall()
     except sqlite3.OperationalError:
-        return {'max_dd_pct': None, 'reason': 'no_history_table'}
+        rows = []
 
-    if len(rows) < 2:
-        # Fallback: aus CLOSED trades kumulativ
-        trow = conn.execute("""
-            SELECT close_date, pnl_eur FROM paper_portfolio
-            WHERE UPPER(status) IN ('CLOSED','WIN','LOSS') ORDER BY close_date ASC
-        """).fetchall()
-        if not trow:
-            return {'max_dd_pct': None, 'reason': 'no_data'}
-        equity = 25000.0
-        peak = equity
-        max_dd = 0.0
-        for _, pnl in trow:
-            equity += (pnl or 0)
-            if equity > peak:
-                peak = equity
-            dd = (peak - equity) / peak * 100 if peak > 0 else 0
-            if dd > max_dd:
-                max_dd = dd
-        return {'max_dd_pct': round(max_dd, 2), 'reason': 'from_trades'}
+    if len(rows) >= 2:
+        max_dd = max((r[2] or 0) for r in rows)
+        days = len(rows)
+        return {
+            'max_dd_pct': round(max_dd, 2),
+            'reason': 'from_equity_history',
+            'snapshot_days': days,
+        }
 
-    peak = rows[0][1]
+    # Fallback: kumulativ aus closed trades (nur realized — Unterschätzung)
+    trow = conn.execute("""
+        SELECT close_date, pnl_eur FROM paper_portfolio
+        WHERE UPPER(status) IN ('CLOSED','WIN','LOSS') ORDER BY close_date ASC
+    """).fetchall()
+    if not trow:
+        return {'max_dd_pct': None, 'reason': 'no_data'}
+    equity = 25000.0
+    peak = equity
     max_dd = 0.0
-    for _, cash in rows:
-        if cash > peak:
-            peak = cash
-        dd = (peak - cash) / peak * 100 if peak > 0 else 0
+    for _, pnl in trow:
+        equity += (pnl or 0)
+        if equity > peak:
+            peak = equity
+        dd = (peak - equity) / peak * 100 if peak > 0 else 0
         if dd > max_dd:
             max_dd = dd
-    return {'max_dd_pct': round(max_dd, 2), 'reason': 'from_history'}
+    return {
+        'max_dd_pct': round(max_dd, 2),
+        'reason': 'from_trades_fallback (UNDERESTIMATES — no MTM history yet)',
+    }
 
 
 def _reconciliation_alerts_30d(conn: sqlite3.Connection) -> int:

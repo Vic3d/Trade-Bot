@@ -386,14 +386,15 @@ def close_position(
         """
         UPDATE paper_portfolio
         SET status=?, close_price=?, close_date=datetime('now'),
-            pnl_eur=?, pnl_pct=?, notes = notes || ?
+            pnl_eur=?, pnl_pct=?, exit_type=?, notes = notes || ?
         WHERE id=?
         """,
         (
-            'WIN' if pnl > 0 else 'CLOSED',
+            'WIN' if pnl > 0 else 'LOSS',
             round(close_price, 4),
             round(pnl, 2),
             round(pnl_pct, 2),
+            exit_type or 'UNKNOWN',
             f' [EXIT:{exit_type} {date.today().isoformat()}]' + net_note,
             row_id
         )
