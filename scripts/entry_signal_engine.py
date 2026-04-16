@@ -20,8 +20,14 @@ P1.4 Update: Sentiment-Magnitude-Bonus
 import urllib.request, json
 from pathlib import Path
 from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 MARKET_REGIME_FILE = WS / 'memory/market-regime.json'
 
 
@@ -36,9 +42,9 @@ def load_ceo_directive() -> dict | None:
     if not path.exists():
         return None
     try:
-        d = json.loads(path.read_text())
+        d = json.loads(path.read_text(encoding="utf-8"))
         ts = datetime.fromisoformat(d['timestamp'])
-        if (datetime.now() - ts).total_seconds() < 86400:
+        if (datetime.now(_BERLIN) - ts).total_seconds() < 86400:
             return d
     except Exception:
         pass
@@ -55,14 +61,14 @@ def get_vix() -> float | None:
     # Versuch 1: market-regime.json lesen
     if MARKET_REGIME_FILE.exists():
         try:
-            data = json.loads(MARKET_REGIME_FILE.read_text())
+            data = json.loads(MARKET_REGIME_FILE.read_text(encoding="utf-8"))
             updated_str = data.get('updated', '')
             vix_val = data.get('indicators', {}).get('vix')
             if vix_val is not None and updated_str:
                 # Stale-Check: älter als 2 Stunden?
                 try:
                     updated_dt = datetime.strptime(updated_str, '%Y-%m-%d %H:%M')
-                    age_hours = (datetime.now() - updated_dt).total_seconds() / 3600
+                    age_hours = (datetime.now(_BERLIN) - updated_dt).total_seconds() / 3600
                     if age_hours <= 2.0:
                         return float(vix_val)
                     # Datei zu alt → Fallback auf Yahoo
@@ -274,7 +280,7 @@ def check_entry_signal(ticker: str, current_price: float, magnitude: int = 1, pa
     _regime_known = False
     try:
         if MARKET_REGIME_FILE.exists():
-            _rdata = json.loads(MARKET_REGIME_FILE.read_text())
+            _rdata = json.loads(MARKET_REGIME_FILE.read_text(encoding="utf-8"))
             _regime_val = _rdata.get('regime', None)
             if _regime_val and _regime_val not in ('None', '', 'UNKNOWN'):
                 _regime_known = True

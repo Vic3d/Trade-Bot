@@ -27,20 +27,24 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo as _BerZI
+_BERLIN = _BerZI('Europe/Berlin')
 from collections import defaultdict
 
-WS = Path('/data/.openclaw/workspace')
-
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 # ─── Hilfsfunktionen ─────────────────────────────────────────────────────────
 
 def safe_read_json(path: Path, default=None):
     """JSON-Datei lesen — gibt default zurück wenn Datei fehlt oder kaputt ist."""
     try:
         if path.exists():
-            return json.loads(path.read_text())
-    except Exception:
-        pass
+            return json.loads(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"[CEO] Warnung: {path.name} nicht lesbar: {e}", flush=True)
     return default if default is not None else {}
 
 
@@ -48,9 +52,9 @@ def safe_read_text(path: Path, default: str = '') -> str:
     """Textdatei lesen — gibt default zurück wenn Datei fehlt."""
     try:
         if path.exists():
-            return path.read_text()
-    except Exception:
-        pass
+            return path.read_text(encoding="utf-8")
+    except Exception as e:
+        print(f"[CEO] Warnung: {path.name} nicht lesbar: {e}", flush=True)
     return default
 
 
@@ -150,7 +154,7 @@ def fetch_live_market_data() -> dict:
     # Check cache
     try:
         if MARKET_CACHE_PATH.exists():
-            cache = json.loads(MARKET_CACHE_PATH.read_text())
+            cache = json.loads(MARKET_CACHE_PATH.read_text(encoding="utf-8"))
             cache_ts = cache.get('_timestamp', 0)
             if (time.time() - cache_ts) < MARKET_CACHE_TTL:
                 print('📦 Market-Cache verwendet (< 5 Min alt)')
@@ -338,9 +342,9 @@ def load_ceo_directive() -> dict | None:
     if not path.exists():
         return None
     try:
-        d = json.loads(path.read_text())
+        d = json.loads(path.read_text(encoding="utf-8"))
         ts = datetime.fromisoformat(d['timestamp'])
-        if (datetime.now() - ts).total_seconds() < 86400:
+        if (datetime.now(_BERLIN) - ts).total_seconds() < 86400:
             return d
     except Exception:
         pass
@@ -448,8 +452,8 @@ def load_historical_data(conn) -> dict:
 
     try:
         # Win-Rate letzte 7 und 30 Tage
-        cutoff_7d = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-        cutoff_30d = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+        cutoff_7d = (datetime.now(_BERLIN) - timedelta(days=7)).strftime('%Y-%m-%d')
+        cutoff_30d = (datetime.now(_BERLIN) - timedelta(days=30)).strftime('%Y-%m-%d')
 
         for days, cutoff, key in [(7, cutoff_7d, 'recent_win_rate_7d'),
                                     (30, cutoff_30d, 'recent_win_rate_30d')]:
@@ -1001,7 +1005,7 @@ def _load_vix_history() -> list:
     """Loads VIX history from JSON file. Returns list of {'date': str, 'vix': float}."""
     try:
         if VIX_HISTORY_PATH.exists():
-            data = json.loads(VIX_HISTORY_PATH.read_text())
+            data = json.loads(VIX_HISTORY_PATH.read_text(encoding="utf-8"))
             if isinstance(data, list):
                 return data
     except Exception:
@@ -1066,7 +1070,7 @@ def calculate_adaptive_thresholds(conn, current_vix: float = None,
             # Fallback: aus trading.db holen
             try:
                 import sqlite3 as _sq
-                _c = _sq.connect('/data/.openclaw/workspace/data/trading.db')
+                _c = _sq.connect(str(WS / 'data/trading.db'))
                 _row = _c.execute(
                     "SELECT value FROM macro_daily WHERE indicator='VIX' ORDER BY date DESC LIMIT 1"
                 ).fetchone()
@@ -1118,7 +1122,7 @@ def calculate_adaptive_thresholds(conn, current_vix: float = None,
             pass
 
     # Append current VIX to history file (dedup by date)
-    today_str = datetime.now().strftime('%Y-%m-%d')
+    today_str = datetime.now(_BERLIN).strftime('%Y-%m-%d')
     already_today = any(e.get('date') == today_str for e in history)
     if not already_today and current_vix > 0:
         history.append({'date': today_str, 'vix': round(current_vix, 2)})
@@ -1451,28 +1455,32 @@ def determine_trading_mode(vix: float, geo_score: float, win_rate_7d: float,
         vix_shutdown = 40.0
         vix_defensive = 28.0
 
-    # SHUTDOWN: VIX > shutdown_threshold ODER Drawdown > 20% ODER 3+ Verlust-Tage in Folge
+    # ── SHUTDOWN-Trigger (verschärft: mind. 2 Gründe ODER 1 extremer) ──────
+    # VIX > 40 allein reicht als extremer Trigger
     if vix > vix_shutdown:
         reasons.append(f'VIX {vix:.1f} > {vix_shutdown:.0f} (adaptive SHUTDOWN)')
-    if drawdown > 0.20:
-        reasons.append(f'Drawdown {drawdown:.1%} > 20%')
-    if consecutive_loss_days >= 3:
+    # Drawdown > 25% (verschärft von 20%) allein reicht
+    if drawdown > 0.25:
+        reasons.append(f'Drawdown {drawdown:.1%} > 25%')
+    # 5+ Verlust-Tage (verschärft von 3) — nur in Kombi mit anderem Trigger
+    if consecutive_loss_days >= 5:
         reasons.append(f'{consecutive_loss_days} Verlust-Tage in Folge')
 
-    # P1.A SHUTDOWN-Trigger: Sharpe < -1.0 ODER Expectancy < 0 über 30+ Trades
+    # P1.A: Sharpe/Expectancy — nur SHUTDOWN wenn beides schlecht UND signifikant
     if risk_metrics:
         overall = risk_metrics.get('overall', {})
         sharpe = overall.get('sharpe_ratio', 0.0)
         expectancy = overall.get('expectancy', 0.0)
         total_trades = overall.get('total_trades', 0)
 
-        if total_trades >= 30:
-            if sharpe < -1.0:
-                reasons.append(f'Sharpe {sharpe:.2f} < -1.0 (30+ Trades)')
-            if expectancy < 0:
-                reasons.append(f'Expectancy €{expectancy:.2f} < 0 (30+ Trades)')
+        if total_trades >= 50:  # Erhöht von 30 — braucht mehr Daten
+            if sharpe < -1.5:  # Verschärft von -1.0
+                reasons.append(f'Sharpe {sharpe:.2f} < -1.5 (50+ Trades)')
+            # Expectancy: nur SHUTDOWN wenn signifikant negativ (>€5 Verlust pro Trade)
+            if expectancy < -5.0 and drawdown > 0.15:
+                reasons.append(f'Expectancy €{expectancy:.2f} < -5 + DD > 15%')
 
-    # P2.B: Enhanced regime triggers
+    # P2.B: Enhanced regime — CRASH allein reicht
     if regime_detail:
         overall_regime = regime_detail.get('overall', '')
         if overall_regime == 'CRASH':
@@ -1481,14 +1489,21 @@ def determine_trading_mode(vix: float, geo_score: float, win_rate_7d: float,
         if spy_vs < -20:
             reasons.append(f'SPY {spy_vs:.1f}% unter MA200')
 
-    # P3.C: ≥3 HIGH anomalies → SHUTDOWN
+    # P3.C: ≥3 HIGH anomalies
     if anomaly_result:
         high_count = anomaly_result.get('high_count', 0)
         if high_count >= 3:
             reasons.append(f'{high_count} HIGH Anomalien')
 
-    if reasons:
+    # ── SHUTDOWN nur bei extremen Einzeltriggern ODER mind. 2 Gründe ──────
+    extreme_triggers = [r for r in reasons if any(x in r for x in ['CRASH', 'VIX', 'SPY'])]
+    if len(reasons) >= 2 or extreme_triggers:
         return 'SHUTDOWN', ' + '.join(reasons)
+
+    # ── RECOVERY: Wenn Bedingungen sich verbessern, DEFENSIVE statt SHUTDOWN ──
+    # Einzelne moderate Trigger → DEFENSIVE statt SHUTDOWN
+    if reasons:
+        return 'DEFENSIVE', 'Moderate Risiken (kein SHUTDOWN): ' + ' + '.join(reasons)
 
     # DEFENSIVE: VIX > adaptive threshold ODER Geopolitik HIGH ODER Win-Rate < 25%
     def_reasons = []
@@ -2689,7 +2704,7 @@ def detect_anomalies(conn, market_data: dict = None) -> dict:
     # ── 6. Stale Position Detection ──────────────────────────────────────
     try:
         if conn is not None:
-            cutoff = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+            cutoff = (datetime.now(_BERLIN) - timedelta(days=30)).strftime('%Y-%m-%d')
             rows = conn.execute(
                 "SELECT ticker, entry_price, entry_date, shares "
                 "FROM paper_portfolio WHERE status = 'OPEN' "
@@ -2716,7 +2731,7 @@ def detect_anomalies(conn, market_data: dict = None) -> dict:
                         # Calculate days held
                         try:
                             entry_dt = datetime.strptime(entry_date[:10], '%Y-%m-%d')
-                            days_held = (datetime.now() - entry_dt).days
+                            days_held = (datetime.now(_BERLIN) - entry_dt).days
                         except Exception:
                             days_held = 31
 
@@ -3169,7 +3184,7 @@ def analyze_trade_postmortems(conn) -> dict:
         'regime_performance': regime_result,
         'insights': insights,
         'trade_details': trade_details,
-        'analysis_timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'analysis_timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
         'avg_win_holding_days': round(avg_win_holding, 1),
         'avg_loss_holding_days': round(avg_loss_holding, 1),
     }
@@ -3203,7 +3218,7 @@ def run_backtest(conn, strategies: dict) -> dict:
             'improvement_pct': 0.0,
             'recommendation': '',
         },
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
     }
 
     if conn is None:
@@ -3515,7 +3530,7 @@ def evolve_strategy_dna(conn, strategies: dict) -> dict:
         'evolutions': {},
         'regime_filters': {},
         'insufficient_data': [],
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
     }
 
     if conn is None:
@@ -4291,7 +4306,7 @@ def build_directive(sources: dict, hist: dict, health: dict,
 
     # Direktive zusammenbauen
     directive = {
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
         'mode': mode,
         'mode_reason': mode_reason,
         'vix': round(vix, 1),
@@ -4445,6 +4460,213 @@ def _calc_data_quality(hist: dict, health: dict) -> int:
     elif health['journal_entries'] < 20: score -= 10
     if not health['p1_features_active']: score -= 15
     return max(0, min(100, score))
+
+
+# ─── CEO AI-Analyse via Claude Sonnet ─────────────────────────────────────────
+
+def _ceo_ai_analysis(directive: dict) -> dict:
+    """
+    CEO AI-Analyse: Liest News + Portfolio-Daten, analysiert via Claude Sonnet.
+    Kann den regelbasierten Modus ueberschreiben wenn die Confidence hoch genug ist.
+    Fallback: regelbasierter Modus bleibt, wenn API nicht verfuegbar.
+    """
+    import os
+    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
+    if not api_key:
+        directive['ai_analysis'] = {'status': 'skipped', 'reason': 'No ANTHROPIC_API_KEY'}
+        return directive
+
+    try:
+        import anthropic
+    except ImportError:
+        directive['ai_analysis'] = {'status': 'skipped', 'reason': 'anthropic not installed'}
+        return directive
+
+    # ── Kontext sammeln: News aus overnight_events + newswire ────────────────
+    events = []
+    try:
+        conn = sqlite3.connect(str(DB))
+        rows = conn.execute("""
+            SELECT headline, source, sector, impact_direction, timestamp
+            FROM overnight_events ORDER BY timestamp DESC LIMIT 30
+        """).fetchall()
+        events.extend([
+            {'headline': r[0], 'source': r[1], 'sector': r[2], 'impact': r[3], 'time': r[4]}
+            for r in rows
+        ])
+        conn.close()
+    except Exception:
+        pass
+
+    try:
+        nws_db = WS / 'newswire.db'
+        if nws_db.exists():
+            nconn = sqlite3.connect(str(nws_db))
+            rows = nconn.execute("""
+                SELECT headline, source, category, sector, impact_direction, timestamp
+                FROM events ORDER BY timestamp DESC LIMIT 20
+            """).fetchall()
+            events.extend([
+                {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
+                for r in rows
+            ])
+            nconn.close()
+    except Exception:
+        pass
+
+    # News Gate
+    news_gate_items = []
+    try:
+        ng_path = WS / 'data/news_gate.json'
+        if ng_path.exists():
+            ng = json.loads(ng_path.read_text(encoding='utf-8'))
+            if isinstance(ng, list):
+                news_gate_items = ng[:15]
+            elif isinstance(ng, dict):
+                news_gate_items = ng.get('items', ng.get('events', []))[:15]
+    except Exception:
+        pass
+
+    # ── Kontext aufbereiten ──────────────────────────────────────────────────
+    mode = directive['mode']
+    vix = directive['vix']
+    regime = directive['regime']
+    geo = directive.get('geo_score', 0)
+    rules = directive.get('trading_rules', {})
+    learning = directive.get('learning_status', {})
+
+    news_lines = []
+    seen = set()
+    for e in events:
+        h = (e.get('headline') or '')[:120]
+        if h and h not in seen:
+            seen.add(h)
+            news_lines.append(f"- [{e.get('time','')}] {h} (Quelle: {e.get('source','?')}, Impact: {e.get('impact','-')})")
+    for ng_item in news_gate_items:
+        h = ''
+        if isinstance(ng_item, dict):
+            h = (ng_item.get('headline') or ng_item.get('title', ''))[:120]
+        elif isinstance(ng_item, str):
+            h = ng_item[:120]
+        if h and h not in seen:
+            seen.add(h)
+            news_lines.append(f"- {h}")
+
+    news_text = "\n".join(news_lines[:40]) if news_lines else "Keine aktuellen Nachrichten verfuegbar."
+
+    # ── Strategien-Kontext ───────────────────────────────────────────────────
+    strategies_text = ""
+    try:
+        strat_path = WS / 'data/strategies.json'
+        if strat_path.exists():
+            strats = json.loads(strat_path.read_text(encoding='utf-8'))
+            active = {k: v for k, v in strats.items() if isinstance(v, dict) and v.get('status') == 'active'}
+            strat_lines = [f"- {k}: {v.get('name', k)} (Conviction: {v.get('conviction', '?')}, Sektor: {v.get('sector', '?')})"
+                           for k, v in list(active.items())[:15]]
+            strategies_text = "\n".join(strat_lines)
+    except Exception:
+        pass
+
+    # ── Claude Sonnet Call ───────────────────────────────────────────────────
+    system_prompt = """Du bist der CEO von TradeMind, einem algorithmischen Trading-System.
+Du analysierst taeglich die Marktlage, Nachrichten und Portfolio-Performance.
+
+Deine Aufgaben:
+1. Analysiere die gesammelten Nachrichten auf Risiken und Chancen fuer das Portfolio
+2. Bewerte ob der regelbasierte Modus (NORMAL/DEFENSIVE/SHUTDOWN) korrekt ist
+3. Identifiziere die 3 wichtigsten Risiken und 3 wichtigsten Chancen
+4. Gib konkrete Handlungsempfehlungen
+5. Beruecksichtige: Asien-Maerkte als Fruehindikatoren, geopolitische Risiken, Makro-Trends
+
+WICHTIG: Sei konservativ. Nur SHUTDOWN empfehlen bei echten Krisen (Crash, Krieg, extreme VIX).
+DEFENSIVE bei erhoehten Risiken. NORMAL ist der Standard.
+
+Antworte AUSSCHLIESSLICH als JSON (kein Markdown, kein Text drumherum):
+{
+  "mode_recommendation": "NORMAL|DEFENSIVE|SHUTDOWN",
+  "mode_reason": "Kurze Begruendung (1-2 Saetze)",
+  "top_risks": ["Risiko 1", "Risiko 2", "Risiko 3"],
+  "top_opportunities": ["Chance 1", "Chance 2", "Chance 3"],
+  "sector_outlook": {"defense": "bullish|neutral|bearish", "tech": "...", "china": "...", "japan": "...", "energy": "..."},
+  "action_items": ["Konkrete Empfehlung 1", "Konkrete Empfehlung 2"],
+  "market_summary": "2-3 Saetze Markt-Zusammenfassung",
+  "confidence": 0.7
+}"""
+
+    user_prompt = f"""MARKTDATEN:
+- VIX: {vix}
+- Regime: {regime}
+- Geo-Score: {geo}/100
+- Regelbasierter Modus: {mode}
+
+PORTFOLIO:
+- Offene Positionen: {learning.get('open_positions', '?')}
+- Win-Rate gesamt: {learning.get('overall_win_rate', '?')}%
+- Drawdown: {learning.get('portfolio_drawdown', '?')}%
+- Geschlossene Trades: {learning.get('total_closed_trades', '?')}
+
+AKTIVE STRATEGIEN:
+{strategies_text if strategies_text else 'Keine Strategie-Daten verfuegbar.'}
+
+AKTUELLE NACHRICHTEN (letzte 24h):
+{news_text}
+
+TRADING-RULES (regelbasiert):
+- Max neue Positionen: {rules.get('max_new_positions_today', '?')}
+- Max Positionsgroesse: {rules.get('max_position_size_eur', '?')} EUR
+- Geblockte Strategien: {rules.get('blocked_strategies', [])}
+
+Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model='claude-sonnet-4-5-20250514',
+            max_tokens=1000,
+            system=system_prompt,
+            messages=[{'role': 'user', 'content': user_prompt}],
+        )
+        raw = response.content[0].text.strip()
+
+        # JSON parsen
+        import re
+        json_match = re.search(r'\{[\s\S]*\}', raw)
+        if json_match:
+            analysis = json.loads(json_match.group())
+        else:
+            analysis = {'raw': raw[:500], 'error': 'No JSON in response'}
+
+        directive['ai_analysis'] = analysis
+
+        # Mode Override: AI kann den Modus ueberschreiben bei hoher Confidence
+        ai_mode = analysis.get('mode_recommendation')
+        ai_confidence = analysis.get('confidence', 0)
+        if ai_mode and ai_mode in ('NORMAL', 'DEFENSIVE', 'SHUTDOWN') and ai_confidence >= 0.75:
+            if ai_mode != mode:
+                print(f"[CEO] AI Override: {mode} -> {ai_mode} (Confidence: {ai_confidence:.0%})")
+                print(f"[CEO] Grund: {analysis.get('mode_reason', 'N/A')}")
+                directive['mode'] = ai_mode
+                directive['mode_reason'] = f"AI-Analyse ({ai_confidence:.0%}): {analysis.get('mode_reason', '')}"
+            else:
+                print(f"[CEO] AI bestaetigt Modus {mode} (Confidence: {ai_confidence:.0%})")
+        elif ai_mode:
+            print(f"[CEO] AI empfiehlt {ai_mode} (Confidence: {ai_confidence:.0%}) — zu niedrig fuer Override")
+
+        # Market Summary in CEO Notes einfuegen
+        if analysis.get('market_summary'):
+            existing_notes = directive.get('ceo_notes', '')
+            directive['ceo_notes'] = f"AI: {analysis['market_summary']} | {existing_notes}"
+
+        print(f"[CEO] AI-Analyse erfolgreich. Risks: {len(analysis.get('top_risks', []))}, Opps: {len(analysis.get('top_opportunities', []))}")
+
+    except json.JSONDecodeError as e:
+        print(f"[CEO] AI-Analyse JSON Parse Error: {e}")
+        directive['ai_analysis'] = {'status': 'error', 'reason': f'JSON parse: {e}'}
+    except Exception as e:
+        print(f"[CEO] AI-Analyse fehlgeschlagen (Fallback auf Regeln): {e}")
+        directive['ai_analysis'] = {'status': 'error', 'reason': str(e)}
+
+    return directive
 
 
 # ─── Discord-Report generieren (kompakt, <1900 Zeichen) ──────────────────────
@@ -4637,6 +4859,17 @@ def generate_report(directive: dict, hist: dict) -> str:
         st = sig_tracker
         acc_str = f"{st['accuracy']:.0f}%" if st.get('accuracy') is not None else '?'
         sections.append(f"📡 Signals: {st['total']} total | ⏳{st['pending']} | ✅{st['wins']}/{st['wins']+st['losses']} ({acc_str})")
+
+    # AI-Analyse (wenn vorhanden)
+    ai = directive.get('ai_analysis', {})
+    if ai and ai.get('market_summary'):
+        risks = ', '.join(ai.get('top_risks', [])[:2]) or 'N/A'
+        opps = ', '.join(ai.get('top_opportunities', [])[:2]) or 'N/A'
+        sections.append(
+            f'🤖 **AI:** {ai["market_summary"][:120]}\n'
+            f'⚠️ Risks: {risks[:80]}\n'
+            f'💡 Opps: {opps[:80]}'
+        )
 
     # CEO note
     ceo_notes = directive.get('ceo_notes', '')
@@ -5229,6 +5462,10 @@ def main():
             conn.close()
         except Exception:
             pass
+
+    # ── Schritt 4b: CEO AI-Analyse (Claude Sonnet) ───────────────────────────
+    print('[CEO] AI-Analyse starten (Claude Sonnet)...')
+    directive = _ceo_ai_analysis(directive)
 
     # ── Schritt 5: Report generieren ──────────────────────────────────────────
     if args.full:

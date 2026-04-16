@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3
 """
 thesis_engine.py — Thesen-Lifecycle-Management
 ===============================================
@@ -22,9 +22,16 @@ import re
 import sqlite3
 import sys
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'execution'))
 sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
@@ -692,7 +699,7 @@ def sync_strategies_and_db() -> dict:
 
     # Sync-Log schreiben
     try:
-        ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
         log_line = f'[{ts}] Sync: {result["corrections"]} Korrekturen'
         if result['details']:
             log_line += ' | ' + '; '.join(result['details'])

@@ -30,6 +30,8 @@ import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 WS      = Path('/data/.openclaw/workspace')
@@ -43,7 +45,7 @@ DISCORD_MIN_SCORE = 3  # Mindest-Score für Discord-Alert
 
 
 def log(msg: str):
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
     print(line, flush=True)
     try:

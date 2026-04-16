@@ -21,8 +21,14 @@ import sqlite3
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 OUTPUT = WS / 'data/sector_rotation_state.json'
 
@@ -55,7 +61,7 @@ def get_sector_performance_7d(db) -> dict:
     Berechne 7-Tage Win-Rate pro Sektor aus paper_portfolio.
     Returns: {sektor: {'wins': n, 'total': n, 'win_rate': float, 'avg_pnl': float}}
     """
-    cutoff = (datetime.now() - timedelta(days=7)).isoformat()
+    cutoff = (datetime.now(_BERLIN) - timedelta(days=7)).isoformat()
     rows = db.execute("""
         SELECT sector, status, pnl_eur
         FROM paper_portfolio
@@ -180,7 +186,7 @@ def build_rotation_multiplier(hot: list, cooling: list, neutral: list, perf: dic
 
 def run():
     """Hauptfunktion: Berechne Sektor-Rotation-State und speichere JSON."""
-    print(f"🔄 Sector Rotation Logic — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"🔄 Sector Rotation Logic — {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}")
 
     db = sqlite3.connect(DB)
     db.row_factory = sqlite3.Row
@@ -205,7 +211,7 @@ def run():
 
     # State zusammenbauen
     state = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'hot_sectors': hot,
         'cooling_sectors': cooling,
         'neutral_sectors': neutral,

@@ -38,6 +38,8 @@ import os
 import sqlite3
 import statistics
 from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 from typing import Any
 
@@ -661,7 +663,7 @@ def check_drawdown_circuit(
         {blocked, reason, peak_value, current_value, drawdown_pct, pause_until}
     """
     state = _load_risk_state()
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
 
     # Wenn Pause aktiv und noch nicht abgelaufen → blockieren
     pause_until_str = state.get('dd_pause_until')
@@ -1158,7 +1160,7 @@ if __name__ == '__main__':
         cash = _get_cash()
         vix = _get_vix()
         print("=" * 60)
-        print(f"  Portfolio Risk Snapshot — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        print(f"  Portfolio Risk Snapshot — {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}")
         print("=" * 60)
         print(f"Fund Value:     {fund:,.0f}€")
         print(f"Cash:           {cash:,.0f}€")

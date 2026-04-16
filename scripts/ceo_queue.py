@@ -25,8 +25,14 @@ Usage:
 import json
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 QUEUE_PATH = WS / 'data/ceo_trigger_queue.json'
 
 
@@ -36,7 +42,7 @@ def enqueue(source: str, priority: str, headline: str, detail: str = '', thesis:
 
     queue = _read_raw()
     queue.append({
-        'id': f'{datetime.now().strftime("%Y%m%d%H%M%S")}_{source[:8]}',
+        'id': f'{datetime.now(_BERLIN).strftime("%Y%m%d%H%M%S")}_{source[:8]}',
         'timestamp': datetime.now().isoformat(),
         'source': source,
         'priority': priority,
@@ -92,7 +98,7 @@ def summary() -> str:
 def _read_raw() -> list:
     try:
         if QUEUE_PATH.exists():
-            return json.loads(QUEUE_PATH.read_text())
+            return json.loads(QUEUE_PATH.read_text(encoding="utf-8"))
     except Exception:
         pass
     return []
@@ -101,7 +107,7 @@ def _read_raw() -> list:
 def purge_old(max_age_hours: int = 24):
     """Verarbeitete und alte Einträge bereinigen."""
     from datetime import timedelta
-    cutoff = (datetime.now() - timedelta(hours=max_age_hours)).isoformat()
+    cutoff = (datetime.now(_BERLIN) - timedelta(hours=max_age_hours)).isoformat()
     queue = _read_raw()
     queue = [
         q for q in queue

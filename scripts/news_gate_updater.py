@@ -12,10 +12,15 @@ Kein LLM, keine Token-Kosten.
 import json
 import sqlite3
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
-
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 # ── Thesis-Keywords pro Strategie ──────────────────────────────────────────────
 THESIS_KEYWORDS = {
     # ── Bestehende Thesen ──────────────────────────────────────────────────────
@@ -54,7 +59,7 @@ ACTIVE_STRATEGIES = {
 def load_strategies():
     """Lade Ticker-Listen aus strategies.json für erweiterte Keyword-Generierung."""
     try:
-        strats = json.loads((WS / 'data/strategies.json').read_text())
+        strats = json.loads((WS / 'data/strategies.json').read_text(encoding="utf-8"))
         return strats
     except Exception:
         return {}
@@ -70,7 +75,7 @@ def get_recent_events(hours: int = 24) -> list[dict]:
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    cutoff = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
+    cutoff = (datetime.now(_BERLIN) - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
 
     try:
         cur.execute("""
@@ -146,7 +151,7 @@ def update_news_gate():
     relevant = hit_count > 0
 
     result = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'relevant': relevant,
         'hit_count': hit_count,
         'events_scanned': len(events),

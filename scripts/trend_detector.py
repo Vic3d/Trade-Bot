@@ -15,10 +15,16 @@ import sqlite3
 import json
 import sys
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 from collections import defaultdict
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 GEO_LOG = WS / 'memory/night-geo-log.md'
 
@@ -155,7 +161,7 @@ def log_strong_trends_to_geo_log(trends: list[dict]):
         return
 
     GEO_LOG.parent.mkdir(parents=True, exist_ok=True)
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_str = datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")
 
     lines_to_add = []
     for t in strong:
@@ -164,7 +170,7 @@ def log_strong_trends_to_geo_log(trends: list[dict]):
             f"({t['count']} Events in 3h): {t['headlines'][0] if t['headlines'] else ''}"
         )
 
-    existing = GEO_LOG.read_text() if GEO_LOG.exists() else ""
+    existing = GEO_LOG.read_text(encoding="utf-8") if GEO_LOG.exists() else ""
     with open(GEO_LOG, 'w') as f:
         f.write(existing)
         f.write("\n".join(lines_to_add) + "\n")

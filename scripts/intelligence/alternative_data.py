@@ -31,6 +31,8 @@ import urllib.request
 import urllib.parse
 import urllib.error
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 from xml.etree import ElementTree
 
@@ -151,10 +153,10 @@ def fetch_sec_insider(ticker: str) -> dict:
 
 
 def _days_ago(n: int) -> str:
-    return (datetime.now() - timedelta(days=n)).strftime('%Y-%m-%d')
+    return (datetime.now(_BERLIN) - timedelta(days=n)).strftime('%Y-%m-%d')
 
 def _today() -> str:
-    return datetime.now().strftime('%Y-%m-%d')
+    return datetime.now(_BERLIN).strftime('%Y-%m-%d')
 
 
 # ── 2. VesselFinder — Schiffsverkehr Hormuz ──────────────────────────────────

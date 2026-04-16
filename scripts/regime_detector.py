@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.13
+#!/usr/bin/env python3
 """
 Regime Detector — Phase 5 des ML-Bauplans
 ==========================================
@@ -22,22 +22,28 @@ Zustände (automatisch aus Daten gelernt, nicht manuell definiert):
     CRASH    (extreme Vola, starke negative Rendite)
 
 Usage:
-  python3.13 regime_detector.py                  # Aktuelles Regime
-  python3.13 regime_detector.py --train          # HMM (neu) trainieren
-  python3.13 regime_detector.py --history 30     # Letzten 30 Tage Regime-History
-  python3.13 regime_detector.py --integrate      # In CEO-Direktive einbauen
+  python3 regime_detector.py                  # Aktuelles Regime
+  python3 regime_detector.py --train          # HMM (neu) trainieren
+  python3 regime_detector.py --history 30     # Letzten 30 Tage Regime-History
+  python3 regime_detector.py --integrate      # In CEO-Direktive einbauen
 """
 
 import json
 import pickle
 import sys
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import numpy as np
 from hmmlearn import hmm
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 CACHE = WS / 'data/price_cache'
 MODEL_FILE = WS / 'data/hmm_regime.pkl'
 REGIME_FILE = WS / 'data/regime_history.json'
@@ -58,9 +64,9 @@ def load_market_data() -> dict[str, dict]:
     if not sp_file.exists():
         raise FileNotFoundError("S&P 500 Daten nicht gefunden. Erst: download_data('^GSPC')")
 
-    sp  = json.loads(sp_file.read_text())
-    vix = json.loads(vix_file.read_text()) if vix_file.exists() else {}
-    tnx = json.loads(tnx_file.read_text()) if tnx_file.exists() else {}
+    sp  = json.loads(sp_file.read_text(encoding="utf-8"))
+    vix = json.loads(vix_file.read_text(encoding="utf-8")) if vix_file.exists() else {}
+    tnx = json.loads(tnx_file.read_text(encoding="utf-8")) if tnx_file.exists() else {}
 
     # Schnittmenge der Daten
     common_dates = sorted(set(sp.keys()) & (set(vix.keys()) if vix else set(sp.keys())))
@@ -292,7 +298,7 @@ def get_regime_history(days: int = 30) -> list[dict]:
     """Gibt Regime-History der letzten N Tage zurück."""
     if not REGIME_FILE.exists():
         return []
-    history = json.loads(REGIME_FILE.read_text())
+    history = json.loads(REGIME_FILE.read_text(encoding="utf-8"))
     dates = sorted(history.keys())[-days:]
     return [{'date': d, **history[d]} for d in dates]
 
@@ -302,7 +308,7 @@ def get_regime_history(days: int = 30) -> list[dict]:
 def update_ceo_directive(regime: dict) -> bool:
     """Schreibt aktuelles Regime in CEO-Direktive."""
     try:
-        ceo = json.loads(CEO_FILE.read_text()) if CEO_FILE.exists() else {}
+        ceo = json.loads(CEO_FILE.read_text(encoding="utf-8")) if CEO_FILE.exists() else {}
         ceo['hmm_regime'] = {
             'name': regime['name'],
             'probabilities': regime.get('probabilities', {}),
@@ -372,8 +378,8 @@ def daily_regime_update() -> dict:
     update_ceo_directive(regime)
 
     # Regime-History updaten
-    today = datetime.now().strftime('%Y-%m-%d')
-    history = json.loads(REGIME_FILE.read_text()) if REGIME_FILE.exists() else {}
+    today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
+    history = json.loads(REGIME_FILE.read_text(encoding="utf-8")) if REGIME_FILE.exists() else {}
     history[today] = {
         'state': regime.get('state'),
         'name': regime.get('name'),

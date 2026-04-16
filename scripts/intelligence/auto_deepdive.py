@@ -27,6 +27,8 @@ import os
 import sqlite3
 import sys
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 log = logging.getLogger('auto_deepdive')
@@ -251,7 +253,7 @@ def _analyze_ticker(ticker: str) -> dict:
 
 
 def _build_verdict_entry(analysis: dict) -> dict:
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
     expires = now + timedelta(days=12)
     return {
         'ticker': analysis['ticker'],
@@ -274,7 +276,7 @@ def _log_flip(ticker: str, old: str, new: str, reasons: list[str]) -> None:
     flips = _load_json(FLIP_LOG, [])
     flips.append({
         'ticker': ticker,
-        'timestamp': datetime.now().isoformat(timespec='seconds'),
+        'timestamp': datetime.now(_BERLIN).isoformat(timespec='seconds'),
         'old_verdict': old,
         'new_verdict': new,
         'reasons': reasons[:5],
@@ -317,7 +319,7 @@ def run(force_all: bool = False) -> dict:
         is_fresh = False
         if exist_date:
             try:
-                age = (datetime.now() - datetime.fromisoformat(exist_date)).days
+                age = (datetime.now(_BERLIN) - datetime.fromisoformat(exist_date)).days
                 is_fresh = age <= REFRESH_IF_AGE_DAYS
             except Exception:
                 pass

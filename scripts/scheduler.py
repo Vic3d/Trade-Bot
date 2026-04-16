@@ -17,9 +17,14 @@ import os
 import signal
 import sys
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 RUNNER = str(WS / 'scripts/cron_runner.sh')
 LOG = WS / 'data/scheduler.log'
 PID_FILE = Path('/tmp/scheduler.pid')
@@ -112,14 +117,14 @@ def should_run(minute_pat: str, hour_pat: str, weekday_pat: str, now: datetime) 
 
 
 def log(msg: str):
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}\n'
     try:
         with open(LOG, 'a') as f:
             f.write(line)
         # Log rotieren wenn > 100KB
         if LOG.stat().st_size > 100_000:
-            lines = LOG.read_text().splitlines()[-200:]
+            lines = LOG.read_text(encoding="utf-8").splitlines()[-200:]
             LOG.write_text('\n'.join(lines) + '\n')
     except:
         pass
@@ -164,7 +169,7 @@ def main():
     last_run_minute = -1
     
     while True:
-        now = datetime.now()
+        now = datetime.now(_BERLIN)
         current_minute = now.hour * 60 + now.minute
         
         # Nur einmal pro Minute laufen

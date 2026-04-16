@@ -26,6 +26,8 @@ import re
 import sqlite3
 import sys
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 log = logging.getLogger('proposal_executor')
@@ -84,7 +86,7 @@ def _verdict_ok(ticker: str) -> tuple[bool, str]:
     if v.get('verdict') != 'KAUFEN':
         return False, f"verdict={v.get('verdict')}"
     try:
-        age = (datetime.now() - datetime.fromisoformat(v['date'])).days
+        age = (datetime.now(_BERLIN) - datetime.fromisoformat(v['date'])).days
         if age > 14:
             return False, f'verdict {age}d old'
     except Exception:
@@ -121,7 +123,7 @@ def _trigger_met(proposal: dict) -> tuple[bool, str]:
 
 def _log_decision(entry: dict) -> None:
     hist = _load(EXECUTOR_LOG, [])
-    entry['ts'] = datetime.now().isoformat(timespec='seconds')
+    entry['ts'] = datetime.now(_BERLIN).isoformat(timespec='seconds')
     hist.append(entry)
     _save(EXECUTOR_LOG, hist[-500:])
 
@@ -228,7 +230,7 @@ def run() -> dict:
         elif result.get('success'):
             stats['executed'] += 1
             p['status'] = 'executed'
-            p['executed_at'] = datetime.now().isoformat(timespec='seconds')
+            p['executed_at'] = datetime.now(_BERLIN).isoformat(timespec='seconds')
             p['trade_id'] = result.get('trade_id')
             _notify(
                 f'✅ Proposal executed: {ticker} #{result.get("trade_id")} '

@@ -15,10 +15,18 @@ import json
 import hashlib
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
-TRANSCRIPT_DIR = Path("/data/.openclaw/workspace/memory/transcripts")
-STATE_FILE = Path("/data/.openclaw/workspace/memory/transcript_processing_state.json")
-TRADINGTOOL_FILE = Path("/data/.openclaw/workspace/memory/projekt-tradingtool.md")
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
+
+
+TRANSCRIPT_DIR = WS / 'memory/transcripts'
+STATE_FILE = WS / 'memory/transcript_processing_state.json'
+TRADINGTOOL_FILE = WS / 'memory/projekt-tradingtool.md'
 
 def get_file_hash(filepath):
     """Berechne SHA256 Hash einer Datei."""
@@ -58,7 +66,7 @@ def append_to_tradingtool(analyse_text, source, filename):
     with open(TRADINGTOOL_FILE, "a") as f:
         f.write(f"\n## Transcript: {filename}\n")
         f.write(f"**Quelle:** {source}\n")
-        f.write(f"**Datum:** {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
+        f.write(f"**Datum:** {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}\n\n")
         f.write(analyse_text)
         f.write("\n\n---\n")
 

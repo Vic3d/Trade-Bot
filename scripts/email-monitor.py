@@ -13,6 +13,15 @@ import http.cookiejar
 import os
 import hashlib
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
+
+from pathlib import Path
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
+
 
 # Zugangsdaten
 ACCOUNTS = [
@@ -25,9 +34,9 @@ ACCOUNTS = [
 OWA_BASE = "https://mail.phx-hosting.de"
 OWA_LOGIN = f"{OWA_BASE}/owa/auth.owa"
 OWA_INBOX = f"{OWA_BASE}/owa/"
-DASHBOARD_FILE = "/data/.openclaw/workspace/dashboard/email-dashboard.html"
-STATE_FILE  = "/data/.openclaw/workspace/memory/email-state.json"
-LOG_FILE    = "/data/.openclaw/workspace/memory/email-log.md"
+DASHBOARD_FILE = str(WS / 'dashboard/email-dashboard.html')
+STATE_FILE  = str(WS / 'memory/email-state.json')
+LOG_FILE    = str(WS / 'memory/email-log.md')
 
 # Keywords für Kundenanfragen
 INQUIRY_KEYWORDS = [
@@ -216,7 +225,7 @@ POSTFACH_META = {
 
 def generate_dashboard(all_data, new_count):
     """Erstellt das HTML-Dashboard — gruppiert nach Typ, mit Passwortschutz."""
-    now = datetime.now().strftime("%d.%m.%Y %H:%M")
+    now = datetime.now(_BERLIN).strftime("%d.%m.%Y %H:%M")
 
     # Alle Anfragen sammeln und nach Typ sortieren
     all_inquiries = []
@@ -460,7 +469,7 @@ document.querySelectorAll('.group-header').forEach(h=>{{
 def write_log(new_inquiries):
     """Hält jede neue Anfrage mit Postfach, Absender/Betreff und Datum im Log fest."""
     os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-    now = datetime.now().strftime("%d.%m.%Y %H:%M")
+    now = datetime.now(_BERLIN).strftime("%d.%m.%Y %H:%M")
 
     # Datei anlegen falls nicht vorhanden
     if not os.path.exists(LOG_FILE):
@@ -539,6 +548,6 @@ def main():
 
 
 if __name__ == "__main__":
-    print(f"\n🔍 E-Mail Check — {datetime.now().strftime('%d.%m.%Y %H:%M')}")
+    print(f"\n🔍 E-Mail Check — {datetime.now(_BERLIN).strftime('%d.%m.%Y %H:%M')}")
     results = main()
     print("\nFertig.\n")

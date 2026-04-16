@@ -14,14 +14,21 @@ Albert 🎩 | v1.0 | 29.03.2026
 
 import sqlite3, json, urllib.request, os
 from datetime import datetime, timedelta, date
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    # scripts/subdir/ -> go up 2 levels to reach WS root
+    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data' / 'trading.db'
 
 # Finnhub Key
 try:
-    for line in (WS / '.env').read_text().splitlines():
+    for line in (WS / '.env').read_text(encoding="utf-8").splitlines():
         if line.startswith('FINNHUB_KEY='):
             FINNHUB_KEY = line.split('=', 1)[1].strip()
             break
@@ -124,7 +131,7 @@ def get_next_earnings(ticker: str) -> date | None:
 
     if row and row['next_date']:
         updated = datetime.fromisoformat(row['updated'])
-        if datetime.now() - updated < timedelta(hours=24):
+        if datetime.now(_BERLIN) - updated < timedelta(hours=24):
             conn.close()
             try:
                 return date.fromisoformat(row['next_date'])
@@ -157,7 +164,7 @@ def get_next_earnings(ticker: str) -> date | None:
         conn.execute("""
             INSERT OR REPLACE INTO earnings_calendar (ticker, next_date, updated)
             VALUES (?, ?, ?)
-        """, (ticker, next_earnings.isoformat(), datetime.now().isoformat()))
+        """, (ticker, next_earnings.isoformat(), datetime.now(_BERLIN).isoformat()))
         conn.commit()
         conn.close()
 
@@ -219,7 +226,7 @@ def load_watchlist_config() -> dict:
     """Lädt trading_config.json und gibt Ticker→Thesis-Config zurück."""
     cfg_path = WS / 'trading_config.json'
     try:
-        cfg = json.loads(cfg_path.read_text())
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
         return {w['ticker']: w for w in cfg.get('watchlist', [])}
     except Exception:
         return {}
@@ -351,7 +358,7 @@ if __name__ == '__main__':
     tickers = sys.argv[1:] if len(sys.argv) > 1 else ['STLD', 'NUE', 'NVDA', 'PLTR', 'LHA.DE', 'NVO']
 
     print(f"\n{'═'*60}")
-    print(f"  Market Guards Check — {datetime.now().strftime('%d.%m.%Y %H:%M')}")
+    print(f"  Market Guards Check — {datetime.now(_BERLIN).strftime('%d.%m.%Y %H:%M')}")
     print(f"{'═'*60}\n")
 
     for t in tickers:

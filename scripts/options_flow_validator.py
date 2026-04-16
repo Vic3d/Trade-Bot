@@ -18,9 +18,15 @@ import json
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WORKSPACE    = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 LAG_DB_PATH  = WORKSPACE / 'data/lag_knowledge.json'
 SIGNALS_PATH = WORKSPACE / 'data/signals.json'
 
@@ -82,7 +88,7 @@ def send_discord_summary(results: list[dict]):
     if not results:
         return
 
-    lines = [f"📊 **Options Flow Validator — {datetime.now().strftime('%d.%m.%Y')}**\n"]
+    lines = [f"📊 **Options Flow Validator — {datetime.now(_BERLIN).strftime('%d.%m.%Y')}**\n"]
 
     wins   = sum(1 for r in results if r["outcome"] == "WIN")
     losses = sum(1 for r in results if r["outcome"] == "LOSS")
@@ -172,7 +178,7 @@ def validate_signal(sig: dict, current_price: float, lk: dict) -> dict:
 # ── Hauptprogramm ─────────────────────────────────────────────────────────────
 
 def main():
-    print(f"[Options Flow Validator] {datetime.now().strftime('%Y-%m-%d %H:%M')} CET")
+    print(f"[Options Flow Validator] {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')} CET")
 
     lk      = load_lag_knowledge()
     signals = load_signals()

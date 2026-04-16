@@ -9,9 +9,15 @@ import json
 import urllib.request
 import urllib.parse
 from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 
 # Strategy → Emoji Mapping
@@ -74,7 +80,7 @@ def read_state_snapshot() -> str:
     if not path.exists():
         return "Kein State Snapshot vorhanden."
     try:
-        content = path.read_text()
+        content = path.read_text(encoding="utf-8")
         # Extrahiere relevante Abschnitte
         lines = content.split('\n')
         relevant = []
@@ -107,7 +113,7 @@ def read_night_geo_log() -> str:
     if not path.exists():
         return ""
     try:
-        content = path.read_text().strip()
+        content = path.read_text(encoding="utf-8").strip()
         # Letzte 20 Zeilen
         lines = content.split('\n')
         recent = '\n'.join(lines[-20:])
@@ -169,18 +175,47 @@ def format_time(ts_str: str) -> str:
         return "??"
 
 
+def format_source_name(raw_source: str) -> str:
+    """Formatiert rohe Source-IDs zu lesbaren Namen.
+
+    Beispiele:
+        bloomberg_markets → Bloomberg Markets
+        yahoo_EQNR       → Yahoo EQNR
+        google_news       → Google News
+        reuters_energy    → Reuters Energy
+        liveuamap_iran    → Liveuamap Iran
+    """
+    if not raw_source:
+        return "Unbekannt"
+    return raw_source.replace('_', ' ').title()
+
+
 def format_event_line(event: dict) -> str:
     """Formatiert ein einzelnes Event als Bullet Point inkl. Magnitude-Schätzung."""
     headline = event["headline"]
-    source = event["source"]
+    source = format_source_name(event["source"])
     time_str = format_time(event["timestamp"])
+    # Datum aus Timestamp extrahieren (YYYY-MM-DD HH:MM)
+    date_str = ""
+    try:
+        for fmt in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M"]:
+            try:
+                dt = datetime.strptime(event["timestamp"][:19], fmt[:len(event["timestamp"][:19])])
+                date_str = dt.strftime("%Y-%m-%d %H:%M")
+                break
+            except ValueError:
+                continue
+        if not date_str:
+            date_str = event["timestamp"][:16]
+    except Exception:
+        date_str = time_str
     impact = IMPACT_EMOJI.get(event["impact_direction"], "〰️")
     why = event["entities"].get("why", "")
 
     line = f"  • {impact} {headline}"
     if why and why not in ("parse error", "extraction failed"):
         line += f"\n    → {why}"
-    line += f"\n    ({source}, {time_str})"
+    line += f"\n    [{source}, {date_str}]"
 
     # Magnitude-Schätzung anhängen (aus DB oder frisch berechnet)
     mag_str = _get_magnitude_line(event)
@@ -267,7 +302,7 @@ def get_calibration_section() -> str:
 def generate_briefing() -> str:
     """Hauptfunktion: generiert den vollständigen Briefing-Text."""
     today = date.today().isoformat()
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
     date_str = now.strftime("%d.%m.%Y")
 
     # Events laden — Graceful Degradation: kein Crash wenn DB/Tabelle fehlt
@@ -312,7 +347,9 @@ def generate_briefing() -> str:
     exec_lines = []
     for e in exec_events[:3]:
         impact = IMPACT_EMOJI.get(e["impact_direction"], "〰️")
-        exec_lines.append(f"• {impact} {e['headline']}")
+        src = format_source_name(e["source"])
+        ts = format_time(e["timestamp"])
+        exec_lines.append(f"• {impact} {e['headline']}\n  [{src}, {ts}]")
 
     if not exec_lines:
         exec_lines = ["• Keine hochpriorisierten Events in der Nacht"]

@@ -7,6 +7,8 @@ Zeigt: alle Jobs heute, Fehler, Portfolio-Snapshot, Morgen-Plan.
 import json
 import sqlite3
 from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 import os
 
@@ -102,7 +104,7 @@ def _tomorrows_plan() -> str:
 
 def build_report() -> str:
     """Erstellt vollständigen Health Report."""
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
     ok_jobs, err_jobs = _todays_jobs()
 
     lines = [
