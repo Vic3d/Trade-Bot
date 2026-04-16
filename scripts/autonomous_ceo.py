@@ -473,6 +473,21 @@ def execute_entry(decision: dict, dry_run: bool = False) -> dict:
     if not all([ticker, entry, stop, target]):
         return {'success': False, 'reason': 'Fehlende Parameter (entry/stop/target)'}
 
+    # Guard: Ticker bereits im Portfolio? → Doppelkauf verhindern
+    try:
+        _db = sqlite3.connect(str(DATA / 'trading.db'))
+        _existing = _db.execute(
+            "SELECT id, strategy FROM paper_portfolio WHERE ticker=? AND status='OPEN' LIMIT 1",
+            (ticker,)
+        ).fetchone()
+        _db.close()
+        if _existing:
+            _msg = f'{ticker} bereits offen ({_existing[1]}) — kein Doppelkauf'
+            log(f'  ⚠️ {_msg}')
+            return {'success': False, 'reason': _msg, 'blocked_by': 'duplicate_position'}
+    except Exception:
+        pass  # Guard nicht kritisch
+
     # Verdict in deep_dive_verdicts.json sicherstellen
     verdicts_file = DATA / 'deep_dive_verdicts.json'
     verdicts = {}
@@ -485,8 +500,8 @@ def execute_entry(decision: dict, dry_run: bool = False) -> dict:
         if verdict == 'KAUFEN':
             verdicts[ticker] = {
                 'verdict':   'KAUFEN',
-                'timestamp': datetime.now().isoformat(),
-                'date':      datetime.now().strftime('%Y-%m-%d'),
+                'timestamp': datetime.now(ZoneInfo('Europe/Berlin')).isoformat(),
+                'date':      datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d'),
                 'source':    'autonomous_ceo',
                 'reason':    decision.get('reason', ''),
             }
@@ -508,7 +523,9 @@ def execute_entry(decision: dict, dry_run: bool = False) -> dict:
         if result.get('success'):
             log(f'  ✅ {ticker} eingetragen (ID {result.get("trade_id")})')
         else:
-            log(f'  ❌ {ticker} blockiert: {result.get("reason", "?")}')
+            _log_reason = result.get('reason') or result.get('message', '?')
+            _log_by = result.get('blocked_by', '')
+            log(f'  ❌ {ticker} blockiert [{_log_by}]: {_log_reason}')
         return result
     except Exception as e:
         log(f'  ❌ execute_paper_entry Fehler: {e}', 'ERROR')
@@ -853,7 +870,7 @@ def run(dry_run: bool = False, force: bool = False):
 
     # 3. Entscheidungen ausführen
     results      = []
-    report_parts = [f'🤖 **Albert CEO — {datetime.now().strftime("%H:%M")}**\n']
+    report_parts = [f'🤖 **Albert CEO — {datetime.now(ZoneInfo("Europe/Berlin")).strftime("%H:%M")} DE**\n']
     report_parts.append(f'📊 *{analysis}*\n')
 
     entries_done = 0
@@ -883,8 +900,11 @@ def run(dry_run: bool = False, force: bool = False):
             elif result.get('skipped'):
                 report_parts.append(f"⏭️ {d.get('ticker')} übersprungen (dry-run)")
             else:
+                _block_msg = (result.get('reason') or result.get('message') or 'Unbekannter Grund').lstrip('❌ ')
+                _block_by  = result.get('blocked_by', '')
+                _block_tag = f' [{_block_by}]' if _block_by else ''
                 report_parts.append(
-                    f"❌ Entry **{d.get('ticker')}** blockiert: {result.get('reason', '?')[:60]}"
+                    f"❌ Entry **{d.get('ticker')}** blockiert{_block_tag}: {_block_msg[:80]}"
                 )
 
         elif action == 'EXIT_POSITION':
@@ -896,7 +916,8 @@ def run(dry_run: bool = False, force: bool = False):
                     f"💰 Exit **{ticker}**: {result.get('pnl_eur', 0):+.0f}€ | {reason[:50]}"
                 )
             else:
-                report_parts.append(f"❌ Exit {ticker} fehlgeschlagen: {result.get('reason', '?')[:50]}")
+                _exit_msg = (result.get('reason') or result.get('message') or 'Unbekannter Grund').lstrip('❌ ')
+                report_parts.append(f"❌ Exit {ticker} fehlgeschlagen: {_exit_msg[:60]}")
 
         elif action == 'UPDATE_STRATEGY':
             sid = d.get('strategy_id', '')
