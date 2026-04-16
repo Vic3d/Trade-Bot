@@ -283,6 +283,32 @@ def execute_paper_entry(
     except Exception:
         style_cfg = None
 
+    # ── Guard -1: KILL-SWITCH (höchste Priorität) ─────────────────────────────
+    # CEO HALT muss ALLES stoppen — auch wenn andere Guards Probleme haetten.
+    # Fail-safe: Wenn das directive-File fehlt oder kaputt ist → HALT (konservativ).
+    try:
+        _ceo_file = WORKSPACE / 'data' / 'ceo_directive.json'
+        if _ceo_file.exists():
+            _ceo_d = json.loads(_ceo_file.read_text(encoding='utf-8'))
+            if _ceo_d.get('trading_halt', False):
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'🛑 KILL-SWITCH aktiv: {_ceo_d.get("halt_reason", "kein Grund")}',
+                    'blocked_by': 'ceo_halt',
+                }
+        # directive missing: im Zweifel weiter (Startup-Szenario)
+    except json.JSONDecodeError:
+        # Korruptes JSON = fail-safe HALT
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': '🛑 ceo_directive.json korrupt — Trade blockiert (fail-safe)',
+            'blocked_by': 'ceo_halt_failsafe',
+        }
+    except Exception:
+        pass  # andere Fehler (z.B. Permission) nicht kritisch
+
     # ── Guard 0a: Entry-Zeitfenster ──────────────────────────────────────────────
     # Daten: Morgen-Entries (07-11h) haben 0% Win-Rate über 10 Trades.
     # Abend-Entries (17-22h) haben 51% Win-Rate → nur in diesem Fenster.
