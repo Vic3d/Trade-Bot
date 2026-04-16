@@ -56,6 +56,7 @@ def _closed_in_range(start: date, end: date) -> list[dict]:
         "exit_type, entry_date, close_date "
         "FROM paper_portfolio "
         "WHERE status IN ('WIN','LOSS','CLOSED') "
+        "AND COALESCE(archived_pre_reset,0)=0 "
         "AND close_date BETWEEN ? AND ? "
         "ORDER BY pnl_eur DESC",
         (start.isoformat(), end.isoformat() + ' 23:59:59'),
@@ -69,7 +70,8 @@ def _opened_in_range(start: date, end: date) -> list[dict]:
     rows = c.execute(
         "SELECT ticker, strategy, entry_date "
         "FROM paper_portfolio "
-        "WHERE entry_date BETWEEN ? AND ?",
+        "WHERE entry_date BETWEEN ? AND ? "
+        "AND COALESCE(archived_pre_reset,0)=0",
         (start.isoformat(), end.isoformat() + ' 23:59:59'),
     ).fetchall()
     c.close()
@@ -79,7 +81,8 @@ def _opened_in_range(start: date, end: date) -> list[dict]:
 def _open_positions() -> list[dict]:
     c = _conn()
     rows = c.execute(
-        "SELECT ticker, strategy, entry_price, shares, entry_date "
+        "SELECT ticker, strategy, entry_price, shares, entry_date, "
+        "COALESCE(archived_pre_reset,0) as archived "
         "FROM paper_portfolio WHERE status='OPEN'"
     ).fetchall()
     c.close()

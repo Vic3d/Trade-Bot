@@ -401,6 +401,12 @@ def update_strategy_scores() -> list:
             })
             strategies[strat_id]['genesis'] = genesis
             changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
+            # Phase 7.12: Loop schliessen — bei conviction=1 + weiterhin SUSPEND -> hard SUSPENDED
+            if new_conv == 1 and strategies[strat_id].get('status') != 'SUSPENDED':
+                strategies[strat_id]['status'] = 'SUSPENDED'
+                strategies[strat_id]['suspended_reason'] = f"Auto: WR {analysis['win_rate']:.0%} / {analysis['trades']} trades"
+                strategies[strat_id]['suspended_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+                changes.append(f"{strat_id}: status -> SUSPENDED (auto, Loop geschlossen)")
 
         elif rec == 'ELEVATE' and current_conv < 5:
             new_conv = min(5, current_conv + 1)
@@ -417,7 +423,12 @@ def update_strategy_scores() -> list:
             strategies[strat_id]['genesis'] = genesis
             changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
 
-    STRATEGIES_JSON.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
+    # Phase 7.7: atomic write statt write_text (Crash-Schutz)
+    try:
+        from atomic_json import atomic_write_json
+        atomic_write_json(STRATEGIES_JSON, strategies)
+    except Exception:
+        STRATEGIES_JSON.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
     return changes
 
 

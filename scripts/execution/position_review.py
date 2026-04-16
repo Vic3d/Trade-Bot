@@ -112,7 +112,7 @@ def close_position(conn, row_id: int, price: float, exit_type: str,
             pnl_eur=?, pnl_pct=?, notes = notes || ?, exit_type=?
         WHERE id=?
     """, (
-        'WIN' if pnl > 0 else 'CLOSED',
+        'WIN' if pnl > 0 else ('LOSS' if pnl < 0 else 'CLOSED'),
         round(price, 2),
         round(pnl, 2), round(pnl_pct, 2),
         f' [REVIEW_EXIT:{exit_type} {datetime.now().date()}]',

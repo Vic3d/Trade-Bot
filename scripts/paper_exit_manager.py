@@ -303,7 +303,7 @@ def close_position(
         WHERE id=?
         """,
         (
-            'WIN' if pnl > 0 else 'CLOSED',
+            'WIN' if pnl > 0 else ('LOSS' if pnl < 0 else 'CLOSED'),
             round(close_price, 4),
             round(pnl, 2),
             round(pnl_pct, 2),

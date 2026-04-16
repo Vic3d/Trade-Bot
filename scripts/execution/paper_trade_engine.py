@@ -250,6 +250,31 @@ def queue_alert(message: str):
     ALERT_QUEUE.write_text(json.dumps(queue, indent=2))
 
 
+# ─── Guard-Block Logging (Phase 7.12) ────────────────────────────────
+
+GUARD_LOG = WORKSPACE / 'data' / 'guard_blocks.jsonl'
+
+
+def _log_guard_result(ticker: str, strategy: str, source: str, result: dict) -> None:
+    """Append-only JSONL-Log jedes Entry-Attempts (success UND block)."""
+    try:
+        rec = {
+            'ts': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+            'ticker': ticker,
+            'strategy': strategy,
+            'source': source,
+            'success': bool(result.get('success')),
+            'blocked_by': result.get('blocked_by'),
+            'trade_id': result.get('trade_id'),
+            'message': (result.get('message') or '')[:200],
+        }
+        GUARD_LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(GUARD_LOG, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+    except Exception:
+        pass  # nie Trade-Execution stoppen wegen Logging-Fehler
+
+
 # ─── Core: Trade Entry ───────────────────────────────────────────────
 
 def execute_paper_entry(
@@ -264,9 +289,28 @@ def execute_paper_entry(
 ) -> dict:
     """
     Führt einen Paper Trade aus (nach allen Guards).
-    
+
     Returns: {'success': bool, 'trade_id': int|None, 'message': str, 'blocked_by': str|None}
     """
+    # Wrapper: loggt jedes Ergebnis (success UND block) nach data/guard_blocks.jsonl
+    result = _execute_paper_entry_inner(
+        ticker, strategy, entry_price, stop_price, target_price, thesis, style, source
+    )
+    _log_guard_result(ticker, strategy, source, result)
+    return result
+
+
+def _execute_paper_entry_inner(
+    ticker: str,
+    strategy: str,
+    entry_price: float,
+    stop_price: float,
+    target_price: float,
+    thesis: str = '',
+    style: str = 'swing',
+    source: str = 'auto',
+) -> dict:
+    """Eigentliche Trade-Execution mit allen Guards."""
     ticker = ticker.upper()
 
     # ── Style automatisch aus Strategie ableiten ──────────────────────
@@ -309,6 +353,75 @@ def execute_paper_entry(
             'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 2.0:1 Minimum',
             'blocked_by': 'crv_minimum',
         }
+
+    # ── Guard 0c2: Deep Dive Verdict Gate (Phase 7.13) ─────────────
+    # Für autonome Entries: aktuelles KAUFEN-Verdict < 14 Tage Pflicht.
+    # Akzeptiert sowohl human ("MANUAL") als auch AUTO_CLAUDE verdicts.
+    # AUTO_CLAUDE braucht confidence >= 65 (anti-hallucination).
+    # Manuelle Orders (source='manual') übergehen das Gate.
+    if source != 'manual':
+        try:
+            _dd_path = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
+            _dd_data = {}
+            if _dd_path.exists():
+                _dd_data = json.loads(_dd_path.read_text(encoding='utf-8'))
+            _verdict = _dd_data.get(ticker) or _dd_data.get(ticker.upper())
+            if not _verdict:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'❌ {ticker}: Kein Deep Dive Verdict vorhanden (autonomer Entry blockiert)',
+                    'blocked_by': 'deep_dive_missing',
+                }
+            _vd = str(_verdict.get('verdict', '')).upper()
+            if _vd != 'KAUFEN':
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'❌ {ticker}: Deep Dive Verdict = {_vd or "UNBEKANNT"} (KAUFEN erforderlich)',
+                    'blocked_by': 'deep_dive_not_kaufen',
+                }
+            # Alter prüfen
+            _ts_raw = _verdict.get('timestamp') or _verdict.get('created_at') or ''
+            try:
+                _ts = datetime.fromisoformat(_ts_raw.replace('Z', '+00:00'))
+                _age_days = (datetime.now(timezone.utc) - _ts).total_seconds() / 86400
+            except Exception:
+                _age_days = 999
+            if _age_days > 14:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'❌ {ticker}: Deep Dive Verdict zu alt ({_age_days:.1f}d > 14d)',
+                    'blocked_by': 'deep_dive_stale',
+                }
+            # AUTO_CLAUDE: Mindest-Confidence (anti-hallucination)
+            _src = str(_verdict.get('source', 'MANUAL')).upper()
+            if _src == 'AUTO_CLAUDE':
+                _conf = int(_verdict.get('confidence', 0) or 0)
+                if _conf < 65:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': f'❌ {ticker}: AUTO_CLAUDE Verdict confidence {_conf} < 65 (Halluzinations-Schutz)',
+                        'blocked_by': 'deep_dive_low_confidence',
+                    }
+                # Downgrade-Flag prüfen
+                if _verdict.get('_degraded_reason'):
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': f'❌ {ticker}: AUTO_CLAUDE Verdict degraded ({_verdict["_degraded_reason"]})',
+                        'blocked_by': 'deep_dive_degraded',
+                    }
+        except Exception as e:
+            # Fail-safe: Bei Fehler im Gate blocken, nicht durchlassen
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f'❌ {ticker}: Deep Dive Gate Fehler: {e}',
+                'blocked_by': 'deep_dive_error',
+            }
 
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
