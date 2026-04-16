@@ -18,18 +18,27 @@ from pathlib import Path
 OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
 VICTOR_DM = '1492225799062032484'   # Victor DM Channel
 
-# Nachtruhe-Fenster (CET/CEST)
-QUIET_START = 23   # 23:00 CET
-QUIET_END = 7      # 07:00 CET
-CET = timezone(timedelta(hours=1))
+# Nachtruhe-Fenster (deutsche Ortszeit, DST-aware)
+QUIET_START = 23   # 23:00 deutsche Zeit
+QUIET_END = 7      # 07:00 deutsche Zeit
 
 # Fallback Token-Pfade für lokale Entwicklung
 _LOCAL_TOKEN_FILE = Path(__file__).resolve().parent.parent / 'deploy' / '.env'
 
 
+def _german_hour() -> int:
+    """Aktuelle Stunde in deutscher Ortszeit (CET/CEST automatisch)."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo('Europe/Berlin')).hour
+    except Exception:
+        # Fallback: CET (UTC+1) — im Sommer 1h daneben, aber safe
+        return datetime.now(timezone(timedelta(hours=1))).hour
+
+
 def _is_quiet_hours() -> bool:
-    """True wenn gerade Nachtruhe ist (23:00-07:00 CET)."""
-    hour = datetime.now(CET).hour
+    """True wenn gerade Nachtruhe ist (23:00-07:00 deutsche Zeit)."""
+    hour = _german_hour()
     return hour >= QUIET_START or hour < QUIET_END
 
 
