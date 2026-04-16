@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """
-Portfolio Risk Management 2.0 — Phase 9
+Portfolio Risk Management 3.0 — Phase 21 (Korrelations-basiert)
 
 Pro-Level Risiko-Checks die das Portfolio vor Cluster-Risiken,
 Drawdown-Spiralen und schlecht dimensionierten Positionen schützen.
 
-5 Checks:
-1. check_correlation()        — Cluster-Risiko (z.B. 3x Öl = 1 Bet)
+7 Checks:
+1. check_correlation()        — Cluster-Risiko + Size-Factor (z.B. 3x Öl = 1 Bet)
 2. kelly_position_size()      — Dynamische Kelly-basierte Größe
 3. volatility_adjusted_size() — VIX-skalierte Positionsgröße
 4. check_sector_exposure()    — Max 30% pro Sektor
 5. check_drawdown_circuit()   — -5% in 7 Tagen → Pause
+
+Portfolio-Level Analytics (Phase 21):
+6. compute_full_matrix()          — NxN Korrelationsmatrix
+7. compute_diversification_ratio() — Diversifikations-Score
+8. compute_herfindahl_sector()    — Sektor-Konzentration
+9. find_correlation_clusters()    — Korrelierte Gruppen erkennen
+10. compute_parametric_var()      — Value at Risk in EUR
 
 Alle Funktionen sind defensiv: bei fehlenden Daten → graceful degradation,
 keine Blockade von Trades (better safe: loggen, nicht blockieren wenn Daten fehlen).
@@ -21,6 +28,7 @@ Integration:
     if risk['blocked']:
         return {'success': False, 'blocked_by': risk['blocked_by'], 'reason': risk['reason']}
     final_size = risk['final_size']
+    size_factor = risk.get('size_factor', 1.0)  # Correlation-based scaling
 """
 from __future__ import annotations
 
@@ -221,92 +229,127 @@ def _pct_returns(prices: list[float]) -> list[float]:
 
 def check_correlation(
     new_ticker: str,
-    threshold: float = 0.70,
+    threshold_block: float = 0.70,
+    threshold_reduce: float = 0.50,
     max_correlated: int = 2,
 ) -> dict:
     """
-    Prüft ob neue Position zu stark mit bestehenden korreliert.
+    Phase 21: Erweiterter Korrelations-Check mit Size-Factor.
 
     Logik:
-    - Wenn >= `max_correlated` bestehende Positionen Korrelation > threshold
-      zum neuen Ticker haben → BLOCK (Cluster-Risiko)
-    - Wenn 1 Position hoch korreliert → WARNING (nicht blockiert)
+    - corr < 0.50: size_factor=1.0 (volle Größe)
+    - corr 0.50-0.70: size_factor linear runter auf 0.5
+    - corr > 0.70 bei 2+ Positionen: BLOCK (Cluster-Risiko)
+    - Sektor-Override: gleicher Sektor = Minimum-Korrelation 0.60
 
     Args:
         new_ticker: Neuer Ticker der gekauft werden soll
-        threshold: Korrelations-Schwelle (default 0.70)
+        threshold_block: Ab dieser Korrelation zählt als "hoch korreliert" (0.70)
+        threshold_reduce: Ab dieser Korrelation Size-Reduktion (0.50)
         max_correlated: Ab wie vielen hoch-korrelierten Positionen blockiert wird
 
     Returns:
-        {blocked, reason, max_correlation, correlated_with: [(ticker, corr)]}
+        {blocked, reason, max_correlation, correlated_with, size_factor, cluster_warning}
     """
+    result_base = {
+        'blocked': False, 'reason': '', 'max_correlation': 0.0,
+        'correlated_with': [], 'size_factor': 1.0, 'cluster_warning': None,
+    }
+
     positions = _get_open_positions()
     if not positions:
-        return {'blocked': False, 'reason': '', 'max_correlation': 0.0, 'correlated_with': []}
+        return result_base
 
     new_prices = _get_price_series(new_ticker, days=30)
     if len(new_prices) < 15:
-        # Zu wenig Historie für robuste Korrelation → skip
         log.info(f"Korrelation skipped: {new_ticker} hat nur {len(new_prices)} Kurse")
-        return {
-            'blocked': False,
-            'reason': 'insufficient_history',
-            'max_correlation': 0.0,
-            'correlated_with': [],
-        }
+        result_base['reason'] = 'insufficient_history'
+        return result_base
 
     new_rets = _pct_returns(new_prices)
-    correlated: list[tuple[str, float]] = []
+    new_sector = get_sector(new_ticker)
+    all_corrs: list[tuple[str, float]] = []
+    high_correlated: list[tuple[str, float]] = []
     max_corr = 0.0
 
     for pos in positions:
         pos_ticker = pos.get('ticker', '')
         if not pos_ticker or pos_ticker.upper() == new_ticker.upper():
             continue
+
         pos_prices = _get_price_series(pos_ticker, days=30)
-        if len(pos_prices) < 15:
-            continue
-        pos_rets = _pct_returns(pos_prices)
-        # Auf gleiche Länge kürzen
+        pos_rets = _pct_returns(pos_prices) if len(pos_prices) >= 15 else []
+
+        # Korrelation berechnen
         n = min(len(new_rets), len(pos_rets))
-        if n < 10:
-            continue
-        corr = _pearson(new_rets[-n:], pos_rets[-n:])
+        corr = _pearson(new_rets[-n:], pos_rets[-n:]) if n >= 10 else None
+
+        # Sektor-Override: gleicher Sektor = min 0.60 Korrelation
+        # (Öl-Aktien fallen zusammen auch wenn Returns kurzfristig divergieren)
+        pos_sector = get_sector(pos_ticker)
+        if (pos_sector == new_sector and new_sector != 'unknown'):
+            sector_min = 0.60
+            if corr is None or corr < sector_min:
+                corr = sector_min
+                log.info(f"Sector override: {new_ticker}↔{pos_ticker} ({new_sector}) → corr={corr}")
+
         if corr is None:
             continue
+
+        all_corrs.append((pos_ticker, round(corr, 3)))
         if abs(corr) > abs(max_corr):
             max_corr = corr
-        if corr >= threshold:
-            correlated.append((pos_ticker, round(corr, 3)))
+        if corr >= threshold_block:
+            high_correlated.append((pos_ticker, round(corr, 3)))
 
-    # Auch Sektor-basierter Fallback: wenn 2+ Positionen im selben Sektor sind,
-    # gilt automatisch als korreliert (egal was die Preise sagen)
-    new_sector = get_sector(new_ticker)
+    # Entscheidung: Block wenn 2+ hoch korreliert
+    if len(high_correlated) >= max_correlated:
+        return {
+            'blocked': True,
+            'reason': (
+                f'CLUSTER_RISK: {len(high_correlated)} Positionen korrelieren > {threshold_block} '
+                f'({", ".join(f"{t}={c}" for t, c in high_correlated)})'
+            ),
+            'max_correlation': round(max_corr, 3),
+            'correlated_with': high_correlated,
+            'size_factor': 0.0,
+            'cluster_warning': None,
+        }
+
+    # Size-Factor: abgestufte Reduktion bei mittlerer Korrelation
+    size_factor = 1.0
+    if all_corrs:
+        # Durchschnitt der Korrelationen mit bestehenden Positionen
+        avg_corr = sum(c for _, c in all_corrs) / len(all_corrs)
+        if avg_corr >= threshold_reduce:
+            # Linear: 1.0 bei threshold_reduce, 0.5 bei threshold_block
+            range_width = threshold_block - threshold_reduce
+            if range_width > 0:
+                reduction = (avg_corr - threshold_reduce) / range_width
+                size_factor = max(0.5, 1.0 - reduction * 0.5)
+
+    # Cluster-Warning: 3+ Positionen im selben Sektor
     same_sector_count = sum(
-        1 for p in positions if get_sector(p.get('ticker', '')) == new_sector and new_sector != 'unknown'
+        1 for p in positions
+        if get_sector(p.get('ticker', '')) == new_sector and new_sector != 'unknown'
     )
+    cluster_warning = None
+    if same_sector_count >= 2:
+        cluster_warning = f'{same_sector_count + 1} Positionen in Sektor "{new_sector}"'
 
-    if len(correlated) >= max_correlated:
-        return {
-            'blocked': True,
-            'reason': f'CLUSTER_RISK: {len(correlated)} existing positions correlate > {threshold}',
-            'max_correlation': round(max_corr, 3),
-            'correlated_with': correlated,
-        }
-
-    if same_sector_count >= max_correlated:
-        return {
-            'blocked': True,
-            'reason': f'SECTOR_CLUSTER: {same_sector_count} positions already in sector "{new_sector}"',
-            'max_correlation': round(max_corr, 3),
-            'correlated_with': correlated,
-        }
+    reason = ''
+    if size_factor < 1.0:
+        reason = f'Corr-Adjust: size_factor={size_factor:.0%} (avg_corr={avg_corr:.2f})'
+    if cluster_warning:
+        reason = f'{reason}; {cluster_warning}' if reason else cluster_warning
 
     return {
         'blocked': False,
-        'reason': '',
+        'reason': reason,
         'max_correlation': round(max_corr, 3),
-        'correlated_with': correlated,
+        'correlated_with': all_corrs,
+        'size_factor': round(size_factor, 2),
+        'cluster_warning': cluster_warning,
     }
 
 
@@ -691,6 +734,305 @@ def check_drawdown_circuit(
 
 
 # ────────────────────────────────────────────────────────────────────────────
+# Phase 21: Portfolio-Level Correlation Analytics
+# ────────────────────────────────────────────────────────────────────────────
+
+def compute_full_matrix(tickers: list[str], days: int = 30) -> dict[str, dict[str, float]]:
+    """
+    NxN Korrelationsmatrix für alle gegebenen Tickers.
+    Berechnet Returns einmal pro Ticker, dann alle paarweisen Korrelationen.
+    Für N=15 sind das 105 Paare — trivial in pure Python.
+
+    Returns:
+        {'NVDA': {'MSFT': 0.72, 'OXY': -0.01, ...}, ...}
+    """
+    # Returns einmal pro Ticker berechnen
+    returns: dict[str, list[float]] = {}
+    for t in tickers:
+        prices = _get_price_series(t, days=days)
+        if len(prices) >= 10:
+            returns[t] = _pct_returns(prices)
+
+    valid_tickers = list(returns.keys())
+    matrix: dict[str, dict[str, float]] = {}
+
+    for i, t_a in enumerate(valid_tickers):
+        matrix[t_a] = {}
+        for j, t_b in enumerate(valid_tickers):
+            if i == j:
+                matrix[t_a][t_b] = 1.0
+                continue
+            if j < i:
+                # Symmetrisch — bereits berechnet
+                matrix[t_a][t_b] = matrix[t_b][t_a]
+                continue
+            # Auf gleiche Länge kürzen
+            n = min(len(returns[t_a]), len(returns[t_b]))
+            if n < 10:
+                matrix[t_a][t_b] = 0.0
+                continue
+            corr = _pearson(returns[t_a][-n:], returns[t_b][-n:])
+            matrix[t_a][t_b] = round(corr, 3) if corr is not None else 0.0
+
+    return matrix
+
+
+def compute_diversification_ratio(
+    positions: list[dict],
+    corr_matrix: dict[str, dict[str, float]],
+) -> float:
+    """
+    Portfolio Diversification Ratio = wertgewichteter Durchschnitt aller paarweisen Korrelationen.
+    0.0 = perfekt diversifiziert, 1.0 = alle Positionen identisch.
+    """
+    if len(positions) < 2:
+        return 0.0
+
+    total_value = sum((p.get('position_size_eur') or 0) for p in positions)
+    if total_value <= 0:
+        total_value = len(positions)  # Fallback: gleiche Gewichtung
+
+    weighted_sum = 0.0
+    weight_total = 0.0
+
+    for i in range(len(positions)):
+        t_a = positions[i].get('ticker', '').upper()
+        val_a = (positions[i].get('position_size_eur') or 0) or (total_value / len(positions))
+        for j in range(i + 1, len(positions)):
+            t_b = positions[j].get('ticker', '').upper()
+            val_b = (positions[j].get('position_size_eur') or 0) or (total_value / len(positions))
+            weight = val_a * val_b
+            corr = corr_matrix.get(t_a, {}).get(t_b, 0.0)
+            weighted_sum += weight * corr
+            weight_total += weight
+
+    return round(weighted_sum / weight_total, 3) if weight_total > 0 else 0.0
+
+
+def compute_herfindahl_sector(positions: list[dict]) -> float:
+    """
+    Herfindahl-Hirschman Index für Sektor-Konzentration.
+    HHI = Summe der quadrierten Sektor-Gewichte.
+    1.0 = nur ein Sektor, ~0.1 = gut diversifiziert über 10 Sektoren.
+    """
+    total_value = sum((p.get('position_size_eur') or 0) for p in positions)
+    if total_value <= 0:
+        total_value = len(positions)
+
+    sector_values: dict[str, float] = {}
+    for p in positions:
+        sector = get_sector(p.get('ticker', ''))
+        val = (p.get('position_size_eur') or 0) or (total_value / len(positions))
+        sector_values[sector] = sector_values.get(sector, 0) + val
+
+    hhi = sum((v / total_value) ** 2 for v in sector_values.values()) if total_value > 0 else 1.0
+    return round(hhi, 3)
+
+
+def find_correlation_clusters(
+    corr_matrix: dict[str, dict[str, float]],
+    threshold: float = 0.60,
+) -> list[list[str]]:
+    """
+    Findet Gruppen von 3+ Positionen wo alle paarweisen Korrelationen > threshold.
+    Greedy Clique Detection (ausreichend für N < 20).
+    """
+    tickers = list(corr_matrix.keys())
+    clusters: list[list[str]] = []
+    used: set[str] = set()
+
+    for t in tickers:
+        if t in used:
+            continue
+        # Finde alle stark korrelierten Partner
+        group = [t]
+        for other in tickers:
+            if other == t or other in used:
+                continue
+            # Muss mit allen bestehenden Gruppenmitgliedern korrelieren
+            all_corr = all(
+                corr_matrix.get(member, {}).get(other, 0.0) >= threshold
+                for member in group
+            )
+            if all_corr:
+                group.append(other)
+
+        if len(group) >= 3:
+            clusters.append(group)
+            used.update(group)
+
+    return clusters
+
+
+def compute_parametric_var(
+    positions: list[dict],
+    corr_matrix: dict[str, dict[str, float]],
+    confidence: float = 0.95,
+    horizon_days: int = 1,
+) -> float:
+    """
+    Parametrischer VaR unter Nutzung der Korrelationsmatrix.
+
+    Steps:
+    1. Tägliche Volatilität pro Position aus Returns Std-Dev
+    2. Kovarianz-Matrix = vol_i * vol_j * corr_ij
+    3. Portfolio-Varianz = w^T * Cov * w
+    4. VaR = portfolio_value * z_score * sqrt(variance) * sqrt(horizon)
+
+    Returns: VaR in EUR (negativer Betrag = maximaler erwarteter Verlust)
+    """
+    z_scores = {0.95: 1.645, 0.99: 2.326}
+    z = z_scores.get(confidence, 1.645)
+
+    # Positionen mit Werten
+    pos_with_values = []
+    for p in positions:
+        ticker = p.get('ticker', '').upper()
+        val = (p.get('position_size_eur') or 0)
+        if val <= 0:
+            continue
+        prices = _get_price_series(ticker, days=30)
+        rets = _pct_returns(prices)
+        if len(rets) < 5:
+            continue
+        vol = statistics.stdev(rets) if len(rets) > 1 else 0.02
+        pos_with_values.append({'ticker': ticker, 'value': val, 'vol': vol})
+
+    if not pos_with_values:
+        return 0.0
+
+    total = sum(p['value'] for p in pos_with_values)
+    n = len(pos_with_values)
+
+    # Portfolio-Varianz: Summe über alle Paare (i,j) von w_i * w_j * vol_i * vol_j * corr_ij
+    port_var = 0.0
+    for i in range(n):
+        w_i = pos_with_values[i]['value'] / total
+        v_i = pos_with_values[i]['vol']
+        t_i = pos_with_values[i]['ticker']
+        for j in range(n):
+            w_j = pos_with_values[j]['value'] / total
+            v_j = pos_with_values[j]['vol']
+            t_j = pos_with_values[j]['ticker']
+            if i == j:
+                corr = 1.0
+            else:
+                corr = corr_matrix.get(t_i, {}).get(t_j, 0.0)
+            port_var += w_i * w_j * v_i * v_j * corr
+
+    port_vol = port_var ** 0.5 if port_var > 0 else 0.0
+    var_eur = total * z * port_vol * (horizon_days ** 0.5)
+
+    return round(-var_eur, 2)
+
+
+def get_exposure_breakdown(positions: list[dict] | None = None) -> dict:
+    """
+    Phase 21: Vollständiges Exposure-Breakdown für Dashboard.
+
+    Returns:
+        {
+            'by_sector': {sector: {'eur': float, 'pct': float, 'count': int}},
+            'by_region': {region: {'eur': float, 'pct': float}},
+            'by_currency': {currency: {'eur': float, 'pct': float}},
+            'total_eur': float,
+            'position_count': int,
+        }
+    """
+    if positions is None:
+        positions = _get_open_positions()
+
+    total = sum((p.get('position_size_eur') or 0) for p in positions)
+    if total <= 0:
+        total = len(positions)  # Fallback
+
+    # Sektor
+    by_sector: dict[str, dict] = {}
+    for p in positions:
+        sector = get_sector(p.get('ticker', ''))
+        val = (p.get('position_size_eur') or 0) or (total / len(positions) if positions else 0)
+        if sector not in by_sector:
+            by_sector[sector] = {'eur': 0.0, 'count': 0}
+        by_sector[sector]['eur'] += val
+        by_sector[sector]['count'] += 1
+
+    for s in by_sector:
+        by_sector[s]['pct'] = round(by_sector[s]['eur'] / total, 3) if total > 0 else 0
+
+    # Region (basierend auf Ticker-Suffix)
+    def _region(ticker: str) -> str:
+        t = ticker.upper()
+        if any(s in t for s in ['.DE', '.PA', '.AS', '.MI', '.BR']):
+            return 'EU'
+        if '.L' in t:
+            return 'UK'
+        if '.OL' in t or '.CO' in t or '.ST' in t:
+            return 'Nordics'
+        if '.T' in t:
+            return 'Japan'
+        if '.HK' in t:
+            return 'China/HK'
+        if '.AX' in t:
+            return 'Australia'
+        if '.TO' in t:
+            return 'Canada'
+        return 'US'
+
+    by_region: dict[str, dict] = {}
+    for p in positions:
+        region = _region(p.get('ticker', ''))
+        val = (p.get('position_size_eur') or 0) or (total / len(positions) if positions else 0)
+        if region not in by_region:
+            by_region[region] = {'eur': 0.0}
+        by_region[region]['eur'] += val
+
+    for r in by_region:
+        by_region[r]['pct'] = round(by_region[r]['eur'] / total, 3) if total > 0 else 0
+
+    # Währung
+    def _currency(ticker: str) -> str:
+        t = ticker.upper()
+        if any(s in t for s in ['.DE', '.PA', '.AS', '.MI', '.BR']):
+            return 'EUR'
+        if '.L' in t:
+            return 'GBP'
+        if '.OL' in t:
+            return 'NOK'
+        if '.CO' in t:
+            return 'DKK'
+        if '.ST' in t:
+            return 'SEK'
+        if '.T' in t:
+            return 'JPY'
+        if '.HK' in t:
+            return 'HKD'
+        if '.AX' in t:
+            return 'AUD'
+        if '.TO' in t:
+            return 'CAD'
+        return 'USD'
+
+    by_currency: dict[str, dict] = {}
+    for p in positions:
+        curr = _currency(p.get('ticker', ''))
+        val = (p.get('position_size_eur') or 0) or (total / len(positions) if positions else 0)
+        if curr not in by_currency:
+            by_currency[curr] = {'eur': 0.0}
+        by_currency[curr]['eur'] += val
+
+    for c in by_currency:
+        by_currency[c]['pct'] = round(by_currency[c]['eur'] / total, 3) if total > 0 else 0
+
+    return {
+        'by_sector': by_sector,
+        'by_region': by_region,
+        'by_currency': by_currency,
+        'total_eur': round(total, 2),
+        'position_count': len(positions),
+    }
+
+
+# ────────────────────────────────────────────────────────────────────────────
 # Combined Risk Check — der eine Aufruf für paper_trade_engine.py
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -734,9 +1076,10 @@ def run_all_risk_checks(
             'details': details,
         }
 
-    # 2. Correlation / Cluster
+    # 2. Correlation / Cluster (Phase 21: mit size_factor)
     corr = check_correlation(ticker)
     details['correlation'] = corr
+    corr_size_factor = corr.get('size_factor', 1.0)
     if corr['blocked']:
         log.warning(f"BLOCKED[correlation]: {ticker} — {corr['reason']}")
         return {
@@ -744,6 +1087,7 @@ def run_all_risk_checks(
             'blocked_by': 'correlation_cluster',
             'reason': corr['reason'],
             'final_size': 0.0,
+            'size_factor': 0.0,
             'details': details,
         }
 
@@ -757,8 +1101,13 @@ def run_all_risk_checks(
     details['volatility'] = vol
     vol_size = vol['adjusted_size']
 
+    # Phase 21: Korrelations-basierte Size-Reduktion anwenden
+    corr_adjusted = vol_size * corr_size_factor
+    if corr_size_factor < 1.0:
+        log.info(f"Corr-Size-Adjust: {ticker} {vol_size:.0f}€ × {corr_size_factor} = {corr_adjusted:.0f}€")
+
     # Wenn base_size explizit mitgegeben wurde, nie über base_size hinausgehen
-    final_size = min(vol_size, base_size) if base_size else vol_size
+    final_size = min(corr_adjusted, base_size) if base_size else corr_adjusted
     # Niemals unter Min
     final_size = max(500.0, final_size)
 
@@ -786,6 +1135,7 @@ def run_all_risk_checks(
         'blocked_by': '',
         'reason': 'OK',
         'final_size': round(final_size, 2),
+        'size_factor': corr_size_factor,
         'details': details,
     }
 

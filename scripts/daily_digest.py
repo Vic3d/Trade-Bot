@@ -334,10 +334,18 @@ def morning_digest() -> None:
     n = queue_size()
     header = f'🌅 **Morgen-Digest** {date.today().isoformat()}'
 
+    # Phase 21: Risk-Dashboard Block
+    try:
+        from risk_dashboard import generate_risk_block
+        risk_block = generate_risk_block()
+    except Exception:
+        risk_block = ''
+
     msg_parts = [
         header,
         '',
         _portfolio_block(),
+        risk_block,
         '',
         _overnight_news_block(),
         _overnight_universe_block(),
