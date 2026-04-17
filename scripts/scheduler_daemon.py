@@ -374,20 +374,54 @@ def scheduler_loop():
     start_price_monitor()
 
     # Albert Discord-Chat-Thread starten
-    try:
-        sys.path.insert(0, str(SCRIPTS))
-        import discord_chat
-        chat_thread = threading.Thread(target=discord_chat.run_forever, daemon=True, name='AlbertChat')
-        chat_thread.start()
-        log('💬 Albert Discord-Chat-Thread gestartet')
-    except Exception as e:
-        log(f'⚠️  Albert Discord-Chat konnte nicht gestartet werden: {e}')
+    chat_thread_ref = {'t': None}
+
+    def _start_chat_thread():
+        try:
+            sys.path.insert(0, str(SCRIPTS))
+            import discord_chat
+            import importlib
+            importlib.reload(discord_chat)
+            t = threading.Thread(target=discord_chat.run_forever, daemon=True, name='AlbertChat')
+            t.start()
+            chat_thread_ref['t'] = t
+            log('💬 Albert Discord-Chat-Thread gestartet')
+        except Exception as e:
+            log(f'⚠️  Albert Discord-Chat konnte nicht gestartet werden: {e}')
+
+    _start_chat_thread()
+
+    # Subthread-Watchdog: prueft jede Minute Price-Monitor-Prozess + Chat-Thread
+    last_hc_log = [0.0]
+
+    def _subthread_healthcheck():
+        # Price Monitor: PID muss leben
+        try:
+            start_price_monitor()  # ist idempotent: startet nur wenn PID tot
+        except Exception as _e:
+            log(f'⚠️  Price-Monitor-Watchdog: {_e}')
+        # Discord Chat Thread: muss is_alive() sein
+        t = chat_thread_ref.get('t')
+        if t is None or not t.is_alive():
+            log('⚠️  Albert-Chat-Thread tot → Restart')
+            _start_chat_thread()
+        # Heartbeat-Log max 1x/h
+        import time as _tm
+        if _tm.time() - last_hc_log[0] > 3600:
+            log('💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK')
+            last_hc_log[0] = _tm.time()
 
     last_run = {}  # Verhindert Doppel-Ausführungen
 
     while True:
         now = datetime.now()
         current_key = f'{now.strftime("%Y-%m-%d %H:%M")}'
+
+        # Subthread-Watchdog (vor Job-Dispatch)
+        try:
+            _subthread_healthcheck()
+        except Exception as _hc_err:
+            log(f'⚠️  Healthcheck-Fehler: {_hc_err}')
 
         for entry in SCHEDULE:
             name, script, args, hour, minute, weekdays = entry[:6]
