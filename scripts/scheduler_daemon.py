@@ -286,14 +286,31 @@ def log(msg: str):
 
 # ── Discord ───────────────────────────────────────────────────────────────────
 
-def notify(msg: str):
-    """Sendet Discord-Nachricht direkt (kein LLM)."""
+def notify(msg: str, *, tier: str = 'HIGH', category: str = 'scheduler',
+           dedupe_key: str | None = None):
+    """Sendet Discord-Nachricht via Dispatcher (mit Tier + Dedupe).
+
+    Default TIER_HIGH für Rückwärtskompatibilität (Startup-Notifications etc.).
+    Job-Fehler sollten TIER_MEDIUM + Dedupe-Key (Job-Name) übergeben, damit
+    wiederholte Crashes nicht alle 30 min spammen."""
     try:
         sys.path.insert(0, str(SCRIPTS))
-        from discord_sender import send
-        send(msg)
+        from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        tier_map = {'HIGH': TIER_HIGH, 'MEDIUM': TIER_MEDIUM, 'LOW': TIER_LOW}
+        send_alert(
+            msg,
+            tier=tier_map.get(tier, TIER_HIGH),
+            category=category,
+            dedupe_key=dedupe_key,
+        )
     except Exception as e:
         log(f'Discord-Fehler: {e}')
+        # Legacy-Fallback wenn Dispatcher kaputt
+        try:
+            from discord_sender import send
+            send(msg)
+        except Exception:
+            pass
 
 
 # ── Job Runner ────────────────────────────────────────────────────────────────
@@ -364,6 +381,11 @@ def start_price_monitor():
         stdout=open(str(WS / 'data/price_monitor.log'), 'a'),
         stderr=_sp.STDOUT,
     )
+    # PID sofort persistieren, damit Watchdog-Aufrufe die Instanz erkennen
+    try:
+        monitor_pid_file.write_text(str(proc.pid), encoding="utf-8")
+    except Exception as _e:
+        log(f'⚠️  PID-File konnte nicht geschrieben werden: {_e}')
     log(f'📡 Price Monitor gestartet (PID {proc.pid})')
 
 
@@ -451,7 +473,15 @@ def scheduler_loop():
 
                 # Bestimmte Jobs senden Discord-Notification bei Fehler
                 if not success:
-                    notify(f'⚠️ **Scheduler:** {name} fehlgeschlagen — Logs: data/scheduler.log')
+                    # TIER_MEDIUM + Dedupe pro Job-Name → max. 1 Alert pro Tag
+                    # (24h-Window im Dispatcher), rest geht in den Digest.
+                    _slug = name.lower().replace(' ', '_')
+                    notify(
+                        f'⚠️ **Scheduler:** {name} fehlgeschlagen — Logs: data/scheduler.log',
+                        tier='MEDIUM',
+                        category='scheduler',
+                        dedupe_key=f'sched_fail_{_slug}',
+                    )
 
         # Genau auf nächste Minute warten
         sleep_secs = 60 - datetime.now().second

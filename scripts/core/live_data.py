@@ -241,12 +241,20 @@ def get_price_eur(ticker: str) -> float | None:
         fx_data = _yahoo_raw(fx_pair, range_='1d')
         try:
             fx_rate = fx_data['chart']['result'][0]['meta']['regularMarketPrice']
-            return round(price * fx_rate / eurusd, 4) if eurusd else None
         except Exception:
-            pass
+            fx_rate = None
+        # SICHERHEIT: Ohne FX-Rate KEIN Fallback — sonst droht Nicht-EUR-Preis
+        # als EUR interpretiert zu werden (z.B. SEK 93 → vermeintlich 93€ statt 8€).
+        # Das hätte echte TARGET/STOP-Alerts mit falschen Close-Actions zur Folge.
+        if fx_rate is None or not eurusd:
+            return None
+        return round(price * fx_rate / eurusd, 4)
 
     # US-Ticker oder unbekannt: USD → EUR
-    return round(price / eurusd, 4) if eurusd else price
+    # Ohne EURUSD keine verlässliche Konvertierung → None (kein stumpfer USD-Fallback).
+    if not eurusd:
+        return None
+    return round(price / eurusd, 4)
 
 
 def is_price_fresh(ticker: str, max_days: int = MAX_PRICE_AGE_DAYS) -> bool:
