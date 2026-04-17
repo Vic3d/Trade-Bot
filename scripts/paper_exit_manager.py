@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 Paper Exit Manager v2 — Tranche-based Partial Exits + ATR Trailing
 ===================================================================
@@ -29,13 +29,10 @@ Albert | TradeMind v3 | 2026-04-10
 import sqlite3
 import json
 from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
-import os as _os
-_default_ws = '/data/.openclaw/workspace'
-if not Path(_default_ws).exists():
-    _default_ws = str(Path(__file__).resolve().parent.parent)
-WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data' / 'trading.db'
 
 # ─── Thesis-aware hold times (min_days, max_days) ────────────────────────────
@@ -134,6 +131,39 @@ def get_atr(ticker: str, period: int = 14) -> float | None:
         return None
 
 
+# ─── Conviction-based Stop ───────────────────────────────────────────────────
+
+def _get_conviction_stop_pct(trade_id: int) -> float:
+    """
+    Dynamischer Circuit-Breaker basierend auf Conviction-Score.
+    Schwache Setups bekommen engere Stops → weniger Verlust bei Fehlsignalen.
+
+    Conviction 45-55 (niedrig): -5% Stop
+    Conviction 55-65 (mittel):  -7% Stop
+    Conviction 65+   (hoch):    -8% Stop (bestehende Logik)
+    Fallback:                   -8% wenn conviction nicht vorhanden
+    """
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT conviction FROM paper_portfolio WHERE id = ?",
+            (trade_id,)
+        ).fetchone()
+        conn.close()
+
+        if row and row['conviction'] is not None:
+            conv = row['conviction']
+            if conv < 55:
+                return -0.05   # Enge Stops für schwache Setups
+            elif conv < 65:
+                return -0.07   # Moderate Stops
+            else:
+                return -0.08   # Weite Stops für starke Setups
+    except Exception:
+        pass
+    return CIRCUIT_BREAKER_PCT  # Fallback: -8%
+
+
 # ─── Thesis status check ──────────────────────────────────────────────────────
 
 def is_thesis_invalidated(strategy: str) -> bool:
@@ -150,77 +180,6 @@ def is_thesis_invalidated(strategy: str) -> bool:
         return False
     except Exception:
         return False
-
-
-# ─── Auto-DD Exit-Signale (Phase 7.14) ────────────────────────────────────────
-
-def load_auto_dd_exit_signals() -> dict:
-    """
-    Liest unconsumed Exit-Signale aus data/auto_dd_exit_signals.jsonl.
-    Returns: {ticker: signal_record}
-
-    Signale werden nach Verarbeitung auf consumed=True gesetzt via mark_signal_consumed().
-    """
-    import os as _os
-    from pathlib import Path as _Path
-    ws = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind'))
-    signals_path = ws / 'data' / 'auto_dd_exit_signals.jsonl'
-    if not signals_path.exists():
-        return {}
-
-    out: dict = {}
-    try:
-        with open(signals_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    rec = json.loads(line)
-                except Exception:
-                    continue
-                if rec.get('consumed'):
-                    continue
-                ticker = (rec.get('ticker') or '').upper()
-                if ticker:
-                    # Neueste Signal gewinnt bei Duplikaten
-                    out[ticker] = rec
-    except Exception as e:
-        print(f"[exit_manager] Auto-DD Signale laden fehlgeschlagen: {e}")
-    return out
-
-
-def mark_auto_dd_signal_consumed(ticker: str, position_id: int | None) -> None:
-    """Markiert ein Exit-Signal als verarbeitet (in-place Rewrite der JSONL)."""
-    import os as _os
-    from pathlib import Path as _Path
-    ws = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind'))
-    signals_path = ws / 'data' / 'auto_dd_exit_signals.jsonl'
-    if not signals_path.exists():
-        return
-
-    try:
-        lines_out = []
-        with open(signals_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    rec = json.loads(line)
-                except Exception:
-                    lines_out.append(line)
-                    continue
-                if ((rec.get('ticker') or '').upper() == ticker.upper()
-                        and (position_id is None or rec.get('position_id') == position_id)
-                        and not rec.get('consumed')):
-                    rec['consumed'] = True
-                    rec['consumed_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
-                lines_out.append(json.dumps(rec, ensure_ascii=False))
-        with open(signals_path, 'w', encoding='utf-8') as f:
-            f.write('\n'.join(lines_out) + ('\n' if lines_out else ''))
-    except Exception as e:
-        print(f"[exit_manager] Auto-DD Signal mark-consumed fehlgeschlagen: {e}")
 
 
 # ─── Tranche helpers ──────────────────────────────────────────────────────────
@@ -248,20 +207,58 @@ def get_trade_tranches(conn: sqlite3.Connection, trade_id: int) -> list[dict]:
     return []  # No tranches → handled by caller as legacy single-tranche
 
 
+def _ensure_tranche_table(conn: sqlite3.Connection) -> bool:
+    """
+    Erstellt trade_tranches Tabelle falls sie nicht existiert.
+    Kritisch: Wenn diese Tabelle fehlt, fallen ALLE Trades in Legacy-Modus
+    und die Tranche-Exits (+5%/+10%) feuern nie.
+    Returns True wenn Tabelle vorhanden oder erstellt.
+    """
+    try:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS trade_tranches (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                trade_id      INTEGER NOT NULL,
+                tranche_num   INTEGER NOT NULL,   -- 1, 2, oder 3
+                shares        REAL    NOT NULL,
+                status        TEXT    DEFAULT 'OPEN',  -- OPEN / CLOSED
+                exit_price    REAL,
+                exit_date     TEXT,
+                exit_type     TEXT,
+                notes         TEXT,
+                created_at    TEXT    DEFAULT (datetime('now'))
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_tranches_trade ON trade_tranches(trade_id, status)"
+        )
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"[exit_manager] trade_tranches table error: {e}")
+        return False
+
+
 def ensure_tranches_exist(conn: sqlite3.Connection, trade_id: int, total_shares: float) -> bool:
     """
     Creates 3 tranche records for a trade if none exist.
     Splits shares into 3 roughly equal thirds.
     Returns True if created, False if already existed.
+
+    BUG FIX: Stellt sicher dass Tabelle existiert bevor COUNT ausgeführt wird.
+    Vorher: fehlende Tabelle → Exception → return False → Legacy-Modus für alle Trades.
     """
-    existing = conn.execute(
-        "SELECT COUNT(*) FROM trade_tranches WHERE trade_id = ?",
-        (trade_id,)
-    ).fetchone()[0]
-    if existing > 0:
-        return False
+    # Sicherstellen dass Tabelle existiert (kritischer Fix)
+    _ensure_tranche_table(conn)
 
     try:
+        existing = conn.execute(
+            "SELECT COUNT(*) FROM trade_tranches WHERE trade_id = ?",
+            (trade_id,)
+        ).fetchone()[0]
+        if existing > 0:
+            return False
+
         tranche1 = round(total_shares / 3, 4)
         tranche2 = round(total_shares / 3, 4)
         tranche3 = round(total_shares - tranche1 - tranche2, 4)
@@ -316,21 +313,26 @@ def count_open_tranches(conn: sqlite3.Connection, trade_id: int) -> int:
 # ─── Discord alert ────────────────────────────────────────────────────────────
 
 def send_alert(message: str) -> None:
-    """Send Discord alert via alert-queue.json."""
+    """Send Discord alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Auto-Tier nach Keyword-Heuristik:
+      HIGH   — STOP HIT, CIRCUIT BREAKER, EVENT-AUTO-EXIT, THESIS KILL,
+               AUTO-DD EXIT (alle alpha-relevanten Exits)
+      MEDIUM — TRANCHE-Exits (teilweise Gewinnmitnahme)
+      LOW    — Rest (MAX_HOLD, Debug)
+    """
     try:
-        alert_queue = WS / 'memory' / 'alert-queue.json'
-        queue = []
-        if alert_queue.exists():
-            try:
-                queue = json.loads(alert_queue.read_text(encoding="utf-8"))
-            except Exception:
-                queue = []
-        queue.append({
-            'message': message,
-            'target': '452053147620343808',
-            'ts': datetime.utcnow().isoformat(),
-        })
-        alert_queue.write_text(json.dumps(queue, indent=2))
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        m_up = message.upper()
+        if any(k in m_up for k in ('STOP HIT', 'CIRCUIT BREAKER', 'EVENT-AUTO-EXIT',
+                                    'THESIS KILL', 'AUTO-DD EXIT', '🚨')):
+            tier = TIER_HIGH
+        elif 'TRANCHE' in m_up:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        _dispatch(message, tier=tier, category='exit')
     except Exception as e:
         print(f"[exit_manager] alert error: {e}")
 
@@ -366,19 +368,39 @@ def close_position(
     ).fetchone()
     ticker = ticker_row['ticker'] if ticker_row else None
 
+    # ── Phase 19a: compute NET PnL (after realistic costs) ──────────────────
+    net_note = ''
+    try:
+        from execution.transaction_costs import net_pnl as _net_pnl
+        if ticker and entry_price and close_price and shares:
+            rt = _net_pnl(
+                ticker=ticker,
+                entry_price=entry_price,
+                exit_price=close_price,
+                shares=shares,
+                fx_rate=1.0,  # already-EUR world here; sizer handles FX
+            )
+            net_note = (
+                f' [NET:{rt["net_pnl_eur"]:+.0f}€ '
+                f'drag:{rt["cost_drag_pct"]:.2f}%]'
+            )
+    except Exception as e:
+        print(f"[exit_manager] net_pnl calc failed: {e}")
+
     conn.execute(
         """
         UPDATE paper_portfolio
         SET status=?, close_price=?, close_date=datetime('now'),
-            pnl_eur=?, pnl_pct=?, notes = notes || ?
+            pnl_eur=?, pnl_pct=?, exit_type=?, notes = notes || ?
         WHERE id=?
         """,
         (
-            'WIN' if pnl > 0 else ('LOSS' if pnl < 0 else 'CLOSED'),
+            'WIN' if pnl > 0 else 'LOSS',
             round(close_price, 4),
             round(pnl, 2),
             round(pnl_pct, 2),
-            f' [EXIT:{exit_type} {date.today().isoformat()}]',
+            exit_type or 'UNKNOWN',
+            f' [EXIT:{exit_type} {date.today().isoformat()}]' + net_note,
             row_id
         )
     )
@@ -405,7 +427,7 @@ def is_market_open() -> bool:
         probe = ['AAPL', 'RHM.DE', 'EQNR.OL', 'BA.L', 'TTE.PA', 'ASML.AS']
         return is_any_trading_day(probe)
     except Exception:
-        return datetime.utcnow().weekday() < 5
+        return datetime.now(timezone.utc).weekday() < 5
 
 
 # ─── Main exit logic ──────────────────────────────────────────────────────────
@@ -416,10 +438,13 @@ def run() -> tuple[list, list]:
     Returns: (closed_records, trailing_updates)
     """
     if not is_market_open():
-        print(f"[exit_manager] Market closed ({datetime.now().strftime('%A')}) — skipping.")
+        print(f"[exit_manager] Market closed ({datetime.now(ZoneInfo('Europe/Berlin')).strftime('%A')}) — skipping.")
         return [], []
 
     conn = get_db()
+
+    # Sicherstellen dass trade_tranches Tabelle existiert (einmaliger Fix beim Start)
+    _ensure_tranche_table(conn)
 
     open_trades = conn.execute(
         """
@@ -431,9 +456,6 @@ def run() -> tuple[list, list]:
 
     closed_records  = []
     trailing_updates = []
-
-    # Phase 7.14: Auto-DD Exit-Signale laden (Claude hat Leiche im Keller entdeckt)
-    auto_dd_signals = load_auto_dd_exit_signals()
 
     for t in open_trades:
         ticker  = t['ticker']
@@ -493,36 +515,6 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
-        # HARD STOP 1c (Phase 22.1): Event-Auto-Exit-Queue
-        # Wenn dieser Ticker im force_exit_queue.json steht, sofort schliessen.
-        # ══════════════════════════════════════════════════════════════════
-        try:
-            _queue_path = WS / 'data' / 'force_exit_queue.json'
-            if _queue_path.exists():
-                _q = json.loads(_queue_path.read_text(encoding='utf-8'))
-                _entries = _q.get('entries', [])
-                _hit = next((e for e in _entries
-                             if e.get('ticker','').upper() == ticker.upper()
-                             and not e.get('consumed')), None)
-                if _hit:
-                    _reason = _hit.get('reason', 'event_auto_exit')
-                    pnl = close_position(conn, trade_id, price, _reason.upper(), entry, shares, fees)
-                    closed_records.append(
-                        f"EVENT_AUTO_EXIT {ticker} | {_reason} | PnL: {pnl:+.2f}EUR"
-                    )
-                    send_alert(
-                        f"⚡ **EVENT-AUTO-EXIT**: {ticker}\n"
-                        f"Grund: {_reason}\n"
-                        f"Entry={entry:.2f} → Close={price:.2f} | PnL: {pnl:+.2f}EUR"
-                    )
-                    _hit['consumed'] = True
-                    _hit['consumed_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
-                    _queue_path.write_text(json.dumps(_q, indent=2, ensure_ascii=False), encoding='utf-8')
-                    continue
-        except Exception as _qe:
-            print(f"[exit-manager] force_exit_queue Fehler (skip): {_qe}")
-
-        # ══════════════════════════════════════════════════════════════════
         # HARD STOP 2: Thesis INVALIDATED
         # ══════════════════════════════════════════════════════════════════
         if is_thesis_invalidated(strategy):
@@ -537,27 +529,6 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
-        # HARD STOP 2b: Auto-DD hat Leiche im Keller entdeckt (Phase 7.14)
-        # NICHT_KAUFEN + confidence >= 75 von Claude Hold-Check
-        # ══════════════════════════════════════════════════════════════════
-        _sig = auto_dd_signals.get(ticker.upper())
-        if _sig and _sig.get('reason_code') == 'AUTO_DD_INVALIDATED':
-            _conf = int(_sig.get('confidence') or 0)
-            _reasoning = _sig.get('reasoning', '')[:200]
-            pnl = close_position(conn, trade_id, price, 'AUTO_DD_INVALIDATED', entry, shares, fees)
-            closed_records.append(
-                f"AUTO_DD_EXIT {ticker} | conf={_conf} | PnL: {pnl:+.2f}EUR | hold={hold_days}d"
-            )
-            send_alert(
-                f"🚨 AUTO-DD EXIT: **{ticker}** — Leiche im Keller entdeckt.\n"
-                f"Claude-Verdict: NICHT_KAUFEN (conf={_conf})\n"
-                f"Grund: {_reasoning}\n"
-                f"Entry={entry:.2f} | Close={price:.2f} | PnL: {pnl:+.2f}EUR"
-            )
-            mark_auto_dd_signal_consumed(ticker, trade_id)
-            continue
-
-        # ══════════════════════════════════════════════════════════════════
         # HARD STOP 3: Max hold time exceeded
         # ══════════════════════════════════════════════════════════════════
         if hold_days >= max_hold:
@@ -568,15 +539,16 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
-        # HARD STOP 4: Single-day circuit breaker (-8%)
+        # HARD STOP 4: Conviction-based circuit breaker (variable -5% bis -8%)
         # ══════════════════════════════════════════════════════════════════
-        if move_pct <= CIRCUIT_BREAKER_PCT:
-            pnl = close_position(conn, trade_id, price, 'CIRCUIT_BREAKER', entry, shares, fees)
+        _cb_pct = _get_conviction_stop_pct(trade_id)
+        if move_pct <= _cb_pct:
+            pnl = close_position(conn, trade_id, price, f'CIRCUIT_BREAKER_{abs(_cb_pct)*100:.0f}PCT', entry, shares, fees)
             closed_records.append(
-                f"CIRCUIT_BRK {ticker} | {move_pct:.1%} loss | PnL: {pnl:+.2f}EUR"
+                f"CIRCUIT_BRK {ticker} | {move_pct:.1%} loss (limit {_cb_pct:.0%}) | PnL: {pnl:+.2f}EUR"
             )
             send_alert(
-                f"CIRCUIT BREAKER: {ticker} -8% circuit breaker triggered.\n"
+                f"CIRCUIT BREAKER: {ticker} {_cb_pct:.0%} circuit breaker triggered.\n"
                 f"Entry={entry:.2f} | Close={price:.2f} | PnL: {pnl:+.2f}EUR"
             )
             continue

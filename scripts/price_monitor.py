@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 price_monitor.py — Echtzeit-Preisüberwachung für offene Positionen
 ===================================================================
@@ -11,7 +11,7 @@ Läuft dauerhaft im Hintergrund. Prüft alle 60 Sekunden:
 Sendet sofort Discord-Alert bei Treffern.
 Nur während Marktzeiten aktiv. Nachts/Wochenende: schläft 5 Min.
 
-Start: python3 price_monitor.py
+Start: python3.13 price_monitor.py
 Daemon: wird von scheduler_daemon.py gestartet (background thread)
 """
 
@@ -22,10 +22,7 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-_default_ws = '/data/.openclaw/workspace'
-if not Path(_default_ws).exists():
-    _default_ws = str(Path(__file__).resolve().parent.parent)
-WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
+WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data/trading.db'
 PID_FILE = WS / 'data/price_monitor.pid'
 
@@ -58,10 +55,23 @@ def is_market_hours() -> bool:
 
 
 def send_alert(msg: str):
-    """Discord-Alert — direkt, kein LLM."""
+    """Discord-Alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Auto-Tier nach Keyword:
+      HIGH   — STOP getroffen, TARGET erreicht, Entry-Trigger, VIX-Spike
+      MEDIUM — Trailing Stop Anpassung
+      LOW    — Stop sehr nah (Frühwarnung)
+    """
     try:
-        from discord_sender import send
-        send(msg)
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        m = msg.upper()
+        if any(k in m for k in ('STOP GETROFFEN', 'TARGET ERREICHT',
+                                 'ENTRY-TRIGGER', 'VIX-SPIKE', '🔴', '🟢', '🎯', '⚡')):
+            tier = TIER_HIGH
+        elif 'TRAILING' in m or '🔄' in m:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        _dispatch(msg, tier=tier, category='trade')
     except Exception as e:
         print(f"[ALERT FAIL] {e}: {msg[:80]}")
 

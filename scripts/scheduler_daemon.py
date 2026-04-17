@@ -102,6 +102,14 @@ SCHEDULE = [
     ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4], True),
     ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4], True),
     ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None,        True),
+    # ── Phase 22.4 — Discord-Dispatcher Flush-Jobs ──────────────────────────
+    # MEDIUM-Queue wird 4x/Tag gebuendelt versendet (09/12/17/21:55).
+    # LOW-Queue wird nur 1x abends konsolidiert (vor Abend-Report).
+    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     9,  0,  None,        False),
+    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     12, 0,  None,        False),
+    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     17, 0,  None,        False),
+    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     21, 55, None,        False),
+    ('Discord Flush LOW',   'discord_dispatcher.py',      ['--flush-low'],        21, 58, None,        False),
     # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
     ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00

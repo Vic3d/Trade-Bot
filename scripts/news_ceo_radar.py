@@ -74,10 +74,15 @@ def run_ceo_report() -> str:
 
 
 def send_discord(msg: str):
+    """News-CEO-Radar via Dispatcher (Phase 22.4).
+    News-Radar-Alerts sind per se action-relevant (intern bereits gefiltert),
+    daher HIGH. Dedupe per Headline-Hash verhindert Wiederholungen."""
     sys.path.insert(0, str(WS / 'scripts'))
     try:
-        from discord_sender import send
-        send(msg[:1900])
+        from discord_dispatcher import send_alert, TIER_HIGH
+        import hashlib as _h
+        dk = f'news_{_h.md5(msg[:200].encode()).hexdigest()[:10]}'
+        send_alert(msg[:1900], tier=TIER_HIGH, category='general', dedupe_key=dk)
     except Exception as e:
         print(f'Discord Fehler: {e}')
 

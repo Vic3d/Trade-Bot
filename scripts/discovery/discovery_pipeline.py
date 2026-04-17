@@ -166,10 +166,12 @@ def promote_candidate(ticker: str, candidate: dict, verdict: dict, dry: bool = F
 
 
 def try_send_discord(msg: str) -> None:
+    """Discord via Dispatcher (Phase 22.4).
+    Discovery-Promotions sind HIGH (neue Trade-Basis), alles andere LOW."""
     try:
         sys.path.insert(0, str(WS / 'scripts'))
-        from discord_alert import send_alert
-        send_alert(msg)
+        from discord_dispatcher import send_alert, TIER_HIGH
+        send_alert(msg, tier=TIER_HIGH, category='discovery')
     except Exception:
         pass
 

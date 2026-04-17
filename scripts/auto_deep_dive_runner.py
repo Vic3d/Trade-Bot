@@ -262,7 +262,33 @@ def _write_exit_signal(ticker: str, position_id: int, verdict: dict, reasoning: 
 
 
 def _queue_discord_alert(message: str) -> None:
-    """Schreibe Alert in die Alert-Queue."""
+    """Discord-Alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Auto-DD-Alerts:
+      HIGH   — Exit-Signal (🚨 NICHT_KAUFEN conf>=75, Position muss raus)
+      MEDIUM — Warnung (60<=conf<75, manuelle Pruefung)
+      LOW    — Budget-Cap, Info-Messages
+    Dedupe via Ticker-Match: gleicher Ticker nur 1x/h pro Alert-Typ.
+    """
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from discord_dispatcher import send_alert as _d, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        import re as _re
+        m = message.upper()
+        if '🚨' in message or 'EXIT-SIGNAL' in m or 'AUTO-DD EXIT' in m:
+            tier = TIER_HIGH
+        elif '⚠️' in message or 'WARNUNG' in m:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        mm = _re.search(r'\*\*([A-Z0-9\.\-]+)\*\*', message)
+        dk = f'autodd_{mm.group(1)}_{tier}' if mm else None
+        _d(message, tier=tier, category='verdict', dedupe_key=dk)
+        return
+    except Exception as _de:
+        print(f"[runner] Dispatcher-Fehler, Fallback auf Legacy: {_de}")
+
+    # Legacy-Fallback (alert-queue.json) falls Dispatcher down
     alert_queue = WS / 'memory' / 'alert-queue.json'
     try:
         queue = []
