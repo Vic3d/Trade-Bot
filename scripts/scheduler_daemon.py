@@ -76,8 +76,11 @@ SCHEDULE = [
     ('Regime Cache Refresh','regime_cache_refresh.py', [],                        6,  55, None),
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
     # Phase 7.15 — Discovery (Ticker-Findung)
-    # News Extractor laeuft 7 Tage/Woche (Nachrichten schlafen nicht)
+    # News Extractor laeuft 4x/Tag, 7d/Woche (Nachrichten schlafen nicht — intraday-Coverage)
     ('Discovery News',      'discovery/news_ticker_extractor.py', [],             6,  0,  None,        False),
+    ('Discovery News',      'discovery/news_ticker_extractor.py', [],             12, 0,  None,        False),
+    ('Discovery News',      'discovery/news_ticker_extractor.py', [],             17, 0,  None,        False),
+    ('Discovery News',      'discovery/news_ticker_extractor.py', [],             22, 0,  None,        False),
     # Market Scanner + Earnings nur Mo-Fr (Maerkte geschlossen am WE)
     ('Discovery Market',    'discovery/market_scanner.py',        [],             6,  15, [0,1,2,3,4], False),
     ('Discovery Earnings',  'discovery/earnings_calendar.py',     [],             6,  30, [0,1,2,3,4], False),
@@ -117,6 +120,14 @@ SCHEDULE = [
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
+    # ── Geo-Watcher: stuetzen PS1 (Iran-Oel) + PS17/18 (Trade-War) ────────────
+    # Beide lightweight RSS-Scraper, stuendlich aktive Stunden (07-23) 7d/Woche
+    # Sofort-Alert via Discord bei Peace-Signal / Trump-Post mit Iran-Keywords
+]
+_GEO_HOURS = list(range(7, 24))  # 07-23 CET
+SCHEDULE += [('Iran Peace Watch', 'iran_peace_watch.py', [], h, 5, None) for h in _GEO_HOURS]
+SCHEDULE += [('Trump Watch',      'trump_watch.py',      [], h, 15, None) for h in _GEO_HOURS]
+SCHEDULE += [
     # ── Thesis Monitoring: 24/7 — Kill-Trigger kennen keine Marktzeiten ────────
     # Asien-Session (00:00-06:00 UTC) — alle 2h
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             0,  0,  None),
