@@ -45,8 +45,12 @@ VERDICT_FILE = WS / 'data' / 'deep_dive_verdicts.json'
 STRATS_FILE = WS / 'data' / 'strategies.json'
 PROMOTION_LOG = WS / 'data' / 'discovery_promotions.jsonl'
 
-PROMOTE_MIN_PRIORITY = 0.5
-PROMOTE_MIN_CONFIDENCE = 70
+#  Paper-Training-Phase (2026-04-17): Thresholds gelockert damit Auto-Entry
+#  ueberhaupt Trades generiert. Safety liegt bei Guard 0c2 (Deep-Dive KAUFEN),
+#  Guard 0c (CRV 2:1), Stop-Loss -8%, Trailing Stops, Max 3 Trades/Woche.
+#  Fuer Live-Kapital spaeter zurueck auf 0.5 / 70 erhoehen.
+PROMOTE_MIN_PRIORITY = 0.3
+PROMOTE_MIN_CONFIDENCE = 60
 
 
 def load_verdicts() -> dict:
@@ -190,7 +194,7 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
     promoted_count = 0
     rejected_count = 0
     triggered_llm_dd = 0
-    MAX_LLM_DD_PER_RUN = int(os.environ.get('DISCOVERY_MAX_LLM_DD', '3'))
+    MAX_LLM_DD_PER_RUN = int(os.environ.get('DISCOVERY_MAX_LLM_DD', '6'))
 
     # Helper: nur LLM-Verdicts als "echt" gelten lassen
     def _is_llm_verdict(v: dict) -> bool:
