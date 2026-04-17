@@ -149,6 +149,12 @@ Fuer JEDEN Katalysator liefere:
 
 WICHTIG: Sei KONKRET mit Tickern (nicht 'Tech-Sektor' sondern 'MSFT, NVDA, GOOGL').
 Keine weichen Aussagen — jedes Szenario braucht quantifizierte Probability + Payoff.
+
+### JSON-STRIKT-REGELN (CRITICAL)
+- Nur ASCII-Doppel-Quotes "..." in JSON. KEINE typografischen „deutschen" Anfuehrungszeichen.
+- Keine Kommentare (// oder /* */), keine trailing Kommas, keine Markdown-Fences.
+- Innerhalb von Strings: Doppel-Quotes mit \\ escapen. Kein Apostroph-Problem.
+- Antworte AUSSCHLIESSLICH mit valide JSON. Kein Text davor/danach.
 """
 
 
@@ -191,7 +197,17 @@ def parse_json(text: str) -> dict:
     except json.JSONDecodeError:
         # Heuristische Repair: Trailing commas entfernen
         fixed = re.sub(r',(\s*[\]}])', r'\1', raw)
-        return json.loads(fixed)
+        # Typografische Quotes -> ASCII
+        fixed = fixed.replace('„', '"').replace('"', '"').replace('"', '"').replace(''', "'").replace(''', "'")
+        try:
+            return json.loads(fixed)
+        except json.JSONDecodeError as e2:
+            # Letzter Versuch: Debug-Dump schreiben
+            try:
+                Path('/tmp/scenario_raw.json').write_text(raw, encoding='utf-8')
+            except Exception:
+                pass
+            raise
 
 
 def run(top_n: int = 5) -> dict:
