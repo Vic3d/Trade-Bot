@@ -189,6 +189,15 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
 
     promoted_count = 0
     rejected_count = 0
+    triggered_llm_dd = 0
+    MAX_LLM_DD_PER_RUN = int(os.environ.get('DISCOVERY_MAX_LLM_DD', '3'))
+
+    # Helper: nur LLM-Verdicts als "echt" gelten lassen
+    def _is_llm_verdict(v: dict) -> bool:
+        src = str(v.get('source', '')).lower()
+        if src in ('auto_deepdive_rule', 'rule', 'pre_screen'):
+            return False
+        return bool(v.get('confidence') is not None or src in ('auto_deep_dive', 'llm', 'manual'))
 
     for ticker, cand in candidates.items():
         if cand.get('status') not in ('pending', 'analyzing'):
@@ -197,11 +206,37 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
             continue
 
         v = verdicts.get(ticker) or verdicts.get(ticker.upper())
-        if not v:
+
+        # Kein LLM-Verdict vorhanden? → Auto-DD-LLM aktiv anwerfen (statt passiv warten)
+        if not v or not _is_llm_verdict(v):
+            if triggered_llm_dd >= MAX_LLM_DD_PER_RUN:
+                # Budget pro Lauf erreicht — naechster Lauf holt die restlichen ab
+                continue
+            if not dry:
+                try:
+                    import sys as _sys
+                    _sys.path.insert(0, str(WS / 'scripts'))
+                    from intelligence.auto_deep_dive import run as _run_dd  # type: ignore
+                    print(f'  → trigger LLM-DD für {ticker}')
+                    _run_dd(ticker, force=False, dry=False, mode='entry')
+                    triggered_llm_dd += 1
+                    # Neu laden
+                    verdicts = load_verdicts()
+                    v = verdicts.get(ticker) or verdicts.get(ticker.upper())
+                except Exception as _dde:
+                    print(f'  ! LLM-DD-Trigger-Fehler {ticker}: {str(_dde)[:100]}')
+                    continue
+            else:
+                continue
+
+        if not v or not _is_llm_verdict(v):
+            # Trigger fehlgeschlagen oder immer noch nur Rule-Verdict → skip
             continue
 
         verdict_label = str(v.get('verdict', '')).upper()
-        conf = int(v.get('confidence', 0) or 0)
+        # Backward-compat: LLM-Verdicts schreiben 'confidence', Rule-Verdicts
+        # haben 'conviction'. Fall durch auf beide.
+        conf = int(v.get('confidence') or v.get('conviction') or 0)
 
         if verdict_label == 'KAUFEN' and conf >= PROMOTE_MIN_CONFIDENCE:
             if promote_candidate(ticker, cand, v, dry=dry):
@@ -216,7 +251,8 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
             rejected_count += 1
             print(f'  - REJECTED {ticker} (NICHT_KAUFEN conf {conf})')
 
-    print(f'[pipeline] Promoted: {promoted_count}, Rejected: {rejected_count}, Expired: {expired}')
+    print(f'[pipeline] Promoted: {promoted_count}, Rejected: {rejected_count}, '
+          f'Expired: {expired}, LLM-DD-Triggered: {triggered_llm_dd}')
     return {
         'status': 'ok',
         'stats': stats,
