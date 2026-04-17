@@ -72,7 +72,17 @@ SCHEDULE = [
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 0,  [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        20, 30, [0,1,2,3,4]),
     ('Watchlist Tracker',   'watchlist_tracker.py',   [],                        21, 0,  [0,1,2,3,4]),
+    # Phase 7.15 Fix — Cache befuellen BEVOR Regime-Detector laeuft
+    ('Regime Cache Refresh','regime_cache_refresh.py', [],                        6,  55, None),
     ('Regime Detector',     'regime_detector.py',     ['--integrate', '--quick'], 7,  5,  None),
+    # Phase 7.15 — Discovery (Ticker-Findung)
+    # News Extractor laeuft 7 Tage/Woche (Nachrichten schlafen nicht)
+    ('Discovery News',      'discovery/news_ticker_extractor.py', [],             6,  0,  None,        False),
+    # Market Scanner + Earnings nur Mo-Fr (Maerkte geschlossen am WE)
+    ('Discovery Market',    'discovery/market_scanner.py',        [],             6,  15, [0,1,2,3,4], False),
+    ('Discovery Earnings',  'discovery/earnings_calendar.py',     [],             6,  30, [0,1,2,3,4], False),
+    # Pipeline: nach Auto-DD (07:30) — promoted/rejected auf Basis der neuen Verdikts
+    ('Discovery Pipeline',  'discovery/discovery_pipeline.py',    [],             12, 0,  [0,1,2,3,4], True),
     # ── Overnight Events sammeln — 24/7, auch Asien-Session ────────────────
     ('Overnight Collector', 'overnight_collector.py',  [],                        1,  0,  None),   # Asien Morgen (10:00 JST)
     ('Overnight Collector', 'overnight_collector.py',  [],                        4,  0,  None),   # Asien Close (13:00 JST)

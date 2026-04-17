@@ -184,6 +184,31 @@ def build_watchlist(scope: str) -> list[dict]:
     if scope == 'open-only':
         return watchlist[:MAX_TICKERS_PER_RUN]
 
+    # Priority 1.5: Discovery-Kandidaten (candidate_tickers.json, status=pending, top-priority)
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'discovery'))
+        from candidates import get_pending_candidates, load_candidates
+        cand_data = load_candidates()
+        for t in get_pending_candidates(max_count=8):
+            t_up = t.upper()
+            if t_up in seen:
+                continue
+            entry = cand_data.get(t_up, {})
+            source_types = sorted({s.get('type', '?') for s in entry.get('sources', [])})
+            watchlist.append({
+                'ticker': t_up,
+                'mode': 'entry',
+                'priority': 1.5,
+                'reason': f"discovery_candidate:{','.join(source_types)}:prio={entry.get('priority', 0.0)}",
+                'position_ctx': None,
+                'force': True,  # pending candidates immer durchziehen (sind noch nie analysiert)
+            })
+            seen.add(t_up)
+            if len(watchlist) >= MAX_TICKERS_PER_RUN:
+                return watchlist[:MAX_TICKERS_PER_RUN]
+    except Exception as e:
+        print(f'[runner] discovery-candidates error: {e}')
+
     # Priority 2+3: Entry-Kandidaten aus aktiven Strategien
     verdicts = load_verdicts_map()
     for ticker, sid in get_active_strategies_tickers():
@@ -353,6 +378,14 @@ def run_batch(scope: str = 'full', dry: bool = False) -> dict:
             'warnings': len(result.get('warnings', [])),
             'cost_usd': round(cost, 4),
         })
+
+        # ── Discovery-Candidate status-update (Priority 1.5) ──────────
+        if entry.get('priority') == 1.5:
+            try:
+                from candidates import mark_status as _mark_cand
+                _mark_cand(ticker, 'analyzing', note=f'DD {raw_verdict} conf={result.get("confidence")}')
+            except Exception:
+                pass
 
         # ── Exit-Trigger: Hold-Check + NICHT_KAUFEN + conf>=75 ────────
         if mode == 'hold' and raw_verdict == 'NICHT_KAUFEN':
