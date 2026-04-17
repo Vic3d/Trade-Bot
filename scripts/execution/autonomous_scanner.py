@@ -496,6 +496,19 @@ def evaluate_setup(ticker: str, strategy: str, data: dict) -> dict | None:
     min_stop = data['price'] * 0.70
     stop = max(stop, min_stop)
 
+    # Stop-Floor: Swings brauchen mind. 4% Abstand (siehe trade_style.min_stop_pct).
+    # Bei niedrig-volatilen Tickern (ATR ~1-2%) berechnet ATR*2 einen <2% Stop,
+    # der vom Daily-Noise sofort getroffen wird. Hier Floor durchziehen statt
+    # später im paper_trade_engine-Guard als Reject zu enden.
+    try:
+        from trade_style import classify_strategy as _cls, get_style_config as _gsc
+        _min_pct = _gsc(_cls(strategy)).min_stop_pct
+    except Exception:
+        _min_pct = 4.0  # Fallback für Swings
+    _stop_floor = data['price'] * (1 - _min_pct / 100)
+    if stop > _stop_floor:
+        stop = _stop_floor  # weiter weg (= kleinerer Stop-Preis)
+
     # Target via CRV
     risk   = data['price'] - stop
     if risk <= 0:
@@ -922,6 +935,15 @@ def run_lab_scan() -> list:
         atr    = _atr(closes, highs, lows)
         stop   = data['price'] - criteria['stop_atr'] * atr
         stop   = max(stop, data['price'] * 0.70)
+        # Stop-Floor (min_stop_pct aus trade_style) — siehe Doku oben
+        try:
+            from trade_style import classify_strategy as _cls2, get_style_config as _gsc2
+            _mp = _gsc2(_cls2(strategy)).min_stop_pct
+        except Exception:
+            _mp = 4.0
+        _sf = data['price'] * (1 - _mp / 100)
+        if stop > _sf:
+            stop = _sf
         risk   = data['price'] - stop
         if risk <= 0:
             results.append({'ticker': ticker, 'status': 'no_setup'})

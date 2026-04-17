@@ -46,7 +46,12 @@ STYLES: dict[str, StyleConfig] = {
         min_crv=1.5,                 # Mindest CRV 1.5:1 (mehr Zeit = mehr Spielraum)
         min_conviction=45,           # Moderate Conviction reicht
         max_vix=35.0,                # Swing kann auch bei höherem VIX halten
-        min_stop_pct=2.0,            # Stop mindestens 2% weg (sonst Whipsaw)
+        # Stop-Floor 4%: Daily-ATR liegt bei den meisten Swing-Kandidaten
+        # zwischen 1.5-3%. Ein Stop enger als 4% wird vom normalen Intraday-
+        # Rauschen getroffen (Whipsaw) — siehe ERIC-B.ST id=101 17.04.2026:
+        # Stop bei -2.0%, Gap auf -5.5% via STOP_MONITOR. Lesson: enge Stops
+        # erhöhen Loss-Rate ohne Risk-Reduction, weil Gap-Distanz gleich bleibt.
+        min_stop_pct=4.0,            # RAISED 2.0 → 4.0 (Whipsaw-Schutz)
         max_stop_pct=10.0,           # Stop max 10% (für volatile Thesis-Plays)
         position_size_mult=1.0,      # Normale Positionsgröße
         description='Mehrtägig bis mehrwöchig. Kein Zwangsschluss. Thesis-getrieben.',
