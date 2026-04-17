@@ -11,7 +11,7 @@
     "explanation": "Win-Rate stabil | EWMA 58% | Trend: IMPROVING",
     "first_trade": "2026-03-17",
     "last_trade": "2026-04-06",
-    "updated_at": "2026-04-09T20:45:00.850522+00:00"
+    "updated_at": "2026-04-11T20:45:00.836075+00:00"
   },
   "PS2": {
     "strategy": "PS2",
@@ -25,7 +25,7 @@
     "explanation": "Nur 6 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-17",
     "last_trade": "2026-04-02",
-    "updated_at": "2026-04-09T20:45:00.851416+00:00"
+    "updated_at": "2026-04-11T20:45:00.837095+00:00"
   },
   "PS3": {
     "strategy": "PS3",
@@ -39,7 +39,7 @@
     "explanation": "Nur 3 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-17",
     "last_trade": "2026-03-18",
-    "updated_at": "2026-04-09T20:45:00.852274+00:00"
+    "updated_at": "2026-04-11T20:45:00.838120+00:00"
   },
   "PT": {
     "strategy": "PT",
@@ -53,7 +53,7 @@
     "explanation": "Nur 5 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-25",
     "last_trade": "2026-03-31",
-    "updated_at": "2026-04-09T20:45:00.853115+00:00"
+    "updated_at": "2026-04-11T20:45:00.839109+00:00"
   },
   "PS5": {
     "strategy": "PS5",
@@ -67,7 +67,7 @@
     "explanation": "Nur 3 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-18",
     "last_trade": "2026-04-09",
-    "updated_at": "2026-04-09T20:45:00.853945+00:00"
+    "updated_at": "2026-04-11T20:45:00.840142+00:00"
   },
   "new": {
     "strategy": "new",
@@ -81,7 +81,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-18",
     "last_trade": "2026-03-25",
-    "updated_at": "2026-04-09T20:45:00.854773+00:00"
+    "updated_at": "2026-04-11T20:45:00.841095+00:00"
   },
   "PM": {
     "strategy": "PM",
@@ -95,7 +95,7 @@
     "explanation": "Nur 2 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-25",
     "last_trade": "2026-03-29",
-    "updated_at": "2026-04-09T20:45:00.855606+00:00"
+    "updated_at": "2026-04-11T20:45:00.842066+00:00"
   },
   "DT1": {
     "strategy": "DT1",
@@ -109,7 +109,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-27",
     "last_trade": "2026-03-27",
-    "updated_at": "2026-04-09T20:45:00.856420+00:00"
+    "updated_at": "2026-04-11T20:45:00.843065+00:00"
   },
   "PS9": {
     "strategy": "PS9",
@@ -123,7 +123,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-27",
     "last_trade": "2026-03-29",
-    "updated_at": "2026-04-09T20:45:00.857207+00:00"
+    "updated_at": "2026-04-11T20:45:00.844011+00:00"
   },
   "PS10": {
     "strategy": "PS10",
@@ -137,7 +137,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-27",
     "last_trade": "2026-03-31",
-    "updated_at": "2026-04-09T20:45:00.858040+00:00"
+    "updated_at": "2026-04-11T20:45:00.844945+00:00"
   },
   "PS4": {
     "strategy": "PS4",
@@ -151,7 +151,7 @@
     "explanation": "Nur 6 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-27",
     "last_trade": "2026-04-02",
-    "updated_at": "2026-04-09T20:45:00.858782+00:00"
+    "updated_at": "2026-04-11T20:45:00.845874+00:00"
   },
   "S1": {
     "strategy": "S1",
@@ -165,7 +165,7 @@
     "explanation": "Nur 2 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-29",
     "last_trade": "2026-03-29",
-    "updated_at": "2026-04-09T20:45:00.859489+00:00"
+    "updated_at": "2026-04-11T20:45:00.846806+00:00"
   },
   "PS_STLD": {
     "strategy": "PS_STLD",
@@ -179,7 +179,7 @@
     "explanation": "Nur 5 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-29",
     "last_trade": "2026-04-02",
-    "updated_at": "2026-04-09T20:45:00.860272+00:00"
+    "updated_at": "2026-04-11T20:45:00.847728+00:00"
   },
   "DT4": {
     "strategy": "DT4",
@@ -193,7 +193,7 @@
     "explanation": "EWMA Win-Rate 0% < 30% — Edge möglicherweise weg",
     "first_trade": "2026-03-29",
     "last_trade": "2026-03-31",
-    "updated_at": "2026-04-09T20:45:00.861045+00:00"
+    "updated_at": "2026-04-11T20:45:00.848683+00:00"
   },
   "PS13": {
     "strategy": "PS13",
@@ -207,7 +207,7 @@
     "explanation": "Nur 4 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-29",
     "last_trade": "2026-04-01",
-    "updated_at": "2026-04-09T20:45:00.861804+00:00"
+    "updated_at": "2026-04-11T20:45:00.849621+00:00"
   },
   "AR-HALB": {
     "strategy": "AR-HALB",
@@ -221,7 +221,7 @@
     "explanation": "Nur 3 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-30",
     "last_trade": "2026-03-30",
-    "updated_at": "2026-04-09T20:45:00.862570+00:00"
+    "updated_at": "2026-04-11T20:45:00.850539+00:00"
   },
   "AR-AGRA": {
     "strategy": "AR-AGRA",
@@ -235,7 +235,7 @@
     "explanation": "Nur 3 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-30",
     "last_trade": "2026-03-30",
-    "updated_at": "2026-04-09T20:45:00.863252+00:00"
+    "updated_at": "2026-04-11T20:45:00.851456+00:00"
   },
   "PS15": {
     "strategy": "PS15",
@@ -249,21 +249,21 @@
     "explanation": "Nur 3 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-30",
     "last_trade": "2026-03-31",
-    "updated_at": "2026-04-09T20:45:00.863965+00:00"
+    "updated_at": "2026-04-11T20:45:00.852367+00:00"
   },
   "PS11": {
     "strategy": "PS11",
     "status": "INSUFFICIENT_DATA",
-    "n_trades": 3,
-    "raw_win_rate": 0.667,
-    "ewma_win_rate": 0.623,
-    "rolling_win_rate": 0.667,
-    "decay_score": 0.043,
+    "n_trades": 4,
+    "raw_win_rate": 0.75,
+    "ewma_win_rate": 0.736,
+    "rolling_win_rate": 0.75,
+    "decay_score": 0.014,
     "trend": "INSUFFICIENT",
-    "explanation": "Nur 3 Trades (mind. 8 nötig)",
+    "explanation": "Nur 4 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-30",
-    "last_trade": "2026-04-04",
-    "updated_at": "2026-04-09T20:45:00.864701+00:00"
+    "last_trade": "2026-04-11",
+    "updated_at": "2026-04-11T20:45:00.853289+00:00"
   },
   "PS17": {
     "strategy": "PS17",
@@ -277,7 +277,7 @@
     "explanation": "Nur 2 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-30",
     "last_trade": "2026-04-03",
-    "updated_at": "2026-04-09T20:45:00.865382+00:00"
+    "updated_at": "2026-04-11T20:45:00.854200+00:00"
   },
   "PS_NVO": {
     "strategy": "PS_NVO",
@@ -291,7 +291,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-31",
     "last_trade": "2026-04-06",
-    "updated_at": "2026-04-09T20:45:00.866080+00:00"
+    "updated_at": "2026-04-11T20:45:00.855131+00:00"
   },
   "PS12": {
     "strategy": "PS12",
@@ -305,7 +305,7 @@
     "explanation": "Nur 1 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-31",
     "last_trade": "2026-04-01",
-    "updated_at": "2026-04-09T20:45:00.866774+00:00"
+    "updated_at": "2026-04-11T20:45:00.856060+00:00"
   },
   "PS14": {
     "strategy": "PS14",
@@ -319,7 +319,7 @@
     "explanation": "Nur 4 Trades (mind. 8 nötig)",
     "first_trade": "2026-03-31",
     "last_trade": "2026-04-09",
-    "updated_at": "2026-04-09T20:45:00.867652+00:00"
+    "updated_at": "2026-04-11T20:45:00.856986+00:00"
   },
   "S4": {
     "strategy": "S4",
@@ -333,6 +333,6 @@
     "explanation": "Nur 4 Trades (mind. 8 nötig)",
     "first_trade": "2026-04-02",
     "last_trade": "2026-04-03",
-    "updated_at": "2026-04-09T20:45:00.868391+00:00"
+    "updated_at": "2026-04-11T20:45:00.857892+00:00"
   }
 }

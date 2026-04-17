@@ -1,18 +1,17 @@
 {
-  "timestamp": "2026-04-10T07:05:29",
-  "mode": "SHUTDOWN",
-  "mode_reason": "Expectancy €-2.82 < 0 (30+ Trades)",
+  "timestamp": "2026-04-11 20:36:34 UTC",
+  "mode": "NORMAL",
+  "mode_reason": "Manueller Reset + CEO-Logik verbessert. SHUTDOWN-Thresholds verschärft, Recovery-Mechanismus aktiv.",
   "vix": 19.5,
   "regime": "RANGE_BOUND",
   "geo_alert_level": "HIGH",
   "geo_score": 75,
   "trading_rules": {
-    "max_new_positions_today": 0,
-    "max_position_size_eur": 0,
+    "max_new_positions_today": 3,
+    "max_position_size_eur": 2000,
     "stop_tightening_factor": 1.5,
     "vix_conviction_adjustment": -3,
-    "allowed_strategies": [],
-    "blocked_strategies": [
+    "allowed_strategies": [
       "AR-AGRA",
       "AR-HALB",
       "DT1",
@@ -47,6 +46,7 @@
       "S6",
       "S7"
     ],
+    "blocked_strategies": [],
     "dna_overrides": {
       "PS1": {
         "stop_pct": 6.5,
@@ -91,7 +91,7 @@
     "data_quality_score": 65
   },
   "top_opportunities": [],
-  "ceo_notes": "System im SHUTDOWN-Modus. Keine neuen Positionen öffnen. | Freitag — Wochenend-Risiko prüfen. RSI >75 + Wochenende = Gefahr.",
+  "ceo_notes": "System NORMAL. SHUTDOWN-Deadlock gefixt: Expectancy-Threshold verschärft auf <-5EUR+DD>15%. Recovery via DEFENSIVE statt Deadlock. Mind. 2 Trigger für SHUTDOWN.",
   "risk_metrics": {
     "overall": {
       "sharpe_ratio": -0.961,

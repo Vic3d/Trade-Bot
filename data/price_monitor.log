@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\victo\Trade-Bot\scripts\price_monitor.py", line 25, in <module>
+    _default_ws = str(WS)
+                      ^^
+NameError: name 'WS' is not defined

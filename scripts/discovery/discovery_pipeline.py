@@ -221,8 +221,11 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
                     import sys as _sys
                     _sys.path.insert(0, str(WS / 'scripts'))
                     from intelligence.auto_deep_dive import run as _run_dd  # type: ignore
-                    print(f'  → trigger LLM-DD für {ticker}')
-                    _run_dd(ticker, force=False, dry=False, mode='entry')
+                    # force=True wenn vorhandenes Verdict nur Rule-basiert ist
+                    # (sonst skippt auto_deep_dive mit "Verdict noch frisch")
+                    _force = bool(v and not _is_llm_verdict(v))
+                    print(f'  → trigger LLM-DD für {ticker} (force={_force})')
+                    _run_dd(ticker, force=_force, dry=False, mode='entry')
                     triggered_llm_dd += 1
                     # Neu laden
                     verdicts = load_verdicts()

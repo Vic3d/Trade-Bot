@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-10T09:05:00.779539",
+  "timestamp": "2026-04-11T21:05:00.843798",
   "relevant": true,
-  "hit_count": 158,
-  "events_scanned": 242,
+  "hit_count": 32,
+  "events_scanned": 51,
   "window_hours": 24,
   "top_hits": [
     {
@@ -10,127 +10,126 @@
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Xi Tells Taiwan's Main Opposition Chief That China Wants Peace, Unification",
-      "ticker": "",
+      "headline": "Nvidia Aktie: Acht Tage Aufwärtssog - Börse Express",
+      "ticker": "NVDA",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Zelenskiy Says Gulf Offers Kyiv Fuel Aid for Anti-Drone Support",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
+      "source": "google_news",
+      "ts": "2026-04-11 19:00:07"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "Trump Demands Reopening of Hormuz as US-Iran Peace Talks Near",
+      "headline": "US, Iran and Pakistan Hold Ceasefire Talks in Islamabad",
+      "ticker": "",
+      "score": 0.5,
+      "direction": "bullish",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-11 19:00:06"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Brazil’s Lula Tied With Main Competitors, Datafolha Poll Shows",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
+      "ts": "2026-04-11 19:00:06"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "Oil Futures Set for Biggest Weekly Loss Since June",
+      "headline": "Irish Army Helps Police Break Oil Refinery Blockade, RTE Reports",
       "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
+      "score": -1.0,
+      "direction": "bearish",
       "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
+      "ts": "2026-04-11 19:00:06"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
-        "S1_Iran",
-        "PS2_Tanker"
+        "S1_Iran"
       ],
-      "headline": "What to Expect From US-Iran Talks in Pakistan",
-      "ticker": "FRO",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Bessent Summoned Wall Street Leaders to Discuss Anthropic's New AI",
+      "headline": "US, Iran Officials Hold Direct Talks in Pakistan on Ending War",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-10 07:00:10"
+      "ts": "2026-04-11 19:00:06"
     },
     {
-      "thesis": "S3_KI",
+      "thesis": "PS1_Oil",
       "all_theses": [
-        "S3_KI"
+        "PS1_Oil"
       ],
-      "headline": "China AI Firm Discloses $92 Million of Banned Nvidia Chip Servers to Beijing",
-      "ticker": "NVDA",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-10 07:00:09"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI",
-        "PS_China"
-      ],
-      "headline": "Alibaba Claims Viral Happy Horse AI Model in Latest Breakthrough",
-      "ticker": "",
-      "score": 0.5,
-      "direction": "bullish",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-10 07:00:09"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "SoftBank Group Prices Â¥418 Billion Retail Bonds at Record 4.97%",
+      "headline": "A Panicked Race for Barrels Is Gripping the Global Oil Market",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_technology",
-      "ts": "2026-04-10 07:00:09"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "TSMCâ€™s Sales Beat Estimates After War Fails to Dent AI Demand",
-      "ticker": "",
-      "score": 0.3,
-      "direction": "bullish",
       "source": "bloomberg_markets",
-      "ts": "2026-04-10 07:00:08"
+      "ts": "2026-04-11 19:00:04"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Exclusive: Pentagon to adopt Palantir AI as core US military system, memo says - Reuters",
+      "ticker": "PLTR",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-11 07:22:02"
+    },
+    {
+      "thesis": "PS1_Oil",
+      "all_theses": [
+        "PS1_Oil"
+      ],
+      "headline": "Equinor makes Arctic Norway oil discovery - Reuters",
+      "ticker": "EQNR",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "google_news",
+      "ts": "2026-04-11 07:08:29"
+    },
+    {
+      "thesis": "PS5_Agrar",
+      "all_theses": [
+        "PS5_Agrar"
+      ],
+      "headline": "Morning Trump post: WORLD'S MOST POWERFUL RESET!!!",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "liveuamap_russia",
+      "ts": "2026-04-11 07:02:06"
+    },
+    {
+      "thesis": "S3_KI",
+      "all_theses": [
+        "S3_KI"
+      ],
+      "headline": "Ukraine’s General Staff reports that overnight on 10 April, Defence Forces struck two offshore drilling platforms in the",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "liveuamap_russia",
+      "ts": "2026-04-11 07:02:06"
     }
   ],
   "theses_hit": [
-    "S3_KI",
     "S1_Iran",
-    "PS1_Oil"
+    "PS1_Oil",
+    "S3_KI",
+    "PS5_Agrar"
   ]
 }

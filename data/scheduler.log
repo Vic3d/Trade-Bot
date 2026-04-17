@@ -581,3 +581,101 @@ Check the documentation of torch.load to learn more about types accepted by defa
 [2026-04-10 13:00:04] ✅ Watchlist Tracker: OK
 [2026-04-10 13:00:04] ▶️  Newswire Analyst: Start
 [2026-04-10 13:00:20] ✅ Newswire Analyst: OK
+[2026-04-11 08:05:04] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 08:05:04] 💥 Daemon Crash: [WinError 87] Falscher Parameter
+[2026-04-11 08:05:24] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 08:05:24] 💥 Daemon Crash: [WinError 2] Das System kann die angegebene Datei nicht finden
+[2026-04-11 08:05:55] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 08:05:55] 📡 Price Monitor gestartet (PID 18164)
+[2026-04-11 08:05:55] ⚠️  Albert Discord-Chat konnte nicht gestartet werden: name 'WS' is not defined
+[2026-04-11 09:00:00] ▶️  Live Data Refresh: Start
+[2026-04-11 09:00:00] ❌ Live Data Refresh: Fehler (code 1)
+[2026-04-11 09:00:00]    STDERR: Traceback (most recent call last):
+  File "C:\Users\victo\Trade-Bot\scripts\core\live_data.py", line 32, in <module>
+    _default_ws = str(WS)
+                      ^^
+NameError: name 'WS' is not defined
+
+[2026-04-11 09:00:00] ▶️  Newswire Analyst: Start
+[2026-04-11 09:00:00] ❌ Newswire Analyst: Fehler (code 1)
+[2026-04-11 09:00:00]    STDERR:  f"""SELECT id, source, ticker, strategy_id, direction, headline, score, {mag_col}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        (cutoff,)
+        ^^^^^^^^^
+    ).fetchall()
+    ^
+sqlite3.OperationalError: no such table: events
+
+[2026-04-11 09:05:00] ▶️  News Gate Update: Start
+[2026-04-11 09:05:00] ✅ News Gate Update: OK
+[2026-04-11 09:07:32] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 09:07:32] 📡 Price Monitor gestartet (PID 488)
+[2026-04-11 09:07:32] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 09:10:00] ▶️  CEO Radar: Start
+[2026-04-11 09:10:02] ✅ CEO Radar: OK
+[2026-04-11 09:24:10] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 09:24:10] 📡 Price Monitor gestartet (PID 17700)
+[2026-04-11 09:24:10] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 09:32:16] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 09:32:16] 📡 Price Monitor gestartet (PID 33524)
+[2026-04-11 09:32:16] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 09:35:10] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 09:35:10] 📡 Price Monitor gestartet (PID 38308)
+[2026-04-11 09:35:10] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 19:49:27] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 19:49:27] 📡 Price Monitor gestartet (PID 9704)
+[2026-04-11 19:49:27] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 20:27:09] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 20:27:09] 📡 Price Monitor gestartet (PID 4312)
+[2026-04-11 20:27:09] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 20:36:51] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 20:36:51] 📡 Price Monitor gestartet (PID 28656)
+[2026-04-11 20:36:51] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 20:42:43] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-11 20:42:43] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-11 21:00:00] ▶️  Live Data Refresh: Start
+[2026-04-11 21:00:02] ✅ Live Data Refresh: OK
+[2026-04-11 21:00:02] ▶️  Alpha Decay: Start
+[2026-04-11 21:00:03] ❌ Alpha Decay: Fehler (code 1)
+[2026-04-11 21:00:03]    STDERR: \Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f534' in position 2: character maps to <undefined>
+
+[2026-04-11 21:00:03] ▶️  Newswire Analyst: Start
+[2026-04-11 21:00:09] ✅ Newswire Analyst: OK
+[2026-04-11 21:05:00] ▶️  News Gate Update: Start
+[2026-04-11 21:05:00] ✅ News Gate Update: OK
+[2026-04-11 21:10:00] ▶️  CEO Radar: Start
+[2026-04-11 21:10:02] ❌ CEO Radar: Fehler (code 1)
+[2026-04-11 21:10:02]    STDERR: 4-64\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 0: character maps to <undefined>
+
+[2026-04-11 21:30:00] ▶️  Performance Tracker: Start
+[2026-04-11 21:30:00] ❌ Performance Tracker: Fehler (code 1)
+[2026-04-11 21:30:00]    STDERR: \Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4ca' in position 2: character maps to <undefined>
+
+[2026-04-11 22:45:00] ▶️  Daily Learning: Start
+[2026-04-11 22:45:00] ❌ Daily Learning: Fehler (code 1)
+[2026-04-11 22:45:00]    STDERR: re-3.14-64\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: character maps to <undefined>
+
+[2026-04-11 23:00:00] ▶️  Tagesabschluss: Start
+[2026-04-11 23:00:00] ❌ Tagesabschluss: Fehler (code 1)
+[2026-04-11 23:00:00]    STDERR: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        FROM trades WHERE outcome = 'open'
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ORDER BY ts_entry DESC
+        ^^^^^^^^^^^^^^^^^^^^^^
+    """).fetchall()
+    ^^^^
+sqlite3.OperationalError: no such table: trades
+

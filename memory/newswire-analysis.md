@@ -458,3 +458,31 @@ High-Impact: 7 | Actionable: True
   [S3_KI] TSMCâ€™s Sales Beat Estimates After War Fails to Dent AI Demand
 High-Impact: 3 | Actionable: True
 ---
+
+## [2026-04-11 09:10] News Radar — 30 neue Headlines
+  [S1_Iran] (S+) Iran nimmt den Ölhandel in den Würgegriff - Spiegel
+  [S1_Iran] Raffinerien und LNG-Anlagen brennen: Irans Angriff auf Katar treibt Preise für Öl und Gas 
+  [S1_Iran] Wegen Iran-Eskalation: Straße von Hormus „praktisch geschlossen“ – Ölmarkt gerät unter Dru
+  [S1_Iran] Ölpreis steigt nach Iran-Eskalation und verteuert Tanken - ZDFheute
+  [PS1_Oil] Ölpreis korrigiert nach OPEC+-Produktionserhöhung: Brent bei 108 USD, WTI bei 110 USD – Ir
+  [PS1_Oil] Ölpreis volatil um 108-110 Dollar: Trumps Drohungen und OPEC+-Angebot treiben Brent und WT
+  [PS1_Oil] Ölpreise fallen nach Opec-plus-Entscheid - Handelsblatt
+  [PS1_Oil] Ölpreis fällt und droht weiter abzusacken – OPEC mit Ölschwemme - finanzmarktwelt.de
+  [PS1_Oil] Rohöl vor der nächsten Schockwelle? WTI & Brent zwischen Bärenmarkt-Risiko und Supply-Sque
+  [S4_Silver] Silber vor der nächsten Rakete – Chance deines Lebens oder Crash in Zeitlupe? - AD HOC NEW
+High-Impact: 17 | Actionable: True
+---
+
+## [2026-04-11 21:10] News Radar — 25 neue Headlines
+  [S1_Iran] Nahost-Eskalation treibt Oelpreise: Iran droht Hormuz-Schliessung, Irak drosselt Produktio
+  [S1_Iran] (S+) Iran nimmt den Ölhandel in den Würgegriff - Spiegel
+  [S1_Iran] Wegen Iran-Eskalation: Straße von Hormus „praktisch geschlossen“ – Ölmarkt gerät unter Dru
+  [S1_Iran] Ölpreis steigt nach Iran-Eskalation und verteuert Tanken - ZDFheute
+  [S1_Iran] "Macht sich an der Tankstelle bemerkbar": Iran sperrt Straße von Hormus - T-Online
+  [PS1_Oil] Ölpreis korrigiert nach OPEC+-Produktionserhöhung: Brent bei 108 USD, WTI bei 110 USD – Ir
+  [PS1_Oil] Ölpreis volatil um 108-110 Dollar: Trumps Drohungen und OPEC+-Angebot treiben Brent und WT
+  [PS1_Oil] Ölpreise fallen nach Opec-plus-Entscheid - Handelsblatt
+  [PS1_Oil] Ölpreis: Produktionssteigerung drückt die Preise für Öl - WirtschaftsWoche
+  [PS1_Oil] Ölpreis fällt und droht weiter abzusacken – OPEC mit Ölschwemme - finanzmarktwelt.de
+High-Impact: 15 | Actionable: True
+---

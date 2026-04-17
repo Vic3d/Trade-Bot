@@ -171,20 +171,46 @@ def _score_thesis_strength(strategy: str, ticker: str = '') -> tuple[int, str]:
     if effective_status == 'DEGRADED':
         # Check for entry_trigger confirmation bonus (capped at 15)
         entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
-        score = min(15, 10 + entry_bonus)
+        ng_bonus = _news_gate_bonus(strategy)
+        score = min(15, 10 + entry_bonus + ng_bonus)
         score = _apply_decay_and_dna(strategy, score)
-        return (score, f'DEGRADED thesis — capped at {score}/15')
+        return (score, f'DEGRADED thesis — capped at {score}/15 (ng={ng_bonus})')
 
     if effective_status in ('ACTIVE', 'WATCHING', 'EVALUATING'):
         base = 20
         entry_bonus = _check_entry_trigger_bonus(strategy, strategy_cfg)
-        score = min(35, base + entry_bonus)
+        ng_bonus = _news_gate_bonus(strategy)
+        score = min(35, base + entry_bonus + ng_bonus)
         score = _apply_decay_and_dna(strategy, score)
-        return (score, f'ACTIVE thesis — {score}/35 (bonus={entry_bonus})')
+        return (score, f'ACTIVE thesis — {score}/35 (bonus={entry_bonus}, news_gate={ng_bonus})')
 
     # PAUSED or unknown
     _paused_score = _apply_decay_and_dna(strategy, 10)
     return (_paused_score, f'thesis status {effective_status} — partial credit {_paused_score}/35')
+
+
+def _news_gate_bonus(strategy: str) -> int:
+    """
+    Liest news_gate.json und gibt +5 Bonus wenn diese Strategie
+    in den theses_hit der letzten 24h vorkommt.
+    Matching: 'PS1' trifft 'PS1_Oil', 'S1' trifft 'S1_Iran' etc.
+    Returns 0 or 5.
+    """
+    try:
+        ng_path = DATA_DIR / 'news_gate.json'
+        if not ng_path.exists():
+            return 0
+        ng = json.loads(ng_path.read_bytes().decode('utf-8', errors='replace'))
+        if not isinstance(ng, dict):
+            return 0
+        theses_hit = ng.get('theses_hit', [])
+        for hit in theses_hit:
+            # Match: 'PS1' == 'PS1_Oil' (prefix) oder exakter Match
+            if hit == strategy or hit.startswith(strategy + '_') or hit.startswith(strategy):
+                return 5
+    except Exception:
+        pass
+    return 0
 
 
 def _check_entry_trigger_bonus(strategy: str, strategy_cfg: dict) -> int:
