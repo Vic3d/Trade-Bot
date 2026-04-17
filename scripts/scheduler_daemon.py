@@ -111,7 +111,10 @@ SCHEDULE = [
     ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], True),
     ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        True),
     ('Thesis Generator',    'thesis_generator.py',              [],                7,  15, [0,1,2,3,4], True),
+    # Backfill NACH Thesis-Generator (neue Kandidaten brauchen Preisdaten fuer Auto-DD 07:30)
+    ('Discovery Price BF',  'discovery/price_backfill.py',      [],                7,  22, [0,1,2,3,4], False),
     ('Thesis Generator',    'thesis_generator.py',              [],                19, 15, [0,1,2,3,4], True),
+    ('Discovery Price BF',  'discovery/price_backfill.py',      [],                19, 22, [0,1,2,3,4], False),
     ('Thesis Graveyard',    'thesis_graveyard.py',              [],                23, 30, None,        True),
     # Phase 7.14 — Auto-Deep-Dive via Claude API (sonnet)
     # Mo-Fr 07:30: full run (offene Positionen + Entry-Kandidaten)

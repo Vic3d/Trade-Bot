@@ -48,16 +48,25 @@ sys.path.insert(0, str(WS / 'scripts'))
 # Signal-Fetchers
 # ────────────────────────────────────────────────────────────────────────────
 
+def _get_close(ticker: str, period: str = '5d') -> float | None:
+    """Robuster Close-Fetch via yfinance.Ticker.history (funktioniert besser als download)."""
+    try:
+        import yfinance as yf
+        h = yf.Ticker(ticker).history(period=period)
+        if h is None or h.empty:
+            return None
+        return float(h['Close'].iloc[-1])
+    except Exception:
+        return None
+
+
 def fetch_vix_structure() -> dict:
     """VIX Spot + 3M → Contango (bull-komplacency) / Backwardation (panic)."""
     try:
-        import yfinance as yf
-        spot = yf.download('^VIX', period='2d', progress=False, auto_adjust=True)
-        vx3m = yf.download('^VIX3M', period='2d', progress=False, auto_adjust=True)
-        if spot is None or spot.empty:
-            return {'status': 'error'}
-        v_spot = float(spot['Close'].iloc[-1])
-        v_3m = float(vx3m['Close'].iloc[-1]) if vx3m is not None and not vx3m.empty else None
+        v_spot = _get_close('^VIX')
+        v_3m = _get_close('^VIX3M')
+        if v_spot is None:
+            return {'status': 'error', 'error': 'VIX close not available'}
         structure = 'unknown'
         if v_3m:
             ratio = v_spot / v_3m
@@ -80,23 +89,26 @@ def fetch_vix_structure() -> dict:
 
 def fetch_put_call_ratio() -> dict:
     """CBOE Put/Call via yfinance ^CPC (falls verfuegbar, sonst Proxy aus VIX)."""
-    try:
-        import yfinance as yf
-        d = yf.download('^CPC', period='5d', progress=False, auto_adjust=True)
-        if d is not None and not d.empty:
-            val = float(d['Close'].iloc[-1])
-            state = 'greed' if val < 0.7 else 'fear' if val > 1.2 else 'neutral'
-            return {'put_call': round(val, 2), 'state': state}
-    except Exception:
-        pass
+    val = _get_close('^CPC')
+    if val is not None:
+        state = 'greed' if val < 0.7 else 'fear' if val > 1.2 else 'neutral'
+        return {'put_call': round(val, 2), 'state': state}
     return {'put_call': None, 'state': 'unknown'}
 
 
 def fetch_fear_greed_cnn() -> dict:
     """CNN Fear & Greed Index via JSON-Endpoint (oft verfuegbar ohne Key)."""
     url = 'https://production.dataviz.cnn.io/index/fearandgreed/graphdata'
+    # CNN blockt einfache User-Agents mit HTTP 418 — echter Browser-UA noetig
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://edition.cnn.com/',
+        'Origin': 'https://edition.cnn.com',
+    }
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=10) as r:
             data = json.loads(r.read().decode('utf-8'))
         fg = data.get('fear_and_greed', {})
@@ -105,6 +117,14 @@ def fetch_fear_greed_cnn() -> dict:
         if score is not None:
             return {'score': round(float(score), 1), 'rating': rating}
     except Exception as e:
+        # Fallback: Ableitung aus VIX
+        v = _get_close('^VIX')
+        if v is not None:
+            # VIX 10-15 = extreme greed 75+, VIX 30+ = extreme fear 25-
+            score = max(0, min(100, 100 - (v - 12) * 3.5))
+            rating = ('extreme fear' if score < 25 else 'fear' if score < 45
+                      else 'neutral' if score < 55 else 'greed' if score < 75 else 'extreme greed')
+            return {'score': round(score, 1), 'rating': rating, 'source': 'vix_derived'}
         return {'score': None, 'rating': 'unknown', 'error': str(e)[:80]}
     return {'score': None, 'rating': 'unknown'}
 
@@ -124,25 +144,30 @@ def fetch_sector_momentum() -> dict:
         'real_estate': 'XLRE',
         'communications': 'XLC',
     }
+    # Einzel-Fetch via Ticker.history (robuster als yf.download-Batch)
     try:
         import yfinance as yf
-        tickers = list(sectors.values()) + ['SPY']
-        data = yf.download(tickers, period='30d', progress=False, auto_adjust=True, threads=False)
-        if data is None or data.empty:
-            return {}
-        closes = data['Close'] if 'Close' in data else data
     except Exception as e:
-        return {'error': str(e)}
+        return {'error': f'yfinance import: {e}'}
 
-    try:
-        spy_ret = float(closes['SPY'].iloc[-1] / closes['SPY'].iloc[0] - 1) * 100
-    except Exception:
-        spy_ret = 0.0
+    def _series(tk: str):
+        try:
+            h = yf.Ticker(tk).history(period='30d')
+            return h['Close'] if h is not None and not h.empty else None
+        except Exception:
+            return None
+
+    spy = _series('SPY')
+    if spy is None or len(spy) < 2:
+        return {'error': 'SPY-Daten fehlen'}
+    spy_ret = float(spy.iloc[-1] / spy.iloc[0] - 1) * 100
 
     result = {}
     for name, etf in sectors.items():
         try:
-            s = closes[etf]
+            s = _series(etf)
+            if s is None or len(s) < 2:
+                continue
             ret = float(s.iloc[-1] / s.iloc[0] - 1) * 100
             rel = ret - spy_ret
             # Positioning-Score: 0.0-1.0, 0.5 = neutral
