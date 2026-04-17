@@ -4507,31 +4507,39 @@ def _ceo_ai_analysis(directive: dict) -> dict:
         pass
 
     try:
-        nws_db = WS / 'newswire.db'
-        if nws_db.exists():
+        # Prüfe beide möglichen Pfade für newswire.db
+        for nws_db in [WS / 'memory/newswire.db', WS / 'newswire.db']:
+            if not nws_db.exists():
+                continue
             nconn = sqlite3.connect(str(nws_db))
             rows = nconn.execute("""
                 SELECT headline, source, category, sector, impact_direction, timestamp
                 FROM events ORDER BY timestamp DESC LIMIT 20
             """).fetchall()
-            events.extend([
-                {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
-                for r in rows
-            ])
             nconn.close()
+            if rows:
+                events.extend([
+                    {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
+                    for r in rows
+                ])
+                break  # Erste DB mit Daten reicht
     except Exception:
         pass
 
-    # News Gate
+    # News Gate — liest top_hits + theses_hit für AI-Kontext
     news_gate_items = []
+    news_gate_theses = []
+    news_gate_hit_count = 0
     try:
         ng_path = WS / 'data/news_gate.json'
         if ng_path.exists():
-            ng = json.loads(ng_path.read_text(encoding='utf-8'))
+            ng = json.loads(ng_path.read_bytes().decode('utf-8', errors='replace'))
             if isinstance(ng, list):
                 news_gate_items = ng[:15]
             elif isinstance(ng, dict):
-                news_gate_items = ng.get('items', ng.get('events', []))[:15]
+                news_gate_items = ng.get('top_hits', [])[:15]
+                news_gate_theses = ng.get('theses_hit', [])
+                news_gate_hit_count = ng.get('hit_count', 0)
     except Exception:
         pass
 
@@ -4601,6 +4609,7 @@ Antworte AUSSCHLIESSLICH als JSON (kein Markdown, kein Text drumherum):
   "confidence": 0.7
 }"""
 
+    theses_hit_text = ', '.join(news_gate_theses) if news_gate_theses else 'keine'
     user_prompt = f"""MARKTDATEN:
 - VIX: {vix}
 - Regime: {regime}
@@ -4616,6 +4625,10 @@ PORTFOLIO:
 AKTIVE STRATEGIEN:
 {strategies_text if strategies_text else 'Keine Strategie-Daten verfuegbar.'}
 
+NEWS-GATE (Thesen-Treffer letzte 24h):
+- Gesamttreffer: {news_gate_hit_count}
+- Betroffene Thesen: {theses_hit_text}
+
 AKTUELLE NACHRICHTEN (letzte 24h):
 {news_text}
 
@@ -4629,20 +4642,39 @@ Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
     try:
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
-            model='claude-sonnet-4-5-20250514',
-            max_tokens=1000,
+            model='claude-sonnet-4-5',
+            max_tokens=2000,
             system=system_prompt,
             messages=[{'role': 'user', 'content': user_prompt}],
         )
         raw = response.content[0].text.strip()
 
-        # JSON parsen
+        # JSON parsen — robust gegen Markdown-Wrapper und Trailing Commas
         import re
-        json_match = re.search(r'\{[\s\S]*\}', raw)
+
+        def _try_parse(s: str) -> dict | None:
+            try:
+                return json.loads(s)
+            except json.JSONDecodeError:
+                pass
+            # Versuch 2: Trailing Commas entfernen
+            s2 = re.sub(r',(\s*[}\]])', r'\1', s)
+            try:
+                return json.loads(s2)
+            except json.JSONDecodeError:
+                return None
+
+        # Schritt 1: Markdown-Wrapper entfernen (```json ... ```)
+        clean = re.sub(r'```(?:json)?\s*', '', raw).strip().rstrip('`').strip()
+
+        # Schritt 2: JSON-Block extrahieren
+        analysis = None
+        json_match = re.search(r'\{[\s\S]*\}', clean)
         if json_match:
-            analysis = json.loads(json_match.group())
-        else:
-            analysis = {'raw': raw[:500], 'error': 'No JSON in response'}
+            analysis = _try_parse(json_match.group())
+
+        if analysis is None:
+            analysis = {'raw': raw[:500], 'error': 'JSON malformed'}
 
         directive['ai_analysis'] = analysis
 

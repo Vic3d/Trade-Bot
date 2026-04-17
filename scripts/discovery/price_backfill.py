@@ -83,10 +83,35 @@ def backfill_ticker(conn: sqlite3.Connection, ticker: str, years: int) -> int:
     return len(rows)
 
 
+def _load_active_strategy_tickers() -> list:
+    """Ticker aus allen aktiven + watchlist Strategien extrahieren."""
+    strat_file = WS / 'data' / 'strategies.json'
+    if not strat_file.exists():
+        return []
+    try:
+        import json as _json
+        strats = _json.loads(strat_file.read_text(encoding='utf-8'))
+    except Exception:
+        return []
+    active_tickers = set()
+    for sid, s in strats.items():
+        if not isinstance(s, dict):
+            continue
+        if s.get('status') in ('active', 'watchlist', 'watching', 'probation'):
+            for t in s.get('tickers', []) or []:
+                if t:
+                    active_tickers.add(str(t).upper())
+    return sorted(active_tickers)
+
+
 def run(min_rows: int = 60, years: int = 1) -> dict:
     candidates = load_candidates()
     pending = [t for t, e in candidates.items() if e.get('status') == 'pending']
-    print(f'[backfill] {len(pending)} pending Kandidaten')
+    active = _load_active_strategy_tickers()
+    # Merge: pending Kandidaten + aktive Strategy-Ticker (dedupe)
+    all_targets = list({*pending, *active})
+    print(f'[backfill] {len(pending)} pending + {len(active)} active = {len(all_targets)} Ticker')
+    pending = all_targets
 
     conn = sqlite3.connect(str(DB))
     try:

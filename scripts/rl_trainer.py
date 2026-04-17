@@ -94,6 +94,11 @@ def run_training(total_steps: int = 50_000, quick: bool = False) -> dict:
     print("[RL Trainer] Lade Umgebung...")
     env = MultiTickerEnv(seed=42)
 
+    # Graceful Skip wenn keine Ticker-Envs geladen (price_cache leer / <200 Bars)
+    if not getattr(env, 'envs', None):
+        print("[RL Trainer] WARN: Keine Ticker-Envs geladen (price_cache leer). Skip.")
+        return {'skipped': True, 'reason': 'no_envs'}
+
     print("[RL Trainer] Initialisiere PPO Agent...")
     trainer = PPOTrainer(resume=True)
 

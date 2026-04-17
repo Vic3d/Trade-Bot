@@ -10,6 +10,11 @@ import urllib.request
 import urllib.parse
 from datetime import datetime, date, timedelta, timezone
 from pathlib import Path
+try:
+    from zoneinfo import ZoneInfo
+    _BERLIN = ZoneInfo('Europe/Berlin')
+except Exception:
+    _BERLIN = timezone.utc
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
