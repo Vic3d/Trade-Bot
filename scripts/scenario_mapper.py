@@ -176,10 +176,22 @@ def call_claude(prompt: str) -> tuple[str, dict]:
 
 
 def parse_json(text: str) -> dict:
-    m = re.search(r'\{[\s\S]*\}', text)
+    # Trim zu ```json fences
+    t = text.strip()
+    if '```' in t:
+        m = re.search(r'```(?:json)?\s*([\s\S]*?)```', t)
+        if m:
+            t = m.group(1).strip()
+    m = re.search(r'\{[\s\S]*\}', t)
     if not m:
         raise ValueError('Kein JSON im Claude-Output')
-    return json.loads(m.group(0))
+    raw = m.group(0)
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Heuristische Repair: Trailing commas entfernen
+        fixed = re.sub(r',(\s*[\]}])', r'\1', raw)
+        return json.loads(fixed)
 
 
 def run(top_n: int = 5) -> dict:

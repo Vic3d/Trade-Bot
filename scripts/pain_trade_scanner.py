@@ -215,12 +215,13 @@ def run() -> dict:
     regime = compute_market_regime(vix_info, pc, fg)
 
     # Pain-Trade-Kandidaten (top-3 je Richtung)
+    _sector_items = [(s, d) for s, d in sectors.items() if isinstance(d, dict)]
     crowded_longs = sorted(
-        [(s, d.get('positioning', 0)) for s, d in sectors.items() if d.get('state') == 'crowded_long'],
+        [(s, d.get('positioning', 0)) for s, d in _sector_items if d.get('state') == 'crowded_long'],
         key=lambda x: -x[1],
     )[:3]
     underowned = sorted(
-        [(s, d.get('positioning', 0)) for s, d in sectors.items() if d.get('state') == 'underowned'],
+        [(s, d.get('positioning', 0)) for s, d in _sector_items if d.get('state') == 'underowned'],
         key=lambda x: x[1],
     )[:3]
 
