@@ -38,39 +38,92 @@ def count_prices(conn: sqlite3.Connection, ticker: str) -> int:
     return int(r[0]) if r else 0
 
 
-def backfill_ticker(conn: sqlite3.Connection, ticker: str, years: int) -> int:
-    """Fetcht OHLCV via yfinance und schreibt in prices. Return Anzahl geschrieben."""
+def _fetch_yfinance(ticker: str, years: int) -> list:
+    """Yahoo via Ticker().history — robuster als yf.download fuer single-ticker."""
     try:
         import yfinance as yf
     except ImportError:
-        print('[backfill] yfinance fehlt')
-        return 0
-
+        return []
     try:
-        df = yf.download(
-            tickers=ticker, period=f'{years}y', interval='1d',
-            auto_adjust=True, progress=False, threads=False,
-        )
+        t = yf.Ticker(ticker)
+        df = t.history(period=f'{years}y', interval='1d', auto_adjust=True)
     except Exception as e:
-        print(f'[backfill] {ticker}: download-error {e}')
-        return 0
-
+        print(f'[backfill] {ticker}: yf-history-error {e}')
+        return []
     if df is None or df.empty:
-        return 0
-
+        return []
     rows = []
     for dt, row in df.dropna().iterrows():
         try:
-            o = float(row['Open'].iloc[0]) if hasattr(row['Open'], 'iloc') else float(row['Open'])
-            h = float(row['High'].iloc[0]) if hasattr(row['High'], 'iloc') else float(row['High'])
-            l = float(row['Low'].iloc[0]) if hasattr(row['Low'], 'iloc') else float(row['Low'])
-            c = float(row['Close'].iloc[0]) if hasattr(row['Close'], 'iloc') else float(row['Close'])
-            v = row['Volume'].iloc[0] if hasattr(row['Volume'], 'iloc') else row['Volume']
-            v = int(v) if v == v else 0  # NaN-check
-            rows.append((ticker, dt.strftime('%Y-%m-%d'), o, h, l, c, v))
+            rows.append((ticker, dt.strftime('%Y-%m-%d'),
+                         float(row['Open']), float(row['High']),
+                         float(row['Low']), float(row['Close']),
+                         int(row['Volume']) if row['Volume'] == row['Volume'] else 0))
         except Exception:
             continue
+    return rows
 
+
+def _fetch_stooq(ticker: str) -> list:
+    """
+    Stooq-Fallback fuer deutsche/EU-Ticker die Yahoo nicht hat.
+    Beispiele: BMW.DE -> bmw.de, MC.PA -> mc.fr (Stooq-Konvention).
+    Gibt leere Liste zurueck wenn Stooq die Boerse nicht kennt.
+    """
+    import urllib.request
+    import urllib.error
+
+    t = ticker.lower().strip()
+    # Stooq-Boersen-Mapping
+    suffix_map = {
+        '.de': '.de', '.pa': '.fr', '.mi': '.it', '.as': '.nl',
+        '.l': '.uk', '.ol': '.no', '.st': '.se', '.hk': '.hk',
+    }
+    stooq_sym = t
+    mapped = False
+    for suf, stooq_suf in suffix_map.items():
+        if t.endswith(suf):
+            stooq_sym = t[:-len(suf)] + stooq_suf
+            mapped = True
+            break
+    if not mapped and '.' not in t:
+        # US-Ticker ohne Suffix → bereits Yahoo-Domain, Stooq nutzt us-Suffix
+        stooq_sym = t + '.us'
+
+    url = f'https://stooq.com/q/d/l/?s={stooq_sym}&i=d'
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            text = resp.read().decode('utf-8', errors='replace')
+    except (urllib.error.URLError, TimeoutError) as e:
+        print(f'[backfill] {ticker}: stooq-error {e}')
+        return []
+
+    lines = text.strip().split('\n')
+    if len(lines) < 2 or not lines[0].lower().startswith('date'):
+        return []
+
+    rows = []
+    for ln in lines[1:]:
+        parts = ln.split(',')
+        if len(parts) < 6:
+            continue
+        try:
+            d, o, h, l, c = parts[0], float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4])
+            v = int(float(parts[5])) if parts[5] else 0
+            rows.append((ticker, d, o, h, l, c, v))
+        except (ValueError, IndexError):
+            continue
+    return rows
+
+
+def backfill_ticker(conn: sqlite3.Connection, ticker: str, years: int) -> int:
+    """Yahoo primaer, Stooq-Fallback. Return Anzahl geschriebener Zeilen."""
+    rows = _fetch_yfinance(ticker, years)
+    source = 'yahoo'
+    if not rows:
+        rows = _fetch_stooq(ticker)
+        source = 'stooq'
     if not rows:
         return 0
 
@@ -80,6 +133,7 @@ def backfill_ticker(conn: sqlite3.Connection, ticker: str, years: int) -> int:
         rows,
     )
     conn.commit()
+    print(f'  + {ticker}: {len(rows)} Zeilen via {source}')
     return len(rows)
 
 

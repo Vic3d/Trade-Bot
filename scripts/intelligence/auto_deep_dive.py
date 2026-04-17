@@ -438,39 +438,29 @@ mit EV +€5 und Skew 1.1 bei Confidence 80%. Pro-HF-Logik: Asymmetrie schlaegt 
 
 def call_claude(prompt: str, model: str | None = None, max_tokens: int = 2500) -> tuple[str, dict]:
     """
-    Ruft Anthropic API auf. Raises bei Fehler.
+    Ruft LLM via Dual-LLM-Wrapper (Anthropic primaer, OpenAI-Fallback).
     Returns: (text, usage_dict) mit input_tokens / output_tokens / cost_usd_est
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY')
-    if not api_key:
-        raise RuntimeError('ANTHROPIC_API_KEY nicht gesetzt')
-    model = model or os.environ.get('ANTHROPIC_MODEL', 'claude-sonnet-4-5')
-
-    try:
-        import anthropic
-    except ImportError:
-        raise RuntimeError('anthropic package nicht installiert (pip install anthropic)')
-
-    client = anthropic.Anthropic(api_key=api_key)
-    resp = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[{'role': 'user', 'content': prompt}],
-    )
-    # Extrahiere Text
-    content = resp.content[0].text if resp.content else ''
-
-    # Token-Kosten (opus-4-5: $15/MTok input, $75/MTok output — konservativ)
-    # sonnet: $3/MTok input, $15/MTok output
-    usage = {
-        'input_tokens': getattr(resp.usage, 'input_tokens', 0) if resp.usage else 0,
-        'output_tokens': getattr(resp.usage, 'output_tokens', 0) if resp.usage else 0,
-    }
-    if 'opus' in model.lower():
-        usage['cost_usd_est'] = (usage['input_tokens'] * 15 + usage['output_tokens'] * 75) / 1_000_000
+    # Model-Hint aus env oder param ableiten
+    _m = (model or os.environ.get('ANTHROPIC_MODEL') or 'sonnet').lower()
+    if 'opus' in _m:
+        hint = 'opus'
+    elif 'haiku' in _m:
+        hint = 'haiku'
     else:
-        usage['cost_usd_est'] = (usage['input_tokens'] * 3 + usage['output_tokens'] * 15) / 1_000_000
-    return content, usage
+        hint = 'sonnet'
+
+    # Import mit Fallback-Path
+    try:
+        from core.llm_client import call_llm
+    except ImportError:
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+        from core.llm_client import call_llm  # type: ignore
+
+    text, usage = call_llm(prompt, model_hint=hint, max_tokens=max_tokens)
+    return text, usage
 
 
 def parse_verdict(text: str) -> dict:

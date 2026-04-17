@@ -175,17 +175,27 @@ def _call_openai(prompt: str, model: str, max_tokens: int) -> tuple[str, dict]:
 # Public API
 # ──────────────────────────────────────────────────────────────────────────
 
+class LLMBudgetExceeded(RuntimeError):
+    """Raised wenn Tages-LLM-Budget aufgebraucht ist."""
+
+
 def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
              allow_fallback: bool = True) -> tuple[str, dict]:
     """
     Ruft primaer Anthropic, faellt bei Fehler auf OpenAI zurueck.
     Respektiert Tages-Budget (default $15).
+    Soft-Cap bei 80%: downgrade auf 'haiku' um Reserve zu schonen.
     """
     ok, spent = _check_budget()
     if not ok:
-        raise RuntimeError(
+        raise LLMBudgetExceeded(
             f'LLM-Tagesbudget ueberschritten: ${spent:.2f} >= ${DEFAULT_BUDGET_USD}'
         )
+
+    # Soft-Cap: Bei 80% Budget-Verbrauch auf haiku/mini downgraden
+    if spent >= DEFAULT_BUDGET_USD * 0.80 and model_hint != 'haiku':
+        print(f"[llm] ⚠️  Soft-Cap aktiv (${spent:.2f}/${DEFAULT_BUDGET_USD}) — downgrade {model_hint}→haiku")
+        model_hint = 'haiku'
 
     anth_model = ANTHROPIC_MODEL_MAP.get(model_hint, 'claude-sonnet-4-5')
     oai_model = OPENAI_MODEL_MAP.get(model_hint, 'gpt-4o')
@@ -224,6 +234,22 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
         raise RuntimeError(
             f'Beide LLM-Provider gescheitert: anthropic={last_err} openai={fe}'
         )
+
+
+def safe_call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
+                  allow_fallback: bool = True) -> tuple[str | None, dict]:
+    """
+    Wie call_llm, aber raised NIE — bei Fehler (Budget, Provider down) returnt
+    (None, {'error': '...', 'degraded': True}) damit Caller graceful weiter
+    koennen (z.B. Job skippt statt crasht).
+    """
+    try:
+        return call_llm(prompt, model_hint=model_hint, max_tokens=max_tokens,
+                        allow_fallback=allow_fallback)
+    except LLMBudgetExceeded as e:
+        return None, {'error': str(e), 'degraded': True, 'reason': 'budget'}
+    except Exception as e:
+        return None, {'error': str(e)[:300], 'degraded': True, 'reason': 'provider'}
 
 
 def get_budget_status() -> dict:

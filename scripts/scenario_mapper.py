@@ -159,26 +159,17 @@ Keine weichen Aussagen — jedes Szenario braucht quantifizierte Probability + P
 
 
 def call_claude(prompt: str) -> tuple[str, dict]:
+    """Dual-LLM (Anthropic primaer, OpenAI-Fallback)."""
     try:
-        import anthropic
+        from core.llm_client import call_llm
     except ImportError:
-        raise RuntimeError('anthropic SDK fehlt')
-    api_key = os.getenv('ANTHROPIC_API_KEY')
-    if not api_key:
-        raise RuntimeError('ANTHROPIC_API_KEY fehlt')
-    client = anthropic.Anthropic(api_key=api_key)
-    model = os.getenv('ANTHROPIC_MODEL', 'claude-sonnet-4-5')
-    resp = client.messages.create(
-        model=model, max_tokens=4000,
-        messages=[{'role': 'user', 'content': prompt}],
-    )
-    content = resp.content[0].text if resp.content else ''
-    usage = {
-        'input_tokens': resp.usage.input_tokens if resp.usage else 0,
-        'output_tokens': resp.usage.output_tokens if resp.usage else 0,
-    }
-    usage['cost_usd_est'] = (usage['input_tokens'] * 3 + usage['output_tokens'] * 15) / 1_000_000
-    return content, usage
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+        from core.llm_client import call_llm  # type: ignore
+    _m = (os.getenv('ANTHROPIC_MODEL') or 'sonnet').lower()
+    hint = 'opus' if 'opus' in _m else ('haiku' if 'haiku' in _m else 'sonnet')
+    return call_llm(prompt, model_hint=hint, max_tokens=4000)
 
 
 def parse_json(text: str) -> dict:

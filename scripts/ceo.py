@@ -4640,14 +4640,17 @@ TRADING-RULES (regelbasiert):
 Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model='claude-sonnet-4-5',
-            max_tokens=2000,
-            system=system_prompt,
-            messages=[{'role': 'user', 'content': user_prompt}],
-        )
-        raw = response.content[0].text.strip()
+        # Dual-LLM via core.llm_client (Anthropic primaer, OpenAI-Fallback)
+        try:
+            from core.llm_client import call_llm as _call_llm
+        except ImportError:
+            import sys as _sys
+            from pathlib import Path as _Path
+            _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+            from core.llm_client import call_llm as _call_llm  # type: ignore
+        _combined = f"{system_prompt}\n\n---\n\n{user_prompt}"
+        raw, _usage = _call_llm(_combined, model_hint='sonnet', max_tokens=2000)
+        raw = raw.strip()
 
         # JSON parsen — robust gegen Markdown-Wrapper und Trailing Commas
         import re
