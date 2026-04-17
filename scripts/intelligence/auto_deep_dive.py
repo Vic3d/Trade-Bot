@@ -288,6 +288,18 @@ Verdict-Mapping fuer Hold-Check:
     except Exception:
         pass
 
+    # Kalibrierungs-Feedback aus dem Thesis-Graveyard (Phase 22 Closed-Loop)
+    calibration_context = ''
+    try:
+        import sys as _sys
+        _scripts = WS / 'scripts'
+        if str(_scripts) not in _sys.path:
+            _sys.path.insert(0, str(_scripts))
+        from thesis_graveyard import build_calibration_block
+        calibration_context = build_calibration_block(max_missed=3)
+    except Exception:
+        calibration_context = ''
+
     # Positioning-Kontext (Pain-Trade Detector)
     positioning_context = ''
     try:
@@ -352,6 +364,7 @@ Recent News (letzte 7 Tage):
 {news_block}
 {scenario_context}
 {positioning_context}
+{calibration_context}
 
 ### DEEP DIVE PROTOKOLL (Scenario-based, Phase 22)
 1. **Katalysator identifizieren** — Welches benannte Event (Datum!) loest die These aus?

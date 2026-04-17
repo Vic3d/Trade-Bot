@@ -193,6 +193,58 @@ def report() -> dict:
     }
 
 
+def build_calibration_block(max_missed: int = 3) -> str:
+    """
+    Generiert einen Prompt-Block fuer den Auto-DD-Claude-Aufruf.
+    Teilt Claude mit, wie gut/schlecht seine bisherigen Rejections waren
+    und zwingt ihn zur Re-Kalibrierung.
+
+    Returns empty string wenn noch keine Alt-Checks vorhanden sind.
+    """
+    r = report()
+    acc_30 = r.get('accuracy_30d')
+    acc_14 = r.get('accuracy_14d')
+    missed = r.get('top_missed_opportunities', [])[:max_missed]
+
+    if acc_30 is None and acc_14 is None:
+        return ''  # Noch keine Datenbasis
+
+    lines = ['\n### KALIBRIERUNG (aus Thesis-Graveyard)']
+    if acc_30 is not None:
+        lines.append(f"Deine 30d-Ablehn-Accuracy: **{acc_30}%** "
+                     f"(= {100-acc_30:.0f}% der abgelehnten Thesen haetten gewonnen > +5%)")
+    if acc_14 is not None:
+        lines.append(f"Deine 14d-Ablehn-Accuracy: **{acc_14}%**")
+
+    # Verhaltens-Anweisung basierend auf Accuracy
+    if acc_30 is not None:
+        if acc_30 < 50:
+            lines.append(
+                "\n⚠️ WARNSIGNAL: Du bist ZU KONSERVATIV. Mehr als die Haelfte deiner "
+                "Ablehnungen haette Geld gemacht. BEVORZUGE im Zweifel KAUFEN gegenueber "
+                "WARTEN. Senke die mentale EV-Schwelle um ~20%."
+            )
+        elif acc_30 > 80:
+            lines.append(
+                "\n✅ Dein Filter ist gut kalibriert. Bleib diszipliniert — NICHT laxer werden."
+            )
+        else:
+            lines.append(
+                "\nDein Filter ist okay kalibriert. Kein systematisches Tuning noetig."
+            )
+
+    if missed:
+        lines.append("\nTop verpasste Chancen (was du faelschlich abgelehnt hast):")
+        for m in missed:
+            lines.append(f"  - {m['ticker']}: +{m['return_30d']:.1f}% in 30d (Grund war: {m.get('reason','?')[:60]})")
+        lines.append(
+            "→ Lerne aus dem Muster: Waren diese abgelehnten Kandidaten alle aus demselben "
+            "Sektor/Setup-Typ? Dann ist dort dein Filter zu streng."
+        )
+
+    return '\n'.join(lines)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--report', action='store_true')
