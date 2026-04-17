@@ -375,6 +375,10 @@ def run_batch(scope: str = 'full', dry: bool = False) -> dict:
             'verdict': result.get('verdict'),
             'raw_verdict': raw_verdict,
             'confidence': result.get('confidence'),
+            'ev_eur': result.get('ev_eur'),
+            'payoff_skew': result.get('payoff_skew'),
+            'pain_trade_flag': result.get('pain_trade_flag'),
+            'catalyst_date': result.get('catalyst_date'),
             'warnings': len(result.get('warnings', [])),
             'cost_usd': round(cost, 4),
         })
@@ -435,6 +439,15 @@ def run_batch(scope: str = 'full', dry: bool = False) -> dict:
     except Exception as e:
         print(f"[runner] Runs-Log schreiben fehlgeschlagen: {e}")
 
+    # EV-Statistiken (Phase 22)
+    ev_values = [r.get('ev_eur') for r in results['per_ticker'] if isinstance(r.get('ev_eur'), (int, float))]
+    pain_count = sum(1 for r in results['per_ticker'] if r.get('pain_trade_flag'))
+    top_ev = sorted(
+        [r for r in results['per_ticker'] if isinstance(r.get('ev_eur'), (int, float))],
+        key=lambda r: r.get('ev_eur', 0),
+        reverse=True,
+    )[:3]
+
     # Summary print
     print(f"\n═══ Auto-DD Runner Summary ({scope}) ═══")
     print(f"  Watchlist:      {results['watchlist_size']} Tickers")
@@ -443,9 +456,25 @@ def run_batch(scope: str = 'full', dry: bool = False) -> dict:
           f"WARTEN={results['verdicts_by_type']['WARTEN']}  "
           f"NICHT_KAUFEN={results['verdicts_by_type']['NICHT_KAUFEN']}  "
           f"ERROR={results['verdicts_by_type']['ERROR']}")
+    if ev_values:
+        ev_sorted = sorted(ev_values, reverse=True)
+        print(f"  EV-Verteilung:  max={ev_sorted[0]:+.0f}€  median={ev_sorted[len(ev_sorted)//2]:+.0f}€  "
+              f"min={ev_sorted[-1]:+.0f}€  n={len(ev_values)}")
+        if top_ev:
+            print(f"  Top-EV:         " + "  ".join(
+                f"{r['ticker']}={r.get('ev_eur'):+.0f}€({r.get('raw_verdict','?')[:4]})" for r in top_ev
+            ))
+    print(f"  Pain-Trades:    {pain_count}")
     print(f"  Exit-Signale:   {len(results['exit_signals'])}")
     print(f"  Kosten-Schaetz: {results['total_cost_usd']:.2f} USD")
     print(f"  Dauer:          {results['duration_sec']}s")
+
+    results['ev_stats'] = {
+        'count': len(ev_values),
+        'max': max(ev_values) if ev_values else None,
+        'median': sorted(ev_values)[len(ev_values)//2] if ev_values else None,
+        'pain_trades': pain_count,
+    }
 
     return results
 

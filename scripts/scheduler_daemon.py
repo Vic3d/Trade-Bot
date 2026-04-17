@@ -105,6 +105,14 @@ SCHEDULE = [
     # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
     ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00
+    # ── Phase 22 — Opportunity Engine (laeuft VOR Auto-Deep-Dive) ────────────
+    ('Smart Money Tracker', 'discovery/smart_money_tracker.py', [],                6,  10, [0,1,2,3,4], True),
+    ('Catalyst Calendar',   'catalyst_calendar.py',             [],                6,  20, None,        True),
+    ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], True),
+    ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        True),
+    ('Thesis Generator',    'thesis_generator.py',              [],                7,  15, [0,1,2,3,4], True),
+    ('Thesis Generator',    'thesis_generator.py',              [],                19, 15, [0,1,2,3,4], True),
+    ('Thesis Graveyard',    'thesis_graveyard.py',              [],                23, 30, None,        True),
     # Phase 7.14 — Auto-Deep-Dive via Claude API (sonnet)
     # Mo-Fr 07:30: full run (offene Positionen + Entry-Kandidaten)
     ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              7,  30, [0,1,2,3,4], True),

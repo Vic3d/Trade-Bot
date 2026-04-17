@@ -271,15 +271,63 @@ Verdict-Mapping fuer Hold-Check:
         else f"**Trading-Verdict** fuer {facts['ticker']} nach dem Deep-Dive-Protokoll."
     )
 
+    # Scenario-Kontext aus dem Scenario-Mapper laden (falls vorhanden)
+    scenario_context = ''
+    try:
+        sm_path = WS / 'data' / 'scenario_map.json'
+        if sm_path.exists():
+            sm = json.loads(sm_path.read_text(encoding='utf-8'))
+            top_scenarios = sm.get('top_catalysts', [])[:3]
+            if top_scenarios:
+                lines = []
+                for c in top_scenarios:
+                    lines.append(f"- {c.get('name','?')} ({c.get('date','?')}): {c.get('summary','')[:160]}")
+                    for sc in c.get('scenarios', [])[:3]:
+                        lines.append(f"   · {sc.get('label','?')} P={sc.get('probability',0)}: Winners={sc.get('winners',[])[:5]} Losers={sc.get('losers',[])[:5]}")
+                scenario_context = "\n### AKTIVE TOP-KATALYSATOREN (aus Scenario-Map)\n" + '\n'.join(lines)
+    except Exception:
+        pass
+
+    # Positioning-Kontext (Pain-Trade Detector)
+    positioning_context = ''
+    try:
+        pt_path = WS / 'data' / 'positioning.json'
+        if pt_path.exists():
+            pt = json.loads(pt_path.read_text(encoding='utf-8'))
+            sector = (facts.get('sector') or '').lower()
+            sector_data = pt.get('sectors', {}).get(sector) or pt.get(sector)
+            if sector_data:
+                positioning_context = (
+                    f"\n### POSITIONIERUNG (Pain-Trade-Layer)\n"
+                    f"Sektor '{sector}': Positioning={sector_data.get('positioning','?')} "
+                    f"State={sector_data.get('state','?')} Pain-Trade={sector_data.get('pain_trade','?')}\n"
+                    f"Aggregiert: Put/Call={pt.get('put_call_ratio','?')} "
+                    f"AAII-Bullish={pt.get('aaii_bullish','?')} VIX-Struktur={pt.get('vix_structure','?')}"
+                )
+    except Exception:
+        pass
+
     prompt = f"""Du bist Albert, der AI-CEO von TradeMind. Du machst einen Deep Dive fuer
 den Paper-Trading-Bot im Auftrag von Victor.
 
 Deine Aufgabe: {task_line}
 {mode_header}
 
-KRITISCH: Du gibst NUR ein Verdict basierend auf den Fakten unten. Keine Spekulation ueber
-Daten die du nicht hast. Wenn wichtige Infos fehlen (z.B. keine News, kein KGV), dann
-reflektiere das im Verdict — "WARTEN wegen Daten-Luecke" ist ein legitimes Ergebnis.
+KRITISCH — NEUES MINDSET (Phase 22, seit 17.04.2026):
+Du denkst NICHT mehr rueckwaertsgewandt ("ist RSI okay, ist Preis ueber MA50").
+Du denkst VORWAERTSGEWANDT und in SZENARIEN wie ein Hedge-Fund-Analyst:
+
+  1. Welches konkrete Event aufloest diese These in den naechsten 14 Tagen?
+  2. Wenn Event in Richtung X aufloest: wieviel % Upside? Wenn Richtung Y: wieviel Downside?
+  3. Wo liegt der Marktkonsens aktuell? Ist der Trade ein Pain-Trade (Contrarian) oder Crowd-Trade?
+  4. Was ist der Expected Value (Wahrscheinlichkeit x Payoff - Transaktionskosten)?
+
+Technische Daten sind KONTEXT, nicht der Treiber. Ein Ticker der RSI 78 hat kann trotzdem KAUFEN
+sein wenn ein asymmetrischer Katalysator mit EV > +€50 ansteht. Ein Ticker mit Golden Cross
+kann NICHT_KAUFEN sein wenn er bereits Konsens-Long ist und Pain-Trade ist short.
+
+HARTE REGEL: Wenn du keinen spezifischen Katalysator in den naechsten 30 Tagen nennen kannst,
+lautet das Verdict WARTEN mit Begruendung "kein benannter Katalysator".
 
 ### HARTE FAKTEN (aus DB, {facts['timestamp'][:19]})
 Ticker: {facts['ticker']}
@@ -302,33 +350,59 @@ Preis & Technik:
 
 Recent News (letzte 7 Tage):
 {news_block}
+{scenario_context}
+{positioning_context}
 
-### DEEP DIVE PROTOKOLL (Kurzform)
-1. **Bewertung** — KGV/EV-EBITDA sektorgerecht (du kennst Fundamentals nicht aus DB)
-   → Falls keine Fundamentals: kennzeichne als DATEN-LUECKE
-2. **Technische Lage** — oben bereits in Fakten
-3. **Katalysator** — gibt es einen frischen, spezifischen Trigger? (News-Block pruefen)
-4. **Leiche im Keller** — Risiken, Downgrades, Polit-Risiko, Schulden
-5. **Gegenthese** — warum koennte die Aktie NICHT steigen?
-6. **Timing** — ist das ein Knife-Catch (unter MA50 + 3M < -10%)?
+### DEEP DIVE PROTOKOLL (Scenario-based, Phase 22)
+1. **Katalysator identifizieren** — Welches benannte Event (Datum!) loest die These aus?
+   → Kein Katalysator in 30 Tagen = WARTEN
+2. **Szenario-Mapping** — Mind. 2 Szenarien (bullish Case, bearish Case):
+   → P(bull) + P(bear) + P(side) = 1.0
+   → Fuer jedes Szenario: erwartete Rendite auf 14-Tage-Sicht in %
+3. **Expected Value (EV)** berechnen:
+   → EV_pct = P_bull * rendite_bull_pct + P_bear * rendite_bear_pct + P_side * rendite_side_pct
+   → EV_eur = EV_pct * 1500 / 100  (Annahme: €1.500 Position)
+4. **Payoff-Skew** — rendite_bull_pct / abs(rendite_bear_pct) >= 1.5 ?
+5. **Positionierung** — Ist dieser Trade Consensus oder Contrarian (Pain-Trade)?
+6. **Pre-Mortem / Falsifikation** — Welches einzelne Event wuerde diese These killen?
 
-### KILLER-REGELN (hart)
-- Preis < EMA50 UND 3M-Trend < -10%  → NICHT_KAUFEN (Falling Knife)
-- 40%+ unter 52W-Hoch  → WARTEN oder NICHT_KAUFEN (Vertrauensbruch im Chart)
-- RSI > 75  → WARTEN (ueberkauft)
-- RSI < 25 UND unter MA200  → WARTEN (noch nicht gedreht)
-- Keine News & 52W-Hoch nahe & RSI hoch  → WARTEN (Momentum-Chase)
+### ENTSCHEIDUNGS-LOGIK (neu)
+- EV_eur > +€50 UND Skew >= 2.0 UND Katalysator vorhanden → KAUFEN
+- EV_eur > +€10 UND Skew >= 1.5 UND Katalysator vorhanden → KAUFEN (half-size signal)
+- EV_eur zwischen -€10 und +€10 → WARTEN
+- EV_eur < -€10 oder Falling Knife bestaetigt → NICHT_KAUFEN
+- Kein benannter Katalysator → WARTEN (egal wie gut die Technik aussieht)
 
-### OUTPUT-FORMAT (streng)
-Gib AUSSCHLIESSLICH valides JSON zurueck, KEIN Markdown, KEIN Fliesstext drumherum.
+### KILLER-REGELN (Override-Kriterien)
+- Preis < EMA50 UND 3M-Trend < -20%  → NICHT_KAUFEN (echter Falling Knife)
+- 50%+ unter 52W-Hoch ohne Katalysator  → NICHT_KAUFEN
+- Consensus crowded long UND RSI > 80 → WARTEN (Pain-Trade-Gefahr)
+
+### OUTPUT-FORMAT (streng, Phase-22-Schema)
+Gib AUSSCHLIESSLICH valides JSON zurueck, KEIN Markdown.
 
 {{
   "verdict": "KAUFEN" | "WARTEN" | "NICHT_KAUFEN",
   "confidence": <int 0-100>,
   "reasoning": "<2-3 Saetze warum>",
-  "key_risks": ["<risiko1>", "<risiko2>"],
-  "katalysator": "<spezifischer Trigger oder 'keiner erkennbar'>",
+  "katalysator": "<konkretes Event + Datum, z.B. 'FOMC 24.04' oder 'keiner erkennbar'>",
+  "catalyst_date": "<YYYY-MM-DD oder null>",
+  "scenarios": [
+    {{"label": "bull", "probability": 0.45, "expected_return_pct": 8.0, "trigger": "<was muss passieren>"}},
+    {{"label": "bear", "probability": 0.45, "expected_return_pct": -4.0, "trigger": "<was muss passieren>"}},
+    {{"label": "side", "probability": 0.10, "expected_return_pct": 0.0, "trigger": "<was muss passieren>"}}
+  ],
+  "ev_pct": <float, berechnet aus scenarios>,
+  "ev_eur": <float, ev_pct * 1500 / 100>,
+  "payoff_skew": <float, rendite_bull / abs(rendite_bear)>,
+  "consensus_position": "crowded_long" | "crowded_short" | "neutral" | "contrarian_opp",
+  "pain_trade_flag": <true|false, ob dies ein Contrarian-Trade gegen den Konsens ist>,
+  "falsification": "<welches konkrete Event wuerde diese These zerstoeren>",
   "target_hold_days": <int, typisch 7-30>,
+  "entry_price_hint": <float oder null>,
+  "stop_pct_hint": <float, z.B. -6.0>,
+  "target_pct_hint": <float, z.B. +12.0>,
+  "key_risks": ["<risiko1>", "<risiko2>"],
   "facts_claims": {{
     "above_ma50": <true|false|null>,
     "above_ma200": <true|false|null>,
@@ -337,8 +411,9 @@ Gib AUSSCHLIESSLICH valides JSON zurueck, KEIN Markdown, KEIN Fliesstext drumher
   }}
 }}
 
-Die "facts_claims" verwenden wir zum Anti-Halluzinations-Check — trag nur rein was
-DU aus den Fakten oben schliesst, nicht was du glaubst wahr sein sollte.
+WICHTIG: Der Score basiert auf EV+Skew, NICHT mehr nur auf Confidence.
+Ein Trade mit EV +€80 und Skew 3.0 bei Confidence 55% ist besser als ein Trade
+mit EV +€5 und Skew 1.1 bei Confidence 80%. Pro-HF-Logik: Asymmetrie schlaegt Sicherheit.
 """
     return prompt
 
@@ -461,7 +536,19 @@ def save_verdict(ticker: str, verdict: dict, facts: dict, warnings: list[str], m
         'reasoning': verdict.get('reasoning'),
         'key_risks': verdict.get('key_risks', []),
         'katalysator': verdict.get('katalysator'),
+        'catalyst_date': verdict.get('catalyst_date'),
         'target_hold_days': verdict.get('target_hold_days'),
+        # Phase 22 — Scenario + EV fields
+        'scenarios': verdict.get('scenarios', []),
+        'ev_pct': verdict.get('ev_pct'),
+        'ev_eur': verdict.get('ev_eur'),
+        'payoff_skew': verdict.get('payoff_skew'),
+        'consensus_position': verdict.get('consensus_position'),
+        'pain_trade_flag': verdict.get('pain_trade_flag'),
+        'falsification': verdict.get('falsification'),
+        'entry_price_hint': verdict.get('entry_price_hint'),
+        'stop_pct_hint': verdict.get('stop_pct_hint'),
+        'target_pct_hint': verdict.get('target_pct_hint'),
         'source': 'AUTO_CLAUDE',
         'model': model,
         'timestamp': datetime.now(timezone.utc).isoformat(timespec='seconds'),
@@ -555,8 +642,14 @@ def run(
     final = verdict.get('verdict')
     if warnings and verdict.get('verdict') == 'KAUFEN':
         final = 'WARTEN (downgraded)'
-    print(f"[{ticker}] ✅ {final}  conf={verdict.get('confidence')}  "
-          f"reasoning={verdict.get('reasoning','')[:120]}")
+    ev_eur = verdict.get('ev_eur')
+    skew = verdict.get('payoff_skew')
+    pain = verdict.get('pain_trade_flag')
+    ev_str = f"EV={ev_eur:+.0f}€" if isinstance(ev_eur, (int, float)) else "EV=?"
+    skew_str = f"skew={skew:.1f}" if isinstance(skew, (int, float)) else ""
+    pain_str = "🎯pain" if pain else ""
+    print(f"[{ticker}] ✅ {final}  conf={verdict.get('confidence')}  {ev_str} {skew_str} {pain_str}  "
+          f"reasoning={verdict.get('reasoning','')[:100]}")
     return {
         'status': 'ok',
         'verdict': final,
@@ -567,6 +660,11 @@ def run(
         'warnings': warnings,
         'usage': usage,
         'mode': mode,
+        'ev_eur': verdict.get('ev_eur'),
+        'ev_pct': verdict.get('ev_pct'),
+        'payoff_skew': verdict.get('payoff_skew'),
+        'pain_trade_flag': verdict.get('pain_trade_flag'),
+        'catalyst_date': verdict.get('catalyst_date'),
     }
 
 

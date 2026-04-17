@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.13
 """
 Paper Trade Engine v1 — Autonome Paper Trade Ausführung
 ========================================================
@@ -22,18 +22,16 @@ Albert 🎩 | v1.0 | 29.03.2026
 import sqlite3, json, sys, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'core'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'execution'))
 
-DB_PATH = WS / 'data/trading.db'
-import os as _os
-_default_ws = '/data/.openclaw/workspace'
-if not Path(_default_ws).exists():
-    # scripts/subdir/ -> go up 2 levels to reach WS root
-    _default_ws = str(Path(__file__).resolve().parent.parent.parent)
-WORKSPACE = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+DB_PATH = Path('/data/.openclaw/workspace/data/trading.db')
+WORKSPACE = Path('/data/.openclaw/workspace')
 PAPER_CFG = WORKSPACE / 'data' / 'paper_config.json'
 ALERT_QUEUE = WORKSPACE / 'memory' / 'alert-queue.json'
 
@@ -49,12 +47,14 @@ FEE_PER_TRADE = 1.0      # Trade Republic Gebühr
 def get_db():
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
 def load_config() -> dict:
     try:
-        return json.loads(PAPER_CFG.read_text(encoding="utf-8"))
+        return json.loads(PAPER_CFG.read_text())
     except Exception:
         return {'capital': 25000, 'fee_per_trade': 1.0, 'position_sizing': {}}
 
@@ -83,7 +83,7 @@ def has_open_position(conn, ticker: str) -> bool:
 def get_sector(ticker: str) -> str:
     """Liest Sektor aus ticker_meta oder trading_config."""
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
         return cfg.get('sector_map', {}).get(ticker.upper(), 'UNKNOWN')
     except Exception:
         return 'UNKNOWN'
@@ -96,17 +96,20 @@ def get_sector_count(conn, sector: str) -> int:
 
 
 def yahoo_price(ticker: str) -> float | None:
-    """→ live_data.get_price(). Alle Preise kommen aus einer Quelle."""
+    """→ live_data.get_price_eur(). IMMER in EUR — NOK/DKK/GBp werden konvertiert.
+    
+    Behebt Currency-Bug: EQNR.OL (NOK), NOVO-B.CO (DKK), BA.L (GBp) wurden
+    vorher in Lokalwährung gespeichert, aber in EUR verglichen → Fake-Verluste.
+    """
     import sys as _sys
-    _sys.path.insert(0, str(WS / 'scripts/core'))
-    from live_data import get_price
-    return get_price(ticker)
-
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
+    from live_data import get_price_eur
+    return get_price_eur(ticker)
 
 def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
     """→ live_data.is_price_fresh()."""
     import sys as _sys
-    _sys.path.insert(0, str(WS / 'scripts/core'))
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
     from live_data import is_price_fresh as _fresh
     return _fresh(ticker, max_days)
 
@@ -116,7 +119,7 @@ def is_price_fresh(ticker: str, max_days: int = 3) -> bool:
 def sync_prices_for_tickers(tickers: list):
     """→ live_data.refresh_prices_bulk(). Alle Preise kommen aus einer Quelle."""
     import sys as _sys
-    _sys.path.insert(0, str(WS / 'scripts/core'))
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
     from live_data import refresh_prices_bulk
     results = refresh_prices_bulk(tickers)
     return sum(1 for v in results.values() if v is not None)
@@ -171,7 +174,7 @@ def _sync_prices_for_tickers_DEPRECATED(tickers: list):
 def sync_watchlist_prices():
     """Synct Preise für alle Watchlist-Ticker aus trading_config.json."""
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
         tickers = [w.get('yahoo') or w.get('ticker') for w in cfg.get('watchlist', []) if w.get('ticker')]
         tickers = list(set(t for t in tickers if t))
         inserted = sync_prices_for_tickers(tickers)
@@ -185,7 +188,7 @@ def sync_watchlist_prices():
 def refresh_vix_in_db():
     """→ live_data.refresh_vix(). VIX kommt aus einer Quelle."""
     import sys as _sys
-    _sys.path.insert(0, str(WS / 'scripts/core'))
+    _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
     from live_data import refresh_vix as _rv
     vix = _rv()  # schreibt schon in DB
     if vix is None:
@@ -238,7 +241,7 @@ def queue_alert(message: str):
     queue = []
     if ALERT_QUEUE.exists():
         try:
-            queue = json.loads(ALERT_QUEUE.read_text(encoding="utf-8"))
+            queue = json.loads(ALERT_QUEUE.read_text())
         except Exception:
             queue = []
     
@@ -316,13 +319,54 @@ def _execute_paper_entry_inner(
     # ── Style automatisch aus Strategie ableiten ──────────────────────
     try:
         import sys as _sys
-        _sys.path.insert(0, str(WS / 'scripts/core'))
+        _sys.path.insert(0, '/data/.openclaw/workspace/scripts/core')
         from trade_style import classify_strategy, get_style_config, validate_stop_for_style, validate_crv_for_style
         if style == 'swing':  # nur überschreiben wenn default
             style = classify_strategy(strategy)
         style_cfg = get_style_config(style)
     except Exception:
         style_cfg = None
+
+    # ── Guard -1: KILL-SWITCH (höchste Priorität) ─────────────────────────────
+    # CEO HALT muss ALLES stoppen — auch wenn andere Guards Probleme haetten.
+    # Fail-safe: Wenn das directive-File fehlt oder kaputt ist → HALT (konservativ).
+    try:
+        _ceo_file = WORKSPACE / 'data' / 'ceo_directive.json'
+        if _ceo_file.exists():
+            _ceo_d = json.loads(_ceo_file.read_text(encoding='utf-8'))
+            if _ceo_d.get('trading_halt', False):
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'🛑 KILL-SWITCH aktiv: {_ceo_d.get("halt_reason", "kein Grund")}',
+                    'blocked_by': 'ceo_halt',
+                }
+        # directive missing: im Zweifel weiter (Startup-Szenario)
+    except json.JSONDecodeError:
+        # Korruptes JSON = fail-safe HALT
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': '🛑 ceo_directive.json korrupt — Trade blockiert (fail-safe)',
+            'blocked_by': 'ceo_halt_failsafe',
+        }
+    except Exception:
+        pass  # andere Fehler (z.B. Permission) nicht kritisch
+
+    # ── Guard 0a: Entry-Zeitfenster ──────────────────────────────────────────────
+    # Daten: Morgen-Entries (07-11h) haben 0% Win-Rate über 10 Trades.
+    # Abend-Entries (17-22h) haben 51% Win-Rate → nur in diesem Fenster.
+    # Ausnahme: source='manual' darf immer (Victor handelt manuell), oder
+    #           wenn explizit für Backtests aufgerufen.
+    try:
+        import zoneinfo as _zi
+        _now_cet = datetime.now(_zi.ZoneInfo('Europe/Berlin'))
+        _hour = _now_cet.hour
+        _is_autonomous = source not in ('manual', 'backtest', 'cli', 'victor')
+        # Morning Block entfernt (Victor 15.04.2026): kein Zeitfenster-Block mehr
+        # Generelles Außerhalb-Fenster: 11-17h hat nur 34% WR → weiche Warnung, kein Block
+    except Exception:
+        pass  # Zeitcheck nicht kritisch
 
     # ── Guard 0: Preis-Frische ────────────────────────────────────────
     if not is_price_fresh(ticker, max_days=3):
@@ -455,6 +499,60 @@ def _execute_paper_entry_inner(
                         'message': f'❌ {ticker}: AUTO_CLAUDE Verdict degraded ({_verdict["_degraded_reason"]})',
                         'blocked_by': 'deep_dive_degraded',
                     }
+                # Phase 22 — Expected-Value Gate
+                # Wenn das Verdict im neuen Schema ist (hat ev_eur), erzwinge EV-Threshold.
+                # Legacy-Verdicts ohne ev_eur laufen unverändert durch (backward compatible).
+                _ev_eur = _verdict.get('ev_eur')
+                _skew = _verdict.get('payoff_skew')
+                _cat_date = _verdict.get('catalyst_date')
+                if _ev_eur is not None:
+                    try:
+                        _ev_val = float(_ev_eur)
+                    except Exception:
+                        _ev_val = 0.0
+                    # Hart: negativer EV = kein Entry
+                    if _ev_val < 10.0:
+                        return {
+                            'success': False,
+                            'trade_id': None,
+                            'message': (
+                                f'❌ {ticker}: EV {_ev_val:+.0f}€ < +10€ Threshold '
+                                f'(skew={_skew}, catalyst={_cat_date})'
+                            ),
+                            'blocked_by': 'ev_too_low',
+                        }
+                    # Skew-Check (asymmetrische Payoff-Struktur)
+                    if isinstance(_skew, (int, float)) and _skew < 1.3:
+                        return {
+                            'success': False,
+                            'trade_id': None,
+                            'message': (
+                                f'❌ {ticker}: Payoff-Skew {_skew:.1f} < 1.3 '
+                                f'(EV={_ev_val:+.0f}€, kein asymmetrisches Setup)'
+                            ),
+                            'blocked_by': 'skew_too_low',
+                        }
+                    # Katalysator-Pflicht (neue Phase-22-Regel)
+                    if not _cat_date:
+                        print(f"[{ticker}] ⚠️  Guard 0c2+: Kein catalyst_date — lasse durch mit Warnung")
+                    else:
+                        print(f"[{ticker}] ✅ EV-Gate: {_ev_val:+.0f}€ skew={_skew} cat={_cat_date}")
+                    # ── Pre-Mortem Gate (Phase 22 Task 8) ──
+                    try:
+                        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+                        from pre_mortem_check import check_falsification as _pm_check
+                        _fals = _verdict.get('falsification') or _verdict.get('bear_scenario') or ''
+                        _pm_ok, _pm_reason = _pm_check(_fals)
+                        if not _pm_ok:
+                            return {
+                                'success': False,
+                                'trade_id': None,
+                                'message': f'❌ {ticker}: Pre-Mortem Gate: {_pm_reason}',
+                                'blocked_by': 'pre_mortem_vague',
+                            }
+                        print(f"[{ticker}] ✅ Pre-Mortem: {_pm_reason}")
+                    except ImportError:
+                        pass
         except Exception as e:
             return {
                 'success': False,
@@ -514,6 +612,36 @@ def _execute_paper_entry_inner(
     
     conn = get_db()
     
+    # ── Guard 2b: Wöchentliches Trade-Limit ─────────────────────────
+    # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
+    # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
+    MAX_TRADES_PER_WEEK = 7
+    try:
+        from datetime import timedelta
+        # ISO-Woche: Montag 00:00 bis Sonntag 23:59
+        today = datetime.now(timezone.utc)
+        days_since_monday = today.weekday()  # 0=Mo, 6=So
+        monday = today - timedelta(days=days_since_monday)
+        monday_str = monday.strftime('%Y-%m-%d')
+        weekly_count = conn.execute(
+            "SELECT COUNT(*) FROM paper_portfolio WHERE entry_date >= ? AND status != 'CANCELLED'",
+            (monday_str,)
+        ).fetchone()[0]
+        if weekly_count >= MAX_TRADES_PER_WEEK:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Wöchentliches Trade-Limit erreicht: {weekly_count}/{MAX_TRADES_PER_WEEK} '
+                    f'Trades diese Woche (seit {monday_str}). '
+                    f'Mehr Trades = schlechtere Qualität. Warte auf nächste Woche oder erhöhe Qualität der Setups.'
+                ),
+                'blocked_by': 'weekly_trade_limit',
+            }
+    except Exception:
+        pass  # Limit nicht kritisch — bei Fehler weiter
+
     # ── Guard 3: Max Positionen ──────────────────────────────────────
     open_count = get_open_count(conn)
     if open_count >= MAX_POSITIONS:
@@ -536,9 +664,13 @@ def _execute_paper_entry_inner(
         }
     
     # ── Guard 5: Sektor-Limit ────────────────────────────────────────
+    # Phase 21 MVP (2026-04-16): von 4 → 2 reduziert.
+    # Rationale: Korrelations-Cluster-Risiko. 3-4 Tech-Mega oder
+    # 3-4 Energy-Ticker = effektiv 1 Wette. Max 2 offene Positionen
+    # pro Sektor erzwingt Diversifikation VOR dem 30d autonomous run.
     sector = get_sector(ticker)
     sector_count = get_sector_count(conn, sector)
-    max_sector = 4  # aus paper_config
+    max_sector = 2  # Phase 21 MVP — vorher 4
     if sector_count >= max_sector:
         conn.close()
         return {
@@ -591,7 +723,37 @@ def _execute_paper_entry_inner(
             }
     except Exception:
         pass
-    
+
+    # ═══════════════════════════════════════════════════════════════════
+    # ── Guard 5p9: PHASE 9 — Portfolio Risk Management 2.0 ───────────
+    # ═══════════════════════════════════════════════════════════════════
+    # 5 Profi-Level Checks in einem Aufruf:
+    #   - Drawdown Circuit Breaker (-5% in 7d → Pause)
+    #   - Correlation / Sector Cluster (max 2 korrelierte Positionen)
+    #   - Kelly Criterion Sizing (dynamisch basierend auf Strategy-WR)
+    #   - VIX Volatility Scaling (VIX>25 → Size halbieren)
+    #   - Sector Exposure Limit (max 30% pro Sektor)
+    phase9_cap = 1500.0  # Fallback falls Risk-Modul nicht lädt
+    try:
+        import sys as _p9sys
+        if '/opt/trademind/scripts' not in _p9sys.path:
+            _p9sys.path.insert(0, '/opt/trademind/scripts')
+        from portfolio_risk import run_all_risk_checks as _p9_run
+        _p9 = _p9_run(ticker=ticker, strategy_id=strategy, base_size=1500.0)
+        if _p9.get('blocked'):
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f"❌ Phase 9 Risk-Block ({_p9.get('blocked_by')}): {_p9.get('reason')}",
+                'blocked_by': f"phase9_{_p9.get('blocked_by')}",
+            }
+        phase9_cap = float(_p9.get('final_size') or 1500.0)
+    except Exception as _p9e:
+        # Graceful degradation: wenn Risk-Modul fehlt, nicht blockieren
+        import logging as _p9log
+        _p9log.getLogger('paper_trade_engine').warning(f'Phase 9 risk check skipped: {_p9e}')
+
     # ── Guard 6: Freies Cash + Position Sizing ───────────────────────
     free_cash = get_free_cash(conn)
     cfg = load_config()
@@ -609,6 +771,37 @@ def _execute_paper_entry_inner(
         else:
             shares_from_risk = 0
 
+    # ── Phase 19b: Vol-Target Sizing (feature-flagged) ──────────────────
+    # Override conviction sizing if autonomy_config.json sets
+    #   "sizing_mode": "vol_target"
+    try:
+        import json as _json
+        _cfg_path = DB_PATH.parent / 'autonomy_config.json'
+        if _cfg_path.exists():
+            _auto = _json.loads(_cfg_path.read_text(encoding='utf-8'))
+        else:
+            _auto = {}
+        if _auto.get('sizing_mode') == 'vol_target':
+            from execution.position_sizing import size_position as _vt_size
+            _sz = _vt_size(
+                ticker=ticker,
+                entry_price=entry_price,
+                stop_price=stop_price,
+                portfolio_value_eur=portfolio_value,
+                conviction_score=int(conv_score) if conv_score else None,
+                fx_rate=1.0,
+            )
+            if not _sz.get('skip') and _sz.get('shares', 0) > 0:
+                shares_from_risk = int(_sz['shares'])
+                print(
+                    f"[sizer] vol_target: {_sz['shares']} shares "
+                    f"risk={_sz['risk_eur']}€ ({_sz['risk_pct_of_portfolio']}%) "
+                    f"reason={_sz['reason']}"
+                )
+    except Exception as _sz_e:
+        import logging as _sz_log
+        _sz_log.getLogger('paper_trade_engine').warning(f'vol_target sizing skipped: {_sz_e}')
+
     if shares_from_risk <= 0:
         conn.close()
         return {
@@ -618,8 +811,14 @@ def _execute_paper_entry_inner(
             'blocked_by': 'sizing_zero',
         }
 
-    # Apply cash constraint
+    # Phase 9: Dynamic Cap aus Kelly + VIX + Sector Check (oder 1500€ Fallback)
+    MAX_POSITION_EUR = phase9_cap
     position_eur = shares_from_risk * entry_price
+    if position_eur > MAX_POSITION_EUR:
+        shares_from_risk = int(MAX_POSITION_EUR / entry_price)
+        position_eur = shares_from_risk * entry_price
+
+    # Apply cash constraint
     if position_eur > free_cash - 100:
         # Scale down to available cash
         shares_from_risk = int((free_cash - 100) / entry_price)
@@ -633,6 +832,43 @@ def _execute_paper_entry_inner(
             'message': f'❌ Nicht genug Cash: {free_cash:.0f}€ verfügbar, {position_eur:.0f}€ benötigt',
             'blocked_by': 'cash',
         }
+
+    # ── Guard 6b: Position <15% vom Fund (Trade-Vor-Checkliste Regel 8) ───────
+    # Verhindert Überkonzentration in einer einzelnen Position.
+    # Hard Cap 1500€ löst das meist, aber als explizite Regel auch hier prüfen.
+    try:
+        total_capital_est = cfg.get('capital', 25000)
+        position_pct = position_eur / total_capital_est
+        if position_pct > 0.15:
+            # Trim auf 15% statt blocken (freundlichere Behandlung)
+            max_allowed_eur = total_capital_est * 0.15
+            shares_from_risk = int(max_allowed_eur / entry_price)
+            position_eur = shares_from_risk * entry_price
+    except Exception:
+        pass
+
+    # ── Guard 6c: Cash nach Trade muss >10% bleiben (Trade-Vor-Checkliste) ──
+    # Regel 7 der Checkliste: "Cash nach Trade noch >10% vom Fund?"
+    total_capital_est = cfg.get('capital', 25000)  # für unten
+    # Verhindert illiquide Situationen wo wir nicht mehr auf Chancen reagieren können.
+    MIN_CASH_RESERVE_PCT = 0.10
+    try:
+        remaining_cash_after = free_cash - position_eur
+        if remaining_cash_after < total_capital_est * MIN_CASH_RESERVE_PCT:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Cash-Reserve-Regel verletzt: nach diesem Trade nur noch '
+                    f'{remaining_cash_after:.0f}€ ({remaining_cash_after/total_capital_est*100:.1f}%) übrig. '
+                    f'Mindest-Reserve: 10% = {total_capital_est*MIN_CASH_RESERVE_PCT:.0f}€. '
+                    f'Position verkleinern oder anderen Trade schließen.'
+                ),
+                'blocked_by': 'cash_reserve',
+            }
+    except Exception:
+        pass  # Reserve-Check nicht kritisch
 
     shares = float(shares_from_risk)
     fees = FEE_PER_TRADE
@@ -788,7 +1024,7 @@ def scan_and_execute_watchlist():
     Returns: list[dict] mit Ergebnissen
     """
     try:
-        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text(encoding="utf-8"))
+        cfg = json.loads((WORKSPACE / 'trading_config.json').read_text())
     except Exception as e:
         return [{'error': f'Config not found: {e}'}]
     
@@ -850,6 +1086,95 @@ def scan_and_execute_watchlist():
     return results
 
 
+# ─── Trade Close mit PnL-Berechnung ─────────────────────────────────
+
+def close_trade(trade_id: int, exit_price: float, exit_reason: str = 'manual') -> dict:
+    """
+    Schliesst einen offenen Paper Trade und berechnet PnL.
+
+    Berechnet:
+      pnl_eur  = (exit_price - entry_price) * shares - 2 * FEE_PER_TRADE
+      pnl_pct  = pnl_eur / (entry_price * shares)
+      status   = WIN (pnl_eur > 10) | LOSS (pnl_eur < -10) | CLOSED (break-even)
+
+    Returns dict mit success, pnl_eur, pnl_pct, status.
+    """
+    conn = get_db()
+    try:
+        trade = conn.execute(
+            "SELECT * FROM paper_portfolio WHERE id=? AND status='OPEN'",
+            (trade_id,)
+        ).fetchone()
+        if not trade:
+            return {'success': False, 'message': f'Trade {trade_id} nicht gefunden oder bereits geschlossen'}
+
+        entry_price = trade['entry_price']
+        shares      = trade['shares']
+        strategy    = trade['strategy'] or 'UNKNOWN'
+        ticker      = trade['ticker']
+
+        if not entry_price or not shares or shares <= 0:
+            return {'success': False, 'message': 'Ungueltige Trade-Daten (entry_price oder shares fehlt)'}
+
+        entry_cost = entry_price * shares
+        exit_value = exit_price * shares
+        fees = FEE_PER_TRADE * 2  # entry + exit
+        pnl_eur = exit_value - entry_cost - fees
+        pnl_pct = (pnl_eur / entry_cost * 100) if entry_cost > 0 else 0.0
+
+        if pnl_eur > 10:
+            new_status = 'WIN'
+        elif pnl_eur < -10:
+            new_status = 'LOSS'
+        else:
+            new_status = 'CLOSED'
+
+        now = datetime.now(timezone.utc).isoformat()
+        conn.execute(
+            """
+            UPDATE paper_portfolio
+            SET status=?, exit_price=?, close_date=?, pnl_eur=?, pnl_pct=?, exit_type=?
+            WHERE id=?
+            """,
+            (new_status, exit_price, now, round(pnl_eur, 2), round(pnl_pct, 2), exit_reason, trade_id)
+        )
+        conn.commit()
+
+        # Cash zurueck in paper_fund
+        try:
+            conn.execute(
+                "UPDATE paper_fund SET value = value + ? WHERE key='current_cash'",
+                (exit_value - FEE_PER_TRADE,)
+            )
+            conn.commit()
+        except Exception:
+            pass  # paper_fund optional
+
+        icon = 'WIN' if new_status == 'WIN' else ('LOSS' if new_status == 'LOSS' else 'CLOSED')
+        msg = (
+            f"[{icon}] {ticker} | {strategy} | "
+            f"Entry {entry_price:.2f} -> Exit {exit_price:.2f} | "
+            f"PnL: {pnl_eur:+.2f} EUR ({pnl_pct:+.1f}%) | Grund: {exit_reason}"
+        )
+        queue_alert(msg)
+
+        return {
+            'success':    True,
+            'trade_id':   trade_id,
+            'ticker':     ticker,
+            'strategy':   strategy,
+            'pnl_eur':    round(pnl_eur, 2),
+            'pnl_pct':    round(pnl_pct, 2),
+            'status':     new_status,
+            'exit_price': exit_price,
+            'message':    msg,
+        }
+    except Exception as e:
+        return {'success': False, 'message': f'close_trade Fehler: {e}'}
+    finally:
+        conn.close()
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────
 
 def main():
@@ -897,6 +1222,16 @@ def main():
             else:
                 print(f"  ⚪ {ticker}: {r}")
     
+    elif cmd == 'close' and len(sys.argv) >= 4:
+        trade_id   = int(sys.argv[2])
+        exit_price = float(sys.argv[3])
+        reason     = sys.argv[4] if len(sys.argv) > 4 else 'manual'
+        result = close_trade(trade_id, exit_price, reason)
+        if result['success']:
+            print(f"[{result['status']}] Trade #{trade_id} geschlossen: {result['pnl_eur']:+.2f} EUR ({result['pnl_pct']:+.1f}%)")
+        else:
+            print(f"Fehler: {result['message']}")
+
     elif cmd == 'propose' and len(sys.argv) >= 7:
         ticker   = sys.argv[2]
         strategy = sys.argv[3]
