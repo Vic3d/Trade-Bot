@@ -116,6 +116,8 @@ SCHEDULE = [
     ('Thesis Generator',    'thesis_generator.py',              [],                19, 15, [0,1,2,3,4], True),
     ('Discovery Price BF',  'discovery/price_backfill.py',      [],                19, 22, [0,1,2,3,4], False),
     ('Thesis Graveyard',    'thesis_graveyard.py',              [],                23, 30, None,        True),
+    # ── Phase 22.1: Portfolio Circuit Breaker — Tages-Snapshot vor Schluss ────
+    ('Equity Snapshot',     'portfolio_circuit_breaker.py',     ['--record-close'], 21, 45, None,      False),
     # Phase 7.14 — Auto-Deep-Dive via Claude API (sonnet)
     # Mo-Fr 07:30: full run (offene Positionen + Entry-Kandidaten)
     ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              7,  30, [0,1,2,3,4], True),
@@ -138,6 +140,9 @@ SCHEDULE = [
 _GEO_HOURS = list(range(7, 24))  # 07-23 CET
 SCHEDULE += [('Iran Peace Watch', 'iran_peace_watch.py', [], h, 5, None) for h in _GEO_HOURS]
 SCHEDULE += [('Trump Watch',      'trump_watch.py',      [], h, 15, None) for h in _GEO_HOURS]
+# Phase 22.1 — Event-Auto-Exit: laeuft 5 Min nach jedem Watch-Job (x:20),
+# prueft auf neue Signale und triggert force_close bei betroffenen Thesen.
+SCHEDULE += [('Event Auto-Exit', 'event_auto_exit.py', [], h, 20, None) for h in _GEO_HOURS]
 SCHEDULE += [
     # ── Thesis Monitoring: 24/7 — Kill-Trigger kennen keine Marktzeiten ────────
     # Asien-Session (00:00-06:00 UTC) — alle 2h

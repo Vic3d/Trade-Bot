@@ -493,6 +493,36 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
+        # HARD STOP 1c (Phase 22.1): Event-Auto-Exit-Queue
+        # Wenn dieser Ticker im force_exit_queue.json steht, sofort schliessen.
+        # ══════════════════════════════════════════════════════════════════
+        try:
+            _queue_path = WS / 'data' / 'force_exit_queue.json'
+            if _queue_path.exists():
+                _q = json.loads(_queue_path.read_text(encoding='utf-8'))
+                _entries = _q.get('entries', [])
+                _hit = next((e for e in _entries
+                             if e.get('ticker','').upper() == ticker.upper()
+                             and not e.get('consumed')), None)
+                if _hit:
+                    _reason = _hit.get('reason', 'event_auto_exit')
+                    pnl = close_position(conn, trade_id, price, _reason.upper(), entry, shares, fees)
+                    closed_records.append(
+                        f"EVENT_AUTO_EXIT {ticker} | {_reason} | PnL: {pnl:+.2f}EUR"
+                    )
+                    send_alert(
+                        f"⚡ **EVENT-AUTO-EXIT**: {ticker}\n"
+                        f"Grund: {_reason}\n"
+                        f"Entry={entry:.2f} → Close={price:.2f} | PnL: {pnl:+.2f}EUR"
+                    )
+                    _hit['consumed'] = True
+                    _hit['consumed_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+                    _queue_path.write_text(json.dumps(_q, indent=2, ensure_ascii=False), encoding='utf-8')
+                    continue
+        except Exception as _qe:
+            print(f"[exit-manager] force_exit_queue Fehler (skip): {_qe}")
+
+        # ══════════════════════════════════════════════════════════════════
         # HARD STOP 2: Thesis INVALIDATED
         # ══════════════════════════════════════════════════════════════════
         if is_thesis_invalidated(strategy):

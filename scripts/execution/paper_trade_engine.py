@@ -353,6 +353,29 @@ def _execute_paper_entry_inner(
     except Exception:
         pass  # andere Fehler (z.B. Permission) nicht kritisch
 
+    # ── Guard 0 (Phase 22.1): Portfolio Circuit Breaker ─────────────────────────
+    # Blockiert ALLE neuen Entries wenn Tages-/Monats-DD zu hoch wird.
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from portfolio_circuit_breaker import check as _cb_check
+        _cb = _cb_check()
+        if _cb.get('status') == 'halt':
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'🛑 {ticker}: Portfolio Circuit Breaker HALT — '
+                    + '; '.join(_cb.get('reasons', []))
+                ),
+                'blocked_by': 'circuit_breaker_halt',
+                'drawdowns': _cb.get('drawdowns'),
+            }
+        elif _cb.get('status') == 'warn':
+            print(f"[{ticker}] ⚠️  Circuit-Breaker WARN: {_cb.get('reasons')}")
+    except Exception as _cb_err:
+        # Fail-open: wenn Breaker selbst crasht, Trade darf durch (logged)
+        print(f"[circuit-breaker] Check-Fehler (lasse durch): {_cb_err}")
+
     # ── Guard 0a: Entry-Zeitfenster ──────────────────────────────────────────────
     # Daten: Morgen-Entries (07-11h) haben 0% Win-Rate über 10 Trades.
     # Abend-Entries (17-22h) haben 51% Win-Rate → nur in diesem Fenster.
