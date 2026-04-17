@@ -81,6 +81,8 @@ SCHEDULE = [
     # Market Scanner + Earnings nur Mo-Fr (Maerkte geschlossen am WE)
     ('Discovery Market',    'discovery/market_scanner.py',        [],             6,  15, [0,1,2,3,4], False),
     ('Discovery Earnings',  'discovery/earnings_calendar.py',     [],             6,  30, [0,1,2,3,4], False),
+    # Price-Backfill: laedt Historie fuer neu discovered Tickers (Auto-DD braucht >=60d)
+    ('Discovery Price BF',  'discovery/price_backfill.py',        [],             6,  45, [0,1,2,3,4], False),
     # Pipeline: nach Auto-DD (07:30) — promoted/rejected auf Basis der neuen Verdikts
     ('Discovery Pipeline',  'discovery/discovery_pipeline.py',    [],             12, 0,  [0,1,2,3,4], True),
     # ── Overnight Events sammeln — 24/7, auch Asien-Session ────────────────
