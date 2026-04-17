@@ -220,6 +220,21 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
                 try:
                     import sys as _sys
                     _sys.path.insert(0, str(WS / 'scripts'))
+                    # Erst Preis-Backfill sicherstellen (Auto-DD braucht >=60 Tage)
+                    try:
+                        import sqlite3 as _sql
+                        from discovery.price_backfill import count_prices as _cp, backfill_ticker as _bt
+                        _db = WS / 'data' / 'trading.db'
+                        _conn = _sql.connect(str(_db))
+                        try:
+                            if _cp(_conn, ticker) < 60:
+                                _n = _bt(_conn, ticker, years=1)
+                                print(f'  ↳ backfill {ticker}: +{_n} Zeilen')
+                        finally:
+                            _conn.close()
+                    except Exception as _be:
+                        print(f'  ! Backfill-Fehler {ticker}: {str(_be)[:100]}')
+
                     from intelligence.auto_deep_dive import run as _run_dd  # type: ignore
                     # force=True wenn vorhandenes Verdict nur Rule-basiert ist
                     # (sonst skippt auto_deep_dive mit "Verdict noch frisch")
