@@ -489,6 +489,70 @@ def print_report(result: dict):
 
 # ── Integration: Online Model Feature-Gewichtung ──────────────────────────────
 
+def bridge_to_conviction_weights(composite: dict) -> dict | None:
+    """K9 — Feature-Importance → Conviction-Weights Brücke.
+    Aggregiert Feature-Scores zu den 4 Conviction-Faktoren und schreibt
+    data/conviction_weights.json (wenn die Datei nicht in den letzten
+    7 Tagen schon vom daily_learning_cycle aktualisiert wurde).
+
+    Mapping:
+      technical      ← rsi_at_entry, volume_ratio, atr_pct_at_entry, ma50_distance
+      market_context ← vix_at_entry, hmm_regime, spy_5d_return, sector_momentum
+      thesis         ← (kein Feature im Set; bleibt Default)
+      risk_reward    ← (kein Feature im Set; bleibt Default)
+    """
+    try:
+        from datetime import datetime as _dt, timezone as _tz
+        out_path = WS / 'data' / 'conviction_weights.json'
+
+        # Schreibe nur wenn aktuelle Datei älter als 7 Tage (daily_learning hat Vorrang)
+        try:
+            if out_path.exists():
+                age_d = (_dt.now().timestamp() - out_path.stat().st_mtime) / 86400.0
+                if age_d < 7:
+                    return None  # daily_learning hat es schon kürzlich aktualisiert
+        except Exception:
+            pass
+
+        tech_keys = ['rsi_at_entry', 'volume_ratio', 'atr_pct_at_entry', 'ma50_distance']
+        mkt_keys = ['vix_at_entry', 'hmm_regime', 'spy_5d_return', 'sector_momentum']
+        tech_scores = [composite[k] for k in tech_keys if k in composite]
+        mkt_scores = [composite[k] for k in mkt_keys if k in composite]
+        if not tech_scores or not mkt_scores:
+            return None
+
+        avg_tech = sum(tech_scores) / len(tech_scores)
+        avg_mkt = sum(mkt_scores) / len(mkt_scores)
+        # Defaults: thesis=35, technical=30, risk_reward=20, market_context=15
+        # Adjust ±5pt basierend auf relativer Wichtigkeit von tech vs mkt
+        ratio = avg_tech / (avg_tech + avg_mkt) if (avg_tech + avg_mkt) > 0 else 0.5
+        # ratio > 0.5 → tech wichtiger → mehr Gewicht auf technical
+        tech_w = max(20, min(40, round(30 + (ratio - 0.5) * 20)))
+        mkt_w = max(10, min(25, round(15 + (0.5 - ratio) * 20)))
+        # Constraint: Summe = 100
+        thesis_w = 35
+        rr_w = 100 - tech_w - mkt_w - thesis_w
+        rr_w = max(15, min(25, rr_w))
+        # final balance
+        thesis_w = 100 - tech_w - mkt_w - rr_w
+
+        weights = {'thesis': thesis_w, 'technical': tech_w,
+                   'risk_reward': rr_w, 'market_context': mkt_w}
+
+        out = {
+            'weights': weights,
+            'computed_at': _dt.now(_tz.utc).isoformat(),
+            'source': 'feature_importance_bridge_K9',
+            'feature_avg_tech': round(avg_tech, 3),
+            'feature_avg_mkt': round(avg_mkt, 3),
+        }
+        out_path.write_text(json.dumps(out, indent=2, ensure_ascii=False))
+        return out
+    except Exception as e:
+        print(f'[bridge_to_conviction_weights] error: {e}')
+        return None
+
+
 def export_feature_weights(composite: dict) -> dict:
     """
     Konvertiert Composite Scores in Feature-Gewichte für Online Model.
@@ -525,3 +589,13 @@ if __name__ == '__main__':
         weights_file = WS / 'data/feature_weights.json'
         weights_file.write_text(json.dumps(weights, indent=2))
         print(f"\n✅ Feature-Gewichte gespeichert: data/feature_weights.json")
+
+        # K9 — Feature-Importance → Conviction-Weights Brücke
+        bridged = bridge_to_conviction_weights(result['composite_scores'])
+        if bridged:
+            w = bridged['weights']
+            print(f"✅ Conviction-Weights aktualisiert (K9-Bridge): "
+                  f"thesis={w['thesis']} technical={w['technical']} "
+                  f"risk_reward={w['risk_reward']} market_context={w['market_context']}")
+        else:
+            print("ℹ️  Conviction-Weights NICHT überschrieben (daily_learning hat Vorrang oder zu wenig Daten)")

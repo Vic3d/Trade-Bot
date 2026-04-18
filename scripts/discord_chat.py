@@ -492,6 +492,40 @@ Entscheidung triffst. Bei reinen Fragen/Analysen keine Marker.
 """
 
 
+def _enrich_with_memory(message: str) -> str:
+    """K2 — Memory-Index Reader: wenn Victor einen Ticker erwähnt,
+    hängt Albert historische Memory-Insights + Victor-Trust an den Kontext."""
+    import re as _re
+    extra = []
+    ticker_re = _re.compile(r'\b([A-Z]{2,5}(?:\.[A-Z]{1,3})?)\b')
+    BL = {'AND','THE','FOR','BUT','NOT','EUR','USD','VIX','CEO','OK','AI','ML','DB','API'}
+    candidates = [t for t in set(ticker_re.findall(message or '')) if t not in BL and len(t) >= 2]
+    if not candidates:
+        return ''
+    # Memory-Index abfragen
+    try:
+        sys.path.insert(0, str(SCRIPTS))
+        from memory_index import query as _mem_query
+        for tk in candidates[:3]:
+            hits = _mem_query(ticker=tk)[-5:]
+            if hits:
+                extra.append(f'\n--- MEMORY-HITS zu {tk} (letzte {len(hits)}) ---')
+                for h in hits:
+                    extra.append(f"  {h.get('date','?')} | {h.get('file','?')}: {h.get('headline','')[:100]}")
+    except Exception as e:
+        print(f'[Albert] memory-enrich fail: {e}', flush=True)
+    # Victor-Trust anhängen
+    try:
+        from victor_feedback import get_trust_malus as _gm
+        for tk in candidates[:3]:
+            mal, reason = _gm(ticker=tk)
+            if mal != 0 and reason:
+                extra.append(f'  TRUST({tk}): {reason} → Score-Δ {mal:+.1f}')
+    except Exception:
+        pass
+    return '\n'.join(extra)
+
+
 def ask_albert(message: str) -> str:
     """
     Ruft Claude API mit Alberts Persona + aktuellem Kontext auf.
@@ -516,6 +550,10 @@ def ask_albert(message: str) -> str:
         import anthropic
 
         context = load_context()
+        # K2 — Ticker-spezifische Memory-Hits + Victor-Trust anhängen
+        mem_extra = _enrich_with_memory(message)
+        if mem_extra:
+            context = f'{context}\n{mem_extra}'
         system_prompt = f'{ALBERT_PERSONA}\n\n{context}'
 
         client = anthropic.Anthropic(api_key=api_key)

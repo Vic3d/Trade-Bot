@@ -62,6 +62,37 @@ def record_thesis_kill(strategy: str, ticker: str, reason: str, exit_pnl: float 
     except Exception as e:
         print(f"[record_thesis_kill] error: {e}")
 
+    # K3 — Zusätzlich persistent in strategy_dna.json (überlebt 48h-Fenster)
+    try:
+        dna_path = WS / 'data' / 'strategy_dna.json'
+        dna = {}
+        if dna_path.exists():
+            try:
+                dna = json.loads(dna_path.read_text(encoding='utf-8'))
+            except Exception:
+                dna = {}
+        sid = (strategy or 'UNKNOWN').upper()
+        entry = dna.get(sid, {}) if isinstance(dna.get(sid), dict) else {}
+        entry['kill_count'] = int(entry.get('kill_count', 0)) + 1
+        entry['last_kill_at'] = datetime.now(timezone.utc).isoformat()
+        entry['last_kill_ticker'] = (ticker or '').upper()
+        entry['last_kill_pnl'] = round(float(exit_pnl), 2)
+        entry['last_kill_reason'] = reason[:200]
+        dna[sid] = entry
+        dna_path.write_text(json.dumps(dna, indent=2, ensure_ascii=False), encoding='utf-8')
+    except Exception as e:
+        print(f"[record_thesis_kill] dna persist error: {e}")
+
+    # K4 — Proaktiv Victor via Discord informieren
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from discord_sender import send as _send
+        _send(f"🛑 **Thesis INVALIDATED** — {strategy}/{ticker} @ PnL {exit_pnl:+.0f}€\n"
+              f"Grund: {reason[:160]}\n48h-Quarantäne aktiv.")
+    except Exception as e:
+        print(f"[record_thesis_kill] discord notify error: {e}")
+
 # ─── Thesis-aware hold times (min_days, max_days) ────────────────────────────
 
 HOLD_LIMITS = {

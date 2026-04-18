@@ -134,6 +134,22 @@ def sync_recommendations_to_db(learnings: dict | None) -> dict:
         print(f"  🔄 Learning→DB Sync: {synced} updates")
         for a in actions[:10]:
             print(f"     {a}")
+        # K4 — Discord-Notify für SUSPEND/ELEVATE (sonst nur in albert-accuracy.md)
+        try:
+            from discord_sender import send as _send
+            _suspended = [a for a in actions if a.startswith('DEGRADED')]
+            _elevated = [a for a in actions if a.startswith('ACTIVATED')]
+            lines = []
+            if _suspended:
+                lines.append(f"🔴 **{len(_suspended)} Strategie(n) SUSPENDED** (Learning):")
+                lines.extend(f"  • {a[10:]}" for a in _suspended[:5])
+            if _elevated:
+                lines.append(f"🟢 **{len(_elevated)} Strategie(n) ELEVATED**:")
+                lines.extend(f"  • {a[11:]}" for a in _elevated[:5])
+            if lines:
+                _send('\n'.join(lines))
+        except Exception as _e:
+            print(f"  ⚠️  Discord-Notify fail: {_e}")
     return {'synced': synced, 'errors': errors, 'actions': actions}
 
 
