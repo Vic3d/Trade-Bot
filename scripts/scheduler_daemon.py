@@ -245,19 +245,22 @@ SCHEDULE += [
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   18, 30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 30, [0,1,2,3,4]),   # US letzte Stunde
-    # ── Lab Scanner: stuendlich Mo-Fr 08:45–19:45 UTC ────────────────────────
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  8,  45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  9,  45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  10, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  11, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  12, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  13, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  14, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  15, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  16, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  17, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  18, 45, [0,1,2,3,4]),
-    ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  19, 45, [0,1,2,3,4]),
+    # ── Lab Scanner: DEAKTIVIERT 18.04.2026 ──────────────────────────────────
+    # Lab-Mode erzeugte _LAB-Positionen mit 30k€ Exposure (> Fund-Budget).
+    # Cash-Berechnung zaehlte LAB-Trades mit → Portfolio zeigte -33955€ Cash,
+    # -235% Performance. Bis LAB-Positionen in Reporting separiert sind, OFF.
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  8,  45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  9,  45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  10, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  11, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  12, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  13, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  14, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  15, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  16, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  17, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  18, 45, [0,1,2,3,4]),
+    # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  19, 45, [0,1,2,3,4]),
     # ── Backtest v2: jeden Sonntag 08:00 UTC (nach Thesis Discovery 07:00) ──────
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 UTC
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 UTC (Mid-Week Refresh)
