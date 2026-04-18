@@ -153,12 +153,13 @@ SCHEDULE += [('Trump Watch',      'trump_watch.py',      [], h, 15, None) for h 
 SCHEDULE += [('Event Auto-Exit', 'event_auto_exit.py', [], h, 20, None) for h in _GEO_HOURS]
 SCHEDULE += [
     # ── Thesis Monitoring: 24/7 — Kill-Trigger kennen keine Marktzeiten ────────
-    # Asien-Session (00:00-06:00 UTC) — alle 2h
+    # ALLE Zeiten in CEST / deutscher Zeit (Server-TZ: Europe/Berlin)
+    # Asien-Session (00:00-06:00 CEST) — alle 2h
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             0,  0,  None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             2,  0,  None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             4,  0,  None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             6,  0,  None),
-    # EU+US-Session (07:00-21:00 UTC) — alle 30 Min, taeglich
+    # EU+US-Session (07:00-21:00 CEST) — alle 30 Min, taeglich
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             7,  30, None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             8,  0,  None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             8,  30, None),
@@ -219,11 +220,26 @@ SCHEDULE += [
     ('Strategy Discovery',  'strategy_discovery.py',   [],                        14, 0,  [5]),   # Sa
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
     # ── Phase 6: Autonome Thesen-Entdeckung — taeglich ─────────────────────
-    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              5,  0,  None),   # Taeglich 05:00 UTC (vor EU-Open)
-    # ── Autonomous Scanner: Mo-Fr 08:00–19:30 UTC (Xetra 08-16 + US 13:30-20) ──
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  0,  [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   8,  30, [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  0,  [0,1,2,3,4]),
+    ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              5,  0,  None),   # Taeglich 05:00 CEST (vor EU-Open)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # ── Autonomous Scanner — GLOBAL (ALLE Zeiten in CEST / deutscher Zeit) ────
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Server TZ: Europe/Berlin → scheduler liest datetime.now() als Lokalzeit.
+    # Abdeckung der 3 globalen Sessions die wir handeln (Asien, Europa, US):
+    #
+    #   Asien (Tokyo/HK/Shanghai):   01:00–10:00 CEST
+    #   Europa (Xetra/LSE/Euronext): 09:00–17:30 CEST
+    #   US (NYSE/Nasdaq Regular):    15:30–22:00 CEST
+    #   US Post-Market (limitiert):  22:00–00:00 CEST
+    # ═══════════════════════════════════════════════════════════════════════════
+    # --- ASIEN-FENSTER 03:00-07:00 CEST (stuendlich, 5 Runs) ------------------
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   3,  0,  [0,1,2,3,4]),   # Tokyo early session
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   4,  0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   5,  0,  [0,1,2,3,4]),   # HK/Shanghai open
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   6,  0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   7,  0,  [0,1,2,3,4]),   # Tokyo close approach
+    # --- EUROPA-FENSTER 09:00-17:30 CEST (alle 30min, 17 Runs) ---------------
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  0,  [0,1,2,3,4]),   # Xetra open
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   9,  30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   10, 0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   10, 30, [0,1,2,3,4]),
@@ -236,15 +252,27 @@ SCHEDULE += [
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   14, 0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   14, 30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 0,  [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 30, [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   15, 30, [0,1,2,3,4]),   # US Pre-Market
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 0,  [0,1,2,3,4]),   # NYSE open (15:30 CEST)
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   16, 30, [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 0,  [0,1,2,3,4]),   # US Nachmittag
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 0,  [0,1,2,3,4]),   # US Opening Range
+    # --- US-HAUPTFENSTER 17:30-22:00 CEST (alle 30min, 10 Runs — 51% WR) -----
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   17, 30, [0,1,2,3,4]),   # Xetra close, US active
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   18, 0,  [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   18, 30, [0,1,2,3,4]),
     ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 0,  [0,1,2,3,4]),
-    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 30, [0,1,2,3,4]),   # US letzte Stunde
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   19, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   20, 0,  [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   20, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   21, 0,  [0,1,2,3,4]),   # US letzte Stunde
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   21, 30, [0,1,2,3,4]),
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   22, 0,  [0,1,2,3,4]),   # NYSE Close (22:00 CEST)
+    # --- US-POST-MARKET 22:30-23:00 CEST (2 Runs) ----------------------------
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   22, 30, [0,1,2,3,4]),   # Post-Market Earnings
+    ('Auto Scanner',  'execution/autonomous_scanner.py', [],   23, 0,  [0,1,2,3,4]),
+    # --- WOCHENENDE Geo/News-Scan --------------------------------------------
+    ('Weekend Geo Scan',  'execution/autonomous_scanner.py', [], 10, 0, [5,6]),   # Sa+So 10:00 CEST
+    ('Weekend Geo Scan',  'execution/autonomous_scanner.py', [], 18, 0, [5,6]),   # Sa+So 18:00 CEST
     # ── Lab Scanner: DEAKTIVIERT 18.04.2026 ──────────────────────────────────
     # Lab-Mode erzeugte _LAB-Positionen mit 30k€ Exposure (> Fund-Budget).
     # Cash-Berechnung zaehlte LAB-Trades mit → Portfolio zeigte -33955€ Cash,
@@ -261,9 +289,9 @@ SCHEDULE += [
     # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  17, 45, [0,1,2,3,4]),
     # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  18, 45, [0,1,2,3,4]),
     # ('Lab Scanner',   'execution/autonomous_scanner.py', ['--lab'],  19, 45, [0,1,2,3,4]),
-    # ── Backtest v2: jeden Sonntag 08:00 UTC (nach Thesis Discovery 07:00) ──────
-    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 UTC
-    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 UTC (Mid-Week Refresh)
+    # ── Backtest v2: So+Mi 08:00 CEST (nach Thesis Discovery 07:00 CEST) ────────
+    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 CEST
+    ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 CEST (Mid-Week Refresh)
 ]
 
 
