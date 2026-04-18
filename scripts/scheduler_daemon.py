@@ -121,8 +121,10 @@ SCHEDULE = [
     # ── Phase 20: Universe Maintenance (vor Auto Deep Dive) ──
     ('Universe Expander',   'intelligence/universe_expander.py', [],              1,  0,  None),  # tgl. 01:00 — News→Discovery
     ('Universe Decay',      'intelligence/universe_decay.py',    [],              2,  0,  None),  # tgl. 02:00 — Auto-dormant
-    # ── Phase 21: Correlation Matrix Refresh (vor Handelsstart) ──
+    # ── Phase 21 Pro: Correlation Matrix + Risk Dashboard ──
     ('Correlation Matrix',  'correlation_refresh.py',            [],              7,  15, [0,1,2,3,4]),
+    ('Risk Dashboard AM',   'risk_dashboard.py',                 ['--morning'],   7,  30, [0,1,2,3,4], True),
+    ('Risk Dashboard PM',   'risk_dashboard.py',                 ['--evening'],  21,  0,  [0,1,2,3,4]),
     # ── Phase 12: Auto Deep Dive (nightly verdict refresh, rule-based, no LLM) ──
     ('Auto Deep Dive',      'intelligence/auto_deepdive.py',   [],                2,  30, None),  # tgl. 02:30
     # ── Phase 14: Position Watchdog (alle 2h während Marktzeiten) ──

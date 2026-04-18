@@ -866,6 +866,95 @@ def execute_paper_entry(
         except Exception:
             pass
 
+    # ── Guard 5d: Marginal-VaR Pre-Trade (Phase 21 Pro) ──────────────
+    # Verhindert Trades, deren Korrelations-Beitrag das Portfolio-Risiko
+    # ueberproportional erhoeht. SHARP ab Tag 1 (Victor: "geben wir das
+    # Risiko ein — sind ja Paper Trades").
+    #
+    # Block-Bedingungen (eines genuegt):
+    #   1. Neue Position wuerde Portfolio-VaR um > 35% erhoehen
+    #   2. Position-MVaR uebersteigt 25% des Total-VaR
+    try:
+        import numpy as _np
+        from risk.correlation_engine import (
+            load_current_matrix, load_price_history, compute_returns,
+        )
+        from risk.var_calculator import parametric_var, marginal_var
+
+        corr_matrix, corr_tickers, _ = load_current_matrix()
+        if corr_matrix.size > 0 and ticker.upper() in corr_tickers:
+            # Aktuelle offene Positionen (in der Matrix)
+            open_rows = conn.execute(
+                "SELECT ticker, COALESCE(shares,0)*COALESCE(entry_price,0) AS v "
+                "FROM paper_portfolio WHERE status='OPEN'"
+            ).fetchall()
+            open_map: dict[str, float] = {}
+            for r in open_rows:
+                tk = (r[0] or '').upper()
+                if tk in corr_tickers:
+                    open_map[tk] = open_map.get(tk, 0.0) + (r[1] or 0.0)
+
+            # Subset-Tickers: alle offenen + neuer Ticker
+            sub_tickers = sorted(set(open_map.keys()) | {ticker.upper()})
+            if len(sub_tickers) >= 2:
+                idx = [corr_tickers.index(t) for t in sub_tickers]
+                sub_corr = corr_matrix[_np.ix_(idx, idx)]
+
+                # Vols schaetzen aus 60d Returns
+                prices = load_price_history(sub_tickers, days=60)
+                rets = compute_returns(prices)
+                vols = []
+                for t in sub_tickers:
+                    rr = rets.get(t)
+                    vols.append(float(_np.std(rr, ddof=1)) if rr is not None and len(rr) >= 5 else 0.02)
+                vols = _np.array(vols)
+                cov = sub_corr * _np.outer(vols, vols)
+
+                # VaR vor Trade (ohne neue Position)
+                w_before = _np.array([open_map.get(t, 0.0) for t in sub_tickers])
+                var_before = parametric_var(w_before, cov, confidence=0.95)
+
+                # VaR nach Trade
+                w_after = w_before.copy()
+                new_idx = sub_tickers.index(ticker.upper())
+                w_after[new_idx] += float(NEW_POS_EST)
+                var_after = parametric_var(w_after, cov, confidence=0.95)
+
+                # MVaR fuer neue Position
+                mvar = marginal_var(w_after, cov, new_idx, confidence=0.95)
+                position_var_share = (mvar * w_after[new_idx]) / var_after if var_after > 0 else 0.0
+                var_increase = (var_after - var_before) / var_before if var_before > 0 else float('inf')
+
+                if var_before > 50.0 and var_increase > 0.35:
+                    conn.close()
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Marginal-VaR Block: Trade wuerde Portfolio-VaR '
+                            f'um {var_increase*100:.0f}% erhoehen ({var_before:.0f}€ → '
+                            f'{var_after:.0f}€). Schwelle: 35%. Korrelation zu '
+                            f'bestehenden Positionen zu hoch.'
+                        ),
+                        'blocked_by': 'marginal_var',
+                    }
+
+                if position_var_share > 0.25 and len(open_map) >= 2:
+                    conn.close()
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Marginal-VaR Block: {ticker} wuerde {position_var_share*100:.0f}% '
+                            f'des Portfolio-VaR ausmachen (>25% Cap). '
+                            f'Diversifiziere in unkorrelierten Sektor.'
+                        ),
+                        'blocked_by': 'marginal_var_concentration',
+                    }
+    except Exception as e:
+        # Defensiv: wenn Matrix fehlt, Guard durchlassen (keine Block ohne Daten)
+        print(f'[Guard 5d MVaR] skip: {e}')
+
     # ── Guard 6: Thesis-Exposure (max 30% Kapital pro These) ────────
     try:
         total_capital = 25000.0
