@@ -89,11 +89,27 @@ def load_strategy_samples() -> dict[str, list]:
     """).fetchall()
     conn.close()
 
+    # hmm_regime kann String ('NEUTRAL'/'BULLISH'/'BEARISH') oder Zahl sein
+    REGIME_MAP = {'BEARISH': 0.0, 'NEUTRAL': 1.0, 'BULLISH': 2.0, 'HALT': 0.0}
+
+    def _to_float(feat: str, val):
+        if val is None:
+            return None
+        if isinstance(val, (int, float)):
+            return float(val)
+        if isinstance(val, str):
+            if feat == 'hmm_regime':
+                return REGIME_MAP.get(val.upper(), 1.0)
+            try:
+                return float(val)
+            except ValueError:
+                return None
+        return None
+
     real_count = 0
     for row in real_rows:
         strat = row['strategy'] or 'unknown'
-        features = {feat: (float(row[feat]) if row[feat] is not None else None)
-                    for feat in FEATURES}
+        features = {feat: _to_float(feat, row[feat]) for feat in FEATURES}
         outcome = 1 if (row['pnl_eur'] or 0) > 0 else 0
         by_strategy[strat].append({'features': features, 'outcome': outcome, 'source': 'real'})
         real_count += 1
