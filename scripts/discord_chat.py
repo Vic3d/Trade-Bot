@@ -39,8 +39,10 @@ CHANNEL_ID    = '1492225799062032484'   # Victors DM-Kanal für Albert-Chat
 VICTOR_USER_ID = '452053147620343808'   # Victor — nur seine Nachrichten verarbeiten
 DISCORD_API    = 'https://discord.com/api/v10'
 
-# Claude-Modell
-CLAUDE_MODEL = 'claude-sonnet-4-5-20250514'
+# Claude-Modell — stabiler Alias (kein Date-Suffix) verhindert 404 wenn Anthropic
+# Model-Snapshots deprecated. 4-5 = Sonnet 4.5 (aktuell). Auf claude-opus-4-5
+# umstellen wenn mehr Reasoning fuer Deep-Dives gebraucht wird (teurer).
+CLAUDE_MODEL = 'claude-sonnet-4-5'
 
 
 # ── Token & Hilfsfunktionen ───────────────────────────────────────────────────
@@ -407,8 +409,15 @@ def ask_albert(message: str) -> str:
     except Exception as e:
         error_str = str(e)[:200]
         print(f'[Albert] Claude API Fehler: {error_str}', flush=True)
+        # Discord-Flood-Schutz: bei 404 (Model nicht gefunden) nur kurze Meldung,
+        # kein voller Error-Dump (sonst postet Albert bei jeder DM den selben
+        # 200-Zeichen-Stacktrace → pure Spam).
+        if '404' in error_str or 'not_found' in error_str:
+            return '⚠️ **Albert offline** — Model-Konfig fehlerhaft. Admin wurde informiert.'
+        if '529' in error_str or 'overloaded' in error_str.lower():
+            return '⚠️ **Albert ueberlastet** — Anthropic-API momentan ueberfordert. Kurz warten.'
         return (
-            f'⚠️ **Albert temporär nicht verfügbar** — API-Fehler: {error_str}\n'
+            f'⚠️ **Albert temporär nicht verfügbar** — API-Fehler: {error_str[:80]}\n'
             f'Bitte in wenigen Minuten erneut versuchen.'
         )
 

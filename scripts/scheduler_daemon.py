@@ -668,6 +668,13 @@ if __name__ == '__main__':
             PID_FILE.unlink(missing_ok=True)
         except Exception as e:
             log(f'💥 Daemon Crash: {e}')
-            notify(f'🚨 **TradeMind Scheduler CRASH:** {e}\nNeustart nötig!')
+            # Crash-Notify mit Dedupe: pro Error-Typ max 1× pro Stunde
+            # (verhindert Flut wenn systemd in Crash-Restart-Loop steht)
+            _err_slug = type(e).__name__.lower()
+            from datetime import datetime as _dt
+            _hour_bucket = _dt.now().strftime('%Y%m%d%H')
+            notify(f'🚨 **TradeMind Scheduler CRASH:** {e}\nNeustart nötig!',
+                   tier='HIGH', category='scheduler_crash',
+                   dedupe_key=f'crash_{_err_slug}_{_hour_bucket}')
             PID_FILE.unlink(missing_ok=True)
             raise
