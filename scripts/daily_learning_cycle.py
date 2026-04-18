@@ -81,6 +81,58 @@ def run_learning():
         return None
 
 
+def sync_recommendations_to_db(learnings: dict | None) -> dict:
+    """P0.4 — Sync Learning-Recommendations in thesis_status DB-Tabelle.
+
+    Vor dieser Funktion: Lernloop schreibt SUSPEND in JSON, DB sagt aber
+    weiterhin ACTIVE → autonome Execution liest DB → trade trotzdem.
+
+    Jetzt: SUSPEND/REDUCE → degrade_thesis(); ELEVATE → set ACTIVE.
+    """
+    if not learnings:
+        return {'synced': 0, 'errors': 0, 'skipped': 'no_learnings'}
+    scores = learnings.get('strategy_scores', {})
+    if not scores:
+        return {'synced': 0, 'errors': 0, 'skipped': 'no_scores'}
+
+    synced = 0
+    errors = 0
+    actions = []
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from core.thesis_engine import degrade_thesis, set_thesis_status
+    except Exception as e:
+        print(f"  ⚠️  thesis_engine import Fehler: {e}")
+        return {'synced': 0, 'errors': 1, 'skipped': 'import_failed'}
+
+    for sid, data in scores.items():
+        rec = data.get('recommendation', 'KEEP')
+        wr = data.get('win_rate', 0)
+        pnl = data.get('total_pnl_eur', 0)
+        trades = data.get('trades', 0)
+        try:
+            if rec == 'SUSPEND':
+                reason = f"Learning: WR {wr:.0%} | PnL {pnl:+.0f}€ | {trades} trades → SUSPEND"
+                if degrade_thesis(sid, reason):
+                    actions.append(f"DEGRADED: {sid} ({reason[:60]})")
+                    synced += 1
+            elif rec == 'ELEVATE' and trades >= 5:
+                reason = f"Learning: WR {wr:.0%} | PnL {pnl:+.0f}€ | {trades} trades → ELEVATE"
+                if set_thesis_status(sid, 'ACTIVE', reason):
+                    actions.append(f"ACTIVATED: {sid}")
+                    synced += 1
+            # REDUCE / KEEP / INSUFFICIENT_DATA → kein DB-Sync nötig
+        except Exception as e:
+            print(f"  ⚠️  sync({sid}) Fehler: {type(e).__name__}: {e}")
+            errors += 1
+
+    if actions:
+        print(f"  🔄 Learning→DB Sync: {synced} updates")
+        for a in actions[:10]:
+            print(f"     {a}")
+    return {'synced': synced, 'errors': errors, 'actions': actions}
+
+
 # ── 3. ACCURACY REPORT ───────────────────────────────────────────────────────
 
 def build_accuracy_report() -> str:
@@ -334,6 +386,10 @@ def run_full():
 
     print("\n[3/5] Learning Engine (Strategy Scores)...")
     learnings = run_learning()
+
+    print("\n[3b/5] Learning → DB Sync (P0.4)...")
+    sync_result = sync_recommendations_to_db(learnings)
+    print(f"  ✅ DB Sync: {sync_result.get('synced', 0)} updates, {sync_result.get('errors', 0)} errors")
 
     print("\n[4/5] Accuracy Report generieren...")
     accuracy = build_accuracy_report()

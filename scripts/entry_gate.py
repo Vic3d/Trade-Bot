@@ -4,7 +4,52 @@ Schicht 2 — Entry Gate
 Pflicht-Validierung vor jedem Paper Trade.
 """
 import sqlite3, json, re, os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+
+# P1.7 — Thesis-Kill Quarantäne-Registry (48h Sperre nach THESIS_INVALIDATED)
+KILL_REGISTRY_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    'data', 'thesis_invalidation_log.json'
+)
+QUARANTINE_HOURS = 48
+
+
+def check_thesis_quarantine(strategy: str) -> tuple[bool, str]:
+    """P1.7 — Block-Check: gab es in den letzten 48h einen THESIS_INVALIDATED Exit
+    für diese Strategie? Wenn ja → Quarantäne, kein neuer Entry."""
+    try:
+        if not os.path.exists(KILL_REGISTRY_PATH):
+            return False, ''
+        with open(KILL_REGISTRY_PATH, encoding='utf-8') as f:
+            data = json.load(f) or {}
+        kills = data.get('kills', [])
+        if not kills:
+            return False, ''
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=QUARANTINE_HOURS)
+        sid = (strategy or '').upper()
+        for k in reversed(kills):
+            if (k.get('strategy') or '').upper() != sid:
+                continue
+            ts = k.get('killed_at') or k.get('timestamp')
+            if not ts:
+                continue
+            try:
+                dt = datetime.fromisoformat(str(ts).replace('Z', '+00:00'))
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+            except Exception:
+                continue
+            if dt >= cutoff:
+                age_h = (datetime.now(timezone.utc) - dt).total_seconds() / 3600.0
+                remain = QUARANTINE_HOURS - age_h
+                return True, (
+                    f"Strategie '{strategy}' in 48h-Quarantäne nach THESIS_INVALIDATED "
+                    f"({k.get('ticker','?')}, vor {age_h:.1f}h, noch {remain:.1f}h gesperrt)."
+                )
+        return False, ''
+    except Exception as e:
+        print(f'[entry_gate] thesis-quarantine check failed: {e}')
+        return False, ''
 
 # ─── Permanent Blocked Strategies (NIEMALS traden) ────────────────────────────
 # DT1-DT5: Day-Trade Strategien — Paper Fund macht keine Day Trades
@@ -173,6 +218,15 @@ class EntryGate:
             self._log_blocked(ticker, strategy, 'GATE0_PERMANENTLY_BLOCKED', reason,
                                news_headline, news_source, regime, vix)
             return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': None}
+
+        # ─── Gate 0q: Thesis-Kill Quarantäne (P1.7) ────────────────────
+        # Strategien die in den letzten 48h einen THESIS_INVALIDATED Exit hatten
+        # bekommen eine Auszeit (kein Re-Entry direkt nach Kill).
+        _q_blocked, _q_reason = check_thesis_quarantine(strategy_upper)
+        if _q_blocked:
+            self._log_blocked(ticker, strategy, 'GATE0Q_THESIS_QUARANTINE', _q_reason,
+                               news_headline, news_source, regime, vix)
+            return {'allowed': False, 'reason': _q_reason, 'warnings': warnings, 'tier': None}
 
         # ─── Gate 1: Duplikat (ticker bereits OPEN?) ───────────────────
         if self._is_ticker_open(ticker):

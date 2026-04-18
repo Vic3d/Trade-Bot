@@ -15,7 +15,7 @@ import sys
 import time
 import urllib.request
 import urllib.error
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 _BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
@@ -1172,6 +1172,73 @@ def poll_once() -> None:
         _save_state(state)
 
 
+# ── P2.12 — Discord-Reactions als Feedback-Kanal ──────────────────────────────
+FEEDBACK_FILE = DATA / 'victor_feedback.json'
+REACTION_STATE = DATA / 'reaction_poll_state.json'
+
+
+def _load_feedback() -> dict:
+    try:
+        if FEEDBACK_FILE.exists():
+            return json.loads(FEEDBACK_FILE.read_text(encoding='utf-8'))
+    except Exception:
+        pass
+    return {'reactions': []}
+
+
+def _save_feedback(d: dict) -> None:
+    try:
+        FEEDBACK_FILE.write_text(json.dumps(d, indent=2, ensure_ascii=False), encoding='utf-8')
+    except Exception as e:
+        print(f'[Albert] feedback save failed: {e}', flush=True)
+
+
+def poll_reactions(channel_id: str = CHANNEL_ID, limit: int = 30) -> int:
+    """P2.12 — Scant die letzten N Messages auf ✅/❌-Reactions von Victor und
+    schreibt strukturiertes Feedback in data/victor_feedback.json.
+    Returns: Anzahl neu erfasster Reactions."""
+    try:
+        msgs = _fetch_messages(channel_id, limit=limit)
+    except Exception as e:
+        print(f'[Albert] reaction-poll fetch error: {e}', flush=True)
+        return 0
+    fb = _load_feedback()
+    seen = {(r.get('message_id'), r.get('emoji')) for r in fb.get('reactions', [])}
+    EMOJI_MAP = {'✅': 'CONFIRM', '❌': 'REJECT', '⚠️': 'CAUTION', '👍': 'LIKE', '👎': 'DISLIKE'}
+    new = 0
+    for m in msgs or []:
+        reactions = m.get('reactions') or []
+        if not reactions:
+            continue
+        # Nur Messages vom Bot (Alberts Vorschläge) auswerten
+        author = (m.get('author') or {})
+        if not author.get('bot'):
+            continue
+        for r in reactions:
+            emoji = ((r.get('emoji') or {}).get('name') or '')
+            label = EMOJI_MAP.get(emoji)
+            if not label:
+                continue
+            key = (m.get('id'), emoji)
+            if key in seen:
+                continue
+            fb.setdefault('reactions', []).append({
+                'message_id': m.get('id'),
+                'message_excerpt': (m.get('content') or '')[:240],
+                'emoji': emoji,
+                'label': label,
+                'count': r.get('count', 1),
+                'recorded_at': datetime.now(timezone.utc).isoformat(),
+            })
+            new += 1
+    if new:
+        # auf 500 Einträge begrenzen
+        fb['reactions'] = fb['reactions'][-500:]
+        _save_feedback(fb)
+        print(f'[Albert] {new} neue Reaction(s) gespeichert', flush=True)
+    return new
+
+
 def run_forever() -> None:
     """
     Haupt-Loop: ruft poll_once() alle 30 Sekunden auf.
@@ -1183,11 +1250,21 @@ def run_forever() -> None:
     # Kurze Verzögerung beim Start damit der Daemon vollständig initialisiert ist
     time.sleep(5)
 
+    _react_counter = 0
     while True:
         try:
             poll_once()
         except Exception as e:
             print(f'[Albert] poll_once Fehler: {e}', flush=True)
+
+        # P2.12 — Reactions alle 5 Min checken (jeden 10. Loop bei 30s-Takt)
+        _react_counter += 1
+        if _react_counter >= 10:
+            _react_counter = 0
+            try:
+                poll_reactions()
+            except Exception as e:
+                print(f'[Albert] poll_reactions Fehler: {e}', flush=True)
 
         time.sleep(30)
 

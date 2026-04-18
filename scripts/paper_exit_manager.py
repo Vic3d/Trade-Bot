@@ -34,6 +34,33 @@ from pathlib import Path
 
 WS = Path('/data/.openclaw/workspace')
 DB = WS / 'data' / 'trading.db'
+KILL_REGISTRY = WS / 'data' / 'thesis_invalidation_log.json'  # P1.7
+
+
+def record_thesis_kill(strategy: str, ticker: str, reason: str, exit_pnl: float = 0.0) -> None:
+    """P1.7 — Schreibe Thesis-Kill ins Registry für 48h-Quarantäne im Entry Gate."""
+    try:
+        log_data = {}
+        if KILL_REGISTRY.exists():
+            try:
+                log_data = json.loads(KILL_REGISTRY.read_text(encoding='utf-8'))
+            except Exception:
+                log_data = {}
+        kills = log_data.get('kills', [])
+        kills.append({
+            'strategy': strategy,
+            'ticker': ticker.upper() if ticker else None,
+            'reason': reason[:200],
+            'exit_pnl': round(float(exit_pnl), 2),
+            'killed_at': datetime.now(timezone.utc).isoformat(),
+        })
+        # Letzte 200 Einträge behalten
+        log_data['kills'] = kills[-200:]
+        log_data['last_updated'] = datetime.now(timezone.utc).isoformat()
+        KILL_REGISTRY.parent.mkdir(parents=True, exist_ok=True)
+        KILL_REGISTRY.write_text(json.dumps(log_data, indent=2), encoding='utf-8')
+    except Exception as e:
+        print(f"[record_thesis_kill] error: {e}")
 
 # ─── Thesis-aware hold times (min_days, max_days) ────────────────────────────
 
@@ -313,21 +340,26 @@ def count_open_tranches(conn: sqlite3.Connection, trade_id: int) -> int:
 # ─── Discord alert ────────────────────────────────────────────────────────────
 
 def send_alert(message: str) -> None:
-    """Send Discord alert via alert-queue.json."""
+    """Send Discord alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Auto-Tier nach Keyword-Heuristik:
+      HIGH   — STOP HIT, CIRCUIT BREAKER, EVENT-AUTO-EXIT, THESIS KILL,
+               AUTO-DD EXIT (alle alpha-relevanten Exits)
+      MEDIUM — TRANCHE-Exits (teilweise Gewinnmitnahme)
+      LOW    — Rest (MAX_HOLD, Debug)
+    """
     try:
-        alert_queue = WS / 'memory' / 'alert-queue.json'
-        queue = []
-        if alert_queue.exists():
-            try:
-                queue = json.loads(alert_queue.read_text())
-            except Exception:
-                queue = []
-        queue.append({
-            'message': message,
-            'target': '452053147620343808',
-            'ts': datetime.now(timezone.utc).isoformat(),
-        })
-        alert_queue.write_text(json.dumps(queue, indent=2))
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        m_up = message.upper()
+        if any(k in m_up for k in ('STOP HIT', 'CIRCUIT BREAKER', 'EVENT-AUTO-EXIT',
+                                    'THESIS KILL', 'AUTO-DD EXIT', '🚨')):
+            tier = TIER_HIGH
+        elif 'TRANCHE' in m_up:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        _dispatch(message, tier=tier, category='exit')
     except Exception as e:
         print(f"[exit_manager] alert error: {e}")
 
@@ -514,6 +546,8 @@ def run() -> tuple[list, list]:
         # ══════════════════════════════════════════════════════════════════
         if is_thesis_invalidated(strategy):
             pnl = close_position(conn, trade_id, price, 'THESIS_INVALIDATED', entry, shares, fees)
+            # P1.7 — Kill-Registry Eintrag (für Entry-Gate-Quarantäne 48h)
+            record_thesis_kill(strategy, ticker, 'THESIS_INVALIDATED', pnl)
             closed_records.append(
                 f"THESIS_KILL {ticker} | Strategy={strategy} INVALIDATED | PnL: {pnl:+.2f}EUR"
             )

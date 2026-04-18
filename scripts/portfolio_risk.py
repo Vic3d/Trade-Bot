@@ -161,7 +161,8 @@ def _get_cash() -> float:
         ).fetchone()
         conn.close()
         return float(row[0]) if row else 25000.0
-    except Exception:
+    except Exception as e:
+        log.warning('_get_starting_capital fallback to 25000.0: %s: %s', type(e).__name__, e)
         return 25000.0
 
 
@@ -202,7 +203,8 @@ def _get_price_series(ticker: str, days: int = 30) -> list[float]:
         conn.close()
         # älteste zuerst
         return list(reversed([float(r[0]) for r in rows]))
-    except Exception:
+    except Exception as e:
+        log.warning('_get_price_series(%s) failed: %s: %s', ticker, type(e).__name__, e)
         return []
 
 
@@ -223,7 +225,8 @@ def _pearson(a: list[float], b: list[float]) -> float | None:
         if den_a == 0 or den_b == 0:
             return None
         return num / ((den_a * den_b) ** 0.5)
-    except Exception:
+    except Exception as e:
+        log.warning('_pearson failed: %s: %s', type(e).__name__, e)
         return None
 
 
@@ -373,7 +376,8 @@ def _load_learnings() -> dict:
         return {}
     try:
         return json.loads(LEARNINGS.read_text(encoding='utf-8'))
-    except Exception:
+    except Exception as e:
+        log.warning('_load_learnings parse failed: %s: %s', type(e).__name__, e)
         return {}
 
 
@@ -618,7 +622,8 @@ def _load_risk_state() -> dict:
         return {}
     try:
         return json.loads(RISK_STATE.read_text(encoding='utf-8'))
-    except Exception:
+    except Exception as e:
+        log.warning('_load_risk_state parse failed: %s: %s', type(e).__name__, e)
         return {}
 
 
@@ -652,8 +657,8 @@ def _get_portfolio_value_series(days: int = 8) -> list[tuple[str, float]]:
                     for e in data[-days:]
                     if e.get('date')
                 ]
-        except Exception:
-            pass
+        except Exception as e:
+            log.warning('equity_curve.json parse failed: %s: %s', type(e).__name__, e)
     return []
 
 
@@ -688,8 +693,8 @@ def check_drawdown_circuit(
                     'drawdown_pct': state.get('dd_pct', 0),
                     'pause_until': pause_until_str,
                 }
-        except Exception:
-            pass
+        except Exception as e:
+            log.warning('drawdown pause_until parse failed: %s: %s', type(e).__name__, e)
 
     # Aktuelle Equity-Kurve holen
     series = _get_portfolio_value_series(days=lookback_days + 1)

@@ -96,6 +96,8 @@ SCHEDULE = [
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
     # ── Phase 3: State Sync (JSONs → SQL, nach Daily Learning) ──
     ('State Sync',          'state_sync.py',           [],                        23, 5,  None),
+    # P2.13 — Memory-Index regenerieren (queryable history)
+    ('Memory Index',        'memory_index.py',         [],                        23, 30, None),
     # ── Phase 4/5/6.7/6.9: Integrity + Truth Jobs ──
     ('Fund Reconciliation', 'fund_reconciliation.py',  [],                        23, 15, None),   # tgl. 23:15 nach State Sync
     ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
@@ -116,7 +118,7 @@ SCHEDULE = [
     ('Edge Attribution',    'edge_attribution.py',     ['--apply'],               21, 54, None),
     ('Readiness Tracker',   'readiness_tracker.py',    [],                        21, 56, None),
     ('Honesty Report',      'honesty_report.py',       [],                        22,  5, None),
-    ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 50, [0,1,2,3,4,5,6]),  # Phase 9 — Drawdown Circuit Input
+    ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 40, [0,1,2,3,4,5,6]),  # Phase 9 — MUSS vor Daily Learning (22:45) laufen, sonst nutzt Learning Stale-Equity
     ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.
     ('Macro Brain',         'intelligence/macro_brain.py',     [],                15, 30, [0,1,2,3,4]),  # Phase 11 — US Pre-Open Update
@@ -130,21 +132,22 @@ SCHEDULE = [
     # ── Phase 12: Auto Deep Dive (nightly verdict refresh, rule-based, no LLM) ──
     ('Auto Deep Dive',      'intelligence/auto_deepdive.py',   [],                2,  30, None),  # tgl. 02:30
     # ── Phase 14: Position Watchdog (alle 2h während Marktzeiten) ──
-    ('Position Watchdog',   'position_watchdog.py',            [],                10, 0,  [0,1,2,3,4]),
-    ('Position Watchdog',   'position_watchdog.py',            [],                12, 0,  [0,1,2,3,4]),
-    ('Position Watchdog',   'position_watchdog.py',            [],                14, 0,  [0,1,2,3,4]),
-    ('Position Watchdog',   'position_watchdog.py',            [],                16, 0,  [0,1,2,3,4]),
-    ('Position Watchdog',   'position_watchdog.py',            [],                18, 0,  [0,1,2,3,4]),
-    ('Position Watchdog',   'position_watchdog.py',            [],                20, 0,  [0,1,2,3,4]),
-    # ── Phase 18: Proposal Executor (globale Börsenzeiten, alle 2h) ──
-    ('Proposal Executor',   'proposal_executor.py',            [],                 8, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                10, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                12, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                14, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                16, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                18, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                20, 15, [0,1,2,3,4]),
-    ('Proposal Executor',   'proposal_executor.py',            [],                22, 15, [0,1,2,3,4]),
+    # Watchdog läuft xx:05, Proposal Executor xx:25 — entzerrt Race vs Portfolio-State
+    ('Position Watchdog',   'position_watchdog.py',            [],                10, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                12, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                14, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                16, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                18, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                20, 5,  [0,1,2,3,4]),
+    # ── Phase 18: Proposal Executor (globale Börsenzeiten, alle 2h, NACH Watchdog) ──
+    ('Proposal Executor',   'proposal_executor.py',            [],                 8, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                10, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                12, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                14, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                16, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                18, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                20, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                22, 25, [0,1,2,3,4]),
     # ── Phase 18: Autonomous Pipeline (alle 2h, globale Abdeckung) ──
     ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                 9, 0,  [0,1,2,3,4]),
     ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11, 0,  [0,1,2,3,4]),
@@ -315,6 +318,37 @@ def check_heartbeat_age() -> tuple[bool, str]:
         return False, f'Heartbeat-Fehler: {e}'
 
 
+# P1.8 — Job-Dependency-DAG
+# Map: job-name → (predecessor_name, max_age_hours)
+# Wenn Predecessor älter als max_age oder nie gelaufen → Skip mit Warning.
+JOB_DEPENDENCIES: dict[str, tuple[str, float]] = {
+    'Risk Dashboard AM':   ('Correlation Matrix', 6.0),
+    'Risk Dashboard PM':   ('Correlation Matrix', 24.0),
+    'Daily Learning':      ('Equity Snapshot',    1.0),
+    'State Sync':          ('Daily Learning',     1.0),
+    'Honesty Report':      ('Readiness Tracker',  1.0),
+    'Proposal Executor':   ('Position Watchdog',  1.0),
+}
+
+# In-Memory Tracker für letzten erfolgreichen Lauf pro Job-Name
+_LAST_SUCCESS: dict[str, datetime] = {}
+
+
+def check_dependency(name: str) -> tuple[bool, str]:
+    """P1.8 — Prüft ob Predecessor-Job kürzlich erfolgreich lief."""
+    dep = JOB_DEPENDENCIES.get(name)
+    if not dep:
+        return True, ''
+    pred, max_age_h = dep
+    last = _LAST_SUCCESS.get(pred)
+    if last is None:
+        return False, f"Dependency '{pred}' noch nie gelaufen — Skip"
+    age_h = (datetime.now(_BERLIN) - last).total_seconds() / 3600.0
+    if age_h > max_age_h:
+        return False, f"Dependency '{pred}' veraltet ({age_h:.1f}h > {max_age_h:.1f}h) — Skip"
+    return True, ''
+
+
 def run_job(name: str, script: str, args: list[str], discord: bool = False) -> bool:
     """Führt ein Script aus. Bei discord=True wird stdout an Victor gesendet."""
     script_path = SCRIPTS / script
@@ -331,6 +365,8 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
         )
         if result.returncode == 0:
             output = result.stdout.strip()
+            # P1.8 — Erfolg im Dependency-Tracker vermerken
+            _LAST_SUCCESS[name] = datetime.now(_BERLIN)
             if discord and output and len(output) > 20 and 'KEIN_SIGNAL' not in output:
                 notify(output[:1900])
                 log(f'✅ {name}: OK + Discord gesendet')
@@ -437,6 +473,12 @@ def scheduler_loop():
                     old_keys = list(last_run.keys())[:-500]
                     for k in old_keys:
                         del last_run[k]
+
+                # P1.8 — Dependency-Check vor Ausführung
+                _ok, _dep_reason = check_dependency(name)
+                if not _ok:
+                    log(f'⏭️  {name}: {_dep_reason}')
+                    continue
 
                 success = run_job(name, script, args, discord=discord_send)
 

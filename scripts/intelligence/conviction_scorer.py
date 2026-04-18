@@ -664,6 +664,28 @@ def _score_backtest_validation(strategy: str) -> tuple[int, str]:
         if not bt_file.exists():
             return (0, 'backtest=n/a (keine Datei)')
 
+        # P1.6 — Cache TTL: Backtest > 14 Tage alt = veraltet
+        import os as _os
+        from datetime import datetime as _dt, timezone as _tz
+        try:
+            _age_days = (_dt.now().timestamp() - _os.path.getmtime(bt_file)) / 86400.0
+        except Exception:
+            _age_days = 0
+        _stale = _age_days > 14
+
+        # P1.6 — Backtest-Validation: live-WR vs backtest-WR vergleichen
+        _val_file = DATA_DIR / 'backtest_validation_status.json'
+        _val_penalty = 0  # Bonus halbieren wenn live deutlich schlechter
+        if _val_file.exists():
+            try:
+                _val = json.loads(_val_file.read_text(encoding='utf-8'))
+                _strat_val = _val.get(strategy, {})
+                if _strat_val.get('downgrade'):
+                    _val_penalty = -5
+
+            except Exception:
+                pass
+
         bt_data = json.loads(bt_file.read_text(encoding='utf-8'))
         bt_entry = bt_data.get(strategy, {})
         if isinstance(bt_entry, dict):
@@ -678,14 +700,23 @@ def _score_backtest_validation(strategy: str) -> tuple[int, str]:
         if bt_trades < 5:
             return (0, f'backtest=n/a ({bt_trades} Trades < 5)')
 
+        # Score-Bonus berechnen
+        _bonus = 0
+        _label = 'backtest_neutral'
         if bt_pnl > 0 and bt_wr >= 0.55:
-            return (10, f'backtest_strong: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → +10')
+            _bonus = 10; _label = 'backtest_strong'
         elif bt_pnl > 0 or bt_wr >= 0.50:
-            return (5, f'backtest_ok: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → +5')
+            _bonus = 5; _label = 'backtest_ok'
         elif bt_pnl < 0 and bt_wr < 0.45:
-            return (-5, f'backtest_weak: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → -5')
+            _bonus = -5; _label = 'backtest_weak'
 
-        return (0, f'backtest_neutral: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%} → 0')
+        # Stale → Bonus halbieren (Vorsicht), Penalty bleibt voll
+        if _stale and _bonus > 0:
+            _bonus = _bonus // 2
+            _label += '_stale'
+        # Validation-Penalty draufrechnen
+        _bonus += _val_penalty
+        return (_bonus, f'{_label}: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%}, age={_age_days:.0f}d → {_bonus:+d}')
     except Exception as e:
         return (0, f'backtest=error ({e})')
 

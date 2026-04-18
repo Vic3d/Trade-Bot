@@ -1,0 +1,5219 @@
+{
+  "generated_at": "2026-04-18T18:34:58.421514+00:00",
+  "count": 184,
+  "entries": [
+    {
+      "file": "memory/2026-02-22.md",
+      "date": "2026-02-22",
+      "headline": "# 2026-02-22",
+      "tickers": [
+        "DM",
+        "ID",
+        "SMTP"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 1002
+    },
+    {
+      "file": "memory/2026-02-23.md",
+      "date": "2026-02-23",
+      "headline": "# 2026-02-23",
+      "tickers": [
+        "ACR",
+        "ARR",
+        "BITV",
+        "CMS",
+        "DAS",
+        "EN",
+        "KI",
+        "LOC",
+        "PPT",
+        "SMTP",
+        "SSO",
+        "UA",
+        "UI",
+        "USP",
+        "VPAT",
+        "WAVE",
+        "WCAG"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [],
+      "size": 4228
+    },
+    {
+      "file": "memory/2026-02-24.md",
+      "date": "2026-02-24",
+      "headline": "# 2026-02-24 — Axessify Strategiewechsel + Scanner-Ausbau",
+      "tickers": [
+        "AA",
+        "CSP",
+        "GET",
+        "KI",
+        "NICHT",
+        "SMTP",
+        "UI",
+        "WCAG"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [],
+      "size": 4131
+    },
+    {
+      "file": "memory/2026-02-25-cloudflare-tunnel.md",
+      "date": "2026-02-25",
+      "headline": "# Session: 2026-02-25 12:10:24 UTC",
+      "tickers": [
+        "DM",
+        "ID",
+        "MEDIA",
+        "SES"
+      ],
+      "strategies": [],
+      "tags": [
+        "cloudflare",
+        "tunnel"
+      ],
+      "size": 6881
+    },
+    {
+      "file": "memory/2026-02-25-wcag-competitors.md",
+      "date": "2026-02-25",
+      "headline": "# Session: 2026-02-25 00:54:41 UTC",
+      "tickers": [
+        "BFSG",
+        "BOIA",
+        "CD",
+        "CDN",
+        "CI",
+        "ID",
+        "OOM",
+        "RAM",
+        "SSE",
+        "TS",
+        "WAVE",
+        "WCAG"
+      ],
+      "strategies": [
+        "PM",
+        "PM2"
+      ],
+      "tags": [
+        "wcag",
+        "competitors"
+      ],
+      "size": 7244
+    },
+    {
+      "file": "memory/2026-02-25.md",
+      "date": "2026-02-25",
+      "headline": "# 2026-02-25",
+      "tickers": [
+        "COO",
+        "DM",
+        "DSGVO",
+        "GPT",
+        "KI",
+        "MUSS",
+        "MVP",
+        "RAM",
+        "UG",
+        "WAF",
+        "WCAG"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [],
+      "size": 10656
+    },
+    {
+      "file": "memory/2026-02-26.md",
+      "date": "2026-02-26",
+      "headline": "# 2026-02-26",
+      "tickers": [
+        "AA",
+        "ALLE",
+        "CMS",
+        "CTA",
+        "DOM",
+        "FTP",
+        "IN",
+        "JS",
+        "NACH",
+        "OUT",
+        "SVG",
+        "UFW",
+        "WCAG",
+        "WTV"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [],
+      "size": 8069
+    },
+    {
+      "file": "memory/2026-02-27-heartbeat-check.md",
+      "date": "2026-02-27",
+      "headline": "# Session: 2026-02-27 12:26:07 UTC",
+      "tickers": [
+        "AM",
+        "ID"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [
+        "heartbeat",
+        "check"
+      ],
+      "size": 1121
+    },
+    {
+      "file": "memory/2026-02-27-werkstattos-reuse.md",
+      "date": "2026-02-27",
+      "headline": "# Session: 2026-02-27 16:43:37 UTC",
+      "tickers": [
+        "DONE",
+        "ID",
+        "JA",
+        "JWT",
+        "KFZ",
+        "MVP",
+        "REST",
+        "UI"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [
+        "werkstattos",
+        "reuse"
+      ],
+      "size": 9245
+    },
+    {
+      "file": "memory/2026-02-27.md",
+      "date": "2026-02-27",
+      "headline": "# 2026-02-27 — Daily Notes",
+      "tickers": [
+        "DSGVO",
+        "KFZ",
+        "NICHT",
+        "SHK"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [],
+      "size": 2519
+    },
+    {
+      "file": "memory/2026-02-28.md",
+      "date": "2026-02-28",
+      "headline": "# 2026-02-28 — Daily Notes",
+      "tickers": [
+        "DOWN"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 1231
+    },
+    {
+      "file": "memory/2026-03-01.md",
+      "date": "2026-03-01",
+      "headline": "# 2026-03-01 — Daily Notes",
+      "tickers": [],
+      "strategies": [],
+      "tags": [],
+      "size": 2271
+    },
+    {
+      "file": "memory/2026-03-02-zwerg-animation.md",
+      "date": "2026-03-02",
+      "headline": "# Session: 2026-03-02 19:14:14 UTC",
+      "tickers": [
+        "AM",
+        "DALL",
+        "FPS",
+        "ID",
+        "PNG"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "zwerg",
+        "animation"
+      ],
+      "size": 4348
+    },
+    {
+      "file": "memory/2026-03-02.md",
+      "date": "2026-03-02",
+      "headline": "# 2026-03-02 — Tagesnotizen",
+      "tickers": [
+        "POST"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 1898
+    },
+    {
+      "file": "memory/2026-03-03.md",
+      "date": "2026-03-03",
+      "headline": "# 2026-03-03 — Tagesnotizen",
+      "tickers": [
+        "WTV"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 1764
+    },
+    {
+      "file": "memory/2026-03-04.md",
+      "date": "2026-03-04",
+      "headline": "# 2026-03-04 — Tagesnotizen",
+      "tickers": [],
+      "strategies": [],
+      "tags": [],
+      "size": 1462
+    },
+    {
+      "file": "memory/2026-03-05-stopp-loss.md",
+      "date": "2026-03-05",
+      "headline": "# Session: 2026-03-05 12:50:18 UTC",
+      "tickers": [
+        "AM",
+        "BAYN.DE",
+        "DSGVO",
+        "EPS",
+        "EQNR",
+        "ID",
+        "IP",
+        "ISPA.DE",
+        "KGV",
+        "KI",
+        "MSFT",
+        "NVDA",
+        "PEG",
+        "PLTR",
+        "SHK",
+        "TR",
+        "WKN"
+      ],
+      "strategies": [],
+      "tags": [
+        "stopp",
+        "loss"
+      ],
+      "size": 6269
+    },
+    {
+      "file": "memory/2026-03-05.md",
+      "date": "2026-03-05",
+      "headline": "# 2026-03-05 — Tagesnotizen",
+      "tickers": [
+        "AG",
+        "ASP",
+        "BAYN.DE",
+        "DNS",
+        "ENTRY",
+        "EQNR",
+        "GET",
+        "IN",
+        "ISPA.DE",
+        "MSFT",
+        "NUR",
+        "NVDA",
+        "PLTR",
+        "SHK",
+        "ZONE"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 2606
+    },
+    {
+      "file": "memory/2026-03-07.md",
+      "date": "2026-03-07",
+      "headline": "# 2026-03-07 — Tagesprotokoll",
+      "tickers": [
+        "AG",
+        "ALERT",
+        "CSV",
+        "DNA",
+        "EQNR",
+        "ETF",
+        "FIFO",
+        "IBKR",
+        "KI",
+        "LNG",
+        "META",
+        "MSFT",
+        "NEU",
+        "NICHT",
+        "NOK",
+        "NVDA",
+        "NYSE",
+        "NZZ",
+        "PLTR",
+        "RSS",
+        "SMH",
+        "STUFE",
+        "TR",
+        "USA",
+        "USP"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 9714
+    },
+    {
+      "file": "memory/2026-03-08.md",
+      "date": "2026-03-08",
+      "headline": "# 2026-03-08 — Tagesprotokoll (Sonntag)",
+      "tickers": [
+        "AG",
+        "DACH",
+        "EQNR",
+        "ERST",
+        "IAB",
+        "IRGC",
+        "KI",
+        "MSFT",
+        "MVP",
+        "NICHT",
+        "NOK",
+        "NVDA",
+        "OECD",
+        "PLTR",
+        "REST",
+        "RHM.DE",
+        "SAM",
+        "SOM",
+        "STUFE",
+        "TAM",
+        "USA",
+        "USP",
+        "VAE"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 9523
+    },
+    {
+      "file": "memory/2026-03-09-trading-strategie.md",
+      "date": "2026-03-09",
+      "headline": "# Session: 2026-03-09 08:36:58 UTC",
+      "tickers": [
+        "AG",
+        "ALERT",
+        "AM",
+        "AT",
+        "BAYN",
+        "BAYN.DE",
+        "EQNR",
+        "ETC",
+        "ID",
+        "INPEX",
+        "ISPA",
+        "ISPA.DE",
+        "MSFT",
+        "NOK",
+        "NVDA",
+        "PLTR",
+        "RSS",
+        "TSE",
+        "UNTER",
+        "WTI",
+        "ZONE"
+      ],
+      "strategies": [],
+      "tags": [
+        "trading",
+        "strategie"
+      ],
+      "size": 6354
+    },
+    {
+      "file": "memory/2026-03-09.md",
+      "date": "2026-03-09",
+      "headline": "# 2026-03-09 — Tagesprotokoll (Montag)",
+      "tickers": [
+        "ABER",
+        "AG",
+        "AT",
+        "BAYN.DE",
+        "BHP",
+        "BHP.DE",
+        "BHP.L",
+        "DM",
+        "EQNR",
+        "EQNR.OL",
+        "FM",
+        "GOP",
+        "IAF",
+        "ID",
+        "INPEX",
+        "IRGC",
+        "KI",
+        "MA",
+        "MSFT",
+        "NEU",
+        "NICHT",
+        "NOK",
+        "NVDA",
+        "PLTR",
+        "RHM.DE"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 11102
+    },
+    {
+      "file": "memory/2026-03-10.md",
+      "date": "2026-03-10",
+      "headline": "# Tageslog — Dienstag, 10.03.2026",
+      "tickers": [
+        "AG",
+        "BAYN.DE",
+        "BBC",
+        "BHP.L",
+        "ENG",
+        "EQNR",
+        "EQT",
+        "IMMER",
+        "MSFT",
+        "NICHT",
+        "NOK",
+        "NVDA",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "RIO.L",
+        "RSS",
+        "TR",
+        "VLO",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 8114
+    },
+    {
+      "file": "memory/2026-03-11.md",
+      "date": "2026-03-11",
+      "headline": "# Tageslog — Mittwoch, 11.03.2026",
+      "tickers": [
+        "AG",
+        "AIR.PA",
+        "ASML",
+        "BAYN.DE",
+        "DM",
+        "ECB",
+        "EQNR",
+        "EUV",
+        "EZB",
+        "HEUTE",
+        "IMMER",
+        "KGV",
+        "KI",
+        "MSFT",
+        "NEU",
+        "NICHT",
+        "NVDA",
+        "PAAS",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "RIO.L",
+        "RSS",
+        "SVM",
+        "TR"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 9185
+    },
+    {
+      "file": "memory/2026-03-12.md",
+      "date": "2026-03-12",
+      "headline": "# Daily Log — 12. März 2026",
+      "tickers": [
+        "AEM",
+        "AG",
+        "BAYN",
+        "BAYN.DE",
+        "BHP",
+        "BHP.L",
+        "CHECK",
+        "COST",
+        "EQNR",
+        "EQT",
+        "ETC",
+        "ISPA.DE",
+        "KI",
+        "LIVE",
+        "MSFT",
+        "NEWS",
+        "NVDA",
+        "PLD",
+        "PLTR",
+        "RADAR",
+        "RHM",
+        "RHM.DE",
+        "RIO",
+        "RIO.L",
+        "STARK"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 9674
+    },
+    {
+      "file": "memory/2026-03-13.md",
+      "date": "2026-03-13",
+      "headline": "# Tageslog — Freitag 13.03.2026",
+      "tickers": [
+        "AD",
+        "AG",
+        "BAYN.DE",
+        "DRUCK",
+        "EQNR",
+        "EQNR.OL",
+        "ETF",
+        "HOC",
+        "KEIN",
+        "KI",
+        "LONG",
+        "MSFT",
+        "NEWS",
+        "NVDA",
+        "PLTR",
+        "RHM.DE",
+        "RIO.L",
+        "SPIKE",
+        "STOP",
+        "TEIL",
+        "WELT"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S5"
+      ],
+      "tags": [],
+      "size": 8843
+    },
+    {
+      "file": "memory/2026-03-14-context-window.md",
+      "date": "2026-03-14",
+      "headline": "# Session: 2026-03-14 22:40:25 UTC",
+      "tickers": [
+        "AKAD",
+        "BOOT",
+        "GPT",
+        "ID",
+        "ONLY"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "context",
+        "window"
+      ],
+      "size": 4642
+    },
+    {
+      "file": "memory/2026-03-14-model-switch.md",
+      "date": "2026-03-14",
+      "headline": "# Session: 2026-03-14 22:34:44 UTC",
+      "tickers": [
+        "BOOT",
+        "CLI",
+        "ID",
+        "JA",
+        "NEIN",
+        "ONLY",
+        "TTS"
+      ],
+      "strategies": [],
+      "tags": [
+        "model",
+        "switch"
+      ],
+      "size": 3353
+    },
+    {
+      "file": "memory/2026-03-14-session-startup.md",
+      "date": "2026-03-14",
+      "headline": "# Session: 2026-03-14 22:40:42 UTC",
+      "tickers": [
+        "AKAD",
+        "ID"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "session",
+        "startup"
+      ],
+      "size": 1119
+    },
+    {
+      "file": "memory/2026-03-14.md",
+      "date": "2026-03-14",
+      "headline": "# 2026-03-14 — Session Log",
+      "tickers": [
+        "AKAD",
+        "GET",
+        "JETZT",
+        "KB",
+        "KERN",
+        "MAIN",
+        "MC",
+        "MVP",
+        "NICHT",
+        "PLAN",
+        "POST",
+        "PUT",
+        "TAGE",
+        "TFA",
+        "TTS",
+        "UI",
+        "UX"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "tags": [],
+      "size": 16492
+    },
+    {
+      "file": "memory/2026-03-15.md",
+      "date": "2026-03-15",
+      "headline": "# 2026-03-15 — Tageslog",
+      "tickers": [
+        "AG",
+        "AKAD",
+        "ALLE",
+        "BAYN",
+        "CDN",
+        "EQNR",
+        "KEIN",
+        "MSFT",
+        "NICHT",
+        "NUM",
+        "RIO.L",
+        "TOC",
+        "TTS",
+        "WTI"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [],
+      "size": 15991
+    },
+    {
+      "file": "memory/2026-03-16.md",
+      "date": "2026-03-16",
+      "headline": "# 2026-03-16 — Montag",
+      "tickers": [
+        "AG",
+        "BAE",
+        "BAYN.DE",
+        "DHT",
+        "EQNR",
+        "EQNR.OL",
+        "EXK",
+        "FRO",
+        "HAL",
+        "HII",
+        "HL",
+        "HM",
+        "JJ",
+        "KEIN",
+        "KTOS",
+        "LEG",
+        "LONG",
+        "MSFT",
+        "NEU",
+        "NICHT",
+        "NOCH",
+        "NVDA",
+        "NYSE",
+        "OWA",
+        "OXY"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S4"
+      ],
+      "tags": [],
+      "size": 7719
+    },
+    {
+      "file": "memory/2026-03-17.md",
+      "date": "2026-03-17",
+      "headline": "# 2026-03-17 — Dienstag",
+      "tickers": [
+        "BAYN.DE",
+        "BHP.L",
+        "BUG",
+        "CLI",
+        "DHT",
+        "EQNR",
+        "EQNR.OL",
+        "FRO",
+        "HAL",
+        "HL",
+        "KTOS",
+        "LONG",
+        "MOS",
+        "MSFT",
+        "NVDA",
+        "NYSE",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "RIO.L",
+        "STARK",
+        "TP",
+        "TTE.PA",
+        "UND",
+        "WTI"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [],
+      "size": 6134
+    },
+    {
+      "file": "memory/2026-03-18.md",
+      "date": "2026-03-18",
+      "headline": "# 2026-03-18 — Dienstag",
+      "tickers": [
+        "CCJ",
+        "COPX",
+        "DATA",
+        "DHT",
+        "EQNR",
+        "FCX",
+        "FRO",
+        "GET",
+        "HAL",
+        "HL",
+        "JS",
+        "MSFT",
+        "NATO",
+        "NVDA",
+        "ORS",
+        "OXY",
+        "PAAS",
+        "PLTR",
+        "PLZ",
+        "POST",
+        "RIO.L",
+        "SLB",
+        "TR",
+        "TTE.PA"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "S1",
+        "S7"
+      ],
+      "tags": [],
+      "size": 21656
+    },
+    {
+      "file": "memory/2026-03-19.md",
+      "date": "2026-03-19",
+      "headline": "",
+      "tickers": [
+        "ALERT",
+        "BAYN.DE",
+        "BBC",
+        "BZ",
+        "CDN",
+        "DNA",
+        "EQNR",
+        "ETF",
+        "FX",
+        "GET",
+        "HIT",
+        "ID",
+        "INPEX",
+        "JP",
+        "JPY",
+        "KB",
+        "KI",
+        "LOST",
+        "MSFT",
+        "NVDA",
+        "OVER",
+        "PLTR",
+        "POST",
+        "RIO.L",
+        "SKIP"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [],
+      "size": 25095
+    },
+    {
+      "file": "memory/2026-03-20.md",
+      "date": "2026-03-20",
+      "headline": "# 2026-03-20 — Tagesnotizen",
+      "tickers": [
+        "AKAD",
+        "ALLES",
+        "BEVOR",
+        "CDN",
+        "DONE",
+        "EQNR",
+        "ETF",
+        "ID",
+        "KI",
+        "MSFT",
+        "NATO",
+        "NAV",
+        "NVDA",
+        "PAPER",
+        "PLTR",
+        "QQQ",
+        "RHM.DE",
+        "RIO.L",
+        "RSS",
+        "STARK",
+        "TR",
+        "TRA",
+        "TTS",
+        "UCITS",
+        "UI"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "PS6",
+        "S3",
+        "S7"
+      ],
+      "tags": [],
+      "size": 23498
+    },
+    {
+      "file": "memory/2026-03-21.md",
+      "date": "2026-03-21",
+      "headline": "",
+      "tickers": [
+        "AEX",
+        "BAYN.DE",
+        "BB",
+        "CAC",
+        "CNN",
+        "DAX",
+        "DNA",
+        "DW",
+        "EQNR",
+        "EQNR.OL",
+        "ETF",
+        "FTSE",
+        "FX",
+        "IBS",
+        "LEG",
+        "LONG",
+        "MSFT",
+        "NATO",
+        "NOK",
+        "NVDA",
+        "PLTR",
+        "POST",
+        "RIO.L",
+        "USA"
+      ],
+      "strategies": [
+        "DT1",
+        "DT5",
+        "DT6",
+        "DT7",
+        "DT8",
+        "DT9"
+      ],
+      "tags": [],
+      "size": 5078
+    },
+    {
+      "file": "memory/2026-03-22.md",
+      "date": "2026-03-22",
+      "headline": "# 2026-03-22 — Sonntag",
+      "tickers": [
+        "ADX",
+        "ALLEN",
+        "BYD",
+        "CN",
+        "CNOOC",
+        "CRASH",
+        "DHT",
+        "DOWN",
+        "ENV",
+        "EQNR",
+        "FRO",
+        "GET",
+        "HK",
+        "HKEX",
+        "ID",
+        "IMMER",
+        "INPEX",
+        "INPEX.T",
+        "JP",
+        "JWT",
+        "MOS",
+        "NEU",
+        "NUR",
+        "NYSE",
+        "OFFEN"
+      ],
+      "strategies": [
+        "DT1",
+        "DT2",
+        "DT3",
+        "DT4",
+        "DT6",
+        "DT7",
+        "DT8",
+        "DT9",
+        "PS1",
+        "PS2",
+        "S1",
+        "S3",
+        "S7"
+      ],
+      "tags": [],
+      "size": 14516
+    },
+    {
+      "file": "memory/2026-03-23.md",
+      "date": "2026-03-23",
+      "headline": "# Memory — 23.03.2026",
+      "tickers": [
+        "ALLE",
+        "BAYN.DE",
+        "CSI",
+        "DHT",
+        "EQNR",
+        "FRO",
+        "FX",
+        "GET",
+        "HL",
+        "ID",
+        "KI",
+        "MOS",
+        "MSFT",
+        "NICHT",
+        "NOCH",
+        "NUR",
+        "NVDA",
+        "OFFEN",
+        "OXY",
+        "PAAS",
+        "PLTR",
+        "RIO.L",
+        "SPA",
+        "SPAM",
+        "TOOLS"
+      ],
+      "strategies": [
+        "S1",
+        "S3",
+        "S7"
+      ],
+      "tags": [],
+      "size": 9776
+    },
+    {
+      "file": "memory/2026-03-24.md",
+      "date": "2026-03-24",
+      "headline": "# Daily Log — 2026-03-24 (Dienstag)",
+      "tickers": [
+        "AAOI",
+        "ADR",
+        "BAYN.DE",
+        "CTO",
+        "EQNR",
+        "EQNR.OL",
+        "ETF",
+        "HOCH",
+        "ID",
+        "KI",
+        "LONG",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "OI",
+        "PLTR",
+        "RIO.L",
+        "RS",
+        "SMS",
+        "WTI",
+        "WW",
+        "XLE"
+      ],
+      "strategies": [
+        "S3",
+        "S7"
+      ],
+      "tags": [],
+      "size": 6963
+    },
+    {
+      "file": "memory/2026-03-25.md",
+      "date": "2026-03-25",
+      "headline": "# Daily Log — 2026-03-25",
+      "tickers": [
+        "AG",
+        "ASA",
+        "ASML",
+        "ASML.AS",
+        "DANN",
+        "DHT",
+        "DINO",
+        "EQNR",
+        "EUV",
+        "FCF",
+        "FCX",
+        "FDA",
+        "FRO",
+        "HO.PA",
+        "INFO",
+        "JS",
+        "KEIN",
+        "KI",
+        "LADEN",
+        "NICHT",
+        "NTV",
+        "NVDA",
+        "NYSE",
+        "OXY",
+        "PLTR"
+      ],
+      "strategies": [
+        "PM",
+        "PS1",
+        "PS2",
+        "PS4",
+        "PS7",
+        "PT",
+        "S1",
+        "S3",
+        "S7"
+      ],
+      "tags": [],
+      "size": 9589
+    },
+    {
+      "file": "memory/2026-03-26.md",
+      "date": "2026-03-26",
+      "headline": "# 2026-03-26 — Tagesnotizen",
+      "tickers": [
+        "AG",
+        "ALLE",
+        "ASA",
+        "CCL",
+        "DAX",
+        "ENI",
+        "EOD",
+        "EQNR",
+        "EXK",
+        "FM",
+        "HEUTE",
+        "HII",
+        "HL",
+        "HO.PA",
+        "ID",
+        "KTOS",
+        "LNG",
+        "MP",
+        "NICHT",
+        "NYSE",
+        "OXY",
+        "PAAS",
+        "PSX",
+        "RSS",
+        "SPY"
+      ],
+      "strategies": [
+        "DT1",
+        "DT3",
+        "DT4",
+        "DT6",
+        "DT8",
+        "DT9",
+        "S1",
+        "S10",
+        "S3",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "tags": [],
+      "size": 27425
+    },
+    {
+      "file": "memory/2026-03-27.md",
+      "date": "2026-03-27",
+      "headline": "# 2026-03-27 — Cron-Logs",
+      "tickers": [
+        "ALLE",
+        "BAYN.DE",
+        "BOM",
+        "CLI",
+        "EQNR",
+        "EQNR.OL",
+        "ETA",
+        "LONG",
+        "MSFT",
+        "NVDA",
+        "ODER",
+        "PLTR",
+        "RIO.L",
+        "UTF"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 3493
+    },
+    {
+      "file": "memory/2026-03-28.md",
+      "date": "2026-03-28",
+      "headline": "# 2026-03-28 — Samstag",
+      "tickers": [
+        "AF",
+        "AF.PA",
+        "CF",
+        "DAX",
+        "EIN",
+        "EPS",
+        "EV",
+        "IAG",
+        "IPI",
+        "ITA",
+        "KBV",
+        "KCV",
+        "KEIN",
+        "KGV",
+        "KLM",
+        "LHA",
+        "LHA.DE",
+        "MEZ",
+        "MOS",
+        "NICHT",
+        "PEG",
+        "TTM",
+        "UBS"
+      ],
+      "strategies": [
+        "S1",
+        "S10",
+        "S3"
+      ],
+      "tags": [],
+      "size": 21184
+    },
+    {
+      "file": "memory/2026-03-29.md",
+      "date": "2026-03-29",
+      "headline": "# Memory — 2026-03-29 (Sonntag)",
+      "tickers": [
+        "AG",
+        "ALERT",
+        "CORN",
+        "EPS",
+        "EQNR",
+        "ETF",
+        "FM",
+        "HRW",
+        "KGV",
+        "KI",
+        "KMI",
+        "LG",
+        "LLY",
+        "MEZ",
+        "MOS",
+        "NEU",
+        "NICHT",
+        "NUE",
+        "NVO",
+        "ODER",
+        "OLED",
+        "PE",
+        "PLTR",
+        "PPI",
+        "QD"
+      ],
+      "strategies": [
+        "S1",
+        "S10",
+        "S9"
+      ],
+      "tags": [],
+      "size": 18920
+    },
+    {
+      "file": "memory/2026-03-30.md",
+      "date": "2026-03-30",
+      "headline": "# 30.03.2026 — Daily Log",
+      "tickers": [
+        "ARKG",
+        "ASA",
+        "BA.L",
+        "BKX",
+        "DHT",
+        "EINEM",
+        "EQNR",
+        "EQNR.OL",
+        "ID",
+        "IM",
+        "KI",
+        "LHA",
+        "LHA.DE",
+        "LONG",
+        "MEZ",
+        "MPC",
+        "MSFT",
+        "NACH",
+        "NICHT",
+        "NVDA",
+        "NYSE",
+        "PAUSE",
+        "PLTR",
+        "PSX",
+        "RHM.DE"
+      ],
+      "strategies": [
+        "PS1",
+        "PS11",
+        "PS2",
+        "S1",
+        "S10",
+        "S11",
+        "S3",
+        "S8"
+      ],
+      "tags": [],
+      "size": 9126
+    },
+    {
+      "file": "memory/2026-03-31.md",
+      "date": "2026-03-31",
+      "headline": "# 2026-03-31 — Paper Trading Report",
+      "tickers": [
+        "AAL",
+        "ADM",
+        "AFK",
+        "AMAT",
+        "ASML.AS",
+        "BA",
+        "BKNG",
+        "CF",
+        "CVX",
+        "DAL",
+        "DHT",
+        "DNA",
+        "EDT",
+        "EQNR",
+        "ERC",
+        "EXPE",
+        "FRO",
+        "HLT",
+        "ID",
+        "JETZT",
+        "KLAC",
+        "LHA",
+        "LHA.DE",
+        "LMT",
+        "LRCX"
+      ],
+      "strategies": [
+        "DT4",
+        "DT5",
+        "DT9",
+        "PS1",
+        "PS12",
+        "PT",
+        "S1",
+        "S10",
+        "S3"
+      ],
+      "tags": [],
+      "size": 18417
+    },
+    {
+      "file": "memory/2026-04-01.md",
+      "date": "2026-04-01",
+      "headline": "# Tagestagebuch — 01.04.2026",
+      "tickers": [
+        "BA.L",
+        "BAYN.DE",
+        "BHP.L",
+        "CRASH",
+        "DW",
+        "EQNR",
+        "EQNR.OL",
+        "HOCH",
+        "JETZT",
+        "KI",
+        "PLTR",
+        "RHM.DE",
+        "RIO.L",
+        "SIE.DE",
+        "STARK",
+        "WSJ",
+        "YTD"
+      ],
+      "strategies": [
+        "S1",
+        "S3"
+      ],
+      "tags": [],
+      "size": 4221
+    },
+    {
+      "file": "memory/2026-04-02.md",
+      "date": "2026-04-02",
+      "headline": "# 2026-04-02 — Täglich",
+      "tickers": [
+        "BMW.DE",
+        "MOS",
+        "SAP",
+        "SPY",
+        "ZIM"
+      ],
+      "strategies": [
+        "PS14",
+        "PS17",
+        "PS18",
+        "PS5",
+        "S1",
+        "S17",
+        "S18",
+        "S5"
+      ],
+      "tags": [],
+      "size": 857
+    },
+    {
+      "file": "memory/2026-04-03.md",
+      "date": "2026-04-03",
+      "headline": "# 2026-04-03",
+      "tickers": [
+        "ABEND",
+        "AG",
+        "AKTIV",
+        "ASML",
+        "BA",
+        "BAYN.DE",
+        "BMW",
+        "BUY",
+        "BZ",
+        "CL",
+        "CLF",
+        "CO",
+        "DHT",
+        "EQNR",
+        "EQNR.OL",
+        "EXIT",
+        "FRO",
+        "IRGC",
+        "KEIN",
+        "LHA.DE",
+        "LONG",
+        "MEZ",
+        "MOS",
+        "MSFT",
+        "NFP"
+      ],
+      "strategies": [
+        "PS1",
+        "PS11",
+        "S1",
+        "S2",
+        "S4"
+      ],
+      "tags": [],
+      "size": 7368
+    },
+    {
+      "file": "memory/2026-04-04.md",
+      "date": "2026-04-04",
+      "headline": "# 2026-04-04 — The Build Day",
+      "tickers": [
+        "AMAT",
+        "BA",
+        "BA.L",
+        "BABA",
+        "FCX",
+        "FXI",
+        "JD",
+        "KWEB",
+        "LMT",
+        "LONG",
+        "MU",
+        "MVP",
+        "NEU",
+        "NXE",
+        "PID",
+        "PLTR",
+        "RHM",
+        "SCCO",
+        "SMCI",
+        "TECK",
+        "VRT",
+        "VST"
+      ],
+      "strategies": [
+        "PS1",
+        "PS11",
+        "PS14",
+        "PS3",
+        "PS5"
+      ],
+      "tags": [],
+      "size": 11689
+    },
+    {
+      "file": "memory/2026-04-05.md",
+      "date": "2026-04-05",
+      "headline": "# 2026-04-05",
+      "tickers": [
+        "LONG",
+        "PID",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 949
+    },
+    {
+      "file": "memory/2026-04-06.md",
+      "date": "2026-04-06",
+      "headline": "# Daily Log — 06.04.2026",
+      "tickers": [
+        "ETF",
+        "LONG",
+        "PLTR",
+        "WPR"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 1230
+    },
+    {
+      "file": "memory/2026-04-07.md",
+      "date": "2026-04-07",
+      "headline": "# 2026-04-07",
+      "tickers": [
+        "LONG",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 360
+    },
+    {
+      "file": "memory/2026-04-08.md",
+      "date": "2026-04-08",
+      "headline": "# 2026-04-08",
+      "tickers": [
+        "LONG",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [],
+      "size": 360
+    },
+    {
+      "file": "memory/2026-04-09.md",
+      "date": "2026-04-09",
+      "headline": "# 2026-04-09",
+      "tickers": [
+        "LONG",
+        "PLTR"
+      ],
+      "strategies": [
+        "S1",
+        "S2"
+      ],
+      "tags": [],
+      "size": 1034
+    },
+    {
+      "file": "memory/abend-empfehlungen-2026-03-13.md",
+      "date": "2026-03-13",
+      "headline": "# Abend-Empfehlungen 2026-03-13 (21:00 UTC)",
+      "tickers": [
+        "ADD",
+        "ASAP",
+        "BAYN.DE",
+        "EEG",
+        "EQNR",
+        "LONG",
+        "MSFT",
+        "NVDA",
+        "ODER",
+        "ORDER",
+        "PLTR",
+        "RIO.L",
+        "STOP",
+        "TOO"
+      ],
+      "strategies": [],
+      "tags": [
+        "abend",
+        "empfehlungen"
+      ],
+      "size": 1957
+    },
+    {
+      "file": "memory/ai-tutor-architecture.md",
+      "date": "",
+      "headline": "# AI-TUTOR ARCHITECTURE — Wie man einen KI-Lehrer baut",
+      "tickers": [
+        "BEVOR",
+        "IDEE",
+        "JEDES",
+        "KERN",
+        "KI",
+        "LEVEL",
+        "STATE",
+        "TUTOR",
+        "WRONG",
+        "ZPD"
+      ],
+      "strategies": [],
+      "tags": [
+        "tutor",
+        "architecture"
+      ],
+      "size": 29305
+    },
+    {
+      "file": "memory/aktien-bewertung.md",
+      "date": "2026-03-25",
+      "headline": "# Aktien-Bewertungssystem — Albert Standard v2",
+      "tickers": [
+        "ALLE",
+        "BEVOR",
+        "CF",
+        "DANN",
+        "DCF",
+        "DINO",
+        "ERST",
+        "ETF",
+        "EV",
+        "FCF",
+        "FRO",
+        "FX",
+        "IMMER",
+        "ISIN",
+        "JEDE",
+        "NICHT",
+        "NOK",
+        "OCF",
+        "OPEC",
+        "PBF",
+        "ROA",
+        "ROE",
+        "VOR",
+        "WKN"
+      ],
+      "strategies": [],
+      "tags": [
+        "aktien",
+        "bewertung"
+      ],
+      "size": 8807
+    },
+    {
+      "file": "memory/albert-accuracy.md",
+      "date": "2026-04-09",
+      "headline": "# Albert Accuracy & Learning Report",
+      "tickers": [
+        "AGRA",
+        "HALB",
+        "TEST"
+      ],
+      "strategies": [
+        "AR-AGRA",
+        "AR-HALB",
+        "DT1",
+        "DT2",
+        "DT3",
+        "DT4",
+        "DT5",
+        "PM",
+        "PS1",
+        "PS10",
+        "PS11",
+        "PS12",
+        "PS13",
+        "PS14",
+        "PS15"
+      ],
+      "tags": [
+        "albert",
+        "accuracy"
+      ],
+      "size": 2053
+    },
+    {
+      "file": "memory/albert-log.md",
+      "date": "2026-03-14",
+      "headline": "# Albert-Log",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "albert",
+        "log"
+      ],
+      "size": 135
+    },
+    {
+      "file": "memory/albert-trades.md",
+      "date": "2026-03-26",
+      "headline": "# Albert Strategy — Trade Log 🎩",
+      "tickers": [
+        "FRO",
+        "OXY",
+        "TRADE",
+        "UAE"
+      ],
+      "strategies": [],
+      "tags": [
+        "albert",
+        "trades"
+      ],
+      "size": 1535
+    },
+    {
+      "file": "memory/backtest-report.md",
+      "date": "2026-04-05",
+      "headline": "# Backtest Report — Walk-Forward Analyse",
+      "tickers": [
+        "CO",
+        "DD",
+        "TIME",
+        "WE",
+        "WEAK"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "tags": [
+        "backtest",
+        "report"
+      ],
+      "size": 7002
+    },
+    {
+      "file": "memory/briefing-2026-03-20.md",
+      "date": "2026-03-20",
+      "headline": "# 🌅 Morgen-Briefing | Freitag, 20. März 2026 (08:30)",
+      "tickers": [
+        "ABER",
+        "BAYN.DE",
+        "DHT",
+        "ECB",
+        "EQNR",
+        "FRO",
+        "FX",
+        "GREEN",
+        "HEUTE",
+        "HOT",
+        "KEINE",
+        "KI",
+        "MSFT",
+        "NATO",
+        "NEWS",
+        "NVDA",
+        "OXY",
+        "PLTR",
+        "RED",
+        "RHM.DE",
+        "UND",
+        "WTI",
+        "XETRA",
+        "YTD"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "S1",
+        "S2",
+        "S3",
+        "S6"
+      ],
+      "tags": [
+        "briefing"
+      ],
+      "size": 3910
+    },
+    {
+      "file": "memory/correlation-report.md",
+      "date": "2026-03-15",
+      "headline": "# Korrelations-Report — 2026-03-15",
+      "tickers": [
+        "BZ",
+        "CL",
+        "EQNR",
+        "EQNR.OL",
+        "HG",
+        "NOK",
+        "PLTR",
+        "RIO",
+        "RIO.L",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "correlation",
+        "report"
+      ],
+      "size": 2661
+    },
+    {
+      "file": "memory/cron-backup.md",
+      "date": "2026-03-14",
+      "headline": "# Cron-Jobs Backup — Stand 2026-03-14",
+      "tickers": [
+        "AG",
+        "ASML",
+        "BHP",
+        "ID",
+        "NVDA",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "cron",
+        "backup"
+      ],
+      "size": 2237
+    },
+    {
+      "file": "memory/cron-health.md",
+      "date": "",
+      "headline": "# Cron Health Report — 15.03.2026",
+      "tickers": [
+        "ODER",
+        "UND"
+      ],
+      "strategies": [],
+      "tags": [
+        "cron",
+        "health"
+      ],
+      "size": 1507
+    },
+    {
+      "file": "memory/daemon-watchdog-log.md",
+      "date": "2026-04-05",
+      "headline": "# Daemon Watchdog Log",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "daemon",
+        "watchdog",
+        "log"
+      ],
+      "size": 116
+    },
+    {
+      "file": "memory/daytrader-log.md",
+      "date": "2026-03-23",
+      "headline": "[2026-03-23 02:00] Neue Trades: 5 | Offen: 5",
+      "tickers": [
+        "AAL.L",
+        "ANTO.L",
+        "BA.L",
+        "CRH.L",
+        "ENR.DE",
+        "EOD",
+        "FRES.L",
+        "GOLD",
+        "HAL",
+        "HEI.DE",
+        "KWEB",
+        "MNDI.L",
+        "ORCL",
+        "PUM.DE",
+        "RHM.DE",
+        "SGO.PA",
+        "TRAIL",
+        "ZAL.DE"
+      ],
+      "strategies": [],
+      "tags": [
+        "daytrader",
+        "log"
+      ],
+      "size": 29776
+    },
+    {
+      "file": "memory/deepdive-protokoll.md",
+      "date": "",
+      "headline": "# Deep Dive Protokoll — Albert",
+      "tickers": [
+        "ALLE",
+        "BAYN",
+        "BEVOR",
+        "BHP",
+        "CHECK",
+        "CN",
+        "EP",
+        "EPS",
+        "EQNR",
+        "EV",
+        "FX",
+        "GLP",
+        "JEDEM",
+        "KBV",
+        "KCV",
+        "KEIN",
+        "KEINE",
+        "KGV",
+        "KMI",
+        "LHA",
+        "LLY",
+        "MDAX",
+        "MOS",
+        "MSFT",
+        "NEU"
+      ],
+      "strategies": [
+        "S1"
+      ],
+      "tags": [
+        "deepdive",
+        "protokoll"
+      ],
+      "size": 14269
+    },
+    {
+      "file": "memory/dirk-predictions.md",
+      "date": "",
+      "headline": "# Dirk 7H — Predictions Tracker",
+      "tickers": [
+        "DATUM",
+        "ETF",
+        "KI",
+        "META",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "SMH",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "dirk",
+        "predictions"
+      ],
+      "size": 4059
+    },
+    {
+      "file": "memory/dt-backtest.md",
+      "date": "2026-03-28",
+      "headline": "# DT Backtesting Report — 2026-03-28 10:30",
+      "tickers": [],
+      "strategies": [
+        "DT1",
+        "DT2",
+        "DT3",
+        "DT6",
+        "DT7",
+        "DT8"
+      ],
+      "tags": [
+        "backtest"
+      ],
+      "size": 1637
+    },
+    {
+      "file": "memory/ecosystem-human-resilience.md",
+      "date": "",
+      "headline": "# Ecosystem: Human Resilience in the AI Era",
+      "tickers": [
+        "ALLE",
+        "CAD",
+        "CRM",
+        "DEINE",
+        "DICH",
+        "DIR",
+        "FLOW",
+        "IHREN",
+        "JOB",
+        "JOBS",
+        "KI",
+        "MVP",
+        "PLUS",
+        "USER",
+        "USERS",
+        "UX",
+        "WO"
+      ],
+      "strategies": [],
+      "tags": [
+        "ecosystem",
+        "human",
+        "resilience"
+      ],
+      "size": 11497
+    },
+    {
+      "file": "memory/email-accounts.md",
+      "date": "",
+      "headline": "# E-Mail Zugangsdaten — Schutzeichel",
+      "tickers": [
+        "AAAJ",
+        "GET",
+        "ID",
+        "IPM",
+        "OWA",
+        "POST",
+        "TSP"
+      ],
+      "strategies": [],
+      "tags": [
+        "email",
+        "accounts"
+      ],
+      "size": 1142
+    },
+    {
+      "file": "memory/email-log.md",
+      "date": "",
+      "headline": "# E-Mail Log — Kundenanfragen Gebr. Schutzeichel",
+      "tickers": [
+        "AM",
+        "AW",
+        "BV",
+        "TSP",
+        "WG"
+      ],
+      "strategies": [],
+      "tags": [
+        "email",
+        "log"
+      ],
+      "size": 28919
+    },
+    {
+      "file": "memory/entscheidungs-log.md",
+      "date": "2026-03-26",
+      "headline": "# Entscheidungs-Log — Trading Strategie",
+      "tickers": [
+        "AG",
+        "ASA",
+        "BAYN.DE",
+        "BNO",
+        "CVX",
+        "EQNR",
+        "ETF",
+        "IMMER",
+        "KI",
+        "MSFT",
+        "NATO",
+        "NOK",
+        "OI",
+        "OXY",
+        "REAL",
+        "RHM.DE",
+        "RIO.L",
+        "TR",
+        "UAE",
+        "USO",
+        "VOR",
+        "XLE",
+        "XOM"
+      ],
+      "strategies": [
+        "AR-AGRA",
+        "AR-HALB",
+        "DT3",
+        "DT4",
+        "PS6",
+        "S1",
+        "S10"
+      ],
+      "tags": [
+        "entscheidungs",
+        "log"
+      ],
+      "size": 25311
+    },
+    {
+      "file": "memory/feedback-log.md",
+      "date": "2026-03-27",
+      "headline": "# Feedback Engine Log",
+      "tickers": [
+        "EV"
+      ],
+      "strategies": [
+        "DT1",
+        "DT2",
+        "DT3",
+        "DT4",
+        "DT5",
+        "DT6",
+        "DT9",
+        "PS1"
+      ],
+      "tags": [
+        "feedback",
+        "log"
+      ],
+      "size": 1924
+    },
+    {
+      "file": "memory/friday-agent-log-template.md",
+      "date": "2026-02-27",
+      "headline": "# Friday Agent Log — Gemeinsames Arbeitsprotokoll",
+      "tickers": [
+        "DATUM",
+        "SOUL"
+      ],
+      "strategies": [],
+      "tags": [
+        "friday",
+        "agent",
+        "log",
+        "template"
+      ],
+      "size": 873
+    },
+    {
+      "file": "memory/friday-update-fuer-albert.md",
+      "date": "",
+      "headline": "# Friday — Update für Albert (Stand: 27.02.2026)",
+      "tickers": [
+        "AV",
+        "DC",
+        "DM",
+        "DSGVO",
+        "HERE",
+        "JA",
+        "JETZT",
+        "NEIN",
+        "OS",
+        "REST",
+        "SHK",
+        "SOUL"
+      ],
+      "strategies": [],
+      "tags": [
+        "friday",
+        "update",
+        "fuer",
+        "albert"
+      ],
+      "size": 4952
+    },
+    {
+      "file": "memory/josh-email-report-31-03-2026.md",
+      "date": "",
+      "headline": "# E-Mail Tagesreport 31.03.2026",
+      "tickers": [
+        "AM",
+        "BV",
+        "HLS",
+        "OST",
+        "TSP"
+      ],
+      "strategies": [],
+      "tags": [
+        "josh",
+        "email",
+        "report",
+        "2026"
+      ],
+      "size": 1031
+    },
+    {
+      "file": "memory/langzeit-vision.md",
+      "date": "",
+      "headline": "# LANGZEITVISION: Human Resilience in the AI Era",
+      "tickers": [
+        "DEIN",
+        "DICH",
+        "DIR",
+        "DNA",
+        "DU",
+        "JOB",
+        "KERN",
+        "KI",
+        "MAX",
+        "PHASE",
+        "UX",
+        "ZU"
+      ],
+      "strategies": [],
+      "tags": [
+        "langzeit",
+        "vision"
+      ],
+      "size": 14792
+    },
+    {
+      "file": "memory/learning-log.md",
+      "date": "2026-03-18",
+      "headline": "# Learning Log",
+      "tickers": [
+        "WL"
+      ],
+      "strategies": [
+        "DT4",
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "PT"
+      ],
+      "tags": [
+        "learning",
+        "log"
+      ],
+      "size": 6471
+    },
+    {
+      "file": "memory/morgen-deploy-checklist.md",
+      "date": "",
+      "headline": "# Morgen-Deploy-Checklist — Josh Dashboard (21.03.2026)",
+      "tickers": [
+        "ODER",
+        "ORS",
+        "OSRM",
+        "PLZ",
+        "POST",
+        "TRA",
+        "UI",
+        "VRP"
+      ],
+      "strategies": [],
+      "tags": [
+        "morgen",
+        "deploy",
+        "checklist"
+      ],
+      "size": 3368
+    },
+    {
+      "file": "memory/news-verarbeitung.md",
+      "date": "2026-03-25",
+      "headline": "# Breaking News Verarbeitung — PFLICHT-Checkliste",
+      "tickers": [
+        "EQNR",
+        "GEGEN",
+        "JEDER",
+        "NUR",
+        "STOP"
+      ],
+      "strategies": [],
+      "tags": [
+        "news",
+        "verarbeitung"
+      ],
+      "size": 2481
+    },
+    {
+      "file": "memory/newswire-analysis.md",
+      "date": "2026-04-04",
+      "headline": "",
+      "tickers": [
+        "FESCO",
+        "NATO",
+        "OPEC",
+        "UAE"
+      ],
+      "strategies": [
+        "PM",
+        "S1",
+        "S2",
+        "S3",
+        "S8",
+        "S9"
+      ],
+      "tags": [
+        "newswire",
+        "analysis"
+      ],
+      "size": 31039
+    },
+    {
+      "file": "memory/nextjob-techspec.md",
+      "date": "2026-03-08",
+      "headline": "# NextJob — Technische Spezifikation & Fahrplan",
+      "tickers": [
+        "APP",
+        "AUTH",
+        "CDN",
+        "DATEN",
+        "ESCO",
+        "FALSE",
+        "GET",
+        "JSONB",
+        "KEY",
+        "KI",
+        "MVP",
+        "NOW",
+        "NULL",
+        "ODER",
+        "POST",
+        "REST",
+        "TABLE",
+        "TEXT",
+        "TRUE",
+        "UUID"
+      ],
+      "strategies": [
+        "S3"
+      ],
+      "tags": [
+        "nextjob",
+        "techspec"
+      ],
+      "size": 32462
+    },
+    {
+      "file": "memory/night-geo-log.md",
+      "date": "2026-03-30",
+      "headline": "[TREND] 2026-03-30 08:25 — 🔴 STRONG: S1 bullish_oil (16 Events in 3h): FTSE 100 Set to Fall on Iran War Escalation Worri",
+      "tickers": [
+        "AIC",
+        "BTG",
+        "FTSE",
+        "MRE",
+        "SEC",
+        "TREND",
+        "UAE"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S8"
+      ],
+      "tags": [
+        "night",
+        "geo",
+        "log"
+      ],
+      "size": 9846
+    },
+    {
+      "file": "memory/opportunity-log.md",
+      "date": "2026-03-22",
+      "headline": "# Opportunity Detector Log",
+      "tickers": [
+        "AG",
+        "ASML",
+        "ASML.AS",
+        "EUV",
+        "FCX",
+        "GOLD",
+        "ING",
+        "NATO",
+        "NICHT",
+        "RHM.DE",
+        "SCCO",
+        "THINK"
+      ],
+      "strategies": [
+        "PS3"
+      ],
+      "tags": [
+        "opportunity",
+        "log"
+      ],
+      "size": 2081
+    },
+    {
+      "file": "memory/overnight-context.md",
+      "date": "2026-04-09",
+      "headline": "# Overnight Context — 09.04.2026",
+      "tickers": [
+        "ETF",
+        "KI",
+        "PLTR",
+        "WTI"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "overnight",
+        "context"
+      ],
+      "size": 1010
+    },
+    {
+      "file": "memory/paper-exit-log.md",
+      "date": "2026-03-31",
+      "headline": "# Paper Exit Log",
+      "tickers": [
+        "ADM",
+        "AMAT",
+        "ARKG",
+        "CF",
+        "CLF",
+        "CO",
+        "DHT",
+        "HL",
+        "KLAC",
+        "LRCX",
+        "MOS",
+        "NOVO",
+        "PAAS",
+        "SAAB",
+        "SAP",
+        "SCCO",
+        "ST",
+        "STLD",
+        "STOP",
+        "TRAIL",
+        "TTE.PA",
+        "XBI"
+      ],
+      "strategies": [],
+      "tags": [
+        "paper",
+        "exit",
+        "log"
+      ],
+      "size": 2536
+    },
+    {
+      "file": "memory/paper-portfolio.md",
+      "date": "",
+      "headline": "# Paper Portfolio — Albert's 1000€ Trading Fund",
+      "tickers": [
+        "ALLE",
+        "BE",
+        "DHT",
+        "ENTRY",
+        "FOMO",
+        "FRO",
+        "HAG",
+        "HAG.DE",
+        "HII",
+        "HK",
+        "HL",
+        "IMMER",
+        "KTOS",
+        "LONG",
+        "LSE",
+        "MOS",
+        "NATO",
+        "NYSE",
+        "OXY",
+        "PAAS",
+        "RALLY",
+        "START",
+        "TP",
+        "TTE",
+        "TTE.PA"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [
+        "paper",
+        "portfolio"
+      ],
+      "size": 8322
+    },
+    {
+      "file": "memory/paper-strategien.md",
+      "date": "",
+      "headline": "# Paper Fund — Strategien & Lern-Framework",
+      "tickers": [
+        "ABER",
+        "ATH",
+        "DANN",
+        "DHT",
+        "ERST",
+        "FOMO",
+        "FRO",
+        "HAG.DE",
+        "HII",
+        "HL",
+        "KTOS",
+        "MOS",
+        "NATO",
+        "OPEC",
+        "OXY",
+        "PAAS",
+        "TTE.PA",
+        "UND",
+        "WTI"
+      ],
+      "strategies": [
+        "PM",
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "PT"
+      ],
+      "tags": [
+        "paper",
+        "strategien"
+      ],
+      "size": 6766
+    },
+    {
+      "file": "memory/paper-trades.md",
+      "date": "",
+      "headline": "# Paper Trades — Simulierte Trades für Statistik",
+      "tickers": [
+        "AIR.DE",
+        "ASML",
+        "ATH",
+        "BA.L",
+        "BAE",
+        "CF",
+        "CLF",
+        "DHT",
+        "ENPH",
+        "EQNR.OL",
+        "ETF",
+        "EXK",
+        "FRO",
+        "GEGEN",
+        "GOLD",
+        "HAG.DE",
+        "HAL",
+        "HII",
+        "HL",
+        "KTOS",
+        "LONG",
+        "MOS",
+        "MP",
+        "OXY",
+        "PAAS"
+      ],
+      "strategies": [
+        "PS1",
+        "PS4",
+        "S1"
+      ],
+      "tags": [
+        "paper",
+        "trades"
+      ],
+      "size": 13411
+    },
+    {
+      "file": "memory/paper-trading-weekly.md",
+      "date": "2026-03-28",
+      "headline": "# Paper Trading Weekly Report — 2026-W12",
+      "tickers": [
+        "ASIA",
+        "DAY",
+        "HK",
+        "KEEP",
+        "KWEB",
+        "MOS",
+        "OXY",
+        "RAR",
+        "SWING"
+      ],
+      "strategies": [
+        "DT1",
+        "DT2",
+        "DT3",
+        "DT4",
+        "DT6",
+        "DT9",
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS5",
+        "PT"
+      ],
+      "tags": [
+        "paper",
+        "trading",
+        "weekly"
+      ],
+      "size": 3021
+    },
+    {
+      "file": "memory/paper-trading-workflow.md",
+      "date": "",
+      "headline": "# Paper Fund — Analyse & Trading Workflow",
+      "tickers": [
+        "FOMO",
+        "HAG.DE",
+        "NICHT",
+        "RSS",
+        "TTE.PA",
+        "WARUM"
+      ],
+      "strategies": [
+        "PS1",
+        "PS3",
+        "PS5"
+      ],
+      "tags": [
+        "paper",
+        "trading",
+        "workflow"
+      ],
+      "size": 4594
+    },
+    {
+      "file": "memory/paper-verbesserungen.md",
+      "date": "",
+      "headline": "# Paper Fund — Verbesserungsplan",
+      "tickers": [
+        "CALM",
+        "CF",
+        "DHT",
+        "FRO",
+        "HAG.DE",
+        "HII",
+        "HL",
+        "JETZT",
+        "KGV",
+        "KTOS",
+        "MOS",
+        "NUR",
+        "OXY",
+        "PAAS",
+        "PANIC",
+        "RSS",
+        "TTE.PA",
+        "UVXY",
+        "WTI"
+      ],
+      "strategies": [
+        "PS1",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "PS6",
+        "PS7",
+        "PS8"
+      ],
+      "tags": [
+        "paper",
+        "verbesserungen"
+      ],
+      "size": 3164
+    },
+    {
+      "file": "memory/portfolio-risk.md",
+      "date": "2026-03-20",
+      "headline": "# Portfolio Risk Report",
+      "tickers": [
+        "AG",
+        "ASA",
+        "BAYN.D",
+        "BAYN.DE",
+        "EQNR",
+        "ETF",
+        "KI",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "RIO.L"
+      ],
+      "strategies": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "portfolio",
+        "risk"
+      ],
+      "size": 2364
+    },
+    {
+      "file": "memory/positions-live.md",
+      "date": "2026-04-10",
+      "headline": "# Positions Live — Einzige Wahrheitsquelle für aktuelle Positionen",
+      "tickers": [
+        "AG",
+        "ASA",
+        "BAYN.DE",
+        "EQNR",
+        "ETF",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "PLTR",
+        "REAL",
+        "RHM.DE",
+        "RIO.L",
+        "TR"
+      ],
+      "strategies": [
+        "S1"
+      ],
+      "tags": [
+        "positions",
+        "live"
+      ],
+      "size": 2301
+    },
+    {
+      "file": "memory/privateteacher-anforderungen.md",
+      "date": "",
+      "headline": "# PrivatTeacher — Anforderungskatalog",
+      "tickers": [
+        "ABER",
+        "CH",
+        "IF",
+        "JA",
+        "KI",
+        "LEVEL",
+        "MODUL",
+        "MVP",
+        "NICHT",
+        "NLP",
+        "NUR",
+        "SELF",
+        "TASK",
+        "TTS",
+        "UI",
+        "ZPD"
+      ],
+      "strategies": [],
+      "tags": [
+        "privateteacher",
+        "anforderungen"
+      ],
+      "size": 7949
+    },
+    {
+      "file": "memory/privateteacher-neural-training.md",
+      "date": "",
+      "headline": "# PrivatTeacher — Neural Network Training Infrastructure",
+      "tickers": [
+        "ALLEM",
+        "ALLES",
+        "AN",
+        "CH",
+        "DATEN",
+        "DER",
+        "GIVEN",
+        "IF",
+        "KI",
+        "LABEL",
+        "MVP",
+        "NEXT",
+        "RULE",
+        "STATE",
+        "STEP",
+        "THEN",
+        "UUID",
+        "VON",
+        "VOR",
+        "XYZ"
+      ],
+      "strategies": [],
+      "tags": [
+        "privateteacher",
+        "neural",
+        "training"
+      ],
+      "size": 24554
+    },
+    {
+      "file": "memory/privateteacher-vision.md",
+      "date": "",
+      "headline": "# PrivatTeacher — Die komplette Vision",
+      "tickers": [
+        "ABER",
+        "BASE",
+        "BEVOR",
+        "DAS",
+        "DIE",
+        "EINES",
+        "GUT",
+        "IMMER",
+        "JA",
+        "JEDEN",
+        "KI",
+        "MODEL",
+        "NICHT",
+        "NLP",
+        "SEHR",
+        "SEINE",
+        "STARR",
+        "TUTOR",
+        "WARUM",
+        "WRONG",
+        "ZPD"
+      ],
+      "strategies": [
+        "S3"
+      ],
+      "tags": [
+        "privateteacher",
+        "vision"
+      ],
+      "size": 13705
+    },
+    {
+      "file": "memory/projekt-ag-detector.md",
+      "date": "2026-03-13",
+      "headline": "# Projekt: AG (First Majestic Silver) - Umkehrkerze-Detektor",
+      "tickers": [
+        "AG",
+        "AKTIV",
+        "DM",
+        "ID",
+        "SKIP"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "detector"
+      ],
+      "size": 1244
+    },
+    {
+      "file": "memory/projekt-andreas-n8n.md",
+      "date": "",
+      "headline": "# Projekt: Andreas — n8n YouTube-Pipeline",
+      "tickers": [
+        "GPT",
+        "KI"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "andreas",
+        "n8n"
+      ],
+      "size": 2757
+    },
+    {
+      "file": "memory/projekt-axessify.md",
+      "date": "",
+      "headline": "# Projekt: Axessify",
+      "tickers": [
+        "BFSG",
+        "GB",
+        "KI",
+        "ORM",
+        "USP",
+        "WCAG"
+      ],
+      "strategies": [
+        "PM2"
+      ],
+      "tags": [
+        "projekt",
+        "axessify"
+      ],
+      "size": 1558
+    },
+    {
+      "file": "memory/projekt-ceo-upgrade.md",
+      "date": "",
+      "headline": "# 🎩 TradeMind CEO — Upgrade Blueprint v1.0",
+      "tickers": [
+        "BRAIN",
+        "DNA",
+        "GEO",
+        "HHI",
+        "HOCH",
+        "INTEL",
+        "KEIN",
+        "LAB",
+        "LAYER",
+        "NICHT",
+        "NLP",
+        "ODER",
+        "PAPER",
+        "PIFS",
+        "PLAN",
+        "REAL",
+        "TR",
+        "TRADE"
+      ],
+      "strategies": [
+        "S1",
+        "S3"
+      ],
+      "tags": [
+        "projekt",
+        "ceo",
+        "upgrade"
+      ],
+      "size": 21409
+    },
+    {
+      "file": "memory/projekt-dobrotech-agentinfra.md",
+      "date": "2026-02-25",
+      "headline": "# DobroTech Agent-Infrastruktur — Konzept",
+      "tickers": [
+        "AMD",
+        "COO",
+        "CPU",
+        "CSV",
+        "DSFA",
+        "DSGVO",
+        "GB",
+        "GPU",
+        "HN",
+        "IMAP",
+        "KI",
+        "LOKAL",
+        "LUKS",
+        "NUR",
+        "RAID",
+        "RAM",
+        "TLS",
+        "UFW",
+        "UG",
+        "WAF"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "dobrotech",
+        "agentinfra"
+      ],
+      "size": 5027
+    },
+    {
+      "file": "memory/projekt-dobrotech.md",
+      "date": "",
+      "headline": "# Projekt: DobroTech",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "dobrotech"
+      ],
+      "size": 385
+    },
+    {
+      "file": "memory/projekt-friday.md",
+      "date": "",
+      "headline": "# Projekt: Friday — Josh's SHK AI-Backoffice-Assistent",
+      "tickers": [
+        "AV",
+        "DM",
+        "DSGVO",
+        "HERE",
+        "IP",
+        "JA",
+        "NEIN",
+        "NICHT",
+        "SHK",
+        "TSP"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "friday"
+      ],
+      "size": 3640
+    },
+    {
+      "file": "memory/projekt-human-resilience.md",
+      "date": "2026-03-19",
+      "headline": "# Projekt: Human Resilience in the AI Era",
+      "tickers": [
+        "AKAD",
+        "ARR",
+        "AZAV",
+        "BEVOR",
+        "DEINE",
+        "DIR",
+        "DSGVO",
+        "EN",
+        "ESCO",
+        "ESF",
+        "GO",
+        "ID",
+        "JOB",
+        "KI",
+        "MVP",
+        "NICHT",
+        "NPS",
+        "SCALE",
+        "TAM",
+        "TFA",
+        "TRA",
+        "UI",
+        "WARUM"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "human",
+        "resilience"
+      ],
+      "size": 6391
+    },
+    {
+      "file": "memory/projekt-josh-dashboard-v2.md",
+      "date": "",
+      "headline": "# Projekt: Josh Dashboard v2 — Vollautomatisiertes SHK Back-Office",
+      "tickers": [
+        "ALLE",
+        "BEVOR",
+        "CDN",
+        "DATE",
+        "EINER",
+        "FLOAT",
+        "HMAC",
+        "ID",
+        "IN",
+        "KEIN",
+        "KEY",
+        "KV",
+        "MAX",
+        "MUSS",
+        "NEU",
+        "NICHT",
+        "NOW",
+        "NUR",
+        "OSRM",
+        "OWA",
+        "PLZ",
+        "PWA",
+        "READ",
+        "SHK",
+        "TEXT"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "josh",
+        "dashboard"
+      ],
+      "size": 13107
+    },
+    {
+      "file": "memory/projekt-learning-engine.md",
+      "date": "",
+      "headline": "# Projekt: Learning Engine — Cross-System Lernen",
+      "tickers": [
+        "ALLEN",
+        "EQNR",
+        "RHM",
+        "WTI"
+      ],
+      "strategies": [
+        "PS3",
+        "S1",
+        "S4"
+      ],
+      "tags": [
+        "projekt",
+        "learning",
+        "engine"
+      ],
+      "size": 2728
+    },
+    {
+      "file": "memory/projekt-lernbot.md",
+      "date": "",
+      "headline": "# Lern-Bot AKAD — Projekt Status",
+      "tickers": [
+        "AKAD",
+        "FKD",
+        "JETZT",
+        "KERN",
+        "MVP",
+        "PLAN",
+        "READY",
+        "START",
+        "TAG",
+        "TAGE",
+        "UI"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "lernbot"
+      ],
+      "size": 6679
+    },
+    {
+      "file": "memory/projekt-lernplattform.md",
+      "date": "",
+      "headline": "# Lernplattform — Projektplan",
+      "tickers": [
+        "MC",
+        "SM",
+        "TTS",
+        "UI",
+        "UX"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "lernplattform"
+      ],
+      "size": 2858
+    },
+    {
+      "file": "memory/projekt-nextjob.md",
+      "date": "2026-03-08",
+      "headline": "# Projekt: NextJob — KI-Umschulungsplattform",
+      "tickers": [
+        "ACV",
+        "AZAV",
+        "ESF",
+        "HEUTE",
+        "HR",
+        "IG",
+        "KERN",
+        "KI",
+        "UX"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "nextjob"
+      ],
+      "size": 14749
+    },
+    {
+      "file": "memory/projekt-options-flow-system.md",
+      "date": "2026-03-24",
+      "headline": "# Projekt: Options Flow Intelligence System",
+      "tickers": [
+        "ASA",
+        "BNO",
+        "CVX",
+        "EQNR.OL",
+        "ETF",
+        "FLOW",
+        "HEUTE",
+        "LONG",
+        "MIT",
+        "OI",
+        "OTM",
+        "OXY",
+        "SHORT",
+        "USO",
+        "XLE",
+        "XOM"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "options",
+        "flow",
+        "system"
+      ],
+      "size": 10176
+    },
+    {
+      "file": "memory/projekt-overnight-research.md",
+      "date": "2026-03-30",
+      "headline": "# Projekt: Overnight-Research-System",
+      "tickers": [
+        "DD",
+        "ID",
+        "MEZ",
+        "MM",
+        "NATO",
+        "OR",
+        "REAL",
+        "TEXT",
+        "YYYY"
+      ],
+      "strategies": [
+        "S1",
+        "S10",
+        "S11",
+        "S2",
+        "S3",
+        "S4",
+        "S8",
+        "S9"
+      ],
+      "tags": [
+        "projekt",
+        "overnight",
+        "research"
+      ],
+      "size": 3846
+    },
+    {
+      "file": "memory/projekt-paper-trading-system.md",
+      "date": "",
+      "headline": "# Projekt: Paper Trading System — Autonomes Analyse-Trading",
+      "tickers": [
+        "CF",
+        "CLI",
+        "DHT",
+        "HAL",
+        "HII",
+        "OXY",
+        "RS",
+        "RSS",
+        "YARA.OL"
+      ],
+      "strategies": [
+        "PS1",
+        "PS3",
+        "PS5"
+      ],
+      "tags": [
+        "projekt",
+        "paper",
+        "trading",
+        "system"
+      ],
+      "size": 3706
+    },
+    {
+      "file": "memory/projekt-privatteacher.md",
+      "date": "",
+      "headline": "# PrivatTeacher — KI-Tutoring-System (Core Engine für Human Resilience)",
+      "tickers": [
+        "ALLE",
+        "ALLES",
+        "BEST",
+        "DATA",
+        "DATEN",
+        "DER",
+        "ECHTE",
+        "FIRST",
+        "GUT",
+        "IF",
+        "JETZT",
+        "KB",
+        "KEY",
+        "KI",
+        "MVP",
+        "NICHT",
+        "TALK",
+        "THEN",
+        "VOM",
+        "WARUM",
+        "ZPD"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "privatteacher"
+      ],
+      "size": 8210
+    },
+    {
+      "file": "memory/projekt-reversal-detector.md",
+      "date": "",
+      "headline": "# Projekt: Umkehrkerze-Detektoren (5min Intraday)",
+      "tickers": [
+        "AG",
+        "DM",
+        "MAG",
+        "MAG.TO",
+        "NYSE",
+        "TSX"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "reversal",
+        "detector"
+      ],
+      "size": 1286
+    },
+    {
+      "file": "memory/projekt-terminbot.md",
+      "date": "",
+      "headline": "# Projekt: Josh Dashboard / TerminBot – Gebr. Schutzeichel Back-Office",
+      "tickers": [
+        "CDP",
+        "CRM",
+        "KI",
+        "MVP",
+        "NICHT",
+        "POST",
+        "SHK",
+        "TXT"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "terminbot"
+      ],
+      "size": 4652
+    },
+    {
+      "file": "memory/projekt-tfa-lernbot.md",
+      "date": "",
+      "headline": "# TFA Lernbot — Projekt",
+      "tickers": [
+        "DM",
+        "JS",
+        "MC",
+        "TFA"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "tfa",
+        "lernbot"
+      ],
+      "size": 2329
+    },
+    {
+      "file": "memory/projekt-trademind-bauplan.md",
+      "date": "2026-03-26",
+      "headline": "# TradeMind — Professionalisierungs-Bauplan 🎩",
+      "tickers": [
+        "ABC",
+        "ADX",
+        "BAYN.DE",
+        "CORE",
+        "COUNT",
+        "DD",
+        "DROP",
+        "ECHT",
+        "EINE",
+        "FROM",
+        "FX",
+        "HK",
+        "IBKR",
+        "IMMER",
+        "IS",
+        "JEDEM",
+        "LOC",
+        "MA",
+        "NICHT",
+        "NLP",
+        "NULL",
+        "RHM.DE",
+        "TR",
+        "UND",
+        "WHERE"
+      ],
+      "strategies": [
+        "DT1",
+        "DT3",
+        "DT4",
+        "DT9",
+        "PS1",
+        "PS5"
+      ],
+      "tags": [
+        "projekt",
+        "trademind",
+        "bauplan"
+      ],
+      "size": 27511
+    },
+    {
+      "file": "memory/projekt-trademind-ml-bauplan.md",
+      "date": "2026-04-04",
+      "headline": "# TradeMind ML — Bauplan (Langfristig)",
+      "tickers": [
+        "ADD",
+        "ALTER",
+        "BEVOR",
+        "DNA",
+        "ETF",
+        "EWMA",
+        "JEDEM",
+        "JETZT",
+        "OHLCV",
+        "REAL",
+        "SHAP",
+        "SPY",
+        "TABLE"
+      ],
+      "strategies": [
+        "DT4",
+        "PM",
+        "PS1",
+        "PT"
+      ],
+      "tags": [
+        "projekt",
+        "trademind",
+        "bauplan"
+      ],
+      "size": 13180
+    },
+    {
+      "file": "memory/projekt-trading.md",
+      "date": "2026-03-04",
+      "headline": "# Projekt: Trading",
+      "tickers": [
+        "AKTIV",
+        "AMD",
+        "DJT",
+        "EPS",
+        "EQNR",
+        "ETF",
+        "HVC",
+        "HVE",
+        "NEIN",
+        "NOK",
+        "NUR",
+        "NVDA",
+        "PLTR",
+        "RHM",
+        "RSS",
+        "SR",
+        "WTI",
+        "XOM"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S7"
+      ],
+      "tags": [
+        "projekt",
+        "trading"
+      ],
+      "size": 45613
+    },
+    {
+      "file": "memory/projekt-tradingtool.md",
+      "date": "2026-04-04",
+      "headline": "# TradeMind — Projekt-Dokumentation",
+      "tickers": [
+        "BA.L",
+        "BIP",
+        "CO",
+        "DHT",
+        "DNA",
+        "EQNR.OL",
+        "EWMA",
+        "FRO",
+        "GLD",
+        "GLP",
+        "ID",
+        "KI",
+        "KTOS",
+        "LMT",
+        "MOS",
+        "NATO",
+        "NEWS",
+        "NOVO",
+        "OHLCV",
+        "OXY",
+        "PE",
+        "PID",
+        "PPO",
+        "RHM.DE",
+        "RSS"
+      ],
+      "strategies": [
+        "PS1",
+        "PS11",
+        "PS14",
+        "PS17",
+        "PS18",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [
+        "projekt",
+        "tradingtool"
+      ],
+      "size": 12131
+    },
+    {
+      "file": "memory/projekt-werkstattos.md",
+      "date": "",
+      "headline": "# Projekt: WerkstattOS",
+      "tickers": [
+        "ARR",
+        "CAC",
+        "DACH",
+        "DSGVO",
+        "KFZ",
+        "LTV",
+        "MVP",
+        "SAM",
+        "SOM",
+        "TAM"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "werkstattos"
+      ],
+      "size": 2094
+    },
+    {
+      "file": "memory/projekt-wtv-website.md",
+      "date": "",
+      "headline": "# Projekt: Turnverein Willich Website",
+      "tickers": [
+        "AA",
+        "CMS",
+        "DSGVO",
+        "FTP",
+        "IN",
+        "JS",
+        "SVG",
+        "WCAG",
+        "WTV"
+      ],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "wtv",
+        "website"
+      ],
+      "size": 6065
+    },
+    {
+      "file": "memory/projekt-zwergenhalma.md",
+      "date": "",
+      "headline": "# Projekt: Zwergenhalma",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "projekt",
+        "zwergenhalma"
+      ],
+      "size": 684
+    },
+    {
+      "file": "memory/projeto-tradingtool-analysis.md",
+      "date": "2026-03-18",
+      "headline": "## Lars Eriksen — Scaling-Strategie & Makro (2026-03-18)",
+      "tickers": [
+        "ABER",
+        "BDC",
+        "EPS",
+        "NICHT"
+      ],
+      "strategies": [],
+      "tags": [
+        "projeto",
+        "tradingtool",
+        "analysis"
+      ],
+      "size": 4363
+    },
+    {
+      "file": "memory/realmoney_log.md",
+      "date": "",
+      "headline": "# Real Money Signal Log",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "realmoney",
+        "log"
+      ],
+      "size": 90
+    },
+    {
+      "file": "memory/research-dr0-svm-2026-03-11.md",
+      "date": "2026-03-11",
+      "headline": "# Research-Bericht — DR0 + Silber-Alternativen",
+      "tickers": [
+        "AG",
+        "BESTE",
+        "EPS",
+        "KGV",
+        "MA",
+        "NICHT",
+        "PAAS",
+        "SVM",
+        "WPM",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "research",
+        "dr0",
+        "svm"
+      ],
+      "size": 1155
+    },
+    {
+      "file": "memory/rhm-watchlist-status.md",
+      "date": "",
+      "headline": "# RHM.DE Watchlist Status",
+      "tickers": [
+        "RHM.DE"
+      ],
+      "strategies": [],
+      "tags": [
+        "rhm",
+        "watchlist",
+        "status"
+      ],
+      "size": 411
+    },
+    {
+      "file": "memory/smart-pdf-reader-design.md",
+      "date": "",
+      "headline": "# Smart PDF Reader - Design Blueprint (based on Speechify)",
+      "tickers": [
+        "BOX",
+        "CORE",
+        "IS",
+        "THIS",
+        "TTS",
+        "UI",
+        "UNSER",
+        "UX"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "smart",
+        "pdf",
+        "reader",
+        "design"
+      ],
+      "size": 18250
+    },
+    {
+      "file": "memory/smart-pdf-reader-web-app.md",
+      "date": "",
+      "headline": "# Smart PDF Reader - Web App Architecture",
+      "tickers": [
+        "FALSE",
+        "FLOAT",
+        "GET",
+        "KEY",
+        "MVP",
+        "NOW",
+        "PLAY",
+        "POST",
+        "PUT",
+        "REST",
+        "TABLE",
+        "TEXT",
+        "TTS",
+        "UI",
+        "UUID"
+      ],
+      "strategies": [
+        "S3"
+      ],
+      "tags": [
+        "smart",
+        "pdf",
+        "reader",
+        "web",
+        "app"
+      ],
+      "size": 13426
+    },
+    {
+      "file": "memory/smart-pdf-reader.md",
+      "date": "",
+      "headline": "# Smart PDF Reader für PrivatTeacher",
+      "tickers": [
+        "ALLES",
+        "IDEA",
+        "INPUT",
+        "KEPT",
+        "KEY",
+        "LOOP",
+        "MORE",
+        "MVP",
+        "NLP",
+        "OCR",
+        "TEXT",
+        "TO",
+        "TTS",
+        "WORDS"
+      ],
+      "strategies": [],
+      "tags": [
+        "smart",
+        "pdf",
+        "reader"
+      ],
+      "size": 15224
+    },
+    {
+      "file": "memory/state-snapshot.md",
+      "date": "2026-04-10",
+      "headline": "# State Snapshot — Trading Bot",
+      "tickers": [
+        "AG",
+        "ASML",
+        "ASML.AS",
+        "AVOID",
+        "BAYN.DE",
+        "BHP",
+        "BHP.L",
+        "BUY",
+        "CO",
+        "DKK",
+        "ETF",
+        "FCX",
+        "GOLD",
+        "HOLD",
+        "KI",
+        "LHA.DE",
+        "MOS",
+        "NEM",
+        "NOVO",
+        "PLTR",
+        "QQQ",
+        "RHM.DE",
+        "RIO.L",
+        "RS",
+        "SAP"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "state",
+        "snapshot"
+      ],
+      "size": 3040
+    },
+    {
+      "file": "memory/stop-monitor-log.md",
+      "date": "2026-03-13",
+      "headline": "# Stop-Monitor Log",
+      "tickers": [
+        "BAYN.DE",
+        "EQNR",
+        "FX",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "RIO.L"
+      ],
+      "strategies": [],
+      "tags": [
+        "stop",
+        "monitor",
+        "log"
+      ],
+      "size": 824
+    },
+    {
+      "file": "memory/stopwatch-alerts.md",
+      "date": "2026-03-13",
+      "headline": "# Stop-Loss Alerts Log",
+      "tickers": [
+        "BAYN.DE",
+        "EQNR",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "RIO.L"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "stopwatch",
+        "alerts"
+      ],
+      "size": 789
+    },
+    {
+      "file": "memory/strategie-albert.md",
+      "date": "",
+      "headline": "# Strategie ALBERT — \"Geopolitischer Kontra-Sniper\"",
+      "tickers": [
+        "ABC",
+        "ABER",
+        "AG",
+        "AKTIE",
+        "BGRI",
+        "CCL",
+        "CNBC",
+        "DHT",
+        "DIE",
+        "EINEM",
+        "EQNR",
+        "EV",
+        "EVENT",
+        "FOMO",
+        "FRO",
+        "HK",
+        "IMMER",
+        "IN",
+        "KEIN",
+        "LNG",
+        "MP",
+        "NICHT",
+        "NLP",
+        "NUR",
+        "OHNE"
+      ],
+      "strategies": [
+        "DT1",
+        "DT4",
+        "DT9"
+      ],
+      "tags": [
+        "strategie",
+        "albert"
+      ],
+      "size": 21446
+    },
+    {
+      "file": "memory/strategie-friedhof.md",
+      "date": "2026-03-26",
+      "headline": "# Strategie-Friedhof 🪦",
+      "tickers": [
+        "IMMER",
+        "NICHT",
+        "NUR",
+        "OXY",
+        "TR",
+        "WARUM"
+      ],
+      "strategies": [
+        "DT1",
+        "DT3",
+        "DT4"
+      ],
+      "tags": [
+        "strategie",
+        "friedhof"
+      ],
+      "size": 4766
+    },
+    {
+      "file": "memory/strategie-plan-2026-03-10.md",
+      "date": "2026-03-10",
+      "headline": "# 📋 STRATEGIE-PLAN — DIENSTAG, 10. MÄRZ 2026",
+      "tickers": [
+        "ABER",
+        "AG",
+        "AKTIV",
+        "BIP",
+        "EQNR",
+        "EQNR.OL",
+        "INFOS",
+        "ISPA.DE",
+        "KEIN",
+        "KEINE",
+        "MSFT",
+        "NATO",
+        "NEUE",
+        "NICHT",
+        "NOCH",
+        "NVDA",
+        "OTC",
+        "PCE",
+        "PLAN",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "RIO.L",
+        "STOPS",
+        "TR"
+      ],
+      "strategies": [],
+      "tags": [
+        "strategie",
+        "plan"
+      ],
+      "size": 10804
+    },
+    {
+      "file": "memory/strategie-silber.md",
+      "date": "2026-03-26",
+      "headline": "# Strategie S10 — Silber-Aktien (Watchlist)",
+      "tickers": [
+        "AG",
+        "CDE",
+        "EXK",
+        "GD",
+        "HL",
+        "KEIN",
+        "KI",
+        "MAG",
+        "PAAS",
+        "RSS",
+        "USA",
+        "WPM"
+      ],
+      "strategies": [
+        "S1",
+        "S10",
+        "S9"
+      ],
+      "tags": [
+        "strategie",
+        "silber"
+      ],
+      "size": 5816
+    },
+    {
+      "file": "memory/strategien.md",
+      "date": "2026-03-08",
+      "headline": "# Strategien — Trade Thesis Playbook",
+      "tickers": [
+        "AG",
+        "AKTIV",
+        "BEVOR",
+        "CRASH",
+        "DREI",
+        "ENTRY",
+        "EPS",
+        "EQNR",
+        "ETF",
+        "ISPA.DE",
+        "KEIN",
+        "KGV",
+        "KI",
+        "MOS",
+        "MSCI",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "ODER",
+        "OXY",
+        "PLTR",
+        "QQQ",
+        "RANGE",
+        "SPY",
+        "UND"
+      ],
+      "strategies": [
+        "PS10",
+        "PS11",
+        "PS12",
+        "PS3",
+        "S1",
+        "S10",
+        "S2",
+        "S4",
+        "S6",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "tags": [
+        "strategien"
+      ],
+      "size": 70585
+    },
+    {
+      "file": "memory/strategy-changelog.md",
+      "date": "2026-04-01",
+      "headline": "# Strategy-Changelog — Statuswechsel-Log",
+      "tickers": [
+        "BBC",
+        "CRASH",
+        "DHT",
+        "DM",
+        "DW",
+        "EQNR",
+        "FOCUS",
+        "FRO",
+        "HAG",
+        "HII",
+        "HL",
+        "JEDEM",
+        "KTOS",
+        "MOS",
+        "NATO",
+        "OXY",
+        "PAAS",
+        "RSS",
+        "STARK",
+        "WSJ"
+      ],
+      "strategies": [
+        "DT4",
+        "PS1",
+        "PS10",
+        "PS11",
+        "PS12",
+        "PS13",
+        "PS14",
+        "PS15",
+        "PS16",
+        "PS17",
+        "PS18",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [
+        "strategy",
+        "changelog"
+      ],
+      "size": 69329
+    },
+    {
+      "file": "memory/strategy-discovery.md",
+      "date": "2026-04-04",
+      "headline": "# Strategy Discovery Log",
+      "tickers": [
+        "FCX",
+        "LEARN",
+        "MEZ",
+        "SCCO",
+        "TECK"
+      ],
+      "strategies": [
+        "PS1",
+        "PS13",
+        "PS15",
+        "PS2",
+        "PS3"
+      ],
+      "tags": [
+        "strategy",
+        "discovery"
+      ],
+      "size": 2335
+    },
+    {
+      "file": "memory/strategy-feedback-log.md",
+      "date": "2026-03-25",
+      "headline": "# Strategy Feedback Report — 2026-03-25",
+      "tickers": [
+        "NATO"
+      ],
+      "strategies": [
+        "DT4",
+        "PS1",
+        "PS3",
+        "PS4",
+        "PS5"
+      ],
+      "tags": [
+        "strategy",
+        "feedback",
+        "log"
+      ],
+      "size": 5079
+    },
+    {
+      "file": "memory/strategy-learner-report.md",
+      "date": "2026-03-13",
+      "headline": "# Strategy Learner Report",
+      "tickers": [
+        "KI"
+      ],
+      "strategies": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "strategy",
+        "learner",
+        "report"
+      ],
+      "size": 640
+    },
+    {
+      "file": "memory/strategy-research.md",
+      "date": "2026-04-01",
+      "headline": "# Strategy Research Log — Albert",
+      "tickers": [
+        "AIR.PA",
+        "BMW",
+        "BWX",
+        "BWXT",
+        "BYDDY",
+        "CCJ",
+        "CLF",
+        "CTR",
+        "DAI",
+        "EM",
+        "EV",
+        "GO",
+        "GOOGL",
+        "HAL",
+        "HK",
+        "KI",
+        "NEM",
+        "NEU",
+        "NEUE",
+        "NYT",
+        "ORCL",
+        "OXY",
+        "RED",
+        "RSS",
+        "SAP"
+      ],
+      "strategies": [
+        "DT3",
+        "DT6",
+        "DT9",
+        "PS11",
+        "PS12",
+        "PS13",
+        "PS14",
+        "PS15",
+        "PS16",
+        "PS17",
+        "PS18",
+        "PS4",
+        "S4",
+        "S5"
+      ],
+      "tags": [
+        "strategy",
+        "research"
+      ],
+      "size": 7983
+    },
+    {
+      "file": "memory/teacher-competencies.md",
+      "date": "",
+      "headline": "# LEHRER-KOMPETENZEN — Tiefenanalyse",
+      "tickers": [
+        "ABER",
+        "DAS",
+        "DENKT",
+        "ERST",
+        "FRAGT",
+        "GUTE",
+        "GUTEN",
+        "JETZT",
+        "KI",
+        "LISTE",
+        "NLP",
+        "NUR",
+        "STARR",
+        "WARUM",
+        "ZPD",
+        "ZU",
+        "ZUM"
+      ],
+      "strategies": [],
+      "tags": [
+        "teacher",
+        "competencies"
+      ],
+      "size": 12546
+    },
+    {
+      "file": "memory/teaching-science-research.md",
+      "date": "",
+      "headline": "# Teaching Science — Was Forschung über gutes Lehren weiß",
+      "tickers": [
+        "APPLY",
+        "DANN",
+        "GENAU",
+        "GENUG",
+        "LEHRT",
+        "LEVEL",
+        "NICHT",
+        "STARR",
+        "WARUM",
+        "ZPD"
+      ],
+      "strategies": [],
+      "tags": [
+        "teaching",
+        "science",
+        "research"
+      ],
+      "size": 4153
+    },
+    {
+      "file": "memory/thesis-validation.md",
+      "date": "2026-03-22",
+      "headline": "# Thesis Validation — 2026-03-22 11:49",
+      "tickers": [
+        "MA",
+        "NVDA",
+        "SPY",
+        "WL",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "thesis",
+        "validation"
+      ],
+      "size": 771
+    },
+    {
+      "file": "memory/trade-decisions.md",
+      "date": "",
+      "headline": "# Trade Decisions — Entscheidungslog",
+      "tickers": [
+        "AG",
+        "ASA",
+        "BAYN.DE",
+        "BBC",
+        "DD",
+        "EQNR",
+        "ETF",
+        "IMMER",
+        "KI",
+        "MM",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "PLTR",
+        "RHM.DE",
+        "RIO.L",
+        "TR",
+        "WTI",
+        "XX",
+        "YYYY"
+      ],
+      "strategies": [
+        "S1",
+        "S2",
+        "S3",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "trade",
+        "decisions"
+      ],
+      "size": 14997
+    },
+    {
+      "file": "memory/trademind-bauplan.md",
+      "date": "2026-03-19",
+      "headline": "# TradeMind — Bauplan: Bestand → Masterplan",
+      "tickers": [
+        "ADD",
+        "ALTER",
+        "DNA",
+        "EQNR.OL",
+        "GET",
+        "IF",
+        "KB",
+        "KEINE",
+        "KERN",
+        "KEY",
+        "MB",
+        "MSFT",
+        "NEU",
+        "NLP",
+        "NULL",
+        "NVDA",
+        "POST",
+        "PWA",
+        "REAL",
+        "TABLE",
+        "TEXT",
+        "TR",
+        "TRA"
+      ],
+      "strategies": [
+        "PS1",
+        "PS5",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "tags": [
+        "trademind",
+        "bauplan"
+      ],
+      "size": 20302
+    },
+    {
+      "file": "memory/trademind-masterplan.md",
+      "date": "2026-03-19",
+      "headline": "# TradeMind — Masterplan: Perfektionierte Architektur",
+      "tickers": [
+        "BZ",
+        "CL",
+        "DATA",
+        "DX",
+        "EDGAR",
+        "EQNR",
+        "EQNR.OL",
+        "EZB",
+        "FRED",
+        "FX",
+        "GC",
+        "HG",
+        "IBKR",
+        "IRX",
+        "KEY",
+        "LAYER",
+        "NER",
+        "NFP",
+        "NOK",
+        "NULL",
+        "NVDA",
+        "NYB",
+        "OPEC",
+        "RHM.DE",
+        "RSS"
+      ],
+      "strategies": [
+        "PS1",
+        "PS3",
+        "PS5",
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S7"
+      ],
+      "tags": [
+        "trademind",
+        "masterplan"
+      ],
+      "size": 28842
+    },
+    {
+      "file": "memory/trading-hypothesen.md",
+      "date": "",
+      "headline": "# Trading Hypothesen — Tracker",
+      "tickers": [
+        "EQNR",
+        "ETF",
+        "HVC",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "SMH",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "trading",
+        "hypothesen"
+      ],
+      "size": 4738
+    },
+    {
+      "file": "memory/trading-lessons.md",
+      "date": "",
+      "headline": "# Trading Lessons — Gelernte Fehler",
+      "tickers": [
+        "AG",
+        "EQNR",
+        "MUSS",
+        "NICHT",
+        "RHM.DE",
+        "TR",
+        "UND",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "trading",
+        "lessons"
+      ],
+      "size": 4938
+    },
+    {
+      "file": "memory/trading-tageslog-2026-03-16.md",
+      "date": "2026-03-16",
+      "headline": "# Trading-Tageslog — Montag, 16. März 2026",
+      "tickers": [
+        "AKTIV",
+        "BAYN.DE",
+        "CRON",
+        "EQNR",
+        "EST",
+        "ET",
+        "MSFT",
+        "NICHT",
+        "NVDA",
+        "NYSE",
+        "PLTR",
+        "RIO",
+        "RIO.L"
+      ],
+      "strategies": [],
+      "tags": [
+        "trading",
+        "tageslog"
+      ],
+      "size": 2837
+    },
+    {
+      "file": "memory/tradingtool-features.md",
+      "date": "",
+      "headline": "# Trading Tool — Feature Backlog",
+      "tickers": [
+        "ASML",
+        "BAYN.DE",
+        "EQNR",
+        "FX",
+        "IMMER",
+        "KI",
+        "MUSS",
+        "NIE",
+        "NOK",
+        "OPEC",
+        "RHM.DE",
+        "RSS",
+        "TR",
+        "UI"
+      ],
+      "strategies": [],
+      "tags": [
+        "tradingtool",
+        "features"
+      ],
+      "size": 4065
+    },
+    {
+      "file": "memory/tradingtool-lernarchitektur.md",
+      "date": "",
+      "headline": "# TradeMind — Lernarchitektur",
+      "tickers": [
+        "FOMO",
+        "NICHT",
+        "SPY"
+      ],
+      "strategies": [
+        "S1"
+      ],
+      "tags": [
+        "tradingtool",
+        "lernarchitektur"
+      ],
+      "size": 4178
+    },
+    {
+      "file": "memory/tradingtool-lernplan.md",
+      "date": "",
+      "headline": "# TradeMind — Learning System Roadmap",
+      "tickers": [
+        "AGRA",
+        "AVG",
+        "BY",
+        "COUNT",
+        "DESC",
+        "DONE",
+        "EQNR",
+        "EQNR.OL",
+        "FROM",
+        "GROUP",
+        "HALB",
+        "KEIN",
+        "MSFT",
+        "NVDA",
+        "ODER",
+        "ORDER",
+        "OXY",
+        "PLTR",
+        "RSS",
+        "SPY",
+        "TTE.PA",
+        "UND",
+        "WARN"
+      ],
+      "strategies": [
+        "AR-AGRA",
+        "AR-HALB",
+        "DT1",
+        "DT2",
+        "DT3",
+        "PM",
+        "PS1",
+        "PS12",
+        "PT",
+        "S1",
+        "S4"
+      ],
+      "tags": [
+        "tradingtool",
+        "lernplan"
+      ],
+      "size": 13740
+    },
+    {
+      "file": "memory/transcript-analysis-temp.md",
+      "date": "2026-03-27",
+      "headline": "## Finanzbär — Lithium-Analyse (2026-03-27) — Thema: Batteriesektor & Rohstoffzyklen",
+      "tickers": [
+        "BYD",
+        "EOL",
+        "ETF",
+        "EV",
+        "FOMO",
+        "GM",
+        "HEUTE",
+        "LFP",
+        "USA"
+      ],
+      "strategies": [],
+      "tags": [
+        "transcript",
+        "analysis",
+        "temp"
+      ],
+      "size": 7564
+    },
+    {
+      "file": "memory/transcript-extraction-2026-04-01.md",
+      "date": "2026-04-01",
+      "headline": "# Transcript-Extraktion — 2026-04-01",
+      "tickers": [
+        "AWK",
+        "ODER",
+        "WPR"
+      ],
+      "strategies": [],
+      "tags": [
+        "transcript",
+        "extraction"
+      ],
+      "size": 12048
+    },
+    {
+      "file": "memory/transcript-insights.md",
+      "date": "2026-03-28",
+      "headline": "# Transcript Insights — Extrahierte Methodik",
+      "tickers": [
+        "AAPL",
+        "ALLE",
+        "AMZN",
+        "BEIDE",
+        "BEVOR",
+        "CAPE",
+        "DANN",
+        "EQNR",
+        "GD",
+        "IMMER",
+        "IT",
+        "META",
+        "MSCI",
+        "MSFT",
+        "NICHT",
+        "NUR",
+        "NVDA",
+        "ODER",
+        "OHNE",
+        "PLTR",
+        "SPY",
+        "USA",
+        "VOR",
+        "WARUM",
+        "WIE"
+      ],
+      "strategies": [
+        "DT3",
+        "DT8",
+        "PS1",
+        "PS5",
+        "S1",
+        "S3"
+      ],
+      "tags": [
+        "transcript",
+        "insights"
+      ],
+      "size": 42119
+    },
+    {
+      "file": "memory/trump-watch-log.md",
+      "date": "2026-03-31",
+      "headline": "# Trump Watch Log",
+      "tickers": [
+        "BE",
+        "CNN",
+        "DEAL",
+        "FAKE",
+        "FRAUD",
+        "FROM",
+        "GOT",
+        "GREAT",
+        "HIM",
+        "IRAN",
+        "IS",
+        "IT",
+        "LATE",
+        "MAKE",
+        "MORE",
+        "MR",
+        "OIL",
+        "PLAN",
+        "POINT",
+        "TAKE",
+        "TARIF",
+        "TEN",
+        "THANK",
+        "TIME",
+        "TO"
+      ],
+      "strategies": [],
+      "tags": [
+        "trump",
+        "watch",
+        "log"
+      ],
+      "size": 6700
+    },
+    {
+      "file": "memory/victor-profil.md",
+      "date": "2026-04-04",
+      "headline": "# Victor Dobrowolny — Profil",
+      "tickers": [
+        "AKAD",
+        "DM",
+        "DSGVO",
+        "ETC",
+        "ID",
+        "IMMER",
+        "KFZ",
+        "KI",
+        "PLTR",
+        "REAL",
+        "SHK",
+        "TFA",
+        "TR",
+        "WTV"
+      ],
+      "strategies": [],
+      "tags": [
+        "victor",
+        "profil"
+      ],
+      "size": 4915
+    },
+    {
+      "file": "memory/webseiten-fragebogen.md",
+      "date": "",
+      "headline": "# Webseiten Fragebogen — Branding Brothers",
+      "tickers": [
+        "BITTE",
+        "CMS",
+        "DER",
+        "FALL",
+        "IHK",
+        "IHR",
+        "IHRE",
+        "NICHT",
+        "PLZ",
+        "PNG",
+        "SVG",
+        "TEXTE",
+        "TUN",
+        "ZIEL"
+      ],
+      "strategies": [],
+      "tags": [
+        "webseiten",
+        "fragebogen"
+      ],
+      "size": 9602
+    },
+    {
+      "file": "memory/weekly-performance.md",
+      "date": "",
+      "headline": "# Weekly Performance Tracker — TradeMind Paper Lab",
+      "tickers": [],
+      "strategies": [],
+      "tags": [
+        "weekly",
+        "performance"
+      ],
+      "size": 738
+    },
+    {
+      "file": "memory/weekly-review.md",
+      "date": "",
+      "headline": "# Wöchentliche Review — KW11 (09.–15.03.2026)",
+      "tickers": [
+        "AG",
+        "ALLE",
+        "ATH",
+        "BAYN",
+        "BAYN.DE",
+        "BHP",
+        "EQNR",
+        "ISPA",
+        "KEINE",
+        "KI",
+        "KW",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "RIO",
+        "RIO.L",
+        "STARK",
+        "TR",
+        "TRADE",
+        "WE",
+        "WTI"
+      ],
+      "strategies": [
+        "DT3",
+        "DT4",
+        "PS1",
+        "PS11",
+        "PS2",
+        "PS3",
+        "PS4",
+        "PS5",
+        "S1",
+        "S10",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "tags": [
+        "weekly",
+        "review"
+      ],
+      "size": 19728
+    },
+    {
+      "file": "memory/weekly-scan-latest.md",
+      "date": "",
+      "headline": "# 🌍 Wöchentlicher Sektor-Scan — KW14 (05.04.2026)",
+      "tickers": [
+        "BIIB",
+        "CAG",
+        "CO",
+        "CORN",
+        "DKK",
+        "ET",
+        "GOLD",
+        "HRL",
+        "KMI",
+        "LLY",
+        "MP",
+        "NOVO",
+        "SOYB",
+        "TRGP",
+        "VRTX",
+        "WEAT",
+        "WMB",
+        "WTI",
+        "XLB",
+        "XLE",
+        "XLP",
+        "XLRE",
+        "XLU"
+      ],
+      "strategies": [],
+      "tags": [
+        "weekly",
+        "scan",
+        "latest"
+      ],
+      "size": 3696
+    },
+    {
+      "file": "memory/wochenend-news-2026-03-14.md",
+      "date": "2026-03-14",
+      "headline": "# 📰 Wochenend-News-Sammlung — Samstag 14.03.2026 19:00",
+      "tickers": [
+        "BAPCO",
+        "CASE",
+        "CHINA",
+        "CN",
+        "EQNR",
+        "FM",
+        "IRAN",
+        "IRGC",
+        "LONG",
+        "NACH",
+        "NATO",
+        "NVDA",
+        "PLA",
+        "PLAN",
+        "RADAR",
+        "RHM",
+        "RSS",
+        "TEIL",
+        "TSMC",
+        "UN",
+        "USA",
+        "WORST",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 16515
+    },
+    {
+      "file": "memory/wochenend-news-2026-03-21.md",
+      "date": "2026-03-21",
+      "headline": "# Wochenend-News-Sammlung — 21. März 2026, 19:00 CET",
+      "tickers": [
+        "AD",
+        "AKTIV",
+        "ALERT",
+        "ASA",
+        "BUY",
+        "CNBC",
+        "DIE",
+        "EQNR",
+        "HOC",
+        "JA",
+        "KI",
+        "KW",
+        "NEIN",
+        "NEWS",
+        "OPEC",
+        "PLA",
+        "PLTR",
+        "TP",
+        "UBS",
+        "ZEIT"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 4476
+    },
+    {
+      "file": "memory/wochenend-news-2026-03-22.md",
+      "date": "2026-03-22",
+      "headline": "# Wochenend-News-Sammlung — 2026-03-22 19:00 CET",
+      "tickers": [
+        "ALERT",
+        "CHECK",
+        "EQNR",
+        "FOKUS",
+        "IDF",
+        "KEINE",
+        "MMP",
+        "NEWS",
+        "OPEC",
+        "PLA",
+        "PLTR",
+        "RADAR",
+        "TIER",
+        "UBS",
+        "UN",
+        "UP",
+        "WOCHE"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 2834
+    },
+    {
+      "file": "memory/wochenend-news-2026-03-28.md",
+      "date": "2026-03-28",
+      "headline": "# Wochenend-News-Sammlung — Sa, 28.03.2026 · 19:00 CET",
+      "tickers": [
+        "AKTIV",
+        "ALERT",
+        "CHECK",
+        "CHINA",
+        "EQNR",
+        "IRAN",
+        "IRGC",
+        "KEINE",
+        "KZ",
+        "NEWS",
+        "NFP",
+        "NOK",
+        "OBEN",
+        "PLTR",
+        "RADAR",
+        "STARK",
+        "VAE",
+        "WOCHE"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 2254
+    },
+    {
+      "file": "memory/wochenend-news-2026-03-29.md",
+      "date": "2026-03-29",
+      "headline": "# Wochenend-News — 29.03.2026 (19:00 CET)",
+      "tickers": [
+        "ABER",
+        "AD",
+        "ALERT",
+        "CHECK",
+        "CHINA",
+        "DIE",
+        "DRUCK",
+        "EQNR",
+        "ETF",
+        "HOC",
+        "IRAN",
+        "KEIN",
+        "KEINE",
+        "KI",
+        "NEWS",
+        "NFP",
+        "NICHT",
+        "OPEC",
+        "PLTR",
+        "PPI",
+        "RADAR",
+        "STARK",
+        "STLD",
+        "UBS",
+        "USA"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 5315
+    },
+    {
+      "file": "memory/wochenend-news-2026-04-04.md",
+      "date": "2026-04-04",
+      "headline": "",
+      "tickers": [
+        "ALERT",
+        "ASML",
+        "ASML.AS",
+        "BA.L",
+        "BMW.DE",
+        "CO",
+        "EQNR",
+        "EQNR.OL",
+        "FOMC",
+        "IAEA",
+        "IN",
+        "KEINE",
+        "KRISE",
+        "LIVE",
+        "MOS",
+        "NOVO",
+        "NUR",
+        "OIL",
+        "PLTR",
+        "RHM",
+        "RHM.DE",
+        "SAA",
+        "SEHR",
+        "SIE.DE",
+        "TAIL"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 3336
+    },
+    {
+      "file": "memory/wochenend-news-2026-04-05.md",
+      "date": "2026-04-05",
+      "headline": "# 📰 Wochenend-News — 5. April 2026, 19:00 Uhr",
+      "tickers": [
+        "BMW.DE",
+        "CHECK",
+        "CRASH",
+        "EQNR",
+        "EQNR.OL",
+        "MOS",
+        "NEWS",
+        "PLTR",
+        "RADAR",
+        "RHM",
+        "RHM.DE",
+        "WOCHE",
+        "ZIM"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenend",
+        "news"
+      ],
+      "size": 1696
+    },
+    {
+      "file": "memory/wochenreview-2026-03-14.md",
+      "date": "2026-03-14",
+      "headline": "# 📊 WÖCHENTLICHE TRADING REVIEW — Woche 11/2026 (07.03–13.03)",
+      "tickers": [
+        "AG",
+        "BAYN",
+        "BAYN.DE",
+        "DER",
+        "DIESE",
+        "DIRK",
+        "EQNR",
+        "EQNR.OL",
+        "HAVE",
+        "HOLD",
+        "KEINE",
+        "KI",
+        "META",
+        "MSFT",
+        "NDX",
+        "NICE",
+        "NOK",
+        "NVDA",
+        "ODER",
+        "PLTR",
+        "QQQ",
+        "RHM",
+        "RHM.DE",
+        "RIO",
+        "RIO.L"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenreview"
+      ],
+      "size": 12898
+    },
+    {
+      "file": "memory/wochenstrategie-2026-03-08.md",
+      "date": "2026-03-08",
+      "headline": "# Wochenstrategie KW11 — 09.03.2026",
+      "tickers": [
+        "AG",
+        "AM",
+        "ATH",
+        "CHECK",
+        "EQNR",
+        "ETC",
+        "ETF",
+        "FAST",
+        "FM",
+        "IRGC",
+        "ISPA",
+        "ISPA.DE",
+        "IV",
+        "KEIN",
+        "KEINE",
+        "META",
+        "MSFT",
+        "NVDA",
+        "PLAN",
+        "PLTR",
+        "RHM.DE",
+        "SMH",
+        "TEIL",
+        "USA",
+        "VLO"
+      ],
+      "strategies": [
+        "PM"
+      ],
+      "tags": [
+        "wochenstrategie"
+      ],
+      "size": 8646
+    },
+    {
+      "file": "memory/wochenstrategie-2026-03-15.md",
+      "date": "2026-03-15",
+      "headline": "# Wochenstrategie KW12: 16.03–22.03.2026",
+      "tickers": [
+        "AG",
+        "BAYN.DE",
+        "EQNR",
+        "ESG",
+        "ETF",
+        "GPU",
+        "IN",
+        "ISPA.DE",
+        "KEIN",
+        "KW",
+        "META",
+        "MSFT",
+        "NVDA",
+        "PLTR",
+        "RHM.DE",
+        "RIO",
+        "RIO.L",
+        "STOP",
+        "TP",
+        "TR",
+        "WTI"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenstrategie"
+      ],
+      "size": 7101
+    },
+    {
+      "file": "memory/wochenstrategie-2026-03-22.md",
+      "date": "2026-03-22",
+      "headline": "# Wochenstrategie — 2026-03-22",
+      "tickers": [
+        "BAYN",
+        "EQNR",
+        "KW",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenstrategie"
+      ],
+      "size": 649
+    },
+    {
+      "file": "memory/wochenstrategie-2026-03-29.md",
+      "date": "2026-03-29",
+      "headline": "## Wochenstrategie — KW 14 (30.3. – 5.4.2026)",
+      "tickers": [
+        "ETF",
+        "KGV",
+        "KW",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenstrategie"
+      ],
+      "size": 1656
+    },
+    {
+      "file": "memory/wochenstrategie-2026-04-05.md",
+      "date": "2026-04-05",
+      "headline": "# 🎯 Wochenstrategie — Woche ab 2026-04-07",
+      "tickers": [
+        "ATH",
+        "IRAN",
+        "LONG",
+        "PLTR"
+      ],
+      "strategies": [],
+      "tags": [
+        "wochenstrategie"
+      ],
+      "size": 2067
+    },
+    {
+      "file": "memory/wtv-email-angebot.md",
+      "date": "",
+      "headline": "# E-Mail Entwurf: Angebot WTV Website",
+      "tickers": [
+        "FTP",
+        "IP",
+        "USB",
+        "WTV"
+      ],
+      "strategies": [],
+      "tags": [
+        "wtv",
+        "email",
+        "angebot"
+      ],
+      "size": 2118
+    },
+    {
+      "file": "memory/trading-journal/README.md",
+      "date": "",
+      "headline": "# Trading Journal",
+      "tickers": [
+        "DD",
+        "MM",
+        "RHM",
+        "YYYY"
+      ],
+      "strategies": [],
+      "tags": [
+        "README"
+      ],
+      "size": 729
+    }
+  ]
+}

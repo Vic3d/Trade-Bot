@@ -554,6 +554,27 @@ def execute_paper_entry(
         except Exception:
             pass  # Fehler im Gate → defensiv durchlassen (lieber kein Block als Blockade)
 
+    # ── Guard 0-DNA: Strategy DNA Hard Gate (P2.11) ───────────────────────
+    # Blockiert Strategien mit historisch katastrophaler DNA (WR<30% n≥10
+    # oder Regime-Mismatch). HALVE-Verdikt halbiert Position-Size unten.
+    _dna_size_factor = 1.0
+    try:
+        sys.path.insert(0, str(WORKSPACE / 'scripts' / 'intelligence'))
+        from strategy_dna import check_dna_gate as _check_dna_gate
+        _dna = _check_dna_gate(strategy or '', regime or '')
+        if _dna.get('verdict') == 'BLOCK':
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f"❌ Guard 0-DNA: {_dna.get('reason')} (score={_dna.get('score')})",
+                'blocked_by': 'dna_gate',
+            }
+        if _dna.get('verdict') == 'HALVE':
+            _dna_size_factor = 0.5
+            print(f"[Guard 0-DNA] HALVE: {_dna.get('reason')} → size_factor=0.5")
+    except Exception as _e:
+        print(f"[Guard 0-DNA] check failed (non-fatal): {_e}")
+
     # ── Guard 0d: Deep Dive Pre-Trade Gate ──────────────────────────────
     # Implementiert die Pflichtregeln aus deepdive-protokoll.md.
     # Verhindert "Falling Knife", "kein frischer Katalysator", "Aktie läuft
@@ -732,12 +753,22 @@ def execute_paper_entry(
     
     conn = get_db()
     
-    # ── Guard 2b: Wöchentliches Trade-Limit ─────────────────────────
+    # ── Guard 2b: Wöchentliches Trade-Limit (ATOMIC seit P0.2) ──────
     # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
     # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
+    # ATOMIC LOCK: verhindert Race wenn 2 Scanner-Jobs parallel laufen
     MAX_TRADES_PER_WEEK = 7
+    _trade_lock_fd = None
     try:
         from datetime import timedelta
+        import fcntl as _fcntl  # POSIX only (Server = Linux)
+        _lock_path = WORKSPACE / 'data' / 'trade_limit.lock'
+        _lock_path.parent.mkdir(parents=True, exist_ok=True)
+        _trade_lock_fd = open(_lock_path, 'w')
+        try:
+            _fcntl.flock(_trade_lock_fd.fileno(), _fcntl.LOCK_EX)
+        except Exception as _e:
+            print(f'[Guard 2b] flock failed (non-fatal): {_e}')
         # ISO-Woche: Montag 00:00 bis Sonntag 23:59
         today = datetime.now(timezone.utc)
         days_since_monday = today.weekday()  # 0=Mo, 6=So
@@ -748,6 +779,12 @@ def execute_paper_entry(
             (monday_str,)
         ).fetchone()[0]
         if weekly_count >= MAX_TRADES_PER_WEEK:
+            try:
+                if _trade_lock_fd:
+                    _fcntl.flock(_trade_lock_fd.fileno(), _fcntl.LOCK_UN)
+                    _trade_lock_fd.close()
+            except Exception:
+                pass
             conn.close()
             return {
                 'success': False,
@@ -759,8 +796,13 @@ def execute_paper_entry(
                 ),
                 'blocked_by': 'weekly_trade_limit',
             }
-    except Exception:
-        pass  # Limit nicht kritisch — bei Fehler weiter
+        # Lock bleibt offen bis Funktionsende → wird unten beim Insert/Return freigegeben.
+        # (Garbage-Collector schließt Datei spätestens beim Return.)
+    except ImportError:
+        # Windows-Fallback (lokales Dev): kein flock verfügbar
+        pass
+    except Exception as e:
+        print(f'[Guard 2b] non-fatal error: {e}')
 
     # ── Guard 3: Max Positionen ──────────────────────────────────────
     open_count = get_open_count(conn)
@@ -881,7 +923,34 @@ def execute_paper_entry(
         )
         from risk.var_calculator import parametric_var, marginal_var
 
-        corr_matrix, corr_tickers, _ = load_current_matrix()
+        # P1.5 — VaR-TTL Check: Wenn Korrelations-Matrix > 24h alt, konservativ skalieren
+        corr_matrix, corr_tickers, corr_meta = load_current_matrix()
+        _matrix_age_h = float('inf')
+        try:
+            _ts = (corr_meta or {}).get('computed_at') or (corr_meta or {}).get('timestamp')
+            if _ts:
+                _matrix_dt = datetime.fromisoformat(str(_ts).replace('Z', '+00:00'))
+                if _matrix_dt.tzinfo is None:
+                    _matrix_dt = _matrix_dt.replace(tzinfo=timezone.utc)
+                _matrix_age_h = (datetime.now(timezone.utc) - _matrix_dt).total_seconds() / 3600.0
+        except Exception as _e:
+            print(f'[Guard 5d MVaR] matrix age unknown: {_e}')
+        _stale_factor = 1.0
+        if _matrix_age_h > 48:
+            print(f'[Guard 5d MVaR] CRITICAL: matrix {_matrix_age_h:.0f}h old → block trade')
+            conn.close()
+            return {
+                'success': False, 'trade_id': None,
+                'message': (
+                    f'❌ Korrelations-Matrix ist {_matrix_age_h:.0f}h alt (>48h). '
+                    f'Risk-Engine nicht verlaesslich — manueller Refresh noetig.'
+                ),
+                'blocked_by': 'risk_matrix_stale',
+            }
+        elif _matrix_age_h > 24:
+            _stale_factor = 1.20  # +20% konservativer Aufschlag
+            print(f'[Guard 5d MVaR] matrix {_matrix_age_h:.0f}h old → VaR x{_stale_factor}')
+
         if corr_matrix.size > 0 and ticker.upper() in corr_tickers:
             # Aktuelle offene Positionen (in der Matrix)
             open_rows = conn.execute(
@@ -910,18 +979,18 @@ def execute_paper_entry(
                 vols = _np.array(vols)
                 cov = sub_corr * _np.outer(vols, vols)
 
-                # VaR vor Trade (ohne neue Position)
+                # VaR vor Trade (ohne neue Position) — P1.5 mit stale_factor
                 w_before = _np.array([open_map.get(t, 0.0) for t in sub_tickers])
-                var_before = parametric_var(w_before, cov, confidence=0.95)
+                var_before = parametric_var(w_before, cov, confidence=0.95) * _stale_factor
 
                 # VaR nach Trade
                 w_after = w_before.copy()
                 new_idx = sub_tickers.index(ticker.upper())
                 w_after[new_idx] += float(NEW_POS_EST)
-                var_after = parametric_var(w_after, cov, confidence=0.95)
+                var_after = parametric_var(w_after, cov, confidence=0.95) * _stale_factor
 
                 # MVaR fuer neue Position
-                mvar = marginal_var(w_after, cov, new_idx, confidence=0.95)
+                mvar = marginal_var(w_after, cov, new_idx, confidence=0.95) * _stale_factor
                 position_var_share = (mvar * w_after[new_idx]) / var_after if var_after > 0 else 0.0
                 var_increase = (var_after - var_before) / var_before if var_before > 0 else float('inf')
 
@@ -1063,6 +1132,12 @@ def execute_paper_entry(
 
     # Phase 9: Dynamic Cap aus Kelly + VIX + Sector Check (oder 1500€ Fallback)
     MAX_POSITION_EUR = phase9_cap
+    # P2.11 — DNA HALVE-Verdikt halbiert Position-Size
+    try:
+        if _dna_size_factor < 1.0:
+            shares_from_risk = max(1, int(shares_from_risk * _dna_size_factor))
+    except Exception:
+        pass
     position_eur = shares_from_risk * entry_price
     if position_eur > MAX_POSITION_EUR:
         shares_from_risk = int(MAX_POSITION_EUR / entry_price)

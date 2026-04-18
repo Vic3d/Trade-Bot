@@ -249,6 +249,27 @@ def discover_theses_with_claude(headlines: list[dict], existing: list[dict]) -> 
 
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
+    # P2.10 — Aktuelles Regime + Velocity in Prompt einspeisen
+    _regime_block = ''
+    try:
+        import json as _json, os as _os
+        _here = _os.path.dirname(_os.path.abspath(__file__))
+        _reg_path = _os.path.join(_here, '..', '..', 'data', 'current_regime.json')
+        if _os.path.exists(_reg_path):
+            with open(_reg_path, encoding='utf-8') as _rf:
+                _rd = _json.load(_rf)
+            _regime_block = (
+                f"\n=== AKTUELLES REGIME (HMM/Macro Brain) ===\n"
+                f"Regime: {_rd.get('regime','?')} | Velocity: {_rd.get('velocity','?')}\n"
+                f"VIX: {(_rd.get('factors') or {}).get('vix','?')} | "
+                f"DXY: {(_rd.get('factors') or {}).get('dxy','?')} | "
+                f"US10Y: {(_rd.get('factors') or {}).get('us10y','?')} | "
+                f"SP500 vs MA200: {(_rd.get('factors') or {}).get('sp500_vs_ma200','?')}\n"
+                f"→ Thesen MÜSSEN regime-kompatibel sein. RISK_OFF/BEAR = nur defensive/short-Thesen.\n"
+            )
+    except Exception as _e:
+        print(f'[thesis_discovery] regime injection failed: {_e}', flush=True)
+
     # Determine next available thesis ID
     # Count existing PS IDs and pick the next one
     existing_ps_ids = []
@@ -268,7 +289,7 @@ def discover_theses_with_claude(headlines: list[dict], existing: list[dict]) -> 
     )
 
     user_prompt = f"""Heute ist {today}.
-
+{_regime_block}
 === AKTUELLE MAKRO-NEWS HEADLINES ({len(headlines)} Stück) ===
 {headlines_text}
 
