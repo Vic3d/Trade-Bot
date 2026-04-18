@@ -95,6 +95,64 @@ def get_sector_count(conn, sector: str) -> int:
     ).fetchone()[0]
 
 
+def get_sector_exposure_eur(conn, sector: str) -> float:
+    """Summe entry_price*shares aller offenen Positionen im Sektor."""
+    row = conn.execute(
+        "SELECT COALESCE(SUM(entry_price * shares), 0) "
+        "FROM paper_portfolio WHERE sector=? AND status='OPEN'",
+        (sector,)
+    ).fetchone()
+    return float(row[0] or 0.0)
+
+
+# Region-Klassifikation via Ticker-Suffix.
+# Lernung aus MD-Files: 99% US-Exposure (Klumpenrisiko) → Max 60% pro Region.
+_EU_SUFFIX  = ('.DE', '.PA', '.AS', '.L', '.MI', '.SW', '.MC', '.BR', '.LS', '.VI', '.IR')
+_NORDIC_SUFFIX = ('.OL', '.CO', '.ST', '.HE')  # OSE, Kopenhagen, Stockholm, Helsinki
+_ASIA_SUFFIX = ('.T', '.HK', '.SS', '.SZ', '.KS', '.KQ', '.TW', '.AX', '.NS', '.BO')
+
+def classify_region(ticker: str) -> str:
+    """Gibt 'EU', 'ASIA' oder 'US' zurück (Nordics → EU)."""
+    t = (ticker or '').upper()
+    if any(t.endswith(s) for s in _EU_SUFFIX + _NORDIC_SUFFIX):
+        return 'EU'
+    if any(t.endswith(s) for s in _ASIA_SUFFIX):
+        return 'ASIA'
+    return 'US'  # Default: NYSE/Nasdaq
+
+
+def get_region_exposure_eur(conn, region: str) -> float:
+    """Summe entry_price*shares aller offenen Positionen in der Region.
+    Berechnet in Python weil 'region' nicht in DB-Spalte gespeichert ist."""
+    rows = conn.execute(
+        "SELECT ticker, entry_price, shares FROM paper_portfolio WHERE status='OPEN'"
+    ).fetchall()
+    total = 0.0
+    for r in rows:
+        tk = r['ticker'] if hasattr(r, 'keys') else r[0]
+        ep = r['entry_price'] if hasattr(r, 'keys') else r[1]
+        sh = r['shares'] if hasattr(r, 'keys') else r[2]
+        if classify_region(tk) == region:
+            total += float(ep or 0) * float(sh or 0)
+    return total
+
+
+def get_current_regime_safe() -> str:
+    """Neustes Regime aus regime_history; leer/UNKNOWN/None wenn nicht ermittelbar."""
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        conn.close()
+        if row:
+            r = row['regime'] if hasattr(row, 'keys') else row[0]
+            return (r or '').strip() or 'UNKNOWN'
+    except Exception:
+        pass
+    return 'UNKNOWN'
+
+
 def yahoo_price(ticker: str) -> float | None:
     """→ live_data.get_price_eur(). IMMER in EUR — NOK/DKK/GBp werden konvertiert.
     
@@ -605,6 +663,24 @@ def execute_paper_entry(
         except Exception:
             pass  # Earnings-Check nicht kritisch — bei Fehler weiter
 
+    # ── Guard 0f: Regime Hard-Block ─────────────────────────────────────
+    # Lernung aus MD-Files: Bei Regime=None/UNKNOWN = 0% Win-Rate historisch.
+    # Kein Trade wenn Makro-Regime nicht klassifizierbar. Manuelle Entries
+    # bleiben erlaubt (Victor kann bewusst durchtraden).
+    if source not in ('manual', 'victor', 'cli', 'paper_lab', 'backtest'):
+        _regime_now = get_current_regime_safe()
+        if _regime_now.upper() in ('', 'UNKNOWN', 'NONE'):
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Regime Hard-Block: Makro-Regime = {_regime_now!r}. '
+                    f'Historisch 0% Win-Rate bei unklassifizierbarem Regime. '
+                    f'Warte auf klares BULL/BEAR/NEUTRAL/CRISIS Signal.'
+                ),
+                'blocked_by': 'regime_unknown',
+            }
+
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
     # Hard blocks are: thesis INVALIDATED or CRV < 2.0
@@ -707,11 +783,13 @@ def execute_paper_entry(
             'blocked_by': 'duplicate',
         }
     
-    # ── Guard 5: Sektor-Limit ────────────────────────────────────────
+    # ── Guard 5: Sektor-Limit (Count + %) ────────────────────────────
     # Phase 21 MVP (2026-04-16): von 4 → 2 reduziert.
-    # Rationale: Korrelations-Cluster-Risiko. 3-4 Tech-Mega oder
-    # 3-4 Energy-Ticker = effektiv 1 Wette. Max 2 offene Positionen
-    # pro Sektor erzwingt Diversifikation VOR dem 30d autonomous run.
+    # Phase 21b (2026-04-18): Zusätzlich Value-%-Limit 40% — Lernung aus
+    # MD-Files: 91% Energy-Exposure im März = Klumpenrisiko. Count allein
+    # reicht nicht, wenn 2 Positionen je 4000€ = 32% schon kritisch werden.
+    FUND_TOTAL = 25000.0
+    NEW_POS_EST = 1500.0  # Default-Größe für die Forecast-Prüfung
     sector = get_sector(ticker)
     sector_count = get_sector_count(conn, sector)
     max_sector = 2  # Phase 21 MVP — vorher 4
@@ -723,6 +801,45 @@ def execute_paper_entry(
             'message': f'❌ Sektor {sector} voll ({sector_count}/{max_sector} Positionen)',
             'blocked_by': 'sector_limit',
         }
+    try:
+        sector_eur = get_sector_exposure_eur(conn, sector)
+        sector_pct_after = (sector_eur + NEW_POS_EST) / FUND_TOTAL
+        if sector_pct_after > 0.40:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Sektor-%-Limit: {sector} würde auf '
+                    f'{sector_pct_after*100:.0f}% steigen (>40% Cap). '
+                    f'Aktuell {sector_eur:.0f}€ offen. Diversifiziere.'
+                ),
+                'blocked_by': 'sector_pct_limit',
+            }
+    except Exception:
+        pass  # Expo-Check ist defensiv — bei Fehler nicht blockieren
+
+    # ── Guard 5c: Region-%-Limit (US/EU/Asia) ────────────────────────
+    # Lernung aus MD-Files: 99% US-Exposure = fatale Wette auf Dollar+Fed.
+    # Max 60% pro Region erzwingt globale Diversifikation.
+    try:
+        region = classify_region(ticker)
+        region_eur = get_region_exposure_eur(conn, region)
+        region_pct_after = (region_eur + NEW_POS_EST) / FUND_TOTAL
+        if region_pct_after > 0.60:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Region-%-Limit: {region} würde auf '
+                    f'{region_pct_after*100:.0f}% steigen (>60% Cap). '
+                    f'Aktuell {region_eur:.0f}€ offen. Suche EU/Asia-Ticker.'
+                ),
+                'blocked_by': 'region_pct_limit',
+            }
+    except Exception:
+        pass
 
     # ── Guard 5b: Style-spezifische Checks ──────────────────────────
     if style_cfg:

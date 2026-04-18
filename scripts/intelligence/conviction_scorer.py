@@ -918,6 +918,48 @@ def calculate_conviction(
         except Exception:
             pass  # crowd reaction is optional
 
+    # ── Factor 6b: Options-Flow Confluence Booster ───────────────────────
+    # Lernung aus MD-Files: Unusual-Call-Volume ist Smart-Money-Signal.
+    # Wenn für den Ticker aktive Call-Alerts in options_flow_state.json
+    # existieren, +5 (weak) bis +10 (strong) auf den Gesamtscore.
+    # Caps bei 0..100, damit nie Über-Overflow.
+    of_mod = 0
+    of_reason = None
+    try:
+        of_file = DATA_DIR / 'options_flow_state.json'
+        if of_file.exists():
+            of_data = json.loads(of_file.read_text(encoding='utf-8'))
+            alerted = of_data.get('alerted', {}) or {}
+            tk_up = ticker.upper()
+            call_hits = 0
+            put_hits = 0
+            max_vol = 0
+            for key in alerted.keys():
+                parts = key.split('_')
+                if len(parts) < 2:
+                    continue
+                if parts[0].upper() != tk_up:
+                    continue
+                vol = alerted.get(key) or 0
+                if parts[1].upper() == 'CALL':
+                    call_hits += 1
+                    if vol > max_vol:
+                        max_vol = vol
+                elif parts[1].upper() == 'PUT':
+                    put_hits += 1
+            net_bull = call_hits - put_hits
+            if net_bull >= 3 or (net_bull >= 1 and max_vol >= 5000):
+                of_mod = 10  # Strong confluence
+            elif net_bull >= 1:
+                of_mod = 5   # Weak confluence
+            elif put_hits >= 3 and call_hits == 0:
+                of_mod = -5  # Bearish flow gegen den Bullish-Trade
+            if of_mod != 0:
+                total = max(0, min(100, total + of_mod))
+                of_reason = f'flow calls={call_hits} puts={put_hits} max_vol={max_vol} → {of_mod:+d}'
+    except Exception:
+        pass  # Options-flow ist optional — bei Fehler keinen Bonus
+
     # ── Factor 7: Insider Signal (Phase 10, SEC EDGAR Form 4) ─────────────
     # ±10 modifier basierend auf Insider-Käufen/-Verkäufen der letzten 30 Tage
     insider_mod = 0
@@ -978,6 +1020,7 @@ def calculate_conviction(
             'decay_dna_modifier':  decay_dna_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
             **({'insider_signal': insider_mod} if insider_mod != 0 else {}),
+            **({'options_flow': of_mod} if of_mod != 0 else {}),
         },
         'factor_reasons': {
             'thesis_strength':     thesis_reason,
@@ -989,6 +1032,7 @@ def calculate_conviction(
             'decay_dna':           decay_dna_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
             **({'insider_signal': insider_reason} if insider_reason else {}),
+            **({'options_flow': of_reason} if of_reason else {}),
         },
         'position_sizing': sizing,
         'vix': vix,
