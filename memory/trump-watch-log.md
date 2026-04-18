@@ -150,3 +150,29 @@ The Wall Street Journal, one of the worst and most inaccurate “Editorial Board
 ---
 
 [2026-04-10 06:02 UTC] Scan: 100 Posts, keine Signale
+
+## [2026-04-18 07:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+President Xi is very happy that the Strait of Hormuz is open and/or rapidly opening. Our meeting in China will be a special one and, potentially, Hist...
+---
+
+## [2026-04-18 07:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+THE STRAIT OF HORMUZ IS COMPLETELY OPEN AND READY FOR BUSINESS AND FULL PASSAGE, BUT THE NAVAL BLOCKADE WILL REMAIN IN FULL FORCE AND EFFECT AS IT PER...
+---
+
+## [2026-04-18 07:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+IRAN HAS JUST ANNOUNCED THAT THE STRAIT OF IRAN IS FULLY OPEN AND READY FOR FULL PASSAGE. THANK YOU!...
+---
+
+## [2026-04-18 07:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+Italy wasn’t there for us, we won’t be there for them! President DONALD J. TRUMP   https://www.  theguardian.com/world/2026/mar  /31/italy-denies-sici...
+---
+
+## [2026-04-18 07:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+China is very happy that I am permanently opening the Strait of Hormuz. I am doing it for them, also - And the World. This situation will never happen...
+---
+
+## [2026-04-18 08:15 UTC] PEACE_WATCH (Peace:2 Esc:0)
+THE STRAIT OF HORMUZ IS COMPLETELY OPEN AND READY FOR BUSINESS AND FULL PASSAGE, BUT THE NAVAL BLOCKADE WILL REMAIN IN FULL FORCE AND EFFECT AS IT PER...
+---
+
+[2026-04-18 09:15 UTC] Scan: 100 Posts, keine Signale

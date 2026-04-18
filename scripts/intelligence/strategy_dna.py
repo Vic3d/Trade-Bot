@@ -29,6 +29,84 @@ def get_db():
     return conn
 
 
+def check_dna_gate(strategy: str, regime: str = '') -> dict:
+    """P2.11 — DNA-Gate für Pre-Trade Validierung.
+
+    Returns: {
+        'score': 0-100,           # DNA-Score (höher = besser)
+        'verdict': 'PASS|HALVE|BLOCK',
+        'reason': str,
+        'trades': int,
+    }
+
+    Logik:
+      - <10 closed trades → PASS (zu wenig Daten, score=50)
+      - WR ≥ 45% & Expectancy > 0 → PASS (score=70+)
+      - WR 30-45% oder Expectancy <= 0 → HALVE (size_factor=0.5)
+      - WR < 30% mit 10+ trades → BLOCK
+      - Falls regime gegeben: Regime-Mismatch (regime-WR < 25%, ≥4 trades) → BLOCK
+    """
+    sid = (strategy or '').upper()
+    if not sid:
+        return {'score': 50, 'verdict': 'PASS', 'reason': 'no strategy', 'trades': 0}
+    try:
+        conn = get_db()
+        row = conn.execute("""
+            SELECT COUNT(*) AS total,
+                   SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) AS wins,
+                   SUM(CASE WHEN status='LOSS' THEN 1 ELSE 0 END) AS losses,
+                   AVG(CASE WHEN status='WIN' THEN pnl_pct END) AS avg_win,
+                   AVG(CASE WHEN status='LOSS' THEN pnl_pct END) AS avg_loss,
+                   SUM(CASE WHEN status IN ('WIN','LOSS') THEN pnl_eur ELSE 0 END) AS pnl_eur
+            FROM trades
+            WHERE UPPER(strategy)=? AND status IN ('WIN','LOSS')
+        """, (sid,)).fetchone()
+        regime_row = None
+        if regime:
+            regime_row = conn.execute("""
+                SELECT COUNT(*) AS total,
+                       SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) AS wins
+                FROM trades
+                WHERE UPPER(strategy)=? AND UPPER(regime_at_entry)=?
+                  AND status IN ('WIN','LOSS')
+            """, (sid, regime.upper())).fetchone()
+        conn.close()
+    except Exception as e:
+        return {'score': 50, 'verdict': 'PASS', 'reason': f'dna db error: {e}', 'trades': 0}
+
+    closed = (row['total'] or 0) if row else 0
+    if closed < 10:
+        return {'score': 50, 'verdict': 'PASS',
+                'reason': f'insufficient history ({closed}<10 trades)', 'trades': closed}
+
+    wins = row['wins'] or 0
+    wr = wins / closed if closed else 0
+    avg_win = row['avg_win'] or 0
+    avg_loss = row['avg_loss'] or 0
+    expectancy = avg_win * wr + avg_loss * (1 - wr)
+    pnl = row['pnl_eur'] or 0
+
+    # Score-Komposition: WR (60pt) + Expectancy (25pt) + PnL-Sign (15pt)
+    score = round(min(100, max(0, wr * 100 * 0.6 + max(-25, min(25, expectancy * 10)) + (15 if pnl > 0 else -10))))
+
+    # Regime-Mismatch Hard-Block
+    if regime_row and (regime_row['total'] or 0) >= 4:
+        rwr = (regime_row['wins'] or 0) / regime_row['total']
+        if rwr < 0.25:
+            return {'score': score, 'verdict': 'BLOCK',
+                    'reason': f"DNA: regime '{regime}' WR {rwr:.0%} < 25% (n={regime_row['total']})",
+                    'trades': closed}
+
+    if wr < 0.30:
+        return {'score': score, 'verdict': 'BLOCK',
+                'reason': f'DNA: WR {wr:.0%} < 30% (n={closed}, PnL {pnl:+.0f}€)', 'trades': closed}
+    if wr < 0.45 or expectancy <= 0 or pnl < 0:
+        return {'score': score, 'verdict': 'HALVE',
+                'reason': f'DNA: WR {wr:.0%}, Exp {expectancy:+.2f}%, PnL {pnl:+.0f}€', 'trades': closed}
+    return {'score': score, 'verdict': 'PASS',
+            'reason': f'DNA: WR {wr:.0%}, Exp {expectancy:+.2f}%, PnL {pnl:+.0f}€', 'trades': closed}
+
+
 def strategy_metrics():
     """Berechnet Metriken pro Strategie."""
     conn = get_db()

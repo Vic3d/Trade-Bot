@@ -20,6 +20,8 @@ P1.4 Update: Sentiment-Magnitude-Bonus
 import urllib.request, json
 from pathlib import Path
 from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -42,7 +44,7 @@ def load_ceo_directive() -> dict | None:
     try:
         d = json.loads(path.read_text(encoding="utf-8"))
         ts = datetime.fromisoformat(d['timestamp'])
-        if (datetime.now() - ts).total_seconds() < 86400:
+        if (datetime.now(_BERLIN) - ts).total_seconds() < 86400:
             return d
     except Exception:
         pass
@@ -66,7 +68,7 @@ def get_vix() -> float | None:
                 # Stale-Check: älter als 2 Stunden?
                 try:
                     updated_dt = datetime.strptime(updated_str, '%Y-%m-%d %H:%M')
-                    age_hours = (datetime.now() - updated_dt).total_seconds() / 3600
+                    age_hours = (datetime.now(_BERLIN) - updated_dt).total_seconds() / 3600
                     if age_hours <= 2.0:
                         return float(vix_val)
                     # Datei zu alt → Fallback auf Yahoo

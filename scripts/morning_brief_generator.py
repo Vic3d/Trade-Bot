@@ -8,7 +8,9 @@ import sqlite3
 import json
 import urllib.request
 import urllib.parse
-from datetime import datetime, date, timedelta, timezone
+from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 try:
     from zoneinfo import ZoneInfo
@@ -383,7 +385,7 @@ def get_auto_dd_section() -> str:
 def generate_briefing() -> str:
     """Hauptfunktion: generiert den vollständigen Briefing-Text."""
     today = date.today().isoformat()
-    now = datetime.now()
+    now = datetime.now(_BERLIN)
     date_str = now.strftime("%d.%m.%Y")
 
     # Events laden — Graceful Degradation: kein Crash wenn DB/Tabelle fehlt

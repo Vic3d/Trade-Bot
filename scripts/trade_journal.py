@@ -12,6 +12,9 @@ import sqlite3
 import sys
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -77,7 +80,7 @@ def open_trade(ticker, strategy, direction, entry_price, stop, target, shares, t
         return None
     init_tables()
     conn = get_db()
-    entry_date = datetime.now().strftime("%Y-%m-%d")
+    entry_date = datetime.now(_BERLIN).strftime("%Y-%m-%d")
     conn.execute(
         """INSERT INTO trades (ticker, strategy, direction, entry_price, entry_date, 
            stop, target, shares, status, thesis, trade_type) VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
@@ -125,7 +128,7 @@ def close_trade(trade_id, exit_price, result="", lessons=""):
         pnl = (entry - exit_price) * shares
         pnl_pct = (1 - exit_price / entry) * 100
 
-    exit_date = datetime.now().strftime("%Y-%m-%d")
+    exit_date = datetime.now(_BERLIN).strftime("%Y-%m-%d")
     status = "WIN" if pnl > 0 else "LOSS"
 
     conn.execute(

@@ -32,6 +32,8 @@ import json
 import pickle
 import sys
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import numpy as np
@@ -46,6 +48,9 @@ CACHE = WS / 'data/price_cache'
 MODEL_FILE = WS / 'data/hmm_regime.pkl'
 REGIME_FILE = WS / 'data/regime_history.json'
 CEO_FILE = WS / 'data/ceo_directive.json'
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 
 N_STATES = 4
 REGIME_NAMES = ['BULL', 'NEUTRAL', 'RISK_OFF', 'CRASH']  # nach Training zugewiesen
@@ -318,7 +323,7 @@ def update_ceo_directive(regime: dict) -> bool:
         }
         # Auch das alte 'regime' Feld aktualisieren (Rückwärtskompatibilität)
         ceo['regime'] = regime['name']
-        CEO_FILE.write_text(json.dumps(ceo, indent=2, ensure_ascii=False))
+        atomic_write_json(CEO_FILE, ceo)
         return True
     except Exception as e:
         print(f"  ⚠️  CEO Update Fehler: {e}")
@@ -376,7 +381,7 @@ def daily_regime_update() -> dict:
     update_ceo_directive(regime)
 
     # Regime-History updaten
-    today = datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
     history = json.loads(REGIME_FILE.read_text(encoding="utf-8")) if REGIME_FILE.exists() else {}
     history[today] = {
         'state': regime.get('state'),

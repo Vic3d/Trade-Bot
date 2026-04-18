@@ -15,6 +15,8 @@ import json
 import re
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import os as _os
@@ -182,7 +184,7 @@ def calculate_risk_reward(lha_price: float) -> dict:
 
 def run_monitor() -> dict:
     """Vollständiger S10 Monitor-Lauf."""
-    print(f'S10 Lufthansa Monitor — {datetime.now().strftime("%Y-%m-%d %H:%M")}')
+    print(f'S10 Lufthansa Monitor — {datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")}')
     print('─' * 50)
 
     # 1. LHA.DE Kurs + EMA
@@ -237,7 +239,7 @@ def run_monitor() -> dict:
         alert_msg = f'😴 S10 Standby: 0/3 Trigger aktiv'
 
     result = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'lha': lha,
         'brent_price': brent,
         'triggers': {

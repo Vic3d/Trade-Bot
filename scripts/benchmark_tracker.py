@@ -43,7 +43,7 @@ def get_paper_stats():
     db.row_factory = sqlite3.Row
     closed = db.execute("""
         SELECT pnl_eur, close_date FROM paper_portfolio
-        WHERE status='CLOSED' AND pnl_eur IS NOT NULL AND pnl_eur != 0
+        WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_eur IS NOT NULL AND pnl_eur != 0
         ORDER BY close_date
     """).fetchall()
     total_pnl = sum(r['pnl_eur'] for r in closed)

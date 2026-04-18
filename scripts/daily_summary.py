@@ -7,6 +7,7 @@ Damit liest Albert beim nächsten Session-Start automatisch was gestern passiert
 
 import sqlite3, os, time
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 DB_PATH   = os.path.join(os.path.dirname(__file__), "..", "memory", "newswire.db")
 MEM_DIR   = os.path.join(os.path.dirname(__file__), "..", "memory")
@@ -15,7 +16,15 @@ def _conn():
     return sqlite3.connect(DB_PATH)
 
 def today_str():
-    return datetime.now(tz=timezone(timedelta(hours=1))).strftime("%Y-%m-%d")
+    return datetime.now(tz=ZoneInfo('Europe/Berlin')).strftime("%Y-%m-%d")
+
+def _safe_query(conn, sql, params=()):
+    """Execute a query, return [] if the table doesn't exist."""
+    try:
+        return conn.execute(sql, params).fetchall()
+    except sqlite3.OperationalError:
+        return []
+
 
 def generate_summary() -> str:
     conn = _conn()
@@ -23,13 +32,13 @@ def generate_summary() -> str:
     lines = []
 
     # ── NewsWire Events heute ──────────────────────────────────────────────────
-    events = conn.execute("""
+    events = _safe_query(conn, """
         SELECT strategy_id, direction, COUNT(*) as n
         FROM events
         WHERE ts > ? AND score >= 2
         GROUP BY strategy_id, direction
         ORDER BY strategy_id, direction
-    """, (today_ts,)).fetchall()
+    """, (today_ts,))
 
     STRAT = {1:"Iran/Öl", 2:"Rüstung", 3:"KI/Tech", 4:"Silber", 5:"Rohstoffe", None:"Makro"}
     if events:
@@ -39,13 +48,13 @@ def generate_summary() -> str:
             lines.append(f"  {emoji} S{sid or '-'} {STRAT.get(sid,'?'):10} {direction:8}: {n}×")
 
     # ── Top Headlines heute ────────────────────────────────────────────────────
-    top = conn.execute("""
+    top = _safe_query(conn, """
         SELECT ticker, direction, headline, score
         FROM events
         WHERE ts > ? AND score >= 2
         ORDER BY score DESC, ts DESC
         LIMIT 8
-    """, (today_ts,)).fetchall()
+    """, (today_ts,))
 
     if top:
         lines.append("\n## Top Headlines heute")
@@ -54,12 +63,12 @@ def generate_summary() -> str:
             t = f"[{ticker}]" if ticker else ""
             lines.append(f"  {emoji} score={score} {t} {headline[:90]}")
 
-    # ── Offene Trades ──────────────────────────────────────────────────────────
-    trades = conn.execute("""
+    # ── Offene Trades (legacy — Tabelle existiert ggf. nicht) ─────────────────
+    trades = _safe_query(conn, """
         SELECT ticker, direction, entry_price, stop_price, conviction_score, notes
         FROM trades WHERE outcome = 'open'
         ORDER BY ts_entry DESC
-    """).fetchall()
+    """)
 
     if trades:
         lines.append("\n## Offene Positionen (Trade Journal)")
@@ -68,12 +77,12 @@ def generate_summary() -> str:
             lines.append(f"  {ticker}: {direction.upper()} @ {entry}€ | {stop_str} | Conviction {conv or '?'}/5")
 
     # ── Empfehlungen heute ─────────────────────────────────────────────────────
-    recs = conn.execute("""
+    recs = _safe_query(conn, """
         SELECT ticker, direction, conviction_score, reasoning, correct_4h
         FROM recommendations
         WHERE ts > ?
         ORDER BY ts DESC
-    """, (today_ts,)).fetchall()
+    """, (today_ts,))
 
     if recs:
         lines.append("\n## Alberts Empfehlungen heute")
@@ -84,24 +93,26 @@ def generate_summary() -> str:
                 lines.append(f"    Begründung: {reasoning[:100]}")
 
     # ── Accuracy-Snapshot ─────────────────────────────────────────────────────
-    acc = conn.execute("""
+    acc_rows = _safe_query(conn, """
         SELECT COUNT(*) as n,
                SUM(correct_4h) as correct,
                ROUND(100.0 * SUM(correct_4h) / COUNT(*), 0) as pct
         FROM recommendations
         WHERE correct_4h IS NOT NULL
-    """).fetchone()
+    """)
+    acc = acc_rows[0] if acc_rows else None
 
     if acc and acc[0] and acc[0] >= 5:
         lines.append(f"\n## Alberts Accuracy (gesamt)")
         lines.append(f"  4h-Trefferquote: {acc[2]:.0f}% ({acc[1]}/{acc[0]} Empfehlungen ausgewertet)")
 
     # ── Makro-Kontext ──────────────────────────────────────────────────────────
-    macro = conn.execute("""
+    macro_rows = _safe_query(conn, """
         SELECT vix, dxy, brent, regime
         FROM macro_context
         ORDER BY ts DESC LIMIT 1
-    """).fetchone()
+    """)
+    macro = macro_rows[0] if macro_rows else None
 
     if macro:
         vix, dxy, brent, regime = macro

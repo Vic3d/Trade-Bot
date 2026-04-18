@@ -95,6 +95,64 @@ def get_sector_count(conn, sector: str) -> int:
     ).fetchone()[0]
 
 
+def get_sector_exposure_eur(conn, sector: str) -> float:
+    """Summe entry_price*shares aller offenen Positionen im Sektor."""
+    row = conn.execute(
+        "SELECT COALESCE(SUM(entry_price * shares), 0) "
+        "FROM paper_portfolio WHERE sector=? AND status='OPEN'",
+        (sector,)
+    ).fetchone()
+    return float(row[0] or 0.0)
+
+
+# Region-Klassifikation via Ticker-Suffix.
+# Lernung aus MD-Files: 99% US-Exposure (Klumpenrisiko) → Max 60% pro Region.
+_EU_SUFFIX  = ('.DE', '.PA', '.AS', '.L', '.MI', '.SW', '.MC', '.BR', '.LS', '.VI', '.IR')
+_NORDIC_SUFFIX = ('.OL', '.CO', '.ST', '.HE')  # OSE, Kopenhagen, Stockholm, Helsinki
+_ASIA_SUFFIX = ('.T', '.HK', '.SS', '.SZ', '.KS', '.KQ', '.TW', '.AX', '.NS', '.BO')
+
+def classify_region(ticker: str) -> str:
+    """Gibt 'EU', 'ASIA' oder 'US' zurück (Nordics → EU)."""
+    t = (ticker or '').upper()
+    if any(t.endswith(s) for s in _EU_SUFFIX + _NORDIC_SUFFIX):
+        return 'EU'
+    if any(t.endswith(s) for s in _ASIA_SUFFIX):
+        return 'ASIA'
+    return 'US'  # Default: NYSE/Nasdaq
+
+
+def get_region_exposure_eur(conn, region: str) -> float:
+    """Summe entry_price*shares aller offenen Positionen in der Region.
+    Berechnet in Python weil 'region' nicht in DB-Spalte gespeichert ist."""
+    rows = conn.execute(
+        "SELECT ticker, entry_price, shares FROM paper_portfolio WHERE status='OPEN'"
+    ).fetchall()
+    total = 0.0
+    for r in rows:
+        tk = r['ticker'] if hasattr(r, 'keys') else r[0]
+        ep = r['entry_price'] if hasattr(r, 'keys') else r[1]
+        sh = r['shares'] if hasattr(r, 'keys') else r[2]
+        if classify_region(tk) == region:
+            total += float(ep or 0) * float(sh or 0)
+    return total
+
+
+def get_current_regime_safe() -> str:
+    """Neustes Regime aus regime_history; leer/UNKNOWN/None wenn nicht ermittelbar."""
+    try:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT regime FROM regime_history ORDER BY date DESC LIMIT 1"
+        ).fetchone()
+        conn.close()
+        if row:
+            r = row['regime'] if hasattr(row, 'keys') else row[0]
+            return (r or '').strip() or 'UNKNOWN'
+    except Exception:
+        pass
+    return 'UNKNOWN'
+
+
 def yahoo_price(ticker: str) -> float | None:
     """→ live_data.get_price_eur(). IMMER in EUR — NOK/DKK/GBp werden konvertiert.
     
@@ -353,29 +411,6 @@ def _execute_paper_entry_inner(
     except Exception:
         pass  # andere Fehler (z.B. Permission) nicht kritisch
 
-    # ── Guard 0 (Phase 22.1): Portfolio Circuit Breaker ─────────────────────────
-    # Blockiert ALLE neuen Entries wenn Tages-/Monats-DD zu hoch wird.
-    try:
-        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-        from portfolio_circuit_breaker import check as _cb_check
-        _cb = _cb_check()
-        if _cb.get('status') == 'halt':
-            return {
-                'success': False,
-                'trade_id': None,
-                'message': (
-                    f'🛑 {ticker}: Portfolio Circuit Breaker HALT — '
-                    + '; '.join(_cb.get('reasons', []))
-                ),
-                'blocked_by': 'circuit_breaker_halt',
-                'drawdowns': _cb.get('drawdowns'),
-            }
-        elif _cb.get('status') == 'warn':
-            print(f"[{ticker}] ⚠️  Circuit-Breaker WARN: {_cb.get('reasons')}")
-    except Exception as _cb_err:
-        # Fail-open: wenn Breaker selbst crasht, Trade darf durch (logged)
-        print(f"[circuit-breaker] Check-Fehler (lasse durch): {_cb_err}")
-
     # ── Guard 0a: Entry-Zeitfenster ──────────────────────────────────────────────
     # Daten: Morgen-Entries (07-11h) haben 0% Win-Rate über 10 Trades.
     # Abend-Entries (17-22h) haben 51% Win-Rate → nur in diesem Fenster.
@@ -421,167 +456,294 @@ def _execute_paper_entry_inner(
             'blocked_by': 'crv_minimum',
         }
 
-    # ── Guard 0c2: Deep Dive Verdict Gate (Phase 7.14 — Inline Refresh) ─────────
-    # Victor-Regel: "Bevor irgendwie getrailt wird, soll immer ein Deep Dive gemacht werden."
-    #
-    # Logik:
-    #   Verdict < DEEP_DIVE_MAX_AGE_HOURS alt       -> Cache ok
-    #   Verdict >= MAX_AGE oder fehlt               -> inline Auto-DD triggern (force)
-    #   Entry auf KAUFEN (conf>=65, kein degrade)   -> durchlassen
-    #   Alles andere                                -> block
-    # Manuelle Orders (source='manual') uebergehen das Gate.
-    DEEP_DIVE_MAX_AGE_HOURS = 6
-
-    if source != 'manual':
-        try:
-            _dd_path = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
-
-            def _load_verdict():
-                if not _dd_path.exists():
-                    return None
-                try:
-                    _data = json.loads(_dd_path.read_text(encoding='utf-8'))
-                except Exception:
-                    return None
-                return _data.get(ticker) or _data.get(ticker.upper())
-
-            def _verdict_age_hours(v):
-                _ts_raw = v.get('timestamp') or v.get('created_at') or ''
-                try:
-                    _ts = datetime.fromisoformat(_ts_raw.replace('Z', '+00:00'))
-                    if _ts.tzinfo is None:
-                        _ts = _ts.replace(tzinfo=timezone.utc)
-                    return (datetime.now(timezone.utc) - _ts).total_seconds() / 3600
-                except Exception:
-                    return 9999
-
-            _verdict = _load_verdict()
-            _age_h = _verdict_age_hours(_verdict) if _verdict else 9999
-            _needs_refresh = (_verdict is None) or (_age_h >= DEEP_DIVE_MAX_AGE_HOURS)
-
-            if _needs_refresh:
-                # Inline Auto-DD triggern
-                print(f"[{ticker}] Guard 0c2: Verdict stale ({_age_h:.1f}h) — inline Auto-DD...")
-                try:
-                    _intel_path = WORKSPACE / 'scripts' / 'intelligence'
-                    if str(_intel_path) not in sys.path:
-                        sys.path.insert(0, str(_intel_path))
-                    from auto_deep_dive import run as _dd_run
-                    _result = _dd_run(ticker, force=True, mode='entry')
-                    if _result.get('status') != 'ok':
-                        return {
-                            'success': False,
-                            'trade_id': None,
-                            'message': (
-                                f'❌ {ticker}: Inline Auto-DD fehlgeschlagen '
-                                f'({_result.get("error") or _result.get("status")})'
-                            ),
-                            'blocked_by': 'deep_dive_api_failed',
-                        }
-                    # Nach Refresh: Verdict neu laden
-                    _verdict = _load_verdict()
-                    if not _verdict:
-                        return {
-                            'success': False,
-                            'trade_id': None,
-                            'message': f'❌ {ticker}: Auto-DD lief, aber kein Verdict persistiert',
-                            'blocked_by': 'deep_dive_persist_failed',
-                        }
-                except Exception as _e:
-                    return {
-                        'success': False,
-                        'trade_id': None,
-                        'message': f'❌ {ticker}: Inline Auto-DD Exception: {_e}',
-                        'blocked_by': 'deep_dive_api_error',
-                    }
-
-            # Verdict jetzt auf jeden Fall frisch — prüfen
-            _vd = str(_verdict.get('verdict', '')).upper()
-            if _vd != 'KAUFEN':
-                return {
-                    'success': False,
-                    'trade_id': None,
-                    'message': f'❌ {ticker}: Deep Dive Verdict = {_vd or "UNBEKANNT"} (KAUFEN erforderlich)',
-                    'blocked_by': 'deep_dive_not_kaufen',
-                }
-            # AUTO_CLAUDE: Mindest-Confidence (anti-hallucination)
-            _src = str(_verdict.get('source', 'MANUAL')).upper()
-            if _src == 'AUTO_CLAUDE':
-                _conf = int(_verdict.get('confidence', 0) or 0)
-                if _conf < 65:
-                    return {
-                        'success': False,
-                        'trade_id': None,
-                        'message': f'❌ {ticker}: AUTO_CLAUDE Verdict confidence {_conf} < 65 (Halluzinations-Schutz)',
-                        'blocked_by': 'deep_dive_low_confidence',
-                    }
-                if _verdict.get('_degraded_reason'):
-                    return {
-                        'success': False,
-                        'trade_id': None,
-                        'message': f'❌ {ticker}: AUTO_CLAUDE Verdict degraded ({_verdict["_degraded_reason"]})',
-                        'blocked_by': 'deep_dive_degraded',
-                    }
-                # Phase 22 — Expected-Value Gate
-                # Wenn das Verdict im neuen Schema ist (hat ev_eur), erzwinge EV-Threshold.
-                # Legacy-Verdicts ohne ev_eur laufen unverändert durch (backward compatible).
-                _ev_eur = _verdict.get('ev_eur')
-                _skew = _verdict.get('payoff_skew')
-                _cat_date = _verdict.get('catalyst_date')
-                if _ev_eur is not None:
-                    try:
-                        _ev_val = float(_ev_eur)
-                    except Exception:
-                        _ev_val = 0.0
-                    # Hart: negativer EV = kein Entry
-                    if _ev_val < 10.0:
-                        return {
-                            'success': False,
-                            'trade_id': None,
-                            'message': (
-                                f'❌ {ticker}: EV {_ev_val:+.0f}€ < +10€ Threshold '
-                                f'(skew={_skew}, catalyst={_cat_date})'
-                            ),
-                            'blocked_by': 'ev_too_low',
-                        }
-                    # Skew-Check (asymmetrische Payoff-Struktur)
-                    if isinstance(_skew, (int, float)) and _skew < 1.3:
-                        return {
-                            'success': False,
-                            'trade_id': None,
-                            'message': (
-                                f'❌ {ticker}: Payoff-Skew {_skew:.1f} < 1.3 '
-                                f'(EV={_ev_val:+.0f}€, kein asymmetrisches Setup)'
-                            ),
-                            'blocked_by': 'skew_too_low',
-                        }
-                    # Katalysator-Pflicht (neue Phase-22-Regel)
-                    if not _cat_date:
-                        print(f"[{ticker}] ⚠️  Guard 0c2+: Kein catalyst_date — lasse durch mit Warnung")
-                    else:
-                        print(f"[{ticker}] ✅ EV-Gate: {_ev_val:+.0f}€ skew={_skew} cat={_cat_date}")
-                    # ── Pre-Mortem Gate (Phase 22 Task 8) ──
-                    try:
-                        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-                        from pre_mortem_check import check_falsification as _pm_check
-                        _fals = _verdict.get('falsification') or _verdict.get('bear_scenario') or ''
-                        _pm_ok, _pm_reason = _pm_check(_fals)
-                        if not _pm_ok:
-                            return {
-                                'success': False,
-                                'trade_id': None,
-                                'message': f'❌ {ticker}: Pre-Mortem Gate: {_pm_reason}',
-                                'blocked_by': 'pre_mortem_vague',
-                            }
-                        print(f"[{ticker}] ✅ Pre-Mortem: {_pm_reason}")
-                    except ImportError:
-                        pass
-        except Exception as e:
+    # ── Guard 0c3: Cost-Hurdle Gate (Phase 19a) ─────────────────────
+    # Verhindert Trades deren Edge kleiner ist als die Round-Trip-Kosten.
+    # Hintergrund: Bei ~0.75-1% Cost Drag pro Trade in US-Mid-Caps und
+    # ~1% in EU-Mid-Caps fressen 100 Trades/Jahr sonst 75-100% des
+    # Kapitals. Wir blocken Trades wo Reward-%  < 3x Round-Trip-Kosten.
+    try:
+        from execution.transaction_costs import get_profile as _tc_profile
+        _prof = _tc_profile(ticker)
+        # Round-trip cost in basis points (both sides + FX both sides if applicable)
+        _rt_bps = 2 * (_prof.spread_bps + _prof.slippage_bps)
+        if _prof.currency != 'EUR':
+            _rt_bps += 2 * _prof.fx_spread_bps
+        _rt_pct = _rt_bps / 100.0  # bps → %
+        _reward_pct = (_reward / entry_price) * 100 if entry_price else 0
+        _hurdle_pct = _rt_pct * 3.0  # need 3x cost coverage as safety margin
+        if _reward_pct < _hurdle_pct:
             return {
                 'success': False,
                 'trade_id': None,
-                'message': f'❌ {ticker}: Deep Dive Gate Fehler: {e}',
-                'blocked_by': 'deep_dive_error',
+                'message': (
+                    f'❌ {ticker}: Edge zu klein — Reward {_reward_pct:.2f}% '
+                    f'< {_hurdle_pct:.2f}% Cost-Hurdle '
+                    f'(Round-Trip {_rt_pct:.2f}% × 3 Safety). '
+                    f'Market: {_prof.name}. Trading Gebühren würden Edge auffressen.'
+                ),
+                'blocked_by': 'cost_hurdle',
+            }
+    except Exception as _tc_e:
+        import logging as _tc_log
+        _tc_log.getLogger('paper_trade_engine').warning(f'cost-hurdle check skipped: {_tc_e}')
+
+    # ── Guard 0: CEO Directive Check ────────────────────────────────────
+    # CEO schreibt täglich sein Marktbild in ceo_directive.json.
+    # Bei BEARISH oder HALT wird hier geblockt.
+    try:
+        ceo_file = WORKSPACE / 'data' / 'ceo_directive.json'
+        if ceo_file.exists():
+            ceo_d = json.loads(ceo_file.read_text(encoding='utf-8'))
+            ceo_bias = ceo_d.get('market_bias', 'NEUTRAL').upper()
+            ceo_halt = ceo_d.get('trading_halt', False)
+            if ceo_halt:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': f'❌ CEO Trading Halt aktiv: {ceo_d.get("halt_reason", "kein Grund angegeben")}',
+                    'blocked_by': 'ceo_halt',
+                }
+            if ceo_bias == 'BEARISH':
+                # Im Bärenmarkt: nur Thesis-Plays mit hoher Conviction erlaubt
+                is_thesis = strategy.startswith(('PS_', 'PS', 'DT'))
+                if not is_thesis:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': f'❌ CEO Bias BEARISH — nur Thesis-Plays erlaubt, kein {strategy}',
+                        'blocked_by': 'ceo_bearish_bias',
+                    }
+    except Exception:
+        pass  # CEO Direktive ist optional — bei Fehler weiter
+
+    # ── Guard 0c2: Deep Dive Verdict Gate ───────────────────────────────────────
+    # Philosophie: Der Deep Dive IST das Gate. Wenn eine Aktie interessant ist,
+    # zuerst Deep Dive durchführen. Wenn Verdict = KAUFEN → Trade erlaubt.
+    # Kein Verdict oder WARTEN/NICHT KAUFEN → Block für autonome Entries.
+    # Victor kann mit source='manual' immer manuell übersteuern.
+    _is_autonomous_entry = source not in ('manual', 'victor', 'cli')
+    if _is_autonomous_entry:
+        try:
+            _verdicts_file = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
+            _verdict_data = {}
+            if _verdicts_file.exists():
+                _verdict_data = json.loads(_verdicts_file.read_text(encoding='utf-8'))
+
+            _ticker_verdict = _verdict_data.get(ticker.upper(), {})
+            _verdict = _ticker_verdict.get('verdict', '')
+
+            # Source-Validierung: nur echte Deep Dives akzeptieren
+            _verdict_source = _ticker_verdict.get('source', '')
+            _trusted_sources = {'autonomous_ceo', 'discord_deepdive'}
+            if _verdict_source and _verdict_source not in _trusted_sources:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Guard: Verdict für {ticker} hat unvertrauenswürdige Quelle '
+                        f'"{_verdict_source}". Nur autonomous_ceo oder discord_deepdive erlaubt. '
+                        f'In Discord: "Deep Dive {ticker}" für echten Deep Dive.'
+                    ),
+                    'blocked_by': 'untrusted_verdict_source',
+                }
+            _verdict_date = _ticker_verdict.get('date', '')
+
+            # Deep Dive veraltet wenn älter als 14 Tage
+            _dd_fresh = False
+            if _verdict_date:
+                try:
+                    _dd_age = (datetime.now(_BERLIN).replace(tzinfo=None) - datetime.fromisoformat(_verdict_date)).days
+                    _dd_fresh = _dd_age <= 14
+                except Exception:
+                    pass
+
+            if not _verdict or not _dd_fresh:
+                # Kein Deep Dive → blocken und Anweisung ausgeben
+                _age_hint = f'(letzter: {_verdict_date}, {_dd_age}d alt)' if _verdict_date else '(noch keiner)'
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Pflicht-Gate: Kein aktuelles Deep Dive Verdict für {ticker} {_age_hint}. '
+                        f'In Discord eingeben: "Deep Dive {ticker}" '
+                        f'→ Wenn Verdict = KAUFEN, wird Trade automatisch freigegeben.'
+                    ),
+                    'blocked_by': 'no_deep_dive_verdict',
+                }
+
+            if _verdict == 'NICHT_KAUFEN':
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Verdict: {ticker} = NICHT KAUFEN (vom {_verdict_date}). '
+                        f'Deep Dive hat diesen Trade abgelehnt. '
+                        f'Neue Analyse wenn sich Lage ändert: "Deep Dive {ticker}"'
+                    ),
+                    'blocked_by': 'deep_dive_nicht_kaufen',
+                }
+
+            if _verdict == 'WARTEN':
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Deep Dive Verdict: {ticker} = WARTEN (vom {_verdict_date}). '
+                        f'Kein Entry bis sich die Situation klärt. '
+                        f'Trigger-Bedingung erfüllt? Dann: "Deep Dive {ticker}" erneut.'
+                    ),
+                    'blocked_by': 'deep_dive_warten',
+                }
+            # KAUFEN: Trade freigegeben — weiter
+        except Exception:
+            pass  # Fehler im Gate → defensiv durchlassen (lieber kein Block als Blockade)
+
+    # ── Guard 0-DNA: Strategy DNA Hard Gate (P2.11) ───────────────────────
+    # Blockiert Strategien mit historisch katastrophaler DNA (WR<30% n≥10
+    # oder Regime-Mismatch). HALVE-Verdikt halbiert Position-Size unten.
+    _dna_size_factor = 1.0
+    try:
+        sys.path.insert(0, str(WORKSPACE / 'scripts' / 'intelligence'))
+        from strategy_dna import check_dna_gate as _check_dna_gate
+        _dna = _check_dna_gate(strategy or '', regime or '')
+        if _dna.get('verdict') == 'BLOCK':
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': f"❌ Guard 0-DNA: {_dna.get('reason')} (score={_dna.get('score')})",
+                'blocked_by': 'dna_gate',
+            }
+        if _dna.get('verdict') == 'HALVE':
+            _dna_size_factor = 0.5
+            print(f"[Guard 0-DNA] HALVE: {_dna.get('reason')} → size_factor=0.5")
+    except Exception as _e:
+        print(f"[Guard 0-DNA] check failed (non-fatal): {_e}")
+
+    # ── Guard 0d: Deep Dive Pre-Trade Gate ──────────────────────────────
+    # Implementiert die Pflichtregeln aus deepdive-protokoll.md.
+    # Verhindert "Falling Knife", "kein frischer Katalysator", "Aktie läuft
+    # gegen eigenen Sektor"-Käufe — die häufigsten Bot-Fehler.
+    try:
+        conn_gate = get_db()
+        rows_gate = conn_gate.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 126",
+            (ticker,)
+        ).fetchall()
+        conn_gate.close()
+        closes_gate = [r['close'] for r in rows_gate if r['close']]
+
+        if len(closes_gate) >= 50:
+            current_gate = entry_price or closes_gate[0]
+            ma50_gate    = sum(closes_gate[:50]) / 50
+
+            # Block 1: Aktie unter MA50 UND 3M-Downtrend > 10%
+            if current_gate < ma50_gate and len(closes_gate) >= 63:
+                trend_3m = (closes_gate[0] - closes_gate[62]) / closes_gate[62]
+                if trend_3m < -0.10:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Deep Dive Gate: Falling Knife — {ticker} unter MA50 '
+                            f'({current_gate:.2f} < {ma50_gate:.2f}) '
+                            f'UND 3M-Trend {trend_3m*100:.1f}%. '
+                            f'Führe zuerst "Deep Dive {ticker}" durch.'
+                        ),
+                        'blocked_by': 'deepdive_gate_downtrend',
+                    }
+
+            # Block 2: Aktie >40% unter 52W-Hoch ohne dokumentierten Erholungs-Katalysator
+            high_52w_gate = max(closes_gate[:min(252, len(closes_gate))])
+            dist_52w = (current_gate - high_52w_gate) / high_52w_gate
+            if dist_52w < -0.40:
+                # Prüfe ob Strategie einen frischen Katalysator hat (≤30 Tage)
+                has_catalyst = False
+                try:
+                    _strats = json.loads(
+                        (WORKSPACE / 'data' / 'strategies.json').read_text(encoding='utf-8')
+                    )
+                    if strategy in _strats:
+                        import re as _re
+                        last_upd = _strats[strategy].get('genesis', {}).get('created', '') or \
+                                   _strats[strategy].get('created_at', '')
+                        if last_upd:
+                            from datetime import timedelta
+                            upd_date = datetime.fromisoformat(str(last_upd)[:10])
+                            has_catalyst = (datetime.now(_BERLIN).replace(tzinfo=None) - upd_date).days <= 30
+                except Exception:
+                    has_catalyst = True  # Kein Block wenn Daten fehlen
+                if not has_catalyst:
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Deep Dive Gate: {ticker} ist {abs(dist_52w)*100:.0f}% '
+                            f'unter 52W-Hoch ohne frischen Katalysator (≤30 Tage). '
+                            f'Strategie {strategy}: Thesis veraltet? '
+                            f'Führe "Deep Dive {ticker}" durch und aktualisiere die Thesis.'
+                        ),
+                        'blocked_by': 'deepdive_gate_no_catalyst',
+                    }
+    except Exception:
+        pass  # Gate ist defensiv — bei Fehler lieber einlassen als blocken
+
+    # ── Guard 0e: Earnings Blackout (3 Tage vor Earnings kein Entry) ─────
+    # Warum: Earnings = binäres Event, Thesis kann perfekt sein und trotzdem
+    # -20% Gap-Down nach schlechten Zahlen. Besser: nach Earnings einsteigen.
+    # Ausnahmen: manual/paper_lab source (Victor will bewusst pre-earnings traden)
+    if source not in ('manual', 'paper_lab', 'victor', 'cli'):
+        try:
+            _events_file = WORKSPACE / 'data' / 'upcoming_events.json'
+            if _events_file.exists():
+                _events = json.loads(_events_file.read_text(encoding='utf-8'))
+                _all_events = _events.get('events', [])
+                _ticker_clean = ticker.upper().replace('.DE', '').replace('.OL', '').replace('.PA', '').replace('.L', '').replace('.AS', '').replace('.CO', '')
+
+                from datetime import timedelta as _td
+                _today = datetime.now(timezone.utc).date()
+
+                for _ev in _all_events:
+                    if _ev.get('type') != 'earnings':
+                        continue
+                    _ev_ticker = (_ev.get('ticker', '') or '').upper()
+                    if _ev_ticker != _ticker_clean and _ev_ticker not in ticker.upper():
+                        continue
+                    # Earnings gefunden — prüfe ob innerhalb 3 Tagen
+                    try:
+                        _ev_date = datetime.fromisoformat(_ev.get('date', '2000-01-01')).date()
+                        _days_until = (_ev_date - _today).days
+                        if 0 <= _days_until <= 3:
+                            return {
+                                'success': False,
+                                'trade_id': None,
+                                'message': (
+                                    f'❌ Earnings Blackout: {ticker} berichtet am {_ev.get("date")} '
+                                    f'({_days_until} Tage). Kein Entry 3 Tage vor Earnings — '
+                                    f'binäres Risiko. Nach Earnings neu bewerten.'
+                                ),
+                                'blocked_by': 'earnings_blackout',
+                            }
+                    except Exception:
+                        pass
+        except Exception:
+            pass  # Earnings-Check nicht kritisch — bei Fehler weiter
+
+    # ── Guard 0f: Regime Hard-Block ─────────────────────────────────────
+    # Lernung aus MD-Files: Bei Regime=None/UNKNOWN = 0% Win-Rate historisch.
+    # Kein Trade wenn Makro-Regime nicht klassifizierbar. Manuelle Entries
+    # bleiben erlaubt (Victor kann bewusst durchtraden).
+    if source not in ('manual', 'victor', 'cli', 'paper_lab', 'backtest'):
+        _regime_now = get_current_regime_safe()
+        if _regime_now.upper() in ('', 'UNKNOWN', 'NONE'):
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Regime Hard-Block: Makro-Regime = {_regime_now!r}. '
+                    f'Historisch 0% Win-Rate bei unklassifizierbarem Regime. '
+                    f'Warte auf klares BULL/BEAR/NEUTRAL/CRISIS Signal.'
+                ),
+                'blocked_by': 'regime_unknown',
             }
 
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
@@ -635,12 +797,22 @@ def _execute_paper_entry_inner(
     
     conn = get_db()
     
-    # ── Guard 2b: Wöchentliches Trade-Limit ─────────────────────────
+    # ── Guard 2b: Wöchentliches Trade-Limit (ATOMIC seit P0.2) ──────
     # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
     # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
+    # ATOMIC LOCK: verhindert Race wenn 2 Scanner-Jobs parallel laufen
     MAX_TRADES_PER_WEEK = 7
+    _trade_lock_fd = None
     try:
         from datetime import timedelta
+        import fcntl as _fcntl  # POSIX only (Server = Linux)
+        _lock_path = WORKSPACE / 'data' / 'trade_limit.lock'
+        _lock_path.parent.mkdir(parents=True, exist_ok=True)
+        _trade_lock_fd = open(_lock_path, 'w')
+        try:
+            _fcntl.flock(_trade_lock_fd.fileno(), _fcntl.LOCK_EX)
+        except Exception as _e:
+            print(f'[Guard 2b] flock failed (non-fatal): {_e}')
         # ISO-Woche: Montag 00:00 bis Sonntag 23:59
         today = datetime.now(timezone.utc)
         days_since_monday = today.weekday()  # 0=Mo, 6=So
@@ -651,6 +823,12 @@ def _execute_paper_entry_inner(
             (monday_str,)
         ).fetchone()[0]
         if weekly_count >= MAX_TRADES_PER_WEEK:
+            try:
+                if _trade_lock_fd:
+                    _fcntl.flock(_trade_lock_fd.fileno(), _fcntl.LOCK_UN)
+                    _trade_lock_fd.close()
+            except Exception:
+                pass
             conn.close()
             return {
                 'success': False,
@@ -662,8 +840,13 @@ def _execute_paper_entry_inner(
                 ),
                 'blocked_by': 'weekly_trade_limit',
             }
-    except Exception:
-        pass  # Limit nicht kritisch — bei Fehler weiter
+        # Lock bleibt offen bis Funktionsende → wird unten beim Insert/Return freigegeben.
+        # (Garbage-Collector schließt Datei spätestens beim Return.)
+    except ImportError:
+        # Windows-Fallback (lokales Dev): kein flock verfügbar
+        pass
+    except Exception as e:
+        print(f'[Guard 2b] non-fatal error: {e}')
 
     # ── Guard 3: Max Positionen ──────────────────────────────────────
     open_count = get_open_count(conn)
@@ -686,11 +869,13 @@ def _execute_paper_entry_inner(
             'blocked_by': 'duplicate',
         }
     
-    # ── Guard 5: Sektor-Limit ────────────────────────────────────────
+    # ── Guard 5: Sektor-Limit (Count + %) ────────────────────────────
     # Phase 21 MVP (2026-04-16): von 4 → 2 reduziert.
-    # Rationale: Korrelations-Cluster-Risiko. 3-4 Tech-Mega oder
-    # 3-4 Energy-Ticker = effektiv 1 Wette. Max 2 offene Positionen
-    # pro Sektor erzwingt Diversifikation VOR dem 30d autonomous run.
+    # Phase 21b (2026-04-18): Zusätzlich Value-%-Limit 40% — Lernung aus
+    # MD-Files: 91% Energy-Exposure im März = Klumpenrisiko. Count allein
+    # reicht nicht, wenn 2 Positionen je 4000€ = 32% schon kritisch werden.
+    FUND_TOTAL = 25000.0
+    NEW_POS_EST = 1500.0  # Default-Größe für die Forecast-Prüfung
     sector = get_sector(ticker)
     sector_count = get_sector_count(conn, sector)
     max_sector = 2  # Phase 21 MVP — vorher 4
@@ -702,6 +887,45 @@ def _execute_paper_entry_inner(
             'message': f'❌ Sektor {sector} voll ({sector_count}/{max_sector} Positionen)',
             'blocked_by': 'sector_limit',
         }
+    try:
+        sector_eur = get_sector_exposure_eur(conn, sector)
+        sector_pct_after = (sector_eur + NEW_POS_EST) / FUND_TOTAL
+        if sector_pct_after > 0.40:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Sektor-%-Limit: {sector} würde auf '
+                    f'{sector_pct_after*100:.0f}% steigen (>40% Cap). '
+                    f'Aktuell {sector_eur:.0f}€ offen. Diversifiziere.'
+                ),
+                'blocked_by': 'sector_pct_limit',
+            }
+    except Exception:
+        pass  # Expo-Check ist defensiv — bei Fehler nicht blockieren
+
+    # ── Guard 5c: Region-%-Limit (US/EU/Asia) ────────────────────────
+    # Lernung aus MD-Files: 99% US-Exposure = fatale Wette auf Dollar+Fed.
+    # Max 60% pro Region erzwingt globale Diversifikation.
+    try:
+        region = classify_region(ticker)
+        region_eur = get_region_exposure_eur(conn, region)
+        region_pct_after = (region_eur + NEW_POS_EST) / FUND_TOTAL
+        if region_pct_after > 0.60:
+            conn.close()
+            return {
+                'success': False,
+                'trade_id': None,
+                'message': (
+                    f'❌ Region-%-Limit: {region} würde auf '
+                    f'{region_pct_after*100:.0f}% steigen (>60% Cap). '
+                    f'Aktuell {region_eur:.0f}€ offen. Suche EU/Asia-Ticker.'
+                ),
+                'blocked_by': 'region_pct_limit',
+            }
+    except Exception:
+        pass
 
     # ── Guard 5b: Style-spezifische Checks ──────────────────────────
     if style_cfg:
@@ -727,6 +951,122 @@ def _execute_paper_entry_inner(
                 return {'success': False, 'trade_id': None, 'message': f'❌ {crv_reason}', 'blocked_by': 'crv_style'}
         except Exception:
             pass
+
+    # ── Guard 5d: Marginal-VaR Pre-Trade (Phase 21 Pro) ──────────────
+    # Verhindert Trades, deren Korrelations-Beitrag das Portfolio-Risiko
+    # ueberproportional erhoeht. SHARP ab Tag 1 (Victor: "geben wir das
+    # Risiko ein — sind ja Paper Trades").
+    #
+    # Block-Bedingungen (eines genuegt):
+    #   1. Neue Position wuerde Portfolio-VaR um > 35% erhoehen
+    #   2. Position-MVaR uebersteigt 25% des Total-VaR
+    try:
+        import numpy as _np
+        from risk.correlation_engine import (
+            load_current_matrix, load_price_history, compute_returns,
+        )
+        from risk.var_calculator import parametric_var, marginal_var
+
+        # P1.5 — VaR-TTL Check: Wenn Korrelations-Matrix > 24h alt, konservativ skalieren
+        corr_matrix, corr_tickers, corr_meta = load_current_matrix()
+        _matrix_age_h = float('inf')
+        try:
+            _ts = (corr_meta or {}).get('computed_at') or (corr_meta or {}).get('timestamp')
+            if _ts:
+                _matrix_dt = datetime.fromisoformat(str(_ts).replace('Z', '+00:00'))
+                if _matrix_dt.tzinfo is None:
+                    _matrix_dt = _matrix_dt.replace(tzinfo=timezone.utc)
+                _matrix_age_h = (datetime.now(timezone.utc) - _matrix_dt).total_seconds() / 3600.0
+        except Exception as _e:
+            print(f'[Guard 5d MVaR] matrix age unknown: {_e}')
+        _stale_factor = 1.0
+        if _matrix_age_h > 48:
+            print(f'[Guard 5d MVaR] CRITICAL: matrix {_matrix_age_h:.0f}h old → block trade')
+            conn.close()
+            return {
+                'success': False, 'trade_id': None,
+                'message': (
+                    f'❌ Korrelations-Matrix ist {_matrix_age_h:.0f}h alt (>48h). '
+                    f'Risk-Engine nicht verlaesslich — manueller Refresh noetig.'
+                ),
+                'blocked_by': 'risk_matrix_stale',
+            }
+        elif _matrix_age_h > 24:
+            _stale_factor = 1.20  # +20% konservativer Aufschlag
+            print(f'[Guard 5d MVaR] matrix {_matrix_age_h:.0f}h old → VaR x{_stale_factor}')
+
+        if corr_matrix.size > 0 and ticker.upper() in corr_tickers:
+            # Aktuelle offene Positionen (in der Matrix)
+            open_rows = conn.execute(
+                "SELECT ticker, COALESCE(shares,0)*COALESCE(entry_price,0) AS v "
+                "FROM paper_portfolio WHERE status='OPEN'"
+            ).fetchall()
+            open_map: dict[str, float] = {}
+            for r in open_rows:
+                tk = (r[0] or '').upper()
+                if tk in corr_tickers:
+                    open_map[tk] = open_map.get(tk, 0.0) + (r[1] or 0.0)
+
+            # Subset-Tickers: alle offenen + neuer Ticker
+            sub_tickers = sorted(set(open_map.keys()) | {ticker.upper()})
+            if len(sub_tickers) >= 2:
+                idx = [corr_tickers.index(t) for t in sub_tickers]
+                sub_corr = corr_matrix[_np.ix_(idx, idx)]
+
+                # Vols schaetzen aus 60d Returns
+                prices = load_price_history(sub_tickers, days=60)
+                rets = compute_returns(prices)
+                vols = []
+                for t in sub_tickers:
+                    rr = rets.get(t)
+                    vols.append(float(_np.std(rr, ddof=1)) if rr is not None and len(rr) >= 5 else 0.02)
+                vols = _np.array(vols)
+                cov = sub_corr * _np.outer(vols, vols)
+
+                # VaR vor Trade (ohne neue Position) — P1.5 mit stale_factor
+                w_before = _np.array([open_map.get(t, 0.0) for t in sub_tickers])
+                var_before = parametric_var(w_before, cov, confidence=0.95) * _stale_factor
+
+                # VaR nach Trade
+                w_after = w_before.copy()
+                new_idx = sub_tickers.index(ticker.upper())
+                w_after[new_idx] += float(NEW_POS_EST)
+                var_after = parametric_var(w_after, cov, confidence=0.95) * _stale_factor
+
+                # MVaR fuer neue Position
+                mvar = marginal_var(w_after, cov, new_idx, confidence=0.95) * _stale_factor
+                position_var_share = (mvar * w_after[new_idx]) / var_after if var_after > 0 else 0.0
+                var_increase = (var_after - var_before) / var_before if var_before > 0 else float('inf')
+
+                if var_before > 50.0 and var_increase > 0.35:
+                    conn.close()
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Marginal-VaR Block: Trade wuerde Portfolio-VaR '
+                            f'um {var_increase*100:.0f}% erhoehen ({var_before:.0f}€ → '
+                            f'{var_after:.0f}€). Schwelle: 35%. Korrelation zu '
+                            f'bestehenden Positionen zu hoch.'
+                        ),
+                        'blocked_by': 'marginal_var',
+                    }
+
+                if position_var_share > 0.25 and len(open_map) >= 2:
+                    conn.close()
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Marginal-VaR Block: {ticker} wuerde {position_var_share*100:.0f}% '
+                            f'des Portfolio-VaR ausmachen (>25% Cap). '
+                            f'Diversifiziere in unkorrelierten Sektor.'
+                        ),
+                        'blocked_by': 'marginal_var_concentration',
+                    }
+    except Exception as e:
+        # Defensiv: wenn Matrix fehlt, Guard durchlassen (keine Block ohne Daten)
+        print(f'[Guard 5d MVaR] skip: {e}')
 
     # ── Guard 6: Thesis-Exposure (max 30% Kapital pro These) ────────
     try:
@@ -836,6 +1176,12 @@ def _execute_paper_entry_inner(
 
     # Phase 9: Dynamic Cap aus Kelly + VIX + Sector Check (oder 1500€ Fallback)
     MAX_POSITION_EUR = phase9_cap
+    # P2.11 — DNA HALVE-Verdikt halbiert Position-Size
+    try:
+        if _dna_size_factor < 1.0:
+            shares_from_risk = max(1, int(shares_from_risk * _dna_size_factor))
+    except Exception:
+        pass
     position_eur = shares_from_risk * entry_price
     if position_eur > MAX_POSITION_EUR:
         shares_from_risk = int(MAX_POSITION_EUR / entry_price)

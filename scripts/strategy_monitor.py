@@ -17,6 +17,15 @@ Strategie-Definitionen kommen aus: data/strategies.json (Single Source of Truth)
 import sys, json, re
 from pathlib import Path
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
+
+import os as _os
+_default_ws = '/data/.openclaw/workspace'
+if not Path(_default_ws).exists():
+    _default_ws = str(Path(__file__).resolve().parent.parent)
+WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -26,6 +35,7 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 
 
 sys.path.insert(0, str(Path(__file__).parent))
+from atomic_json import atomic_write_json
 
 DATA_DIR = WS / 'data'
 MEM_DIR  = WS / 'memory'
@@ -71,7 +81,7 @@ def save_health_update(strategy_id, new_health):
     data = json.loads(STRATEGIES_PATH.read_text(encoding="utf-8"))
     if strategy_id in data:
         data[strategy_id]["health"] = new_health
-        STRATEGIES_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+        atomic_write_json(STRATEGIES_PATH, data)
 
 
 # ──────────────────────────────────────────────────────────────
@@ -262,7 +272,7 @@ def update_changelog(changes):
         return
 
     changelog = MEM_DIR / "strategy-changelog.md"
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now = datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")
 
     new_entries = f"\n\n## {now} — Automatischer Status-Check\n\n"
     for ch in changes:
@@ -285,7 +295,7 @@ def update_changelog(changes):
 # ──────────────────────────────────────────────────────────────
 
 def run_monitor():
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now = datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")
     lines = []
 
     def log(msg=""):
@@ -429,7 +439,7 @@ def run_monitor():
 
     # Ergebnis speichern
     result = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'strategies': results,
         'changes': changes,
         'emerging_themes': emerging,

@@ -16,6 +16,8 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 WS = Path(__file__).resolve().parent.parent
@@ -25,16 +27,26 @@ ANALYSIS_OUT = WS / 'memory/newswire-analysis.md'
 
 # ─── Keywords per These (für frische Google-Suche) ──────────────────────────
 THESIS_QUERIES = {
-    'S1_Iran':    'Iran Hormuz Öl Eskalation',
-    'PS1_Oil':    'Brent WTI Ölpreis OPEC',
-    'S4_Silver':  'Silber Silver Gold safe haven',
-    'S3_KI':      'Nvidia PLTR Palantir AI tech',
-    'S11_Steel':  'Stahl Zölle STLD Steel Dynamics tariff',
-    'S12_Rüstung': 'Rheinmetall Rüstung defense spending',
+    # Geopolitik & Rohstoffe
+    'S1_Iran':     'Iran Hormuz Öl Eskalation',
+    'PS1_Oil':     'Brent WTI Ölpreis OPEC crude oil',
+    'S4_Silver':   'Silber Silver Gold safe haven precious metals',
+    'S11_Steel':   'Stahl Zölle STLD Steel Dynamics tariff',
+    # Tech & KI
+    'S3_KI':       'Nvidia PLTR Palantir AI artificial intelligence earnings',
+    'S3_KI_b':     'Microsoft MSFT AI cloud earnings guidance',
+    # Rüstung & Industrials
+    'S12_Rüstung': 'defense spending NATO Rheinmetall BAE LDO',
+    # Pharma & Biotech
+    'PS_Pharma':   'Bayer BAYN pharma FDA approval drug earnings',
+    # Makro & Zölle
+    'PS_Macro':    'Trump tariff trade war Fed interest rate inflation',
+    # Airlines
+    'PS_Airlines': 'Lufthansa LHA airline travel demand earnings',
 }
 
 # Thesen mit aktivem Portfolio-Impact (für direkten Alert)
-HIGH_IMPACT_THESES = {'S1_Iran', 'PS1_Oil', 'S11_Steel', 'S12_Rüstung'}
+HIGH_IMPACT_THESES = {'S1_Iran', 'PS1_Oil', 'S11_Steel', 'S12_Rüstung', 'S3_KI', 'S3_KI_b', 'S4_Silver', 'PS_Macro', 'PS_Pharma', 'PS_Airlines'}
 
 
 def load_state() -> dict:
@@ -90,12 +102,25 @@ def send_discord(msg: str):
 def is_actionable(headlines: list[str]) -> bool:
     """Prüft ob Headlines echte Handlungssignale enthalten."""
     action_words = [
+        # Geopolitik
         'attack', 'strike', 'explosion', 'blockade', 'sanctions',
         'Angriff', 'Explosion', 'Blockade', 'Sanktionen', 'Ultimatum',
-        'deal', 'agreement', 'ceasefire', 'Waffenstillstand', 'Einigung',
-        'tariff', 'Zoll', 'spike', 'crash', 'surge', 'plunge',
-        'breakthrough', 'Durchbruch', 'Eskalation', 'escalation',
+        'ceasefire', 'Waffenstillstand', 'Einigung', 'Eskalation', 'escalation',
+        # Makro
+        'tariff', 'Zoll', 'trade war', 'Handelskrieg', 'Fed rate', 'Zinsentscheid',
+        'recession', 'Rezession', 'inflation',
+        # Marktbewegungen
+        'spike', 'crash', 'surge', 'plunge', 'rally', 'Einbruch',
         '100 Dollar', '$100', 'all-time high', 'Rekord',
+        # Tech-Katalysatoren
+        'earnings beat', 'earnings miss', 'guidance raised', 'guidance lowered',
+        'revenue beat', 'Umsatz', 'contract', 'partnership', 'acquisition',
+        'breakthrough', 'Durchbruch', 'deal', 'agreement',
+        # Pharma-Katalysatoren
+        'FDA approval', 'FDA approved', 'clinical trial', 'Phase 3', 'drug approval',
+        'Zulassung',
+        # Rüstung
+        'defense contract', 'Rüstungsauftrag', 'NATO order', 'military spending',
     ]
     text = ' '.join(headlines).lower()
     return any(w.lower() in text for w in action_words)
@@ -145,7 +170,7 @@ def main():
     )
 
     # ─── In Analysis-File schreiben ─────────────────────────────────────────
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
     entry = (
         f'\n## [{ts}] News Radar — {len(new_hits)} neue Headlines\n'
         f'{headlines_text}\n'

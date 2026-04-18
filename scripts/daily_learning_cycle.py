@@ -20,6 +20,10 @@ import sqlite3
 import json
 import sys
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+def _berlin_now() -> datetime:
+    return datetime.now(ZoneInfo('Europe/Berlin'))
 from pathlib import Path
 
 import os as _os
@@ -30,7 +34,7 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 ACCURACY_FILE = WS / 'memory/albert-accuracy.md'
 LEARNINGS_FILE = WS / 'data/trading_learnings.json'
-DAILY_LOG = WS / f"memory/{datetime.now().strftime('%Y-%m-%d')}.md"
+DAILY_LOG = WS / f"memory/{datetime.now(ZoneInfo('Europe/Berlin')).strftime('%Y-%m-%d')}.md"
 
 
 def get_db():
@@ -81,6 +85,58 @@ def run_learning():
         return None
 
 
+def sync_recommendations_to_db(learnings: dict | None) -> dict:
+    """P0.4 — Sync Learning-Recommendations in thesis_status DB-Tabelle.
+
+    Vor dieser Funktion: Lernloop schreibt SUSPEND in JSON, DB sagt aber
+    weiterhin ACTIVE → autonome Execution liest DB → trade trotzdem.
+
+    Jetzt: SUSPEND/REDUCE → degrade_thesis(); ELEVATE → set ACTIVE.
+    """
+    if not learnings:
+        return {'synced': 0, 'errors': 0, 'skipped': 'no_learnings'}
+    scores = learnings.get('strategy_scores', {})
+    if not scores:
+        return {'synced': 0, 'errors': 0, 'skipped': 'no_scores'}
+
+    synced = 0
+    errors = 0
+    actions = []
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from core.thesis_engine import degrade_thesis, set_thesis_status
+    except Exception as e:
+        print(f"  ⚠️  thesis_engine import Fehler: {e}")
+        return {'synced': 0, 'errors': 1, 'skipped': 'import_failed'}
+
+    for sid, data in scores.items():
+        rec = data.get('recommendation', 'KEEP')
+        wr = data.get('win_rate', 0)
+        pnl = data.get('total_pnl_eur', 0)
+        trades = data.get('trades', 0)
+        try:
+            if rec == 'SUSPEND':
+                reason = f"Learning: WR {wr:.0%} | PnL {pnl:+.0f}€ | {trades} trades → SUSPEND"
+                if degrade_thesis(sid, reason):
+                    actions.append(f"DEGRADED: {sid} ({reason[:60]})")
+                    synced += 1
+            elif rec == 'ELEVATE' and trades >= 5:
+                reason = f"Learning: WR {wr:.0%} | PnL {pnl:+.0f}€ | {trades} trades → ELEVATE"
+                if set_thesis_status(sid, 'ACTIVE', reason):
+                    actions.append(f"ACTIVATED: {sid}")
+                    synced += 1
+            # REDUCE / KEEP / INSUFFICIENT_DATA → kein DB-Sync nötig
+        except Exception as e:
+            print(f"  ⚠️  sync({sid}) Fehler: {type(e).__name__}: {e}")
+            errors += 1
+
+    if actions:
+        print(f"  🔄 Learning→DB Sync: {synced} updates")
+        for a in actions[:10]:
+            print(f"     {a}")
+    return {'synced': synced, 'errors': errors, 'actions': actions}
+
+
 # ── 3. ACCURACY REPORT ───────────────────────────────────────────────────────
 
 def build_accuracy_report() -> str:
@@ -99,7 +155,7 @@ def build_accuracy_report() -> str:
             SUM(CASE WHEN status='OPEN' THEN entry_price * shares ELSE 0 END) as invested,
             SUM(CASE WHEN status IN ('WIN','CLOSED','LOSS') THEN pnl_eur ELSE 0 END) as realized_pnl,
             COUNT(CASE WHEN status='WIN' THEN 1 END) as wins,
-            COUNT(CASE WHEN status='CLOSED' AND pnl_eur < 0 THEN 1 END) as losses
+            COUNT(CASE WHEN status IN ('CLOSED','LOSS') AND pnl_eur < 0 THEN 1 END) as losses
         FROM paper_portfolio
         WHERE notes NOT LIKE '%DATENFEHLER%'
     """).fetchone()
@@ -205,17 +261,126 @@ def build_accuracy_report() -> str:
 
 def append_to_daily_log(summary: str):
     """Hängt Learning-Summary an heutiges Daily-Log."""
-    entry = f"\n## {datetime.now().strftime('%H:%M')} — Auto-Learning Cycle\n\n{summary}\n"
+    entry = f"\n## {_berlin_now().strftime('%H:%M')} — Auto-Learning Cycle\n\n{summary}\n"
     if DAILY_LOG.exists():
         existing = DAILY_LOG.read_text(encoding="utf-8")
         DAILY_LOG.write_text(existing + entry, encoding='utf-8')
     # Wenn kein Daily-Log existiert → nicht anlegen (Tagesabschluss macht das)
 
 
+# ── 5b. CONVICTION WEIGHT RECALIBRATION (Sonntags) ──────────────────────────
+
+def recalculate_conviction_weights():
+    """
+    Berechnet adaptive Conviction-Gewichte aus Trade-Ergebnissen.
+    Läuft nur Sonntags. Korreliert Faktor-Scores mit Win/Loss.
+
+    Schreibt data/conviction_weights.json mit:
+      weights: {thesis: X, technical: Y, risk_reward: Z, market_context: W}
+      computed_at: ISO timestamp
+      trade_count: N
+    """
+    if _berlin_now().weekday() != 6:  # Nur Sonntag (Berliner Zeit)
+        print("  ℹ️  Gewichte-Rekalibrierung nur Sonntags")
+        return None
+
+    conn = get_db()
+    try:
+        trades = conn.execute("""
+            SELECT id, strategy, conviction, pnl_eur, status
+            FROM paper_portfolio
+            WHERE status IN ('WIN', 'LOSS', 'CLOSED')
+              AND conviction IS NOT NULL
+              AND conviction > 0
+            ORDER BY exit_date DESC
+            LIMIT 50
+        """).fetchall()
+    except Exception as e:
+        print(f"  ⚠️  Gewichte-Rekalibrierung DB-Fehler: {e}")
+        conn.close()
+        return None
+
+    conn.close()
+
+    if len(trades) < 20:
+        print(f"  ℹ️  Zu wenig Trades ({len(trades)}/20 min) für Gewichte-Rekalibrierung")
+        return None
+
+    # Faktor-Scores aus conviction_scorer nachladen
+    factor_wins = {'thesis': 0, 'technical': 0, 'risk_reward': 0, 'market_context': 0}
+    factor_total = {'thesis': 0, 'technical': 0, 'risk_reward': 0, 'market_context': 0}
+
+    try:
+        sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
+        from conviction_scorer import calculate_conviction
+
+        for t in trades:
+            is_win = (t['pnl_eur'] or 0) > 0
+            # Re-score mit aktuellen Daten (approximation)
+            try:
+                result = calculate_conviction(
+                    ticker='_HISTORICAL',
+                    strategy=t['strategy'] or 'DEFAULT',
+                )
+                factors = result.get('factors', {})
+                for key, factor_key in [
+                    ('thesis', 'thesis_strength'),
+                    ('technical', 'technical_alignment'),
+                    ('risk_reward', 'risk_reward_quality'),
+                    ('market_context', 'market_context'),
+                ]:
+                    val = factors.get(factor_key, 0)
+                    if val > 0:
+                        factor_total[key] += 1
+                        if is_win:
+                            factor_wins[key] += 1
+            except Exception:
+                pass
+    except Exception as e:
+        print(f"  ⚠️  Faktor-Scoring Fehler: {e}")
+        return None
+
+    # Gewichte berechnen: höhere Korrelation mit Wins = höheres Gewicht
+    raw_weights = {}
+    for key in factor_total:
+        if factor_total[key] > 0:
+            raw_weights[key] = factor_wins[key] / factor_total[key]
+        else:
+            raw_weights[key] = 0.25  # Default gleichverteilt
+
+    # Normalisieren auf Summe 100 mit Constraints [10, 50]
+    total_raw = sum(raw_weights.values()) or 1
+    weights = {}
+    for key in raw_weights:
+        w = (raw_weights[key] / total_raw) * 100
+        weights[key] = max(10, min(50, round(w)))
+
+    # Re-normalisieren falls Constraints die Summe verzerrt haben
+    w_sum = sum(weights.values())
+    if w_sum != 100:
+        diff = 100 - w_sum
+        # Anpassung am größten Gewicht
+        max_key = max(weights, key=weights.get)
+        weights[max_key] += diff
+
+    output = {
+        'weights': weights,
+        'computed_at': datetime.now(timezone.utc).isoformat(),
+        'trade_count': len(trades),
+        'raw_correlations': {k: round(v, 3) for k, v in raw_weights.items()},
+    }
+
+    weights_file = WS / 'data' / 'conviction_weights.json'
+    weights_file.write_text(json.dumps(output, indent=2, ensure_ascii=False))
+
+    print(f"  ✅ Conviction-Gewichte rekalibriert: {weights} ({len(trades)} Trades)")
+    return output
+
+
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 
 def run_full():
-    print(f"[Daily Learning Cycle] Start — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"[Daily Learning Cycle] Start — {_berlin_now().strftime('%Y-%m-%d %H:%M')}")
 
     print("\n[1/5] Alpha Decay Check...")
     decay_alerts = run_alpha_decay()
@@ -225,6 +390,10 @@ def run_full():
 
     print("\n[3/5] Learning Engine (Strategy Scores)...")
     learnings = run_learning()
+
+    print("\n[3b/5] Learning → DB Sync (P0.4)...")
+    sync_result = sync_recommendations_to_db(learnings)
+    print(f"  ✅ DB Sync: {sync_result.get('synced', 0)} updates, {sync_result.get('errors', 0)} errors")
 
     print("\n[4/5] Accuracy Report generieren...")
     accuracy = build_accuracy_report()
@@ -242,9 +411,12 @@ def run_full():
         f"- albert-accuracy.md automatisch aktualisiert"
     )
 
-    print("\n[5/5] Feature Importance (weekly, Freitags)...")
+    print("\n[5/7] Conviction-Gewichte Rekalibrierung (Sonntags)...")
+    cw_result = recalculate_conviction_weights()
+
+    print("\n[6/7] Feature Importance (weekly, Freitags)...")
     fi_result = {}
-    if datetime.now().weekday() == 4:  # Freitag
+    if _berlin_now().weekday() == 4:  # Freitag (Berliner Zeit)
         try:
             from feature_importance import run_analysis, print_report, export_feature_weights
             fi_result = run_analysis(quick=True)
@@ -255,7 +427,7 @@ def run_full():
     else:
         print("  ℹ️  Wöchentlich (Freitag) — heute kein Run")
 
-    print("\n[6/7] Daily Log updaten...")
+    print("\n[7/7] Daily Log updaten...")
     fi_note = f"\n- Feature Importance: {len(fi_result.get('composite_scores',{}))} Features analysiert" if fi_result else ""
     summary = (
         f"Learning Cycle abgeschlossen:\n"
@@ -267,31 +439,87 @@ def run_full():
     append_to_daily_log(summary)
     print(f"  ✅ Daily Log aktualisiert")
 
-    print("\n[7/7] State Snapshot regenerieren...")
+    print("\n[8/8] State Snapshot regenerieren...")
     try:
-        import sqlite3 as _sqlite3
-        _db = _sqlite3.connect(str(WS / 'data' / 'trading.db'))
-        _positions = _db.execute(
-            'SELECT ticker, entry_price, stop_price, target_price, strategy, conviction, entry_date FROM paper_portfolio WHERE status="OPEN" ORDER BY entry_date'
+        import sqlite3 as _sql
+        _db = WS / 'data/trading.db'
+        _snap_path = WS / 'memory/state-snapshot.md'
+        _conn = _sql.connect(str(_db))
+        _conn.row_factory = _sql.Row
+        _now_str = _berlin_now().strftime('%Y-%m-%d %H:%M')
+
+        # Offene Positionen
+        _positions = _conn.execute(
+            "SELECT ticker, strategy, entry_price, shares, stop_price, target_price, "
+            "entry_date, conviction FROM paper_portfolio WHERE status='OPEN' ORDER BY entry_date DESC"
         ).fetchall()
-        _fund = dict(_db.execute('SELECT key, value FROM paper_fund').fetchall())
-        _db.close()
-        _now = datetime.now().strftime('%Y-%m-%d %H:%M UTC')
+
+        # Cash
+        _cash_row = _conn.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+        _cash = _cash_row[0] if _cash_row else 0.0
+
+        # Letzte 5 abgeschlossene Trades
+        _closed = _conn.execute(
+            "SELECT ticker, strategy, entry_price, close_price AS exit_price, pnl_eur, "
+            "close_date AS exit_date "
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') ORDER BY close_date DESC LIMIT 5"
+        ).fetchall()
+
+        # Aktive Strategien aus strategies.json
+        _strats_file = WS / 'data/strategies.json'
+        _active_strats = []
+        try:
+            _strats = json.loads(_strats_file.read_text())
+            _active_strats = [k for k, v in _strats.items()
+                              if isinstance(v, dict) and v.get('status') not in ('inactive', 'blocked')]
+        except Exception:
+            pass
+
+        _conn.close()
+
+        # Snapshot schreiben
         _lines = [
-            '# State Snapshot — Trading Bot',
-            f'**Zuletzt aktualisiert:** {_now}',
-            f'**Positionen:** {len(_positions)} | **Cash:** {float(_fund.get("current_cash", 0)):.0f}EUR',
-            '', '---', '',
-            f'## Portfolio ({len(_positions)} Positionen)', '',
-            '| Ticker | Entry | Stop | Target | Strategie | Conviction | Seit |',
-            '|---|---|---|---|---|---|---|',
+            f"# State Snapshot — Zuletzt aktualisiert: {_now_str}\n",
+            f"*Auto-generiert durch daily_learning_cycle.py [7/7]*\n\n",
+            f"## Cash\n",
+            f"**Verfügbares Cash:** {_cash:,.0f}€\n\n",
+            f"## Offene Positionen ({len(_positions)})\n",
         ]
-        for p in _positions:
-            _lines.append(f'| {p[0]} | {p[1]:.2f} | {p[2] or "—"} | {p[3] or "—"} | {p[4]} | {p[5] or "—"} | {str(p[6])[:10]} |')
-        (WS / 'memory' / 'state-snapshot.md').write_text('\n'.join(_lines), encoding='utf-8')
-        print("  state-snapshot.md aktualisiert")
-    except Exception as e:
-        print(f"  Snapshot-Fehler (nicht kritisch): {e}")
+        if _positions:
+            _lines.append("| Ticker | Strategie | Entry | Stop | Target | Conviction | Datum |\n")
+            _lines.append("|--------|-----------|-------|------|--------|------------|-------|\n")
+            for _p in _positions:
+                _lines.append(
+                    f"| {_p['ticker']} | {_p['strategy']} | {_p['entry_price']:.2f}€ "
+                    f"| {_p['stop_price']:.2f}€ | {_p['target_price']:.2f}€ "
+                    f"| {_p['conviction'] or '—'} | {str(_p['entry_date'])[:10]} |\n"
+                )
+        else:
+            _lines.append("*Keine offenen Positionen*\n")
+
+        _lines.append(f"\n## Letzte 5 geschlossene Trades\n")
+        if _closed:
+            _lines.append("| Ticker | Strategie | Entry | Exit | PnL | Datum |\n")
+            _lines.append("|--------|-----------|-------|------|-----|-------|\n")
+            for _c in _closed:
+                _pnl = _c['pnl_eur'] or 0
+                _pnl_str = f"+{_pnl:.0f}€" if _pnl >= 0 else f"{_pnl:.0f}€"
+                _lines.append(
+                    f"| {_c['ticker']} | {_c['strategy']} | {_c['entry_price']:.2f}€ "
+                    f"| {(_c['exit_price'] or 0):.2f}€ | {_pnl_str} "
+                    f"| {str(_c['exit_date'])[:10]} |\n"
+                )
+        else:
+            _lines.append("*Keine abgeschlossenen Trades*\n")
+
+        _lines.append(f"\n## Aktive Strategien ({len(_active_strats)})\n")
+        for _s in _active_strats:
+            _lines.append(f"- {_s}\n")
+
+        _snap_path.write_text(''.join(_lines), encoding='utf-8')
+        print(f"  ✅ memory/state-snapshot.md aktualisiert ({len(_positions)} Positionen, {_cash:,.0f}€ Cash)")
+    except Exception as _e:
+        print(f"  ⚠️  State Snapshot Fehler (nicht kritisch): {_e}")
 
     print(f"\n✅ Learning Cycle fertig.")
     return summary

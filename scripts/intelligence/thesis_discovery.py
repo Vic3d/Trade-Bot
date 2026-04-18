@@ -18,6 +18,15 @@ import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_DE_DAYS = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+
+def _berlin_now() -> datetime:
+    return datetime.now(ZoneInfo('Europe/Berlin'))
+
+def _de_weekday(dt: datetime) -> str:
+    return _DE_DAYS[dt.weekday()]
 
 _default_ws = '/data/.openclaw/workspace'
 if not Path(_default_ws).exists():
@@ -25,6 +34,8 @@ if not Path(_default_ws).exists():
     _default_ws = str(Path(__file__).resolve().parent.parent.parent)
 WS = Path(os.getenv('TRADEMIND_HOME', _default_ws))
 sys.path.insert(0, str(WS / 'scripts'))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from atomic_json import atomic_write_json
 
 DATA = WS / 'data'
 DB = DATA / 'trading.db'
@@ -242,6 +253,27 @@ def discover_theses_with_claude(headlines: list[dict], existing: list[dict]) -> 
 
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
+    # P2.10 — Aktuelles Regime + Velocity in Prompt einspeisen
+    _regime_block = ''
+    try:
+        import json as _json, os as _os
+        _here = _os.path.dirname(_os.path.abspath(__file__))
+        _reg_path = _os.path.join(_here, '..', '..', 'data', 'current_regime.json')
+        if _os.path.exists(_reg_path):
+            with open(_reg_path, encoding='utf-8') as _rf:
+                _rd = _json.load(_rf)
+            _regime_block = (
+                f"\n=== AKTUELLES REGIME (HMM/Macro Brain) ===\n"
+                f"Regime: {_rd.get('regime','?')} | Velocity: {_rd.get('velocity','?')}\n"
+                f"VIX: {(_rd.get('factors') or {}).get('vix','?')} | "
+                f"DXY: {(_rd.get('factors') or {}).get('dxy','?')} | "
+                f"US10Y: {(_rd.get('factors') or {}).get('us10y','?')} | "
+                f"SP500 vs MA200: {(_rd.get('factors') or {}).get('sp500_vs_ma200','?')}\n"
+                f"→ Thesen MÜSSEN regime-kompatibel sein. RISK_OFF/BEAR = nur defensive/short-Thesen.\n"
+            )
+    except Exception as _e:
+        print(f'[thesis_discovery] regime injection failed: {_e}', flush=True)
+
     # Determine next available thesis ID
     # Count existing PS IDs and pick the next one
     existing_ps_ids = []
@@ -261,7 +293,7 @@ def discover_theses_with_claude(headlines: list[dict], existing: list[dict]) -> 
     )
 
     user_prompt = f"""Heute ist {today}.
-
+{_regime_block}
 === AKTUELLE MAKRO-NEWS HEADLINES ({len(headlines)} Stück) ===
 {headlines_text}
 
@@ -381,10 +413,7 @@ def _auto_activate_thesis(thesis: dict) -> bool:
             },
         }
         strategies[thesis_id] = new_entry
-        STRATEGIES_JSON.write_text(
-            json.dumps(strategies, indent=2, ensure_ascii=False),
-            encoding='utf-8',
-        )
+        atomic_write_json(STRATEGIES_JSON, strategies)
         print(f'[thesis_discovery] {thesis_id} written to strategies.json', flush=True)
     except Exception as e:
         print(f'[thesis_discovery] strategies.json write error: {e}', flush=True)
@@ -503,9 +532,11 @@ def send_discovery_report(theses: list[dict], headlines_count: int) -> bool:
     watching       = [t for t in theses if 50 <= t.get('confidence', 0) <= 64]
     proposed_only  = [t for t in theses if t.get('confidence', 0) < 50]
 
-    today = datetime.now(timezone.utc).strftime('%d.%m.%Y')
+    _now_berlin = _berlin_now()
+    today = _now_berlin.strftime('%d.%m.%Y')
+    weekday_name = _de_weekday(_now_berlin)
     lines = [
-        f'🔍 **Albert | Wöchentliche Thesen-Analyse** ({today}, Sonntag)',
+        f'🔍 **Albert | Wöchentliche Thesen-Analyse** ({today}, {weekday_name})',
         f'Analysierte Headlines: **{headlines_count}**',
         '',
     ]

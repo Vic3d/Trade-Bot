@@ -23,6 +23,9 @@ Albert 🎩 | v1.0 | 29.03.2026
 import sqlite3, json, sys, urllib.request, time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -115,7 +118,7 @@ def close_position(conn, row_id: int, price: float, exit_type: str,
         'WIN' if pnl > 0 else ('LOSS' if pnl < 0 else 'CLOSED'),
         round(price, 2),
         round(pnl, 2), round(pnl_pct, 2),
-        f' [REVIEW_EXIT:{exit_type} {datetime.now().date()}]',
+        f' [REVIEW_EXIT:{exit_type} {datetime.now(_BERLIN).date()}]',
         exit_type, row_id
     ))
     conn.execute("UPDATE paper_fund SET value = value + ? WHERE key='cash'",
@@ -158,7 +161,7 @@ def review_position(t: dict, data: dict, vix: float) -> dict:
 
     try:
         entry_dt  = datetime.fromisoformat(str(t['entry_date'])[:19])
-        hold_days = (datetime.now() - entry_dt).days
+        hold_days = (datetime.now(_BERLIN).replace(tzinfo=None) - entry_dt).days
     except Exception:
         hold_days = 0
 
@@ -328,6 +331,6 @@ def print_review(actions: list):
 
 
 if __name__ == '__main__':
-    print(f"🔍 Active Position Review läuft ({datetime.now().strftime('%H:%M')})...")
+    print(f"🔍 Active Position Review läuft ({datetime.now(_BERLIN).strftime('%H:%M')})...")
     actions = run_review()
     print_review(actions)

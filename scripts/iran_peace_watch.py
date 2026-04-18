@@ -6,6 +6,8 @@ Läuft alle 30 Min. Sendet SOFORT wenn Peace-Signal gefunden.
 import urllib.request, urllib.parse, re, json, time, hashlib
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -76,7 +78,7 @@ def run():
     state = load_state()
     new_signals = []
     
-    print(f'Iran Peace Watch — {datetime.now().strftime("%Y-%m-%d %H:%M")}')
+    print(f'Iran Peace Watch — {datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")}')
     
     # 1. Google News
     for query in QUERIES:

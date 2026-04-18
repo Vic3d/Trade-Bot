@@ -27,6 +27,9 @@ STRATEGIES_JSON = WORKSPACE / 'data/strategies.json'
 LEARNINGS_JSON  = WORKSPACE / 'data/trading_learnings.json'
 WEEKLY_REPORT   = WORKSPACE / 'memory/paper-trading-weekly.md'
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
+
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -41,7 +44,7 @@ def load_closed_swing_trades():
         SELECT id, ticker, strategy, entry_price, close_price, shares, fees,
                pnl_eur, pnl_pct, entry_date, close_date, notes
         FROM paper_portfolio
-        WHERE status='CLOSED'
+        WHERE status IN ('CLOSED','WIN','LOSS')
           AND entry_price IS NOT NULL
           AND close_price IS NOT NULL
           AND pnl_eur IS NOT NULL
@@ -216,7 +219,7 @@ def analyze_styles() -> dict:
             "SUM(CASE WHEN pnl_eur > 0 THEN 1 ELSE 0 END) as wins, "
             "COALESCE(SUM(pnl_eur), 0) as total_pnl, "
             "COALESCE(AVG(pnl_pct), 0) as avg_pct "
-            "FROM paper_portfolio WHERE status='CLOSED' AND style=?", (style,)).fetchone()
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') AND style=?", (style,)).fetchone()
         dt = conn.execute(
             "SELECT COUNT(*) as n, "
             "SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) as wins, "
@@ -348,14 +351,38 @@ def detect_patterns() -> dict:
     }
 
 
-def get_recommendation(win_rate: float, trades: int) -> str:
-    """Gibt Empfehlung basierend auf Win-Rate und Trade-Anzahl."""
+def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0) -> str:
+    """
+    Gibt Empfehlung basierend auf Win-Rate, Anzahl Trades UND realem P&L.
+
+    BUG FIX: Vorher nur Win-Rate → DT2 (41% WR, -579€) und DT4 (40% WR, -858€)
+    bekamen 'KEEP' obwohl sie dauerhaft Geld verlieren. Jetzt wird P&L mitgewichtet.
+
+    Logik:
+    - SUSPEND: Win-Rate < 30% ODER (Win-Rate < 45% UND P&L negativ mit 15+ Trades)
+    - REDUCE:  Win-Rate 30-45% UND P&L negativ (genug Daten aber kein Edge)
+    - ELEVATE: Win-Rate > 60% UND P&L positiv
+    - KEEP:    Alles dazwischen
+    """
     if trades < 10:
         return 'INSUFFICIENT_DATA'
+
+    # Harte SUSPEND-Bedingungen
     if win_rate < 0.30:
         return 'SUSPEND'
-    if win_rate > 0.60:
+
+    # P&L-gewichtete SUSPEND: Strategie verliert Geld trotz moderater Win-Rate
+    if trades >= 15 and win_rate < 0.45 and total_pnl_eur < -200:
+        return 'SUSPEND'
+
+    # REDUCE: Positiver Ansatz aber negatives Ergebnis — Conviction runter
+    if trades >= 10 and total_pnl_eur < -100 and win_rate < 0.50:
+        return 'REDUCE'
+
+    # ELEVATE: Nur wenn sowohl Win-Rate als auch P&L gut
+    if win_rate > 0.60 and total_pnl_eur > 0:
         return 'ELEVATE'
+
     return 'KEEP'
 
 
@@ -376,7 +403,11 @@ def update_strategy_scores() -> list:
     strategies = json.loads(STRATEGIES_JSON.read_text(encoding="utf-8"))
 
     for strat_id, analysis in strategy_analysis.items():
-        rec = get_recommendation(analysis['win_rate'], analysis['trades'])
+        rec = get_recommendation(
+            analysis['win_rate'],
+            analysis['trades'],
+            analysis.get('total_pnl_eur', 0.0)  # P&L jetzt miteinbezogen
+        )
         if rec == 'INSUFFICIENT_DATA':
             continue
 
@@ -387,48 +418,54 @@ def update_strategy_scores() -> list:
         genesis = strat.get('genesis', {})
         current_conv = genesis.get('conviction_current', genesis.get('conviction_at_start', 3))
 
-        if rec == 'SUSPEND' and current_conv > 1:
+        if rec in ('SUSPEND', 'REDUCE') and current_conv > 1:
             new_conv = max(1, current_conv - 1)
             genesis['conviction_current'] = new_conv
             genesis['auto_adjusted'] = True
             genesis['last_updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            pnl_val = analysis.get('total_pnl_eur', 0)
+            reason = (
+                f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades < 30%'
+                if rec == 'SUSPEND' and analysis['win_rate'] < 0.30
+                else f'Win-Rate {analysis["win_rate"]:.0%} + P&L {pnl_val:+.0f}€ — kein Edge'
+            )
             genesis.setdefault('feedback_history', []).append({
                 'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
                 'action': 'conviction_decreased',
-                'reason': f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades < 30%',
+                'reason': reason,
                 'old_conviction': current_conv,
-                'new_conviction': new_conv
+                'new_conviction': new_conv,
+                'total_pnl_eur': round(pnl_val, 2),
+                'win_rate': round(analysis['win_rate'], 3),
             })
             strategies[strat_id]['genesis'] = genesis
-            changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
-            # Phase 7.12: Loop schliessen — bei conviction=1 + weiterhin SUSPEND -> hard SUSPENDED
-            if new_conv == 1 and strategies[strat_id].get('status') != 'SUSPENDED':
-                strategies[strat_id]['status'] = 'SUSPENDED'
-                strategies[strat_id]['suspended_reason'] = f"Auto: WR {analysis['win_rate']:.0%} / {analysis['trades']} trades"
-                strategies[strat_id]['suspended_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-                changes.append(f"{strat_id}: status -> SUSPENDED (auto, Loop geschlossen)")
+            changes.append(
+                f"{strat_id}: conviction {current_conv} → {new_conv} "
+                f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, {rec})"
+            )
 
         elif rec == 'ELEVATE' and current_conv < 5:
             new_conv = min(5, current_conv + 1)
             genesis['conviction_current'] = new_conv
             genesis['auto_adjusted'] = True
             genesis['last_updated'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            pnl_val = analysis.get('total_pnl_eur', 0)
             genesis.setdefault('feedback_history', []).append({
                 'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
                 'action': 'conviction_increased',
-                'reason': f'Win-Rate {analysis["win_rate"]:.0%} nach {analysis["trades"]} Trades > 60%',
+                'reason': f'Win-Rate {analysis["win_rate"]:.0%} + P&L {pnl_val:+.0f}€ > 60% WR',
                 'old_conviction': current_conv,
-                'new_conviction': new_conv
+                'new_conviction': new_conv,
+                'total_pnl_eur': round(pnl_val, 2),
+                'win_rate': round(analysis['win_rate'], 3),
             })
             strategies[strat_id]['genesis'] = genesis
-            changes.append(f"{strat_id}: conviction {current_conv} → {new_conv} (Win-Rate {analysis['win_rate']:.0%})")
+            changes.append(
+                f"{strat_id}: conviction {current_conv} → {new_conv} "
+                f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, ELEVATE)"
+            )
 
-    # Phase 7.7: atomic write statt write_text (Crash-Schutz)
-    try:
-        from atomic_json import atomic_write_json
-        atomic_write_json(STRATEGIES_JSON, strategies)
-    except Exception:
-        STRATEGIES_JSON.write_text(json.dumps(strategies, indent=2, ensure_ascii=False))
+    atomic_write_json(STRATEGIES_JSON, strategies)
     return changes
 
 
@@ -469,7 +506,11 @@ def close_feedback_loop() -> dict:
     active_rules = []
 
     for strat_id, analysis in strategy_analysis.items():
-        rec = get_recommendation(analysis['win_rate'], analysis['trades'])
+        rec = get_recommendation(
+            analysis['win_rate'],
+            analysis['trades'],
+            analysis.get('total_pnl_eur', 0.0)
+        )
         strategy_scores[strat_id] = {
             'win_rate': analysis['win_rate'],
             'avg_pnl_pct': analysis['avg_pnl_pct'],
@@ -481,9 +522,11 @@ def close_feedback_loop() -> dict:
         }
 
         # Active Rules generieren
-        if rec == 'SUSPEND':
+        if rec in ('SUSPEND', 'REDUCE'):
+            pnl_str = f", PnL {analysis.get('total_pnl_eur', 0):+.0f}€" if analysis.get('total_pnl_eur') else ''
             active_rules.append(
-                f"{strat_id} suspended: {analysis['win_rate']:.0%} win rate after {analysis['trades']} trades"
+                f"{strat_id} {rec.lower()}: {analysis['win_rate']:.0%} win rate"
+                f"{pnl_str} after {analysis['trades']} trades"
             )
         elif rec == 'ELEVATE':
             active_rules.append(
@@ -506,7 +549,7 @@ def close_feedback_loop() -> dict:
         'confidence_calibration': conf_calib
     }
 
-    LEARNINGS_JSON.write_text(json.dumps(learnings, indent=2, ensure_ascii=False))
+    atomic_write_json(LEARNINGS_JSON, learnings)
     print(f"  ✅ trading_learnings.json geschrieben ({len(strategy_scores)} Strategien, {len(active_rules)} Regeln)")
     return learnings
 
@@ -712,6 +755,54 @@ def generate_weekly_report():
     return '\n'.join(lines)
 
 
+def validate_backtest_vs_live() -> dict:
+    """P1.6 — Backtest WR vs Live WR vergleichen, Downgrade-Flag setzen.
+
+    Wenn live-WR > 15pp schlechter als backtest-WR → downgrade=True
+    Conviction-Scorer reduziert Bonus dann um -5pt.
+    """
+    bt_file = WORKSPACE / 'data' / 'backtest_results.json'
+    live_file = LEARNINGS_JSON
+    out_file = WORKSPACE / 'data' / 'backtest_validation_status.json'
+    if not bt_file.exists() or not live_file.exists():
+        return {}
+    try:
+        bt = json.loads(bt_file.read_text(encoding='utf-8'))
+        live = json.loads(live_file.read_text(encoding='utf-8'))
+    except Exception as e:
+        print(f"  ⚠️  Backtest-Validation parse error: {e}")
+        return {}
+
+    live_scores = live.get('strategy_scores', {})
+    out: dict = {}
+    for sid, bt_entry in bt.items():
+        if isinstance(bt_entry, dict):
+            bt_orig = bt_entry.get('original', bt_entry)
+            bt_wr = bt_orig.get('wr', bt_orig.get('win_rate'))
+        else:
+            continue
+        live_entry = live_scores.get(sid, {})
+        live_wr = live_entry.get('win_rate')
+        live_trades = live_entry.get('trades', 0)
+        if bt_wr is None or live_wr is None or live_trades < 5:
+            continue
+        gap = live_wr - bt_wr  # negativ = live schlechter
+        downgrade = gap < -0.15
+        out[sid] = {
+            'backtest_wr': round(bt_wr, 3),
+            'live_wr': round(live_wr, 3),
+            'gap': round(gap, 3),
+            'live_trades': live_trades,
+            'downgrade': downgrade,
+            'updated_at': datetime.now(timezone.utc).isoformat(),
+        }
+    try:
+        atomic_write_json(out_file, out)
+    except Exception as e:
+        print(f"  ⚠️  Backtest-Validation write error: {e}")
+    return out
+
+
 def run_all():
     """Vollständige Analyse: Learnings + Strategy Score Update."""
     print("[Paper Learning Engine] Start...")
@@ -726,6 +817,17 @@ def run_all():
             print(f"  → {c}")
     else:
         print("  Keine Score-Änderungen (zu wenig Daten oder Scores bereits aktuell)")
+
+    print("\n[2b/3] Backtest-Validation (P1.6)")
+    val = validate_backtest_vs_live()
+    if val:
+        downgraded = [s for s, v in val.items() if v.get('downgrade')]
+        print(f"  ✅ Validiert: {len(val)} Strategien, {len(downgraded)} downgraded")
+        for sid in downgraded[:5]:
+            v = val[sid]
+            print(f"     {sid}: bt={v['backtest_wr']:.0%} live={v['live_wr']:.0%} (gap {v['gap']:+.0%})")
+    else:
+        print("  ℹ️  Keine Backtest-Validation möglich")
 
     print("\n[3/3] Strategie-Übersicht:")
     for strat_id, s in sorted(learnings['strategy_scores'].items()):

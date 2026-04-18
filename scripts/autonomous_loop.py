@@ -12,6 +12,8 @@ Kette:
 """
 
 import sqlite3, json, datetime, sys, os, urllib.request
+import zoneinfo as _zi
+_BERLIN = _zi.ZoneInfo('Europe/Berlin')
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 DB = 'data/trading.db'
@@ -35,7 +37,7 @@ def load_rotation_multiplier() -> dict:
         state = json.loads(open(_path).read())
         # Staleness-Check: älter als 12h → ignorieren
         ts = datetime.datetime.fromisoformat(state.get('timestamp', '2000-01-01'))
-        if (datetime.datetime.now() - ts).total_seconds() > 43200:
+        if (datetime.datetime.now(_BERLIN) - ts.replace(tzinfo=_BERLIN)).total_seconds() > 43200:
             return {}
         return state.get('rotation_multiplier', {})
     except Exception:
@@ -159,7 +161,7 @@ def open_trade(ticker, strategy, sector, cur_price, atr, reasons, direction, hea
          status, fees, notes, style, conviction, sector)
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
-        ticker, strategy, cur_price, datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+        ticker, strategy, cur_price, datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
         shares, stop, target, 'OPEN', fees,
         f"AUTO: {headline[:100]}",
         'swing', 65, sector
@@ -175,7 +177,7 @@ def open_trade(ticker, strategy, sector, cur_price, atr, reasons, direction, hea
 
 def log_decision(ticker, decision, score, reasons, headline, trade_details=None):
     """Entscheidung in entscheidungs-log.md schreiben"""
-    today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    today = datetime.datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
     entry = f"""
 ## {today} — AUTO: {decision} {ticker}
 **Entscheidung:** {decision} für {ticker} (Score: {score}/100)
@@ -192,7 +194,7 @@ def log_decision(ticker, decision, score, reasons, headline, trade_details=None)
 def run_autonomous_loop(radar_signals=None):
     """Hauptschleife: Signale verarbeiten → Entscheidungen treffen"""
     print(f"\n{'='*65}")
-    print(f"🤖 AUTONOMOUS LOOP — {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"🤖 AUTONOMOUS LOOP — {datetime.datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*65}")
 
     # Cash-Sanity-Check
@@ -213,7 +215,7 @@ def run_autonomous_loop(radar_signals=None):
         conn = sqlite3.connect(DB)
         c = conn.cursor()
         # Letzte 12h aus global_radar
-        cutoff = (datetime.datetime.now() - datetime.timedelta(hours=12)).isoformat()
+        cutoff = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=12)).isoformat()
         c.execute("""
             SELECT headline, sector, tickers, direction, confidence
             FROM global_radar WHERE scanned_at > ? AND confidence='hoch'
@@ -400,7 +402,7 @@ def close_trade_with_lesson(trade_id, ticker, entry, close_price, reason_close, 
     c.execute("""UPDATE paper_portfolio
         SET status='CLOSED', close_price=?, close_date=?, pnl_eur=?, pnl_pct=?
         WHERE id=?
-    """, (close_price, datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'), pnl, pnl_pct, trade_id))
+    """, (close_price, datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S'), pnl, pnl_pct, trade_id))
 
     # Cash zurückbuchen
     c.execute("UPDATE paper_fund SET value = value + ? WHERE key='current_cash'",
@@ -425,7 +427,7 @@ def close_trade_with_lesson(trade_id, ticker, entry, close_price, reason_close, 
     # Vollständige Lektion in entscheidungs-log
     log_path = 'memory/entscheidungs-log.md'
     log_entry = f"""
-## {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')} — ABSCHLUSS {outcome}: {ticker}
+## {datetime.datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')} — ABSCHLUSS {outcome}: {ticker}
 **Ergebnis:** {pnl:+.2f}€ ({pnl_pct:+.1f}%) | Exit-Grund: {reason_close}
 **Original-Signal:** {original_signal[:120]}
 **Lesson:** {lesson}
@@ -479,7 +481,7 @@ def check_and_close_positions():
 def run_full_cycle():
     """Kompletter autonomer Zyklus: Exit-Check → Radar → Entry"""
     print(f"\n{'='*65}")
-    print(f"🔄 FULL CYCLE — {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"🔄 FULL CYCLE — {datetime.datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*65}")
 
     # 1. Erst Exit-Check (Stops + Targets)

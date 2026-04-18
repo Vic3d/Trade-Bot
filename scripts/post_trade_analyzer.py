@@ -5,6 +5,9 @@ Analysiert neue CLOSED Trades, erkennt Patterns, generiert Berichte.
 """
 import sqlite3, re, os, sys
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 DB_DEFAULT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           'data', 'trading.db')
@@ -246,7 +249,7 @@ def detect_patterns(db_path=None, days=14):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
-    cutoff = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
+    cutoff = (datetime.now(_BERLIN) - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
     patterns = []
 
     try:
@@ -333,8 +336,8 @@ def generate_summary(db_path=None, days=7):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
-    cutoff = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
-    today = datetime.now().strftime('%Y-%m-%d')
+    cutoff = (datetime.now(_BERLIN) - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
+    today = datetime.now(_BERLIN).strftime('%Y-%m-%d')
 
     try:
         # Gesamtstatistik
@@ -441,7 +444,7 @@ def generate_summary(db_path=None, days=7):
     else:
         lines.append(f"\n✅ Keine kritischen Patterns erkannt.")
 
-    lines.append(f"\n_Generiert: {datetime.now().strftime('%Y-%m-%d %H:%M')} — Albert 🎩_")
+    lines.append(f"\n_Generiert: {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')} — Albert 🎩_")
 
     return "\n".join(lines)
 

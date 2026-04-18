@@ -8,6 +8,8 @@ import sys
 import json
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -112,7 +114,7 @@ def analyze_sector(sector_name, tickers):
 def run_analysis():
     """Run full sector rotation analysis."""
     init_tables()
-    today = datetime.now().strftime('%d.%m.%Y')
+    today = datetime.now(_BERLIN).strftime('%d.%m.%Y')
 
     results = []
     for sector_name, tickers in SECTORS.items():
@@ -152,7 +154,7 @@ def run_analysis():
 
     # Save JSON
     output = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'date': today,
         'sectors': results,
         'recommendations': {

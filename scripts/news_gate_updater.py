@@ -12,6 +12,8 @@ Kein LLM, keine Token-Kosten.
 import json
 import sqlite3
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import os as _os
@@ -73,7 +75,7 @@ def get_recent_events(hours: int = 24) -> list[dict]:
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    cutoff = (datetime.now() - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
+    cutoff = (datetime.now(_BERLIN) - timedelta(hours=hours)).strftime('%Y-%m-%d %H:%M:%S')
 
     try:
         cur.execute("""
@@ -149,7 +151,7 @@ def update_news_gate():
     relevant = hit_count > 0
 
     result = {
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': datetime.now(_BERLIN).isoformat(),
         'relevant': relevant,
         'hit_count': hit_count,
         'events_scanned': len(events),

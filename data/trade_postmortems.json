@@ -1,13 +1,13 @@
 {
-  "total_analyzed": 87,
+  "total_analyzed": 88,
   "avg_entry_quality": 6.4,
   "avg_exit_quality": 5.9,
-  "disposition_effect": -0.113,
+  "disposition_effect": -0.211,
   "optimal_holding_days": {
+    "PS11": 5.0,
     "PS5": 4.7,
     "PS14": 2.7,
     "PS1": 2.2,
-    "PS11": 1.5,
     "PS17": 1.0,
     "PS2": 2.6,
     "PS4": 1.5,
@@ -21,15 +21,15 @@
     "PS9": 2.0
   },
   "regime_performance": {
+    "RISK_OFF": {
+      "wr": 0.828,
+      "avg_pnl": 27.05,
+      "trades": 29
+    },
     "NEUTRAL": {
       "wr": 0.5,
       "avg_pnl": -172.38,
       "trades": 14
-    },
-    "RISK_OFF": {
-      "wr": 0.821,
-      "avg_pnl": 25.88,
-      "trades": 28
     },
     "PAPER_LEARN": {
       "wr": 0.0,
@@ -43,12 +43,23 @@
     }
   },
   "insights": [
-    "Haltedauer ausgeglichen: Gewinner Ø 1.9d, Verlierer Ø 1.7d.",
+    "Anti-Disposition: Verlierer werden schneller geschlossen (1.7d) als Gewinner gehalten (2.1d). Gute Disziplin!",
     "PS5 hat 100% WR — aber nur 3 Trades. Mehr Daten nötig.",
-    "Bestes Regime: RISK_OFF (82% WR, 28 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
+    "Bestes Regime: RISK_OFF (83% WR, 29 Trades) | Schlechtestes: PAPER_LEARN (0% WR, 8 Trades)",
     "PS5 funktioniert regime-übergreifend — mögliche Allwetter-Strategie."
   ],
   "trade_details": [
+    {
+      "id": 52,
+      "ticker": "RHM.DE",
+      "strategy": "PS11",
+      "entry_quality": 6.0,
+      "exit_quality": 8.0,
+      "holding_days": 12,
+      "regime": "RISK_OFF",
+      "pnl": 59.59,
+      "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
+    },
     {
       "id": 92,
       "ticker": "MOS",
@@ -1007,7 +1018,7 @@
       "lesson": "Standard-Trade ohne besondere Auffälligkeiten."
     }
   ],
-  "analysis_timestamp": "2026-04-10T09:10:06",
-  "avg_win_holding_days": 1.9,
+  "analysis_timestamp": "2026-04-18T17:10:05",
+  "avg_win_holding_days": 2.1,
   "avg_loss_holding_days": 1.7
 }

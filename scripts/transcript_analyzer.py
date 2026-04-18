@@ -15,6 +15,8 @@ import json
 import hashlib
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 _default_ws = '/data/.openclaw/workspace'
 if not Path(_default_ws).exists():
@@ -64,7 +66,7 @@ def append_to_tradingtool(analyse_text, source, filename):
     with open(TRADINGTOOL_FILE, "a") as f:
         f.write(f"\n## Transcript: {filename}\n")
         f.write(f"**Quelle:** {source}\n")
-        f.write(f"**Datum:** {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
+        f.write(f"**Datum:** {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')}\n\n")
         f.write(analyse_text)
         f.write("\n\n---\n")
 

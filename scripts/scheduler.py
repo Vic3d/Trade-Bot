@@ -17,6 +17,8 @@ import os
 import signal
 import sys
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 _default_ws = '/data/.openclaw/workspace'
@@ -115,7 +117,7 @@ def should_run(minute_pat: str, hour_pat: str, weekday_pat: str, now: datetime) 
 
 
 def log(msg: str):
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}\n'
     try:
         with open(LOG, 'a') as f:
@@ -167,7 +169,7 @@ def main():
     last_run_minute = -1
     
     while True:
-        now = datetime.now()
+        now = datetime.now(_BERLIN)
         current_minute = now.hour * 60 + now.minute
         
         # Nur einmal pro Minute laufen

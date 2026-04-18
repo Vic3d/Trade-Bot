@@ -45,6 +45,9 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from dataclasses import dataclass, field, asdict
 from typing import Optional
+from zoneinfo import ZoneInfo
+
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -474,7 +477,7 @@ def close_real_position(ticker, exit_price=None, reason=""):
         pos["exit_eur"] = exit_price
     if reason:
         pos["close_reason"] = reason
-    pos["close_date"] = datetime.now().strftime("%Y-%m-%d")
+    pos["close_date"] = datetime.now(_BERLIN).strftime("%Y-%m-%d")
 
     CONFIG_PATH.write_text(json.dumps(config, indent=2, ensure_ascii=False))
 

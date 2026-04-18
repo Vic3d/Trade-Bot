@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-11T21:05:00.843798",
+  "timestamp": "2026-04-18T17:05:00.530229",
   "relevant": true,
-  "hit_count": 32,
-  "events_scanned": 51,
+  "hit_count": 20,
+  "events_scanned": 34,
   "window_hours": 24,
   "top_hits": [
     {
@@ -10,126 +10,129 @@
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Nvidia Aktie: Acht Tage Aufwärtssog - Börse Express",
-      "ticker": "NVDA",
+      "headline": "Ukraine Says It Hit Three Russian Warships in Crimea With Drones",
+      "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-11 19:00:07"
+      "source": "bloomberg_politics",
+      "ts": "2026-04-18 15:00:07"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
         "S1_Iran"
       ],
-      "headline": "US, Iran and Pakistan Hold Ceasefire Talks in Islamabad",
+      "headline": "US Official Says IRGC Attacked Commercial Ships in Hormuz: Axios",
       "ticker": "",
-      "score": 0.5,
-      "direction": "bullish",
+      "score": 0.0,
+      "direction": "neutral",
       "source": "bloomberg_politics",
-      "ts": "2026-04-11 19:00:06"
+      "ts": "2026-04-18 15:00:07"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran"
+      ],
+      "headline": "Hormuz Chaos, Lebanon Clashes Dent Trump Peace Deal Hopes",
+      "ticker": "",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_politics",
+      "ts": "2026-04-18 15:00:07"
     },
     {
       "thesis": "S3_KI",
       "all_theses": [
         "S3_KI"
       ],
-      "headline": "Brazil’s Lula Tied With Main Competitors, Datafolha Poll Shows",
+      "headline": "Beauty Industry Uses AI to Help Consumers",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-11 19:00:06"
+      "source": "bloomberg_technology",
+      "ts": "2026-04-18 15:00:06"
     },
     {
-      "thesis": "PS1_Oil",
+      "thesis": "PS2_Tanker",
       "all_theses": [
-        "PS1_Oil"
+        "PS2_Tanker"
       ],
-      "headline": "Irish Army Helps Police Break Oil Refinery Blockade, RTE Reports",
-      "ticker": "",
-      "score": -1.0,
-      "direction": "bearish",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-11 19:00:06"
+      "headline": "Strong Earnings Results Canâ€™t Save Stocks from Dimming Forecasts",
+      "ticker": "FRO",
+      "score": 0.3,
+      "direction": "bullish",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-18 15:00:05"
+    },
+    {
+      "thesis": "PS2_Tanker",
+      "all_theses": [
+        "PS2_Tanker"
+      ],
+      "headline": "Nigeria Expands Stocks Trading Hours After Frontier Index Return",
+      "ticker": "FRO",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-18 15:00:05"
     },
     {
       "thesis": "S1_Iran",
       "all_theses": [
-        "S1_Iran"
+        "S1_Iran",
+        "S3_KI"
       ],
-      "headline": "US, Iran Officials Hold Direct Talks in Pakistan on Ending War",
-      "ticker": "",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "bloomberg_politics",
-      "ts": "2026-04-11 19:00:06"
-    },
-    {
-      "thesis": "PS1_Oil",
-      "all_theses": [
-        "PS1_Oil"
-      ],
-      "headline": "A Panicked Race for Barrels Is Gripping the Global Oil Market",
+      "headline": "Peace Deal Uncertain as Iran Says Strait of Hormuz is Shut",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
       "source": "bloomberg_markets",
-      "ts": "2026-04-11 19:00:04"
-    },
-    {
-      "thesis": "S3_KI",
-      "all_theses": [
-        "S3_KI"
-      ],
-      "headline": "Exclusive: Pentagon to adopt Palantir AI as core US military system, memo says - Reuters",
-      "ticker": "PLTR",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-11 07:22:02"
+      "ts": "2026-04-18 15:00:05"
     },
     {
       "thesis": "PS1_Oil",
       "all_theses": [
         "PS1_Oil"
       ],
-      "headline": "Equinor makes Arctic Norway oil discovery - Reuters",
-      "ticker": "EQNR",
-      "score": 0.0,
-      "direction": "neutral",
-      "source": "google_news",
-      "ts": "2026-04-11 07:08:29"
-    },
-    {
-      "thesis": "PS5_Agrar",
-      "all_theses": [
-        "PS5_Agrar"
-      ],
-      "headline": "Morning Trump post: WORLD'S MOST POWERFUL RESET!!!",
+      "headline": "Federal Agency Probes Suspicious Oil Trades Made Before Trump Pivots",
       "ticker": "",
       "score": 0.0,
       "direction": "neutral",
-      "source": "liveuamap_russia",
-      "ts": "2026-04-11 07:02:06"
+      "source": "bloomberg_markets",
+      "ts": "2026-04-18 15:00:05"
     },
     {
-      "thesis": "S3_KI",
+      "thesis": "PS2_Tanker",
       "all_theses": [
-        "S3_KI"
+        "PS2_Tanker"
       ],
-      "headline": "Ukraine’s General Staff reports that overnight on 10 April, Defence Forces struck two offshore drilling platforms in the",
-      "ticker": "",
+      "headline": "ECB Moves Away From April Hike as Peace Talks Progress",
+      "ticker": "FRO",
       "score": 0.0,
       "direction": "neutral",
-      "source": "liveuamap_russia",
-      "ts": "2026-04-11 07:02:06"
+      "source": "bloomberg_markets",
+      "ts": "2026-04-18 15:00:05"
+    },
+    {
+      "thesis": "S1_Iran",
+      "all_theses": [
+        "S1_Iran",
+        "PS1_Oil",
+        "PS2_Tanker"
+      ],
+      "headline": "Why Oil Markets Wonâ€™t Recover Quickly From the Iran War",
+      "ticker": "FRO",
+      "score": 0.0,
+      "direction": "neutral",
+      "source": "bloomberg_markets",
+      "ts": "2026-04-18 15:00:05"
     }
   ],
   "theses_hit": [
-    "S1_Iran",
     "PS1_Oil",
     "S3_KI",
-    "PS5_Agrar"
+    "S1_Iran",
+    "PS2_Tanker"
   ]
 }

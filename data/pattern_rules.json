@@ -1,17 +1,21 @@
 {
-  "total_trades": 83,
-  "winners": 45,
-  "losers": 27,
-  "win_rate": 54,
-  "avg_rsi_winners": null,
-  "avg_rsi_losers": 48.43,
+  "total_trades": 88,
+  "winners": 48,
+  "losers": 29,
+  "win_rate": 55,
+  "avg_rsi_winners": 36.92,
+  "avg_rsi_losers": 40.0,
   "rules": [
     {
-      "rule": "Regime-Verteilung Winners: {}",
+      "rule": "Regime-Verteilung Winners: {'NEUTRAL': 15, 'CORRECTION': 14, 'BEAR': 9}",
       "confidence": "MEDIUM"
     },
     {
-      "rule": "Beste Strategien: [('PS3', 100), ('PS13', 100), ('PS15', 100), ('PS2', 83), ('PS1', 70)]",
+      "rule": "Beste Entry-Tage: [('Sa', 50, 6)]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "rule": "Beste Strategien: [('PS3', 100), ('PS5', 100), ('PS13', 100), ('PS15', 100), ('PS2', 83)]",
       "confidence": "HIGH"
     }
   ]

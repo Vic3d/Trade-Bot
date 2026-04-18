@@ -6,6 +6,8 @@ Frische Intraday-Kurse für US-Ticker + Stop-Warnung
 import json, time, urllib.request
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -80,7 +82,7 @@ def main():
     except:
         pass
 
-    print(f"=== US OPENING REPORT {datetime.now().strftime('%d.%m.%Y')} ===")
+    print(f"=== US OPENING REPORT {datetime.now(_BERLIN).strftime('%d.%m.%Y')} ===")
     print(f"VIX: {vix:.1f} | EURUSD: {eurusd:.4f} | Mode: {ceo.get('mode','?')} | Regime: {ceo.get('regime','?')}")
     print()
     for l in lines:

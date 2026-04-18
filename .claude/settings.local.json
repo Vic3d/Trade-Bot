@@ -1,15 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch",
-      "WebFetch(domain:docs.anthropic.com)",
-      "WebFetch(domain:www.awwwards.com)",
-      "WebFetch(domain:hookagency.com)",
-      "WebFetch(domain:sapruin.webflow.io)",
-      "WebFetch(domain:pixgro-oly.webflow.io)",
-      "WebFetch(domain:neuralflowtemplate.webflow.io)",
-      "WebFetch(domain:vaulta0.webflow.io)",
-      "mcp__Claude_Preview__preview_start"
+      "WebSearch"
     ]
   }
 }

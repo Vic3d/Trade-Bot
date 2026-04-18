@@ -20,6 +20,8 @@ import sqlite3
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import os as _os
@@ -31,6 +33,7 @@ DB    = WS / 'data' / 'trading.db'
 DATA  = WS / 'data'
 sys.path.insert(0, str(WS / 'scripts'))
 sys.path.insert(0, str(WS / 'scripts' / 'core'))
+from atomic_json import atomic_write_json
 
 
 # ── Bekannte Themen → aktive Strategien (um Duplikate zu vermeiden) ────────────
@@ -101,6 +104,8 @@ def scan_news_themes(days: int = 14) -> list[dict]:
     Schlägt neue Strategie-Kandidaten vor.
     """
     conn = sqlite3.connect(str(DB))
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime('%Y-%m-%d')
 
     rows = conn.execute("""
@@ -345,7 +350,7 @@ def track_sector_rotation() -> dict:
 def build_report(themes, patterns, sectors) -> str:
     lines = []
     lines.append("🔍 **TradeMind — Strategy Discovery Report**")
-    lines.append(f"📅 {datetime.now().strftime('%d.%m.%Y %H:%M')} MEZ\n")
+    lines.append(f"📅 {datetime.now(_BERLIN).strftime('%d.%m.%Y %H:%M')} MEZ\n")
 
     # Neue Themen
     lines.append("**📰 Neue Themen in den News (letzte 14 Tage):**")
@@ -417,7 +422,7 @@ def save_to_file(themes, patterns, sectors, report_text: str):
 
     # Markdown-Log
     log_path = WS / 'memory' / 'strategy-discovery.md'
-    entry = f"\n\n---\n## {datetime.now().strftime('%Y-%m-%d')}\n\n{report_text}\n"
+    entry = f"\n\n---\n## {datetime.now(_BERLIN).strftime('%Y-%m-%d')}\n\n{report_text}\n"
 
     if log_path.exists():
         existing = log_path.read_text(encoding="utf-8")
@@ -477,13 +482,90 @@ def auto_create_strategies(themes: list):
             created.append(sid)
 
         if created:
-            strats_path.write_text(json.dumps(strats, indent=2, ensure_ascii=False), encoding='utf-8')
+            atomic_write_json(strats_path, strats)
             print(f"[strategy_discovery] {len(created)} neue Strategien erstellt: {created}")
         else:
             print("[strategy_discovery] Keine neuen Strategien aus Themes erstellt.")
 
     except Exception as e:
         print(f"[strategy_discovery] auto_create_strategies Fehler: {e}")
+
+
+def auto_create_strategies(themes: list) -> list:
+    """
+    Erstellt automatisch PS_Auto_* Eintraege in strategies.json fuer neue Themen
+    die genuegend Frequenz haben und bekannte Ticker haben.
+
+    Bedingungen:
+      - count >= 8 (Mind. 8 Erwahnungen in letzten 14 Tagen)
+      - tickers vorhanden (aus THEME_TICKER_MAP)
+      - Noch nicht in strategies.json vorhanden
+
+    Status: EVALUATING (conviction=1) — wird nicht automatisch getraded,
+    aber vom Scanner gelesen wenn P3 (dynamic universe) aktiv.
+
+    Returns: Liste neu erstellter Strategie-IDs
+    """
+    strategies_path = DATA / 'strategies.json'
+    try:
+        strategies = json.loads(strategies_path.read_text(encoding='utf-8'))
+    except Exception:
+        strategies = {}
+
+    created = []
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    for theme in themes:
+        phrase   = theme.get('phrase', '')
+        count    = theme.get('count', 0)
+        tickers  = theme.get('tickers', [])
+        theme_key = theme.get('theme_key', '')
+
+        if count < 8 or not tickers:
+            continue
+
+        # Strategie-ID generieren
+        safe_phrase = re.sub(r'[^a-zA-Z0-9]', '_', phrase[:12]).strip('_').upper()
+        strategy_id = f"PS_Auto_{safe_phrase}"
+
+        if strategy_id in strategies:
+            continue  # Existiert bereits
+
+        ticker_list = [t[0] for t in tickers[:4]]
+        ticker_names = ', '.join(f"{t[0]} ({t[1]})" for t in tickers[:3])
+
+        strategies[strategy_id] = {
+            'name': f'[Auto] {phrase.title()} — {count}x News in 14d',
+            'status': 'EVALUATING',
+            'conviction': 1,
+            'sector': theme_key or 'unknown',
+            'thesis': (
+                f"News-Thema '{phrase}' erschien {count}x in den letzten 14 Tagen. "
+                f"Automatisch erkannt durch Strategy Discovery. "
+                f"Kandidaten: {ticker_names}. "
+                f"Benoetigt manuelle Validierung bevor ACTIVE."
+            ),
+            'entry_trigger': f"{phrase} Frequenz steigt weiter, ODER {ticker_list[0] if ticker_list else 'Ticker'} bricht aus",
+            'kill_trigger': f"Thema '{phrase}' verschwindet aus News unter 2x pro Woche",
+            'tickers': ticker_list,
+            'direction': 'LONG',
+            'timeframe': 'unbekannt',
+            'position_size_eur': 500,
+            'stop_pct': 0.10,
+            'target_pct': 0.20,
+            'created_at': now_iso[:10],
+            'source': 'strategy_discovery.py (auto)',
+            '_auto': True,
+        }
+
+        created.append(strategy_id)
+        print(f"  [auto_create] {strategy_id} — {phrase} ({count}x, {len(ticker_list)} Ticker)")
+
+    if created:
+        atomic_write_json(strategies_path, strategies)
+        print(f"  [auto_create] {len(created)} neue Strategien gespeichert")
+
+    return created
 
 
 def run():
@@ -505,8 +587,11 @@ def run():
     report = build_report(themes, patterns, sectors)
     save_to_file(themes, patterns, sectors, report)
 
-    # Auto-create strategies from discovered themes
-    auto_create_strategies(themes)
+    # Auto-Erstellung neuer Strategien
+    print("  → Auto-Strategie-Erstellung...")
+    auto_created = auto_create_strategies(themes)
+    if auto_created:
+        report += f"\n\n**Neu auto-erstellt (EVALUATING):** {', '.join(auto_created)}"
 
     # Discord-Nachricht
     try:
@@ -518,7 +603,7 @@ def run():
         print(report)
 
     print("[strategy_discovery] Fertig.")
-    return {'themes': len(themes), 'patterns': patterns, 'sectors': sectors}
+    return {'themes': len(themes), 'patterns': patterns, 'sectors': sectors, 'auto_created': auto_created}
 
 
 if __name__ == '__main__':

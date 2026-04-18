@@ -14,6 +14,8 @@ import sys
 import json
 import os
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 _default_ws = '/data/.openclaw/workspace'
@@ -233,13 +235,13 @@ def run_snapshot():
     from market_hours import is_any_trading_day
 
     # Wochenende — einfacher Check
-    today = datetime.now()
+    today = datetime.now(_BERLIN)
     if today.weekday() >= 5:  # Sa=5, So=6
         print("Wochenende — kein Snapshot")
         return
 
     tickers = get_all_tracked_tickers()
-    print(f"[WatchlistTracker] {len(tickers)} Ticker | {datetime.now().strftime('%H:%M:%S')}")
+    print(f"[WatchlistTracker] {len(tickers)} Ticker | {datetime.now(_BERLIN).strftime('%H:%M:%S')}")
 
     # Preisdaten aus DB holen (für Indikatoren)
     conn = get_db()

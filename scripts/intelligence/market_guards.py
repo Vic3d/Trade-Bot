@@ -14,6 +14,8 @@ Albert 🎩 | v1.0 | 29.03.2026
 
 import sqlite3, json, urllib.request, os
 from datetime import datetime, timedelta, date
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 import os as _os
@@ -129,7 +131,7 @@ def get_next_earnings(ticker: str) -> date | None:
 
     if row and row['next_date']:
         updated = datetime.fromisoformat(row['updated'])
-        if datetime.now() - updated < timedelta(hours=24):
+        if datetime.now(_BERLIN) - updated < timedelta(hours=24):
             conn.close()
             try:
                 return date.fromisoformat(row['next_date'])
@@ -162,7 +164,7 @@ def get_next_earnings(ticker: str) -> date | None:
         conn.execute("""
             INSERT OR REPLACE INTO earnings_calendar (ticker, next_date, updated)
             VALUES (?, ?, ?)
-        """, (ticker, next_earnings.isoformat(), datetime.now().isoformat()))
+        """, (ticker, next_earnings.isoformat(), datetime.now(_BERLIN).isoformat()))
         conn.commit()
         conn.close()
 
@@ -356,7 +358,7 @@ if __name__ == '__main__':
     tickers = sys.argv[1:] if len(sys.argv) > 1 else ['STLD', 'NUE', 'NVDA', 'PLTR', 'LHA.DE', 'NVO']
 
     print(f"\n{'═'*60}")
-    print(f"  Market Guards Check — {datetime.now().strftime('%d.%m.%Y %H:%M')}")
+    print(f"  Market Guards Check — {datetime.now(_BERLIN).strftime('%d.%m.%Y %H:%M')}")
     print(f"{'═'*60}\n")
 
     for t in tickers:

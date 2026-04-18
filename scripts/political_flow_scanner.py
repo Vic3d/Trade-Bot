@@ -20,6 +20,8 @@ import sqlite3
 import re
 import time
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
 _default_ws = '/data/.openclaw/workspace'
@@ -285,7 +287,7 @@ def auto_trade(ticker, sector, score, side, entry_price):
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (
             ticker, 'PIFS', round(entry_price, 2),
-            datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M:%S'),
             1.0, stop, target, 'OPEN', 0.0,
             f'PIFS Auto-Trade | Score={score} | Side={side} | Sektor={sector}',
             'swing', conv, 'UNKNOWN', sector,
@@ -301,7 +303,7 @@ def auto_trade(ticker, sector, score, side, entry_price):
 
 def main():
     now = datetime.now(timezone.utc)
-    print(f"[PIFS] Political Intelligence Flow Scanner — {datetime.now().strftime('%Y-%m-%d %H:%M')} CET")
+    print(f"[PIFS] Political Intelligence Flow Scanner — {datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')} CET")
 
     flow_cfg, full_cfg = load_config()
     sectors_cfg      = flow_cfg.get('sectors', {})
@@ -597,7 +599,7 @@ def _build_alert(signals, sector_results, ov_dir, ov_emoji, ov_score,
     if auto_created:
         lines.append(f"\n🤖 **Auto-Trade ausgeführt:** {', '.join(auto_created)}")
 
-    lines.append(f"\n_PIFS v1.0 — Scan: {datetime.now().strftime('%H:%M')} CET_")
+    lines.append(f"\n_PIFS v1.0 — Scan: {datetime.now(_BERLIN).strftime('%H:%M')} CET_")
     return "\n".join(lines)
 
 

@@ -35,6 +35,10 @@ DATA_DIR = WS / 'data'
 
 ENTRY_THRESHOLD = 45  # Minimum conviction score to enter a trade
 
+# Adaptive Gewichte — werden wöchentlich aus Trade-Ergebnissen berechnet
+CONVICTION_WEIGHTS_FILE = DATA_DIR / 'conviction_weights.json'
+DEFAULT_WEIGHTS = {'thesis': 35, 'technical': 30, 'risk_reward': 20, 'market_context': 15}
+
 
 # ─── DB Helper ────────────────────────────────────────────────────────────────
 
@@ -73,6 +77,8 @@ def _get_current_regime(conn=None) -> str:
 def get_db() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     return conn
 
 
@@ -509,9 +515,150 @@ def _score_market_context(strategy: str) -> tuple[int, str]:
     except Exception:
         pass
 
-    score = min(15, vix_score + regime_bonus)
+    # CRASH hard block — kein Trading in Crash-Regimen
+    if regime and 'CRASH' in regime.upper():
+        return (-999, f'BLOCK: Crash-Regime ({regime}) — Trading gesperrt')
+
+    # BEAR regime: Conviction-Abzug
+    bear_penalty = 0
+    if regime and regime.upper() in ('BEAR', 'BEARISH', 'RISK_OFF'):
+        bear_penalty = -5
+
+    score = min(15, max(0, vix_score + regime_bonus + bear_penalty))
     bonus_str = f' +{regime_bonus}regime_fit' if regime_bonus else ''
-    return (score, f'{vix_str}{bonus_str} → {score}/15')
+    bear_str  = f' {bear_penalty}bear' if bear_penalty else ''
+    return (score, f'{vix_str}{bonus_str}{bear_str} → {score}/15')
+
+
+# ─── Factor 5: Priced-In Check (-20 to +5) ───────────────────────────────────
+
+def _score_priced_in(ticker: str, entry_price: float | None = None) -> tuple[int, str]:
+    """
+    Variant Perception Gate: Has the market already priced in this thesis?
+
+    Checks distance from 52-week high and 6-month momentum.
+    A thesis on a stock at 52W-high = zero edge. The market already knows.
+
+    Scoring (penalty modifier):
+      <5%  from 52W high:  -20 pts  (thesis fully priced in — everyone knows)
+      5-15% from 52W high: -10 pts  (partially priced in)
+      15-30% from 52W high:  0 pts  (neutral)
+      >30% from 52W high:   +5 pts  (beaten down — market may NOT know yet)
+
+    Additional 6M momentum penalty:
+      6M return >50%: -5 pts (thesis has already run)
+      6M return >30%: -3 pts (running hot)
+
+    Returns: (modifier: int, reason: str)
+    """
+    try:
+        conn = get_db()
+        # Last 252 trading days (~1 year)
+        rows = conn.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 252",
+            (ticker,)
+        ).fetchall()
+        conn.close()
+
+        closes = [r['close'] for r in rows if r['close'] is not None]
+        if len(closes) < 20:
+            return (0, 'priced_in=n/a (no data)')
+
+        current = entry_price if entry_price else closes[0]
+        high_52w = max(closes[:min(252, len(closes))])
+
+        # Distance from 52W high (negative = below high)
+        dist_pct = (current - high_52w) / high_52w  # e.g. -0.05 = 5% below high
+
+        if dist_pct >= -0.05:  # within 5% of 52W high
+            dist_penalty = -20
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=-20'
+        elif dist_pct >= -0.15:  # 5-15% below high
+            dist_penalty = -10
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=-10'
+        elif dist_pct >= -0.30:  # 15-30% below high
+            dist_penalty = 0
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=0'
+        else:  # >30% below high — beaten down
+            dist_penalty = 5
+            dist_str = f'{abs(dist_pct)*100:.1f}%_from_52Wh=+5'
+
+        # 6M momentum check (~126 trading days)
+        mom_penalty = 0
+        mom_str = ''
+        if len(closes) >= 126:
+            price_6m_ago = closes[125]
+            if price_6m_ago > 0:
+                return_6m = (current - price_6m_ago) / price_6m_ago
+                if return_6m > 0.50:
+                    mom_penalty = -5
+                    mom_str = f' +6M_run({return_6m*100:.0f}%)=-5'
+                elif return_6m > 0.30:
+                    mom_penalty = -3
+                    mom_str = f' +6M_run({return_6m*100:.0f}%)=-3'
+
+        total_modifier = dist_penalty + mom_penalty
+        return (total_modifier, f'priced_in: {dist_str}{mom_str} → {total_modifier:+d}')
+
+    except Exception as e:
+        return (0, f'priced_in=n/a ({e})')
+
+
+# ─── Factor 6: Alpha Decay + DNA ──────────────────────────────────────────────
+
+def _apply_decay_and_dna(strategy: str) -> tuple[int, str]:
+    """
+    Modifier basierend auf Alpha-Decay-Trend + DNA-Kill-Warning.
+
+    Alpha Decay (data/alpha_decay.json):
+      trend == 'DECAYING'  → -10 (Strategie verliert Edge)
+      trend == 'IMPROVING' → +5  (Strategie gewinnt Edge)
+
+    DNA (data/dna.json):
+      kill_warning = True  → -5  (Strategie auf der Abschuss-Liste)
+      win_rate > 0.60      → +5  (Strategie überperformt)
+
+    Returns: (modifier: int, reason: str)
+    """
+    modifier = 0
+    parts = []
+
+    # ── Alpha Decay Check ──────────────────────────────────────────────
+    try:
+        decay_file = DATA_DIR / 'alpha_decay.json'
+        if decay_file.exists():
+            decay_data = json.loads(decay_file.read_text(encoding='utf-8'))
+            s_decay = decay_data.get(strategy, {})
+            trend  = s_decay.get('trend', '')
+            status = s_decay.get('status', '')
+            if trend == 'DECAYING' or status == 'DECAYING':
+                modifier -= 10
+                parts.append('alpha_decay=-10')
+            elif trend == 'IMPROVING':
+                modifier += 5
+                parts.append('alpha_improving=+5')
+    except Exception:
+        pass
+
+    # ── DNA Check: Strategie-Performance-Warnung ───────────────────────
+    try:
+        dna_file = DATA_DIR / 'dna.json'
+        if dna_file.exists():
+            dna = json.loads(dna_file.read_text(encoding='utf-8'))
+            for s in dna.get('strategies', []):
+                if s.get('id') == strategy or s.get('strategy') == strategy:
+                    if s.get('kill_warning'):
+                        modifier -= 5
+                        parts.append('dna_kill=-5')
+                    elif (s.get('win_rate') or 0) > 0.60:
+                        modifier += 5
+                        parts.append('dna_wr=+5')
+                    break
+    except Exception:
+        pass
+
+    reason = ' | '.join(parts) if parts else 'decay+dna=0'
+    return (modifier, reason)
 
 
 # ─── Position Sizing ──────────────────────────────────────────────────────────
@@ -545,6 +692,110 @@ def get_position_size(
     # Cap at 5% of portfolio per position
     max_shares = int(portfolio_value * 0.05 / entry_price)
     return min(shares, max_shares)
+
+
+# ─── Adaptive Weights + Backtest Factor ──────────────────────────────────────
+
+def _load_adaptive_weights() -> dict:
+    """
+    Lädt adaptive Gewichte aus conviction_weights.json.
+    Fallback zu DEFAULT_WEIGHTS wenn Datei fehlt, veraltet oder zu wenig Trades.
+    """
+    try:
+        if CONVICTION_WEIGHTS_FILE.exists():
+            data = json.loads(CONVICTION_WEIGHTS_FILE.read_text(encoding='utf-8'))
+            # Max 7 Tage alt
+            computed_at = data.get('computed_at', '')
+            if computed_at:
+                from datetime import timedelta
+                age = (datetime.now(timezone.utc) - datetime.fromisoformat(computed_at)).days
+                if age > 7:
+                    return DEFAULT_WEIGHTS.copy()
+            # Min 20 Trades Datenbasis
+            if data.get('trade_count', 0) < 20:
+                return DEFAULT_WEIGHTS.copy()
+            weights = data.get('weights', {})
+            # Validierung: alle Keys vorhanden und im Bereich [10, 50]
+            for key in DEFAULT_WEIGHTS:
+                if key not in weights or not (10 <= weights[key] <= 50):
+                    return DEFAULT_WEIGHTS.copy()
+            return weights
+    except Exception:
+        pass
+    return DEFAULT_WEIGHTS.copy()
+
+
+def _score_backtest_validation(strategy: str) -> tuple[int, str]:
+    """
+    Faktor 5: Backtest Validation Bonus/Malus.
+    Liest backtest_results.json und gibt +10 bis -5 Punkte.
+
+    Scoring:
+      PnL positiv UND WR >= 55%: +10
+      PnL positiv ODER WR >= 50%: +5
+      PnL negativ UND WR < 45%: -5
+      Keine Daten: 0
+    """
+    try:
+        bt_file = DATA_DIR / 'backtest_results.json'
+        if not bt_file.exists():
+            return (0, 'backtest=n/a (keine Datei)')
+
+        # P1.6 — Cache TTL: Backtest > 14 Tage alt = veraltet
+        import os as _os
+        from datetime import datetime as _dt, timezone as _tz
+        try:
+            _age_days = (_dt.now().timestamp() - _os.path.getmtime(bt_file)) / 86400.0
+        except Exception:
+            _age_days = 0
+        _stale = _age_days > 14
+
+        # P1.6 — Backtest-Validation: live-WR vs backtest-WR vergleichen
+        _val_file = DATA_DIR / 'backtest_validation_status.json'
+        _val_penalty = 0  # Bonus halbieren wenn live deutlich schlechter
+        if _val_file.exists():
+            try:
+                _val = json.loads(_val_file.read_text(encoding='utf-8'))
+                _strat_val = _val.get(strategy, {})
+                if _strat_val.get('downgrade'):
+                    _val_penalty = -5
+
+            except Exception:
+                pass
+
+        bt_data = json.loads(bt_file.read_text(encoding='utf-8'))
+        bt_entry = bt_data.get(strategy, {})
+        if isinstance(bt_entry, dict):
+            bt_orig = bt_entry.get('original', bt_entry)
+        else:
+            return (0, 'backtest=n/a (kein Eintrag)')
+
+        bt_trades = bt_orig.get('trades', 0)
+        bt_pnl = bt_orig.get('pnl', 0)
+        bt_wr = bt_orig.get('wr', bt_orig.get('win_rate', 0.5))
+
+        if bt_trades < 5:
+            return (0, f'backtest=n/a ({bt_trades} Trades < 5)')
+
+        # Score-Bonus berechnen
+        _bonus = 0
+        _label = 'backtest_neutral'
+        if bt_pnl > 0 and bt_wr >= 0.55:
+            _bonus = 10; _label = 'backtest_strong'
+        elif bt_pnl > 0 or bt_wr >= 0.50:
+            _bonus = 5; _label = 'backtest_ok'
+        elif bt_pnl < 0 and bt_wr < 0.45:
+            _bonus = -5; _label = 'backtest_weak'
+
+        # Stale → Bonus halbieren (Vorsicht), Penalty bleibt voll
+        if _stale and _bonus > 0:
+            _bonus = _bonus // 2
+            _label += '_stale'
+        # Validation-Penalty draufrechnen
+        _bonus += _val_penalty
+        return (_bonus, f'{_label}: PnL={bt_pnl:+.0f}, WR={bt_wr:.0%}, age={_age_days:.0f}d → {_bonus:+d}')
+    except Exception as e:
+        return (0, f'backtest=error ({e})')
 
 
 # ─── Main Conviction Calculator ───────────────────────────────────────────────
@@ -646,8 +897,134 @@ def calculate_conviction(
     # ── Factor 4: Market Context ──────────────────────────────────────────
     mkt_score, mkt_reason = _score_market_context(strategy)
 
-    # ── Total Score (4 factors) ───────────────────────────────────────────
-    total = thesis_score + tech_score + rr_score + mkt_score
+    # Hard block: CRASH regime
+    if mkt_score == -999:
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': mkt_reason,
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength':    thesis_score,
+                'technical_alignment': tech_score,
+                'risk_reward_quality': rr_score,
+                'market_context':     0,
+            },
+            'factor_reasons': {
+                'thesis_strength':    thesis_reason,
+                'technical_alignment': tech_reason,
+                'risk_reward_quality': rr_reason,
+                'market_context':     mkt_reason,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+            'vix_block': False,
+            'vix_block_reason': None,
+        }
+
+    # ── Factor 5: Priced-In Check ─────────────────────────────────────────
+    priced_in_mod, priced_in_reason = _score_priced_in(ticker, entry_price)
+
+    # ── Hard Block: Downtrend / Falling Knife ────────────────────────────
+    # Verhindert Käufe in fallende Aktien ("Catching a Falling Knife").
+    # Regel: Kein Long-Eintrag wenn Preis UNTER EMA50 UND 3-Monats-Trend negativ.
+    if entry_price and ema50 and entry_price < ema50:
+        try:
+            conn = get_db()
+            rows_3m = conn.execute(
+                "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 63",
+                (ticker,)
+            ).fetchall()
+            conn.close()
+            closes_3m = [r['close'] for r in rows_3m if r['close'] is not None]
+            if len(closes_3m) >= 20:
+                trend_3m = (closes_3m[0] - closes_3m[-1]) / closes_3m[-1]
+                if trend_3m < -0.10:  # >10% gefallen in 3 Monaten → Downtrend
+                    block_msg = (
+                        f'BLOCK: Downtrend — Preis {entry_price:.2f} unter EMA50 {ema50:.2f} '
+                        f'UND 3M-Trend {trend_3m*100:.1f}% (Falling Knife)'
+                    )
+                    return {
+                        'score': 0,
+                        'recommendation': 'BLOCKED',
+                        'block_reason': block_msg,
+                        'entry_allowed': False,
+                        'factors': {
+                            'thesis_strength':    thesis_score,
+                            'technical_alignment': tech_score,
+                            'risk_reward_quality': rr_score,
+                            'market_context':     mkt_score,
+                            'priced_in_modifier': priced_in_mod,
+                        },
+                        'factor_reasons': {
+                            'thesis_strength':    thesis_reason,
+                            'technical_alignment': tech_reason,
+                            'risk_reward_quality': rr_reason,
+                            'market_context':     mkt_reason,
+                            'priced_in_modifier': priced_in_reason,
+                            'downtrend_block':    block_msg,
+                        },
+                        'position_sizing': 'SKIP',
+                        'vix': None,
+                        'regime': None,
+                        'vix_block': False,
+                        'vix_block_reason': None,
+                    }
+        except Exception:
+            pass  # Kein Datenblock wenn Daten fehlen — lieber zu wenig als zu viel sperren
+
+    # Hard block: thesis already fully priced in (within 5% of 52W high)
+    if priced_in_mod <= -20:
+        return {
+            'score': 0,
+            'recommendation': 'BLOCKED',
+            'block_reason': f'Fully priced in — {priced_in_reason}',
+            'entry_allowed': False,
+            'factors': {
+                'thesis_strength':    thesis_score,
+                'technical_alignment': tech_score,
+                'risk_reward_quality': rr_score,
+                'market_context':     mkt_score,
+                'priced_in_modifier': priced_in_mod,
+            },
+            'factor_reasons': {
+                'thesis_strength':    thesis_reason,
+                'technical_alignment': tech_reason,
+                'risk_reward_quality': rr_reason,
+                'market_context':     mkt_reason,
+                'priced_in_modifier': priced_in_reason,
+            },
+            'position_sizing': 'SKIP',
+            'vix': None,
+            'regime': None,
+            'vix_block': False,
+            'vix_block_reason': None,
+        }
+
+    # ── Adaptive Gewichte anwenden ────────────────────────────────────────
+    weights = _load_adaptive_weights()
+    # Skaliere Faktor-Scores proportional zu den adaptiven Gewichten
+    # (Original: thesis=35, tech=30, rr=20, mkt=15)
+    w_thesis = weights.get('thesis', 35)
+    w_tech = weights.get('technical', 30)
+    w_rr = weights.get('risk_reward', 20)
+    w_mkt = weights.get('market_context', 15)
+
+    thesis_weighted = thesis_score * (w_thesis / 35) if w_thesis != 35 else thesis_score
+    tech_weighted = tech_score * (w_tech / 30) if w_tech != 30 else tech_score
+    rr_weighted = rr_score * (w_rr / 20) if w_rr != 20 else rr_score
+    mkt_weighted = mkt_score * (w_mkt / 15) if w_mkt != 15 else mkt_score
+
+    # ── Factor 5: Backtest Validation ────────────────────────────────────
+    bt_score, bt_reason = _score_backtest_validation(strategy)
+
+    # ── Total Score (4 weighted factors + priced-in + backtest) ───────────
+    total = thesis_weighted + tech_weighted + rr_weighted + mkt_weighted + priced_in_mod + bt_score
+
+    # ── Factor 6: Alpha Decay + DNA Modifier ─────────────────────────────
+    decay_dna_mod, decay_dna_reason = _apply_decay_and_dna(strategy)
+    total = max(0, min(100, total + decay_dna_mod))
 
     # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
     crowd_mod = 0
@@ -668,6 +1045,63 @@ def calculate_conviction(
             total           = max(0, min(100, total + crowd_mod))
         except Exception:
             pass  # crowd reaction is optional
+
+    # ── Factor 6b: Options-Flow Confluence Booster ───────────────────────
+    # Lernung aus MD-Files: Unusual-Call-Volume ist Smart-Money-Signal.
+    # Wenn für den Ticker aktive Call-Alerts in options_flow_state.json
+    # existieren, +5 (weak) bis +10 (strong) auf den Gesamtscore.
+    # Caps bei 0..100, damit nie Über-Overflow.
+    of_mod = 0
+    of_reason = None
+    try:
+        of_file = DATA_DIR / 'options_flow_state.json'
+        if of_file.exists():
+            of_data = json.loads(of_file.read_text(encoding='utf-8'))
+            alerted = of_data.get('alerted', {}) or {}
+            tk_up = ticker.upper()
+            call_hits = 0
+            put_hits = 0
+            max_vol = 0
+            for key in alerted.keys():
+                parts = key.split('_')
+                if len(parts) < 2:
+                    continue
+                if parts[0].upper() != tk_up:
+                    continue
+                vol = alerted.get(key) or 0
+                if parts[1].upper() == 'CALL':
+                    call_hits += 1
+                    if vol > max_vol:
+                        max_vol = vol
+                elif parts[1].upper() == 'PUT':
+                    put_hits += 1
+            net_bull = call_hits - put_hits
+            if net_bull >= 3 or (net_bull >= 1 and max_vol >= 5000):
+                of_mod = 10  # Strong confluence
+            elif net_bull >= 1:
+                of_mod = 5   # Weak confluence
+            elif put_hits >= 3 and call_hits == 0:
+                of_mod = -5  # Bearish flow gegen den Bullish-Trade
+            if of_mod != 0:
+                total = max(0, min(100, total + of_mod))
+                of_reason = f'flow calls={call_hits} puts={put_hits} max_vol={max_vol} → {of_mod:+d}'
+    except Exception:
+        pass  # Options-flow ist optional — bei Fehler keinen Bonus
+
+    # ── Factor 7: Insider Signal (Phase 10, SEC EDGAR Form 4) ─────────────
+    # ±10 modifier basierend auf Insider-Käufen/-Verkäufen der letzten 30 Tage
+    insider_mod = 0
+    insider_reason = None
+    try:
+        from intelligence.sec_edgar import insider_signal  # type: ignore
+        sig = insider_signal(ticker, days=30, use_cache=True)
+        raw = int(sig.get('score', 0))  # -100..+100
+        insider_mod = max(-10, min(10, round(raw / 10)))
+        if insider_mod != 0:
+            total = max(0, min(100, total + insider_mod))
+            insider_reason = f"{sig.get('bias')} {insider_mod:+d} ({sig.get('reason', '')})"
+    except Exception:
+        pass  # insider signal is optional (non-US ticker, fetch fail, etc.)
 
     # ── Sizing recommendation ─────────────────────────────────────────────
     if total >= 60:
@@ -709,14 +1143,24 @@ def calculate_conviction(
             'technical_alignment': tech_score,
             'risk_reward_quality': rr_score,
             'market_context':      mkt_score,
+            'priced_in_modifier':  priced_in_mod,
+            'backtest_validation': bt_score,
+            'decay_dna_modifier':  decay_dna_mod,
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
+            **({'insider_signal': insider_mod} if insider_mod != 0 else {}),
+            **({'options_flow': of_mod} if of_mod != 0 else {}),
         },
         'factor_reasons': {
             'thesis_strength':     thesis_reason,
             'technical_alignment': tech_reason,
             'risk_reward_quality': rr_reason,
             'market_context':      mkt_reason,
+            'priced_in_modifier':  priced_in_reason,
+            'backtest_validation': bt_reason,
+            'decay_dna':           decay_dna_reason,
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
+            **({'insider_signal': insider_reason} if insider_reason else {}),
+            **({'options_flow': of_reason} if of_reason else {}),
         },
         'position_sizing': sizing,
         'vix': vix,

@@ -27,6 +27,8 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo as _BerZI
+_BERLIN = _BerZI('Europe/Berlin')
 from collections import defaultdict
 
 import os as _os
@@ -34,6 +36,9 @@ _default_ws = '/data/.openclaw/workspace'
 if not Path(_default_ws).exists():
     _default_ws = str(Path(__file__).resolve().parent.parent)
 WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 # ─── Hilfsfunktionen ─────────────────────────────────────────────────────────
 
 def safe_read_json(path: Path, default=None):
@@ -342,7 +347,7 @@ def load_ceo_directive() -> dict | None:
     try:
         d = json.loads(path.read_text(encoding="utf-8"))
         ts = datetime.fromisoformat(d['timestamp'])
-        if (datetime.now() - ts).total_seconds() < 86400:
+        if (datetime.now(_BERLIN) - ts).total_seconds() < 86400:
             return d
     except Exception:
         pass
@@ -450,8 +455,8 @@ def load_historical_data(conn) -> dict:
 
     try:
         # Win-Rate letzte 7 und 30 Tage
-        cutoff_7d = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-        cutoff_30d = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+        cutoff_7d = (datetime.now(_BERLIN) - timedelta(days=7)).strftime('%Y-%m-%d')
+        cutoff_30d = (datetime.now(_BERLIN) - timedelta(days=30)).strftime('%Y-%m-%d')
 
         for days, cutoff, key in [(7, cutoff_7d, 'recent_win_rate_7d'),
                                     (30, cutoff_30d, 'recent_win_rate_30d')]:
@@ -1120,7 +1125,7 @@ def calculate_adaptive_thresholds(conn, current_vix: float = None,
             pass
 
     # Append current VIX to history file (dedup by date)
-    today_str = datetime.now().strftime('%Y-%m-%d')
+    today_str = datetime.now(_BERLIN).strftime('%Y-%m-%d')
     already_today = any(e.get('date') == today_str for e in history)
     if not already_today and current_vix > 0:
         history.append({'date': today_str, 'vix': round(current_vix, 2)})
@@ -2702,7 +2707,7 @@ def detect_anomalies(conn, market_data: dict = None) -> dict:
     # ── 6. Stale Position Detection ──────────────────────────────────────
     try:
         if conn is not None:
-            cutoff = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+            cutoff = (datetime.now(_BERLIN) - timedelta(days=30)).strftime('%Y-%m-%d')
             rows = conn.execute(
                 "SELECT ticker, entry_price, entry_date, shares "
                 "FROM paper_portfolio WHERE status = 'OPEN' "
@@ -2729,7 +2734,7 @@ def detect_anomalies(conn, market_data: dict = None) -> dict:
                         # Calculate days held
                         try:
                             entry_dt = datetime.strptime(entry_date[:10], '%Y-%m-%d')
-                            days_held = (datetime.now() - entry_dt).days
+                            days_held = (datetime.now(_BERLIN) - entry_dt).days
                         except Exception:
                             days_held = 31
 
@@ -3182,7 +3187,7 @@ def analyze_trade_postmortems(conn) -> dict:
         'regime_performance': regime_result,
         'insights': insights,
         'trade_details': trade_details,
-        'analysis_timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'analysis_timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
         'avg_win_holding_days': round(avg_win_holding, 1),
         'avg_loss_holding_days': round(avg_loss_holding, 1),
     }
@@ -3216,7 +3221,7 @@ def run_backtest(conn, strategies: dict) -> dict:
             'improvement_pct': 0.0,
             'recommendation': '',
         },
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
     }
 
     if conn is None:
@@ -3528,7 +3533,7 @@ def evolve_strategy_dna(conn, strategies: dict) -> dict:
         'evolutions': {},
         'regime_filters': {},
         'insufficient_data': [],
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
     }
 
     if conn is None:
@@ -3940,7 +3945,7 @@ def optimize_portfolio(conn, strategies: dict, market_data: dict = None) -> dict
     try:
         closed_rows = conn.execute(
             "SELECT ticker, strategy, sector, pnl_pct "
-            "FROM paper_portfolio WHERE status = 'CLOSED' AND pnl_pct IS NOT NULL"
+            "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_pct IS NOT NULL"
         ).fetchall()
     except Exception:
         closed_rows = []
@@ -4304,7 +4309,7 @@ def build_directive(sources: dict, hist: dict, health: dict,
 
     # Direktive zusammenbauen
     directive = {
-        'timestamp': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'timestamp': datetime.now(_BERLIN).strftime('%Y-%m-%dT%H:%M:%S'),
         'mode': mode,
         'mode_reason': mode_reason,
         'vix': round(vix, 1),
@@ -4437,20 +4442,10 @@ def _generate_ceo_notes(mode: str, vix: float, hist: dict, regime: str) -> str:
         notes.append('Abwärtstrend aktiv — S&P unter MA200 = kein Growth-Long.')
 
     # Kontext-bewusste Notizen
-    from datetime import datetime, timezone, timedelta
-    now = datetime.now(timezone(timedelta(hours=2)))  # Berlin
+    from datetime import datetime
+    from zoneinfo import ZoneInfo as _ZI
+    now = datetime.now(_ZI('Europe/Berlin'))
     weekday = now.weekday()  # 0=Mo
-    
-    # Liberation Day (02.04.2026)
-    liberation_day = datetime(2026, 4, 2, tzinfo=timezone(timedelta(hours=2)))
-    days_to_lib = (liberation_day.date() - now.date()).days
-    if 0 <= days_to_lib <= 3:
-        if days_to_lib == 0:
-            notes.append('🚨 Liberation Day HEUTE — Trump-Zölle. Volatilität erwartet.')
-        elif days_to_lib == 1:
-            notes.append('⚠️ Liberation Day MORGEN — keine neuen Positionen eröffnen.')
-        else:
-            notes.append(f'Liberation Day in {days_to_lib} Tagen — Vorsicht bei US-Positionen.')
     
     # Wochenende
     if weekday == 4:  # Freitag
@@ -4507,39 +4502,31 @@ def _ceo_ai_analysis(directive: dict) -> dict:
         pass
 
     try:
-        # Prüfe beide möglichen Pfade für newswire.db
-        for nws_db in [WS / 'memory/newswire.db', WS / 'newswire.db']:
-            if not nws_db.exists():
-                continue
+        nws_db = WS / 'newswire.db'
+        if nws_db.exists():
             nconn = sqlite3.connect(str(nws_db))
             rows = nconn.execute("""
                 SELECT headline, source, category, sector, impact_direction, timestamp
                 FROM events ORDER BY timestamp DESC LIMIT 20
             """).fetchall()
+            events.extend([
+                {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
+                for r in rows
+            ])
             nconn.close()
-            if rows:
-                events.extend([
-                    {'headline': r[0], 'source': r[1], 'sector': r[3], 'impact': r[4], 'time': r[5]}
-                    for r in rows
-                ])
-                break  # Erste DB mit Daten reicht
     except Exception:
         pass
 
-    # News Gate — liest top_hits + theses_hit für AI-Kontext
+    # News Gate
     news_gate_items = []
-    news_gate_theses = []
-    news_gate_hit_count = 0
     try:
         ng_path = WS / 'data/news_gate.json'
         if ng_path.exists():
-            ng = json.loads(ng_path.read_bytes().decode('utf-8', errors='replace'))
+            ng = json.loads(ng_path.read_text(encoding='utf-8'))
             if isinstance(ng, list):
                 news_gate_items = ng[:15]
             elif isinstance(ng, dict):
-                news_gate_items = ng.get('top_hits', [])[:15]
-                news_gate_theses = ng.get('theses_hit', [])
-                news_gate_hit_count = ng.get('hit_count', 0)
+                news_gate_items = ng.get('items', ng.get('events', []))[:15]
     except Exception:
         pass
 
@@ -4609,7 +4596,6 @@ Antworte AUSSCHLIESSLICH als JSON (kein Markdown, kein Text drumherum):
   "confidence": 0.7
 }"""
 
-    theses_hit_text = ', '.join(news_gate_theses) if news_gate_theses else 'keine'
     user_prompt = f"""MARKTDATEN:
 - VIX: {vix}
 - Regime: {regime}
@@ -4625,10 +4611,6 @@ PORTFOLIO:
 AKTIVE STRATEGIEN:
 {strategies_text if strategies_text else 'Keine Strategie-Daten verfuegbar.'}
 
-NEWS-GATE (Thesen-Treffer letzte 24h):
-- Gesamttreffer: {news_gate_hit_count}
-- Betroffene Thesen: {theses_hit_text}
-
 AKTUELLE NACHRICHTEN (letzte 24h):
 {news_text}
 
@@ -4640,44 +4622,22 @@ TRADING-RULES (regelbasiert):
 Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
 
     try:
-        # Dual-LLM via core.llm_client (Anthropic primaer, OpenAI-Fallback)
-        try:
-            from core.llm_client import call_llm as _call_llm
-        except ImportError:
-            import sys as _sys
-            from pathlib import Path as _Path
-            _sys.path.insert(0, str(_Path(__file__).resolve().parent))
-            from core.llm_client import call_llm as _call_llm  # type: ignore
-        _combined = f"{system_prompt}\n\n---\n\n{user_prompt}"
-        raw, _usage = _call_llm(_combined, model_hint='sonnet', max_tokens=2000)
-        raw = raw.strip()
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model='claude-sonnet-4-5-20250514',
+            max_tokens=1000,
+            system=system_prompt,
+            messages=[{'role': 'user', 'content': user_prompt}],
+        )
+        raw = response.content[0].text.strip()
 
-        # JSON parsen — robust gegen Markdown-Wrapper und Trailing Commas
+        # JSON parsen
         import re
-
-        def _try_parse(s: str) -> dict | None:
-            try:
-                return json.loads(s)
-            except json.JSONDecodeError:
-                pass
-            # Versuch 2: Trailing Commas entfernen
-            s2 = re.sub(r',(\s*[}\]])', r'\1', s)
-            try:
-                return json.loads(s2)
-            except json.JSONDecodeError:
-                return None
-
-        # Schritt 1: Markdown-Wrapper entfernen (```json ... ```)
-        clean = re.sub(r'```(?:json)?\s*', '', raw).strip().rstrip('`').strip()
-
-        # Schritt 2: JSON-Block extrahieren
-        analysis = None
-        json_match = re.search(r'\{[\s\S]*\}', clean)
+        json_match = re.search(r'\{[\s\S]*\}', raw)
         if json_match:
-            analysis = _try_parse(json_match.group())
-
-        if analysis is None:
-            analysis = {'raw': raw[:500], 'error': 'JSON malformed'}
+            analysis = json.loads(json_match.group())
+        else:
+            analysis = {'raw': raw[:500], 'error': 'No JSON in response'}
 
         directive['ai_analysis'] = analysis
 
@@ -5520,8 +5480,7 @@ def main():
     if not args.report:
         directive_path = WS / 'data/ceo_directive.json'
         try:
-            with open(directive_path, 'w') as f:
-                json.dump(directive, f, indent=2, ensure_ascii=False)
+            atomic_write_json(directive_path, directive)
             print(f'✅ CEO-Direktive geschrieben: {directive_path}')
         except Exception as e:
             print(f'❌ Fehler beim Schreiben der Direktive: {e}', file=sys.stderr)

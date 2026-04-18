@@ -9,9 +9,11 @@ Läuft 2x wöchentlich (Di + Fr 21:00).
 Output: neue Strategien in data/strategies.json + Log in memory/strategy-research.md
 """
 
-import sqlite3, json, urllib.request, re
+import sqlite3, json, urllib.request, re, sys
 from pathlib import Path
 from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from collections import defaultdict
 
 import os as _os
@@ -22,6 +24,9 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 DB = WS / 'data/trading.db'
 STRAT_JSON = WS / 'data/strategies.json'
 RESEARCH_LOG = WS / 'memory/strategy-research.md'
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atomic_json import atomic_write_json
 
 def get_db():
     conn = sqlite3.connect(DB)
@@ -152,8 +157,7 @@ def propose_new_strategy(name, data):
         'pnl': 0.0
     }
     
-    with open(STRAT_JSON, 'w') as f:
-        json.dump(strats, f, indent=2)
+    atomic_write_json(STRAT_JSON, strats, ensure_ascii=True)
     
     return ps_id
 
@@ -167,7 +171,7 @@ def log_research(entries):
     if not RESEARCH_LOG.exists():
         RESEARCH_LOG.write_text('# Strategy Research Log — Albert\n\n', encoding="utf-8")
     
-    ts = datetime.now().strftime('%Y-%m-%d %H:%M')
+    ts = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
     with open(RESEARCH_LOG, 'a') as f:
         f.write(f'\n## [{ts}] Autonomer Strategie-Scan\n\n')
         for e in entries:
@@ -175,7 +179,7 @@ def log_research(entries):
         f.write('\n---\n')
 
 def run():
-    print(f"[Strategy Builder {datetime.now().strftime('%H:%M')}] Start...")
+    print(f"[Strategy Builder {datetime.now(_BERLIN).strftime('%H:%M')}] Start...")
     
     # 1. Bestehende Performance analysieren
     strat_perf, ticker_perf = analyze_winning_patterns()

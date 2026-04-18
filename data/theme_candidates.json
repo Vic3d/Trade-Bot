@@ -1,62 +1,49 @@
 [
   {
+    "phrase": "ceasefire",
+    "count": 100,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
     "phrase": "stocks",
     "count": 70,
     "theme_key": null,
     "tickers": []
   },
   {
-    "phrase": "markets",
-    "count": 32,
-    "theme_key": null,
-    "tickers": []
-  },
-  {
-    "phrase": "copper",
-    "count": 31,
-    "theme_key": "copper",
-    "tickers": [
-      [
-        "FCX",
-        "Freeport-McMoRan"
-      ],
-      [
-        "SCCO",
-        "Southern Copper"
-      ],
-      [
-        "TECK",
-        "Teck Resources"
-      ]
-    ]
-  },
-  {
     "phrase": "china",
-    "count": 31,
+    "count": 50,
     "theme_key": null,
     "tickers": []
   },
   {
-    "phrase": "defense",
-    "count": 30,
+    "phrase": "talks",
+    "count": 47,
     "theme_key": null,
     "tickers": []
   },
   {
-    "phrase": "than",
-    "count": 28,
+    "phrase": "markets",
+    "count": 47,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "deal",
+    "count": 40,
+    "theme_key": null,
+    "tickers": []
+  },
+  {
+    "phrase": "deadline",
+    "count": 36,
     "theme_key": null,
     "tickers": []
   },
   {
     "phrase": "more",
-    "count": 27,
-    "theme_key": null,
-    "tickers": []
-  },
-  {
-    "phrase": "could",
-    "count": 27,
+    "count": 33,
     "theme_key": null,
     "tickers": []
   }

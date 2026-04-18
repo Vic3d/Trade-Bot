@@ -25,6 +25,8 @@ Usage:
 import json
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 
 import os as _os
 _default_ws = '/data/.openclaw/workspace'
@@ -40,7 +42,7 @@ def enqueue(source: str, priority: str, headline: str, detail: str = '', thesis:
 
     queue = _read_raw()
     queue.append({
-        'id': f'{datetime.now().strftime("%Y%m%d%H%M%S")}_{source[:8]}',
+        'id': f'{datetime.now(_BERLIN).strftime("%Y%m%d%H%M%S")}_{source[:8]}',
         'timestamp': datetime.now().isoformat(),
         'source': source,
         'priority': priority,
@@ -105,7 +107,7 @@ def _read_raw() -> list:
 def purge_old(max_age_hours: int = 24):
     """Verarbeitete und alte Einträge bereinigen."""
     from datetime import timedelta
-    cutoff = (datetime.now() - timedelta(hours=max_age_hours)).isoformat()
+    cutoff = (datetime.now(_BERLIN) - timedelta(hours=max_age_hours)).isoformat()
     queue = _read_raw()
     queue = [
         q for q in queue

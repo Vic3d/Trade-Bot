@@ -679,3 +679,121 @@ UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: cha
     ^^^^
 sqlite3.OperationalError: no such table: trades
 
+[2026-04-18 08:32:50] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:32:50] 💥 Daemon Crash: [Errno 13] Permission denied: '/opt/trademind/data/scheduler_started_today.txt'
+[2026-04-18 08:33:01] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:33:01] 💥 Daemon Crash: [Errno 13] Permission denied: '/opt/trademind/data/scheduler_started_today.txt'
+[2026-04-18 08:33:08] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:33:08] 💥 Daemon Crash: [Errno 13] Permission denied: '/opt/trademind/data/scheduler_started_today.txt'
+[2026-04-18 08:33:12] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:33:12] 💥 Daemon Crash: [Errno 13] Permission denied: '/opt/trademind/data/scheduler_started_today.txt'
+[2026-04-18 08:33:12] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:33:13] 📡 Price Monitor gestartet (PID 282276)
+[2026-04-18 08:33:13] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-18 08:33:13] 💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK
+[2026-04-18 08:34:00] 📡 Price Monitor gestartet (PID 282374)
+[2026-04-18 08:35:34] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 08:35:34] 📡 Price Monitor gestartet (PID 282735)
+[2026-04-18 08:35:34] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-18 08:35:34] 💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK
+[2026-04-18 09:00:00] ▶️  Live Data Refresh: Start
+[2026-04-18 09:00:02] ✅ Live Data Refresh: OK
+[2026-04-18 09:00:02] ▶️  Discord Flush MED: Start
+[2026-04-18 09:00:02] ✅ Discord Flush MED: OK
+[2026-04-18 09:00:02] ▶️  Thesis Monitor: Start
+[2026-04-18 09:00:02] ✅ Thesis Monitor: OK
+[2026-04-18 09:00:02] ▶️  Newswire Analyst: Start
+[2026-04-18 09:00:11] ✅ Newswire Analyst: OK
+[2026-04-18 09:01:00] 📡 Price Monitor gestartet (PID 284474)
+[2026-04-18 09:05:00] ▶️  Iran Peace Watch: Start
+[2026-04-18 09:05:02] ✅ Iran Peace Watch: OK
+[2026-04-18 09:05:02] ▶️  News Gate Update: Start
+[2026-04-18 09:05:02] ✅ News Gate Update: OK
+[2026-04-18 09:06:00] 📡 Price Monitor gestartet (PID 284686)
+[2026-04-18 09:10:00] ▶️  CEO Radar: Start
+[2026-04-18 09:10:22] ✅ CEO Radar: OK
+[2026-04-18 09:11:00] 📡 Price Monitor gestartet (PID 284898)
+[2026-04-18 09:15:00] ▶️  Trump Watch: Start
+[2026-04-18 09:15:00] ✅ Trump Watch: OK
+[2026-04-18 09:16:00] 📡 Price Monitor gestartet (PID 285108)
+[2026-04-18 09:20:00] ▶️  Event Auto-Exit: Start
+[2026-04-18 09:20:01] ✅ Event Auto-Exit: OK
+[2026-04-18 09:21:00] 📡 Price Monitor gestartet (PID 285346)
+[2026-04-18 09:30:00] ▶️  Thesis Monitor: Start
+[2026-04-18 09:30:00] ✅ Thesis Monitor: OK
+[2026-04-18 09:31:00] 📡 Price Monitor gestartet (PID 286095)
+[2026-04-18 09:36:00] 💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK
+[2026-04-18 10:00:00] ▶️  Thesis Monitor: Start
+[2026-04-18 10:00:00] ✅ Thesis Monitor: OK
+[2026-04-18 10:00:00] ▶️  Weekend Geo Scan: Start
+[2026-04-18 10:00:01] ✅ Weekend Geo Scan: OK
+[2026-04-18 10:01:00] 📡 Price Monitor gestartet (PID 288429)
+[2026-04-18 10:05:00] ▶️  Iran Peace Watch: Start
+[2026-04-18 10:05:01] ✅ Iran Peace Watch: OK
+[2026-04-18 10:06:00] 📡 Price Monitor gestartet (PID 288676)
+[2026-04-18 10:15:00] ▶️  Trump Watch: Start
+[2026-04-18 10:15:02] ✅ Trump Watch: OK
+[2026-04-18 10:16:00] 📡 Price Monitor gestartet (PID 289114)
+[2026-04-18 10:20:00] ▶️  Event Auto-Exit: Start
+[2026-04-18 10:20:00] ✅ Event Auto-Exit: OK
+[2026-04-18 10:21:00] 📡 Price Monitor gestartet (PID 289585)
+[2026-04-18 10:30:00] ▶️  Thesis Monitor: Start
+[2026-04-18 10:30:00] ✅ Thesis Monitor: OK
+[2026-04-18 10:31:00] 📡 Price Monitor gestartet (PID 290212)
+[2026-04-18 10:36:00] 💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK
+[2026-04-18 11:00:00] ▶️  Thesis Monitor: Start
+[2026-04-18 11:00:00] ✅ Thesis Monitor: OK
+[2026-04-18 11:01:00] 📡 Price Monitor gestartet (PID 292072)
+[2026-04-18 11:05:00] ▶️  Iran Peace Watch: Start
+[2026-04-18 11:05:02] ✅ Iran Peace Watch: OK
+[2026-04-18 11:06:00] 📡 Price Monitor gestartet (PID 292298)
+[2026-04-18 11:15:00] ▶️  Trump Watch: Start
+[2026-04-18 11:15:01] ✅ Trump Watch: OK
+[2026-04-18 11:16:00] 📡 Price Monitor gestartet (PID 292717)
+[2026-04-18 11:20:00] ▶️  Event Auto-Exit: Start
+[2026-04-18 11:20:00] ✅ Event Auto-Exit: OK
+[2026-04-18 11:21:00] 📡 Price Monitor gestartet (PID 292953)
+[2026-04-18 11:30:00] ▶️  Thesis Monitor: Start
+[2026-04-18 11:30:00] ✅ Thesis Monitor: OK
+[2026-04-18 11:30:00] ▶️  Feature Analyzer: Start
+[2026-04-18 11:30:00] ✅ Feature Analyzer: OK
+[2026-04-18 11:31:00] 📡 Price Monitor gestartet (PID 293384)
+[2026-04-18 11:36:00] 💓 Subthread-Healthcheck: Price-Monitor + Chat-Thread OK
+[2026-04-18 11:45:33] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 11:45:33] 📡 Price Monitor gestartet (PID 296788)
+[2026-04-18 11:45:33] 💬 Albert Discord-Chat-Thread gestartet
+[2026-04-18 12:00:00] ⚠️  Alt-Data Scrape: Script nicht gefunden — intelligence/alternative_data.py
+[2026-04-18 12:00:01] ▶️  Strategy DNA: Start
+[2026-04-18 12:00:01] ❌ Strategy DNA: Fehler (code 1)
+[2026-04-18 12:00:01]    STDERR gespeichert: 20260418_120001__Strategy_DNA.log
+[2026-04-18 12:10:00] ⚠️  Deepdive Queue Proc: Script nicht gefunden — deepdive_queue_processor.py
+[2026-04-18 13:00:00] ▶️  Live Data Refresh: Start
+[2026-04-18 13:00:02] ✅ Live Data Refresh: OK
+[2026-04-18 13:00:02] ▶️  Newswire Analyst: Start
+[2026-04-18 13:00:08] ✅ Newswire Analyst: OK
+[2026-04-18 13:05:00] ▶️  News Gate Update: Start
+[2026-04-18 13:05:00] ✅ News Gate Update: OK
+[2026-04-18 13:10:00] ▶️  CEO Radar: Start
+[2026-04-18 13:10:08] ✅ CEO Radar: OK
+[2026-04-18 14:00:00] ▶️  Strategy Discovery: Start
+[2026-04-18 14:00:01] ✅ Strategy Discovery: OK
+[2026-04-18 14:10:00] ▶️  Deepdive Queue Proc: Start
+[2026-04-18 14:10:00] ✅ Deepdive Queue Proc: OK
+[2026-04-18 14:30:00] ⚠️  Proposal Expirer: Script nicht gefunden — proposal_expirer.py
+[2026-04-18 16:10:00] ▶️  Deepdive Queue Proc: Start
+[2026-04-18 16:10:00] ✅ Deepdive Queue Proc: OK
+[2026-04-18 17:00:00] ▶️  Live Data Refresh: Start
+[2026-04-18 17:00:05] ✅ Live Data Refresh: OK
+[2026-04-18 17:00:05] ▶️  Newswire Analyst: Start
+[2026-04-18 17:00:10] ✅ Newswire Analyst: OK
+[2026-04-18 17:05:00] ▶️  News Gate Update: Start
+[2026-04-18 17:05:00] ✅ News Gate Update: OK
+[2026-04-18 17:10:00] ▶️  CEO Radar: Start
+[2026-04-18 17:10:08] ✅ CEO Radar: OK
+[2026-04-18 18:10:00] ▶️  Deepdive Queue Proc: Start
+[2026-04-18 18:10:00] ✅ Deepdive Queue Proc: OK
+[2026-04-18 20:10:00] ▶️  Deepdive Queue Proc: Start
+[2026-04-18 20:10:00] ✅ Deepdive Queue Proc: OK
+[2026-04-18 20:36:21] 🚀 TradeMind Scheduler Daemon gestartet
+[2026-04-18 20:36:21] 📡 Price Monitor gestartet (PID 322439)
+[2026-04-18 20:36:21] 💬 Albert Discord-Chat-Thread gestartet

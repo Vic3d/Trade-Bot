@@ -82,7 +82,6 @@ def _closed_today() -> list[dict]:
             "exit_type, close_date, status "
             "FROM paper_portfolio "
             "WHERE status IN ('WIN','LOSS','CLOSED') "
-            "AND COALESCE(archived_pre_reset,0)=0 "
             "AND close_date LIKE ? "
             "ORDER BY close_date",
             (today + '%',),
@@ -101,8 +100,7 @@ def _opened_today() -> list[dict]:
         rows = c.execute(
             "SELECT ticker, strategy, entry_price, shares "
             "FROM paper_portfolio "
-            "WHERE status='OPEN' AND COALESCE(archived_pre_reset,0)=0 "
-            "AND entry_date LIKE ? "
+            "WHERE status='OPEN' AND entry_date LIKE ? "
             "ORDER BY entry_date",
             (today + '%',),
         ).fetchall()
@@ -118,8 +116,7 @@ def _open_positions() -> list[dict]:
         rows = c.execute(
             "SELECT ticker, strategy, entry_price, shares, "
             "COALESCE(shares,0) * COALESCE(entry_price,0) as size_eur, "
-            "entry_date, COALESCE(archived_pre_reset,0) as archived "
-            "FROM paper_portfolio WHERE status='OPEN'"
+            "entry_date FROM paper_portfolio WHERE status='OPEN'"
         ).fetchall()
         c.close()
         return [dict(r) for r in rows]
@@ -265,13 +262,9 @@ def _render_message() -> str:
     lines.append(f"  Fund-Value: {fund_now if fund_now else '?'}€")
     if delta_line:
         lines.append(delta_line.rstrip())
-    new_pos = [p for p in open_pos if not p.get('archived')]
-    pre_pos = [p for p in open_pos if p.get('archived')]
-    lines.append(f"  Offene Positionen: {len(new_pos)} (Run) + {len(pre_pos)} (pre-reset)")
-    for p in new_pos[:5]:
+    lines.append(f"  Offene Positionen: {len(open_pos)}")
+    for p in open_pos[:5]:
         lines.append(f"    • {p['ticker']} ({p['strategy']}) — {p['size_eur']:.0f}€")
-    for p in pre_pos[:3]:
-        lines.append(f"    · (pre-reset) {p['ticker']} ({p['strategy']}) — {p['size_eur']:.0f}€")
 
     # ── Muster / Lessons ──
     patterns = []

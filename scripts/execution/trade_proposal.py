@@ -22,6 +22,8 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'intelligence'))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'core'))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from atomic_json import atomic_write_json
 
 DB_PATH = WS / 'data/trading.db'
 PROPOSALS_PATH = WS / 'data/proposals.json'
@@ -150,7 +152,7 @@ def generate_proposal(ticker, strategy, direction, entry_price, stop, target,
     
     # Speichern
     proposals.append(proposal)
-    PROPOSALS_PATH.write_text(json.dumps(proposals, indent=2))
+    atomic_write_json(PROPOSALS_PATH, proposals, ensure_ascii=True)
     
     return proposal
 
@@ -204,7 +206,7 @@ def approve_proposal(proposal_id):
         if p['id'] == proposal_id and p['status'] == 'PENDING':
             p['status'] = 'APPROVED'
             p['approved_at'] = datetime.now(timezone.utc).isoformat()
-            PROPOSALS_PATH.write_text(json.dumps(proposals, indent=2))
+            atomic_write_json(PROPOSALS_PATH, proposals, ensure_ascii=True)
             
             # Trade öffnen
             from trade_journal import open_trade
@@ -228,7 +230,7 @@ def reject_proposal(proposal_id, reason=''):
             p['status'] = 'REJECTED'
             p['rejected_at'] = datetime.now(timezone.utc).isoformat()
             p['reject_reason'] = reason
-            PROPOSALS_PATH.write_text(json.dumps(proposals, indent=2))
+            atomic_write_json(PROPOSALS_PATH, proposals, ensure_ascii=True)
             return True
     
     return False

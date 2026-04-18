@@ -349,99 +349,97 @@ def generate_calibration_report(conn: sqlite3.Connection) -> str:
     return "\n".join(lines)
 
 
-# ── NEWS-TRADE KORRELATION ───────────────────────────────────────────────────
+# ── P6: NEWS-TRADE-KORRELATION ────────────────────────────────────────────────
 
-def correlate_news_to_trades():
+def correlate_news_to_trades() -> dict:
     """
-    Korreliert overnight_events mit paper_portfolio Trades.
-    Schreibt Ergebnis nach data/news_trade_correlation.json.
+    Verknüpft overnight_events mit paper_portfolio Trades.
+    Zeitfenster: Trades die 0-4h nach dem Event eröffnet wurden.
+    Schreibt data/news_trade_correlation.json.
+    Returns: dict mit Korrelations-Statistiken.
     """
-    try:
-        conn = sqlite3.connect(str(DB))
-        conn.row_factory = sqlite3.Row
+    conn = sqlite3.connect(str(DB))
+    conn.row_factory = sqlite3.Row
 
-        # Events der letzten 30 Tage mit strategies_affected
-        events = conn.execute("""
-            SELECT id, headline, timestamp, impact_direction, strategies_affected
-            FROM overnight_events
-            WHERE datetime(timestamp) >= datetime('now', '-30 days')
-              AND strategies_affected IS NOT NULL
-              AND strategies_affected != '[]'
-              AND strategies_affected != ''
-            ORDER BY timestamp DESC
-        """).fetchall()
+    # Events der letzten 7 Tage
+    events = conn.execute("""
+        SELECT id, headline, impact_direction, strategies_affected, timestamp
+        FROM overnight_events
+        WHERE timestamp >= datetime('now', '-7 days')
+        ORDER BY timestamp DESC
+        LIMIT 300
+    """).fetchall()
 
-        correlations = []
-        aggregated = {}
+    correlations = []
+    for ev in events:
+        ev_time = ev['timestamp']
+        strategies_raw = ev['strategies_affected'] or '[]'
+        try:
+            strategies = json.loads(strategies_raw)
+        except Exception:
+            strategies = []
 
-        for ev in events:
-            try:
-                strats = json.loads(ev['strategies_affected'] or '[]')
-            except Exception:
-                strats = []
-            if not strats:
-                continue
+        if not strategies:
+            continue
 
-            ev_ts = ev['timestamp'] or ''
-            impact_dir = ev['impact_direction'] or 'unknown'
-            headline = ev['headline'] or ''
+        # Trades die 0–4h nach dem Event eröffnet wurden, mit passender Strategie
+        placeholders = ','.join(['?' for _ in strategies])
+        trades = conn.execute(f"""
+            SELECT id, ticker, strategy, entry_price, pnl_eur, pnl_pct,
+                   entry_date, status
+            FROM paper_portfolio
+            WHERE entry_date >= ?
+              AND entry_date <= datetime(?, '+4 hours')
+              AND strategy IN ({placeholders})
+        """, [ev_time, ev_time] + strategies).fetchall()
 
-            for strat_raw in strats:
-                strategy = strat_raw.split('_')[0] if '_' in strat_raw else strat_raw
-
-                # Find CLOSED trades with matching strategy, entry within 4h of event
-                trades = conn.execute("""
-                    SELECT id, ticker, strategy, pnl_eur, pnl_pct, entry_date
-                    FROM paper_portfolio
-                    WHERE status IN ('WIN', 'CLOSED', 'LOSS')
-                      AND strategy = ?
-                      AND abs(julianday(entry_date) - julianday(?)) <= (4.0/24.0)
-                """, (strategy, ev_ts)).fetchall()
-
-                for t in trades:
-                    pnl = float(t['pnl_eur'] or 0)
-                    won = 1 if pnl > 0 else 0
-                    correlations.append({
-                        'event_headline': headline,
-                        'impact_direction': impact_dir,
-                        'strategy': strategy,
-                        'trade_pnl': round(pnl, 2),
-                        'trade_won': won,
-                    })
-
-                    key = (strategy, impact_dir)
-                    if key not in aggregated:
-                        aggregated[key] = {'wins': 0, 'total_pnl': 0.0, 'count': 0}
-                    aggregated[key]['count'] += 1
-                    aggregated[key]['wins'] += won
-                    aggregated[key]['total_pnl'] += pnl
-
-        conn.close()
-
-        # Build summary
-        summary = []
-        for (strategy, impact_dir), stats in aggregated.items():
-            n = stats['count']
-            summary.append({
-                'strategy': strategy,
-                'impact_direction': impact_dir,
-                'win_rate': round(stats['wins'] / n, 3) if n > 0 else 0,
-                'avg_pnl': round(stats['total_pnl'] / n, 2) if n > 0 else 0,
-                'sample_size': n,
+        for t in trades:
+            correlations.append({
+                'event_id':       ev['id'],
+                'headline':       (ev['headline'] or '')[:120],
+                'impact_direction': ev['impact_direction'],
+                'trade_id':       t['id'],
+                'ticker':         t['ticker'],
+                'strategy':       t['strategy'],
+                'pnl_eur':        t['pnl_eur'],
+                'pnl_pct':        t['pnl_pct'],
+                'trade_status':   t['status'],
+                'event_time':     ev_time,
+                'trade_time':     t['entry_date'],
             })
 
-        output = {
-            'generated': datetime.now().isoformat(),
-            'correlations': correlations,
-            'aggregated': summary,
-        }
+    conn.close()
 
-        out_path = WS / 'data' / 'news_trade_correlation.json'
-        out_path.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding='utf-8')
-        print(f"  news_trade_correlation.json: {len(correlations)} Korrelationen, {len(summary)} Aggregate")
+    # Aggregierte Statistiken
+    closed = [c for c in correlations if c['trade_status'] in ('WIN', 'LOSS', 'CLOSED')]
+    profitable = sum(1 for c in closed if (c['pnl_eur'] or 0) > 0)
+    losing     = sum(1 for c in closed if (c['pnl_eur'] or 0) < 0)
+    avg_pnl    = (sum(c['pnl_eur'] or 0 for c in closed) / len(closed)) if closed else 0.0
 
-    except Exception as e:
-        print(f"  correlate_news_to_trades Fehler (nicht kritisch): {e}")
+    # Beste/schlechteste Impact-Directions nach Ergebnis
+    direction_stats: dict[str, dict] = {}
+    for c in closed:
+        d = c['impact_direction'] or 'unknown'
+        if d not in direction_stats:
+            direction_stats[d] = {'trades': 0, 'wins': 0, 'pnl': 0.0}
+        direction_stats[d]['trades'] += 1
+        direction_stats[d]['wins']   += 1 if (c['pnl_eur'] or 0) > 0 else 0
+        direction_stats[d]['pnl']    += (c['pnl_eur'] or 0)
+
+    stats = {
+        'total_correlations': len(correlations),
+        'closed_trades':      len(closed),
+        'profitable':         profitable,
+        'losing':             losing,
+        'avg_pnl_eur':        round(avg_pnl, 2),
+        'direction_stats':    direction_stats,
+        'updated_at':         datetime.now(timezone.utc).isoformat(),
+        'correlations':       correlations[:100],  # Letzte 100 Matches
+    }
+
+    output_file = WS / 'data' / 'news_trade_correlation.json'
+    output_file.write_text(json.dumps(stats, indent=2, ensure_ascii=False))
+    return stats
 
 
 # ── HAUPTFUNKTION ─────────────────────────────────────────────────────────────
@@ -466,7 +464,14 @@ def run_feedback_loop() -> str:
     if updated > 0 or calibrated > 0:
         print(f"  🔁 Feedback-Loop: {updated} Preise aktualisiert, {calibrated} Events kalibriert")
 
-    correlate_news_to_trades()
+    # ── P6: News-Trade-Korrelation ─────────────────────────────────────
+    try:
+        corr = correlate_news_to_trades()
+        if corr['total_correlations'] > 0:
+            print(f"  🔗 News-Trade-Korrelation: {corr['total_correlations']} Matches, "
+                  f"{corr['closed_trades']} abgeschl., avg P&L {corr['avg_pnl_eur']:+.2f}€")
+    except Exception as e:
+        print(f"  ⚠️  News-Trade-Korrelation Fehler: {e}")
 
     return report
 

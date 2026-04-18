@@ -15,6 +15,8 @@ import sqlite3
 import json
 import sys
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
+_BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 from collections import defaultdict
 
@@ -159,7 +161,7 @@ def log_strong_trends_to_geo_log(trends: list[dict]):
         return
 
     GEO_LOG.parent.mkdir(parents=True, exist_ok=True)
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+    now_str = datetime.now(_BERLIN).strftime("%Y-%m-%d %H:%M")
 
     lines_to_add = []
     for t in strong:
