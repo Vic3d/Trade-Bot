@@ -117,7 +117,11 @@ def append_to_daily(summary: str):
     """Hängt Summary an die tägliche memory-Datei an."""
     date = today_str()
     path = os.path.join(MEM_DIR, f"{date}.md")
-    ts = datetime.now(timezone.utc).strftime("%H:%M UTC")
+    try:
+        from core.timezones import fmt_cet, tz_label
+        ts = f"{fmt_cet(fmt='%H:%M')} {tz_label()}"
+    except Exception:
+        ts = datetime.now().strftime("%H:%M CEST")
 
     section = f"\n## Tagesabschluss-Zusammenfassung ({ts})\n\n{summary}\n"
 

@@ -299,7 +299,13 @@ def _active_theses_section(conn) -> str:
 
 def build_report() -> str:
     """Erstellt den kompletten Abend-Briefing Text."""
-    now_str = datetime.now(timezone.utc).strftime('%d.%m.%Y %H:%M')
+    try:
+        from core.timezones import fmt_cet, tz_label
+        now_str = fmt_cet(fmt='%d.%m.%Y %H:%M')
+        _tz = tz_label()
+    except Exception:
+        now_str = datetime.now().strftime('%d.%m.%Y %H:%M')
+        _tz = 'CEST'
 
     fx = {}
     for pair in ['EURUSD=X', 'EURNOK=X', 'EURGBP=X']:
@@ -317,7 +323,7 @@ def build_report() -> str:
 
     sep = "━" * 34
     sections = [
-        f"🌙 **ABEND-BRIEFING — {now_str} UTC**",
+        f"🌙 **ABEND-BRIEFING — {now_str} {_tz}**",
         sep,
         portfolio_text,
         sep,

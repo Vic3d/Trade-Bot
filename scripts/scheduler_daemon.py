@@ -87,7 +87,8 @@ SCHEDULE = [
     # Price-Backfill: laedt Historie fuer neu discovered Tickers (Auto-DD braucht >=60d)
     ('Discovery Price BF',  'discovery/price_backfill.py',        [],             6,  45, [0,1,2,3,4], False),
     # Pipeline: nach Auto-DD (07:30) — promoted/rejected auf Basis der neuen Verdikts
-    ('Discovery Pipeline',  'discovery/discovery_pipeline.py',    [],             12, 0,  [0,1,2,3,4], True),
+    # LOW-Tier: Pipeline-Status nur ins Log, nicht nach Discord (nicht actionable)
+    ('Discovery Pipeline',  'discovery/discovery_pipeline.py',    [],             12, 0,  [0,1,2,3,4], False),
     # ── Overnight Events sammeln — 24/7, auch Asien-Session ────────────────
     ('Overnight Collector', 'overnight_collector.py',  [],                        1,  0,  None),   # Asien Morgen (10:00 JST)
     ('Overnight Collector', 'overnight_collector.py',  [],                        4,  0,  None),   # Asien Close (13:00 JST)
@@ -114,27 +115,29 @@ SCHEDULE = [
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
     ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00
     # ── Phase 22 — Opportunity Engine (laeuft VOR Auto-Deep-Dive) ────────────
-    ('Smart Money Tracker', 'discovery/smart_money_tracker.py', [],                6,  10, [0,1,2,3,4], True),
-    ('Catalyst Calendar',   'catalyst_calendar.py',             [],                6,  20, None,        True),
-    ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], True),
-    ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        True),
+    # LOW-Tier (Log-only): Scanner ohne direkte Action — Output landet im Morgen-Briefing
+    ('Smart Money Tracker', 'discovery/smart_money_tracker.py', [],                6,  10, [0,1,2,3,4], False),
+    ('Catalyst Calendar',   'catalyst_calendar.py',             [],                6,  20, None,        False),
+    ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], False),
+    ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        False),
+    # HIGH-Tier (Discord direkt): Neue Thesen sind action-relevant
     ('Thesis Generator',    'thesis_generator.py',              [],                7,  15, [0,1,2,3,4], True),
     # Backfill NACH Thesis-Generator (neue Kandidaten brauchen Preisdaten fuer Auto-DD 07:30)
     ('Discovery Price BF',  'discovery/price_backfill.py',      [],                7,  22, [0,1,2,3,4], False),
     ('Thesis Generator',    'thesis_generator.py',              [],                19, 15, [0,1,2,3,4], True),
     ('Discovery Price BF',  'discovery/price_backfill.py',      [],                19, 22, [0,1,2,3,4], False),
-    ('Thesis Graveyard',    'thesis_graveyard.py',              [],                23, 30, None,        True),
+    # LOW-Tier: Graveyard-Cleanup ist internes Housekeeping
+    ('Thesis Graveyard',    'thesis_graveyard.py',              [],                23, 30, None,        False),
     # ── Phase 22.1: Portfolio Circuit Breaker — Tages-Snapshot vor Schluss ────
     ('Equity Snapshot',     'portfolio_circuit_breaker.py',     ['--record-close'], 21, 45, None,      False),
     # Phase 7.14 — Auto-Deep-Dive via Claude API (sonnet)
-    # Mo-Fr 07:30: full run (offene Positionen + Entry-Kandidaten)
-    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              7,  30, [0,1,2,3,4], True),
-    # Mo-Fr 13:30: nur offene Positionen (force refresh — Leichen im Keller intraday)
-    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         13, 30, [0,1,2,3,4], True),
-    # Mo-Fr 19:30: nur offene Positionen (vor Entry-Window)
-    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         19, 30, [0,1,2,3,4], True),
-    # So 20:00: full run (Asien-Vorschau fuer Montag)
-    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              20, 0,  [6],         True),
+    # LOW-Tier: Deep-Dive-Verdicts werden in deep_dive_verdicts.json gespeichert
+    # und von Guard 0c2 genutzt. Volltext-Reports gehoeren ins Log, nicht Discord
+    # (zu lang, taeglich 4x = massiver Noise). Victor sieht Verdikte im Daily Review.
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              7,  30, [0,1,2,3,4], False),
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         13, 30, [0,1,2,3,4], False),
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['open-only'],         19, 30, [0,1,2,3,4], False),
+    ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              20, 0,  [6],         False),
     # ─────────────────────────────────────────────────────────────────────────
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
