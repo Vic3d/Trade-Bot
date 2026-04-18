@@ -23,7 +23,9 @@ from zoneinfo import ZoneInfo
 _BERLIN = ZoneInfo('Europe/Berlin')
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+import os as _os
+WS = Path(_os.getenv('TRADEMIND_HOME',
+                     str(Path(__file__).resolve().parent.parent)))
 SCRIPTS = WS / 'scripts'
 PID_FILE = WS / 'data/scheduler.pid'
 LOG_FILE = WS / 'data/scheduler.log'
