@@ -85,9 +85,16 @@ def fetch_scenario(scenario: str, tickers: list[str]) -> dict:
             if data.empty or 'Close' not in data:
                 print(f'  [skip] {ticker}: no data')
                 continue
-            closes = data['Close'].dropna().tolist()
-            if isinstance(closes[0], list):  # multi-index edge case
-                closes = [c[0] for c in closes]
+            close_obj = data['Close'].dropna()
+            # yfinance 1.3+: kann DataFrame (multi-ticker shape) sein selbst bei single ticker
+            try:
+                close_obj = close_obj.squeeze()
+            except Exception:
+                pass
+            if hasattr(close_obj, 'values'):
+                closes = list(close_obj.values.flatten())
+            else:
+                closes = list(close_obj)
             if len(closes) >= 3:
                 out['tickers'][ticker] = [float(c) for c in closes]
                 print(f'  [OK] {ticker}: {len(closes)} closes')
