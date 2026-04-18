@@ -315,6 +315,59 @@ def notify(msg: str, *, tier: str = 'HIGH', category: str = 'scheduler',
 
 # ── Job Runner ────────────────────────────────────────────────────────────────
 
+def _filter_discord_output(output: str) -> str:
+    """Filtert Job-stdout für Discord — behält nur echte Alerts, nicht Debug-Logs.
+
+    Behalten:
+      - Zeilen die mit Emoji/Symbol starten (🔴🟢📡📊🌙📅🚨⚠️🔍🤖📈📉🧭💼🔄)
+      - Zeilen die mit ** (Markdown-Bold) starten
+      - Zeilen die 'ERROR', 'FEHLER', 'WARNUNG' enthalten (echte Probleme)
+      - Leerzeilen innerhalb eines Alerts (Struktur erhalten)
+
+    Verwerfen:
+      - Zeilen die mit '[xxx]' starten (Prozess-Log Präfixe)
+      - 'Discord-Briefing gesendet', 'Daily Review sent', 'Report saved'
+      - '...generiert', 'Total:', 'Analysiere...' Debug-Noise
+      - Stats-Zeilen wenn kein Alert drum herum ist
+    """
+    import re
+    lines = output.split('\n')
+    kept = []
+    has_real_content = False
+
+    # Wenn die erste Zeile ein echter Alert-Header ist (mit Emoji oder **Bold**),
+    # dann behalten wir den ganzen Block — das ist ein formatierter Report.
+    first_nonempty = next((l for l in lines if l.strip()), '')
+    starts_with_alert = bool(re.match(
+        r'^[🔴🟢📡📊🌙📅🚨⚠️🔍🤖📈📉🧭💼🔄📧💡🛑⚡🎯🌅🌇🌑🎆📅🌙]|^\*\*',
+        first_nonempty
+    ))
+
+    if starts_with_alert:
+        # Formatierter Report → komplett durchlassen, aber Meta-Zeilen am Ende droppen
+        for line in lines:
+            l = line.strip()
+            # Typische Tail-Noise nach einem Report:
+            if re.match(r'^\[[\w\-]+\]\s', l):
+                continue  # [evening_report] Briefing gesendet…
+            if re.match(r'^(Daily Review sent|Report saved|Discord-Briefing gesendet)', l, re.I):
+                continue
+            kept.append(line)
+            if l and not l.startswith('['):
+                has_real_content = True
+    else:
+        # Kein Alert-Header → es ist ein reines Debug-Log. Nur Error-Zeilen durchlassen.
+        for line in lines:
+            l = line.strip()
+            if not l:
+                continue
+            if re.search(r'\b(ERROR|FEHLER|EXCEPTION|TRACEBACK|CRITICAL)\b', l):
+                kept.append(line)
+                has_real_content = True
+
+    return '\n'.join(kept).strip() if has_real_content else ''
+
+
 def run_job(name: str, script: str, args: list[str], discord: bool = False) -> bool:
     """Führt ein Script aus. Bei discord=True wird stdout an Victor gesendet."""
     script_path = SCRIPTS / script
@@ -332,8 +385,21 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
         if result.returncode == 0:
             output = result.stdout.strip()
             if discord and output and len(output) > 20 and 'KEIN_SIGNAL' not in output:
-                notify(output[:1900])
-                log(f'✅ {name}: OK + Discord gesendet')
+                # Filter: nur "echte" Alerts durchlassen, kein Prozess-Debug-Log.
+                # stdout enthält oft Mix aus '[job-name] processing...' (Debug) und
+                # '🚀 **Alert** ...' (für Victor). Wir filtern Zeilen mit
+                # '[...]'-Präfix und Progress-Noise raus, behalten Emoji/Bold/Headers.
+                filtered = _filter_discord_output(output)
+                if filtered and len(filtered) > 20:
+                    # MEDIUM + Dedupe pro Job-Name pro Tag — verhindert
+                    # dass derselbe Job bei mehrfachen Runs denselben Text spammt.
+                    _day = datetime.now().strftime('%Y%m%d')
+                    _slug = name.lower().replace(' ', '_')
+                    notify(filtered[:1900], tier='MEDIUM', category='job',
+                           dedupe_key=f'job_{_slug}_{_day}')
+                    log(f'✅ {name}: OK + Discord gesendet ({len(filtered)} chars, orig {len(output)})')
+                else:
+                    log(f'✅ {name}: OK (stdout war nur Debug-Log, kein Discord)')
             else:
                 log(f'✅ {name}: OK')
             return True
