@@ -563,6 +563,13 @@ def execute_paper_entry(
         from strategy_dna import check_dna_gate as _check_dna_gate
         _dna = _check_dna_gate(strategy or '', regime or '')
         if _dna.get('verdict') == 'BLOCK':
+            # K4 — Discord-Notify (still im Log ginge sonst unter)
+            try:
+                from discord_sender import send as _send_dna
+                _send_dna(f"🚫 **DNA-Block** {strategy}/{ticker} — {_dna.get('reason')} "
+                          f"(score={_dna.get('score')})")
+            except Exception:
+                pass
             return {
                 'success': False,
                 'trade_id': None,

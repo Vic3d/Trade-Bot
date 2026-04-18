@@ -452,10 +452,31 @@ def _queue_positions_for_exit(thesis_id: str, reason: str) -> int:
 
 
 def _send_discord(message: str) -> bool:
-    """Sendet Discord-Alert. Fehler werden unterdrückt."""
+    """Sendet Discord-Alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Thesis-Engine-Alerts:
+      HIGH   — INVALIDATED (Thesis komplett tot, Positionen muessen raus)
+      MEDIUM — DEGRADED (Warnung, keine neuen Entries erlaubt)
+      LOW    — Updates ohne Action-Pflicht
+    """
     try:
-        from discord_sender import send
-        return send(message)
+        import sys as _sys
+        from pathlib import Path as _P
+        _sys.path.insert(0, str(_P(__file__).parent.parent))
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        m = message.upper()
+        if 'INVALIDATED' in m or 'KILL' in m:
+            tier = TIER_HIGH
+        elif 'DEGRADED' in m:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        # Thesis-ID als dedupe-key extrahieren (verhindert Spam bei Reruns)
+        dk = None
+        import re as _re
+        mm = _re.search(r'(?:THESIS \w+:|thesis_id[=:])\s*([A-Z0-9_\-]+)', message)
+        if mm:
+            dk = f'thesis_{mm.group(1)}'
+        return _dispatch(message, tier=tier, category='thesis', dedupe_key=dk)
     except Exception as e:
         print(f"[thesis_engine] Discord-Alert fehlgeschlagen: {e}")
         return False

@@ -929,6 +929,19 @@ def calculate_conviction(
     decay_dna_mod, decay_dna_reason = _apply_decay_and_dna(strategy)
     total = max(0, min(100, total + decay_dna_mod))
 
+    # ── K1 — Victor-Feedback Trust-Malus ─────────────────────────────────
+    trust_mod = 0.0
+    trust_reason = ''
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(DATA_DIR.parent / 'scripts'))
+        from victor_feedback import get_trust_malus as _get_trust_malus
+        trust_mod, trust_reason = _get_trust_malus(strategy=strategy, ticker=ticker)
+        if trust_mod != 0:
+            total = max(0, min(100, total + trust_mod))
+    except Exception as _e:
+        pass
+
     # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
     crowd_mod = 0
     if total >= 40:

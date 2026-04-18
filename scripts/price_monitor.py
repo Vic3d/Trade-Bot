@@ -55,10 +55,23 @@ def is_market_hours() -> bool:
 
 
 def send_alert(msg: str):
-    """Discord-Alert — direkt, kein LLM."""
+    """Discord-Alert via Dispatcher (Phase 22.4 Priority-Tiering).
+    Auto-Tier nach Keyword:
+      HIGH   — STOP getroffen, TARGET erreicht, Entry-Trigger, VIX-Spike
+      MEDIUM — Trailing Stop Anpassung
+      LOW    — Stop sehr nah (Frühwarnung)
+    """
     try:
-        from discord_sender import send
-        send(msg)
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        m = msg.upper()
+        if any(k in m for k in ('STOP GETROFFEN', 'TARGET ERREICHT',
+                                 'ENTRY-TRIGGER', 'VIX-SPIKE', '🔴', '🟢', '🎯', '⚡')):
+            tier = TIER_HIGH
+        elif 'TRAILING' in m or '🔄' in m:
+            tier = TIER_MEDIUM
+        else:
+            tier = TIER_LOW
+        _dispatch(msg, tier=tier, category='trade')
     except Exception as e:
         print(f"[ALERT FAIL] {e}: {msg[:80]}")
 

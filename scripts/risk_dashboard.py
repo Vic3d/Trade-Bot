@@ -322,7 +322,12 @@ def compose_morning(state: dict) -> str:
                 corr_matrix=sub_corr, tickers=sub_tickers, fund_total=fund,
             )
             if danger:
-                cluster_warn = f'\n⚠️  **{len(danger)} kritische Cluster** — Details im Abend-Dashboard'
+                # K4 — Namen der kritischen Cluster direkt in die Notification
+                _cluster_names = []
+                for d in danger[:3]:
+                    _cluster_names.append(', '.join(d.get('tickers', [])[:5]))
+                _csummary = ' | '.join(_cluster_names)
+                cluster_warn = f'\n⚠️  **{len(danger)} kritische Cluster (corr>0.7):** {_csummary}'
 
     return (
         f'📊 **Risk Dashboard** ({date.today().isoformat()})\n'

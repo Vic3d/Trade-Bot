@@ -98,6 +98,8 @@ SCHEDULE = [
     ('State Sync',          'state_sync.py',           [],                        23, 5,  None),
     # P2.13 — Memory-Index regenerieren (queryable history)
     ('Memory Index',        'memory_index.py',         [],                        23, 30, None),
+    # K1 — Victor-Feedback Trust-Score (täglich aus Reactions berechnen)
+    ('Victor Trust',        'victor_feedback.py',      [],                        23, 20, None),
     # ── Phase 4/5/6.7/6.9: Integrity + Truth Jobs ──
     ('Fund Reconciliation', 'fund_reconciliation.py',  [],                        23, 15, None),   # tgl. 23:15 nach State Sync
     ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
@@ -148,14 +150,14 @@ SCHEDULE = [
     ('Proposal Executor',   'proposal_executor.py',            [],                18, 25, [0,1,2,3,4]),
     ('Proposal Executor',   'proposal_executor.py',            [],                20, 25, [0,1,2,3,4]),
     ('Proposal Executor',   'proposal_executor.py',            [],                22, 25, [0,1,2,3,4]),
-    # ── Phase 18: Autonomous Pipeline (alle 2h, globale Abdeckung) ──
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                 9, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                13, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                15, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                17, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                19, 0,  [0,1,2,3,4]),
-    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                21, 0,  [0,1,2,3,4]),
+    # ── Phase 18: Autonomous Pipeline (alle 2h, K8: xx:10 NACH Watchdog xx:05) ──
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                 9, 10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                13,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                15,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                17,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                19,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                21,10, [0,1,2,3,4]),
     # ── Phase 16: Signal-Level Learning (Sonntag Vormittag) ──
     ('Signal Learning',     'intelligence/signal_learning.py', [],                9,  30, [6]),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
@@ -323,15 +325,50 @@ def check_heartbeat_age() -> tuple[bool, str]:
 # Wenn Predecessor älter als max_age oder nie gelaufen → Skip mit Warning.
 JOB_DEPENDENCIES: dict[str, tuple[str, float]] = {
     'Risk Dashboard AM':   ('Correlation Matrix', 6.0),
-    'Risk Dashboard PM':   ('Correlation Matrix', 24.0),
+    'Risk Dashboard PM':   ('Correlation Matrix', 8.0),   # K6 — vorher 24h (zu lasch)
     'Daily Learning':      ('Equity Snapshot',    1.0),
     'State Sync':          ('Daily Learning',     1.0),
     'Honesty Report':      ('Readiness Tracker',  1.0),
     'Proposal Executor':   ('Position Watchdog',  1.0),
+    # K7 — fehlende Dependencies
+    'Thesis Discovery':    ('Macro Brain',        2.0),   # Regime-Prompt aktuell halten
+    'Autonomous CEO':      ('Risk Dashboard AM',  12.0),  # nicht blind tradieren
+    'Memory Index':        ('State Sync',         2.0),   # vollständige History
+    'Victor Trust':        ('State Sync',         2.0),   # nach State-Konsolidierung
 }
 
-# In-Memory Tracker für letzten erfolgreichen Lauf pro Job-Name
+# K5 — Persistenter Tracker (überlebt Scheduler-Restarts)
+_LAST_SUCCESS_FILE = WS / 'data' / 'scheduler_last_success.json'
 _LAST_SUCCESS: dict[str, datetime] = {}
+
+
+def _load_last_success() -> None:
+    """K5 — Lädt letzte Erfolgs-Timestamps aus JSON."""
+    global _LAST_SUCCESS
+    try:
+        if _LAST_SUCCESS_FILE.exists():
+            raw = json.loads(_LAST_SUCCESS_FILE.read_text(encoding='utf-8'))
+            for name, ts in raw.items():
+                try:
+                    dt = datetime.fromisoformat(str(ts))
+                    # Berlin-TZ konsistent halten
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=_BERLIN)
+                    _LAST_SUCCESS[name] = dt
+                except Exception:
+                    continue
+    except Exception as e:
+        print(f'[scheduler] load_last_success fail: {e}', flush=True)
+
+
+def _save_last_success() -> None:
+    """K5 — Persistiert aktuelle Erfolgs-Timestamps (nach jedem Job-Erfolg aufrufen)."""
+    try:
+        _LAST_SUCCESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        out = {name: dt.isoformat() for name, dt in _LAST_SUCCESS.items()}
+        _LAST_SUCCESS_FILE.write_text(json.dumps(out, indent=2), encoding='utf-8')
+    except Exception as e:
+        print(f'[scheduler] save_last_success fail: {e}', flush=True)
 
 
 def check_dependency(name: str) -> tuple[bool, str]:
@@ -367,6 +404,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
             output = result.stdout.strip()
             # P1.8 — Erfolg im Dependency-Tracker vermerken
             _LAST_SUCCESS[name] = datetime.now(_BERLIN)
+            _save_last_success()  # K5 — persistieren
             if discord and output and len(output) > 20 and 'KEIN_SIGNAL' not in output:
                 notify(output[:1900])
                 log(f'✅ {name}: OK + Discord gesendet')
@@ -452,6 +490,9 @@ def scheduler_loop():
     except Exception as e:
         log(f'⚠️  Albert Discord-Chat konnte nicht gestartet werden: {e}')
 
+    _load_last_success()  # K5 — persistenten Tracker laden (überlebt Restart)
+    log(f'📦 Dependency-Tracker: {len(_LAST_SUCCESS)} Einträge geladen')
+
     last_run = {}  # Verhindert Doppel-Ausführungen
 
     while True:
@@ -478,6 +519,14 @@ def scheduler_loop():
                 _ok, _dep_reason = check_dependency(name)
                 if not _ok:
                     log(f'⏭️  {name}: {_dep_reason}')
+                    # K4 — Discord-Alert bei wichtigen Skips (nur kritische Jobs)
+                    _critical = {'Daily Learning', 'State Sync', 'Risk Dashboard AM',
+                                 'Autonomous CEO', 'Memory Index'}
+                    if name in _critical:
+                        _skip_key = f'skip_notify_{name}_{now.strftime("%Y-%m-%d")}'
+                        if _skip_key not in last_run:
+                            last_run[_skip_key] = True
+                            notify(f'⚠️ **{name} übersprungen** — {_dep_reason}')
                     continue
 
                 success = run_job(name, script, args, discord=discord_send)
