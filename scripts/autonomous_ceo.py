@@ -336,7 +336,7 @@ DEINE AUFGABE:
 TRADING-REGELN (ABSOLUT):
 - Nur Trades mit CRV ≥ 2:1
 - Stop-Loss IMMER gesetzt
-- Max 3 neue Trades pro Woche
+- Max 7 neue Trades pro Woche (Phase 18: globaler Handel über alle Börsen)
 - Cash-Reserve min. 10% halten
 - Keine Aktien kaufen ohne begründete These
 - Bei BEARISH/CRASH-Regime: nur Thesis-Plays, keine spekulativen Entries

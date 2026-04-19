@@ -132,13 +132,21 @@ SCHEDULE = [
     ('Proposal Expirer',    'proposal_expirer.py',     [],                        14, 30, None),   # mittags nochmal
     ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
     ('Archive Stale Trades','archive_stale_trades.py', [],                         3,  0, [6]),    # So nur
+    # Phase 24 aggressive: stündlich 08-22h (vorher alle 2h) + max 8/Run
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     8, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     9, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    10, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    11, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    12, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    13, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    14, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    15, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    16, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    17, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    18, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    19, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    20, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    21, 10, None),
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    22, 10, None),
     # ── Phase 7: Validierungs-Jobs (vor Honesty Report) ──
     ('Verdict Accuracy',    'verdict_accuracy_tracker.py', [],                    21, 50, None),
