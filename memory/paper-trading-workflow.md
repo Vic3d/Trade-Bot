@@ -107,7 +107,7 @@ Für jeden geschlossenen Trade:
 ❌ **Momentum-Chasing** — "Die Aktie ist +5% → kaufen!" (HAG.DE + TTE.PA Fehler 17.03.)
 ❌ **FOMO** — "Alle reden über X, ich muss rein!"
 ❌ **Revenge-Trading** — "Ich hab verloren, jetzt muss ich es zurückholen"
-❌ **Overtrading** — Max 2-3 neue Positionen pro Woche
+❌ **Overtrading** — Max 7 neue Positionen pro Woche (Phase 18: war 3, jetzt globaler Handel)
 ❌ **Hoffnung statt Analyse** — "Die kommt schon wieder" bei gebrochenem Stop
 ❌ **Tagestrends nachlaufen** — Grüne Kerze ≠ Kaufsignal
 

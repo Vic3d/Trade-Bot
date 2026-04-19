@@ -20,7 +20,7 @@ Albert agiert als AI-CEO: er scannt Nachrichten, bewertet Thesen, führt Trades 
 1. **Deep Dive vor jedem Trade** — Keine Aktie kaufen ohne vollständigen 6-Schritt Deep Dive
 2. **Thesen-basiert** — Erst Thesis, dann Trade. Nie Momentum-Chasing.
 3. **Keine permanenten Blacklists** — Strategien/Aktien werden durch Deep Dive dynamisch bewertet, nicht statisch geblockt
-4. **Max 2-3 neue Positionen pro Woche** — Qualität über Quantität
+4. **Max 7 neue Positionen pro Woche** — Qualität über Quantität (Phase 18: war 3, jetzt globaler Handel)
 5. **Stop-Loss ist heilig** — Kein "Hoffnung statt Stop"
 6. **Alles updaten = deploy** — Victor sagt "Alles updaten" → Claude committed, pushed, deployed via SSH
 
@@ -80,7 +80,7 @@ Reihenfolge der Guards in `execute_paper_entry()`:
 - 0c2: **Deep Dive Verdict Gate** — braucht KAUFEN-Verdict < 14 Tage
 - 0: CEO Directive (BEARISH = nur Thesis-Plays)
 - 0d: Deep Dive Pre-Trade (Falling Knife + 40% unter 52W-Hoch)
-- 2b: **Wöchentliches Trade-Limit** max 3/Woche
+- 2b: **Wöchentliches Trade-Limit** max 7/Woche
 - 6b: Position < 15% vom Fund
 - 6c: Cash-Reserve > 10% nach Trade
 
@@ -104,7 +104,7 @@ Reihenfolge der Guards in `execute_paper_entry()`:
 |-------|------|-----------------|
 | Entry-Fenster | 17-22h CET (51% WR) | `autonomous_scanner.py` + `paper_trade_engine.py` |
 | Position-Größe | max 1.500€ | `paper_trade_engine.py` Guard 6b |
-| Trades/Woche | max 3 | `paper_trade_engine.py` Guard 2b |
+| Trades/Woche | max 7 | `paper_trade_engine.py` Guard 2b |
 | Cash-Reserve | min 10% | `paper_trade_engine.py` Guard 6c |
 | Stop-Loss | -8% hard | `paper_exit_manager.py` |
 | CRV | min 2:1 | `paper_trade_engine.py` Guard 0c |

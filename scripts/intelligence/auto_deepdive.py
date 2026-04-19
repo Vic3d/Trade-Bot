@@ -49,7 +49,7 @@ MACRO_FILE = DATA / 'macro_regime.json'
 FLIP_LOG = DATA / 'auto_deepdive_flips.json'
 
 # Guardrails
-REFRESH_IF_AGE_DAYS = 10  # refresh before 14-day Guard 0c2 cutoff
+REFRESH_IF_AGE_DAYS = 5  # Phase 24 aggressive: 10→5 (häufigere Verdict-Refreshes)
 KAUFEN_MIN_CONVICTION = 55
 WARTEN_MIN_CONVICTION = 35
 

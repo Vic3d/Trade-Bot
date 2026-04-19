@@ -381,7 +381,7 @@ def _queue_deepdives_from_news(high_priority: list[dict]) -> None:
     # Atomic write — nur die 50 neuesten behalten
     try:
         DEEPDIVE_QUEUE_FILE.write_text(
-            json.dumps(queue[-50:], indent=2, ensure_ascii=False),
+            json.dumps(queue[-150:], indent=2, ensure_ascii=False),  # Phase 24 aggressive: 50→150
             encoding='utf-8',
         )
     except Exception as e:

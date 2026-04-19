@@ -62,16 +62,16 @@ def _has_fresh_verdict(ticker: str) -> bool:
         return False
 
 
-def process_queue(max_n: int = 3, dry_run: bool = False) -> dict:
+def process_queue(max_n: int = 8, dry_run: bool = False) -> dict:
     queue = _load(QUEUE_FILE, [])
     if not isinstance(queue, list):
         return {'error': 'bad_queue_format'}
 
     # Sortiere nach Score DESC, dann Age DESC
-    cutoff_12h = (datetime.now(_BERLIN) - timedelta(hours=12)).isoformat()
+    cutoff_12h = (datetime.now(_BERLIN) - timedelta(hours=36)).isoformat()  # Phase 24 aggressive: 12→36h
     fresh = [q for q in queue
              if isinstance(q, dict)
-             and q.get('ts', '') > cutoff_12h
+             and q.get('ts', '') > cutoff_12h  # 36h Window (Phase 24 aggressive)
              and not _has_fresh_verdict(q.get('ticker', ''))]
     fresh.sort(key=lambda q: (q.get('score', 0), q.get('ts', '')), reverse=True)
 
@@ -119,7 +119,7 @@ def process_queue(max_n: int = 3, dry_run: bool = False) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--max', type=int, default=3)
+    ap.add_argument('--max', type=int, default=8)  # Phase 24 aggressive: 3→8
     ap.add_argument('--dry-run', action='store_true')
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO,

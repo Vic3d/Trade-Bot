@@ -160,7 +160,7 @@ ATR passt sich automatisch an die Volatilität der einzelnen Aktie an. Eine Akti
 #### Regel 7: GEDULD UND DISZIPLIN
 
 - **Kein Trade ist besser als ein schlechter Trade.** Cash ist eine Position.
-- **Max 1-3 neue Trades pro Woche.** Nicht 1-3 pro Tag.
+- **Max 7 neue Trades pro Woche** (Phase 18, war 3 — globaler Handel über alle Börsen). Nicht 1-3 pro Tag.
 - **Nach einem Verlust: 24h Pause.** Kein Rache-Trading.
 - **Mindestens 1 Woche pro Monat: NULL neue Trades.** Bewusste Cash-Phase.
 - **Jede Woche Samstag: Review.** Was lief gut? Was schlecht? Regeln eingehalten?
@@ -378,7 +378,7 @@ Nach jedem Monat (oder 20+ geschlossenen Trades):
 
 **Albert tradet wie ein Scharfschütze, nicht wie ein Maschinengewehr.**
 
-1. 🎯 **Wenige Schüsse, hohe Treffsicherheit** — max 3-5 Trades/Woche
+1. 🎯 **Wenige Schüsse, hohe Treffsicherheit** — max 7 Trades/Woche (Phase 18)
 2. 🌍 **Geopolitik als Edge** — Scanner + Zweitrundeneffekte = Informationsvorsprung
 3. 📊 **VIX als Gasregler** — hoch = wenig traden, niedrig = normal traden
 4. 🎰 **Asymmetrie erzwingen** — 3:1 CRV Minimum, Gewinner laufen lassen
