@@ -46,7 +46,7 @@ SECTOR_ETFS = {
 }
 
 
-def _ret(ticker: str, days: int) -> float | None:
+def _ret_db(ticker: str, days: int) -> float | None:
     try:
         c = sqlite3.connect(str(DB))
         rows = c.execute(
@@ -63,6 +63,30 @@ def _ret(ticker: str, days: int) -> float | None:
         return (latest - oldest) / oldest * 100
     except Exception:
         return None
+
+
+def _ret_yf(ticker: str, days: int) -> float | None:
+    """Fallback: live via yfinance (Sektor-ETFs sind oft nicht in der DB)."""
+    try:
+        import yfinance as yf
+        period = '1mo' if days <= 25 else '3mo'
+        h = yf.Ticker(ticker).history(period=period, auto_adjust=False)
+        if len(h) < days + 1:
+            return None
+        latest = float(h['Close'].iloc[-1])
+        oldest = float(h['Close'].iloc[-(days + 1)])
+        if oldest <= 0:
+            return None
+        return (latest - oldest) / oldest * 100
+    except Exception:
+        return None
+
+
+def _ret(ticker: str, days: int) -> float | None:
+    r = _ret_db(ticker, days)
+    if r is not None:
+        return r
+    return _ret_yf(ticker, days)
 
 
 def compute() -> dict:
