@@ -444,6 +444,16 @@ def _execute_paper_entry_inner(
             'blocked_by': 'invalid_stop',
         }
 
+    # ── P25-6: ATR-basierter Stop-Adjust (Cap auf -10%) ──────────
+    try:
+        from stop_calculator import adjust_stop_if_too_wide
+        _adj_stop, _adj_reason = adjust_stop_if_too_wide(ticker, entry_price, stop_price)
+        if _adj_reason:
+            print(f'[P25-6 ATR-Stop] {ticker}: {_adj_reason}')
+            stop_price = _adj_stop
+    except Exception as _e:
+        pass  # Fallback: Stop unverändert
+
     # ── Guard 0c: Minimum CRV 2:1 ──────────────────────────────────
     _reward = abs(target_price - entry_price)
     _risk = abs(entry_price - stop_price)
