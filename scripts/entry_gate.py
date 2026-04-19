@@ -374,6 +374,32 @@ class EntryGate:
         else:
             reason = "OK (Quelle unbekannt, Warnung)"
 
+        # ── P25-5 Earnings-Blackout-Check ─────────────────────────────────
+        # Block wenn Earnings in <3 Tagen — ausser Strategy-Genesis nennt
+        # Earnings explizit als Katalysator (z.B. PM-Earnings-Plays).
+        try:
+            from earnings_calendar import is_earnings_blackout
+            blocked, e_reason = is_earnings_blackout(ticker)
+            if blocked:
+                # Strategy-Override prüfen
+                allow_earnings = False
+                try:
+                    import json as _j
+                    s_path = self.db_path.parent.parent / 'data' / 'strategies.json' if hasattr(self, 'db_path') else None
+                    if s_path and s_path.exists():
+                        sd = _j.loads(s_path.read_text(encoding='utf-8'))
+                        cfg = sd.get(strategy_id, {})
+                        genesis = (cfg.get('genesis_thesis', '') or cfg.get('thesis', '')).lower()
+                        if 'earnings' in genesis or 'quartal' in genesis or 'q1' in genesis or 'q2' in genesis or 'q3' in genesis or 'q4' in genesis:
+                            allow_earnings = True
+                            warnings.append(f'Earnings-Override: Strategy-Genesis erlaubt ({e_reason})')
+                except Exception:
+                    pass
+                if not allow_earnings:
+                    return {'allowed': False, 'reason': f'Earnings-Blackout: {e_reason}', 'warnings': warnings, 'tier': tier}
+        except Exception:
+            pass  # Modul fehlt oder Cache leer → kein Block
+
         return {'allowed': True, 'reason': reason, 'warnings': warnings, 'tier': tier}
 
 

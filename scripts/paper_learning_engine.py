@@ -104,29 +104,58 @@ def time_bucket(hour: int | None) -> str:
     return 'evening'
 
 
+def _recency_weight(exit_date_str: str | None, half_life_days: int = 60) -> float:
+    """
+    P25-8: Exponentieller Recency-Decay.
+    Trade von heute → 1.0, Trade von vor 60d → 0.5, vor 120d → 0.25.
+
+    Formel: weight = 0.5 ** (age_days / half_life_days)
+    """
+    if not exit_date_str:
+        return 1.0
+    try:
+        from datetime import datetime as _dt
+        # Akzeptiert YYYY-MM-DD oder ISO
+        ed = _dt.fromisoformat(str(exit_date_str)[:19].replace('T', ' '))
+        age_days = max(0, (_dt.utcnow() - ed).days)
+        return 0.5 ** (age_days / half_life_days)
+    except Exception:
+        return 1.0
+
+
 def build_strategy_stats(trades: list, source: str) -> dict:
-    """Berechnet Win-Rate, Avg P&L, etc. pro Strategie."""
+    """Berechnet Win-Rate, Avg P&L, etc. pro Strategie. P25-8: mit Recency-Decay."""
     stats = defaultdict(lambda: {'wins': 0, 'losses': 0, 'total_pnl': 0.0,
-                                  'pnl_list': [], 'source': source})
+                                  'pnl_list': [], 'source': source,
+                                  'weighted_wins': 0.0, 'weighted_losses': 0.0,
+                                  'weighted_pnl': 0.0, 'weight_sum': 0.0})
     for t in trades:
         strat = t.get('strategy') or 'UNKNOWN'
-        # Normalisiere Strategie-ID (z.B. "DT1-momentum" → "DT1")
         strat_base = strat.split('-')[0] if '-' in strat else strat
         pnl = t.get('pnl_eur') or 0
         pnl_pct = t.get('pnl_pct') or 0
+
+        # P25-8 Recency-Decay
+        w = _recency_weight(t.get('exit_date') or t.get('close_date'))
+
         stats[strat_base]['total_pnl'] += pnl
         stats[strat_base]['pnl_list'].append(pnl_pct)
-        # Swing: CLOSED=WIN wenn pnl>0, Day: status WIN/LOSS
-        if source == 'swing':
-            if pnl > 0:
-                stats[strat_base]['wins'] += 1
-            else:
-                stats[strat_base]['losses'] += 1
+        stats[strat_base]['weighted_pnl'] += pnl * w
+        stats[strat_base]['weight_sum'] += w
+
+        is_win = (pnl > 0) if source == 'swing' else (t.get('status') == 'WIN')
+        if is_win:
+            stats[strat_base]['wins'] += 1
+            stats[strat_base]['weighted_wins'] += w
         else:
-            if t.get('status') == 'WIN':
-                stats[strat_base]['wins'] += 1
-            else:
-                stats[strat_base]['losses'] += 1
+            stats[strat_base]['losses'] += 1
+            stats[strat_base]['weighted_losses'] += w
+
+    # Add weighted_win_rate field
+    for s, v in stats.items():
+        ws = v['weighted_wins'] + v['weighted_losses']
+        v['weighted_win_rate'] = (v['weighted_wins'] / ws) if ws > 0 else 0.0
+
     return dict(stats)
 
 

@@ -28,7 +28,7 @@ WS       = Path('/data/.openclaw/workspace')
 DB_PATH  = WS / 'data' / 'trading.db'
 DATA_DIR = WS / 'data'
 
-ENTRY_THRESHOLD = 45  # Minimum conviction score to enter a trade
+ENTRY_THRESHOLD = 50  # Phase 25: war 45, jetzt 50 (höhere Selektion)
 
 # Adaptive Gewichte — werden wöchentlich aus Trade-Ergebnissen berechnet
 CONVICTION_WEIGHTS_FILE = DATA_DIR / 'conviction_weights.json'
@@ -593,18 +593,25 @@ def get_position_size(
     stop_price: float,
 ) -> int:
     """
-    Risk-based position sizing:
-      score >= 60: 2% risk (STRONG)
-      score >= 45: 1% risk (MODERATE)
+    Phase 25 — Conviction-Brackets:
+      score >= 70: 2.5% risk (HIGH_CONVICTION)  → ~2.000€ Position
+      score >= 60: 2.0% risk (STRONG)           → ~1.500€ Position
+      score >= 50: 1.0% risk (MODERATE)         → ~1.000€ Position
       else:        0 shares (skip)
 
-    Capped at 5% of portfolio per position.
+    Capped at 8% of portfolio per position (war 5%, jetzt mehr Spielraum für High-Conviction).
     Returns number of shares (integer).
     """
     if score < ENTRY_THRESHOLD:
         return 0
 
-    risk_pct = 0.02 if score >= 60 else 0.01
+    if score >= 70:
+        risk_pct = 0.025
+    elif score >= 60:
+        risk_pct = 0.02
+    else:
+        risk_pct = 0.01
+
     risk_per_share = entry_price - stop_price
     if risk_per_share <= 0:
         return 0
@@ -612,8 +619,8 @@ def get_position_size(
     risk_amount = portfolio_value * risk_pct
     shares = int(risk_amount / risk_per_share)
 
-    # Cap at 5% of portfolio per position
-    max_shares = int(portfolio_value * 0.05 / entry_price)
+    # Cap at 8% of portfolio per position (Phase 25: war 5%)
+    max_shares = int(portfolio_value * 0.08 / entry_price)
     return min(shares, max_shares)
 
 
@@ -940,6 +947,53 @@ def calculate_conviction(
         if trust_mod != 0:
             total = max(0, min(100, total + trust_mod))
     except Exception as _e:
+        pass
+
+    # ── P25-2 — Sektor-Wetter Modifier ───────────────────────────────────
+    sector_mod = 0
+    sector_reason = ''
+    try:
+        from sector_strength import get_sector_modifier as _get_sector_mod
+        sector_mod, sector_reason = _get_sector_mod(ticker)
+        if sector_mod != 0:
+            total = max(0, min(100, total + sector_mod))
+    except Exception:
+        pass
+
+    # ── P25-9 — Multi-Timeframe Check (Daily + Weekly beide bullish) ─────
+    mtf_mod = 0
+    mtf_reason = ''
+    try:
+        import sqlite3 as _sqlite
+        _conn = _sqlite.connect(str(DATA_DIR / 'trading.db'))
+        rows = _conn.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 60",
+            (ticker.upper(),),
+        ).fetchall()
+        _conn.close()
+        if len(rows) >= 50:
+            closes = [float(r[0]) for r in rows]
+            # Daily-Trend: Preis vs MA20
+            ma20 = sum(closes[:20]) / 20
+            daily_bull = closes[0] > ma20
+            # Weekly-Trend: 5d-Preis vs 25d-Preis (Proxy für W1 vs W5)
+            avg_recent = sum(closes[:5]) / 5
+            avg_prior = sum(closes[20:45]) / 25 if len(closes) >= 45 else sum(closes[20:]) / max(1, len(closes) - 20)
+            weekly_bull = avg_recent > avg_prior
+            if daily_bull and weekly_bull:
+                mtf_mod = +3
+                mtf_reason = 'D+W beide bullish'
+            elif daily_bull and not weekly_bull:
+                mtf_mod = -2
+                mtf_reason = 'D bull, W bear (Counter-Trend)'
+            elif not daily_bull and weekly_bull:
+                mtf_mod = -1
+                mtf_reason = 'D bear in W-Uptrend (Pullback)'
+            else:
+                mtf_mod = -3
+                mtf_reason = 'D+W beide bearish'
+            total = max(0, min(100, total + mtf_mod))
+    except Exception:
         pass
 
     # ── Optional: Crowd Reaction Modifier (-15 to +15) ────────────────────
