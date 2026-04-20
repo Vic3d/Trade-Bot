@@ -7,6 +7,7 @@ Binds the full autonomy chain into ONE process:
 
   1. News → Thesis Discovery         (intelligence/thesis_discovery.py)
   2. Watchlist → Auto Deep Dive      (intelligence/auto_deepdive.py)
+  2.5 KAUFEN-Verdict → Proposal     (intelligence/verdicts_to_proposals.py)
   3. Verdict KAUFEN → Proposal Exec  (proposal_executor.py)
   4. Open positions → Watchdog       (position_watchdog.py)
 
@@ -106,6 +107,9 @@ def run() -> dict:
     ))
     run_entry['steps'].append(_run_step(
         'Auto Deep Dive', 'intelligence/auto_deepdive.py'
+    ))
+    run_entry['steps'].append(_run_step(
+        'Verdicts → Proposals', 'intelligence/verdicts_to_proposals.py'
     ))
     run_entry['steps'].append(_run_step(
         'Proposal Executor', 'proposal_executor.py'

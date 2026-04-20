@@ -445,9 +445,11 @@ def load_current_matrix() -> tuple[np.ndarray, list[str], dict]:
     if not path.exists():
         return np.zeros((0, 0)), [], {}
     data = json.loads(path.read_text(encoding='utf-8'))
+    # Backwards-compat: alte Files schrieben 'matrix', neue 'aggregated'
+    matrix_data = data.get('matrix') or data.get('aggregated') or []
     return (
-        np.asarray(data['matrix']),
-        data['tickers'],
+        np.asarray(matrix_data),
+        data.get('tickers', []),
         data.get('metadata', {}),
     )
 

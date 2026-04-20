@@ -79,8 +79,10 @@ def _open_positions() -> list[dict]:
         c = sqlite3.connect(str(DB))
         c.row_factory = sqlite3.Row
         rows = c.execute(
-            "SELECT id, ticker, strategy, entry_price, stop, target, "
-            "shares, pnl_pct, thesis FROM trades WHERE status='OPEN'"
+            "SELECT id, ticker, strategy, entry_price, "
+            "stop_price AS stop, target_price AS target, "
+            "shares, pnl_pct, notes AS thesis "
+            "FROM paper_portfolio WHERE status='OPEN'"
         ).fetchall()
         c.close()
         for r in rows:

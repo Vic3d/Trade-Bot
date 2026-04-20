@@ -243,9 +243,9 @@ def _pct_returns(prices: list[float]) -> list[float]:
 
 def check_correlation(
     new_ticker: str,
-    threshold_block: float = 0.70,
+    threshold_block: float = 0.90,  # Victor 2026-04-20: 0.70->0.90 gelockert
     threshold_reduce: float = 0.50,
-    max_correlated: int = 2,
+    max_correlated: int = 4,  # Victor 2026-04-20: 2->4 gelockert
 ) -> dict:
     """
     Phase 21: Erweiterter Korrelations-Check mit Size-Factor.
