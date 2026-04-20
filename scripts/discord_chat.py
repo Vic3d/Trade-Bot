@@ -40,6 +40,18 @@ OPENCLAW_CFG = Path('/data/.openclaw/openclaw.json')
 STATE_FILE = DATA / 'discord_last_message.json'
 CHAT_LOG = DATA / 'discord_chat_log.jsonl'  # Persistentes Chat-Log für Claude Code
 
+
+
+def _log_chat(role, content, ts=""):
+    try:
+        from datetime import datetime as _dt
+        CHAT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        entry = {"ts": ts or _dt.now().isoformat(), "role": role, "content": content}
+        with open(CHAT_LOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception as _e:
+        print(f"[Albert] _log_chat error: {_e}", flush=True)
+
 # Discord-Konstanten
 CHANNEL_ID    = '1492225799062032484'   # Victors DM-Kanal für Albert-Chat
 VICTOR_USER_ID = '452053147620343808'   # Victor — nur seine Nachrichten verarbeiten
