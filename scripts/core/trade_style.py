@@ -51,7 +51,7 @@ STYLES: dict[str, StyleConfig] = {
         # Rauschen getroffen (Whipsaw) — siehe ERIC-B.ST id=101 17.04.2026:
         # Stop bei -2.0%, Gap auf -5.5% via STOP_MONITOR. Lesson: enge Stops
         # erhöhen Loss-Rate ohne Risk-Reduction, weil Gap-Distanz gleich bleibt.
-        min_stop_pct=4.0,            # RAISED 2.0 → 4.0 (Whipsaw-Schutz)
+        min_stop_pct=2.0,            # Victor 2026-04-20: 4.0→2.0 wieder gesenkt (Whipsaw-Schutz)
         max_stop_pct=10.0,           # Stop max 10% (für volatile Thesis-Plays)
         position_size_mult=1.0,      # Normale Positionsgröße
         description='Mehrtägig bis mehrwöchig. Kein Zwangsschluss. Thesis-getrieben.',

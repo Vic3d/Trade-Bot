@@ -109,10 +109,10 @@ def build_context() -> str:
         """).fetchall()
 
         recent_trades = conn.execute("""
-            SELECT ticker, strategy, pnl_eur, pnl_pct, exit_date, status
+            SELECT ticker, strategy, pnl_eur, pnl_pct, close_date AS exit_date, status
             FROM paper_portfolio
             WHERE status IN ('WIN','LOSS','CLOSED')
-            ORDER BY exit_date DESC LIMIT 10
+            ORDER BY close_date DESC LIMIT 10
         """).fetchall()
 
         parts.append(f'--- PORTFOLIO ---')
@@ -693,7 +693,7 @@ def execute_exit(ticker: str, reason: str, dry_run: bool = False) -> dict:
 
         conn.execute("""
             UPDATE paper_portfolio
-            SET status='CLOSED', exit_price=?, exit_date=?,
+            SET status='CLOSED', close_price=?, close_date=?,
                 pnl_eur=?, pnl_pct=?, notes=COALESCE(notes,'')||?
             WHERE id=?
         """, (exit_price, now_str, pnl_eur, pnl_pct,
@@ -764,12 +764,20 @@ def send_discord_report(message: str):
         return
 
     try:
+        # Discord REST erfordert korrekten User-Agent, sonst HTTP 403
+        _UA = 'DiscordBot (https://tradermind.app, 1.0)'
+        _base_headers = {
+            'Authorization': f'Bot {token}',
+            'Content-Type': 'application/json',
+            'User-Agent': _UA,
+        }
+
         # DM-Kanal öffnen
         payload = json.dumps({'recipient_id': VICTOR_USER_ID}).encode()
         req = urllib.request.Request(
             'https://discord.com/api/v10/users/@me/channels',
             data=payload,
-            headers={'Authorization': f'Bot {token}', 'Content-Type': 'application/json'},
+            headers=_base_headers,
         )
         with urllib.request.urlopen(req, timeout=10) as r:
             channel = json.loads(r.read())
@@ -785,7 +793,7 @@ def send_discord_report(message: str):
             msg_req = urllib.request.Request(
                 f'https://discord.com/api/v10/channels/{channel_id}/messages',
                 data=msg_payload,
-                headers={'Authorization': f'Bot {token}', 'Content-Type': 'application/json'},
+                headers=_base_headers,
             )
             urllib.request.urlopen(msg_req, timeout=10)
 

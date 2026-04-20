@@ -35,10 +35,11 @@ WORKSPACE = Path('/data/.openclaw/workspace')
 PAPER_CFG = WORKSPACE / 'data' / 'paper_config.json'
 ALERT_QUEUE = WORKSPACE / 'memory' / 'alert-queue.json'
 
-ENTRY_THRESHOLD_DEFAULT = 52   # Generische Strategien
-ENTRY_THRESHOLD_THESIS  = 40   # PS_* Thesis-Plays (Deep Dive validiert) — erhöht von 35
-ENTRY_THRESHOLD = 52           # Rückwärtskompatibilität
-MAX_POSITIONS = 15        # Maximale offene Paper-Positionen
+# Victor 2026-04-20: Regeln aufs Minimum — wir müssen traden um zu lernen
+ENTRY_THRESHOLD_DEFAULT = 35   # war 52
+ENTRY_THRESHOLD_THESIS  = 30   # war 40
+ENTRY_THRESHOLD = 35           # war 52
+MAX_POSITIONS = 20        # war 15
 DEFAULT_POSITION_EUR = 2000  # € pro Position wenn keine Config
 FEE_PER_TRADE = 1.0      # Trade Republic Gebühr
 
@@ -454,15 +455,15 @@ def _execute_paper_entry_inner(
     except Exception as _e:
         pass  # Fallback: Stop unverändert
 
-    # ── Guard 0c: Minimum CRV 2:1 ──────────────────────────────────
+    # ── Guard 0c: Minimum CRV 1.3:1 (Victor 2026-04-20: von 2.0 gelockert) ─
     _reward = abs(target_price - entry_price)
     _risk = abs(entry_price - stop_price)
     _crv = _reward / _risk if _risk > 0 else 0
-    if _crv < 2.0:
+    if _crv < 1.3:
         return {
             'success': False,
             'trade_id': None,
-            'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 2.0:1 Minimum',
+            'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 1.3:1 Minimum',
             'blocked_by': 'crv_minimum',
         }
 
@@ -480,7 +481,7 @@ def _execute_paper_entry_inner(
             _rt_bps += 2 * _prof.fx_spread_bps
         _rt_pct = _rt_bps / 100.0  # bps → %
         _reward_pct = (_reward / entry_price) * 100 if entry_price else 0
-        _hurdle_pct = _rt_pct * 3.0  # need 3x cost coverage as safety margin
+        _hurdle_pct = _rt_pct * 1.5  # Victor 2026-04-20: von 3.0 auf 1.5 gelockert
         if _reward_pct < _hurdle_pct:
             return {
                 'success': False,
@@ -526,13 +527,25 @@ def _execute_paper_entry_inner(
     except Exception:
         pass  # CEO Direktive ist optional — bei Fehler weiter
 
+    # TEST-MODE bypass (24h window, Victor 2026-04-20)
+    _skip_0c2 = False
+    try:
+        import json as _tmj, datetime as _tmd
+        _tmc = _tmj.loads((WORKSPACE / "data" / "test_mode.json").read_text())
+        if _tmc.get("enabled") and _tmc.get("skip_deep_dive_gate"):
+            if _tmd.datetime.fromisoformat(_tmc["expires_at"]) > _tmd.datetime.now():
+                _skip_0c2 = True
+                print("[TEST_MODE] Guard 0c2 bypassed for " + str(ticker))
+    except Exception:
+        pass
+
     # ── Guard 0c2: Deep Dive Verdict Gate ───────────────────────────────────────
     # Philosophie: Der Deep Dive IST das Gate. Wenn eine Aktie interessant ist,
     # zuerst Deep Dive durchführen. Wenn Verdict = KAUFEN → Trade erlaubt.
     # Kein Verdict oder WARTEN/NICHT KAUFEN → Block für autonome Entries.
     # Victor kann mit source='manual' immer manuell übersteuern.
     _is_autonomous_entry = source not in ('manual', 'victor', 'cli')
-    if _is_autonomous_entry:
+    if _is_autonomous_entry and not _skip_0c2:
         try:
             _verdicts_file = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
             _verdict_data = {}
@@ -544,7 +557,13 @@ def _execute_paper_entry_inner(
 
             # Source-Validierung: nur echte Deep Dives akzeptieren
             _verdict_source = _ticker_verdict.get('source', '')
-            _trusted_sources = {'autonomous_ceo', 'discord_deepdive'}
+            # Victor 2026-04-20: auto_deepdive (rule + LLM) als trusted akzeptieren —
+            # sonst kann die autonome Pipeline nie einen Trade durchreichen.
+            _trusted_sources = {
+                'autonomous_ceo', 'discord_deepdive',
+                'auto_deepdive_rule', 'auto_deepdive_llm',
+                'albert_discord', 'deep_dive', 'Albert',
+            }
             if _verdict_source and _verdict_source not in _trusted_sources:
                 return {
                     'success': False,
@@ -612,6 +631,15 @@ def _execute_paper_entry_inner(
     # Blockiert Strategien mit historisch katastrophaler DNA (WR<30% n≥10
     # oder Regime-Mismatch). HALVE-Verdikt halbiert Position-Size unten.
     _dna_size_factor = 1.0
+    # Regime-Variable VOR dem DNA-Check holen (fix: war vorher undefined → NameError)
+    regime = 'UNKNOWN'
+    try:
+        _conn_regime = get_db()
+        from conviction_scorer import _get_current_regime as _get_reg
+        regime = _get_reg(_conn_regime) or 'UNKNOWN'
+        _conn_regime.close()
+    except Exception as _re:
+        print(f"[Guard 0-DNA] regime-lookup failed (non-fatal): {_re}")
     try:
         sys.path.insert(0, str(WORKSPACE / 'scripts' / 'intelligence'))
         from strategy_dna import check_dna_gate as _check_dna_gate
@@ -637,10 +665,12 @@ def _execute_paper_entry_inner(
         print(f"[Guard 0-DNA] check failed (non-fatal): {_e}")
 
     # ── Guard 0d: Deep Dive Pre-Trade Gate ──────────────────────────────
-    # Implementiert die Pflichtregeln aus deepdive-protokoll.md.
-    # Verhindert "Falling Knife", "kein frischer Katalysator", "Aktie läuft
-    # gegen eigenen Sektor"-Käufe — die häufigsten Bot-Fehler.
+    # Victor 2026-04-20: deaktiviert — wir müssen traden um zu lernen.
+    # Der autonome LLM-Deep-Dive entscheidet, nicht ein statischer Guard.
+    _GUARD_0D_DISABLED = True
     try:
+        if _GUARD_0D_DISABLED:
+            raise StopIteration  # springt direkt in except → Guard übersprungen
         conn_gate = get_db()
         rows_gate = conn_gate.execute(
             "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 126",
@@ -818,7 +848,7 @@ def _execute_paper_entry_inner(
     # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
     # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
     # ATOMIC LOCK: verhindert Race wenn 2 Scanner-Jobs parallel laufen
-    MAX_TRADES_PER_WEEK = 7
+    MAX_TRADES_PER_WEEK = 15  # Victor 2026-04-20: von 7 erhöht — wir müssen traden um zu lernen
     _trade_lock_fd = None
     try:
         from datetime import timedelta
@@ -895,8 +925,10 @@ def _execute_paper_entry_inner(
     NEW_POS_EST = 1500.0  # Default-Größe für die Forecast-Prüfung
     sector = get_sector(ticker)
     sector_count = get_sector_count(conn, sector)
-    max_sector = 2  # Phase 21 MVP — vorher 4
-    if sector_count >= max_sector:
+    # Victor 2026-04-20: Sektor-Limit gelockert + UNKNOWN ausgenommen
+    # (UNKNOWN = fehlendes Mapping, nicht echter Sektor-Cluster)
+    max_sector = 4  # war 2
+    if sector != 'UNKNOWN' and sector_count >= max_sector:
         conn.close()
         return {
             'success': False,
@@ -907,7 +939,7 @@ def _execute_paper_entry_inner(
     try:
         sector_eur = get_sector_exposure_eur(conn, sector)
         sector_pct_after = (sector_eur + NEW_POS_EST) / FUND_TOTAL
-        if sector_pct_after > 0.40:
+        if sector != 'UNKNOWN' and sector_pct_after > 0.60:  # war 0.40
             conn.close()
             return {
                 'success': False,
@@ -1055,7 +1087,7 @@ def _execute_paper_entry_inner(
                 position_var_share = (mvar * w_after[new_idx]) / var_after if var_after > 0 else 0.0
                 var_increase = (var_after - var_before) / var_before if var_before > 0 else float('inf')
 
-                if var_before > 50.0 and var_increase > 0.35:
+                if var_before > 50.0 and var_increase > 1.20:  # Victor 2026-04-20: 0.35→1.20
                     conn.close()
                     return {
                         'success': False,
@@ -1069,7 +1101,7 @@ def _execute_paper_entry_inner(
                         'blocked_by': 'marginal_var',
                     }
 
-                if position_var_share > 0.25 and len(open_map) >= 2:
+                if position_var_share > 0.50 and len(open_map) >= 2:  # Victor 2026-04-20: 0.25→0.50
                     conn.close()
                     return {
                         'success': False,

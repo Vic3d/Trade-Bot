@@ -35,6 +35,16 @@ DATA_DIR = WS / 'data'
 
 ENTRY_THRESHOLD = 50  # Phase 25: war 45, jetzt 50 (höhere Selektion)
 
+# TEST-MODE Override (24h-Fenster, Victor 2026-04-20)
+try:
+    import json as _tm_json, datetime as _tm_dt
+    _tm = _tm_json.loads((DATA_DIR / "test_mode.json").read_text())
+    if _tm.get("enabled") and _tm_dt.datetime.fromisoformat(_tm["expires_at"]) > _tm_dt.datetime.now():
+        ENTRY_THRESHOLD = int(_tm.get("conviction_threshold", ENTRY_THRESHOLD))
+        print(f"[TEST_MODE] conviction threshold lowered to {ENTRY_THRESHOLD}")
+except Exception:
+    pass
+
 # Adaptive Gewichte — werden wöchentlich aus Trade-Ergebnissen berechnet
 CONVICTION_WEIGHTS_FILE = DATA_DIR / 'conviction_weights.json'
 DEFAULT_WEIGHTS = {'thesis': 35, 'technical': 30, 'risk_reward': 20, 'market_context': 15}
@@ -606,7 +616,7 @@ def _score_priced_in(ticker: str, entry_price: float | None = None) -> tuple[int
 
 # ─── Factor 6: Alpha Decay + DNA ──────────────────────────────────────────────
 
-def _apply_decay_and_dna(strategy: str) -> tuple[int, str]:
+def _get_decay_dna_modifier(strategy: str) -> tuple[int, str]:
     """
     Modifier basierend auf Alpha-Decay-Trend + DNA-Kill-Warning.
 
@@ -947,7 +957,7 @@ def calculate_conviction(
             closes_3m = [r['close'] for r in rows_3m if r['close'] is not None]
             if len(closes_3m) >= 20:
                 trend_3m = (closes_3m[0] - closes_3m[-1]) / closes_3m[-1]
-                if trend_3m < -0.10:  # >10% gefallen in 3 Monaten → Downtrend
+                if trend_3m < -0.30:  # Victor 2026-04-20: -0.10→-0.30 (nur extreme Falling Knives blocken)
                     block_msg = (
                         f'BLOCK: Downtrend — Preis {entry_price:.2f} unter EMA50 {ema50:.2f} '
                         f'UND 3M-Trend {trend_3m*100:.1f}% (Falling Knife)'
@@ -982,7 +992,7 @@ def calculate_conviction(
             pass  # Kein Datenblock wenn Daten fehlen — lieber zu wenig als zu viel sperren
 
     # Hard block: thesis already fully priced in (within 5% of 52W high)
-    if priced_in_mod <= -20:
+    if priced_in_mod <= -50:  # Victor 2026-04-20: -20→-50 (priced-in nur noch Score-Malus, kein Hard-Block)
         return {
             'score': 0,
             'recommendation': 'BLOCKED',
@@ -1030,7 +1040,7 @@ def calculate_conviction(
     total = thesis_weighted + tech_weighted + rr_weighted + mkt_weighted + priced_in_mod + bt_score
 
     # ── Factor 6: Alpha Decay + DNA Modifier ─────────────────────────────
-    decay_dna_mod, decay_dna_reason = _apply_decay_and_dna(strategy)
+    decay_dna_mod, decay_dna_reason = _get_decay_dna_modifier(strategy)
     total = max(0, min(100, total + decay_dna_mod))
 
     # ── K1 — Victor-Feedback Trust-Malus ─────────────────────────────────

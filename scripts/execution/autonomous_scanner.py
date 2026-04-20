@@ -425,19 +425,6 @@ def _get_rl_confidence(data: dict, entry: float, stop: float,
 
 # ─── Preis + Technische Analyse ─────────────────────────────────────
 
-def fetch_data(ticker: str, days: int = 90) -> dict | None:
-    """Holt OHLCV + einfache Technicals für einen Ticker. Alle Preise in EUR."""
-    url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range={days}d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    try:
-        conn = get_db()
-        r = conn.execute("SELECT value FROM paper_fund WHERE key='cash'").fetchone()
-        conn.close()
-        return r['value'] if r else 5000.0
-    except Exception:
-        return 5000.0
-
-
 # ─── ATR-Berechnung ──────────────────────────────────────────────────────────
 
 def _atr(closes: list, highs: list, lows: list, period: int = 14) -> float:
@@ -746,7 +733,7 @@ def evaluate_setup(ticker: str, strategy: str, data: dict) -> dict | None:
 # ─── Paper Trade Ausführung ───────────────────────────────────────────────────
 
 def execute_paper(ticker: str, strategy: str, entry: float, stop: float,
-                  target: float, thesis: str) -> dict:
+                  target: float, thesis: str, tier: str = 'TIER_B') -> dict:
     """Führt Paper Trade aus via paper_trade_engine."""
     try:
         from paper_trade_engine import execute_paper_entry
@@ -757,7 +744,7 @@ def execute_paper(ticker: str, strategy: str, entry: float, stop: float,
             stop_price=stop,
             target_price=target,
             thesis=thesis,
-            source='autonomous_scanner_v2',
+            source=f'autonomous_scanner_v2:{tier}',
         )
         return result
     except Exception as e:
@@ -1063,7 +1050,7 @@ def run_scan(max_new_trades: int = 5) -> list:
             if open_count() >= 20:
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'max_positions'})
                 break
-            if get_free_cash() < position_cap * 0.5:
+            if get_free_cash() < 750:  # Fix: position_cap war undefined; 750 = halbes 1500€ Cap
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'low_cash'})
                 break
 
@@ -1073,7 +1060,7 @@ def run_scan(max_new_trades: int = 5) -> list:
                 time.sleep(0.2)
                 continue
 
-            setup = score_fn(data)
+            setup = evaluate_setup(ticker, strategy, data)
             if setup is None:
                 results.append({'ticker': ticker, 'tier': tier, 'status': 'no_setup',
                                  'price': data['price'], 'rsi': data.get('rsi')})
@@ -1086,7 +1073,11 @@ def run_scan(max_new_trades: int = 5) -> list:
                 time.sleep(0.2)
                 continue
 
-            entry, stop, target, reason = setup
+            # evaluate_setup returns dict {entry, stop, target, reason, crv, atr, hold_days, ...}
+            entry  = setup['entry']
+            stop   = setup['stop']
+            target = setup['target']
+            reason = setup['reason']
 
             # Phase 20: record signal (tier-based baseline conviction)
             try:
