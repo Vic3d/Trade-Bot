@@ -4624,7 +4624,7 @@ Analysiere die Gesamtlage und gib deine Einschaetzung als JSON zurueck."""
     try:
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
-            model='claude-sonnet-4-5-20250514',
+            model='claude-sonnet-4-5',
             max_tokens=1000,
             system=system_prompt,
             messages=[{'role': 'user', 'content': user_prompt}],
