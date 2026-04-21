@@ -50,7 +50,11 @@
       "TTE.PA",
       "EQNR.OL",
       "FRO",
-      "DHT"
+      "DHT",
+      "BP.L",
+      "REP.MC",
+      "GALP.LS",
+      "ENI.MI"
     ],
     "keywords_bullish": [
       "iran",
@@ -125,7 +129,19 @@
     "pnl": -14.74,
     "vix_correlation": "negative",
     "negation": "Waffenstillstand Iran/Hormuz oder WTI dauerhaft unter $78 → sofort Exit",
-    "horizon": "8-12 Wochen je nach Eskalationslauf"
+    "horizon": "8-12 Wochen je nach Eskalationslauf",
+    "last_update": "2026-04-21T08:59:27+02:00",
+    "notes": "2026-04-21: EU-Oel-Breite ergaenzt (BP.L Pence-Bug fixed, Repsol/REP.MC, Galp/GALP.LS, Eni/ENI.MI). Brent ueber 120 USD nach Iran Ceasefire-Violation",
+    "catalyst": {
+      "date": "2026-02-27",
+      "event": "Iran-Konflikt-Eskalation (Tag 53 laufend)",
+      "fired": true,
+      "fired_date": "2026-02-27",
+      "horizon_days": 90,
+      "commodities": [
+        "BRENT_OIL"
+      ]
+    }
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -271,7 +287,12 @@
     "tickers": [
       "KTOS",
       "HII",
-      "HAG.DE"
+      "HAG.DE",
+      "HO.PA",
+      "BA.L",
+      "LDO.MI",
+      "AM.PA",
+      "KOG.OL"
     ],
     "keywords_bullish": [
       "defense budget",
@@ -337,7 +358,17 @@
     "negation": "Globaler Waffenstillstand in mehreren Regionen gleichzeitig oder EU-Budgetkrise",
     "horizon": "12-16 Wochen",
     "lock_reason": "0% WR nach 3 Trades, -€7.70",
-    "locked_date": "2026-03-31"
+    "locked_date": "2026-03-31",
+    "last_update": "2026-04-21T08:59:27+02:00",
+    "notes": "2026-04-21: Erweitert um EU-Defense (Thales/HO.PA, BAE/BA.L, Leonardo/LDO.MI, Airbus/AM.PA, Kongsberg/KOG.OL) wegen Japan-Waffenexport-Lift + Iran-Spannungen",
+    "catalyst": {
+      "date": "2026-03-15",
+      "event": "EU Defense-Spending Commitment + Japan Export-Lift",
+      "fired": true,
+      "fired_date": "2026-03-15",
+      "horizon_days": 120,
+      "commodities": []
+    }
   },
   "PS4": {
     "name": "Edelmetalle/Miner",
@@ -1227,7 +1258,7 @@
     },
     "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
     "sector": "diversified",
-    "status": "active",
+    "status": "degraded",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1266,7 +1297,8 @@
     "negation": "Breakout ohne Volumen-Bestätigung oder VIX >30 (Momentum bricht zusammen)",
     "horizon": "Intraday bis 1-3 Tage",
     "tickers": [],
-    "health": "paused"
+    "health": "paused",
+    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921182+00:00)"
   },
   "DT2": {
     "name": "Mean-Reversion Oversold",
@@ -1275,9 +1307,9 @@
       "created": "2026-03-21",
       "trigger": "Überverkaufte Aktien bounced intraday zurück",
       "conviction_at_start": 3,
-      "conviction_current": 2,
+      "conviction_current": 1,
       "auto_adjusted": true,
-      "last_updated": "2026-03-27T20:15:58Z",
+      "last_updated": "2026-04-18T20:45:04Z",
       "feedback_history": [
         {
           "date": "2026-03-27",
@@ -1285,6 +1317,15 @@
           "reason": "Win-Rate 22% nach 18 Trades < 30%",
           "old_conviction": 3,
           "new_conviction": 2
+        },
+        {
+          "date": "2026-04-18",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 41% + P&L -580€ — kein Edge",
+          "old_conviction": 2,
+          "new_conviction": 1,
+          "total_pnl_eur": -579.79,
+          "win_rate": 0.408
         }
       ],
       "conviction_backtest": 3,
@@ -1294,7 +1335,7 @@
     },
     "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
     "sector": "diversified",
-    "status": "active",
+    "status": "degraded",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1333,7 +1374,8 @@
     "negation": "Kurs setzt Abwärtstrend fort ohne Bounce (kein Support gehalten)",
     "horizon": "Intraday bis 1-2 Tage",
     "tickers": [],
-    "health": "paused"
+    "health": "paused",
+    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921217+00:00)"
   },
   "DT3": {
     "name": "Gap-Fill",
@@ -1368,7 +1410,7 @@
     },
     "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
     "sector": "diversified",
-    "status": "active",
+    "status": "degraded",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1407,7 +1449,8 @@
     "negation": "Gap bleibt offen (starker Trenntag) oder Markt dreht global",
     "horizon": "Intraday",
     "tickers": [],
-    "health": "paused"
+    "health": "paused",
+    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921223+00:00)"
   },
   "DT4": {
     "name": "News-Catalyst",
@@ -1416,14 +1459,33 @@
       "created": "2026-03-21",
       "trigger": "Positive News/Earnings treiben Intraday-Bewegung",
       "conviction_at_start": 3,
-      "conviction_current": 3,
-      "auto_adjusted": false,
-      "last_updated": "2026-03-25T21:31:02Z",
-      "feedback_history": []
+      "conviction_current": 1,
+      "auto_adjusted": true,
+      "last_updated": "2026-04-19T20:45:01Z",
+      "feedback_history": [
+        {
+          "date": "2026-04-18",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 40% + P&L -858€ — kein Edge",
+          "old_conviction": 3,
+          "new_conviction": 2,
+          "total_pnl_eur": -858.47,
+          "win_rate": 0.402
+        },
+        {
+          "date": "2026-04-19",
+          "action": "conviction_decreased",
+          "reason": "Win-Rate 43% + P&L -724€ — kein Edge",
+          "old_conviction": 2,
+          "new_conviction": 1,
+          "total_pnl_eur": -724.25,
+          "win_rate": 0.433
+        }
+      ]
     },
     "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
     "sector": "diversified",
-    "status": "active",
+    "status": "degraded",
     "performance": {
       "total_trades": 79,
       "wins": 34,
@@ -1471,7 +1533,8 @@
     "negation": "News war Fehler/Gerücht oder breiter Marktabsturz übertönt Catalyst",
     "horizon": "Intraday bis 3 Tage",
     "tickers": [],
-    "locked_date": "2026-03-31"
+    "locked_date": "2026-03-31",
+    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921226+00:00)"
   },
   "_config": {
     "position_size_eur": 2000,
@@ -1724,9 +1787,26 @@
     "vix_correlation": "low",
     "negation": "Tariff-Rollback-Meldung aus Weißem Haus oder STLD dauerhaft unter $155",
     "horizon": "4-8 Wochen (Liberation Day Momentum)",
-    "locked": true,
+    "locked": false,
     "lock_reason": "Neg. Expectancy, -€500, CRV 0.1x nach 3 Trades",
-    "locked_date": "2026-03-31"
+    "locked_date": "2026-03-31",
+    "catalyst": {
+      "date": "2026-04-02",
+      "event": "Trump Liberation Day + Section 232 Stahlzoelle",
+      "fired": true,
+      "fired_date": "2026-04-02",
+      "horizon_days": 60,
+      "secondary": {
+        "date": "2026-04-22",
+        "event": "STLD Q1 Earnings Report",
+        "fired": false
+      },
+      "commodities": [
+        "HRC_STEEL"
+      ]
+    },
+    "unlocked_date": "2026-04-21",
+    "unlock_reason": "Phase 22: Katalysator-Rally bestaetigt These. HRC $680->$1050, STLD $170->$209 (+22%). Lock war zu frueh (3 Tage vor Liberation Day)."
   },
   "PS_NVO": {
     "name": "Novo Nordisk Value/Turnaround",
@@ -2025,6 +2105,16 @@
         "first_tariff_shock",
         "supply_chain_confirmation"
       ]
+    },
+    "catalyst": {
+      "date": "2026-04-02",
+      "event": "Trump Liberation Day (universal tariffs)",
+      "fired": true,
+      "fired_date": "2026-04-02",
+      "horizon_days": 90,
+      "commodities": [
+        "HRC_STEEL"
+      ]
     }
   },
   "PS19": {
@@ -2066,5 +2156,71 @@
     "preferred_regime": "BEAR_QUIET",
     "added_by": "victor",
     "added_at": "2026-04-10"
+  },
+  "PS21": {
+    "name": "DE-Energiewende & Stromnetz",
+    "thesis": "Bundesregierung Reiches plant Netzausbau-Initiative; Freileitung statt Erdkabel-Debatte. EU-Push fuer Erneuerbare. Profiteure: Netzbetreiber, Turbinenhersteller, Solar/Wind-Equipment.",
+    "tickers": [
+      "ENR.DE",
+      "RWE.DE",
+      "SIE.DE",
+      "NDX1.DE",
+      "EOAN.DE"
+    ],
+    "status": "active",
+    "regime_compatibility": [
+      "BULLISH",
+      "NEUTRAL"
+    ],
+    "stop_pct": 7.0,
+    "target_pct": 15.0,
+    "max_position_eur": 1500,
+    "min_crv": 1.5,
+    "created": "2026-04-21T08:59:27+02:00",
+    "last_update": "2026-04-21T08:59:27+02:00",
+    "source": "news_driven_2026-04-21",
+    "category": "DE-Domestic",
+    "notes": "Thesis aufgrund Handelsblatt 21.04.: Stromnetzausbau-Plaene Reiches. Catalysts: Netzentgelt-Reform, EU Green Deal Update Q2",
+    "catalyst": {
+      "date": "2026-04-21",
+      "event": "Bundesregierung Stromnetzausbau-Initiative (Reiches)",
+      "fired": true,
+      "fired_date": "2026-04-21",
+      "horizon_days": 60
+    }
+  },
+  "PS22": {
+    "name": "Bayer Monsanto-Schluss-Recovery",
+    "thesis": "Handelsblatt 20.04.: 24Mrd Schluss-Rechnung fuer Klaeger ist final - Overhang weg. Risk-Off Phase fuer Bayer beendet, Pharma-Sparte (Hauptwert) wieder im Fokus. Defensive DAX-Position mit Rebound-Optionalitaet.",
+    "tickers": [
+      "BAYN.DE"
+    ],
+    "status": "watchlist",
+    "regime_compatibility": [
+      "BULLISH",
+      "NEUTRAL",
+      "BEARISH"
+    ],
+    "stop_pct": 6.0,
+    "target_pct": 18.0,
+    "max_position_eur": 1500,
+    "min_crv": 2.0,
+    "created": "2026-04-21T08:59:27+02:00",
+    "last_update": "2026-04-21T08:59:27+02:00",
+    "source": "news_driven_2026-04-21",
+    "category": "DE-Domestic-Recovery",
+    "notes": "Catalysts: Q1-Earnings, Pharma-Pipeline Update, Settlement-Confirmation. Risiko: Reputationsschaden langfristig",
+    "catalyst": {
+      "date": "2026-04-20",
+      "event": "Monsanto Settlement-Abschluss ($24Mrd cap)",
+      "fired": true,
+      "fired_date": "2026-04-20",
+      "horizon_days": 90,
+      "secondary": {
+        "date": "2026-05-06",
+        "event": "BAYN Q1 Earnings",
+        "fired": false
+      }
+    }
   }
 }

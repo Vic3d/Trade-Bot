@@ -163,6 +163,8 @@ SCHEDULE = [
     ('Universe Decay',      'intelligence/universe_decay.py',    [],              2,  0,  None),  # tgl. 02:00 — Auto-dormant
     # ── Phase 21 Pro: Correlation Matrix + Risk Dashboard ──
     ('Correlation Matrix',  'correlation_refresh.py',            [],              7,  15, [0,1,2,3,4]),
+    # Phase 22 - Catalyst-aware Re-Eval (daily 08:00 CET)
+    ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',   [],              8,   0, [0,1,2,3,4,5,6]),
     # ── Phase 25: Sector Strength + Asia Lead + Earnings Calendar ──
     ('Sector Strength',     'sector_strength.py',                [],              7,  20, [0,1,2,3,4]),  # vor Morning Brief
     ('Asia Lead Signal',    'asia_lead_signal.py',               [],              7,   0, [0,1,2,3,4]),  # Asia-Close → vor 7:30 fertig

@@ -10,6 +10,13 @@ Gibt zurück:
 import json
 from pathlib import Path
 
+try:
+    from intelligence.catalyst_utils import is_effectively_locked
+except Exception:
+    def is_effectively_locked(s):
+        return bool(s.get('locked', False)), s.get('lock_reason', '')
+
+
 
 def load_strategies(path: str = None) -> dict:
     if path is None:
@@ -29,7 +36,8 @@ def validate_strategy(strategy_id: str, strategies: dict) -> dict:
     if missing:
         return {'valid': False, 'reason': f'Fehlende Felder: {missing}'}
 
-    if s.get('locked') or s.get('health') == 'paused':
+    _locked, _lock_reason = is_effectively_locked(s)
+    if _locked or s.get('health') == 'paused':
         return {'valid': False, 'reason': f'Strategie pausiert: {s.get("pause_reason", s.get("lock_reason", ""))}'}
 
     return {

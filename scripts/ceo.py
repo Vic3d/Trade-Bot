@@ -39,6 +39,13 @@ WS = Path(_os.getenv('TRADEMIND_HOME', _default_ws))
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from atomic_json import atomic_write_json
+
+try:
+    from intelligence.catalyst_utils import is_effectively_locked
+except Exception:
+    def is_effectively_locked(s):
+        return bool(s.get('locked', False)), s.get('lock_reason', '')
+
 # ─── Hilfsfunktionen ─────────────────────────────────────────────────────────
 
 def safe_read_json(path: Path, default=None):
@@ -987,7 +994,8 @@ def calculate_all_kelly_sizes(strategies: dict, strat_perf: dict, portfolio_valu
     for strat_id, strat_data in strategies.items():
         if strat_id.startswith('_') or strat_id == 'emerging_themes':
             continue
-        if strat_data.get('locked', False):
+        _locked, _lock_reason = is_effectively_locked(strat_data)
+        if _locked:
             continue
         if strat_data.get('status') not in ('active', 'watchlist', 'watching', None):
             continue
@@ -1612,7 +1620,8 @@ def build_trading_rules(mode: str, vix: float, strat_perf: dict, strategies: dic
             continue
 
         # Explizit gesperrt?
-        if strat_data.get('locked', False):
+        _locked, _lock_reason = is_effectively_locked(strat_data)
+        if _locked:
             blocked.append(strat_id)
             continue
 

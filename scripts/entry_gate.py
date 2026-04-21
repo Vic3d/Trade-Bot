@@ -6,6 +6,13 @@ Pflicht-Validierung vor jedem Paper Trade.
 import sqlite3, json, re, os
 from datetime import datetime, timedelta, timezone
 
+try:
+    from intelligence.catalyst_utils import is_effectively_locked
+except Exception:
+    def is_effectively_locked(s):
+        return bool(s.get('locked', False)), s.get('lock_reason', '')
+
+
 # P1.7 — Thesis-Kill Quarantäne-Registry (48h Sperre nach THESIS_INVALIDATED)
 KILL_REGISTRY_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -322,7 +329,8 @@ class EntryGate:
         if strategy in strategies:
             strat_data = strategies[strategy]
             if isinstance(strat_data, dict):
-                if strat_data.get('locked', False):
+                _locked, _lock_reason = is_effectively_locked(strat_data)
+                if _locked:
                     reason = f"Strategie '{strategy}' ist gesperrt (locked=true)"
                     self._log_blocked(ticker, strategy, 'GATE5_STRATEGY_LOCKED', reason,
                                        news_headline, news_source, regime, vix)
