@@ -648,6 +648,86 @@ def _execute_paper_entry_inner(
         except Exception:
             pass  # Fehler im Gate → defensiv durchlassen (lieber kein Block als Blockade)
 
+    # ── Guard 0-TQS: Thesis Quality Score & Autonomy Gate (Phase 22) ────────
+    # Prueft Watchlist-Status + TQS-Mode + Political-Risk-Flag.
+    # Nur fuer autonome Entries — manuell = Victor entscheidet selbst.
+    # Verhaeltnis zu Guard 0c2: 0c2 prueft Deep-Dive-Verdict (ticker-scoped),
+    # 0-TQS prueft Thesis-Ausarbeitung (strategy-scoped). Beide muessen passen.
+    if _is_autonomous_entry:
+        try:
+            sys.path.insert(0, str(WORKSPACE / 'scripts'))
+            from thesis_watchlist import get_tradable_thesis
+            from intelligence.thesis_quality_score import score_thesis as _score_thesis
+
+            _wl = get_tradable_thesis(strategy)
+
+            # Fall A: These gar nicht in Watchlist (strategy unbekannt) → durchlassen
+            # (Backward-Compat fuer Strategien ohne Phase-22-Ausarbeitung)
+            if _wl is not None:
+                _mode = _wl.get('mode', 'DRAFT')
+                _tqs = _wl.get('tqs', 0)
+                _status = _wl.get('status', 'DRAFT')
+
+                if _status not in ('ACTIVE_WATCH', 'TRIGGER_HIT'):
+                    return {
+                        'success': False, 'trade_id': None,
+                        'message': (
+                            f'❌ Guard 0-TQS: Strategy {strategy} ist nicht in ACTIVE_WATCH '
+                            f'(status={_status}). Watchlist-Rebuild erforderlich.'
+                        ),
+                        'blocked_by': 'thesis_not_active',
+                    }
+
+                if _mode == 'DRAFT':
+                    return {
+                        'success': False, 'trade_id': None,
+                        'message': (
+                            f'❌ Guard 0-TQS: Strategy {strategy} ist DRAFT (TQS={_tqs}<50). '
+                            f'Fehlend: {",".join(_wl.get("missing_fields", [])[:3])}. '
+                            f'Thesis muss ausgearbeitet werden bevor traden.'
+                        ),
+                        'blocked_by': 'thesis_quality_draft',
+                    }
+
+                if _mode == 'SEMI_AUTO':
+                    # Semi-Auto = Victor muss via Discord bestaetigen.
+                    # Autonome Pipeline darf NICHT direkt traden.
+                    return {
+                        'success': False, 'trade_id': None,
+                        'message': (
+                            f'⏸ Guard 0-TQS: Strategy {strategy} TQS={_tqs} SEMI_AUTO — '
+                            f'Victor-Approval via Discord erforderlich. '
+                            f'Missing: {",".join(_wl.get("missing_fields", [])[:3]) or "political-risk-flag"}.'
+                        ),
+                        'blocked_by': 'thesis_semi_auto_needs_approval',
+                    }
+
+                # FULL_AUTO: checke noch mal live das political_risk_flag
+                # (Watchlist kann 4h alt sein — Fresh-Check ist zur Sicherheit)
+                try:
+                    _strats_file = WORKSPACE / 'data' / 'strategies.json'
+                    _strats_cache = json.loads(_strats_file.read_text(encoding='utf-8'))
+                    _strat_live = _strats_cache.get(strategy, {})
+                    if _strat_live.get('political_risk_flag'):
+                        return {
+                            'success': False, 'trade_id': None,
+                            'message': (
+                                f'❌ Guard 0-TQS: Political-Risk-Flag aktiv auf {strategy}: '
+                                f'{_strat_live.get("political_risk_reason", "?")[:120]}. '
+                                f'Entry blockiert bis Flag clearte.'
+                            ),
+                            'blocked_by': 'political_risk_flag',
+                        }
+                except Exception:
+                    pass  # Fresh-Check nicht kritisch
+
+                print(f'[Guard 0-TQS] {strategy} TQS={_tqs} {_mode} → pass')
+
+        except Exception as _tqs_e:
+            # Fallback: wenn Imports fehlen, defensiv durchlassen
+            # (alte Pipelines sollen weiter funktionieren)
+            print(f'[Guard 0-TQS] check failed (non-fatal): {_tqs_e}')
+
     # ── Guard 0-DNA: Strategy DNA Hard Gate (P2.11) ───────────────────────
     # Blockiert Strategien mit historisch katastrophaler DNA (WR<30% n≥10
     # oder Regime-Mismatch). HALVE-Verdikt halbiert Position-Size unten.
