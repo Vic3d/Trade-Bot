@@ -196,6 +196,14 @@ SCHEDULE += [
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             20, 0,  None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             20, 30, None),
     ('Thesis Monitor',       'core/thesis_engine.py',  ['--monitor'],             21, 0,  None),
+    # ── Phase 22: Entry-Trigger-Poll (T1/T2/T3) — alle 2h waehrend Marktzeit ──
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        9,  15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        11, 15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        13, 15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        15, 15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        17, 15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        19, 15, None),
+    ('Thesis Trigger Poll',  'thesis_trigger_poll.py', [],                        21, 15, None),
     # ─────────────────────────────────────────────────────────────────────────
     # ── News Pipeline: 8x taeglich — Asien + EU + US Coverage ─────────────────
     # Asien-Session
