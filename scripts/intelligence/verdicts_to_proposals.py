@@ -76,16 +76,24 @@ def _save(p: Path, data) -> None:
 
 
 def _latest_price(ticker: str) -> float | None:
+    """Live EUR-Preis. Nutzt live_data.get_price_eur fuer GBp/NOK/DKK/SEK Konversion.
+    NEU 2026-04-21: BP.L Bug Fix - vorher wurde 556p als 556 EUR gebucht."""
     try:
-        c = sqlite3.connect(str(DB))
-        row = c.execute(
-            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
-            (ticker,),
-        ).fetchone()
-        c.close()
-        return float(row[0]) if row and row[0] is not None else None
+        from core.live_data import get_price_eur
+        p = get_price_eur(ticker)
+        return float(p) if p else None
     except Exception:
-        return None
+        try:
+            c = sqlite3.connect(str(DB))
+            row = c.execute(
+                "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
+                (ticker,),
+            ).fetchone()
+            c.close()
+            log.warning(f"{ticker}: live_data fallback - Currency-Konversion fehlt!")
+            return float(row[0]) if row and row[0] is not None else None
+        except Exception:
+            return None
 
 
 def _ema50(ticker: str) -> float | None:

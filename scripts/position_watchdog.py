@@ -61,16 +61,54 @@ def _save_json(p: Path, data) -> None:
 
 
 def _latest_price(ticker: str) -> float | None:
+    """EUR-Preis via live_data.get_price_eur (NEU 2026-04-21).
+    Vorher: roher DB-Preis -> BP.L Pence-Bug verursachte Phantom-Stops."""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent / "core"))
+        from live_data import get_price_eur
+        p = get_price_eur(ticker)
+        return float(p) if p else None
+    except Exception:
+        try:
+            c = sqlite3.connect(str(DB))
+            row = c.execute(
+                "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
+                (ticker,),
+            ).fetchone()
+            c.close()
+            return float(row[0]) if row and row[0] is not None else None
+        except Exception:
+            return None
+
+
+def _market_open_for(ticker: str) -> bool:
+    """True wenn Heimat-Boerse des Tickers gerade offen ist."""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent / "core"))
+        from market_hours import is_market_open_now
+        return bool(is_market_open_now(ticker))
+    except Exception:
+        return True  # fail-open: lieber checken als blockieren
+
+
+def _price_age_days(ticker: str) -> int:
+    """Alter des letzten DB-Preises in Tagen."""
     try:
         c = sqlite3.connect(str(DB))
         row = c.execute(
-            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
+            "SELECT date FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
             (ticker,),
         ).fetchone()
         c.close()
-        return float(row[0]) if row and row[0] is not None else None
+        if not row:
+            return 999
+        from datetime import datetime as _dt, timezone as _tz
+        last = _dt.strptime(row[0], "%Y-%m-%d").replace(tzinfo=_tz.utc)
+        return (_dt.now(_tz.utc) - last).days
     except Exception:
-        return None
+        return 999
 
 
 def _open_positions() -> list[dict]:
@@ -158,12 +196,22 @@ def _evaluate_position(pos: dict) -> dict:
     pnl_pct = ((price - entry) / entry * 100) if entry else 0
     result['pnl_pct'] = round(pnl_pct, 2)
 
-    # 1) Stop hit
+    # 1) Stop hit -- aber nur wenn Markt offen ODER Preis frisch ist
+    # (NEU 2026-04-21: verhindert Phantom-Stops auf stale Preisen)
     if stop and price <= stop:
-        result['actions'].append({
-            'severity': 'HARD',
-            'reason': f'stop hit: {price:.2f} <= {stop:.2f}',
-        })
+        market_open = _market_open_for(ticker)
+        age = _price_age_days(ticker)
+        if not market_open and age > 1:
+            result['actions'].append({
+                'severity': 'SOFT',
+                'reason': f'stop unter Wasser ({price:.2f} <= {stop:.2f}) aber Markt zu + Preis {age}d alt - warte auf Open',
+            })
+            result['status'] = 'WAITING_NEXT_OPEN'
+        else:
+            result['actions'].append({
+                'severity': 'HARD',
+                'reason': f'stop hit: {price:.2f} <= {stop:.2f}',
+            })
 
     # 2) Thesis INVALIDATED
     if strategy:

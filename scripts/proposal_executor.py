@@ -45,6 +45,25 @@ CONFIG = DATA / 'autonomy_config.json'
 EXECUTOR_LOG = DATA / 'proposal_executor_log.json'
 
 
+
+PROPOSAL_MAX_AGE_HOURS = 4  # NEU 2026-04-21: Proposals aelter als 4h sind stale
+
+
+def _proposal_too_old(p: dict) -> bool:
+    """True wenn Proposal aelter als PROPOSAL_MAX_AGE_HOURS."""
+    created = p.get('created_at')
+    if not created:
+        return False
+    try:
+        dt = datetime.fromisoformat(created)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=_BERLIN)
+        age_h = (datetime.now(_BERLIN) - dt).total_seconds() / 3600
+        return age_h > PROPOSAL_MAX_AGE_HOURS
+    except Exception:
+        return False
+
+
 def _load(p: Path, default):
     try:
         if p.exists():
@@ -237,6 +256,14 @@ def run() -> dict:
             updated.append(p)
             continue
         if p.get('status', 'active') in ('closed', 'executed', 'cancelled'):
+            updated.append(p)
+            continue
+
+        # NEU 2026-04-21: Proposal-TTL gegen Stale-Entries
+        if _proposal_too_old(p):
+            log.info(f"  {p.get('ticker', '')}: skip - proposal > {PROPOSAL_MAX_AGE_HOURS}h alt")
+            p['status'] = 'expired'
+            stats['skipped'] = stats.get('skipped', 0) + 1
             updated.append(p)
             continue
 

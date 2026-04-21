@@ -427,6 +427,27 @@ def _execute_paper_entry_inner(
     except Exception:
         pass  # Zeitcheck nicht kritisch
 
+
+    # ── Guard 0e: Marktzeit-Check (NEU 2026-04-21 nach Stop-Disaster) ─
+    # Trade nur wenn die Heimat-Borse des Tickers gerade offen ist.
+    # Master-Clock = Europe/Berlin. Verhindert Uebernacht/Wochenend-Trades
+    # mit stale Preisen die zu Phantom-Stops fuehren.
+    # Manuelle/Backtest-Quellen sind ausgenommen.
+    try:
+        if source not in ('manual', 'backtest', 'cli', 'victor'):
+            import sys as _sys2
+            _sys2.path.insert(0, str(WORKSPACE / 'scripts' / 'core'))
+            from market_hours import is_market_open_now, get_exchange
+            if not is_market_open_now(ticker):
+                _exch = get_exchange(ticker)
+                return {
+                    'success': False, 'trade_id': None,
+                    'message': f'{ticker}: {_exch} geschlossen - Trade abgelehnt (Master-Clock CET)',
+                    'blocked_by': 'market_closed',
+                }
+    except Exception:
+        pass  # Bei Modul-Fehler nicht blocken (fail-open fuer Verfuegbarkeit)
+
     # ── Guard 0: Preis-Frische ────────────────────────────────────────
     if not is_price_fresh(ticker, max_days=3):
         return {

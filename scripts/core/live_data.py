@@ -258,7 +258,12 @@ def get_price_eur(ticker: str) -> float | None:
 
 
 def is_price_fresh(ticker: str, max_days: int = MAX_PRICE_AGE_DAYS) -> bool:
-    """True wenn letzter Kurs in DB nicht älter als max_days Werktage."""
+    """Markt-bewusste Preis-Frische (NEU 2026-04-21).
+    - Markt offen: Preis muss vom heutigen Datum sein
+    - Markt zu (innerhalb Werktag): letzter Trading-Day-Close OK
+    - Wochenende: Freitag-Close OK
+    Verhindert Stale-Price-Entries (Hauptgrund AA/CCJ/ORCL Stop-Disaster).
+    """
     conn = _get_db()
     row = conn.execute(
         'SELECT date FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1',
@@ -268,7 +273,20 @@ def is_price_fresh(ticker: str, max_days: int = MAX_PRICE_AGE_DAYS) -> bool:
     if not row:
         return False
     last = datetime.strptime(row['date'], '%Y-%m-%d').replace(tzinfo=timezone.utc)
-    return (datetime.now(timezone.utc) - last).days <= max_days
+    age_days = (datetime.now(timezone.utc) - last).days
+    if age_days > max_days:
+        return False
+    # Wenn Markt aktuell offen: Preis vom heutigen Tag verlangen
+    try:
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+        from market_hours import is_market_open_now
+        if is_market_open_now(ticker) and age_days > 0:
+            return False
+    except Exception:
+        pass
+    return True
 
 
 # ─── VIX ─────────────────────────────────────────────────────────────────────
