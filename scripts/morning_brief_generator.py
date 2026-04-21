@@ -401,10 +401,18 @@ def generate_briefing() -> str:
         brent_str = f"${market.get('Brent', 'N/A')}"
         vix_str = str(market.get('VIX', 'N/A'))
         eurusd_str = str(market.get('EUR/USD', 'N/A'))
+        # Phase 22 Block auch bei leerem Events
+        try:
+            import sys as _sys
+            _sys.path.insert(0, str(Path(__file__).parent))
+            from phase22_digest_block import generate_phase22_block
+            p22 = generate_phase22_block()
+        except Exception:
+            p22 = ''
         return (
             f"📰 **Nacht-Briefing {date_str} — Keine neuen Overnight-Events**\n\n"
             f"VIX: {vix_str} | Brent: {brent_str} | EUR/USD: {eurusd_str}\n\n"
-            f"Nacht war ruhig — keine relevanten geopolitischen Events (novelty_score ≥ 0.5).\n"
+            f"{p22}\n\n"
             f"_Xetra-Briefing: 08:30_"
         )
 
@@ -532,10 +540,20 @@ def generate_briefing() -> str:
     auto_dd_section = get_auto_dd_section()
     auto_dd_block = f"\n━━ AUTO-DEEP-DIVE ━━\n{auto_dd_section}\n" if auto_dd_section else ""
 
+    # ── Phase 22 5-Block (oben einhaengen) ───────────────────────────────────
+    phase22_block = ''
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent))
+        from phase22_digest_block import generate_phase22_block
+        phase22_block = generate_phase22_block() + '\n\n'
+    except Exception as _p22e:
+        phase22_block = f'(Phase22-Block nicht verfuegbar: {_p22e})\n\n'
+
     briefing = f"""🌅 Nacht-Briefing {date_str} — 07:00 MEZ
 ({event_count} neue Events, davon {tier1_count} Tier-1)
 
-━━ EXECUTIVE SUMMARY ━━
+{phase22_block}━━ EXECUTIVE SUMMARY ━━
 {chr(10).join(exec_lines)}
 
 ━━ NEU SEIT 19:00 GESTERN ━━
