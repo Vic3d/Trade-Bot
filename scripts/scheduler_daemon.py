@@ -396,6 +396,28 @@ def write_heartbeat():
         pass
 
 
+# Fix #1 (2026-04-21): Heartbeat aus Daemon-Thread, entkoppelt vom Main-Loop.
+# Vorher: write_heartbeat() lief nur am Ende der while-True-Iteration. Wenn ein Job
+# (z.B. Autonomous Pipeline mit 91-Ticker-LLM-Pool) laenger als 180s subprocess.run()
+# blockierte, wurde der Heartbeat veraltet -> Heartbeat-Monitor restartete den Service.
+# Fix: separater Thread schreibt alle 30s, unabhaengig was im Main-Loop laeuft.
+def _heartbeat_writer_loop():
+    """Daemon-Thread: schreibt Heartbeat alle 30s - unabhaengig vom Main-Loop."""
+    while True:
+        try:
+            write_heartbeat()
+        except Exception:
+            pass
+        time.sleep(30)
+
+
+def start_heartbeat_thread():
+    """Startet den Heartbeat-Writer als Daemon-Thread."""
+    t = threading.Thread(target=_heartbeat_writer_loop, daemon=True, name='HeartbeatWriter')
+    t.start()
+    return t
+
+
 def check_heartbeat_age() -> tuple[bool, str]:
     """Prüft ob Heartbeat frisch ist. Gibt (ok, reason) zurück."""
     try:
@@ -587,6 +609,10 @@ def scheduler_loop():
     if not startup_flag.exists() or startup_flag.read_text().strip() != today_str:
         notify('🤖 **TradeMind** online')
         startup_flag.write_text(today_str, encoding="utf-8")
+
+    # Heartbeat-Thread sofort starten (Fix 2026-04-21 entkoppelt vom Main-Loop)
+    start_heartbeat_thread()
+    log('💓 Heartbeat-Writer-Thread gestartet (30s interval)')
 
     # Price Monitor sofort starten
     start_price_monitor()

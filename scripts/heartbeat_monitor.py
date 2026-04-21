@@ -36,9 +36,23 @@ LAST_ALERT_FILE = WS / 'data' / 'heartbeat_monitor_last_alert.txt'
 STATE_FILE = WS / 'data' / 'heartbeat_monitor_state.txt'  # HEALTHY oder UNHEALTHY
 
 # Schwellen
-HEARTBEAT_MAX_AGE_SEC = 180  # 3 Minuten
+HEARTBEAT_MAX_AGE_SEC = 600  # 10 Minuten (2026-04-21: erhoeht da LLM-Jobs >5min legitim)
 ALERT_COOLDOWN_MIN = 60      # max 1 Alert pro Stunde
 SERVICE_NAME = 'trademind-scheduler'
+# Fix #3 (2026-04-21): Cron-Lock - verhindert dass zwei parallele Aufrufe
+# (z.B. doppelter Cron-Eintrag oder verzoegerte Cron-Runs) BEIDE Restart triggern.
+import fcntl
+LOCK_FILE = WS / 'data' / 'heartbeat_monitor.lock'
+
+def _acquire_lock():
+    """Non-blocking flock. Gibt File-Handle zurueck oder None wenn schon gehalten."""
+    try:
+        fh = open(LOCK_FILE, 'w')
+        fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return fh
+    except (IOError, OSError):
+        return None
+
 
 sys.path.insert(0, str(WS / 'scripts'))
 
@@ -174,7 +188,21 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--test', action='store_true', help='Force UNHEALTHY flow for testing')
     args = ap.parse_args()
-    sys.exit(run(test=args.test))
+    # Fix #3: nur EIN Aufruf darf gleichzeitig laufen
+    lock_fh = _acquire_lock()
+    if lock_fh is None:
+        ts = datetime.now(timezone.utc).isoformat(timespec='seconds')
+        print(f'[{ts}] SKIP - anderer heartbeat_monitor Lauf aktiv (lock busy)')
+        sys.exit(0)
+    try:
+        sys.exit(run(test=args.test))
+    finally:
+        try:
+            import fcntl as _f
+            _f.flock(lock_fh.fileno(), _f.LOCK_UN)
+            lock_fh.close()
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
