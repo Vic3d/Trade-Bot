@@ -1180,6 +1180,33 @@ def calculate_conviction(
     except Exception:
         pass  # insider signal is optional (non-US ticker, fetch fail, etc.)
 
+    # ── Factor 8: VCP Bonus (Volatility Contraction Pattern, Dirk Mueller) ─
+    # +5 bis +8 wenn Ticker im Post-Base-Konsolidierungs-Setup ist.
+    vcp_mod = 0
+    vcp_reason = None
+    try:
+        from intelligence.vcp_detector import get_bonus_for_strategy as _vcp_bonus
+        vcp_mod, vcp_reason = _vcp_bonus(ticker)
+        if vcp_mod != 0:
+            total = max(0, min(100, total + vcp_mod))
+    except Exception:
+        pass  # VCP detector ist optional
+
+    # ── Factor 9: Mid-Term Election Year Bias ────────────────────────────
+    # +3 wenn wir in einem Mid-Term-Year post-Drawdown sind (statistisch +36% avg return)
+    midterm_mod = 0
+    midterm_reason = None
+    try:
+        mt_file = DATA_DIR / 'midterm_bias.json'
+        if mt_file.exists():
+            mt = json.loads(mt_file.read_text(encoding='utf-8'))
+            if mt.get('active') and mt.get('bias') == 'BULLISH':
+                midterm_mod = int(mt.get('conviction_bonus', 3))
+                midterm_reason = mt.get('reason', 'midterm post-drawdown')
+                total = max(0, min(100, total + midterm_mod))
+    except Exception:
+        pass
+
     # ── Sizing recommendation ─────────────────────────────────────────────
     if total >= 60:
         sizing = 'STRONG'        # 2% risk
@@ -1226,6 +1253,8 @@ def calculate_conviction(
             **({'crowd_reaction': crowd_mod} if crowd_mod != 0 else {}),
             **({'insider_signal': insider_mod} if insider_mod != 0 else {}),
             **({'options_flow': of_mod} if of_mod != 0 else {}),
+            **({'vcp_bonus': vcp_mod} if vcp_mod != 0 else {}),
+            **({'midterm_bias': midterm_mod} if midterm_mod != 0 else {}),
         },
         'factor_reasons': {
             'thesis_strength':     thesis_reason,
@@ -1238,6 +1267,8 @@ def calculate_conviction(
             **({'crowd_reaction': f'modifier {crowd_mod:+d}'} if crowd_mod != 0 else {}),
             **({'insider_signal': insider_reason} if insider_reason else {}),
             **({'options_flow': of_reason} if of_reason else {}),
+            **({'vcp_bonus': vcp_reason} if vcp_reason else {}),
+            **({'midterm_bias': midterm_reason} if midterm_reason else {}),
         },
         'position_sizing': sizing,
         'vix': vix,

@@ -148,6 +148,7 @@ SCHEDULE = [
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
+    ('Midterm Bias Refresh','midterm_election_bias.py',[],                        23, 0,  [6]),  # Sonntag
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
     # ── Geo-Watcher: stuetzen PS1 (Iran-Oel) + PS17/18 (Trade-War) ────────────
     # Beide lightweight RSS-Scraper, stuendlich aktive Stunden (07-23) 7d/Woche

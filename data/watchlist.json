@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-21T22:00:42",
+  "updated": "2026-04-21T22:28:20",
   "theses": {
     "PS1": {
       "strategy_id": "PS1",
@@ -17,7 +17,7 @@
       "missing_fields": [],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING_SECONDARY",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS2": {
@@ -38,7 +38,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS3": {
@@ -57,7 +57,7 @@
       ],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS4": {
@@ -78,7 +78,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS5": {
@@ -98,7 +98,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S1": {
@@ -118,7 +118,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S2": {
@@ -138,7 +138,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S3": {
@@ -160,7 +160,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S4": {
@@ -181,7 +181,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S5": {
@@ -201,7 +201,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S6": {
@@ -221,7 +221,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "S7": {
@@ -241,7 +241,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "DT1": {
@@ -261,7 +261,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "DT2": {
@@ -281,7 +281,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "DT3": {
@@ -301,7 +301,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "DT4": {
@@ -321,7 +321,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PT": {
@@ -341,7 +341,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS10": {
@@ -363,7 +363,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS11": {
@@ -382,7 +382,7 @@
       ],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS12": {
@@ -406,7 +406,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS13": {
@@ -430,7 +430,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS14": {
@@ -454,7 +454,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS15": {
@@ -478,7 +478,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS16": {
@@ -502,7 +502,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS17": {
@@ -526,7 +526,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS_STLD": {
@@ -541,7 +541,7 @@
       "missing_fields": [],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING_SECONDARY",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS_NVO": {
@@ -562,7 +562,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS_CCJ": {
@@ -577,7 +577,7 @@
       "missing_fields": [],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "AR-HALB": {
@@ -601,7 +601,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "AR-AGRA": {
@@ -625,7 +625,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS_LHA": {
@@ -640,7 +640,7 @@
       "missing_fields": [],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "PENDING",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS18": {
@@ -666,7 +666,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS19": {
@@ -691,7 +691,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS20": {
@@ -718,7 +718,7 @@
       ],
       "status": "DRAFT",
       "catalyst_state": "NONE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
     },
     "PS_AUTO_TARIFF_LOSERS": {
@@ -738,8 +738,72 @@
       ],
       "status": "ACTIVE_WATCH",
       "catalyst_state": "MATURE",
-      "last_updated": "2026-04-21T22:00:42",
+      "last_updated": "2026-04-21T22:28:20",
       "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_AMZN": {
+      "strategy_id": "PS_AMZN",
+      "tickers": [
+        "AMZN"
+      ],
+      "thesis": "Amazon bildet seit Q4/25 eine 6-Monats-Base auf 210-250$. AWS-KI-Wachstum (+30% YoY Run-Rate) und stabiles Retail-Margin-Delta (Marketplace-Fees + Ads) sollten bei Q1-Earnings 29.04. Base-Breakout tri",
+      "tqs": 78,
+      "grade": "B",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [
+        "Commodity-Hebel"
+      ],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:28:20",
+      "first_added": "2026-04-21T22:27:51"
+    },
+    "PS_HOOD": {
+      "strategy_id": "PS_HOOD",
+      "tickers": [
+        "HOOD"
+      ],
+      "thesis": "Robinhood ist Top-Retail-Broker mit 26M aktiven Usern und profitiert doppelt: (a) Crypto-Volumina treiben Transaction-Revenue (>40% YoY Q4/25), (b) Zinsertraege auf 24B Kundencash bleiben hoch. Aktie ",
+      "tqs": 85,
+      "grade": "A",
+      "mode": "FULL_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:28:20",
+      "first_added": "2026-04-21T22:27:51"
+    },
+    "PS_MRVL": {
+      "strategy_id": "PS_MRVL",
+      "tickers": [
+        "MRVL"
+      ],
+      "thesis": "Marvell ist Hidden-Champion im Custom-Silicon-Rennen: Design-Wins bei AWS Trainium 3, Google TPU v6, Microsoft Cobalt. Data-Center-Revenue-Anteil von 40% (2023) auf ~75% (Q1/26e) gestiegen. Aktie +97%",
+      "tqs": 73,
+      "grade": "B",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [
+        "Commodity-Hebel"
+      ],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:28:20",
+      "first_added": "2026-04-21T22:27:51"
+    },
+    "PS_BE": {
+      "strategy_id": "PS_BE",
+      "tickers": [
+        "BE"
+      ],
+      "thesis": "Bloom Energy profitiert vom Data-Center-Power-Shortage: SOFCs (Solid Oxide Fuel Cells) liefern 24/7 On-Site-Power und umgehen 5-7 Jahre Grid-Connection-Delays. Oracle/Equinix PPAs bestaetigen: 1GW Pip",
+      "tqs": 80,
+      "grade": "A",
+      "mode": "FULL_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:28:20",
+      "first_added": "2026-04-21T22:27:51"
     }
   }
 }

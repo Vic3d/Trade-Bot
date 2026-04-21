@@ -14,13 +14,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: - WKN A2DWAW nicht identifizierbar ohne externe Quelle\n- Keine DB-Eintr\u00e4ge vorhanden\n- Ticker/ISIN/Name erforderlich f\u00fcr Deep Dive Start\n- Strategie S7 Biotech-Kontext bereit sobald Asset gekl\u00e4rt\n- Pr"
+      "key_findings: - WKN A2DWAW nicht identifizierbar ohne externe Quelle\n- Keine DB-Einträge vorhanden\n- Ticker/ISIN/Name erforderlich für Deep Dive Start\n- Strategie S7 Biotech-Kontext bereit sobald Asset geklärt\n- Pr"
     ],
     "entry": 0.0,
     "stop": 0.0,
     "ziel_1": 0.0,
     "key_findings": {
-      "summary": "- WKN A2DWAW nicht identifizierbar ohne externe Quelle\n- Keine DB-Eintr\u00e4ge vorhanden\n- Ticker/ISIN/Name erforderlich f\u00fcr Deep Dive Start\n- Strategie S7 Biotech-Kontext bereit sobald Asset gekl\u00e4rt\n- Protokoll intakt wartend auf Input\n```"
+      "summary": "- WKN A2DWAW nicht identifizierbar ohne externe Quelle\n- Keine DB-Einträge vorhanden\n- Ticker/ISIN/Name erforderlich für Deep Dive Start\n- Strategie S7 Biotech-Kontext bereit sobald Asset geklärt\n- Protokoll intakt wartend auf Input\n```"
     }
   },
   "A3D42Y": {
@@ -62,13 +62,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: rise / Dilution-Risiko\n\u274c **DATEN FEHLEN** \u2014 Share Count Trend + Cash Position pr\u00fcfen\n- **Risiko:** Minen geben oft neue Aktien aus bei niedrigen Preisen\n\n**\ud83d\udea8 LEICHEN-STATUS:** UNKLAR \u2014 zu viele Datenl"
+      "key_findings: rise / Dilution-Risiko\n❌ **DATEN FEHLEN** — Share Count Trend + Cash Position prüfen\n- **Risiko:** Minen geben oft neue Aktien aus bei niedrigen Preisen\n\n**🚨 LEICHEN-STATUS:** UNKLAR — zu viele Datenl"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "rise / Dilution-Risiko\n\u274c **DATEN FEHLEN** \u2014 Share Count Trend + Cash Position pr\u00fcfen\n- **Risiko:** Minen geben oft neue Aktien aus bei niedrigen Preisen\n\n**\ud83d\udea8 LEICHEN-STATUS:** UNKLAR \u2014 zu viele Datenl\u00fccken f\u00fcr finales Urteil\n\n---\n\n## \ud83d\udcc8 SCHRITT 5: TECHNISCHER KONTEXT & CRV\n\n### Chart-Situation\n- **Langfristig (vs. MA200):** Bullish (+37% dar\u00fcber)\n- **Kurzfristig (vs. MA50):** Schwach (-8% darunter)"
+      "summary": "rise / Dilution-Risiko\n❌ **DATEN FEHLEN** — Share Count Trend + Cash Position prüfen\n- **Risiko:** Minen geben oft neue Aktien aus bei niedrigen Preisen\n\n**🚨 LEICHEN-STATUS:** UNKLAR — zu viele Datenlücken für finales Urteil\n\n---\n\n## 📈 SCHRITT 5: TECHNISCHER KONTEXT & CRV\n\n### Chart-Situation\n- **Langfristig (vs. MA200):** Bullish (+37% darüber)\n- **Kurzfristig (vs. MA50):** Schwach (-8% darunter)"
     }
   },
   "DINO": {
@@ -86,13 +86,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ber auch kein Upgrade) |\n| **Katalysator (\u226430d, spezifisch)** | \ud83d\udd34 | KEINE NEWS |\n| **Sektor-Kontext** | \u2753 | Peer-Vergleich fehlt |\n| **CRV \u22652:1** | \ud83d\udfe1 | Technisch berechenbar, aber ohne Fundament speku"
+      "key_findings: ber auch kein Upgrade) |\n| **Katalysator (≤30d, spezifisch)** | 🔴 | KEINE NEWS |\n| **Sektor-Kontext** | ❓ | Peer-Vergleich fehlt |\n| **CRV ≥2:1** | 🟡 | Technisch berechenbar, aber ohne Fundament speku"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ber auch kein Upgrade) |\n| **Katalysator (\u226430d, spezifisch)** | \ud83d\udd34 | KEINE NEWS |\n| **Sektor-Kontext** | \u2753 | Peer-Vergleich fehlt |\n| **CRV \u22652:1** | \ud83d\udfe1 | Technisch berechenbar, aber ohne Fundament spekulativ |\n\n**ERF\u00dcLLUNGSGRAD: 1/7 gr\u00fcn, 5/7 unbekannt, 1/7 rot**\n\n---\n\n## SCHRITT 6: TRADING-VERDICT & RISIKO-PARAMETER\n\n### Problem-Diagnose\n```\n1. FUNDAMENTALE BLINDHEIT\n   - Keine Bewertungsdaten (KGV"
+      "summary": "ber auch kein Upgrade) |\n| **Katalysator (≤30d, spezifisch)** | 🔴 | KEINE NEWS |\n| **Sektor-Kontext** | ❓ | Peer-Vergleich fehlt |\n| **CRV ≥2:1** | 🟡 | Technisch berechenbar, aber ohne Fundament spekulativ |\n\n**ERFÜLLUNGSGRAD: 1/7 grün, 5/7 unbekannt, 1/7 rot**\n\n---\n\n## SCHRITT 6: TRADING-VERDICT & RISIKO-PARAMETER\n\n### Problem-Diagnose\n```\n1. FUNDAMENTALE BLINDHEIT\n   - Keine Bewertungsdaten (KGV"
     }
   },
   "EQNR": {
@@ -110,13 +110,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: cht)\n\n### Prim\u00e4re Metrik: EV/EBITDA (\u00d6l-Sektor)\n**Daten fehlen \u2014 manuell pr\u00fcfen**\n\n| Bewertungsstufe | EV/EBITDA | Status |\n|---|---|---|\n| G\u00fcnstig | \u2264 6x | \u2753 |\n| Fair | 6-9x | \u2753 |\n| Teuer | > 10x | \u2753"
+      "key_findings: cht)\n\n### Primäre Metrik: EV/EBITDA (Öl-Sektor)\n**Daten fehlen — manuell prüfen**\n\n| Bewertungsstufe | EV/EBITDA | Status |\n|---|---|---|\n| Günstig | ≤ 6x | ❓ |\n| Fair | 6-9x | ❓ |\n| Teuer | > 10x | ❓"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "cht)\n\n### Prim\u00e4re Metrik: EV/EBITDA (\u00d6l-Sektor)\n**Daten fehlen \u2014 manuell pr\u00fcfen**\n\n| Bewertungsstufe | EV/EBITDA | Status |\n|---|---|---|\n| G\u00fcnstig | \u2264 6x | \u2753 |\n| Fair | 6-9x | \u2753 |\n| Teuer | > 10x | \u2753 |\n\n### Sekund\u00e4re Metrik: KCV (Kurs/Cash-Flow)\n**Daten fehlen \u2014 manuell pr\u00fcfen**\n\n### Relative Bewertung\n- **vs. Sektor-Durchschnitt:** Daten fehlen\n- **vs. historischer Durchschnitt (5J):** Daten feh"
+      "summary": "cht)\n\n### Primäre Metrik: EV/EBITDA (Öl-Sektor)\n**Daten fehlen — manuell prüfen**\n\n| Bewertungsstufe | EV/EBITDA | Status |\n|---|---|---|\n| Günstig | ≤ 6x | ❓ |\n| Fair | 6-9x | ❓ |\n| Teuer | > 10x | ❓ |\n\n### Sekundäre Metrik: KCV (Kurs/Cash-Flow)\n**Daten fehlen — manuell prüfen**\n\n### Relative Bewertung\n- **vs. Sektor-Durchschnitt:** Daten fehlen\n- **vs. historischer Durchschnitt (5J):** Daten feh"
     }
   },
   "FRO": {
@@ -134,13 +134,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: e  \nAber: **RSI 63.9 + nahe 52W-High** \u2192 kurzfristig \u00fcberhitzt\n\n### 5. **Regulatorisches Risiko / Litigation?**  \n\u2705 **Nichts in News** \u2014 sauber\n\n### 6. **Abh\u00e4ngigkeit von 1-2 Kunden?**  \n\u26a0\ufe0f **Shipping"
+      "key_findings: e  \nAber: **RSI 63.9 + nahe 52W-High** → kurzfristig überhitzt\n\n### 5. **Regulatorisches Risiko / Litigation?**  \n✅ **Nichts in News** — sauber\n\n### 6. **Abhängigkeit von 1-2 Kunden?**  \n⚠️ **Shipping"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "e  \nAber: **RSI 63.9 + nahe 52W-High** \u2192 kurzfristig \u00fcberhitzt\n\n### 5. **Regulatorisches Risiko / Litigation?**  \n\u2705 **Nichts in News** \u2014 sauber\n\n### 6. **Abh\u00e4ngigkeit von 1-2 Kunden?**  \n\u26a0\ufe0f **Shipping-Modell:** Spot-Markt + Langfristcharter-Mix  \n**Daten fehlen** \u2014 aber Branche ist diversifiziert (kein Klumpenrisiko wie bei Defense-Contractor)\n\n### 7. **Management-Wechsel / Insider-Verk\u00e4ufe?**  \n\u274c"
+      "summary": "e  \nAber: **RSI 63.9 + nahe 52W-High** → kurzfristig überhitzt\n\n### 5. **Regulatorisches Risiko / Litigation?**  \n✅ **Nichts in News** — sauber\n\n### 6. **Abhängigkeit von 1-2 Kunden?**  \n⚠️ **Shipping-Modell:** Spot-Markt + Langfristcharter-Mix  \n**Daten fehlen** — aber Branche ist diversifiziert (kein Klumpenrisiko wie bei Defense-Contractor)\n\n### 7. **Management-Wechsel / Insider-Verkäufe?**  \n❌"
     }
   },
   "ORCL": {
@@ -158,13 +158,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ation, Regulation, Tech-Disruption)?\n- **Cloud-Konkurrenz:** AWS/Azure dominieren IaaS \u2014 Oracle = Nische (Datenbank-Workloads)\n- **KI-Disruption:** Oracle profitiert (Infrastruktur), aber kein eigener"
+      "key_findings: ation, Regulation, Tech-Disruption)?\n- **Cloud-Konkurrenz:** AWS/Azure dominieren IaaS — Oracle = Nische (Datenbank-Workloads)\n- **KI-Disruption:** Oracle profitiert (Infrastruktur), aber kein eigener"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ation, Regulation, Tech-Disruption)?\n- **Cloud-Konkurrenz:** AWS/Azure dominieren IaaS \u2014 Oracle = Nische (Datenbank-Workloads)\n- **KI-Disruption:** Oracle profitiert (Infrastruktur), aber kein eigener LLM-Player\n- **Regulierung:** Keine akuten Risiken bekannt\n- \u26a0\ufe0f **Legacy-Erosion:** Alte Lizenz-Gesch\u00e4ft schrumpft weiter\n\n---\n\n## \ud83c\udfaf SCHRITT 5 \u2014 KATALYSATOR-CHECK\n\n### Frische Katalysatoren (\u226430 Tage"
+      "summary": "ation, Regulation, Tech-Disruption)?\n- **Cloud-Konkurrenz:** AWS/Azure dominieren IaaS — Oracle = Nische (Datenbank-Workloads)\n- **KI-Disruption:** Oracle profitiert (Infrastruktur), aber kein eigener LLM-Player\n- **Regulierung:** Keine akuten Risiken bekannt\n- ⚠️ **Legacy-Erosion:** Alte Lizenz-Geschäft schrumpft weiter\n\n---\n\n## 🎯 SCHRITT 5 — KATALYSATOR-CHECK\n\n### Frische Katalysatoren (≤30 Tage"
     }
   },
   "OXY": {
@@ -182,13 +182,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: len\n- **OXY vs. Sektor (XLE-Komponenten):** Daten fehlen\n\n**STATUS:** \u274c **Bewertung kann nicht abschlie\u00dfend beurteilt werden ohne EV/EBITDA, KGV 2025e/2026e, Schulden-Trend**\n\n---\n\n## Schritt 6: CRV &"
+      "key_findings: len\n- **OXY vs. Sektor (XLE-Komponenten):** Daten fehlen\n\n**STATUS:** ❌ **Bewertung kann nicht abschließend beurteilt werden ohne EV/EBITDA, KGV 2025e/2026e, Schulden-Trend**\n\n---\n\n## Schritt 6: CRV &"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "len\n- **OXY vs. Sektor (XLE-Komponenten):** Daten fehlen\n\n**STATUS:** \u274c **Bewertung kann nicht abschlie\u00dfend beurteilt werden ohne EV/EBITDA, KGV 2025e/2026e, Schulden-Trend**\n\n---\n\n## Schritt 6: CRV & Positionsgr\u00f6\u00dfen-Kalkulation\n\n### Risiko-Aufstellung (technisch)\n- **Entry:** $54.50 (aktuell)\n- **Stop:** $51.50 (unter MA50 + Struktur) \u2192 **Risiko: -5.5%**\n- **Ziel 1:** $60.00 (Vorwoche-Resistance)"
+      "summary": "len\n- **OXY vs. Sektor (XLE-Komponenten):** Daten fehlen\n\n**STATUS:** ❌ **Bewertung kann nicht abschließend beurteilt werden ohne EV/EBITDA, KGV 2025e/2026e, Schulden-Trend**\n\n---\n\n## Schritt 6: CRV & Positionsgrößen-Kalkulation\n\n### Risiko-Aufstellung (technisch)\n- **Entry:** $54.50 (aktuell)\n- **Stop:** $51.50 (unter MA50 + Struktur) → **Risiko: -5.5%**\n- **Ziel 1:** $60.00 (Vorwoche-Resistance)"
     }
   },
   "PLTR": {
@@ -206,13 +206,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: z von Snowflake, Databricks, aber PLTR hat **Integrations-Vorsprung**\n\n### 7. **Insiderverk\u00e4ufe (massiv, unerkl\u00e4rlich)?**\n\u274c **Daten fehlen** \u2014 manuell pr\u00fcfen (SEC Filings)\n- Historisch: **Karp verkauf"
+      "key_findings: z von Snowflake, Databricks, aber PLTR hat **Integrations-Vorsprung**\n\n### 7. **Insiderverkäufe (massiv, unerklärlich)?**\n❌ **Daten fehlen** — manuell prüfen (SEC Filings)\n- Historisch: **Karp verkauf"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "z von Snowflake, Databricks, aber PLTR hat **Integrations-Vorsprung**\n\n### 7. **Insiderverk\u00e4ufe (massiv, unerkl\u00e4rlich)?**\n\u274c **Daten fehlen** \u2014 manuell pr\u00fcfen (SEC Filings)\n- Historisch: **Karp verkauft regelm\u00e4\u00dfig** (aber geplant via 10b5-1)\n\n### 8. **Aktie f\u00e4llt, w\u00e4hrend Peers steigen?**\n\u26a0\ufe0f **Ja** \u2014 PLTR -18.1% (6M) vs. Tech-Sektor ca. -10%\n- **Ursache unklar** \u2014 fundamentale Schw\u00e4che ODER \u00dcberbew"
+      "summary": "z von Snowflake, Databricks, aber PLTR hat **Integrations-Vorsprung**\n\n### 7. **Insiderverkäufe (massiv, unerklärlich)?**\n❌ **Daten fehlen** — manuell prüfen (SEC Filings)\n- Historisch: **Karp verkauft regelmäßig** (aber geplant via 10b5-1)\n\n### 8. **Aktie fällt, während Peers steigen?**\n⚠️ **Ja** — PLTR -18.1% (6M) vs. Tech-Sektor ca. -10%\n- **Ursache unklar** — fundamentale Schwäche ODER Überbew"
     }
   },
   "PSX": {
@@ -230,13 +230,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: e\n- XLE (Energy Sektor ETF) Performance\n- Falls Sektor +5% und PSX -10% \u2192 **strukturelles Problem bei PSX**\n\n### \u2753 6. Katalysator f\u00fcr Umkehr: Gibt es einen?\n**KEINE NEWS = KEIN FRISCHER KATALYSATOR** "
+      "key_findings: e\n- XLE (Energy Sektor ETF) Performance\n- Falls Sektor +5% und PSX -10% → **strukturelles Problem bei PSX**\n\n### ❓ 6. Katalysator für Umkehr: Gibt es einen?\n**KEINE NEWS = KEIN FRISCHER KATALYSATOR** "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "e\n- XLE (Energy Sektor ETF) Performance\n- Falls Sektor +5% und PSX -10% \u2192 **strukturelles Problem bei PSX**\n\n### \u2753 6. Katalysator f\u00fcr Umkehr: Gibt es einen?\n**KEINE NEWS = KEIN FRISCHER KATALYSATOR**  \n\u26a0\ufe0f Rote Flagge f\u00fcr Paper-Trading-Regel\n\nM\u00f6gliche Katalysatoren (zuk\u00fcnftig):\n- Q1 2026 Earnings (Datum unbekannt)\n- Crack Spread-Erholung (saisonal Q2 oft st\u00e4rker)\n- Dividenden-Ank\u00fcndigung\n- Buyback-"
+      "summary": "e\n- XLE (Energy Sektor ETF) Performance\n- Falls Sektor +5% und PSX -10% → **strukturelles Problem bei PSX**\n\n### ❓ 6. Katalysator für Umkehr: Gibt es einen?\n**KEINE NEWS = KEIN FRISCHER KATALYSATOR**  \n⚠️ Rote Flagge für Paper-Trading-Regel\n\nMögliche Katalysatoren (zukünftig):\n- Q1 2026 Earnings (Datum unbekannt)\n- Crack Spread-Erholung (saisonal Q2 oft stärker)\n- Dividenden-Ankündigung\n- Buyback-"
     }
   },
   "TESTOK": {
@@ -254,13 +254,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: / Kartellverfahren / Produkthaftung?\n**Antwort:** \u274c Keine News gefunden  \n**Risiko:** Nicht bewertbar (aber auch keine bekannten Skandale)\n\n### Frage 7: Ist das Management neu und noch unbewiesen?\n**A"
+      "key_findings: / Kartellverfahren / Produkthaftung?\n**Antwort:** ❌ Keine News gefunden  \n**Risiko:** Nicht bewertbar (aber auch keine bekannten Skandale)\n\n### Frage 7: Ist das Management neu und noch unbewiesen?\n**A"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "/ Kartellverfahren / Produkthaftung?\n**Antwort:** \u274c Keine News gefunden  \n**Risiko:** Nicht bewertbar (aber auch keine bekannten Skandale)\n\n### Frage 7: Ist das Management neu und noch unbewiesen?\n**Antwort:** \u274c Daten fehlen \u2014 manuell pr\u00fcfen  \n**Risiko:** Nicht bewertbar\n\n### Frage 8: Ist der Hauptkatalysator ein \"Hoffnungstrade\" ohne harte Daten?\n**Antwort:** \u274c Kein Katalysator identifiziert  \n**"
+      "summary": "/ Kartellverfahren / Produkthaftung?\n**Antwort:** ❌ Keine News gefunden  \n**Risiko:** Nicht bewertbar (aber auch keine bekannten Skandale)\n\n### Frage 7: Ist das Management neu und noch unbewiesen?\n**Antwort:** ❌ Daten fehlen — manuell prüfen  \n**Risiko:** Nicht bewertbar\n\n### Frage 8: Ist der Hauptkatalysator ein \"Hoffnungstrade\" ohne harte Daten?\n**Antwort:** ❌ Kein Katalysator identifiziert  \n**"
     }
   },
   "UNH": {
@@ -278,13 +278,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: rsicherer typischerweise moderate Verschuldung, aber UNH hat in Vergangenheit M&A-getrieben Schulden aufgebaut (z.B. Optum-Expansion).\n\n### \u2777 EPS-Trend \u2014 Wachstum oder Trough?\n**Daten fehlen \u2014 manuell"
+      "key_findings: rsicherer typischerweise moderate Verschuldung, aber UNH hat in Vergangenheit M&A-getrieben Schulden aufgebaut (z.B. Optum-Expansion).\n\n### ❷ EPS-Trend — Wachstum oder Trough?\n**Daten fehlen — manuell"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "rsicherer typischerweise moderate Verschuldung, aber UNH hat in Vergangenheit M&A-getrieben Schulden aufgebaut (z.B. Optum-Expansion).\n\n### \u2777 EPS-Trend \u2014 Wachstum oder Trough?\n**Daten fehlen \u2014 manuell pr\u00fcfen:**\n- \u274c EPS 2021-2025 (historisch)\n- \u274c EPS 2026e/2027e (Prognose)\n- \u274c Earnings Surprise Historie\n\n**Kritisch:** Bei RSI 92.3 m\u00fcsste ein massiver Earnings-Beat vorliegen \u2014 oder Datenfehler.\n\n###"
+      "summary": "rsicherer typischerweise moderate Verschuldung, aber UNH hat in Vergangenheit M&A-getrieben Schulden aufgebaut (z.B. Optum-Expansion).\n\n### ❷ EPS-Trend — Wachstum oder Trough?\n**Daten fehlen — manuell prüfen:**\n- ❌ EPS 2021-2025 (historisch)\n- ❌ EPS 2026e/2027e (Prognose)\n- ❌ Earnings Surprise Historie\n\n**Kritisch:** Bei RSI 92.3 müsste ein massiver Earnings-Beat vorliegen — oder Datenfehler.\n\n###"
     }
   },
   "EQNR.OL": {
@@ -302,25 +302,25 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: etzter Earnings-Call, Q4-Zahlen.\n\n### 8. CRV (Chance/Risiko-Verh\u00e4ltnis) mindestens 2:1?\n**Hypothetisches Setup (bei Entry 336):**\n- **Stop:** 320 NOK (unter MA50 nachhaltig) = -4.8%\n- **Ziel 1:** 380 "
+      "key_findings: etzter Earnings-Call, Q4-Zahlen.\n\n### 8. CRV (Chance/Risiko-Verhältnis) mindestens 2:1?\n**Hypothetisches Setup (bei Entry 336):**\n- **Stop:** 320 NOK (unter MA50 nachhaltig) = -4.8%\n- **Ziel 1:** 380 "
     ],
     "entry": 336.0,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "etzter Earnings-Call, Q4-Zahlen.\n\n### 8. CRV (Chance/Risiko-Verh\u00e4ltnis) mindestens 2:1?\n**Hypothetisches Setup (bei Entry 336):**\n- **Stop:** 320 NOK (unter MA50 nachhaltig) = -4.8%\n- **Ziel 1:** 380 NOK (Mitte zwischen Kurs und High) = +13%\n- **CRV:** 13% / 4.8% = **2.7:1** \u2705\n\n**ABER:** Ziel basiert auf Annahme, dass High wieder erreichbar ist. Ohne Earnings-Daten spekulativ.\n\n---\n\n## SCHRITT 5 \u2014"
+      "summary": "etzter Earnings-Call, Q4-Zahlen.\n\n### 8. CRV (Chance/Risiko-Verhältnis) mindestens 2:1?\n**Hypothetisches Setup (bei Entry 336):**\n- **Stop:** 320 NOK (unter MA50 nachhaltig) = -4.8%\n- **Ziel 1:** 380 NOK (Mitte zwischen Kurs und High) = +13%\n- **CRV:** 13% / 4.8% = **2.7:1** ✅\n\n**ABER:** Ziel basiert auf Annahme, dass High wieder erreichbar ist. Ohne Earnings-Daten spekulativ.\n\n---\n\n## SCHRITT 5 —"
     }
   },
   "NFLX": {
     "verdict": "WARTEN",
     "confidence": 40,
-    "reasoning": "NFLX befindet sich in technischer Konsolidierung (Preis zwischen MA50 und MA200, RSI neutral bei 53.2), zeigt aber keinen identifizierbaren Katalysator in den n\u00e4chsten 30 Tagen. Ohne News-Flow und ohne anstehendes Event (Earnings vermutlich erst Juli 2026) fehlt der konkrete Trigger f\u00fcr asymmetrische Moves. Position 29% unter 52W-Hoch deutet auf Erholungspotenzial, aber ohne Katalysator ist dies spekulativ.",
+    "reasoning": "NFLX befindet sich in technischer Konsolidierung (Preis zwischen MA50 und MA200, RSI neutral bei 53.2), zeigt aber keinen identifizierbaren Katalysator in den nächsten 30 Tagen. Ohne News-Flow und ohne anstehendes Event (Earnings vermutlich erst Juli 2026) fehlt der konkrete Trigger für asymmetrische Moves. Position 29% unter 52W-Hoch deutet auf Erholungspotenzial, aber ohne Katalysator ist dies spekulativ.",
     "key_risks": [
-      "Keine Katalysator-Visibilit\u00e4t - rein technischer Drift ohne fundamentale Trigger",
-      "29% unter 52W-Hoch k\u00f6nnte auf strukturelle Probleme (Streaming-Saturierung) hindeuten",
-      "BULL_VOLATILE Regime mit VIX 18.87 - erh\u00f6hte Whipsaw-Gefahr ohne klare Richtung"
+      "Keine Katalysator-Visibilität - rein technischer Drift ohne fundamentale Trigger",
+      "29% unter 52W-Hoch könnte auf strukturelle Probleme (Streaming-Saturierung) hindeuten",
+      "BULL_VOLATILE Regime mit VIX 18.87 - erhöhte Whipsaw-Gefahr ohne klare Richtung"
     ],
-    "katalysator": "keiner erkennbar - n\u00e4chste Earnings Q2 2026 vermutlich Mitte Juli",
+    "katalysator": "keiner erkennbar - nächste Earnings Q2 2026 vermutlich Mitte Juli",
     "catalyst_date": null,
     "target_hold_days": 14,
     "scenarios": [
@@ -334,7 +334,7 @@
         "label": "bear",
         "probability": 0.4,
         "expected_return_pct": -4.5,
-        "trigger": "VIX-Spike \u00fcber 25, Makro-Schock oder negative Streaming-Subscriber-Daten von Peers (Disney/Warner)"
+        "trigger": "VIX-Spike über 25, Makro-Schock oder negative Streaming-Subscriber-Daten von Peers (Disney/Warner)"
       },
       {
         "label": "side",
@@ -348,7 +348,7 @@
     "payoff_skew": 1.22,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "Guidance-Cut von Netflix oder gro\u00dfem Streaming-Peer (Disney/Warner) bez\u00fcglich Subscriber-Wachstum oder ARPU-Druck",
+    "falsification": "Guidance-Cut von Netflix oder großem Streaming-Peer (Disney/Warner) bezüglich Subscriber-Wachstum oder ARPU-Druck",
     "entry_price_hint": null,
     "stop_pct_hint": -5.5,
     "target_pct_hint": 5.5,
@@ -368,12 +368,12 @@
   "VLO": {
     "verdict": "WARTEN",
     "confidence": 45,
-    "reasoning": "VLO zeigt technische Stabilit\u00e4t (\u00fcber MA50/MA200, Golden Cross) und massiven 3M-Momentum von +23.24%, aber RSI 34.4 und Preis unter 20-SMA deuten auf kurzfristige Schw\u00e4che. KRITISCH: Null News in den letzten 7 Tagen, kein identifizierbarer Katalysator in den n\u00e4chsten 30 Tagen. Ohne benanntes Event ist dies reines Momentum-Chasing in einem BULL_VOLATILE-Regime (VIX 18.87). Phase-22-Regel: Kein Katalysator = WARTEN, unabh\u00e4ngig von technischer Setup-Qualit\u00e4t.",
+    "reasoning": "VLO zeigt technische Stabilität (über MA50/MA200, Golden Cross) und massiven 3M-Momentum von +23.24%, aber RSI 34.4 und Preis unter 20-SMA deuten auf kurzfristige Schwäche. KRITISCH: Null News in den letzten 7 Tagen, kein identifizierbarer Katalysator in den nächsten 30 Tagen. Ohne benanntes Event ist dies reines Momentum-Chasing in einem BULL_VOLATILE-Regime (VIX 18.87). Phase-22-Regel: Kein Katalysator = WARTEN, unabhängig von technischer Setup-Qualität.",
     "key_risks": [
       "Kein identifizierbarer Katalysator - reines Beta-Play auf Energie-Sektor",
-      "BULL_VOLATILE Regime: VIX 18.87 erh\u00f6ht Whipsaw-Risiko bei trendlosen Trades",
-      "Preis unter 20-SMA (240.7) signalisiert kurzfristige Schw\u00e4che trotz Golden Cross",
-      "12.44% vom 52W-Hoch entfernt - potenzieller Overhead-Resistance bei 245-258\u20ac"
+      "BULL_VOLATILE Regime: VIX 18.87 erhöht Whipsaw-Risiko bei trendlosen Trades",
+      "Preis unter 20-SMA (240.7) signalisiert kurzfristige Schwäche trotz Golden Cross",
+      "12.44% vom 52W-Hoch entfernt - potenzieller Overhead-Resistance bei 245-258€"
     ],
     "katalysator": "keiner erkennbar",
     "catalyst_date": null,
@@ -383,19 +383,19 @@
         "label": "bull",
         "probability": 0.35,
         "expected_return_pct": 6.5,
-        "trigger": "\u00d6lpreis-Rally >$85/bbl oder positive Refining-Margin-Daten treiben Sektor"
+        "trigger": "Ölpreis-Rally >$85/bbl oder positive Refining-Margin-Daten treiben Sektor"
       },
       {
         "label": "bear",
         "probability": 0.45,
         "expected_return_pct": -5.5,
-        "trigger": "Energie-Sektor-Rotation oder Makro-Schock dr\u00fcckt unter MA50 (225\u20ac)"
+        "trigger": "Energie-Sektor-Rotation oder Makro-Schock drückt unter MA50 (225€)"
       },
       {
         "label": "side",
         "probability": 0.2,
         "expected_return_pct": 0.5,
-        "trigger": "Range-bound 220-235\u20ac ohne Katalysator, theta-decay im volatilen Markt"
+        "trigger": "Range-bound 220-235€ ohne Katalysator, theta-decay im volatilen Markt"
       }
     ],
     "ev_pct": 0.325,
@@ -403,7 +403,7 @@
     "payoff_skew": 1.18,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "\u00d6lpreis-Kollaps unter $70/bbl oder US-Rezessions-Indikation w\u00fcrde Energy-Thesis sofort zerst\u00f6ren",
+    "falsification": "Ölpreis-Kollaps unter $70/bbl oder US-Rezessions-Indikation würde Energy-Thesis sofort zerstören",
     "entry_price_hint": null,
     "stop_pct_hint": -6.5,
     "target_pct_hint": 6.5,
@@ -423,12 +423,12 @@
   "BP.L": {
     "verdict": "WARTEN",
     "confidence": 35,
-    "reasoning": "BP.L zeigt zwar solide technische Struktur (Golden Cross, +27% 3M-Trend, \u00fcber MA50/200), jedoch fehlt ein konkreter benannter Katalysator in den n\u00e4chsten 30 Tagen. Ohne News-Flow seit 7 Tagen und ohne erkennbares Event (Earnings, OPEC-Meeting, Dividenden-Ank\u00fcndigung) ist dies ein Blind-Long in einem Energy-Titel w\u00e4hrend BULL_VOLATILE-Regime. RSI 44 zeigt neutrale Momentum-Zone, Preis -2.9% unter 20-SMA deutet auf kurzfristige Konsolidierung. Nach Phase-22-Regel: kein Katalysator = WARTEN, unabh\u00e4ngig von technischer Setup-Qualit\u00e4t.",
+    "reasoning": "BP.L zeigt zwar solide technische Struktur (Golden Cross, +27% 3M-Trend, über MA50/200), jedoch fehlt ein konkreter benannter Katalysator in den nächsten 30 Tagen. Ohne News-Flow seit 7 Tagen und ohne erkennbares Event (Earnings, OPEC-Meeting, Dividenden-Ankündigung) ist dies ein Blind-Long in einem Energy-Titel während BULL_VOLATILE-Regime. RSI 44 zeigt neutrale Momentum-Zone, Preis -2.9% unter 20-SMA deutet auf kurzfristige Konsolidierung. Nach Phase-22-Regel: kein Katalysator = WARTEN, unabhängig von technischer Setup-Qualität.",
     "key_risks": [
       "Fehlender konkreter Katalysator macht Trade zu reinem Momentum-Play ohne Event-Treiber",
-      "\u00d6lpreis-Volatilit\u00e4t bei schwacher China-Nachfrage und US-Produktion auf Allzeithochs",
-      "Preis unter 20-SMA deutet auf kurzfristige Schw\u00e4che, m\u00f6glicher Test von MA50 bei 525 EUR (-5.7%)",
-      "Energy-Sektor anf\u00e4llig f\u00fcr makro\u00f6konomische \u00dcberraschungen im BULL_VOLATILE-Regime (VIX 18.87)"
+      "Ölpreis-Volatilität bei schwacher China-Nachfrage und US-Produktion auf Allzeithochs",
+      "Preis unter 20-SMA deutet auf kurzfristige Schwäche, möglicher Test von MA50 bei 525 EUR (-5.7%)",
+      "Energy-Sektor anfällig für makroökonomische Überraschungen im BULL_VOLATILE-Regime (VIX 18.87)"
     ],
     "katalysator": "keiner erkennbar",
     "catalyst_date": null,
@@ -438,13 +438,13 @@
         "label": "bull",
         "probability": 0.35,
         "expected_return_pct": 5.5,
-        "trigger": "Brent-Crude Rally \u00fcber $90 auf geopolitische Spannungen oder OPEC+ Produktionsk\u00fcrzung"
+        "trigger": "Brent-Crude Rally über $90 auf geopolitische Spannungen oder OPEC+ Produktionskürzung"
       },
       {
         "label": "bear",
         "probability": 0.4,
         "expected_return_pct": -4.2,
-        "trigger": "\u00d6lpreis-R\u00fcckgang unter $78 durch Rezessions\u00e4ngste oder China-Nachfrage-Schw\u00e4che"
+        "trigger": "Ölpreis-Rückgang unter $78 durch Rezessionsängste oder China-Nachfrage-Schwäche"
       },
       {
         "label": "side",
@@ -458,7 +458,7 @@
     "payoff_skew": 1.31,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "Brent-Crude Absturz unter $75/Barrel oder BP-spezifische negative Nachrichten (Produktionsausfall, regulatorische Strafe, Dividendenk\u00fcrzung)",
+    "falsification": "Brent-Crude Absturz unter $75/Barrel oder BP-spezifische negative Nachrichten (Produktionsausfall, regulatorische Strafe, Dividendenkürzung)",
     "entry_price_hint": null,
     "stop_pct_hint": -6.5,
     "target_pct_hint": 5.5,
@@ -478,10 +478,10 @@
   "ENI.MI": {
     "verdict": "WARTEN",
     "confidence": 30,
-    "reasoning": "ENI.MI zeigt technisch solide Struktur (Golden Cross, \u00fcber MA50/200, +37.72% 3M-Trend), aber ohne erkennbaren Katalysator in den n\u00e4chsten 30 Tagen ist kein asymmetrischer Setup vorhanden. Energiesektor ben\u00f6tigt Event-Trigger (OPEC-Meetings, Quartalszahlen, Geopolitik). Aktuell nur Momentum-Play ohne benannbaren Edge.",
+    "reasoning": "ENI.MI zeigt technisch solide Struktur (Golden Cross, über MA50/200, +37.72% 3M-Trend), aber ohne erkennbaren Katalysator in den nächsten 30 Tagen ist kein asymmetrischer Setup vorhanden. Energiesektor benötigt Event-Trigger (OPEC-Meetings, Quartalszahlen, Geopolitik). Aktuell nur Momentum-Play ohne benannbaren Edge.",
     "key_risks": [
       "Keine News seit 7+ Tagen = Informations-Vakuum",
-      "EV nahe Null (-\u20ac0.75) bei schwachem Payoff-Skew (1.09)",
+      "EV nahe Null (-€0.75) bei schwachem Payoff-Skew (1.09)",
       "Energiesektor stark makro-getrieben, aktuell keine sichtbaren Trigger",
       "RSI 41.1 deutet auf nachlassenden Momentum trotz Golden Cross"
     ],
@@ -493,7 +493,7 @@
         "label": "bull",
         "probability": 0.35,
         "expected_return_pct": 6.0,
-        "trigger": "\u00d6lpreis-Rally \u00fcber $85 oder unerwartete Dividendenanhebung"
+        "trigger": "Ölpreis-Rally über $85 oder unerwartete Dividendenanhebung"
       },
       {
         "label": "bear",
@@ -505,7 +505,7 @@
         "label": "side",
         "probability": 0.25,
         "expected_return_pct": 0.5,
-        "trigger": "Seitw\u00e4rtsbewegung zwischen 21.50-23.50 ohne Impulse"
+        "trigger": "Seitwärtsbewegung zwischen 21.50-23.50 ohne Impulse"
       }
     ],
     "ev_pct": -0.05,
@@ -513,7 +513,7 @@
     "payoff_skew": 1.09,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "\u00d6lpreis-Crash unter $70 oder regulatorischer Schock in EU-Energiepolitik",
+    "falsification": "Ölpreis-Crash unter $70 oder regulatorischer Schock in EU-Energiepolitik",
     "entry_price_hint": null,
     "stop_pct_hint": -6.5,
     "target_pct_hint": null,
@@ -533,12 +533,12 @@
   "STLAP.PA": {
     "verdict": "WARTEN",
     "confidence": 35,
-    "reasoning": "Kein identifizierbarer Katalysator in den n\u00e4chsten 30 Tagen. Trotz technischer Erholung (Preis \u00fcber MA50, RSI 76.9) und kurzfristigem Momentum fehlt ein konkretes Event, das die These aufl\u00f6sen k\u00f6nnte. Der Ticker liegt 30% unter 52W-Hoch und hat keine News-Flows \u2013 ohne benannten Trigger ist dies reines Momentum-Chasing in einem illiquiden Small-Cap (Sektor unknown). Im BULL_VOLATILE Regime mit VIX 18.87 ist Katalysator-Abh\u00e4ngigkeit kritisch.",
+    "reasoning": "Kein identifizierbarer Katalysator in den nächsten 30 Tagen. Trotz technischer Erholung (Preis über MA50, RSI 76.9) und kurzfristigem Momentum fehlt ein konkretes Event, das die These auflösen könnte. Der Ticker liegt 30% unter 52W-Hoch und hat keine News-Flows – ohne benannten Trigger ist dies reines Momentum-Chasing in einem illiquiden Small-Cap (Sektor unknown). Im BULL_VOLATILE Regime mit VIX 18.87 ist Katalysator-Abhängigkeit kritisch.",
     "key_risks": [
-      "RSI 76.9 signalisiert \u00fcberkaufte Bedingungen ohne fundamentalen Treiber \u2013 hohes Mean-Reversion-Risiko",
-      "Null News-Flow in 7 Tagen bei 30% Gap zu 52W-Hoch deutet auf strukturelle Schw\u00e4che",
-      "Unknown Sektor verhindert Katalysator-Mapping (Earnings, Regulatory, Macro-Sensitivit\u00e4t unklar)",
-      "Negativer EV (-\u20ac41) mit inversem Payoff-Skew 0.75 \u2013 asymmetrisches Downside-Profil"
+      "RSI 76.9 signalisiert überkaufte Bedingungen ohne fundamentalen Treiber – hohes Mean-Reversion-Risiko",
+      "Null News-Flow in 7 Tagen bei 30% Gap zu 52W-Hoch deutet auf strukturelle Schwäche",
+      "Unknown Sektor verhindert Katalysator-Mapping (Earnings, Regulatory, Macro-Sensitivität unklar)",
+      "Negativer EV (-€41) mit inversem Payoff-Skew 0.75 – asymmetrisches Downside-Profil"
     ],
     "katalysator": "keiner erkennbar",
     "catalyst_date": null,
@@ -554,13 +554,13 @@
         "label": "bear",
         "probability": 0.5,
         "expected_return_pct": -8.0,
-        "trigger": "RSI-Correction von \u00fcberkauftem Niveau, Mean-Reversion zu MA50 bei fehlendem Follow-Through"
+        "trigger": "RSI-Correction von überkauftem Niveau, Mean-Reversion zu MA50 bei fehlendem Follow-Through"
       },
       {
         "label": "side",
         "probability": 0.25,
         "expected_return_pct": -1.0,
-        "trigger": "Seitw\u00e4rtskonsolidierung bei niedrigem Volumen ohne Katalysator"
+        "trigger": "Seitwärtskonsolidierung bei niedrigem Volumen ohne Katalysator"
       }
     ],
     "ev_pct": -2.75,
@@ -568,7 +568,7 @@
     "payoff_skew": 0.75,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "Bruch unter MA50 (6.35 EUR) mit hohem Volumen w\u00fcrde technische Erholung negieren und Falling-Knife-Dynamik zur\u00fcck unter 6.00 EUR ausl\u00f6sen",
+    "falsification": "Bruch unter MA50 (6.35 EUR) mit hohem Volumen würde technische Erholung negieren und Falling-Knife-Dynamik zurück unter 6.00 EUR auslösen",
     "entry_price_hint": null,
     "stop_pct_hint": -7.5,
     "target_pct_hint": null,
@@ -588,7 +588,7 @@
   "AA": {
     "verdict": "WARTEN",
     "confidence": 35,
-    "reasoning": "AA zeigt solide technische Basis (Golden Cross, +196% \u00fcber 52W-Tief, \u00fcber MA50/200), aber KEIN identifizierbarer Katalysator in den n\u00e4chsten 30 Tagen. Ohne News seit 7+ Tagen und unbekanntem Sektor fehlt jeglicher Trigger f\u00fcr asymmetrische Bewegung. Preis konsolidiert knapp unter 20-SMA bei neutralem RSI 57 - Setup ist 'okay', aber nicht tradeable ohne Event-Treiber.",
+    "reasoning": "AA zeigt solide technische Basis (Golden Cross, +196% über 52W-Tief, über MA50/200), aber KEIN identifizierbarer Katalysator in den nächsten 30 Tagen. Ohne News seit 7+ Tagen und unbekanntem Sektor fehlt jeglicher Trigger für asymmetrische Bewegung. Preis konsolidiert knapp unter 20-SMA bei neutralem RSI 57 - Setup ist 'okay', aber nicht tradeable ohne Event-Treiber.",
     "key_risks": [
       "Zero visibility: Sektor 'unknown', keine News seit 7+ Tagen = Informations-Blackout",
       "VIX 18.87 in BULL_VOLATILE kann schnell umschlagen, ohne Katalysator ist AA passiver Victim von Regime-Shifts",
@@ -622,7 +622,7 @@
     "payoff_skew": 1.11,
     "consensus_position": "neutral",
     "pain_trade_flag": false,
-    "falsification": "Bruch unter MA50 (63.89 EUR) auf erh\u00f6htem Volumen w\u00fcrde technische Struktur invalidieren und bearishen Regime-Shift signalisieren",
+    "falsification": "Bruch unter MA50 (63.89 EUR) auf erhöhtem Volumen würde technische Struktur invalidieren und bearishen Regime-Shift signalisieren",
     "entry_price_hint": null,
     "stop_pct_hint": -5.5,
     "target_pct_hint": 6.0,
@@ -654,13 +654,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: n-spezifisch, aber sektor-wirksam).\n\n**Bewertung:** Katalysator ist **generisch** (Sektor-Thesis), nicht aktien-spezifisch. Akzeptabel f\u00fcr Sektor-Play, aber nicht optimal.\n\n---\n\n## SCHRITT 6: CHANCE/R"
+      "key_findings: n-spezifisch, aber sektor-wirksam).\n\n**Bewertung:** Katalysator ist **generisch** (Sektor-Thesis), nicht aktien-spezifisch. Akzeptabel für Sektor-Play, aber nicht optimal.\n\n---\n\n## SCHRITT 6: CHANCE/R"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "n-spezifisch, aber sektor-wirksam).\n\n**Bewertung:** Katalysator ist **generisch** (Sektor-Thesis), nicht aktien-spezifisch. Akzeptabel f\u00fcr Sektor-Play, aber nicht optimal.\n\n---\n\n## SCHRITT 6: CHANCE/RISIKO-VERH\u00c4LTNIS (CRV)\n\n### Annahmen (konservativ)\n- **Entry:** 74.41 EUR (aktueller Kurs)\n- **Stop-Loss:** 71.75 EUR (MA50 \u2014 erste Unterst\u00fctzung, -3.6%)\n- **Ziel 1:** 81.02 EUR (52W-High, +8.9%)\n- **"
+      "summary": "n-spezifisch, aber sektor-wirksam).\n\n**Bewertung:** Katalysator ist **generisch** (Sektor-Thesis), nicht aktien-spezifisch. Akzeptabel für Sektor-Play, aber nicht optimal.\n\n---\n\n## SCHRITT 6: CHANCE/RISIKO-VERHÄLTNIS (CRV)\n\n### Annahmen (konservativ)\n- **Entry:** 74.41 EUR (aktueller Kurs)\n- **Stop-Loss:** 71.75 EUR (MA50 — erste Unterstützung, -3.6%)\n- **Ziel 1:** 81.02 EUR (52W-High, +8.9%)\n- **"
     }
   },
   "CCJ": {
@@ -678,13 +678,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: 0 \u2192 2026: ~$100+ (Verdopplung)  \n- CCJ-Kurs: $39 (52W-Low) \u2192 $134 (52W-High) = **+240%**  \n- RSI 87.8 = technisch \u00fcberdehnt  \n\n**Fazit:** Wir sind **nicht mehr fr\u00fch im Zyklus**. Das ist keine \"Bodenbi"
+      "key_findings: 0 → 2026: ~$100+ (Verdopplung)  \n- CCJ-Kurs: $39 (52W-Low) → $134 (52W-High) = **+240%**  \n- RSI 87.8 = technisch überdehnt  \n\n**Fazit:** Wir sind **nicht mehr früh im Zyklus**. Das ist keine \"Bodenbi"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "0 \u2192 2026: ~$100+ (Verdopplung)  \n- CCJ-Kurs: $39 (52W-Low) \u2192 $134 (52W-High) = **+240%**  \n- RSI 87.8 = technisch \u00fcberdehnt  \n\n**Fazit:** Wir sind **nicht mehr fr\u00fch im Zyklus**. Das ist keine \"Bodenbildung\", sondern **laufender Bull-Run**.\n\n---\n\n## \ud83d\udcb0 SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Richtige Metrik f\u00fcr Uran-Produzenten: **EV/EBITDA** oder **KCV (Kurs/Cashflow)**\n\n**\u26a0\ufe0f KRITISCHE DATEN FEH"
+      "summary": "0 → 2026: ~$100+ (Verdopplung)  \n- CCJ-Kurs: $39 (52W-Low) → $134 (52W-High) = **+240%**  \n- RSI 87.8 = technisch überdehnt  \n\n**Fazit:** Wir sind **nicht mehr früh im Zyklus**. Das ist keine \"Bodenbildung\", sondern **laufender Bull-Run**.\n\n---\n\n## 💰 SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Richtige Metrik für Uran-Produzenten: **EV/EBITDA** oder **KCV (Kurs/Cashflow)**\n\n**⚠️ KRITISCHE DATEN FEH"
     }
   },
   "RHM.DE": {
@@ -702,13 +702,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: l\u00e4uft seit 2022 \u2014 bereits eingepreist\n- NATO-Druck bekannt seit Jahren\n- Iran-Thema: kein direkter RHM-Katalysator (eher \u00d6l/Luftfahrt)\n\n### Katalysator-Qualit\u00e4t nach Lufthansa-Ma\u00dfstab\n| Kriterium | LH"
+      "key_findings: läuft seit 2022 — bereits eingepreist\n- NATO-Druck bekannt seit Jahren\n- Iran-Thema: kein direkter RHM-Katalysator (eher Öl/Luftfahrt)\n\n### Katalysator-Qualität nach Lufthansa-Maßstab\n| Kriterium | LH"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "l\u00e4uft seit 2022 \u2014 bereits eingepreist\n- NATO-Druck bekannt seit Jahren\n- Iran-Thema: kein direkter RHM-Katalysator (eher \u00d6l/Luftfahrt)\n\n### Katalysator-Qualit\u00e4t nach Lufthansa-Ma\u00dfstab\n| Kriterium | LHA (Vorbild) | RHM (aktuell) | Status |\n|---|---|---|---|\n| **Frische** | Iran-Ende = neuer Trigger | Keine News 30d | \ud83d\udeab |\n| **Spezifit\u00e4t** | \u00d6lpreis \u2193 = Marge \u2191 direkt | \"Europa r\u00fcstet auf\" = vage | \ud83d\udeab"
+      "summary": "läuft seit 2022 — bereits eingepreist\n- NATO-Druck bekannt seit Jahren\n- Iran-Thema: kein direkter RHM-Katalysator (eher Öl/Luftfahrt)\n\n### Katalysator-Qualität nach Lufthansa-Maßstab\n| Kriterium | LHA (Vorbild) | RHM (aktuell) | Status |\n|---|---|---|---|\n| **Frische** | Iran-Ende = neuer Trigger | Keine News 30d | 🚫 |\n| **Spezifität** | Ölpreis ↓ = Marge ↑ direkt | \"Europa rüstet auf\" = vage | 🚫"
     }
   },
   "RHEINMETALL": {
@@ -726,13 +726,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: nstillstand Ukraine k\u00f6nnte Momentum bremsen\n- \u26a0\ufe0f **Regulatorik:** Export-Genehmigungen (z.B. Saudi-Arabien unsicher)\n- \u26a0\ufe0f **Lieferketten:** Stahl, Elektronik \u2014 aber Rheinmetall meist langfristige Vert"
+      "key_findings: nstillstand Ukraine könnte Momentum bremsen\n- ⚠️ **Regulatorik:** Export-Genehmigungen (z.B. Saudi-Arabien unsicher)\n- ⚠️ **Lieferketten:** Stahl, Elektronik — aber Rheinmetall meist langfristige Vert"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "nstillstand Ukraine k\u00f6nnte Momentum bremsen\n- \u26a0\ufe0f **Regulatorik:** Export-Genehmigungen (z.B. Saudi-Arabien unsicher)\n- \u26a0\ufe0f **Lieferketten:** Stahl, Elektronik \u2014 aber Rheinmetall meist langfristige Vertr\u00e4ge\n- \u2705 **Diversifikation:** Nicht nur Ukraine \u2014 strukturelles NATO-Wachstum\n\n---\n\n## SCHRITT 4\ufe0f\u20e3 \u2014 LEICHE IM KELLER? (8 Fragen)\n\n### \u2776 Steigen die Schulden 3+ Jahre ohne strategischen Grund?\n**NEIN."
+      "summary": "nstillstand Ukraine könnte Momentum bremsen\n- ⚠️ **Regulatorik:** Export-Genehmigungen (z.B. Saudi-Arabien unsicher)\n- ⚠️ **Lieferketten:** Stahl, Elektronik — aber Rheinmetall meist langfristige Verträge\n- ✅ **Diversifikation:** Nicht nur Ukraine — strukturelles NATO-Wachstum\n\n---\n\n## SCHRITT 4️⃣ — LEICHE IM KELLER? (8 Fragen)\n\n### ❶ Steigen die Schulden 3+ Jahre ohne strategischen Grund?\n**NEIN."
     }
   },
   "A2QQ9R": {
@@ -750,13 +750,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: NICHT_KAUFEN",
-      "key_findings: WKN_nicht_identifizierbar | Keine_Stammdaten_verf\u00fcgbar | Keine_Fundamentaldaten | Keine_Kursdaten | Deep_Dive_unm\u00f6glich_ohne_Daten\n```"
+      "key_findings: WKN_nicht_identifizierbar | Keine_Stammdaten_verfügbar | Keine_Fundamentaldaten | Keine_Kursdaten | Deep_Dive_unmöglich_ohne_Daten\n```"
     ],
     "entry": 0.0,
     "stop": 0.0,
     "ziel_1": 0.0,
     "key_findings": {
-      "summary": "WKN_nicht_identifizierbar | Keine_Stammdaten_verf\u00fcgbar | Keine_Fundamentaldaten | Keine_Kursdaten | Deep_Dive_unm\u00f6glich_ohne_Daten\n```"
+      "summary": "WKN_nicht_identifizierbar | Keine_Stammdaten_verfügbar | Keine_Fundamentaldaten | Keine_Kursdaten | Deep_Dive_unmöglich_ohne_Daten\n```"
     }
   },
   "ADM": {
@@ -774,13 +774,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: en)\n  - China-Import-Daten (Sojabohnen)\n\n### 6\ufe0f\u20e3 **Sektor-Kontext: L\u00e4uft Aktie mit oder gegen Sektor?**\n**Daten fehlen - manuell pr\u00fcfen**\n- **Zu vergleichen:** ADM vs. BG (Bunge), vs. DBA ETF (Agrar-R"
+      "key_findings: en)\n  - China-Import-Daten (Sojabohnen)\n\n### 6️⃣ **Sektor-Kontext: Läuft Aktie mit oder gegen Sektor?**\n**Daten fehlen - manuell prüfen**\n- **Zu vergleichen:** ADM vs. BG (Bunge), vs. DBA ETF (Agrar-R"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "en)\n  - China-Import-Daten (Sojabohnen)\n\n### 6\ufe0f\u20e3 **Sektor-Kontext: L\u00e4uft Aktie mit oder gegen Sektor?**\n**Daten fehlen - manuell pr\u00fcfen**\n- **Zu vergleichen:** ADM vs. BG (Bunge), vs. DBA ETF (Agrar-Rohstoffe)\n- RSI 34.6 deutet auf relative Schw\u00e4che hin, aber ohne Sektor-Vergleich nicht beurteilbar\n\n### 7\ufe0f\u20e3 **Risiko im Newsflow: Strukturelle Probleme?**\n**\u26a0\ufe0f INDIREKTE RISIKEN AUS NEWS:**\n- **Trump"
+      "summary": "en)\n  - China-Import-Daten (Sojabohnen)\n\n### 6️⃣ **Sektor-Kontext: Läuft Aktie mit oder gegen Sektor?**\n**Daten fehlen - manuell prüfen**\n- **Zu vergleichen:** ADM vs. BG (Bunge), vs. DBA ETF (Agrar-Rohstoffe)\n- RSI 34.6 deutet auf relative Schwäche hin, aber ohne Sektor-Vergleich nicht beurteilbar\n\n### 7️⃣ **Risiko im Newsflow: Strukturelle Probleme?**\n**⚠️ INDIREKTE RISIKEN AUS NEWS:**\n- **Trump"
     }
   },
   "AIR.PA": {
@@ -798,13 +798,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: 15x)\n**Daten fehlen** \u2014 KGV 2025e/2026e nicht in DB\n\n### Ohne KGV: Notfall-Plausibilit\u00e4tscheck\n```\nKurs: 176.38 EUR\n52W-Range: 137.26 - 220.20 EUR\nAktuell bei: 58% der Range (Mitte-unten)\n```\n\n**Hypot"
+      "key_findings: 15x)\n**Daten fehlen** — KGV 2025e/2026e nicht in DB\n\n### Ohne KGV: Notfall-Plausibilitätscheck\n```\nKurs: 176.38 EUR\n52W-Range: 137.26 - 220.20 EUR\nAktuell bei: 58% der Range (Mitte-unten)\n```\n\n**Hypot"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "15x)\n**Daten fehlen** \u2014 KGV 2025e/2026e nicht in DB\n\n### Ohne KGV: Notfall-Plausibilit\u00e4tscheck\n```\nKurs: 176.38 EUR\n52W-Range: 137.26 - 220.20 EUR\nAktuell bei: 58% der Range (Mitte-unten)\n```\n\n**Hypothetische Einsch\u00e4tzung (MUSS validiert werden):**\n- Airbus historisch: KGV 15-25x (Premium wegen Duopol)\n- Bei 176 EUR vermutlich KGV ~18-20x (2026e) \u2192 **nicht billig, aber fair**\n- **Teurer als LHA (6"
+      "summary": "15x)\n**Daten fehlen** — KGV 2025e/2026e nicht in DB\n\n### Ohne KGV: Notfall-Plausibilitätscheck\n```\nKurs: 176.38 EUR\n52W-Range: 137.26 - 220.20 EUR\nAktuell bei: 58% der Range (Mitte-unten)\n```\n\n**Hypothetische Einschätzung (MUSS validiert werden):**\n- Airbus historisch: KGV 15-25x (Premium wegen Duopol)\n- Bei 176 EUR vermutlich KGV ~18-20x (2026e) → **nicht billig, aber fair**\n- **Teurer als LHA (6"
     }
   },
   "AM.PA": {
@@ -822,13 +822,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Bewertung (KGV/KBV)** | \u2753 Unbekannt | Daten fehlen |\n| **EPS-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Schulden-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | \u2753 Unbekannt | Keine News"
+      "key_findings: Bewertung (KGV/KBV)** | ❓ Unbekannt | Daten fehlen |\n| **EPS-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Schulden-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | ❓ Unbekannt | Keine News"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Bewertung (KGV/KBV)** | \u2753 Unbekannt | Daten fehlen |\n| **EPS-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Schulden-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | \u2753 Unbekannt | Keine News in DB |\n| **Katalysator (\u226430d)** | \u274c Keiner bekannt | Keine News in DB |\n| **Sektor-Kontext** | \u2753 Unbekannt | Daten fehlen |\n| **Strategie-Fit PS3** | \u274c KEIN FIT | Asset Manager \u2260 R\u00fcstung |\n| **CRV 2"
+      "summary": "Bewertung (KGV/KBV)** | ❓ Unbekannt | Daten fehlen |\n| **EPS-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Schulden-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | ❓ Unbekannt | Keine News in DB |\n| **Katalysator (≤30d)** | ❌ Keiner bekannt | Keine News in DB |\n| **Sektor-Kontext** | ❓ Unbekannt | Daten fehlen |\n| **Strategie-Fit PS3** | ❌ KEIN FIT | Asset Manager ≠ Rüstung |\n| **CRV 2"
     }
   },
   "AMAT": {
@@ -846,13 +846,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: T 5: PAPER-TRADING KRITERIEN-CHECK\n\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Bewertung (PEG)** | \u2753 Unbekannt | Daten fehlen |\n| **EPS-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Schulden-Tr"
+      "key_findings: T 5: PAPER-TRADING KRITERIEN-CHECK\n\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Bewertung (PEG)** | ❓ Unbekannt | Daten fehlen |\n| **EPS-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Schulden-Tr"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "T 5: PAPER-TRADING KRITERIEN-CHECK\n\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Bewertung (PEG)** | \u2753 Unbekannt | Daten fehlen |\n| **EPS-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Schulden-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | \ud83d\udd34 Bearish | \"Correction Candidate\" = Warnung |\n| **Katalysator** | \ud83d\udd34 Negativ | Kein positiver Trigger, stattdessen Warnung |\n| **Sektor-Kon"
+      "summary": "T 5: PAPER-TRADING KRITERIEN-CHECK\n\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Bewertung (PEG)** | ❓ Unbekannt | Daten fehlen |\n| **EPS-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Schulden-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Analyst-Konsens** | 🔴 Bearish | \"Correction Candidate\" = Warnung |\n| **Katalysator** | 🔴 Negativ | Kein positiver Trigger, stattdessen Warnung |\n| **Sektor-Kon"
     }
   },
   "ANET": {
@@ -870,13 +870,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: ta AI-Datacenter-Expansionen (laufend 2025\u20132026)\n- NVDA Blackwell-Ramp \u2192 mehr GPU-Cluster \u2192 mehr ANET-Switches n\u00f6tig\n\n**Problem:**\n- Diese Katalysatoren sind **nicht frisch** (seit Q4 2025 bekannt)\n- "
+      "key_findings: ta AI-Datacenter-Expansionen (laufend 2025–2026)\n- NVDA Blackwell-Ramp → mehr GPU-Cluster → mehr ANET-Switches nötig\n\n**Problem:**\n- Diese Katalysatoren sind **nicht frisch** (seit Q4 2025 bekannt)\n- "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ta AI-Datacenter-Expansionen (laufend 2025\u20132026)\n- NVDA Blackwell-Ramp \u2192 mehr GPU-Cluster \u2192 mehr ANET-Switches n\u00f6tig\n\n**Problem:**\n- Diese Katalysatoren sind **nicht frisch** (seit Q4 2025 bekannt)\n- Markt hat reagiert: RSI 99.1 = volle Einpreisung\n\n**N\u00e4chster m\u00f6glicher Katalysator:**\n- Q1 2026 Earnings (vermutlich Mai 2026)\n- Guidance-Erh\u00f6hung f\u00fcr FY2026\n- \u2192 **ABER: Bei ATH + RSI 99.1 = Entt\u00e4usch"
+      "summary": "ta AI-Datacenter-Expansionen (laufend 2025–2026)\n- NVDA Blackwell-Ramp → mehr GPU-Cluster → mehr ANET-Switches nötig\n\n**Problem:**\n- Diese Katalysatoren sind **nicht frisch** (seit Q4 2025 bekannt)\n- Markt hat reagiert: RSI 99.1 = volle Einpreisung\n\n**Nächster möglicher Katalysator:**\n- Q1 2026 Earnings (vermutlich Mai 2026)\n- Guidance-Erhöhung für FY2026\n- → **ABER: Bei ATH + RSI 99.1 = Enttäusch"
     }
   },
   "ARKG": {
@@ -900,7 +900,7 @@
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "CHRITT 6: RISIKO/REWARD + CRV\n\n### Technische Marken\n- **Entry (hypothetisch):** $31.12 (aktueller Kurs)\n- **Stop-Loss:** $28.50 (unter Ausbruchsniveau, ~8% Risiko)\n- **Ziel 1:** $34.00 (Fibonacci-Extension, ~9% Chance)\n- **CRV:** 2.88 / 2.62 = **1.1:1** \u2192 \u274c **FAIL** (Mindestens 2:1 erforderlich)\n\n### Risiken\n1. **RSI 84 = technisch \u00fcberkauft** \u2192 Korrektur wahrscheinlich\n2. **Kein frischer Katalys"
+      "summary": "CHRITT 6: RISIKO/REWARD + CRV\n\n### Technische Marken\n- **Entry (hypothetisch):** $31.12 (aktueller Kurs)\n- **Stop-Loss:** $28.50 (unter Ausbruchsniveau, ~8% Risiko)\n- **Ziel 1:** $34.00 (Fibonacci-Extension, ~9% Chance)\n- **CRV:** 2.88 / 2.62 = **1.1:1** → ❌ **FAIL** (Mindestens 2:1 erforderlich)\n\n### Risiken\n1. **RSI 84 = technisch überkauft** → Korrektur wahrscheinlich\n2. **Kein frischer Katalys"
     }
   },
   "BA.L": {
@@ -918,13 +918,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: etzte 8 Quartale)?** | \u2757 Daten fehlen \u2014 Quartalsberichte pr\u00fcfen | \ud83d\udfe1 |\n\n**Zusammenfassung:**\n- **Keine offensichtlichen Red Flags** (News, Sektor-Underperformance)\n- **Aber:** 50% der Checks unvollst\u00e4n"
+      "key_findings: etzte 8 Quartale)?** | ❗ Daten fehlen — Quartalsberichte prüfen | 🟡 |\n\n**Zusammenfassung:**\n- **Keine offensichtlichen Red Flags** (News, Sektor-Underperformance)\n- **Aber:** 50% der Checks unvollstän"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "etzte 8 Quartale)?** | \u2757 Daten fehlen \u2014 Quartalsberichte pr\u00fcfen | \ud83d\udfe1 |\n\n**Zusammenfassung:**\n- **Keine offensichtlichen Red Flags** (News, Sektor-Underperformance)\n- **Aber:** 50% der Checks unvollst\u00e4ndig wegen fehlender Fundamentaldaten\n\n**Rating:** \ud83d\udfe1 **VORSICHTIG OPTIMISTISCH** (aber Datenl\u00fccken schlie\u00dfen!)\n\n---\n\n## \ud83d\ude80 SCHRITT 5: STRATEGIE-FIT & KATALYSATOR\n\n### Strategie-Alignment (PS3: NATO/EU-R"
+      "summary": "etzte 8 Quartale)?** | ❗ Daten fehlen — Quartalsberichte prüfen | 🟡 |\n\n**Zusammenfassung:**\n- **Keine offensichtlichen Red Flags** (News, Sektor-Underperformance)\n- **Aber:** 50% der Checks unvollständig wegen fehlender Fundamentaldaten\n\n**Rating:** 🟡 **VORSICHTIG OPTIMISTISCH** (aber Datenlücken schließen!)\n\n---\n\n## 🚀 SCHRITT 5: STRATEGIE-FIT & KATALYSATOR\n\n### Strategie-Alignment (PS3: NATO/EU-R"
     }
   },
   "BAYN.DE": {
@@ -942,13 +942,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings:  \u2014 keine Kaufempfehlung m\u00f6glich ohne Daten.**\n\n---\n\n## Schritt 5: Katalysator-Check (entscheidend f\u00fcr Timing)\n\n### Strategie-These (PS22)\n- **Event:** Monsanto-Vergleich 24 Mrd. final (Handelsblatt 20"
+      "key_findings:  — keine Kaufempfehlung möglich ohne Daten.**\n\n---\n\n## Schritt 5: Katalysator-Check (entscheidend für Timing)\n\n### Strategie-These (PS22)\n- **Event:** Monsanto-Vergleich 24 Mrd. final (Handelsblatt 20"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " \u2014 keine Kaufempfehlung m\u00f6glich ohne Daten.**\n\n---\n\n## Schritt 5: Katalysator-Check (entscheidend f\u00fcr Timing)\n\n### Strategie-These (PS22)\n- **Event:** Monsanto-Vergleich 24 Mrd. final (Handelsblatt 20.04.2024)\n- **Logik:** Risk-Off Phase beendet, Pharma-Sparte wieder im Fokus\n\n### Katalysator-Bewertung\n| Kriterium | Status |\n|---|---|\n| **Frische (\u226430 Tage)** | \u274c These 2 Jahre alt |\n| **Spezifisch"
+      "summary": " — keine Kaufempfehlung möglich ohne Daten.**\n\n---\n\n## Schritt 5: Katalysator-Check (entscheidend für Timing)\n\n### Strategie-These (PS22)\n- **Event:** Monsanto-Vergleich 24 Mrd. final (Handelsblatt 20.04.2024)\n- **Logik:** Risk-Off Phase beendet, Pharma-Sparte wieder im Fokus\n\n### Katalysator-Bewertung\n| Kriterium | Status |\n|---|---|\n| **Frische (≤30 Tage)** | ❌ These 2 Jahre alt |\n| **Spezifisch"
     }
   },
   "BMW.DE": {
@@ -966,13 +966,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: 6. **Strukturelle vs. zyklische Probleme?**\n**Strukturell (gef\u00e4hrlich):**\n- EV-Transition = dauerhaft niedrigere Margen\n- China-Marktanteil-Verlust an Locals (BYD, NIO)\n\n**Zyklisch (handelbar):**\n- Tr"
+      "key_findings: 6. **Strukturelle vs. zyklische Probleme?**\n**Strukturell (gefährlich):**\n- EV-Transition = dauerhaft niedrigere Margen\n- China-Marktanteil-Verlust an Locals (BYD, NIO)\n\n**Zyklisch (handelbar):**\n- Tr"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "6. **Strukturelle vs. zyklische Probleme?**\n**Strukturell (gef\u00e4hrlich):**\n- EV-Transition = dauerhaft niedrigere Margen\n- China-Marktanteil-Verlust an Locals (BYD, NIO)\n\n**Zyklisch (handelbar):**\n- Trump-Z\u00f6lle = tempor\u00e4r (Policy-Risiko, aber umkehrbar)\n- Nachfrage-Schw\u00e4che Europa (Zinsen, Rezessionsangst)\n\n**Urteil:** Mix aus beidem \u2192 **strukturell unter Druck, zyklisch \u00fcberverkauft m\u00f6glich**\n\n###"
+      "summary": "6. **Strukturelle vs. zyklische Probleme?**\n**Strukturell (gefährlich):**\n- EV-Transition = dauerhaft niedrigere Margen\n- China-Marktanteil-Verlust an Locals (BYD, NIO)\n\n**Zyklisch (handelbar):**\n- Trump-Zölle = temporär (Policy-Risiko, aber umkehrbar)\n- Nachfrage-Schwäche Europa (Zinsen, Rezessionsangst)\n\n**Urteil:** Mix aus beidem → **strukturell unter Druck, zyklisch überverkauft möglich**\n\n###"
     }
   },
   "BWXT": {
@@ -990,13 +990,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ating Margin, Net Margin)  \n**Risiko:** Unbekannt ob Pricing Power vorhanden\n\n### Zwischenfazit Leiche im Keller\n**7 von 8 Fragen unbeantwortet** \u2014 **KRITISCH**. Keine Analyse ohne diese Daten m\u00f6glich"
+      "key_findings: ating Margin, Net Margin)  \n**Risiko:** Unbekannt ob Pricing Power vorhanden\n\n### Zwischenfazit Leiche im Keller\n**7 von 8 Fragen unbeantwortet** — **KRITISCH**. Keine Analyse ohne diese Daten möglich"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ating Margin, Net Margin)  \n**Risiko:** Unbekannt ob Pricing Power vorhanden\n\n### Zwischenfazit Leiche im Keller\n**7 von 8 Fragen unbeantwortet** \u2014 **KRITISCH**. Keine Analyse ohne diese Daten m\u00f6glich.\n\n---\n\n## SCHRITT 5: TECHNISCHE EINORDNUNG\n\n### Kurs-Position\n- **Aktuell:** $228.63\n- **52W-Range:** $191.59 - $238.42\n- **Position im Range:** 78% (oberes Drittel)\n- **Distanz High:** -4.1% (nah am"
+      "summary": "ating Margin, Net Margin)  \n**Risiko:** Unbekannt ob Pricing Power vorhanden\n\n### Zwischenfazit Leiche im Keller\n**7 von 8 Fragen unbeantwortet** — **KRITISCH**. Keine Analyse ohne diese Daten möglich.\n\n---\n\n## SCHRITT 5: TECHNISCHE EINORDNUNG\n\n### Kurs-Position\n- **Aktuell:** $228.63\n- **52W-Range:** $191.59 - $238.42\n- **Position im Range:** 78% (oberes Drittel)\n- **Distanz High:** -4.1% (nah am"
     }
   },
   "BYDDY": {
@@ -1014,13 +1014,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: 8. Insiderverk\u00e4ufe oder Fund-Exits?\n\u26a0\ufe0f **DATEN FEHLEN** \u2014 manuell zu pr\u00fcfen\n\n---\n\n## SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Sektor: Automobil/EV (Zykliker mit Wachstum)\n**Relevante Metriken:**\n- *"
+      "key_findings: 8. Insiderverkäufe oder Fund-Exits?\n⚠️ **DATEN FEHLEN** — manuell zu prüfen\n\n---\n\n## SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Sektor: Automobil/EV (Zykliker mit Wachstum)\n**Relevante Metriken:**\n- *"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "8. Insiderverk\u00e4ufe oder Fund-Exits?\n\u26a0\ufe0f **DATEN FEHLEN** \u2014 manuell zu pr\u00fcfen\n\n---\n\n## SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Sektor: Automobil/EV (Zykliker mit Wachstum)\n**Relevante Metriken:**\n- **KGV:** \u26a0\ufe0f Daten fehlen (typisch f\u00fcr China-EVs: 10-20x bei Profitabilit\u00e4t)\n- **EV/EBITDA:** \u26a0\ufe0f Daten fehlen\n- **PEG-Ratio:** \u26a0\ufe0f Daten fehlen\n\n### Ohne harte Zahlen: Qualitative Bewertung\n**BYD handelt"
+      "summary": "8. Insiderverkäufe oder Fund-Exits?\n⚠️ **DATEN FEHLEN** — manuell zu prüfen\n\n---\n\n## SCHRITT 5: BEWERTUNG (Sektor-gerecht)\n\n### Sektor: Automobil/EV (Zykliker mit Wachstum)\n**Relevante Metriken:**\n- **KGV:** ⚠️ Daten fehlen (typisch für China-EVs: 10-20x bei Profitabilität)\n- **EV/EBITDA:** ⚠️ Daten fehlen\n- **PEG-Ratio:** ⚠️ Daten fehlen\n\n### Ohne harte Zahlen: Qualitative Bewertung\n**BYD handelt"
     }
   },
   "CF": {
@@ -1038,13 +1038,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ounce m\u00f6glich\n- **MA50 Support:** $114.49 (aktuell knapp dar\u00fcber) \u2192 kritische Zone\n- **MA200 Support:** $92.34 (weit drunter, -20%)\n- **52W-Low:** $73.20 (-37% Abw\u00e4rtspotenzial bei Bruch)\n\n### Chance/"
+      "key_findings: ounce möglich\n- **MA50 Support:** $114.49 (aktuell knapp darüber) → kritische Zone\n- **MA200 Support:** $92.34 (weit drunter, -20%)\n- **52W-Low:** $73.20 (-37% Abwärtspotenzial bei Bruch)\n\n### Chance/"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ounce m\u00f6glich\n- **MA50 Support:** $114.49 (aktuell knapp dar\u00fcber) \u2192 kritische Zone\n- **MA200 Support:** $92.34 (weit drunter, -20%)\n- **52W-Low:** $73.20 (-37% Abw\u00e4rtspotenzial bei Bruch)\n\n### Chance/Risiko-Verh\u00e4ltnis (CRV)\n\n**Hypothetisches Setup (falls Entry):**\n- **Entry:** $115 (aktuell)\n- **Stop:** $105 (unter MA50 + Puffer) = -8.7%\n- **Ziel 1:** $125 (vorheriger Support) = +8.7%\n- **CRV:** 1"
+      "summary": "ounce möglich\n- **MA50 Support:** $114.49 (aktuell knapp darüber) → kritische Zone\n- **MA200 Support:** $92.34 (weit drunter, -20%)\n- **52W-Low:** $73.20 (-37% Abwärtspotenzial bei Bruch)\n\n### Chance/Risiko-Verhältnis (CRV)\n\n**Hypothetisches Setup (falls Entry):**\n- **Entry:** $115 (aktuell)\n- **Stop:** $105 (unter MA50 + Puffer) = -8.7%\n- **Ziel 1:** $125 (vorheriger Support) = +8.7%\n- **CRV:** 1"
     }
   },
   "CLF": {
@@ -1062,13 +1062,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: s\u00e4tzlich Umwelt-Risiken (CO2-Regulierung)\n\n### 7. **Liquidit\u00e4tskrise (Cashflow negativ)?**\n**Daten fehlen \u2014 manuell pr\u00fcfen**\n- Bei hohen Schulden + schwachen Preisen = kritisch\n\n### 8. **Ist die Aktie"
+      "key_findings: sätzlich Umwelt-Risiken (CO2-Regulierung)\n\n### 7. **Liquiditätskrise (Cashflow negativ)?**\n**Daten fehlen — manuell prüfen**\n- Bei hohen Schulden + schwachen Preisen = kritisch\n\n### 8. **Ist die Aktie"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "s\u00e4tzlich Umwelt-Risiken (CO2-Regulierung)\n\n### 7. **Liquidit\u00e4tskrise (Cashflow negativ)?**\n**Daten fehlen \u2014 manuell pr\u00fcfen**\n- Bei hohen Schulden + schwachen Preisen = kritisch\n\n### 8. **Ist die Aktie eine Value-Trap?**\n**\u26a0\ufe0f HOHES RISIKO:**\n- RSI 76.1 bei gleichzeitigem 6M-Abw\u00e4rtstrend = technische Erholung, nicht fundamentale\n- Ohne EPS-Wachstum + mit Schulden = klassisches Value-Trap-Setup\n- **Z"
+      "summary": "sätzlich Umwelt-Risiken (CO2-Regulierung)\n\n### 7. **Liquiditätskrise (Cashflow negativ)?**\n**Daten fehlen — manuell prüfen**\n- Bei hohen Schulden + schwachen Preisen = kritisch\n\n### 8. **Ist die Aktie eine Value-Trap?**\n**⚠️ HOHES RISIKO:**\n- RSI 76.1 bei gleichzeitigem 6M-Abwärtstrend = technische Erholung, nicht fundamentale\n- Ohne EPS-Wachstum + mit Schulden = klassisches Value-Trap-Setup\n- **Z"
     }
   },
   "CMC.CN": {
@@ -1086,13 +1086,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: * \u2014 erh\u00f6ht Informations-Asymmetrie\n\n### \u2753 6. Litigation / Regulatorische Risiken?\n**Antwort:** Daten fehlen \u2014 manuell pr\u00fcfen  \n**Risiko:** \ud83d\udfe1 Unbekannt (Bergbau = oft Umwelt-/Genehmigungsrisiken)\n\n### "
+      "key_findings: * — erhöht Informations-Asymmetrie\n\n### ❓ 6. Litigation / Regulatorische Risiken?\n**Antwort:** Daten fehlen — manuell prüfen  \n**Risiko:** 🟡 Unbekannt (Bergbau = oft Umwelt-/Genehmigungsrisiken)\n\n### "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "* \u2014 erh\u00f6ht Informations-Asymmetrie\n\n### \u2753 6. Litigation / Regulatorische Risiken?\n**Antwort:** Daten fehlen \u2014 manuell pr\u00fcfen  \n**Risiko:** \ud83d\udfe1 Unbekannt (Bergbau = oft Umwelt-/Genehmigungsrisiken)\n\n### \u2753 7. Sektor im strukturellen Abw\u00e4rtstrend?\n**Antwort:** **Metalle aktuell zyklisch stark** (Kupfer +15% YTD, Nickel erholt von Trough)  \n**Risiko:** \ud83d\udfe2 Sektor-Wind positiv (E-Mobility + China-Stimulus)"
+      "summary": "* — erhöht Informations-Asymmetrie\n\n### ❓ 6. Litigation / Regulatorische Risiken?\n**Antwort:** Daten fehlen — manuell prüfen  \n**Risiko:** 🟡 Unbekannt (Bergbau = oft Umwelt-/Genehmigungsrisiken)\n\n### ❓ 7. Sektor im strukturellen Abwärtstrend?\n**Antwort:** **Metalle aktuell zyklisch stark** (Kupfer +15% YTD, Nickel erholt von Trough)  \n**Risiko:** 🟢 Sektor-Wind positiv (E-Mobility + China-Stimulus)"
     }
   },
   "DAI": {
@@ -1110,13 +1110,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: siko\n- Hohe Zinsen = Finanzierungskosten f\u00fcr K\u00e4ufer\n\n**Ist das ein tempor\u00e4res Problem?**\n- \u2705 Ja \u2014 Zyklus dreht bei Zinssenkungen (Fed/EZB 2024/25)\n- \u26a0\ufe0f Aber: Struktureller Wandel (E-Mobilit\u00e4t) = Inves"
+      "key_findings: siko\n- Hohe Zinsen = Finanzierungskosten für Käufer\n\n**Ist das ein temporäres Problem?**\n- ✅ Ja — Zyklus dreht bei Zinssenkungen (Fed/EZB 2024/25)\n- ⚠️ Aber: Struktureller Wandel (E-Mobilität) = Inves"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "siko\n- Hohe Zinsen = Finanzierungskosten f\u00fcr K\u00e4ufer\n\n**Ist das ein tempor\u00e4res Problem?**\n- \u2705 Ja \u2014 Zyklus dreht bei Zinssenkungen (Fed/EZB 2024/25)\n- \u26a0\ufe0f Aber: Struktureller Wandel (E-Mobilit\u00e4t) = Investitionsdruck\n\n---\n\n### Frage 2: Schulden-Trend (3+ Jahre steigend?)\n\n**DATEN FEHLEN \u2014 MANUELLE PR\u00dcFUNG ERFORDERLICH**\n\n**Kritisch:** Spin-Off 2021 = neue Kapitalstruktur. Ohne Daten = rotes Flag.\n\n**\u2192"
+      "summary": "siko\n- Hohe Zinsen = Finanzierungskosten für Käufer\n\n**Ist das ein temporäres Problem?**\n- ✅ Ja — Zyklus dreht bei Zinssenkungen (Fed/EZB 2024/25)\n- ⚠️ Aber: Struktureller Wandel (E-Mobilität) = Investitionsdruck\n\n---\n\n### Frage 2: Schulden-Trend (3+ Jahre steigend?)\n\n**DATEN FEHLEN — MANUELLE PRÜFUNG ERFORDERLICH**\n\n**Kritisch:** Spin-Off 2021 = neue Kapitalstruktur. Ohne Daten = rotes Flag.\n\n**→"
     }
   },
   "DELL": {
@@ -1134,13 +1134,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: * beurteilen, ob Dell bei $203.80 fair, g\u00fcnstig oder teuer ist.\n\n**Buffett-Regel (Zinsen vs. Aktien):**\n- 10J-US-Treasury aktuell ~4.2%\n- Faire KGV-Grenze = 1/0.042 \u2248 **23.8x**\n- **Wenn Dell-KGV > 25x"
+      "key_findings: * beurteilen, ob Dell bei $203.80 fair, günstig oder teuer ist.\n\n**Buffett-Regel (Zinsen vs. Aktien):**\n- 10J-US-Treasury aktuell ~4.2%\n- Faire KGV-Grenze = 1/0.042 ≈ **23.8x**\n- **Wenn Dell-KGV > 25x"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "* beurteilen, ob Dell bei $203.80 fair, g\u00fcnstig oder teuer ist.\n\n**Buffett-Regel (Zinsen vs. Aktien):**\n- 10J-US-Treasury aktuell ~4.2%\n- Faire KGV-Grenze = 1/0.042 \u2248 **23.8x**\n- **Wenn Dell-KGV > 25x** \u2192 teuer vs. Anleihen\n\n---\n\n## \ud83c\udfaf SCHRITT 6: TRADING-SETUP (CRV-Check)\n\n### Szenario A: SOFORT-KAUF (bei ATH)\n- **Entry:** $203.80 (aktuell)\n- **Stop:** $190.00 (psychologische Marke, -6.8%)\n- **Ziel"
+      "summary": "* beurteilen, ob Dell bei $203.80 fair, günstig oder teuer ist.\n\n**Buffett-Regel (Zinsen vs. Aktien):**\n- 10J-US-Treasury aktuell ~4.2%\n- Faire KGV-Grenze = 1/0.042 ≈ **23.8x**\n- **Wenn Dell-KGV > 25x** → teuer vs. Anleihen\n\n---\n\n## 🎯 SCHRITT 6: TRADING-SETUP (CRV-Check)\n\n### Szenario A: SOFORT-KAUF (bei ATH)\n- **Entry:** $203.80 (aktuell)\n- **Stop:** $190.00 (psychologische Marke, -6.8%)\n- **Ziel"
     }
   },
   "DHT": {
@@ -1158,13 +1158,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings:  + KILLER-FRAGE\n\n### Zusammenfassung:\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Strategie-Fit (PS1)** | \u26a0\ufe0f Partiell | Profitiert kurzfristig, aber inverser Katalysator bei Iran-Deal |\n| **B"
+      "key_findings:  + KILLER-FRAGE\n\n### Zusammenfassung:\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Strategie-Fit (PS1)** | ⚠️ Partiell | Profitiert kurzfristig, aber inverser Katalysator bei Iran-Deal |\n| **B"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " + KILLER-FRAGE\n\n### Zusammenfassung:\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Strategie-Fit (PS1)** | \u26a0\ufe0f Partiell | Profitiert kurzfristig, aber inverser Katalysator bei Iran-Deal |\n| **Bewertung** | \u274c Unklar/teuer | Technisch ausgereizt, fundamentale Daten fehlen |\n| **EPS-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Schulden-Trend** | \u2753 Unbekannt | Daten fehlen |\n| **Katalysator** | \u274c"
+      "summary": " + KILLER-FRAGE\n\n### Zusammenfassung:\n| Kriterium | Status | Bewertung |\n|---|---|---|\n| **Strategie-Fit (PS1)** | ⚠️ Partiell | Profitiert kurzfristig, aber inverser Katalysator bei Iran-Deal |\n| **Bewertung** | ❌ Unklar/teuer | Technisch ausgereizt, fundamentale Daten fehlen |\n| **EPS-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Schulden-Trend** | ❓ Unbekannt | Daten fehlen |\n| **Katalysator** | ❌"
     }
   },
   "EEM": {
@@ -1182,13 +1182,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: lle Katalysatoren (News-basiert)\n**Iran-USA-Spannungen:**\n- **Art:** Geopolitisch, negativ\n- **Frische:** \u2705 Letzte 20 Tage\n- **Relevanz f\u00fcr EEM:** \u26a0\ufe0f Indirekt (\u00d6l \u2192 EM-Kosten), aber **negativ nicht po"
+      "key_findings: lle Katalysatoren (News-basiert)\n**Iran-USA-Spannungen:**\n- **Art:** Geopolitisch, negativ\n- **Frische:** ✅ Letzte 20 Tage\n- **Relevanz für EEM:** ⚠️ Indirekt (Öl → EM-Kosten), aber **negativ nicht po"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "lle Katalysatoren (News-basiert)\n**Iran-USA-Spannungen:**\n- **Art:** Geopolitisch, negativ\n- **Frische:** \u2705 Letzte 20 Tage\n- **Relevanz f\u00fcr EEM:** \u26a0\ufe0f Indirekt (\u00d6l \u2192 EM-Kosten), aber **negativ nicht positiv**\n\n**Was FEHLT (f\u00fcr bullischen Case):**\n- \u274c Fed-Pivot-Signal (Zinssenkungen)\n- \u274c DXY-Breakdown unter 100\n- \u274c China-Stimulus-Ank\u00fcndigung\n- \u274c EM-Earnings-\u00dcberraschungen\n\n### Impliziter Katalysator"
+      "summary": "lle Katalysatoren (News-basiert)\n**Iran-USA-Spannungen:**\n- **Art:** Geopolitisch, negativ\n- **Frische:** ✅ Letzte 20 Tage\n- **Relevanz für EEM:** ⚠️ Indirekt (Öl → EM-Kosten), aber **negativ nicht positiv**\n\n**Was FEHLT (für bullischen Case):**\n- ❌ Fed-Pivot-Signal (Zinssenkungen)\n- ❌ DXY-Breakdown unter 100\n- ❌ China-Stimulus-Ankündigung\n- ❌ EM-Earnings-Überraschungen\n\n### Impliziter Katalysator"
     }
   },
   "ENR.DE": {
@@ -1206,13 +1206,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings:  \u26a0\ufe0f **MANUELLE PR\u00dcFUNG N\u00d6TIG**\n\n### 4.4 Insider-Transaktionen (letzte 6 Monate)\n\n**Daten fehlen \u2014 manuell pr\u00fcfen** (Directors Dealings auf Bundesanzeiger / DGAP).\n\n**Status:** \u26a0\ufe0f **MANUELLE PR\u00dcFUNG N\u00d6"
+      "key_findings:  ⚠️ **MANUELLE PRÜFUNG NÖTIG**\n\n### 4.4 Insider-Transaktionen (letzte 6 Monate)\n\n**Daten fehlen — manuell prüfen** (Directors Dealings auf Bundesanzeiger / DGAP).\n\n**Status:** ⚠️ **MANUELLE PRÜFUNG NÖ"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " \u26a0\ufe0f **MANUELLE PR\u00dcFUNG N\u00d6TIG**\n\n### 4.4 Insider-Transaktionen (letzte 6 Monate)\n\n**Daten fehlen \u2014 manuell pr\u00fcfen** (Directors Dealings auf Bundesanzeiger / DGAP).\n\n**Status:** \u26a0\ufe0f **MANUELLE PR\u00dcFUNG N\u00d6TIG**\n\n### 4.5 Analyst-Konsens (letzte 30 Tage)\n\n**Laut Brief:** Keine News in letzten 30 Tagen.\n\n**Status:** \u26a0\ufe0f **NEUTRAL** (kein aktiver Downgrade, aber auch kein frischer Upgrade-Katalysator).\n\n###"
+      "summary": " ⚠️ **MANUELLE PRÜFUNG NÖTIG**\n\n### 4.4 Insider-Transaktionen (letzte 6 Monate)\n\n**Daten fehlen — manuell prüfen** (Directors Dealings auf Bundesanzeiger / DGAP).\n\n**Status:** ⚠️ **MANUELLE PRÜFUNG NÖTIG**\n\n### 4.5 Analyst-Konsens (letzte 30 Tage)\n\n**Laut Brief:** Keine News in letzten 30 Tagen.\n\n**Status:** ⚠️ **NEUTRAL** (kein aktiver Downgrade, aber auch kein frischer Upgrade-Katalysator).\n\n###"
     }
   },
   "EOAN.DE": {
@@ -1230,13 +1230,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: 024e | 0,88 EUR | +17% \u2705 |\n| 2025e | 0,95 EUR | +8% \u2705 |\n| 2026e | 1,02 EUR | +7% \u2705 |\n\n**Bewertung:** \u2705 **Stabile Wachstumstrend nach Trough 2022**\n\n### \ud83d\udcb3 Schulden-Entwicklung (Long-Term Debt)\n\n| Jahr "
+      "key_findings: 024e | 0,88 EUR | +17% ✅ |\n| 2025e | 0,95 EUR | +8% ✅ |\n| 2026e | 1,02 EUR | +7% ✅ |\n\n**Bewertung:** ✅ **Stabile Wachstumstrend nach Trough 2022**\n\n### 💳 Schulden-Entwicklung (Long-Term Debt)\n\n| Jahr "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "024e | 0,88 EUR | +17% \u2705 |\n| 2025e | 0,95 EUR | +8% \u2705 |\n| 2026e | 1,02 EUR | +7% \u2705 |\n\n**Bewertung:** \u2705 **Stabile Wachstumstrend nach Trough 2022**\n\n### \ud83d\udcb3 Schulden-Entwicklung (Long-Term Debt)\n\n| Jahr | Schulden | Ver\u00e4nderung |\n|------|----------|-------------|\n| 2019 | 38,5 Mrd. EUR | \u2014 |\n| 2020 | 39,8 Mrd. EUR | +3,4% |\n| 2021 | 42,1 Mrd. EUR | +5,8% |\n| 2022 | 43,5 Mrd. EUR | +3,3% |\n| 2023 | 44"
+      "summary": "024e | 0,88 EUR | +17% ✅ |\n| 2025e | 0,95 EUR | +8% ✅ |\n| 2026e | 1,02 EUR | +7% ✅ |\n\n**Bewertung:** ✅ **Stabile Wachstumstrend nach Trough 2022**\n\n### 💳 Schulden-Entwicklung (Long-Term Debt)\n\n| Jahr | Schulden | Veränderung |\n|------|----------|-------------|\n| 2019 | 38,5 Mrd. EUR | — |\n| 2020 | 39,8 Mrd. EUR | +3,4% |\n| 2021 | 42,1 Mrd. EUR | +5,8% |\n| 2022 | 43,5 Mrd. EUR | +3,3% |\n| 2023 | 44"
     }
   },
   "EWZ": {
@@ -1254,13 +1254,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: rasilien-Earnings Season** (Daten fehlen \u2014 wann?)\n- \u274c **Neuer Impuls?** Keiner sichtbar.\n\n**\u2192 Kein frischer Katalysator. Momentum-Trade ohne News = gef\u00e4hrlich.**\n\n---\n\n## **SCHRITT 6: Tradability \u2014 Se"
+      "key_findings: rasilien-Earnings Season** (Daten fehlen — wann?)\n- ❌ **Neuer Impuls?** Keiner sichtbar.\n\n**→ Kein frischer Katalysator. Momentum-Trade ohne News = gefährlich.**\n\n---\n\n## **SCHRITT 6: Tradability — Se"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "rasilien-Earnings Season** (Daten fehlen \u2014 wann?)\n- \u274c **Neuer Impuls?** Keiner sichtbar.\n\n**\u2192 Kein frischer Katalysator. Momentum-Trade ohne News = gef\u00e4hrlich.**\n\n---\n\n## **SCHRITT 6: Tradability \u2014 Setup + CRV**\n\n### Position Entry (hypothetisch):\n**NICHT EMPFOHLEN** \u2014 aber wenn, dann:\n- **Entry:** 38.50 USD (R\u00fccksetzer zu MA50, RSI <60)\n- **Stop:** 36.00 USD (unter MA50 + 6% Risiko)\n- **Ziel 1:**"
+      "summary": "rasilien-Earnings Season** (Daten fehlen — wann?)\n- ❌ **Neuer Impuls?** Keiner sichtbar.\n\n**→ Kein frischer Katalysator. Momentum-Trade ohne News = gefährlich.**\n\n---\n\n## **SCHRITT 6: Tradability — Setup + CRV**\n\n### Position Entry (hypothetisch):\n**NICHT EMPFOHLEN** — aber wenn, dann:\n- **Entry:** 38.50 USD (Rücksetzer zu MA50, RSI <60)\n- **Stop:** 36.00 USD (unter MA50 + 6% Risiko)\n- **Ziel 1:**"
     }
   },
   "FCX": {
@@ -1278,13 +1278,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: HLEN** \u2014 keine News in DB\n\nManuell pr\u00fcfen:\n- Bloomberg / Seeking Alpha / TipRanks: Analyst Ratings letzte 30 Tage\n- Durchschnitts-Kursziel vs. $70.18\n\n\u26a0\ufe0f **Ohne Analystenbild = Blindflug**\n\n---\n\n### 6"
+      "key_findings: HLEN** — keine News in DB\n\nManuell prüfen:\n- Bloomberg / Seeking Alpha / TipRanks: Analyst Ratings letzte 30 Tage\n- Durchschnitts-Kursziel vs. $70.18\n\n⚠️ **Ohne Analystenbild = Blindflug**\n\n---\n\n### 6"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "HLEN** \u2014 keine News in DB\n\nManuell pr\u00fcfen:\n- Bloomberg / Seeking Alpha / TipRanks: Analyst Ratings letzte 30 Tage\n- Durchschnitts-Kursziel vs. $70.18\n\n\u26a0\ufe0f **Ohne Analystenbild = Blindflug**\n\n---\n\n### 6\ufe0f\u20e3 **Frischer Katalysator (\u226430 Tage)?**\n**NEIN \u2014 keine News in letzten 30 Tagen**\n\nM\u00f6gliche Katalysatoren (extern, nicht FCX-spezifisch):\n- China Stimulus-Erwartungen (Kupfernachfrage)\n- US-Infrastruk"
+      "summary": "HLEN** — keine News in DB\n\nManuell prüfen:\n- Bloomberg / Seeking Alpha / TipRanks: Analyst Ratings letzte 30 Tage\n- Durchschnitts-Kursziel vs. $70.18\n\n⚠️ **Ohne Analystenbild = Blindflug**\n\n---\n\n### 6️⃣ **Frischer Katalysator (≤30 Tage)?**\n**NEIN — keine News in letzten 30 Tagen**\n\nMögliche Katalysatoren (extern, nicht FCX-spezifisch):\n- China Stimulus-Erwartungen (Kupfernachfrage)\n- US-Infrastruk"
     }
   },
   "FXI": {
@@ -1302,13 +1302,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: bau\n- **Bewertung:** \ud83d\udd34 **Kein aktueller Trigger**\n\n### 7. **Geopolitisches Tail-Risk?**\n- \ud83d\udd34 **HOCH:**\n  - Taiwan-Konflikt (Milit\u00e4r\u00fcbungen)\n  - US-Z\u00f6lle (Trump 2.0-Risiko falls Wahl)\n  - Hongkong-Regul"
+      "key_findings: bau\n- **Bewertung:** 🔴 **Kein aktueller Trigger**\n\n### 7. **Geopolitisches Tail-Risk?**\n- 🔴 **HOCH:**\n  - Taiwan-Konflikt (Militärübungen)\n  - US-Zölle (Trump 2.0-Risiko falls Wahl)\n  - Hongkong-Regul"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "bau\n- **Bewertung:** \ud83d\udd34 **Kein aktueller Trigger**\n\n### 7. **Geopolitisches Tail-Risk?**\n- \ud83d\udd34 **HOCH:**\n  - Taiwan-Konflikt (Milit\u00e4r\u00fcbungen)\n  - US-Z\u00f6lle (Trump 2.0-Risiko falls Wahl)\n  - Hongkong-Regulierung\n  - ADR-Delisting-Risiko (betrifft FXI-Holdings)\n- **Bewertung:** \ud83d\udd34 **Signifikantes Risiko nicht in Technicals abgebildet**\n\n### 8. **ETF-spezifisch: Tracking Error / Liquidit\u00e4t?**\n- FXI = hoch"
+      "summary": "bau\n- **Bewertung:** 🔴 **Kein aktueller Trigger**\n\n### 7. **Geopolitisches Tail-Risk?**\n- 🔴 **HOCH:**\n  - Taiwan-Konflikt (Militärübungen)\n  - US-Zölle (Trump 2.0-Risiko falls Wahl)\n  - Hongkong-Regulierung\n  - ADR-Delisting-Risiko (betrifft FXI-Holdings)\n- **Bewertung:** 🔴 **Signifikantes Risiko nicht in Technicals abgebildet**\n\n### 8. **ETF-spezifisch: Tracking Error / Liquidität?**\n- FXI = hoch"
     }
   },
   "GALP.LS": {
@@ -1326,13 +1326,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Jahre steigend?)\n\n**Daten fehlen \u2014 manuell pr\u00fcfen:**\n- Long-Term Debt 2019\u20132024: Trend?\n- Net Debt / EBITDA: Unter 2x (gesund) oder \u00fcber 3x (kritisch)?\n\n**Hypothese:** \u00d6l-Konzerne haben oft strukturel"
+      "key_findings: Jahre steigend?)\n\n**Daten fehlen — manuell prüfen:**\n- Long-Term Debt 2019–2024: Trend?\n- Net Debt / EBITDA: Unter 2x (gesund) oder über 3x (kritisch)?\n\n**Hypothese:** Öl-Konzerne haben oft strukturel"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Jahre steigend?)\n\n**Daten fehlen \u2014 manuell pr\u00fcfen:**\n- Long-Term Debt 2019\u20132024: Trend?\n- Net Debt / EBITDA: Unter 2x (gesund) oder \u00fcber 3x (kritisch)?\n\n**Hypothese:** \u00d6l-Konzerne haben oft strukturelle Schulden f\u00fcr CapEx (Exploration, Raffinerien) \u2192 **akzeptabel, wenn Cashflow stabil**\n\n---\n\n### 4.2 EPS-Trend (fallend ohne Katalysator?)\n\n**Daten fehlen \u2014 manuell pr\u00fcfen:**\n- EPS 2022 / 2023 / 2024"
+      "summary": "Jahre steigend?)\n\n**Daten fehlen — manuell prüfen:**\n- Long-Term Debt 2019–2024: Trend?\n- Net Debt / EBITDA: Unter 2x (gesund) oder über 3x (kritisch)?\n\n**Hypothese:** Öl-Konzerne haben oft strukturelle Schulden für CapEx (Exploration, Raffinerien) → **akzeptabel, wenn Cashflow stabil**\n\n---\n\n### 4.2 EPS-Trend (fallend ohne Katalysator?)\n\n**Daten fehlen — manuell prüfen:**\n- EPS 2022 / 2023 / 2024"
     }
   },
   "GDX": {
@@ -1350,13 +1350,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: g Costs (AISC):** **Daten fehlen** \u2014 Sektor-Durchschnitt 2024 vermutlich $1.200-1.400/oz\n- **Erwartung:** Earnings sollten stark steigen bei Gold $3.000\n- **ABER:** GDX -4% (3M) trotz Gold-St\u00e4rke = **"
+      "key_findings: g Costs (AISC):** **Daten fehlen** — Sektor-Durchschnitt 2024 vermutlich $1.200-1.400/oz\n- **Erwartung:** Earnings sollten stark steigen bei Gold $3.000\n- **ABER:** GDX -4% (3M) trotz Gold-Stärke = **"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "g Costs (AISC):** **Daten fehlen** \u2014 Sektor-Durchschnitt 2024 vermutlich $1.200-1.400/oz\n- **Erwartung:** Earnings sollten stark steigen bei Gold $3.000\n- **ABER:** GDX -4% (3M) trotz Gold-St\u00e4rke = **Markt zweifelt an Margin-Expansion** \u2192 Kostendruck? Produktionsprobleme?\n\n**Urteil:** \u26a0\ufe0f **Widerspruch pr\u00fcfen** \u2014 Earnings sollten explodieren, aber Aktienkurs lahmt\n\n### 3. **Aktuelle Analyst-Einsch\u00e4"
+      "summary": "g Costs (AISC):** **Daten fehlen** — Sektor-Durchschnitt 2024 vermutlich $1.200-1.400/oz\n- **Erwartung:** Earnings sollten stark steigen bei Gold $3.000\n- **ABER:** GDX -4% (3M) trotz Gold-Stärke = **Markt zweifelt an Margin-Expansion** → Kostendruck? Produktionsprobleme?\n\n**Urteil:** ⚠️ **Widerspruch prüfen** — Earnings sollten explodieren, aber Aktienkurs lahmt\n\n### 3. **Aktuelle Analyst-Einschä"
     }
   },
   "HAG.DE": {
@@ -1374,13 +1374,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: , 10-15x okay, >18x teuer)\n\n**Bewertungs-Check:**\n- **KGV 2025e:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **KGV 2026e:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **EV/EBITDA:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **Kurs/"
+      "key_findings: , 10-15x okay, >18x teuer)\n\n**Bewertungs-Check:**\n- **KGV 2025e:** Daten fehlen — manuell prüfen\n- **KGV 2026e:** Daten fehlen — manuell prüfen\n- **EV/EBITDA:** Daten fehlen — manuell prüfen\n- **Kurs/"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": ", 10-15x okay, >18x teuer)\n\n**Bewertungs-Check:**\n- **KGV 2025e:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **KGV 2026e:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **EV/EBITDA:** Daten fehlen \u2014 manuell pr\u00fcfen\n- **Kurs/Buchwert:** Daten fehlen \u2014 manuell pr\u00fcfen\n\n**Relative Bewertung:**\n- vs. Sektor: Nicht m\u00f6glich\n- vs. historischer Durchschnitt: Nicht m\u00f6glich\n- vs. Anleihen (Buffett-Regel): Nicht m\u00f6glich\n\n**STATUS:**"
+      "summary": ", 10-15x okay, >18x teuer)\n\n**Bewertungs-Check:**\n- **KGV 2025e:** Daten fehlen — manuell prüfen\n- **KGV 2026e:** Daten fehlen — manuell prüfen\n- **EV/EBITDA:** Daten fehlen — manuell prüfen\n- **Kurs/Buchwert:** Daten fehlen — manuell prüfen\n\n**Relative Bewertung:**\n- vs. Sektor: Nicht möglich\n- vs. historischer Durchschnitt: Nicht möglich\n- vs. Anleihen (Buffett-Regel): Nicht möglich\n\n**STATUS:**"
     }
   },
   "HII": {
@@ -1398,13 +1398,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: e)**\n- **Aktuell:** KEINE NEWS in letzten 30 Tagen (DB)\n- **Manuell pr\u00fcfen:** \n  - DoD-Auftr\u00e4ge (COLUMBIA-Class U-Boote, FORD-Class Tr\u00e4ger)\n  - FY2026 Defense Budget (verabschiedet?)\n  - Guidance Q1 2"
+      "key_findings: e)**\n- **Aktuell:** KEINE NEWS in letzten 30 Tagen (DB)\n- **Manuell prüfen:** \n  - DoD-Aufträge (COLUMBIA-Class U-Boote, FORD-Class Träger)\n  - FY2026 Defense Budget (verabschiedet?)\n  - Guidance Q1 2"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "e)**\n- **Aktuell:** KEINE NEWS in letzten 30 Tagen (DB)\n- **Manuell pr\u00fcfen:** \n  - DoD-Auftr\u00e4ge (COLUMBIA-Class U-Boote, FORD-Class Tr\u00e4ger)\n  - FY2026 Defense Budget (verabschiedet?)\n  - Guidance Q1 2026 Earnings\n- **Status:** \u274c Kein frischer Katalysator dokumentiert \u2014 **manuell recherchieren**\n\n### 6. **Analyst-Konsens (letzte 30 Tage)**\n- **Aktuell:** Keine Daten\n- **Erforderlich:** Upgrades/Dow"
+      "summary": "e)**\n- **Aktuell:** KEINE NEWS in letzten 30 Tagen (DB)\n- **Manuell prüfen:** \n  - DoD-Aufträge (COLUMBIA-Class U-Boote, FORD-Class Träger)\n  - FY2026 Defense Budget (verabschiedet?)\n  - Guidance Q1 2026 Earnings\n- **Status:** ❌ Kein frischer Katalysator dokumentiert — **manuell recherchieren**\n\n### 6. **Analyst-Konsens (letzte 30 Tage)**\n- **Aktuell:** Keine Daten\n- **Erforderlich:** Upgrades/Dow"
     }
   },
   "HL": {
@@ -1422,13 +1422,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: *EV/EBITDA** | \u2264 6x gut, 6-9x okay, >10x teuer | **Daten fehlen** |\n| **EPS-Trend** | Stabil oder steigend | **Daten fehlen** |\n| **Schulden-Trend** | Nicht 3+ Jahre steigend | **Daten fehlen** |\n| **"
+      "key_findings: *EV/EBITDA** | ≤ 6x gut, 6-9x okay, >10x teuer | **Daten fehlen** |\n| **EPS-Trend** | Stabil oder steigend | **Daten fehlen** |\n| **Schulden-Trend** | Nicht 3+ Jahre steigend | **Daten fehlen** |\n| **"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "*EV/EBITDA** | \u2264 6x gut, 6-9x okay, >10x teuer | **Daten fehlen** |\n| **EPS-Trend** | Stabil oder steigend | **Daten fehlen** |\n| **Schulden-Trend** | Nicht 3+ Jahre steigend | **Daten fehlen** |\n| **Analyst-Konsens** | Kein Downgrade 30d | \u2705 Kein Downgrade sichtbar |\n| **Katalysator** | Frisch \u226430d, spezifisch | \u274c Kein HL-spezifischer |\n| **Sektor-Kontext** | Nicht gegen Sektor | \u26a0\ufe0f **Zu pr\u00fcfen**"
+      "summary": "*EV/EBITDA** | ≤ 6x gut, 6-9x okay, >10x teuer | **Daten fehlen** |\n| **EPS-Trend** | Stabil oder steigend | **Daten fehlen** |\n| **Schulden-Trend** | Nicht 3+ Jahre steigend | **Daten fehlen** |\n| **Analyst-Konsens** | Kein Downgrade 30d | ✅ Kein Downgrade sichtbar |\n| **Katalysator** | Frisch ≤30d, spezifisch | ❌ Kein HL-spezifischer |\n| **Sektor-Kontext** | Nicht gegen Sektor | ⚠️ **Zu prüfen**"
     }
   },
   "HO.PA": {
@@ -1446,13 +1446,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: \ud83d\udcca **Daten fehlen \u2014 manuell pr\u00fcfen**\n- **Was zu pr\u00fcfen:** Long-Term Debt 2019-2024 (Macrotrends)\n- **Rote Flagge w\u00e4re:** 3+ Jahre steigende Schulden ohne organisches Wachstum\n\n### 3\ufe0f\u20e3 **Analyst-Downgra"
+      "key_findings: 📊 **Daten fehlen — manuell prüfen**\n- **Was zu prüfen:** Long-Term Debt 2019-2024 (Macrotrends)\n- **Rote Flagge wäre:** 3+ Jahre steigende Schulden ohne organisches Wachstum\n\n### 3️⃣ **Analyst-Downgra"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "\ud83d\udcca **Daten fehlen \u2014 manuell pr\u00fcfen**\n- **Was zu pr\u00fcfen:** Long-Term Debt 2019-2024 (Macrotrends)\n- **Rote Flagge w\u00e4re:** 3+ Jahre steigende Schulden ohne organisches Wachstum\n\n### 3\ufe0f\u20e3 **Analyst-Downgrades letzte 30 Tage:** \u274c **KEINE NEWS = kein Downgrade**\n- **Status:** Neutral (aber auch kein Upgrade/Katalysator)\n\n### 4\ufe0f\u20e3 **Insider-Verk\u00e4ufe:** \ud83d\udcca **Daten fehlen \u2014 manuell pr\u00fcfen**\n- **Rote Flagge w\u00e4"
+      "summary": "📊 **Daten fehlen — manuell prüfen**\n- **Was zu prüfen:** Long-Term Debt 2019-2024 (Macrotrends)\n- **Rote Flagge wäre:** 3+ Jahre steigende Schulden ohne organisches Wachstum\n\n### 3️⃣ **Analyst-Downgrades letzte 30 Tage:** ❌ **KEINE NEWS = kein Downgrade**\n- **Status:** Neutral (aber auch kein Upgrade/Katalysator)\n\n### 4️⃣ **Insider-Verkäufe:** 📊 **Daten fehlen — manuell prüfen**\n- **Rote Flagge wä"
     }
   },
   "IBB": {
@@ -1470,13 +1470,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: h-ETFs)\n\n### 8. **Management-Track-Record?**\n**N/A f\u00fcr passiven ETF** \u2014 aber: iShares = BlackRock = solide Struktur\n\n---\n\n## Schritt 5: Katalysator-Check \u2014 Was treibt JETZT?\n\n### Frische Katalysatoren"
+      "key_findings: h-ETFs)\n\n### 8. **Management-Track-Record?**\n**N/A für passiven ETF** — aber: iShares = BlackRock = solide Struktur\n\n---\n\n## Schritt 5: Katalysator-Check — Was treibt JETZT?\n\n### Frische Katalysatoren"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "h-ETFs)\n\n### 8. **Management-Track-Record?**\n**N/A f\u00fcr passiven ETF** \u2014 aber: iShares = BlackRock = solide Struktur\n\n---\n\n## Schritt 5: Katalysator-Check \u2014 Was treibt JETZT?\n\n### Frische Katalysatoren (\u226430 Tage)?\n\u274c **KEINE spezifischen News f\u00fcr IBB vorhanden**\n\n### M\u00f6gliche Katalysatoren (zu pr\u00fcfen):\n1. **Fed-Meeting April 2026** \u2014 neue Dot Plots?\n2. **Biotech M&A-Deals Q1** \u2014 Sektor-Hot-Money-Ind"
+      "summary": "h-ETFs)\n\n### 8. **Management-Track-Record?**\n**N/A für passiven ETF** — aber: iShares = BlackRock = solide Struktur\n\n---\n\n## Schritt 5: Katalysator-Check — Was treibt JETZT?\n\n### Frische Katalysatoren (≤30 Tage)?\n❌ **KEINE spezifischen News für IBB vorhanden**\n\n### Mögliche Katalysatoren (zu prüfen):\n1. **Fed-Meeting April 2026** — neue Dot Plots?\n2. **Biotech M&A-Deals Q1** — Sektor-Hot-Money-Ind"
     }
   },
   "ISPA.DE": {
@@ -1494,13 +1494,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Katalysator?\n**\u26a0\ufe0f DATEN FEHLEN** \u2014 EPS-Historie pr\u00fcfen.\n\n### \u2753 3. Aktie f\u00e4llt, w\u00e4hrend Sektor steigt (Relative Weakness)?\n**TEILWEISE PR\u00dcFBAR:**\n- ISPA 6M: +17.2%\n- TecDAX 6M: **DATEN FEHLEN**, aber v"
+      "key_findings: Katalysator?\n**⚠️ DATEN FEHLEN** — EPS-Historie prüfen.\n\n### ❓ 3. Aktie fällt, während Sektor steigt (Relative Weakness)?\n**TEILWEISE PRÜFBAR:**\n- ISPA 6M: +17.2%\n- TecDAX 6M: **DATEN FEHLEN**, aber v"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Katalysator?\n**\u26a0\ufe0f DATEN FEHLEN** \u2014 EPS-Historie pr\u00fcfen.\n\n### \u2753 3. Aktie f\u00e4llt, w\u00e4hrend Sektor steigt (Relative Weakness)?\n**TEILWEISE PR\u00dcFBAR:**\n- ISPA 6M: +17.2%\n- TecDAX 6M: **DATEN FEHLEN**, aber vermutlich \u00e4hnlich oder besser\n- **\u2192 ISPA l\u00e4uft nicht offensichtlich gegen Sektor** (6M-Performance positiv)\n\n### \u2753 4. Insider-Verk\u00e4ufe (letzte 6 Monate)?\n**\u26a0\ufe0f DATEN FEHLEN** \u2014 Bundesanzeiger/Finanznac"
+      "summary": "Katalysator?\n**⚠️ DATEN FEHLEN** — EPS-Historie prüfen.\n\n### ❓ 3. Aktie fällt, während Sektor steigt (Relative Weakness)?\n**TEILWEISE PRÜFBAR:**\n- ISPA 6M: +17.2%\n- TecDAX 6M: **DATEN FEHLEN**, aber vermutlich ähnlich oder besser\n- **→ ISPA läuft nicht offensichtlich gegen Sektor** (6M-Performance positiv)\n\n### ❓ 4. Insider-Verkäufe (letzte 6 Monate)?\n**⚠️ DATEN FEHLEN** — Bundesanzeiger/Finanznac"
     }
   },
   "JNJ": {
@@ -1518,13 +1518,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ch \u00fcberverkauft, aber: Warum?\n- Ohne News-Flow = kein Momentum f\u00fcr Einstieg\n\n### CRV-Berechnung (hypothetisch)\n\n**Annahmen bei unvollst\u00e4ndigen Daten:**\n- Entry: $230 (nahe aktuellem Kurs, Unterst\u00fctzun"
+      "key_findings: ch überverkauft, aber: Warum?\n- Ohne News-Flow = kein Momentum für Einstieg\n\n### CRV-Berechnung (hypothetisch)\n\n**Annahmen bei unvollständigen Daten:**\n- Entry: $230 (nahe aktuellem Kurs, Unterstützun"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ch \u00fcberverkauft, aber: Warum?\n- Ohne News-Flow = kein Momentum f\u00fcr Einstieg\n\n### CRV-Berechnung (hypothetisch)\n\n**Annahmen bei unvollst\u00e4ndigen Daten:**\n- Entry: $230 (nahe aktuellem Kurs, Unterst\u00fctzung MA200)\n- Stop: $215 (unter MA200 = Trendbruch)\n- Ziel 1: $250 (altes 52W-High)\n\n**CRV:** ($250-$230) / ($230-$215) = 20/15 = **1.33:1**\n\n\ud83d\udea8 **UNTER Mindest-CRV 2:1!**\n\n---\n\n## SCHRITT 6: PORTFOLIO-KR"
+      "summary": "ch überverkauft, aber: Warum?\n- Ohne News-Flow = kein Momentum für Einstieg\n\n### CRV-Berechnung (hypothetisch)\n\n**Annahmen bei unvollständigen Daten:**\n- Entry: $230 (nahe aktuellem Kurs, Unterstützung MA200)\n- Stop: $215 (unter MA200 = Trendbruch)\n- Ziel 1: $250 (altes 52W-High)\n\n**CRV:** ($250-$230) / ($230-$215) = 20/15 = **1.33:1**\n\n🚨 **UNTER Mindest-CRV 2:1!**\n\n---\n\n## SCHRITT 6: PORTFOLIO-KR"
     }
   },
   "KLAC": {
@@ -1542,13 +1542,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: ROT \u2014 Antizyklisches Kaufen (Protokoll-Vorbild Lufthansa) hier NICHT gegeben\n\n### 7. CRV \u2014 2:1 m\u00f6glich mit realistischem Stop?\n**Ohne Daten spekulative Rechnung:**\n- **Entry:** $1,795 (aktuell)\n- **St"
+      "key_findings: ROT — Antizyklisches Kaufen (Protokoll-Vorbild Lufthansa) hier NICHT gegeben\n\n### 7. CRV — 2:1 möglich mit realistischem Stop?\n**Ohne Daten spekulative Rechnung:**\n- **Entry:** $1,795 (aktuell)\n- **St"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ROT \u2014 Antizyklisches Kaufen (Protokoll-Vorbild Lufthansa) hier NICHT gegeben\n\n### 7. CRV \u2014 2:1 m\u00f6glich mit realistischem Stop?\n**Ohne Daten spekulative Rechnung:**\n- **Entry:** $1,795 (aktuell)\n- **Stop:** $1,700 (unter psychologischer Schwelle, -5.3%)\n- **Ziel 1:** $1,900 (+5.8%)\n- **CRV:** 1.1:1 \u274c \u2014 NICHT ausreichend\n\n**Alternative (konservativer Stop):**\n- **Stop:** $1,600 (52W-Mitte, -10.9%)\n-"
+      "summary": "ROT — Antizyklisches Kaufen (Protokoll-Vorbild Lufthansa) hier NICHT gegeben\n\n### 7. CRV — 2:1 möglich mit realistischem Stop?\n**Ohne Daten spekulative Rechnung:**\n- **Entry:** $1,795 (aktuell)\n- **Stop:** $1,700 (unter psychologischer Schwelle, -5.3%)\n- **Ziel 1:** $1,900 (+5.8%)\n- **CRV:** 1.1:1 ❌ — NICHT ausreichend\n\n**Alternative (konservativer Stop):**\n- **Stop:** $1,600 (52W-Mitte, -10.9%)\n-"
     }
   },
   "KO": {
@@ -1566,13 +1566,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings:  finale Bewertungs-Einstufung** geben.\n\n---\n\n## SCHRITT 6: KATALYSATOR & TIMING\n\n### Katalysator-Check (letzte 30 Tage)\n**News-Feed Analyse:**\n- \u274c **KEINE unternehmensspezifischen News zu KO**\n- News-"
+      "key_findings:  finale Bewertungs-Einstufung** geben.\n\n---\n\n## SCHRITT 6: KATALYSATOR & TIMING\n\n### Katalysator-Check (letzte 30 Tage)\n**News-Feed Analyse:**\n- ❌ **KEINE unternehmensspezifischen News zu KO**\n- News-"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " finale Bewertungs-Einstufung** geben.\n\n---\n\n## SCHRITT 6: KATALYSATOR & TIMING\n\n### Katalysator-Check (letzte 30 Tage)\n**News-Feed Analyse:**\n- \u274c **KEINE unternehmensspezifischen News zu KO**\n- News-Feed enth\u00e4lt: Geopolitik (Nordkorea, Iran), HK-B\u00f6rse, Immobilien\n- **Kein frischer Katalysator erkennbar**\n\n### Makro-Katalysator (PS20-Kontext)\n\u2705 **Starker impliziter Katalysator:**\n- **US-Rezessions"
+      "summary": " finale Bewertungs-Einstufung** geben.\n\n---\n\n## SCHRITT 6: KATALYSATOR & TIMING\n\n### Katalysator-Check (letzte 30 Tage)\n**News-Feed Analyse:**\n- ❌ **KEINE unternehmensspezifischen News zu KO**\n- News-Feed enthält: Geopolitik (Nordkorea, Iran), HK-Börse, Immobilien\n- **Kein frischer Katalysator erkennbar**\n\n### Makro-Katalysator (PS20-Kontext)\n✅ **Starker impliziter Katalysator:**\n- **US-Rezessions"
     }
   },
   "KOG.OL": {
@@ -1590,13 +1590,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Daten im Feed \u2014 manuell pr\u00fcfen (Pareto Securities, DNB Markets)  \n**Risiko-Level:** \u26a0\ufe0f UNBEKANNT\n\n### 4.5 Margin-Compression trotz Umsatzwachstum?\n\n**Antwort:** Daten fehlen \u2014 manuell pr\u00fcfen (Quarterl"
+      "key_findings: Daten im Feed — manuell prüfen (Pareto Securities, DNB Markets)  \n**Risiko-Level:** ⚠️ UNBEKANNT\n\n### 4.5 Margin-Compression trotz Umsatzwachstum?\n\n**Antwort:** Daten fehlen — manuell prüfen (Quarterl"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Daten im Feed \u2014 manuell pr\u00fcfen (Pareto Securities, DNB Markets)  \n**Risiko-Level:** \u26a0\ufe0f UNBEKANNT\n\n### 4.5 Margin-Compression trotz Umsatzwachstum?\n\n**Antwort:** Daten fehlen \u2014 manuell pr\u00fcfen (Quarterly Reports)  \n**Risiko-Level:** \u26a0\ufe0f UNBEKANNT\n\n### 4.6 Insolvenzrisiko oder Liquidit\u00e4tskrise?\n\n**Antwort:** **NEIN** (Kongsberg = norwegischer Staatskonzern mit 200+ Jahren Geschichte, AAA-nahe Bonit\u00e4t)"
+      "summary": "Daten im Feed — manuell prüfen (Pareto Securities, DNB Markets)  \n**Risiko-Level:** ⚠️ UNBEKANNT\n\n### 4.5 Margin-Compression trotz Umsatzwachstum?\n\n**Antwort:** Daten fehlen — manuell prüfen (Quarterly Reports)  \n**Risiko-Level:** ⚠️ UNBEKANNT\n\n### 4.6 Insolvenzrisiko oder Liquiditätskrise?\n\n**Antwort:** **NEIN** (Kongsberg = norwegischer Staatskonzern mit 200+ Jahren Geschichte, AAA-nahe Bonität)"
     }
   },
   "KTOS": {
@@ -1614,13 +1614,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: y** | 15-20x | Fair |\n| **Teuer** | > 25x | \u00dcberbewertet |\n\n**Peer-Vergleich erforderlich:**\n- Lockheed Martin (LMT): KGV ~17x\n- Raytheon (RTX): KGV ~18x\n- Northrop Grumman (NOC): KGV ~16x\n\n**OHNE DAT"
+      "key_findings: y** | 15-20x | Fair |\n| **Teuer** | > 25x | Überbewertet |\n\n**Peer-Vergleich erforderlich:**\n- Lockheed Martin (LMT): KGV ~17x\n- Raytheon (RTX): KGV ~18x\n- Northrop Grumman (NOC): KGV ~16x\n\n**OHNE DAT"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "y** | 15-20x | Fair |\n| **Teuer** | > 25x | \u00dcberbewertet |\n\n**Peer-Vergleich erforderlich:**\n- Lockheed Martin (LMT): KGV ~17x\n- Raytheon (RTX): KGV ~18x\n- Northrop Grumman (NOC): KGV ~16x\n\n**OHNE DATEN:** \u26a0\ufe0f **Bewertung = UNBEKANNT**\n\n---\n\n## SCHRITT 6 \u2014 Katalysator-Check\n\n### Frischer Katalysator (\u226430 Tage)?\n\u274c **NEIN** \u2014 Keine News in DB\n\n### M\u00f6gliche Katalysatoren (Sektor-Ebene, nicht aktien-sp"
+      "summary": "y** | 15-20x | Fair |\n| **Teuer** | > 25x | Überbewertet |\n\n**Peer-Vergleich erforderlich:**\n- Lockheed Martin (LMT): KGV ~17x\n- Raytheon (RTX): KGV ~18x\n- Northrop Grumman (NOC): KGV ~16x\n\n**OHNE DATEN:** ⚠️ **Bewertung = UNBEKANNT**\n\n---\n\n## SCHRITT 6 — Katalysator-Check\n\n### Frischer Katalysator (≤30 Tage)?\n❌ **NEIN** — Keine News in DB\n\n### Mögliche Katalysatoren (Sektor-Ebene, nicht aktien-sp"
     }
   },
   "LDO.MI": {
@@ -1638,13 +1638,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: schuldung (Italien-Exposure)\n- Aber: Staatsgarantien f\u00fcr Gro\u00dfauftr\u00e4ge typisch im Defense-Sektor\n\n---\n\n### 4.2 EPS-Trend (letzten 5 Jahre)\n\n\u2753 **Daten fehlen** \u2014 Manuell pr\u00fcfen:\n- EPS 2019: ?\n- EPS 2024"
+      "key_findings: schuldung (Italien-Exposure)\n- Aber: Staatsgarantien für Großaufträge typisch im Defense-Sektor\n\n---\n\n### 4.2 EPS-Trend (letzten 5 Jahre)\n\n❓ **Daten fehlen** — Manuell prüfen:\n- EPS 2019: ?\n- EPS 2024"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "schuldung (Italien-Exposure)\n- Aber: Staatsgarantien f\u00fcr Gro\u00dfauftr\u00e4ge typisch im Defense-Sektor\n\n---\n\n### 4.2 EPS-Trend (letzten 5 Jahre)\n\n\u2753 **Daten fehlen** \u2014 Manuell pr\u00fcfen:\n- EPS 2019: ?\n- EPS 2024e: ?\n- **Warnsignal:** 3+ Jahre fallend ohne Restrukturierungsplan\n\n---\n\n### 4.3 Insider-Trades (letzte 6 Monate)\n\n\u2753 **Daten fehlen** \u2014 Manuell pr\u00fcfen (Quelle: Consob Italia)\n- **Warnsignal:** Massen-"
+      "summary": "schuldung (Italien-Exposure)\n- Aber: Staatsgarantien für Großaufträge typisch im Defense-Sektor\n\n---\n\n### 4.2 EPS-Trend (letzten 5 Jahre)\n\n❓ **Daten fehlen** — Manuell prüfen:\n- EPS 2019: ?\n- EPS 2024e: ?\n- **Warnsignal:** 3+ Jahre fallend ohne Restrukturierungsplan\n\n---\n\n### 4.3 Insider-Trades (letzte 6 Monate)\n\n❓ **Daten fehlen** — Manuell prüfen (Quelle: Consob Italia)\n- **Warnsignal:** Massen-"
     }
   },
   "LHA.DE": {
@@ -1662,13 +1662,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: yse\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Upside/Downside |\n|---|---|---|---|\n| **Bull (Iran-Peace, \u00d6l $65)** | 30% | \u20ac10.50 | +35% |\n| **Base (\u00d6l stabil $80-85)** | 50% | \u20ac8.80 | +13% |\n| **B"
+      "key_findings: yse\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Upside/Downside |\n|---|---|---|---|\n| **Bull (Iran-Peace, Öl $65)** | 30% | €10.50 | +35% |\n| **Base (Öl stabil $80-85)** | 50% | €8.80 | +13% |\n| **B"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "yse\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Upside/Downside |\n|---|---|---|---|\n| **Bull (Iran-Peace, \u00d6l $65)** | 30% | \u20ac10.50 | +35% |\n| **Base (\u00d6l stabil $80-85)** | 50% | \u20ac8.80 | +13% |\n| **Bear (Rezession, \u00d6l $95+)** | 20% | \u20ac6.50 | -17% |\n\n### Stop-Loss\n- Technisch: \u20ac7.10 (unter 52W-Low)\n- Risiko: -8.9%\n\n### CRV-Berechnung\n- **Entry:** \u20ac7.79\n- **Stop:** \u20ac7.10 (-\u20ac0.69 / -8.9%)\n- **Ziel 1"
+      "summary": "yse\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Upside/Downside |\n|---|---|---|---|\n| **Bull (Iran-Peace, Öl $65)** | 30% | €10.50 | +35% |\n| **Base (Öl stabil $80-85)** | 50% | €8.80 | +13% |\n| **Bear (Rezession, Öl $95+)** | 20% | €6.50 | -17% |\n\n### Stop-Loss\n- Technisch: €7.10 (unter 52W-Low)\n- Risiko: -8.9%\n\n### CRV-Berechnung\n- **Entry:** €7.79\n- **Stop:** €7.10 (-€0.69 / -8.9%)\n- **Ziel 1"
     }
   },
   "LRCX": {
@@ -1686,13 +1686,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: NBEKANNT | PEG/EV-EBITDA fehlen |\n| **EPS-Trend stabil/steigend** | \u2753 UNBEKANNT | Daten fehlen |\n| **Schulden-Trend okay** | \u2753 UNBEKANNT | 5J-Daten fehlen |\n| **Kein Downgrade (30d)** | \u2705 OKAY | Keine"
+      "key_findings: NBEKANNT | PEG/EV-EBITDA fehlen |\n| **EPS-Trend stabil/steigend** | ❓ UNBEKANNT | Daten fehlen |\n| **Schulden-Trend okay** | ❓ UNBEKANNT | 5J-Daten fehlen |\n| **Kein Downgrade (30d)** | ✅ OKAY | Keine"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "NBEKANNT | PEG/EV-EBITDA fehlen |\n| **EPS-Trend stabil/steigend** | \u2753 UNBEKANNT | Daten fehlen |\n| **Schulden-Trend okay** | \u2753 UNBEKANNT | 5J-Daten fehlen |\n| **Kein Downgrade (30d)** | \u2705 OKAY | Keine News = kein aktiver Downgrade |\n| **Frischer Katalysator** | \u274c NEIN | Keine News, generische These |\n| **Sektor-Kontext positiv** | \u2753 UNBEKANNT | SOXX-Daten fehlen |\n| **CRV \u2265 2:1** | \u274c NEIN | RSI 81"
+      "summary": "NBEKANNT | PEG/EV-EBITDA fehlen |\n| **EPS-Trend stabil/steigend** | ❓ UNBEKANNT | Daten fehlen |\n| **Schulden-Trend okay** | ❓ UNBEKANNT | 5J-Daten fehlen |\n| **Kein Downgrade (30d)** | ✅ OKAY | Keine News = kein aktiver Downgrade |\n| **Frischer Katalysator** | ❌ NEIN | Keine News, generische These |\n| **Sektor-Kontext positiv** | ❓ UNBEKANNT | SOXX-Daten fehlen |\n| **CRV ≥ 2:1** | ❌ NEIN | RSI 81"
     }
   },
   "MATX": {
@@ -1716,7 +1716,7 @@
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " unter Druck, Sektor pessimistisch\n- **Verkaufen:** Wenn Normalisierung eingepreist ist, Aktien am High, Sektor euphorisch\n\n### MATX Status vs. PS14:\n| Kriterium | PS14-Ideal | MATX aktuell | Match? |\n|---|---|---|---|\n| **Kurs-Position** | Tief im Zyklus | Am 52W-High | \u274c |\n| **Sentiment** | Pessimistisch | Keine News = unklar, aber Kurs suggeriert Optimismus | \u274c |\n| **Timing** | Antizyklischer E"
+      "summary": " unter Druck, Sektor pessimistisch\n- **Verkaufen:** Wenn Normalisierung eingepreist ist, Aktien am High, Sektor euphorisch\n\n### MATX Status vs. PS14:\n| Kriterium | PS14-Ideal | MATX aktuell | Match? |\n|---|---|---|---|\n| **Kurs-Position** | Tief im Zyklus | Am 52W-High | ❌ |\n| **Sentiment** | Pessimistisch | Keine News = unklar, aber Kurs suggeriert Optimismus | ❌ |\n| **Timing** | Antizyklischer E"
     }
   },
   "MOS": {
@@ -1734,13 +1734,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: gbau)\n\n**Prim\u00e4re Metrik:** EV/EBITDA (sollte \u2264 5\u20138x sein im \"Okay\"-Bereich)\n\n\u274c **EV/EBITDA:** Nicht vorhanden\n\u274c **KGV 2025e/2026e:** Nicht vorhanden\n\u274c **Kurs/Buchwert:** Nicht vorhanden\n\u274c **Free Cash "
+      "key_findings: gbau)\n\n**Primäre Metrik:** EV/EBITDA (sollte ≤ 5–8x sein im \"Okay\"-Bereich)\n\n❌ **EV/EBITDA:** Nicht vorhanden\n❌ **KGV 2025e/2026e:** Nicht vorhanden\n❌ **Kurs/Buchwert:** Nicht vorhanden\n❌ **Free Cash "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "gbau)\n\n**Prim\u00e4re Metrik:** EV/EBITDA (sollte \u2264 5\u20138x sein im \"Okay\"-Bereich)\n\n\u274c **EV/EBITDA:** Nicht vorhanden\n\u274c **KGV 2025e/2026e:** Nicht vorhanden\n\u274c **Kurs/Buchwert:** Nicht vorhanden\n\u274c **Free Cash Flow Yield:** Nicht vorhanden\n\n**Relative Bewertung:**\n- Ohne Vergleich zu CF Industries (CF), Nutrien (NTR), ICL Group = **keine Einordnung m\u00f6glich**\n\n**Was ich sehe:**\n- Kurs nahe 52W-Tief (-35% vom"
+      "summary": "gbau)\n\n**Primäre Metrik:** EV/EBITDA (sollte ≤ 5–8x sein im \"Okay\"-Bereich)\n\n❌ **EV/EBITDA:** Nicht vorhanden\n❌ **KGV 2025e/2026e:** Nicht vorhanden\n❌ **Kurs/Buchwert:** Nicht vorhanden\n❌ **Free Cash Flow Yield:** Nicht vorhanden\n\n**Relative Bewertung:**\n- Ohne Vergleich zu CF Industries (CF), Nutrien (NTR), ICL Group = **keine Einordnung möglich**\n\n**Was ich sehe:**\n- Kurs nahe 52W-Tief (-35% vom"
     }
   },
   "MSFT": {
@@ -1758,13 +1758,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: :** Immer noch hoch (4%+) \u2192 belastet Growth-Bewertungen\n- **KI-Regulation:** EU AI Act, US-Diskussionen \u2192 k\u00f6nnte Cloud-Gesch\u00e4ft einschr\u00e4nken\n- \u26a0\ufe0f **Leichter Gegenwind**\n\n### 8. **CRV (Chance/Risiko-Ve"
+      "key_findings: :** Immer noch hoch (4%+) → belastet Growth-Bewertungen\n- **KI-Regulation:** EU AI Act, US-Diskussionen → könnte Cloud-Geschäft einschränken\n- ⚠️ **Leichter Gegenwind**\n\n### 8. **CRV (Chance/Risiko-Ve"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": ":** Immer noch hoch (4%+) \u2192 belastet Growth-Bewertungen\n- **KI-Regulation:** EU AI Act, US-Diskussionen \u2192 k\u00f6nnte Cloud-Gesch\u00e4ft einschr\u00e4nken\n- \u26a0\ufe0f **Leichter Gegenwind**\n\n### 8. **CRV (Chance/Risiko-Verh\u00e4ltnis) unter 2:1?**\n**Hypothetisches Setup (da Einstieg fraglich):**\n- Entry: $418 (aktuell)\n- Stop: $392 (MA50-Support) \u2192 **-6.2% Risiko**\n- Ziel 1: $470 (MA200, alter Support) \u2192 **+12.2% Chance**"
+      "summary": ":** Immer noch hoch (4%+) → belastet Growth-Bewertungen\n- **KI-Regulation:** EU AI Act, US-Diskussionen → könnte Cloud-Geschäft einschränken\n- ⚠️ **Leichter Gegenwind**\n\n### 8. **CRV (Chance/Risiko-Verhältnis) unter 2:1?**\n**Hypothetisches Setup (da Einstieg fraglich):**\n- Entry: $418 (aktuell)\n- Stop: $392 (MA50-Support) → **-6.2% Risiko**\n- Ziel 1: $470 (MA200, alter Support) → **+12.2% Chance**"
     }
   },
   "MUV2.DE": {
@@ -1782,13 +1782,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: s Paper-Portfolio m\u00f6glich nach aktuellem Protokoll**\n\n---\n\n## \ud83e\udded SCHRITT 6: TRADING-VERDICT\n\n### Strategische Einsch\u00e4tzung\n\n**Was spricht GEGEN einen Einstieg jetzt:**\n1. **RSI 86** \u2014 statistisch \u00fcberk"
+      "key_findings: s Paper-Portfolio möglich nach aktuellem Protokoll**\n\n---\n\n## 🧭 SCHRITT 6: TRADING-VERDICT\n\n### Strategische Einschätzung\n\n**Was spricht GEGEN einen Einstieg jetzt:**\n1. **RSI 86** — statistisch überk"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "s Paper-Portfolio m\u00f6glich nach aktuellem Protokoll**\n\n---\n\n## \ud83e\udded SCHRITT 6: TRADING-VERDICT\n\n### Strategische Einsch\u00e4tzung\n\n**Was spricht GEGEN einen Einstieg jetzt:**\n1. **RSI 86** \u2014 statistisch \u00fcberkauft, Korrektur wahrscheinlich\n2. **ATH-Einstieg** \u2014 kaufe niemals am H\u00f6chststand ohne Katalysator\n3. **Kein frischer Trigger** \u2014 Value-Rotation ist alte Story (vermutlich Q4 2023/Q1 2024)\n4. **Datenl"
+      "summary": "s Paper-Portfolio möglich nach aktuellem Protokoll**\n\n---\n\n## 🧭 SCHRITT 6: TRADING-VERDICT\n\n### Strategische Einschätzung\n\n**Was spricht GEGEN einen Einstieg jetzt:**\n1. **RSI 86** — statistisch überkauft, Korrektur wahrscheinlich\n2. **ATH-Einstieg** — kaufe niemals am Höchststand ohne Katalysator\n3. **Kein frischer Trigger** — Value-Rotation ist alte Story (vermutlich Q4 2023/Q1 2024)\n4. **Datenl"
     }
   },
   "NDX1.DE": {
@@ -1806,13 +1806,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: \n\n| Szenario | Wahrscheinlichkeit | Kursziel | Begr\u00fcndung |\n|---|---|---|---|\n| **Bull Case** | \u2753 | \u2753 | Netzausbau-Profiteur, stabile Cashflows |\n| **Base Case** | \u2753 | \u2753 | Regulierte Rendite, moderat "
+      "key_findings: \n\n| Szenario | Wahrscheinlichkeit | Kursziel | Begründung |\n|---|---|---|---|\n| **Bull Case** | ❓ | ❓ | Netzausbau-Profiteur, stabile Cashflows |\n| **Base Case** | ❓ | ❓ | Regulierte Rendite, moderat "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Begr\u00fcndung |\n|---|---|---|---|\n| **Bull Case** | \u2753 | \u2753 | Netzausbau-Profiteur, stabile Cashflows |\n| **Base Case** | \u2753 | \u2753 | Regulierte Rendite, moderat |\n| **Bear Case** | \u2753 | \u2753 | Regulatorische Eingriffe, Kosten\u00fcberschreitung |\n\n**Trade-Parameter (hypothetisch):**\n\n```\nENTRY: [keine Daten]\nSTOP: [keine Daten]\nZIEL_1: [keine Daten]\nCRV: N/A\n```\n\n**\u26a0\ufe0f"
+      "summary": "\n\n| Szenario | Wahrscheinlichkeit | Kursziel | Begründung |\n|---|---|---|---|\n| **Bull Case** | ❓ | ❓ | Netzausbau-Profiteur, stabile Cashflows |\n| **Base Case** | ❓ | ❓ | Regulierte Rendite, moderat |\n| **Bear Case** | ❓ | ❓ | Regulatorische Eingriffe, Kostenüberschreitung |\n\n**Trade-Parameter (hypothetisch):**\n\n```\nENTRY: [keine Daten]\nSTOP: [keine Daten]\nZIEL_1: [keine Daten]\nCRV: N/A\n```\n\n**⚠️"
     }
   },
   "NOVO-B.CO": {
@@ -1830,13 +1830,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: rrenz (Eli Lilly) versch\u00e4rft sich.\n\n### 5. Wie ist die Kapitalallokation? (Management-Qualit\u00e4t)\n- **Antwort:** \u26a0\ufe0f **Daten fehlen** \u2014 Dividende? Aktienr\u00fcckk\u00e4ufe? Capex-Disziplin?\n- Novo historisch star"
+      "key_findings: rrenz (Eli Lilly) verschärft sich.\n\n### 5. Wie ist die Kapitalallokation? (Management-Qualität)\n- **Antwort:** ⚠️ **Daten fehlen** — Dividende? Aktienrückkäufe? Capex-Disziplin?\n- Novo historisch star"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "rrenz (Eli Lilly) versch\u00e4rft sich.\n\n### 5. Wie ist die Kapitalallokation? (Management-Qualit\u00e4t)\n- **Antwort:** \u26a0\ufe0f **Daten fehlen** \u2014 Dividende? Aktienr\u00fcckk\u00e4ufe? Capex-Disziplin?\n- Novo historisch stark, aber aktueller Kurs suggeriert Vertrauensverlust.\n\n### 6. Ist die Aktie eine Value Trap? (fallende Earnings bei fallendem Multiple)\n- **Antwort:** \u26a0\ufe0f **RISIKO HOCH** \u2014 KGV 10x ist nur g\u00fcnstig, wenn"
+      "summary": "rrenz (Eli Lilly) verschärft sich.\n\n### 5. Wie ist die Kapitalallokation? (Management-Qualität)\n- **Antwort:** ⚠️ **Daten fehlen** — Dividende? Aktienrückkäufe? Capex-Disziplin?\n- Novo historisch stark, aber aktueller Kurs suggeriert Vertrauensverlust.\n\n### 6. Ist die Aktie eine Value Trap? (fallende Earnings bei fallendem Multiple)\n- **Antwort:** ⚠️ **RISIKO HOCH** — KGV 10x ist nur günstig, wenn"
     }
   },
   "NVDA": {
@@ -1854,13 +1854,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: KEINE in News-Feed erkennbar.**  \n\u26a0\ufe0f Aber: Export-Restriktionen China (bekanntes Risiko, nicht neu).\n\n**Zusammenfassung:**  \n\ud83d\udd34 **KRITISCH: 5 von 8 Fragen k\u00f6nnen nicht final beantwortet werden \u2014 Daten "
+      "key_findings: KEINE in News-Feed erkennbar.**  \n⚠️ Aber: Export-Restriktionen China (bekanntes Risiko, nicht neu).\n\n**Zusammenfassung:**  \n🔴 **KRITISCH: 5 von 8 Fragen können nicht final beantwortet werden — Daten "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "KEINE in News-Feed erkennbar.**  \n\u26a0\ufe0f Aber: Export-Restriktionen China (bekanntes Risiko, nicht neu).\n\n**Zusammenfassung:**  \n\ud83d\udd34 **KRITISCH: 5 von 8 Fragen k\u00f6nnen nicht final beantwortet werden \u2014 Daten fehlen.**  \n\ud83d\udfe1 Keine akuten Red Flags in verf\u00fcgbaren Daten \u2014 aber **unvollst\u00e4ndige Analyse**.\n\n---\n\n## \ud83d\udcd0 SCHRITT 5: BEWERTUNG (SEKTORGERECHT)\n\n### Anwendbare Metrik (Tech/Wachstum): PEG-Ratio\n\n| Bewert"
+      "summary": "KEINE in News-Feed erkennbar.**  \n⚠️ Aber: Export-Restriktionen China (bekanntes Risiko, nicht neu).\n\n**Zusammenfassung:**  \n🔴 **KRITISCH: 5 von 8 Fragen können nicht final beantwortet werden — Daten fehlen.**  \n🟡 Keine akuten Red Flags in verfügbaren Daten — aber **unvollständige Analyse**.\n\n---\n\n## 📐 SCHRITT 5: BEWERTUNG (SEKTORGERECHT)\n\n### Anwendbare Metrik (Tech/Wachstum): PEG-Ratio\n\n| Bewert"
     }
   },
   "PAAS": {
@@ -1878,13 +1878,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: ver hat Minen in: Mexiko, Peru, Argentinien, Bolivien (bekannt f\u00fcr politische Risiken)\n- Nationalisierungs-Risiko? Steuer-\u00c4nderungen?\n\n### 8. Insider-Trading / Share Buybacks / Dilution?\n**Daten fehle"
+      "key_findings: ver hat Minen in: Mexiko, Peru, Argentinien, Bolivien (bekannt für politische Risiken)\n- Nationalisierungs-Risiko? Steuer-Änderungen?\n\n### 8. Insider-Trading / Share Buybacks / Dilution?\n**Daten fehle"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ver hat Minen in: Mexiko, Peru, Argentinien, Bolivien (bekannt f\u00fcr politische Risiken)\n- Nationalisierungs-Risiko? Steuer-\u00c4nderungen?\n\n### 8. Insider-Trading / Share Buybacks / Dilution?\n**Daten fehlen \u2014 manuell pr\u00fcfen:**\n- Wenn Management bei $58 verkauft \u2192 Red Flag\n- Wenn Buybacks laufen \u2192 bullish\n\n---\n\n## SCHRITT 5: RISIKO-CHECK & CRV\n\n### Technische Risiken\n1. **RSI 75.2** = \u00fcberkauft \u2192 Korrek"
+      "summary": "ver hat Minen in: Mexiko, Peru, Argentinien, Bolivien (bekannt für politische Risiken)\n- Nationalisierungs-Risiko? Steuer-Änderungen?\n\n### 8. Insider-Trading / Share Buybacks / Dilution?\n**Daten fehlen — manuell prüfen:**\n- Wenn Management bei $58 verkauft → Red Flag\n- Wenn Buybacks laufen → bullish\n\n---\n\n## SCHRITT 5: RISIKO-CHECK & CRV\n\n### Technische Risiken\n1. **RSI 75.2** = überkauft → Korrek"
     }
   },
   "PG": {
@@ -1908,7 +1908,7 @@
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "lschock = Inputkosten-Inflation\n\n---\n\n## SCHRITT 5: BEWERTUNGS-MATRIX (Sektor-gerecht)\n\n### Consumer Staples - Bewertungs-Leiter:\n| Metrik | Gut | Okay | Teuer | PG Status |\n|--------|-----|------|-------|-----------|\n| **KGV** | \u226418x | 18-25x | >28x | **\u274c UNBEKANNT** |\n| **Div-Rendite** | \u22653.5% | 2.5-3.5% | <2.5% | **\u274c UNBEKANNT** |\n| **PEG-Ratio** | <1.5 | 1.5-2.5 | >3.0 | **\u274c UNBEKANNT** |\n\n###"
+      "summary": "lschock = Inputkosten-Inflation\n\n---\n\n## SCHRITT 5: BEWERTUNGS-MATRIX (Sektor-gerecht)\n\n### Consumer Staples - Bewertungs-Leiter:\n| Metrik | Gut | Okay | Teuer | PG Status |\n|--------|-----|------|-------|-----------|\n| **KGV** | ≤18x | 18-25x | >28x | **❌ UNBEKANNT** |\n| **Div-Rendite** | ≥3.5% | 2.5-3.5% | <2.5% | **❌ UNBEKANNT** |\n| **PEG-Ratio** | <1.5 | 1.5-2.5 | >3.0 | **❌ UNBEKANNT** |\n\n###"
     }
   },
   "REP.MC": {
@@ -1926,13 +1926,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: x, Div ~4% (gesch\u00e4tzt)\n\n**Ohne aktuelle Daten:**  \nKann nicht beurteilen, ob REP.MC aktuell **g\u00fcnstiger oder teurer** als Sektor ist.\n\n### 3.3 Buffett-Regel (Zinsen vs. KGV)\n\n**10J-Bund:** ~2.7% (aus "
+      "key_findings: x, Div ~4% (geschätzt)\n\n**Ohne aktuelle Daten:**  \nKann nicht beurteilen, ob REP.MC aktuell **günstiger oder teurer** als Sektor ist.\n\n### 3.3 Buffett-Regel (Zinsen vs. KGV)\n\n**10J-Bund:** ~2.7% (aus "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "x, Div ~4% (gesch\u00e4tzt)\n\n**Ohne aktuelle Daten:**  \nKann nicht beurteilen, ob REP.MC aktuell **g\u00fcnstiger oder teurer** als Sektor ist.\n\n### 3.3 Buffett-Regel (Zinsen vs. KGV)\n\n**10J-Bund:** ~2.7% (aus Protokoll)  \n**Faire KGV-Grenze:** 1 / 0.027 \u2248 37x\n\n**Interpretation:**  \n\u00d6l-Aktien mit KGV < 10x sind **weit attraktiver** als Anleihen bei 2.7% Rendite.\n\n### 3.4 Zwischenfazit Bewertung\n\n**Status:**"
+      "summary": "x, Div ~4% (geschätzt)\n\n**Ohne aktuelle Daten:**  \nKann nicht beurteilen, ob REP.MC aktuell **günstiger oder teurer** als Sektor ist.\n\n### 3.3 Buffett-Regel (Zinsen vs. KGV)\n\n**10J-Bund:** ~2.7% (aus Protokoll)  \n**Faire KGV-Grenze:** 1 / 0.027 ≈ 37x\n\n**Interpretation:**  \nÖl-Aktien mit KGV < 10x sind **weit attraktiver** als Anleihen bei 2.7% Rendite.\n\n### 3.4 Zwischenfazit Bewertung\n\n**Status:**"
     }
   },
   "RIO.L": {
@@ -1950,13 +1950,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: sches Risiko?**\n\u2705 **RELEVANT:**\n- **China-Exposure:** ~50% Umsatz (Eisenerz \u2192 China-Stahlwerke)\n- **Red Flag:** China-Konjunktur schw\u00e4chelt 2024 (Immobilienkrise)\n- **Australien-China-Spannungen:** Po"
+      "key_findings: sches Risiko?**\n✅ **RELEVANT:**\n- **China-Exposure:** ~50% Umsatz (Eisenerz → China-Stahlwerke)\n- **Red Flag:** China-Konjunktur schwächelt 2024 (Immobilienkrise)\n- **Australien-China-Spannungen:** Po"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "sches Risiko?**\n\u2705 **RELEVANT:**\n- **China-Exposure:** ~50% Umsatz (Eisenerz \u2192 China-Stahlwerke)\n- **Red Flag:** China-Konjunktur schw\u00e4chelt 2024 (Immobilienkrise)\n- **Australien-China-Spannungen:** Politisches Risiko\n- **Guinea (Simandou-Projekt):** Politische Instabilit\u00e4t\n\n---\n\n## SCHRITT 5: CHANCE-RISIKO-VERH\u00c4LTNIS (CRV)\n\n### Technische Levels\n- **Einstieg (hypothetisch):** 7.395 GBp (aktuell)\n-"
+      "summary": "sches Risiko?**\n✅ **RELEVANT:**\n- **China-Exposure:** ~50% Umsatz (Eisenerz → China-Stahlwerke)\n- **Red Flag:** China-Konjunktur schwächelt 2024 (Immobilienkrise)\n- **Australien-China-Spannungen:** Politisches Risiko\n- **Guinea (Simandou-Projekt):** Politische Instabilität\n\n---\n\n## SCHRITT 5: CHANCE-RISIKO-VERHÄLTNIS (CRV)\n\n### Technische Levels\n- **Einstieg (hypothetisch):** 7.395 GBp (aktuell)\n-"
     }
   },
   "RWE.DE": {
@@ -1974,13 +1974,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: nen in Offshore-Wind (>50 Mrd. bis 2030 angek\u00fcndigt)  \n**Risiko:** Schulden wahrscheinlich **steigend** \u2014 aber strategisch gerechtfertigt (Wachstum, nicht Survival)  \n**Pr\u00fcfen:** Ist Nettoverschuldung"
+      "key_findings: nen in Offshore-Wind (>50 Mrd. bis 2030 angekündigt)  \n**Risiko:** Schulden wahrscheinlich **steigend** — aber strategisch gerechtfertigt (Wachstum, nicht Survival)  \n**Prüfen:** Ist Nettoverschuldung"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "nen in Offshore-Wind (>50 Mrd. bis 2030 angek\u00fcndigt)  \n**Risiko:** Schulden wahrscheinlich **steigend** \u2014 aber strategisch gerechtfertigt (Wachstum, nicht Survival)  \n**Pr\u00fcfen:** Ist Nettoverschuldung/EBITDA < 3x? (Versorger-Standard)\n\n### 3. Analystenkonsens letzte 30 Tage?\n\ud83d\udd34 **Keine News = keine Downgrades sichtbar** \u2014 neutral  \n\u26a0\ufe0f **Aber auch keine Upgrades** \u2014 kein Fresh-Momentum von Sell-Side"
+      "summary": "nen in Offshore-Wind (>50 Mrd. bis 2030 angekündigt)  \n**Risiko:** Schulden wahrscheinlich **steigend** — aber strategisch gerechtfertigt (Wachstum, nicht Survival)  \n**Prüfen:** Ist Nettoverschuldung/EBITDA < 3x? (Versorger-Standard)\n\n### 3. Analystenkonsens letzte 30 Tage?\n🔴 **Keine News = keine Downgrades sichtbar** — neutral  \n⚠️ **Aber auch keine Upgrades** — kein Fresh-Momentum von Sell-Side"
     }
   },
   "SAAB-B.ST": {
@@ -1998,13 +1998,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: ntwicklung unbekannt** \u2192 Bilanz-Risiko unklar\n5. \ud83d\udd34 **Warum am 52W-Tief?** \u2192 Kein Sell-Side-Research erkl\u00e4rt Schw\u00e4che\n6. \u26a0\ufe0f **Relative Schw\u00e4che** \u2192 f\u00e4llt w\u00e4hrend Sektor steigt?\n\n### Vergleich zum Vorbi"
+      "key_findings: ntwicklung unbekannt** → Bilanz-Risiko unklar\n5. 🔴 **Warum am 52W-Tief?** → Kein Sell-Side-Research erklärt Schwäche\n6. ⚠️ **Relative Schwäche** → fällt während Sektor steigt?\n\n### Vergleich zum Vorbi"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "ntwicklung unbekannt** \u2192 Bilanz-Risiko unklar\n5. \ud83d\udd34 **Warum am 52W-Tief?** \u2192 Kein Sell-Side-Research erkl\u00e4rt Schw\u00e4che\n6. \u26a0\ufe0f **Relative Schw\u00e4che** \u2192 f\u00e4llt w\u00e4hrend Sektor steigt?\n\n### Vergleich zum Vorbild (Lufthansa 28.03.2026)\n| Kriterium | Lufthansa | SAAB |\n|---|---|---|\n| Bewertung | KGV 6x = g\u00fcnstig | \u2753 unbekannt |\n| Katalysator | Iran-Deal (frisch) | \ud83d\udd34 keiner |\n| EPS-Trend | steigend | \u2753 unbek"
+      "summary": "ntwicklung unbekannt** → Bilanz-Risiko unklar\n5. 🔴 **Warum am 52W-Tief?** → Kein Sell-Side-Research erklärt Schwäche\n6. ⚠️ **Relative Schwäche** → fällt während Sektor steigt?\n\n### Vergleich zum Vorbild (Lufthansa 28.03.2026)\n| Kriterium | Lufthansa | SAAB |\n|---|---|---|\n| Bewertung | KGV 6x = günstig | ❓ unbekannt |\n| Katalysator | Iran-Deal (frisch) | 🔴 keiner |\n| EPS-Trend | steigend | ❓ unbek"
     }
   },
   "SAP": {
@@ -2022,13 +2022,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: (Cluster in 3 Monaten)?\n**Antwort:** [DATEN FEHLEN \u2014 SEC/BaFin Filings manuell pr\u00fcfen]  \n**Risiko:** \u2753 **UNKLAR**\n\n### 6. Guidance-Cuts in letzten 2 Quartalen?\n**Antwort:** **Q1 Earnings stehen BEVOR*"
+      "key_findings: (Cluster in 3 Monaten)?\n**Antwort:** [DATEN FEHLEN — SEC/BaFin Filings manuell prüfen]  \n**Risiko:** ❓ **UNKLAR**\n\n### 6. Guidance-Cuts in letzten 2 Quartalen?\n**Antwort:** **Q1 Earnings stehen BEVOR*"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "(Cluster in 3 Monaten)?\n**Antwort:** [DATEN FEHLEN \u2014 SEC/BaFin Filings manuell pr\u00fcfen]  \n**Risiko:** \u2753 **UNKLAR**\n\n### 6. Guidance-Cuts in letzten 2 Quartalen?\n**Antwort:** **Q1 Earnings stehen BEVOR** \u2014 keine j\u00fcngsten Cuts bekannt, aber nicht verifiziert  \n**Risiko:** \u26a0\ufe0f **EARNINGS-RISIKO AKUT (heute/morgen)**\n\n### 7. Regulatorisches Risiko (Kartellverfahren, Sanktionen)?\n**Antwort:** EU-Datensch"
+      "summary": "(Cluster in 3 Monaten)?\n**Antwort:** [DATEN FEHLEN — SEC/BaFin Filings manuell prüfen]  \n**Risiko:** ❓ **UNKLAR**\n\n### 6. Guidance-Cuts in letzten 2 Quartalen?\n**Antwort:** **Q1 Earnings stehen BEVOR** — keine jüngsten Cuts bekannt, aber nicht verifiziert  \n**Risiko:** ⚠️ **EARNINGS-RISIKO AKUT (heute/morgen)**\n\n### 7. Regulatorisches Risiko (Kartellverfahren, Sanktionen)?\n**Antwort:** EU-Datensch"
     }
   },
   "SBLK": {
@@ -2046,13 +2046,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Bulk lebt von China-Rohstoff-Importen\n- Keine aktuelle Meldung zu neuem Stimulus\n- **Katalysator fehlt**\n\n### Technischer Katalysator:\n\u26a0\ufe0f **RSI 75.9 = \u00fcberkauft**\n- **Gegen-Indikator:** Einstieg bei \u00dc"
+      "key_findings: Bulk lebt von China-Rohstoff-Importen\n- Keine aktuelle Meldung zu neuem Stimulus\n- **Katalysator fehlt**\n\n### Technischer Katalysator:\n⚠️ **RSI 75.9 = überkauft**\n- **Gegen-Indikator:** Einstieg bei Ü"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Bulk lebt von China-Rohstoff-Importen\n- Keine aktuelle Meldung zu neuem Stimulus\n- **Katalysator fehlt**\n\n### Technischer Katalysator:\n\u26a0\ufe0f **RSI 75.9 = \u00fcberkauft**\n- **Gegen-Indikator:** Einstieg bei \u00dcberkauf = schlechtes Timing\n- **Kein bullisher technischer Katalysator**\n\n---\n\n## SCHRITT 6: TRADING-SETUP\n\n### Paper-Portfolio-Kriterien (Pr\u00fcfung):\n\n| Kriterium | Status | Kommentar |\n|---|---|---|\n|"
+      "summary": "Bulk lebt von China-Rohstoff-Importen\n- Keine aktuelle Meldung zu neuem Stimulus\n- **Katalysator fehlt**\n\n### Technischer Katalysator:\n⚠️ **RSI 75.9 = überkauft**\n- **Gegen-Indikator:** Einstieg bei Überkauf = schlechtes Timing\n- **Kein bullisher technischer Katalysator**\n\n---\n\n## SCHRITT 6: TRADING-SETUP\n\n### Paper-Portfolio-Kriterien (Prüfung):\n\n| Kriterium | Status | Kommentar |\n|---|---|---|\n|"
     }
   },
   "SCCO": {
@@ -2070,13 +2070,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: \u2192 Kaufregel nicht erf\u00fcllbar\n2. **EPS-Trend unbekannt** \u2192 Earnings-Qualit\u00e4t unklar\n3. **Schulden-Trend unbekannt** \u2192 Bilanz-Risiko unklar\n4. **Kein frischer Katalysator (\u226430 Tage)** \u2192 kein Timing-Trigg"
+      "key_findings: → Kaufregel nicht erfüllbar\n2. **EPS-Trend unbekannt** → Earnings-Qualität unklar\n3. **Schulden-Trend unbekannt** → Bilanz-Risiko unklar\n4. **Kein frischer Katalysator (≤30 Tage)** → kein Timing-Trigg"
     ],
     "entry": 3.0,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "\u2192 Kaufregel nicht erf\u00fcllbar\n2. **EPS-Trend unbekannt** \u2192 Earnings-Qualit\u00e4t unklar\n3. **Schulden-Trend unbekannt** \u2192 Bilanz-Risiko unklar\n4. **Kein frischer Katalysator (\u226430 Tage)** \u2192 kein Timing-Trigger\n5. **CRV nicht kalkulierbar** \u2192 Risk/Reward unklar\n\n---\n\n## SCHRITT 6: TRADING-ENTSCHEIDUNG\n\n### Vergleich mit Protokoll-Standards\n\n| Kriterium | Anforderung | SCCO Status | \u2713/\u2717 |\n|---|---|---|---|"
+      "summary": "→ Kaufregel nicht erfüllbar\n2. **EPS-Trend unbekannt** → Earnings-Qualität unklar\n3. **Schulden-Trend unbekannt** → Bilanz-Risiko unklar\n4. **Kein frischer Katalysator (≤30 Tage)** → kein Timing-Trigger\n5. **CRV nicht kalkulierbar** → Risk/Reward unklar\n\n---\n\n## SCHRITT 6: TRADING-ENTSCHEIDUNG\n\n### Vergleich mit Protokoll-Standards\n\n| Kriterium | Anforderung | SCCO Status | ✓/✗ |\n|---|---|---|---|"
     }
   },
   "SIE.DE": {
@@ -2094,13 +2094,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings:  FEHLT** \u2014 manuell Onvista pr\u00fcfen.\n\n### Hypothetische Einsch\u00e4tzung (basierend auf 2024-Turnaround-Story):\n- **Wenn KGV 2026e = 15-20x:** Teuer (Turnaround noch nicht abgeschlossen)\n- **Wenn KGV 2026e "
+      "key_findings:  FEHLT** — manuell Onvista prüfen.\n\n### Hypothetische Einschätzung (basierend auf 2024-Turnaround-Story):\n- **Wenn KGV 2026e = 15-20x:** Teuer (Turnaround noch nicht abgeschlossen)\n- **Wenn KGV 2026e "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": " FEHLT** \u2014 manuell Onvista pr\u00fcfen.\n\n### Hypothetische Einsch\u00e4tzung (basierend auf 2024-Turnaround-Story):\n- **Wenn KGV 2026e = 15-20x:** Teuer (Turnaround noch nicht abgeschlossen)\n- **Wenn KGV 2026e = 8-12x:** Fair bis g\u00fcnstig (Turnaround eingepreist)\n- **Wenn KGV negativ/hoch (>30x):** Finger weg (noch im Trough)\n\n### Relative Bewertung:\n- **vs. Vestas (VWS):** Windkonkurrent \u2014 Vergleich n\u00f6tig\n-"
+      "summary": " FEHLT** — manuell Onvista prüfen.\n\n### Hypothetische Einschätzung (basierend auf 2024-Turnaround-Story):\n- **Wenn KGV 2026e = 15-20x:** Teuer (Turnaround noch nicht abgeschlossen)\n- **Wenn KGV 2026e = 8-12x:** Fair bis günstig (Turnaround eingepreist)\n- **Wenn KGV negativ/hoch (>30x):** Finger weg (noch im Trough)\n\n### Relative Bewertung:\n- **vs. Vestas (VWS):** Windkonkurrent — Vergleich nötig\n-"
     }
   },
   "SMCI": {
@@ -2118,13 +2118,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: iteren Lauf.  \n\u26a0\ufe0f **Gefahr:** Kurs k\u00f6nnte auf alten News laufen (momentum play ohne Substanz).\n\n### 8. Makro-Gegenwind: Z\u00f6lle, Regulierung, Commodity-Crash?\n\u2705 **Kein akuter Gegenwind erkennbar**  \n\u2705 *"
+      "key_findings: iteren Lauf.  \n⚠️ **Gefahr:** Kurs könnte auf alten News laufen (momentum play ohne Substanz).\n\n### 8. Makro-Gegenwind: Zölle, Regulierung, Commodity-Crash?\n✅ **Kein akuter Gegenwind erkennbar**  \n✅ *"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "iteren Lauf.  \n\u26a0\ufe0f **Gefahr:** Kurs k\u00f6nnte auf alten News laufen (momentum play ohne Substanz).\n\n### 8. Makro-Gegenwind: Z\u00f6lle, Regulierung, Commodity-Crash?\n\u2705 **Kein akuter Gegenwind erkennbar**  \n\u2705 **AI-Infrastruktur** ist politisch gewollt (US/EU Chip Acts, Rechenzentrumsausbau).\n\n---\n\n## SCHRITT 5\ufe0f\u20e3 \u2014 SYNTHESE & DIALEKTIK\n\n### Bull-Case (Warum kaufen?)\n\u2705 **Strategie-Fit perfekt:** AI-Infrastruk"
+      "summary": "iteren Lauf.  \n⚠️ **Gefahr:** Kurs könnte auf alten News laufen (momentum play ohne Substanz).\n\n### 8. Makro-Gegenwind: Zölle, Regulierung, Commodity-Crash?\n✅ **Kein akuter Gegenwind erkennbar**  \n✅ **AI-Infrastruktur** ist politisch gewollt (US/EU Chip Acts, Rechenzentrumsausbau).\n\n---\n\n## SCHRITT 5️⃣ — SYNTHESE & DIALEKTIK\n\n### Bull-Case (Warum kaufen?)\n✅ **Strategie-Fit perfekt:** AI-Infrastruk"
     }
   },
   "STLD": {
@@ -2140,7 +2140,7 @@
     "conviction": "high",
     "key_drivers": {
       "hrc_price": "Hot-Rolled-Coil von 80/Ton (Jan) auf 050/Ton (Apr) = +54% in 10 Wochen",
-      "section_232": "25% Stahlz\u00f6lle seit 12. M\u00e4rz \u2014 Import-Arbitrage kollabiert",
+      "section_232": "25% Stahlzölle seit 12. März — Import-Arbitrage kollabiert",
       "q1_earnings": "EPS-Konsens von .85 auf .20 gestiegen (+47%). Bericht 22.04.!",
       "margin_leverage": "STLD als low-cost EAF-Produzent: jeder +00 HRC = +-6 EPS",
       "tariff_context": "Trump 36% Approval, braucht Rust-Belt-Wins vor Midterms"
@@ -2151,7 +2151,7 @@
       "tp1_sell_30pct": "205-210 (SOFORT, De-Risk bei RSI 85)",
       "tp2_sell_40pct": "220-225 (nach Q1-Beat, Deadline 30.04.)",
       "tp3_sell_20pct": "195 (erste Korrektur, 50MA)",
-      "runner_10pct": "behalten f\u00fcr 50+ Bull-Case",
+      "runner_10pct": "behalten für 50+ Bull-Case",
       "hard_stop": "186 (50MA Break -> alles raus)"
     },
     "scenarios": {
@@ -2161,7 +2161,7 @@
     },
     "monitoring_triggers": [
       "HRC unter 50 = Alarm",
-      "Trump Tariff-Rollback-Ank\u00fcndigung",
+      "Trump Tariff-Rollback-Ankündigung",
       "ISM Manufacturing unter 48",
       "Q1 Report 22. April"
     ],
@@ -2171,12 +2171,12 @@
       "q1_miss": "15% Wahrscheinlichkeit / -12% Impact"
     },
     "reasons": [
-      "RSI 85.5 + ATH = technisch \u00fcberhitzt",
-      "KGV 14x historisch hoch f\u00fcr Zykliker",
-      "HRC-Preise m\u00f6glicherweise am Peak",
+      "RSI 85.5 + ATH = technisch überhitzt",
+      "KGV 14x historisch hoch für Zykliker",
+      "HRC-Preise möglicherweise am Peak",
       "Q1-Earnings am 22.04. als Katalysator-Endpunkt"
     ],
-    "notes": "Victor ist seit M\u00e4rz bei ~70 drin mit +20%. Empfehlung: gestaffelter Exit startend JETZT. Q1 Earnings 22.04. = kritischer Catalyst, danach Sell-the-News Risiko hoch."
+    "notes": "Victor ist seit März bei ~70 drin mit +20%. Empfehlung: gestaffelter Exit startend JETZT. Q1 Earnings 22.04. = kritischer Catalyst, danach Sell-the-News Risiko hoch."
   },
   "TECK": {
     "ticker": "TECK",
@@ -2193,13 +2193,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: se:**\n\n| Parameter | Wert | Bewertung |\n|---|---|---|\n| Einstieg | $59.00 | \u274c Am 52W-High |\n| RSI | 81.6 | \u274c Extrem \u00fcberkauft |\n| N\u00e4chster Support | ~$54 (gesch\u00e4tzt, 10% darunter) | \u26a0\ufe0f Weit weg |\n| N\u00e4"
+      "key_findings: se:**\n\n| Parameter | Wert | Bewertung |\n|---|---|---|\n| Einstieg | $59.00 | ❌ Am 52W-High |\n| RSI | 81.6 | ❌ Extrem überkauft |\n| Nächster Support | ~$54 (geschätzt, 10% darunter) | ⚠️ Weit weg |\n| Nä"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "se:**\n\n| Parameter | Wert | Bewertung |\n|---|---|---|\n| Einstieg | $59.00 | \u274c Am 52W-High |\n| RSI | 81.6 | \u274c Extrem \u00fcberkauft |\n| N\u00e4chster Support | ~$54 (gesch\u00e4tzt, 10% darunter) | \u26a0\ufe0f Weit weg |\n| N\u00e4chster Widerstand | $59.38 | \u2705 Nur 0.6% h\u00f6her |\n\n**Positionsgr\u00f6\u00dfe-Kalkulation:**\n- **Stop-Loss:** $54 (8.5% unter Entry)\n- **Ziel 1:** $65 (10% \u00fcber Entry, Round Number)\n- **CRV:** 6 / 5 = **1.2:1** \u274c"
+      "summary": "se:**\n\n| Parameter | Wert | Bewertung |\n|---|---|---|\n| Einstieg | $59.00 | ❌ Am 52W-High |\n| RSI | 81.6 | ❌ Extrem überkauft |\n| Nächster Support | ~$54 (geschätzt, 10% darunter) | ⚠️ Weit weg |\n| Nächster Widerstand | $59.38 | ✅ Nur 0.6% höher |\n\n**Positionsgröße-Kalkulation:**\n- **Stop-Loss:** $54 (8.5% unter Entry)\n- **Ziel 1:** $65 (10% über Entry, Round Number)\n- **CRV:** 6 / 5 = **1.2:1** ❌"
     }
   },
   "UEC": {
@@ -2217,13 +2217,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: KGV:** Nicht anwendbar \u2014 Explorer haben oft negatives oder sehr volatiles EPS  \n\u274c **EV/EBITDA:** Daten fehlen \u2014 manuell pr\u00fcfen  \n\u274c **EV/NAV (Net Asset Value):** Daten fehlen \u2014 manuell pr\u00fcfen  \n\u274c **Pri"
+      "key_findings: KGV:** Nicht anwendbar — Explorer haben oft negatives oder sehr volatiles EPS  \n❌ **EV/EBITDA:** Daten fehlen — manuell prüfen  \n❌ **EV/NAV (Net Asset Value):** Daten fehlen — manuell prüfen  \n❌ **Pri"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "KGV:** Nicht anwendbar \u2014 Explorer haben oft negatives oder sehr volatiles EPS  \n\u274c **EV/EBITDA:** Daten fehlen \u2014 manuell pr\u00fcfen  \n\u274c **EV/NAV (Net Asset Value):** Daten fehlen \u2014 manuell pr\u00fcfen  \n\u274c **Price/Book:** Daten fehlen \u2014 manuell pr\u00fcfen  \n\n### Vergleich zu Peers (Beispiel):\n- **Cameco (CCJ):** Gr\u00f6\u00dfter Produzent, ca. 20x EV/EBITDA (2024e)\n- **Denison Mines (DNN):** Developer, schwer bewertbar ("
+      "summary": "KGV:** Nicht anwendbar — Explorer haben oft negatives oder sehr volatiles EPS  \n❌ **EV/EBITDA:** Daten fehlen — manuell prüfen  \n❌ **EV/NAV (Net Asset Value):** Daten fehlen — manuell prüfen  \n❌ **Price/Book:** Daten fehlen — manuell prüfen  \n\n### Vergleich zu Peers (Beispiel):\n- **Cameco (CCJ):** Größter Produzent, ca. 20x EV/EBITDA (2024e)\n- **Denison Mines (DNN):** Developer, schwer bewertbar ("
     }
   },
   "VDC": {
@@ -2241,13 +2241,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: talysator** | \u26a0\ufe0f **Fehlt** | Keine News zu Rezessionsangst-Spike oder Fed-Pivot |\n| **Makro-Katalysator** | \u26a0\ufe0f **Unklar** | Strategie-Thesis (Rezession) ist generisch, kein spezifisches Trigger-Event "
+      "key_findings: talysator** | ⚠️ **Fehlt** | Keine News zu Rezessionsangst-Spike oder Fed-Pivot |\n| **Makro-Katalysator** | ⚠️ **Unklar** | Strategie-Thesis (Rezession) ist generisch, kein spezifisches Trigger-Event "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "talysator** | \u26a0\ufe0f **Fehlt** | Keine News zu Rezessionsangst-Spike oder Fed-Pivot |\n| **Makro-Katalysator** | \u26a0\ufe0f **Unklar** | Strategie-Thesis (Rezession) ist generisch, kein spezifisches Trigger-Event |\n| **Technischer Katalysator** | \u274c Nein | Kurs \u00fcber MA200, aber unter MA50 = Niemandsland |\n\n**Kritische Frage:**  \nWarum JETZT kaufen? Was hat sich in letzten 30 Tagen ge\u00e4ndert?\n\n**Antwort:** **NICH"
+      "summary": "talysator** | ⚠️ **Fehlt** | Keine News zu Rezessionsangst-Spike oder Fed-Pivot |\n| **Makro-Katalysator** | ⚠️ **Unklar** | Strategie-Thesis (Rezession) ist generisch, kein spezifisches Trigger-Event |\n| **Technischer Katalysator** | ❌ Nein | Kurs über MA200, aber unter MA50 = Niemandsland |\n\n**Kritische Frage:**  \nWarum JETZT kaufen? Was hat sich in letzten 30 Tagen geändert?\n\n**Antwort:** **NICH"
     }
   },
   "VWO": {
@@ -2265,13 +2265,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: hmen)?**\n   - VWO h\u00e4lt Unternehmen mit durchschnittlicher EM-Verschuldung\n   - **China-Immobiliensektor:** Strukturell hoch verschuldet (Evergrande-Echo)\n   - **T\u00fcrkei, Argentinien:** Staatsschulden k"
+      "key_findings: hmen)?**\n   - VWO hält Unternehmen mit durchschnittlicher EM-Verschuldung\n   - **China-Immobiliensektor:** Strukturell hoch verschuldet (Evergrande-Echo)\n   - **Türkei, Argentinien:** Staatsschulden k"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "hmen)?**\n   - VWO h\u00e4lt Unternehmen mit durchschnittlicher EM-Verschuldung\n   - **China-Immobiliensektor:** Strukturell hoch verschuldet (Evergrande-Echo)\n   - **T\u00fcrkei, Argentinien:** Staatsschulden kritisch, aber geringes VWO-Gewicht\n   - **Bewertung:** \u26a0\ufe0f Moderate Sorge bei China-Exposure (~30%)\n\n### 2. **Earnings-Trend (Portfolio-Unternehmen)?**\n   - **EM-Earnings-Wachstum 2026e:** +8-10% (Kons"
+      "summary": "hmen)?**\n   - VWO hält Unternehmen mit durchschnittlicher EM-Verschuldung\n   - **China-Immobiliensektor:** Strukturell hoch verschuldet (Evergrande-Echo)\n   - **Türkei, Argentinien:** Staatsschulden kritisch, aber geringes VWO-Gewicht\n   - **Bewertung:** ⚠️ Moderate Sorge bei China-Exposure (~30%)\n\n### 2. **Earnings-Trend (Portfolio-Unternehmen)?**\n   - **EM-Earnings-Wachstum 2026e:** +8-10% (Kons"
     }
   },
   "XBI": {
@@ -2289,13 +2289,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: KAUFEN",
-      "key_findings: ?** (Chart fehlt)\n- **+16% \u00fcber 52W-Low:** Starker Trend, aber **sp\u00e4te Phase**\n\n### Risiko\n\ud83d\udd34 **Einstieg jetzt = Kaufen am Top**\n- Antizyklisches Denken (Protokoll-Vorbild Lufthansa): **Warten auf R\u00fcck"
+      "key_findings: ?** (Chart fehlt)\n- **+16% über 52W-Low:** Starker Trend, aber **späte Phase**\n\n### Risiko\n🔴 **Einstieg jetzt = Kaufen am Top**\n- Antizyklisches Denken (Protokoll-Vorbild Lufthansa): **Warten auf Rück"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "?** (Chart fehlt)\n- **+16% \u00fcber 52W-Low:** Starker Trend, aber **sp\u00e4te Phase**\n\n### Risiko\n\ud83d\udd34 **Einstieg jetzt = Kaufen am Top**\n- Antizyklisches Denken (Protokoll-Vorbild Lufthansa): **Warten auf R\u00fccksetzer**\n- **Idealer Entry:** $125-130 (R\u00fccksetzer zur MA50, falls vorhanden)\n\n---\n\n## SCHRITT 6: CRV & POSITION SIZING\n\n### Hypothetisches Setup (wenn Entry bei $138)\n- **Entry:** $138.07\n- **Stop:**"
+      "summary": "?** (Chart fehlt)\n- **+16% über 52W-Low:** Starker Trend, aber **späte Phase**\n\n### Risiko\n🔴 **Einstieg jetzt = Kaufen am Top**\n- Antizyklisches Denken (Protokoll-Vorbild Lufthansa): **Warten auf Rücksetzer**\n- **Idealer Entry:** $125-130 (Rücksetzer zur MA50, falls vorhanden)\n\n---\n\n## SCHRITT 6: CRV & POSITION SIZING\n\n### Hypothetisches Setup (wenn Entry bei $138)\n- **Entry:** $138.07\n- **Stop:**"
     }
   },
   "XLP": {
@@ -2313,13 +2313,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: dert?\n\n### 8. Momentum l\u00e4uft GEGEN die Position?\n**WARNSIGNAL**\n- RSI 53 = neutral\n- Kurs unter MA50 (-2.5%)\n- Performance 3M nur +0.7% (schwach)\n- **Interpretation:** Kein klares bullishes Momentum, "
+      "key_findings: dert?\n\n### 8. Momentum läuft GEGEN die Position?\n**WARNSIGNAL**\n- RSI 53 = neutral\n- Kurs unter MA50 (-2.5%)\n- Performance 3M nur +0.7% (schwach)\n- **Interpretation:** Kein klares bullishes Momentum, "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "dert?\n\n### 8. Momentum l\u00e4uft GEGEN die Position?\n**WARNSIGNAL**\n- RSI 53 = neutral\n- Kurs unter MA50 (-2.5%)\n- Performance 3M nur +0.7% (schwach)\n- **Interpretation:** Kein klares bullishes Momentum, eher Seitw\u00e4rts/Schw\u00e4che\n\n---\n\n## SCHRITT 5: KATALYSATOR-CHECK\n\n### These der Strategie PS20:\n\"Steigende US-Rezessionswahrscheinlichkeit \u2192 Rotation in Defensive\"\n\n### Ist die These aktuell aktiv (fresh"
+      "summary": "dert?\n\n### 8. Momentum läuft GEGEN die Position?\n**WARNSIGNAL**\n- RSI 53 = neutral\n- Kurs unter MA50 (-2.5%)\n- Performance 3M nur +0.7% (schwach)\n- **Interpretation:** Kein klares bullishes Momentum, eher Seitwärts/Schwäche\n\n---\n\n## SCHRITT 5: KATALYSATOR-CHECK\n\n### These der Strategie PS20:\n\"Steigende US-Rezessionswahrscheinlichkeit → Rotation in Defensive\"\n\n### Ist die These aktuell aktiv (fresh"
     }
   },
   "XLU": {
@@ -2337,13 +2337,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: Nachhaltigkeit\n- **Utilities-Sektor:** Dividenden stabil, Payout-Ratio 60-70%\n- **XLU-Dividende:** ~3.0-3.5% Yield (stabil)\n- \u2705 **Nachhaltig** (regulierte Cashflows)\n\n### 8. Kapitalallokation (Buyback"
+      "key_findings: Nachhaltigkeit\n- **Utilities-Sektor:** Dividenden stabil, Payout-Ratio 60-70%\n- **XLU-Dividende:** ~3.0-3.5% Yield (stabil)\n- ✅ **Nachhaltig** (regulierte Cashflows)\n\n### 8. Kapitalallokation (Buyback"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "Nachhaltigkeit\n- **Utilities-Sektor:** Dividenden stabil, Payout-Ratio 60-70%\n- **XLU-Dividende:** ~3.0-3.5% Yield (stabil)\n- \u2705 **Nachhaltig** (regulierte Cashflows)\n\n### 8. Kapitalallokation (Buybacks vs. Wachstum)\n- **ETF:** Keine eigene Kapitalallokation (passiv replicating)\n- **Underlying:** Utilities investieren in Renewables + Grid Modernization \u2192 sinnvoll, aber kapitalintensiv\n- \u26a0\ufe0f **Risiko"
+      "summary": "Nachhaltigkeit\n- **Utilities-Sektor:** Dividenden stabil, Payout-Ratio 60-70%\n- **XLU-Dividende:** ~3.0-3.5% Yield (stabil)\n- ✅ **Nachhaltig** (regulierte Cashflows)\n\n### 8. Kapitalallokation (Buybacks vs. Wachstum)\n- **ETF:** Keine eigene Kapitalallokation (passiv replicating)\n- **Underlying:** Utilities investieren in Renewables + Grid Modernization → sinnvoll, aber kapitalintensiv\n- ⚠️ **Risiko"
     }
   },
   "XLV": {
@@ -2361,13 +2361,13 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: litisches/regulatorisches Risiko?\n\u26a0\ufe0f **JA \u2014 HEALTHCARE = HOCHREGULIERT:**\n- Medicare-Preisverhandlungen (IRA 2022)\n- Potenzielle weitere Preisregulierung\n- Patentabl\u00e4ufe (GLP-1-Boom vs. Generika-Druck"
+      "key_findings: litisches/regulatorisches Risiko?\n⚠️ **JA — HEALTHCARE = HOCHREGULIERT:**\n- Medicare-Preisverhandlungen (IRA 2022)\n- Potenzielle weitere Preisregulierung\n- Patentabläufe (GLP-1-Boom vs. Generika-Druck"
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "litisches/regulatorisches Risiko?\n\u26a0\ufe0f **JA \u2014 HEALTHCARE = HOCHREGULIERT:**\n- Medicare-Preisverhandlungen (IRA 2022)\n- Potenzielle weitere Preisregulierung\n- Patentabl\u00e4ufe (GLP-1-Boom vs. Generika-Druck)\n- **Status:** **ROT \u2014 strukturelles Risiko, aber bekannt und eingepreist**\n\n### 7. Zyklisches Timing-Risiko?\n\u2705 **NEIN \u2014 Healthcare ist anti-zyklisch**  \n- Nachfrage unelastisch (Medikamente, Behandl"
+      "summary": "litisches/regulatorisches Risiko?\n⚠️ **JA — HEALTHCARE = HOCHREGULIERT:**\n- Medicare-Preisverhandlungen (IRA 2022)\n- Potenzielle weitere Preisregulierung\n- Patentabläufe (GLP-1-Boom vs. Generika-Druck)\n- **Status:** **ROT — strukturelles Risiko, aber bekannt und eingepreist**\n\n### 7. Zyklisches Timing-Risiko?\n✅ **NEIN — Healthcare ist anti-zyklisch**  \n- Nachfrage unelastisch (Medikamente, Behandl"
     }
   },
   "ZIM": {
@@ -2385,13 +2385,109 @@
     "macro_bias": null,
     "reasons": [
       "LLM Sonnet: WARTEN",
-      "key_findings: 26 Earnings** \u2192 Wenn Guidance zeigt: Normalisierung = nachhaltig profitable Raten (nicht Crash)\n3. **China-Nachfrage-Erholung** \u2192 Volumen-Katalysator (pr\u00fcfen: Baltic Dry Index, Shanghai Containerized "
+      "key_findings: 26 Earnings** → Wenn Guidance zeigt: Normalisierung = nachhaltig profitable Raten (nicht Crash)\n3. **China-Nachfrage-Erholung** → Volumen-Katalysator (prüfen: Baltic Dry Index, Shanghai Containerized "
     ],
     "entry": null,
     "stop": null,
     "ziel_1": null,
     "key_findings": {
-      "summary": "26 Earnings** \u2192 Wenn Guidance zeigt: Normalisierung = nachhaltig profitable Raten (nicht Crash)\n3. **China-Nachfrage-Erholung** \u2192 Volumen-Katalysator (pr\u00fcfen: Baltic Dry Index, Shanghai Containerized Freight Index)\n4. **Dividenden-Ank\u00fcndigung** \u2192 ZIM zahlt variable Dividenden basierend auf Cashflow\n\n\u26a0\ufe0f **PROBLEM:** Ohne frischen, spezifischen Katalysator = **spekulativer Entry**.  \n**Vorbild Lufth"
+      "summary": "26 Earnings** → Wenn Guidance zeigt: Normalisierung = nachhaltig profitable Raten (nicht Crash)\n3. **China-Nachfrage-Erholung** → Volumen-Katalysator (prüfen: Baltic Dry Index, Shanghai Containerized Freight Index)\n4. **Dividenden-Ankündigung** → ZIM zahlt variable Dividenden basierend auf Cashflow\n\n⚠️ **PROBLEM:** Ohne frischen, spezifischen Katalysator = **spekulativer Entry**.  \n**Vorbild Lufth"
+    }
+  },
+  "AMZN": {
+    "ticker": "AMZN",
+    "verdict": "KAUFEN",
+    "date": "2026-04-21",
+    "updated_at": "2026-04-21T22:27:48+02:00",
+    "expires": "2026-05-05",
+    "source": "manual_dirk_video_analysis",
+    "analyst": "Albert",
+    "strategy": "PS_AMZN",
+    "score": 75,
+    "conviction": "HIGH",
+    "insider_bias": "neutral",
+    "macro_bias": "bullish",
+    "reasons": [
+      "Dirk-Mueller-Video 22.04.: VCP/Base-Breakout-Setup",
+      "Score 75/100"
+    ],
+    "entry": 249.91,
+    "stop": 232.41,
+    "ziel_1": 290.0,
+    "key_findings": {
+      "summary": "Long-Base 210-250$ seit 6M. Q1-Earnings 29.04. Katalysator. AWS-Wachstum +30% YoY strukturell intakt. Mid-Term-Election-Statistik S&P +36% ab Q2. CRV 2.3:1 (Entry 250, Stop 232, Ziel 290). Dirk-Mueller VCP-Setup."
+    }
+  },
+  "HOOD": {
+    "ticker": "HOOD",
+    "verdict": "KAUFEN",
+    "date": "2026-04-21",
+    "updated_at": "2026-04-21T22:27:48+02:00",
+    "expires": "2026-05-05",
+    "source": "manual_dirk_video_analysis",
+    "analyst": "Albert",
+    "strategy": "PS_HOOD",
+    "score": 70,
+    "conviction": "HIGH",
+    "insider_bias": "neutral",
+    "macro_bias": "bullish",
+    "reasons": [
+      "Dirk-Mueller-Video 22.04.: VCP/Base-Breakout-Setup",
+      "Score 70/100"
+    ],
+    "entry": 86.43,
+    "stop": 79.52,
+    "ziel_1": 100.0,
+    "key_findings": {
+      "summary": "Retail-Broker mit GAAP-Profit seit 3Q. Crypto-Revenue +76% YoY. BTC-Halving-Cycle-Top historisch H2/26. Ziel $100 vor Cycle-Peak. Flagge nach Breakout sauber. CRV 2:1."
+    }
+  },
+  "MRVL": {
+    "ticker": "MRVL",
+    "verdict": "KAUFEN",
+    "date": "2026-04-21",
+    "updated_at": "2026-04-21T22:27:48+02:00",
+    "expires": "2026-05-05",
+    "source": "manual_dirk_video_analysis",
+    "analyst": "Albert",
+    "strategy": "PS_MRVL",
+    "score": 72,
+    "conviction": "HIGH",
+    "insider_bias": "neutral",
+    "macro_bias": "bullish",
+    "reasons": [
+      "Dirk-Mueller-Video 22.04.: VCP/Base-Breakout-Setup",
+      "Score 72/100"
+    ],
+    "entry": 151.31,
+    "stop": 139.2,
+    "ziel_1": 195.0,
+    "key_findings": {
+      "summary": "Hidden-Champion Custom-ASIC. AWS/Google/MSFT-Design-Wins. Hyperscaler-Capex $320B FY26. 5-Jahres-Base-Breakout, jetzt Konsolidierung bei $150. Q1 28.05. Katalysator. CRV 3.6:1."
+    }
+  },
+  "BE": {
+    "ticker": "BE",
+    "verdict": "KAUFEN",
+    "date": "2026-04-21",
+    "updated_at": "2026-04-21T22:27:48+02:00",
+    "expires": "2026-05-05",
+    "source": "manual_dirk_video_analysis",
+    "analyst": "Albert",
+    "strategy": "PS_BE",
+    "score": 68,
+    "conviction": "MEDIUM",
+    "insider_bias": "neutral",
+    "macro_bias": "bullish",
+    "reasons": [
+      "Dirk-Mueller-Video 22.04.: VCP/Base-Breakout-Setup",
+      "Score 68/100"
+    ],
+    "entry": 220.91,
+    "stop": 198.82,
+    "ziel_1": 265.0,
+    "key_findings": {
+      "summary": "SOFC-Power fuer AI-DataCenter. Oracle/AEP-PPA 1GW-Pipeline bis 2028. Grid-Queues 5-7J = BE ist einziger Quick-Fix. Shakeout-Recovery bei $210, Flagge bei $220. Q1 12.05. mit PPA-Announce erwartet. Vola hoch → 10% Stop. CRV 2:1."
     }
   }
 }
