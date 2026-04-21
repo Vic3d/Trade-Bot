@@ -1,0 +1,64 @@
+[
+  {
+    "date": "2026-04-21",
+    "type": "BUG_ROLLBACK",
+    "title": "Overnight Stop-Disaster Rollback",
+    "root_cause": [
+      "Stale prices fuer US-Tickers am Wochenende (is_price_fresh nicht markt-bewusst)",
+      "Market-Hours nicht durchgesetzt (Trade um 23:08 CET fuer NYSE-Tickers)",
+      "BP.L Pence/EUR-Bug (556p als 556 EUR gebucht)",
+      "Proposals ohne TTL koennen Stunden spaeter triggern"
+    ],
+    "fixes_deployed": [
+      "scripts/execution/paper_trade_engine.py Guard 0e (market_hours.is_market_open_now)",
+      "scripts/core/live_data.py is_price_fresh markt-bewusst",
+      "scripts/intelligence/verdicts_to_proposals.py Pence-Fix via get_price_eur",
+      "scripts/proposal_executor.py PROPOSAL_MAX_AGE_HOURS=4 + TTL-Check",
+      "scripts/position_watchdog.py WAITING_NEXT_OPEN bei closed market"
+    ],
+    "rolled_back_trades": [
+      {
+        "id": 98,
+        "ticker": "BP.L",
+        "strategy": "PT",
+        "pnl_eur": -1102.02
+      },
+      {
+        "id": 100,
+        "ticker": "ORCL",
+        "strategy": "PT",
+        "pnl_eur": -157.14
+      },
+      {
+        "id": 101,
+        "ticker": "OXY",
+        "strategy": "PS1",
+        "pnl_eur": -77.25
+      },
+      {
+        "id": 102,
+        "ticker": "PSX",
+        "strategy": "PT",
+        "pnl_eur": -170.5
+      },
+      {
+        "id": 104,
+        "ticker": "AA",
+        "strategy": "PT",
+        "pnl_eur": -169.37
+      },
+      {
+        "id": 105,
+        "ticker": "CCJ",
+        "strategy": "PS16",
+        "pnl_eur": -126.58
+      }
+    ],
+    "total_pnl_neutralized_eur": -1802.86,
+    "cash_before": 5846.24,
+    "cash_after": 7649.1,
+    "rationale": "Bug-Artefakte, keine echten Strategy-Failures. Vom Learning Loop ausgeschlossen damit PT/PS1/PS16 nicht falsch abgewertet werden.",
+    "decided_by": "Victor + Albert",
+    "executed_at": "2026-04-21T08:42:23.816231Z"
+  }
+]
