@@ -1,0 +1,745 @@
+{
+  "updated": "2026-04-21T22:00:42",
+  "theses": {
+    "PS1": {
+      "strategy_id": "PS1",
+      "tickers": [
+        "OXY",
+        "TTE.PA",
+        "EQNR.OL",
+        "FRO",
+        "DHT"
+      ],
+      "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt",
+      "tqs": 75,
+      "grade": "B",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING_SECONDARY",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS2": {
+      "strategy_id": "PS2",
+      "tickers": [
+        "FRO",
+        "DHT"
+      ],
+      "thesis": "Öl-Preisanstieg → Tanker-Aktien folgen mit 2-4 Wochen Verzögerung",
+      "tqs": 43,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS3": {
+      "strategy_id": "PS3",
+      "tickers": [
+        "KTOS",
+        "HII",
+        "HAG.DE"
+      ],
+      "thesis": "EU-Staaten erhöhen Verteidigungsbudgets → Rüstungsfirmen profitieren",
+      "tqs": 68,
+      "grade": "B",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [
+        "Commodity-Hebel"
+      ],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS4": {
+      "strategy_id": "PS4",
+      "tickers": [
+        "HL",
+        "PAAS"
+      ],
+      "thesis": "Hohe Unsicherheit + USD-Schwäche → Gold/Silber steigen → Miner profitieren mit Hebel",
+      "tqs": 43,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS5": {
+      "strategy_id": "PS5",
+      "tickers": [
+        "MOS"
+      ],
+      "thesis": "Russland-Sanktionen + Lebensmittelnachfrage → strukturell höhere Dünger-Preise",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S1": {
+      "strategy_id": "S1",
+      "tickers": [
+        "EQNR"
+      ],
+      "thesis": "Solange Iran-Konflikt und Hormuz-Druck → Öl strukturell gestützt. Silber als Safe Haven.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S2": {
+      "strategy_id": "S2",
+      "tickers": [
+        "RHM.DE"
+      ],
+      "thesis": "Europa rüstet auf — NATO-Druck, Ukraine-Krieg, Iran. Rheinmetall als Hauptprofiteur.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S3": {
+      "strategy_id": "S3",
+      "tickers": [
+        "NVDA",
+        "MSFT",
+        "PLTR"
+      ],
+      "thesis": "KI-Infrastruktur wächst strukturell — NVDA als GPU-Leader, PLTR als Defense-AI, MSFT als Cloud-Infra",
+      "tqs": 43,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S4": {
+      "strategy_id": "S4",
+      "tickers": [
+        "ISPA.DE",
+        "AG"
+      ],
+      "thesis": "Geopolitische Eskalation + Inflationsdruck → Edelmetalle steigen. Silber mit industriellem Hebel.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S5": {
+      "strategy_id": "S5",
+      "tickers": [
+        "RIO.L"
+      ],
+      "thesis": "Energiewende + Geopolitik treiben Kupfer/Lithium. Rio Tinto als Kupfer-Transformation-Play.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S6": {
+      "strategy_id": "S6",
+      "tickers": [
+        "A2QQ9R"
+      ],
+      "thesis": "Hohe Öl-/Gaspreise beschleunigen institutionelle Umschichtung in erneuerbare Energien.",
+      "tqs": 43,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "S7": {
+      "strategy_id": "S7",
+      "tickers": [
+        "A2DWAW"
+      ],
+      "thesis": "US-Biotech profitiert von Zinssenkungen + M&A. Defensive Qualität vs. reines Tech.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "DT1": {
+      "strategy_id": "DT1",
+      "tickers": [],
+      "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "DT2": {
+      "strategy_id": "DT2",
+      "tickers": [],
+      "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "DT3": {
+      "strategy_id": "DT3",
+      "tickers": [],
+      "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "DT4": {
+      "strategy_id": "DT4",
+      "tickers": [],
+      "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PT": {
+      "strategy_id": "PT",
+      "tickers": [],
+      "thesis": "Paper-Trade Platzhalter ohne definierte These",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS10": {
+      "strategy_id": "PS10",
+      "tickers": [
+        "LHA.DE"
+      ],
+      "thesis": "Post-War Recovery Play: Iran-Konflikt endet → Ölpreis fällt → Kerosinkosten sinken + Luftraum öffnet → LHA re-rates von unterdrücktem Niveau",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS11": {
+      "strategy_id": "PS11",
+      "tickers": [
+        "SAAB-B.ST",
+        "RHM.DE",
+        "BA.L"
+      ],
+      "thesis": "EU-Rüstung Nachholbedarf — Budget-Erhöhungen noch nicht eingepreist",
+      "tqs": 73,
+      "grade": "B",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [
+        "Commodity-Hebel"
+      ],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS12": {
+      "strategy_id": "PS12",
+      "tickers": [
+        "SMCI",
+        "ANET",
+        "DELL"
+      ],
+      "thesis": "KI-Infrastruktur = picks & shovels für AI-Boom, weniger regulatorisches Risiko als pure-play AI",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS13": {
+      "strategy_id": "PS13",
+      "tickers": [
+        "FCX",
+        "SCCO",
+        "TECK"
+      ],
+      "thesis": "Kupfer = kritischer Rohstoff für EV + Grid + Offshore Wind, strukturell unterversorgt",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS14": {
+      "strategy_id": "PS14",
+      "tickers": [
+        "ZIM",
+        "MATX",
+        "SBLK"
+      ],
+      "thesis": "Container-Shipping normalisiert sich post-Suez-Krise, Raten stabilisieren",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS15": {
+      "strategy_id": "PS15",
+      "tickers": [
+        "XBI",
+        "ARKG",
+        "IBB"
+      ],
+      "thesis": "Biotech-Sektor profitiert überproportional von Zinssenkungen (lange Laufzeit der Cash Flows)",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS16": {
+      "strategy_id": "PS16",
+      "tickers": [
+        "CCJ",
+        "UEC",
+        "BWXT"
+      ],
+      "thesis": "KI-Rechenzentren brauchen massiv saubere Grundlaststrom — Nuklear ist die einzige skalierbare Option. EU-Energieunabhängigkeit + US-Förderpolitik (IRA) treiben SMR-Entwicklung. Uranium-Spot-Markt blei",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS17": {
+      "strategy_id": "PS17",
+      "tickers": [
+        "SAP",
+        "AIR.PA",
+        "SIE.DE"
+      ],
+      "thesis": "US-Zölle auf EU-Produkte + drohende EU-Gegenmaßnahmen schaffen Gewinner: EU-Unternehmen die primär intraeuropäisch verkaufen profitieren von Marktschutz + EU-Nachfrageshift weg von US-Produkten. Gleic",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_STLD": {
+      "strategy_id": "PS_STLD",
+      "tickers": [
+        "STLD"
+      ],
+      "thesis": "Trump Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. Politischer Druck (36% Approval, Midterms Nov.) macht starke Zölle wahrscheinlicher als schwächere.",
+      "tqs": 80,
+      "grade": "A",
+      "mode": "FULL_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING_SECONDARY",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_NVO": {
+      "strategy_id": "PS_NVO",
+      "tickers": [
+        "NOVO-B.CO"
+      ],
+      "thesis": "PE 10x bei historisch 30x+ = massiver Abschlag. GLP-1 Megatrend intakt. CagriSema-Enttäuschung und Trump-Preisdeal bereits eingepreist. Warten auf Quantifizierung des Rückgangs.",
+      "tqs": 36,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_CCJ": {
+      "strategy_id": "PS_CCJ",
+      "tickers": [
+        "CCJ"
+      ],
+      "thesis": "Weltgrößter Uran-Produzent profitiert von globalem Nuclear Renaissance (AI Data Centers + Taiwan Reaktor-Restart + Energiekrise). Uranium-Spot-Preis strukturell im Aufwärtstrend durch Angebotsdefizit.",
+      "tqs": 80,
+      "grade": "A",
+      "mode": "FULL_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "AR-HALB": {
+      "strategy_id": "AR-HALB",
+      "tickers": [
+        "AMAT",
+        "LRCX",
+        "KLAC"
+      ],
+      "thesis": "KI-Chip-Equipment Hersteller profitieren von Datacenter-Aufbau — AMAT/LRCX/KLAC als Picks&Shovels",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "AR-AGRA": {
+      "strategy_id": "AR-AGRA",
+      "tickers": [
+        "MOS",
+        "CF",
+        "ADM"
+      ],
+      "thesis": "Agrarrohstoffe unter Druck durch Sanktionen/Klima → Dünger-Produzenten als Profiteure",
+      "tqs": 15,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_LHA": {
+      "strategy_id": "PS_LHA",
+      "tickers": [
+        "LHA.DE"
+      ],
+      "thesis": "LHA.DE fundamental unterbewertet (KGV 6x, EPS wächst, Rekordumsatz 2025) aber von Iran-Geopolitik gedrückt. Kerosin ~25% der Betriebskosten — Öl-Prämie belastet direkt. Bei Iran-Deeskalation fällt dop",
+      "tqs": 85,
+      "grade": "A",
+      "mode": "FULL_AUTO",
+      "missing_fields": [],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "PENDING",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS18": {
+      "strategy_id": "PS18",
+      "tickers": [
+        "DAI",
+        "BMW.DE",
+        "SIE.DE",
+        "BYDDY",
+        "STLD",
+        "CLF",
+        "CMC.CN"
+      ],
+      "thesis": "Trump-Zölle schaffen systematische Gewinner/Verlierer — Exportabhängige leiden, US-Domestic und Nearshorer gewinnen. Makro-Theme noch nicht vollständig in Märkten eingepreist.",
+      "tqs": 28,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS19": {
+      "strategy_id": "PS19",
+      "tickers": [
+        "EEM",
+        "VWO",
+        "FXI",
+        "EWZ",
+        "GDX"
+      ],
+      "thesis": "Schwächelnder USD durch US-Haushaltsdefizit und Rezessionsängste stärkt Emerging Markets und Rohstoffwährungen",
+      "tqs": 21,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS20": {
+      "strategy_id": "PS20",
+      "tickers": [
+        "XLP",
+        "XLU",
+        "XLV",
+        "VDC",
+        "KO",
+        "PG",
+        "JNJ"
+      ],
+      "thesis": "Steigende US-Rezessionswahrscheinlichkeit treibt Rotation in defensive Sektoren: Healthcare, Utilities, Consumer Staples",
+      "tqs": 21,
+      "grade": "D",
+      "mode": "DRAFT",
+      "missing_fields": [
+        "Katalysator-Datum",
+        "Katalysator-Event",
+        "Logische Kette 5-6 Schritte",
+        "Commodity-Hebel",
+        "EPS Bear/Base/Bull"
+      ],
+      "status": "DRAFT",
+      "catalyst_state": "NONE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    },
+    "PS_AUTO_TARIFF_LOSERS": {
+      "strategy_id": "PS_AUTO_TARIFF_LOSERS",
+      "tickers": [
+        "DAI",
+        "BMW.DE"
+      ],
+      "thesis": "Export-abhaengige DE-Autos (DAI, BMW.DE) leiden unter US-Zoellen ueberproportional — margenerosion 8-12% in FY26.",
+      "tqs": 50,
+      "grade": "C",
+      "mode": "SEMI_AUTO",
+      "missing_fields": [
+        "Logische Kette 5-6 Schritte",
+        "Kill-Trigger Array",
+        "Commodity-Hebel"
+      ],
+      "status": "ACTIVE_WATCH",
+      "catalyst_state": "MATURE",
+      "last_updated": "2026-04-21T22:00:42",
+      "first_added": "2026-04-21T22:00:42"
+    }
+  }
+}

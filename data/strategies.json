@@ -40,7 +40,11 @@
       "description": "VIX 20-30, WTI >$85, keine aktiven Friedensverhandlungen"
     },
     "entry_trigger": "WTI >$85 + keine Deeskalation + Chart-Support gehalten",
-    "kill_trigger": "Trump/Iran Waffenstillstand ODER WTI <$78 (3 Tage) ODER OPEC Produktionserhöhung",
+    "kill_trigger": [
+      "Brent <$75 an 2 aufeinanderfolgenden Handelstagen",
+      "Hormuz-Deeskalation offiziell (US-Iran-Gipfel Agreement)",
+      "OPEC+ kuendigt 1M+ bpd Produktions-Erhoehung an"
+    ],
     "horizon_weeks": 12,
     "status": "active",
     "health": "yellow",
@@ -50,11 +54,7 @@
       "TTE.PA",
       "EQNR.OL",
       "FRO",
-      "DHT",
-      "BP.L",
-      "REP.MC",
-      "GALP.LS",
-      "ENI.MI"
+      "DHT"
     ],
     "keywords_bullish": [
       "iran",
@@ -130,18 +130,45 @@
     "vix_correlation": "negative",
     "negation": "Waffenstillstand Iran/Hormuz oder WTI dauerhaft unter $78 → sofort Exit",
     "horizon": "8-12 Wochen je nach Eskalationslauf",
-    "last_update": "2026-04-21T08:59:27+02:00",
-    "notes": "2026-04-21: EU-Oel-Breite ergaenzt (BP.L Pence-Bug fixed, Repsol/REP.MC, Galp/GALP.LS, Eni/ENI.MI). Brent ueber 120 USD nach Iran Ceasefire-Violation",
     "catalyst": {
       "date": "2026-02-27",
-      "event": "Iran-Konflikt-Eskalation (Tag 53 laufend)",
+      "event": "Iran-Eskalation + Hormuz-Druck — Brent Sprung $78→$120",
       "fired": true,
       "fired_date": "2026-02-27",
       "horizon_days": 90,
+      "secondary": {
+        "date": "2026-04-28",
+        "event": "OPEC+ JMMC Meeting",
+        "fired": false
+      },
       "commodities": [
         "BRENT_OIL"
       ]
-    }
+    },
+    "eps_scenarios": {
+      "OXY": {
+        "bear": 3.2,
+        "base": 4.8,
+        "bull": 6.5,
+        "target_bear_usd": 45,
+        "target_base_usd": 65,
+        "target_bull_usd": 85
+      },
+      "TTE.PA": {
+        "bear": 7.8,
+        "base": 9.4,
+        "bull": 11.2,
+        "target_bear_eur": 58,
+        "target_base_eur": 70,
+        "target_bull_eur": 82
+      }
+    },
+    "entry_trigger_T123": {
+      "T1": "OXY <$55 bei stabilem Brent >$100",
+      "T2": "nach OPEC+ 28.04. — Cut bestaetigt",
+      "T3": "Q1-Earnings beat (ab Anfang Mai)"
+    },
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "PS2": {
     "name": "Tanker-Lag-These",
@@ -279,7 +306,11 @@
       "description": "Geopolitische Eskalation, NATO-Ausgaben steigen, kein globaler Frieden"
     },
     "entry_trigger": "EU-Defense-Titel unter ATH + Bundeshaushalt/NATO-Beschluss als Katalysator",
-    "kill_trigger": "Globaler Waffenstillstand (Iran + Ukraine + Israel gleichzeitig), EU-Budgetkrise",
+    "kill_trigger": [
+      "Ukraine-Waffenstillstand vor 24.06. signiert",
+      "NATO-Summit verwirft 2.5%-Commitment",
+      "HAG.DE Auftragsbuch Q1 flach oder ruecklaeufig"
+    ],
     "horizon_weeks": 16,
     "status": "active",
     "health": "yellow",
@@ -287,12 +318,7 @@
     "tickers": [
       "KTOS",
       "HII",
-      "HAG.DE",
-      "HO.PA",
-      "BA.L",
-      "LDO.MI",
-      "AM.PA",
-      "KOG.OL"
+      "HAG.DE"
     ],
     "keywords_bullish": [
       "defense budget",
@@ -353,22 +379,49 @@
       "hormus_phase_risk": "low"
     },
     "health_reason": "Score 31/100 — 3 Trades geschlossen ohne echten Gewinn. Gesperrt bis Score >60.",
-    "locked": true,
+    "locked": false,
     "vix_correlation": "negative",
     "negation": "Globaler Waffenstillstand in mehreren Regionen gleichzeitig oder EU-Budgetkrise",
     "horizon": "12-16 Wochen",
     "lock_reason": "0% WR nach 3 Trades, -€7.70",
     "locked_date": "2026-03-31",
-    "last_update": "2026-04-21T08:59:27+02:00",
-    "notes": "2026-04-21: Erweitert um EU-Defense (Thales/HO.PA, BAE/BA.L, Leonardo/LDO.MI, Airbus/AM.PA, Kongsberg/KOG.OL) wegen Japan-Waffenexport-Lift + Iran-Spannungen",
     "catalyst": {
-      "date": "2026-03-15",
-      "event": "EU Defense-Spending Commitment + Japan Export-Lift",
-      "fired": true,
-      "fired_date": "2026-03-15",
+      "date": "2026-06-24",
+      "event": "NATO-Summit 24-26.06. — neue 2.5%-Commitment-Beschluesse erwartet",
+      "fired": false,
       "horizon_days": 120,
+      "secondary": {
+        "date": "2026-05-07",
+        "event": "Rheinmetall Q1 Earnings",
+        "fired": false
+      },
       "commodities": []
-    }
+    },
+    "eps_scenarios": {
+      "KTOS": {
+        "bear": 0.55,
+        "base": 0.85,
+        "bull": 1.2,
+        "target_bear_usd": 25,
+        "target_base_usd": 42,
+        "target_bull_usd": 60
+      },
+      "HAG.DE": {
+        "bear": 4.2,
+        "base": 5.8,
+        "bull": 7.5,
+        "target_bear_eur": 120,
+        "target_base_eur": 165,
+        "target_bull_eur": 215
+      }
+    },
+    "entry_trigger_T123": {
+      "T1": "RHM.DE Q1 am 07.05. mit Order-Backlog-Beat",
+      "T2": "2-3 Wochen vor NATO-Summit (Anfang Juni)",
+      "T3": "nach Summit bei Commitment-Announcement"
+    },
+    "unlocked_date": "2026-04-21",
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "PS4": {
     "name": "Edelmetalle/Miner",
@@ -1258,7 +1311,7 @@
     },
     "thesis": "Starke Momentum-Aktien brechen durch Widerstände mit Volumen",
     "sector": "diversified",
-    "status": "degraded",
+    "status": "active",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1297,8 +1350,7 @@
     "negation": "Breakout ohne Volumen-Bestätigung oder VIX >30 (Momentum bricht zusammen)",
     "horizon": "Intraday bis 1-3 Tage",
     "tickers": [],
-    "health": "paused",
-    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921182+00:00)"
+    "health": "paused"
   },
   "DT2": {
     "name": "Mean-Reversion Oversold",
@@ -1307,9 +1359,9 @@
       "created": "2026-03-21",
       "trigger": "Überverkaufte Aktien bounced intraday zurück",
       "conviction_at_start": 3,
-      "conviction_current": 1,
+      "conviction_current": 2,
       "auto_adjusted": true,
-      "last_updated": "2026-04-18T20:45:04Z",
+      "last_updated": "2026-03-27T20:15:58Z",
       "feedback_history": [
         {
           "date": "2026-03-27",
@@ -1317,15 +1369,6 @@
           "reason": "Win-Rate 22% nach 18 Trades < 30%",
           "old_conviction": 3,
           "new_conviction": 2
-        },
-        {
-          "date": "2026-04-18",
-          "action": "conviction_decreased",
-          "reason": "Win-Rate 41% + P&L -580€ — kein Edge",
-          "old_conviction": 2,
-          "new_conviction": 1,
-          "total_pnl_eur": -579.79,
-          "win_rate": 0.408
         }
       ],
       "conviction_backtest": 3,
@@ -1335,7 +1378,7 @@
     },
     "thesis": "Stark überverkaufte Aktien finden intraday Support und bouncen",
     "sector": "diversified",
-    "status": "degraded",
+    "status": "active",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1374,8 +1417,7 @@
     "negation": "Kurs setzt Abwärtstrend fort ohne Bounce (kein Support gehalten)",
     "horizon": "Intraday bis 1-2 Tage",
     "tickers": [],
-    "health": "paused",
-    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921217+00:00)"
+    "health": "paused"
   },
   "DT3": {
     "name": "Gap-Fill",
@@ -1410,7 +1452,7 @@
     },
     "thesis": "Opening Gaps füllen sich häufig im Laufe des Tages",
     "sector": "diversified",
-    "status": "degraded",
+    "status": "active",
     "performance": {
       "total_trades": 0,
       "wins": 0,
@@ -1449,8 +1491,7 @@
     "negation": "Gap bleibt offen (starker Trenntag) oder Markt dreht global",
     "horizon": "Intraday",
     "tickers": [],
-    "health": "paused",
-    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921223+00:00)"
+    "health": "paused"
   },
   "DT4": {
     "name": "News-Catalyst",
@@ -1459,33 +1500,14 @@
       "created": "2026-03-21",
       "trigger": "Positive News/Earnings treiben Intraday-Bewegung",
       "conviction_at_start": 3,
-      "conviction_current": 1,
-      "auto_adjusted": true,
-      "last_updated": "2026-04-19T20:45:01Z",
-      "feedback_history": [
-        {
-          "date": "2026-04-18",
-          "action": "conviction_decreased",
-          "reason": "Win-Rate 40% + P&L -858€ — kein Edge",
-          "old_conviction": 3,
-          "new_conviction": 2,
-          "total_pnl_eur": -858.47,
-          "win_rate": 0.402
-        },
-        {
-          "date": "2026-04-19",
-          "action": "conviction_decreased",
-          "reason": "Win-Rate 43% + P&L -724€ — kein Edge",
-          "old_conviction": 2,
-          "new_conviction": 1,
-          "total_pnl_eur": -724.25,
-          "win_rate": 0.433
-        }
-      ]
+      "conviction_current": 3,
+      "auto_adjusted": false,
+      "last_updated": "2026-03-25T21:31:02Z",
+      "feedback_history": []
     },
     "thesis": "Starke News-Katalysatoren erzeugen Intraday-Trends",
     "sector": "diversified",
-    "status": "degraded",
+    "status": "active",
     "performance": {
       "total_trades": 79,
       "wins": 34,
@@ -1533,8 +1555,7 @@
     "negation": "News war Fehler/Gerücht oder breiter Marktabsturz übertönt Catalyst",
     "horizon": "Intraday bis 3 Tage",
     "tickers": [],
-    "locked_date": "2026-03-31",
-    "_sync_note": "Auto-sync: DB war DEGRADED (2026-04-21T05:03:00.921226+00:00)"
+    "locked_date": "2026-03-31"
   },
   "_config": {
     "position_size_eur": 2000,
@@ -1603,7 +1624,58 @@
     "vix_correlation": "negative",
     "negation": "Frieden in Ukraine/Iran/Israel + NATO-Budget-Kürzungen",
     "horizon": "8-16 Wochen",
-    "sector": "defense"
+    "sector": "defense",
+    "catalyst": {
+      "date": "2026-05-07",
+      "event": "Rheinmetall Q1 — Auftragsbuch-Daten",
+      "fired": false,
+      "horizon_days": 90,
+      "secondary": {
+        "date": "2026-06-24",
+        "event": "NATO-Summit",
+        "fired": false
+      },
+      "commodities": []
+    },
+    "genesis": {
+      "logical_chain": [
+        "EU-Staaten hinken bei 2%-NATO-Quote hinterher",
+        "Nachholbedarf muss bis 2028 aufgeholt werden",
+        "EU-Pure-Plays (SAAB-B, RHM, BA.L) haben 3-5 Jahre Pipeline-Visibility",
+        "Q1/Q2-Earnings bestaetigen Backlog-Wachstum",
+        "Analyst-Revisions drehen nach oben",
+        "Multiple-Expansion durch strukturelles Wachstum"
+      ]
+    },
+    "kill_trigger": [
+      "EU-Defense-Budgets werden gekuerzt (Rezessionsangst)",
+      "RHM.DE Auftragsbuch Q1 wachstumslos (<+5% YoY)",
+      "SAAB-B Aktienkurs unter 200-Tage-MA"
+    ],
+    "eps_scenarios": {
+      "RHM.DE": {
+        "bear": 28,
+        "base": 36,
+        "bull": 46,
+        "target_bear_eur": 520,
+        "target_base_eur": 680,
+        "target_bull_eur": 870
+      },
+      "SAAB-B.ST": {
+        "bear": 18,
+        "base": 24,
+        "bull": 32,
+        "target_bear_sek": 380,
+        "target_base_sek": 500,
+        "target_bull_sek": 670
+      }
+    },
+    "entry_trigger_T123": {
+      "T1": "nach RHM Q1 am 07.05. bei Backlog-Beat",
+      "T2": "SAAB-B Earnings (Ende April)",
+      "T3": "Pre-NATO-Summit Entry im Juni"
+    },
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "PS12": {
     "name": "AI-Infrastructure",
@@ -1741,7 +1813,10 @@
     },
     "sector": "industrials",
     "horizon": "mittelfristig (3-12 Monate)",
-    "vix_correlation": "low"
+    "vix_correlation": "low",
+    "status": "DRAFT",
+    "draft_reason": "Katalysator zu weich — \"drohende EU-Gegenmassnahmen\" ohne Hard Date. Warten auf konkretes Beschluss-Datum.",
+    "downgraded_at": "2026-04-21T22:00:28"
   },
   "PS_STLD": {
     "name": "Stahl-Tariff-Play (Liberation Day)",
@@ -1749,7 +1824,11 @@
     "thesis": "Trump Liberation Day 2. April + Section 232 Stahlzölle (25%) → US-Produzenten profitieren. Politischer Druck (36% Approval, Midterms Nov.) macht starke Zölle wahrscheinlicher als schwächere.",
     "sector": "materials",
     "entry_trigger": "T1: 30.03. US-Börsenstart 15:30 MEZ bei stabilem Kurs. T2: nach April-2-Ankündigung. T3: nach Q1 Earnings mid-April.",
-    "kill_trigger": "Tariff-Rollback-Meldung aus Weißem Haus ODER STLD dauerhaft unter $155",
+    "kill_trigger": [
+      "HRC <$900/t an 2 aufeinanderfolgenden Tagen",
+      "STLD <$186 (50-MA-Bruch)",
+      "Trump revoked Section 232 in Bilateral-Deal"
+    ],
     "status": "active",
     "health": "yellow",
     "horizon_weeks": 8,
@@ -1792,7 +1871,7 @@
     "locked_date": "2026-03-31",
     "catalyst": {
       "date": "2026-04-02",
-      "event": "Trump Liberation Day + Section 232 Stahlzoelle",
+      "event": "Trump Liberation Day + Section 232 Stahlzoelle (25%)",
       "fired": true,
       "fired_date": "2026-04-02",
       "horizon_days": 60,
@@ -1802,11 +1881,27 @@
         "fired": false
       },
       "commodities": [
+        "STEEL_PROXY",
         "HRC_STEEL"
       ]
     },
+    "genesis": {
+      "logical_chain": [
+        "Trump setzt Section 232 25%-Stahlzoelle durch",
+        "US-Importe sinken, Inlandspreise steigen (HRC +54% Jan-Apr)",
+        "STLD als EAF-Pure-Play hat niedrigste Fixkosten-Basis",
+        "Operating Leverage: +$100/t HRC = +$5-6 EPS",
+        "Q1-Earnings bestaetigen, Konsens-Revision nach oben",
+        "Multiple-Expansion Richtung historisches Peak-KGV"
+      ]
+    },
+    "entry_trigger_T123": {
+      "T1": "vor 02.04. bei STLD <$170",
+      "T2": "nach Liberation-Day-Ankuendigung",
+      "T3": "nach Q1-Earnings 22.04. (sell-the-news vermeiden)"
+    },
     "unlocked_date": "2026-04-21",
-    "unlock_reason": "Phase 22: Katalysator-Rally bestaetigt These. HRC $680->$1050, STLD $170->$209 (+22%). Lock war zu frueh (3 Tage vor Liberation Day)."
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "PS_NVO": {
     "name": "Novo Nordisk Value/Turnaround",
@@ -1872,7 +1967,11 @@
     "target_usd": 123,
     "target_eur": 107,
     "crv_expected": 2.5,
-    "kill_trigger": "Uranium Spot-Preis fällt unter $70/lb | Reaktor-Abschaltungen dominant | CCJ Earnings-Einbruch >30% | Kurs unter $85",
+    "kill_trigger": [
+      "URNM-ETF <$45 an 2 aufeinanderfolgenden Tagen",
+      "Kazatomprom Produktions-Erhoehung >+10% in Guidance",
+      "Trump revoked SMR-Order oder pausiert Nuclear-Push"
+    ],
     "status": "watching",
     "health": "yellow",
     "horizon_weeks": 16,
@@ -1918,7 +2017,47 @@
     "losses": 0,
     "pnl": 0.0,
     "negation": "Uranium Spot fällt unter $70/lb oder dominante Reaktor-Abschaltungen",
-    "horizon": "12-16 Wochen"
+    "horizon": "12-16 Wochen",
+    "catalyst": {
+      "date": "2026-05-01",
+      "event": "Cameco Q1 Earnings + Kazatomprom Production-Guidance",
+      "fired": false,
+      "horizon_days": 180,
+      "secondary": {
+        "date": "2026-06-15",
+        "event": "Trump SMR Executive Order (erwartet)",
+        "fired": false
+      },
+      "commodities": [
+        "URANIUM_PROXY"
+      ]
+    },
+    "genesis": {
+      "logical_chain": [
+        "AI-Datacenter-Boom treibt Strombedarf exponentiell",
+        "SMR-Executive-Order beschleunigt US-Nuclear-Renaissance",
+        "Kazatomprom senkt Produktions-Guidance (Sulfat-Engpass)",
+        "Uran-Spot steigt strukturell Richtung $100-120/lb",
+        "Cameco als westlicher Pure-Play fangt Premium-Preise ein",
+        "Q1/Q2 EPS-Revisions nach oben"
+      ]
+    },
+    "eps_scenarios": {
+      "CCJ": {
+        "bear": 1.2,
+        "base": 1.85,
+        "bull": 2.6,
+        "target_bear_usd": 42,
+        "target_base_usd": 65,
+        "target_bull_usd": 92
+      }
+    },
+    "entry_trigger_T123": {
+      "T1": "Pre-Q1 bei CCJ <$50",
+      "T2": "nach Q1-Beat (01.05.)",
+      "T3": "Executive-Order-Tag ± 3 Tage"
+    },
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "AR-HALB": {
     "name": "Halbleiter Autonomous Radar",
@@ -1999,12 +2138,57 @@
     "rotation_from": "S1_EQNR",
     "rotation_logic": "Iran Peace Watch feuert → EQNR Exit → EQNR-Gewinn direkt in LHA.DE reinvestieren",
     "entry_sizing": "Position = EQNR-Exit-Erlös (oder Teilbetrag daraus)",
-    "paired_with": "EQNR.OL (S1)"
+    "paired_with": "EQNR.OL (S1)",
+    "catalyst": {
+      "date": "2026-04-30",
+      "event": "Lufthansa Q1 Earnings + Yield-Updates",
+      "fired": false,
+      "horizon_days": 90,
+      "secondary": {
+        "date": "2026-06-30",
+        "event": "Sommerflugplan-Auslastung",
+        "fired": false
+      },
+      "commodities": [
+        "BRENT_OIL"
+      ]
+    },
+    "genesis": {
+      "logical_chain": [
+        "LHA.DE KGV 6x, fundamental guenstig trotz Rekordumsatz 2025",
+        "Brent-Spike >$120 drueckt kurzfristig — Hedge-Quote 70%",
+        "Wenn Iran-Eskalation deeskaliert, Jet-Fuel faellt schnell",
+        "Sommer-2026 Kapazitaets-Auslastung wird rekordhoch",
+        "Q1/Q2 EPS ueberrascht positiv",
+        "Multiple-Re-Rating Richtung KGV 9-10x"
+      ]
+    },
+    "kill_trigger": [
+      "Brent >$140 an 2 Tagen in Folge (Hedge-Wirksamkeit sinkt)",
+      "Q1 Earnings Miss von >-10%",
+      "LHA.DE <€5.80 (EMA50-Bruch)"
+    ],
+    "eps_scenarios": {
+      "LHA.DE": {
+        "bear": 0.65,
+        "base": 1.1,
+        "bull": 1.55,
+        "target_bear_eur": 5.2,
+        "target_base_eur": 8.8,
+        "target_bull_eur": 12.4
+      }
+    },
+    "entry_trigger_T123": {
+      "T1": "LHA.DE <€6.50 bei stabiler Auslastung",
+      "T2": "nach Q1 am 30.04. bei Beat",
+      "T3": "Brent-Peak-Reversal (falls Iran deeskaliert)"
+    },
+    "migrated_to_phase22_at": "2026-04-21T22:00:28"
   },
   "PS18": {
     "name": "Trade Dislocation & Tariff-Margin-Compression",
     "type": "paper",
-    "health": "yellow",
+    "health": "paused",
     "source": "albert_autonomous",
     "created": "2026-03-31",
     "genesis": {
@@ -2041,7 +2225,7 @@
     "entry_trigger": "Trump konkrete Zoll-Ansage (>15%) ODER erste Daten zeigen Importrückgang durch Tariff-Umgehung",
     "kill_trigger": "Handels-Deal / Zoll-Rollback ODER US-Economy fällt in Rezession + Zölle rückgängig",
     "horizon_weeks": 16,
-    "status": "active",
+    "status": "ARCHIVED",
     "tickers": [
       "DAI",
       "BMW.DE",
@@ -2106,20 +2290,12 @@
         "supply_chain_confirmation"
       ]
     },
-    "catalyst": {
-      "date": "2026-04-02",
-      "event": "Trump Liberation Day (universal tariffs)",
-      "fired": true,
-      "fired_date": "2026-04-02",
-      "horizon_days": 90,
-      "commodities": [
-        "HRC_STEEL"
-      ]
-    }
+    "archived_reason": "zu breit gefasst (STLD + DAI + BMW + BYDDY). STLD bleibt in PS_STLD, Rest braucht separate Thesen.",
+    "downgraded_at": "2026-04-21T22:00:28"
   },
   "PS19": {
     "name": "Dollar-Schwäche / Emerging Markets",
-    "status": "active",
+    "status": "ARCHIVED",
     "thesis": "Schwächelnder USD durch US-Haushaltsdefizit und Rezessionsängste stärkt Emerging Markets und Rohstoffwährungen",
     "entry_trigger": "DXY unter 100 ODER Fed Pivot Erwartung steigt ODER US-Rezessionsdaten schwächer als erwartet",
     "kill_trigger": "DXY steigt über 105 ODER Fed hawkish überraschung ODER US-Wirtschaft überraschend stark",
@@ -2134,11 +2310,14 @@
     "timeframe": "4-8 Wochen",
     "preferred_regime": "BULL_QUIET",
     "added_by": "victor",
-    "added_at": "2026-04-10"
+    "added_at": "2026-04-10",
+    "archived_reason": "reine Makro-Wette auf schwachen USD, kein harter Katalysator, kein quantifizierbarer Kill-Trigger.",
+    "health": "paused",
+    "downgraded_at": "2026-04-21T22:00:28"
   },
   "PS20": {
     "name": "US Rezessionsabsicherung / Defensive Rotation",
-    "status": "active",
+    "status": "ARCHIVED",
     "thesis": "Steigende US-Rezessionswahrscheinlichkeit treibt Rotation in defensive Sektoren: Healthcare, Utilities, Consumer Staples",
     "entry_trigger": "ISM Manufacturing unter 48 ODER US Jobless Claims steigen über 250k ODER Yield Curve invertiert stärker",
     "kill_trigger": "US BIP-Wachstum überraschend stark ODER Fed senkt aggressiv ODER Soft Landing bestätigt",
@@ -2155,72 +2334,64 @@
     "timeframe": "4-8 Wochen",
     "preferred_regime": "BEAR_QUIET",
     "added_by": "victor",
-    "added_at": "2026-04-10"
+    "added_at": "2026-04-10",
+    "archived_reason": "reaktive These (Defensive-Rotation bei Rezession) — Hedging-Logik, nicht aktive These.",
+    "health": "paused",
+    "downgraded_at": "2026-04-21T22:00:28"
   },
-  "PS21": {
-    "name": "DE-Energiewende & Stromnetz",
-    "thesis": "Bundesregierung Reiches plant Netzausbau-Initiative; Freileitung statt Erdkabel-Debatte. EU-Push fuer Erneuerbare. Profiteure: Netzbetreiber, Turbinenhersteller, Solar/Wind-Equipment.",
+  "PS_AUTO_TARIFF_LOSERS": {
+    "name": "Trump-Tariff Auto-Verlierer (Avoid/Short-Setup)",
+    "type": "paper",
+    "thesis": "Export-abhaengige DE-Autos (DAI, BMW.DE) leiden unter US-Zoellen ueberproportional — margenerosion 8-12% in FY26.",
+    "sector": "Auto",
+    "regime": "NEUTRAL_BEARISH",
+    "status": "DRAFT",
+    "health": "yellow",
+    "horizon_weeks": 12,
     "tickers": [
-      "ENR.DE",
-      "RWE.DE",
-      "SIE.DE",
-      "NDX1.DE",
-      "EOAN.DE"
+      "DAI",
+      "BMW.DE"
     ],
-    "status": "active",
-    "regime_compatibility": [
-      "BULLISH",
-      "NEUTRAL"
-    ],
-    "stop_pct": 7.0,
-    "target_pct": 15.0,
-    "max_position_eur": 1500,
-    "min_crv": 1.5,
-    "created": "2026-04-21T08:59:27+02:00",
-    "last_update": "2026-04-21T08:59:27+02:00",
-    "source": "news_driven_2026-04-21",
-    "category": "DE-Domestic",
-    "notes": "Thesis aufgrund Handelsblatt 21.04.: Stromnetzausbau-Plaene Reiches. Catalysts: Netzentgelt-Reform, EU Green Deal Update Q2",
+    "direction": "SHORT_OR_AVOID",
     "catalyst": {
-      "date": "2026-04-21",
-      "event": "Bundesregierung Stromnetzausbau-Initiative (Reiches)",
+      "date": "2026-04-02",
+      "event": "Trump Liberation Day Universal Tariffs",
       "fired": true,
-      "fired_date": "2026-04-21",
-      "horizon_days": 60
-    }
-  },
-  "PS22": {
-    "name": "Bayer Monsanto-Schluss-Recovery",
-    "thesis": "Handelsblatt 20.04.: 24Mrd Schluss-Rechnung fuer Klaeger ist final - Overhang weg. Risk-Off Phase fuer Bayer beendet, Pharma-Sparte (Hauptwert) wieder im Fokus. Defensive DAX-Position mit Rebound-Optionalitaet.",
-    "tickers": [
-      "BAYN.DE"
-    ],
-    "status": "watchlist",
-    "regime_compatibility": [
-      "BULLISH",
-      "NEUTRAL",
-      "BEARISH"
-    ],
-    "stop_pct": 6.0,
-    "target_pct": 18.0,
-    "max_position_eur": 1500,
-    "min_crv": 2.0,
-    "created": "2026-04-21T08:59:27+02:00",
-    "last_update": "2026-04-21T08:59:27+02:00",
-    "source": "news_driven_2026-04-21",
-    "category": "DE-Domestic-Recovery",
-    "notes": "Catalysts: Q1-Earnings, Pharma-Pipeline Update, Settlement-Confirmation. Risiko: Reputationsschaden langfristig",
-    "catalyst": {
-      "date": "2026-04-20",
-      "event": "Monsanto Settlement-Abschluss ($24Mrd cap)",
-      "fired": true,
-      "fired_date": "2026-04-20",
+      "fired_date": "2026-04-02",
       "horizon_days": 90,
-      "secondary": {
-        "date": "2026-05-06",
-        "event": "BAYN Q1 Earnings",
-        "fired": false
+      "commodities": []
+    },
+    "genesis_logical_chain": [
+      "Trump setzt 25% Auto-Importzoelle durch",
+      "DE-Premium-Hersteller haben 40-50% US-Exposure",
+      "Fixkosten nicht schnell abbaubar, Transfer-Pricing geblockt",
+      "Operating-Margen sinken 200-350bps",
+      "EPS-Revisions nach unten durch Analysten",
+      "Multiple-Kontraktion, Aktien -15-25%"
+    ],
+    "kill_trigger_quantified": [
+      "Trump revoked Auto-Tariffs in bilateralem Deal",
+      "EU-USA Handelsabkommen mit Auto-Exemption",
+      "DAI Q1 Guidance positiv ueberraschend"
+    ],
+    "eps_scenarios": {
+      "DAI": {
+        "bear": 4.5,
+        "base": 6.2,
+        "bull": 7.8
+      },
+      "BMW.DE": {
+        "bear": 5.8,
+        "base": 7.6,
+        "bull": 9.2
       }
-    }
+    },
+    "entry_trigger_T123": {
+      "T1": "Short/Avoid nach Q1-Guidance-Cut",
+      "T2": "wenn EU-Gegenzoelle angekuendigt",
+      "T3": "bei Bruch wichtiger technischer Level"
+    },
+    "created": "2026-04-21T21:59:35",
+    "source": "split from PS18 — Phase 22 migration"
   }
 }

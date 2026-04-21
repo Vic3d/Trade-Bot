@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
-"""Catalyst Re-Eval Job
-=====================
-Taeglich 08:00 CET im Scheduler.
+"""
+Catalyst Re-Eval Job — Phase 22
+================================
+Taeglich 08:00 CET.
 
-Logik:
-  1. Scanne alle Strategien in strategies.json
-  2. Wenn catalyst.date <= today AND catalyst.fired == False:
-     → setze fired=True, fired_date=today (auto-fire)
-  3. Wenn catalyst.fired_date + 7-9 Tage == today:
-     → queue Ticker fuer LLM Deep Dive (re-evaluation)
-  4. Wenn catalyst.fired_date + horizon_days + 7 < today:
-     → mark catalyst.state = EXPIRED, Discord-Alert
+  1. Scanne strategies.json
+  2. catalyst.date <= today AND not fired → setze fired=True (auto-fire)
+  3. Post-Fire +7..9d → queue Ticker fuer LLM-Deep-Dive
+  4. expired (days_since > horizon+7) → Alert
 
-Usage:
-  python3 scripts/intelligence/catalyst_reeval.py
+Usage: python3 scripts/intelligence/catalyst_reeval.py
 """
 from __future__ import annotations
 import json
 import os
 import sys
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 from pathlib import Path
 
-WS = Path(os.getenv('TRADEMIND_HOME', '/opt/trademind'))
+WS = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent.parent)))
 STRATS = WS / 'data' / 'strategies.json'
 QUEUE = WS / 'data' / 'deepdive_queue.json'
 LOG = WS / 'data' / 'catalyst_reeval.log'
@@ -70,7 +66,7 @@ def run() -> dict:
 
     stats = {
         'scanned': 0, 'auto_fired': 0, 'queued_reeval': 0,
-        'expired': 0, 'pending': 0, 'fresh': 0, 'mature': 0
+        'expired': 0, 'pending': 0, 'fresh': 0, 'mature': 0,
     }
     queue = _load_queue()
     changed = False
@@ -85,7 +81,7 @@ def run() -> dict:
             continue
         stats['scanned'] += 1
 
-        # 1) Auto-Fire wenn Datum erreicht
+        # 1) Auto-Fire
         cat_date_s = cat.get('date')
         if cat_date_s and not cat.get('fired'):
             try:
@@ -99,7 +95,6 @@ def run() -> dict:
             except Exception:
                 pass
 
-        # Secondary auto-fire
         sec = cat.get('secondary')
         if sec and sec.get('date') and not sec.get('fired'):
             try:
@@ -113,7 +108,7 @@ def run() -> dict:
             except Exception:
                 pass
 
-        # 2) Re-Eval faellig?
+        # 2) Re-Eval
         needs, reason = needs_reeval(cfg, reeval_after_days=7)
         if needs:
             tickers = cfg.get('tickers') or ([cfg.get('ticker')] if cfg.get('ticker') else [])
@@ -132,7 +127,7 @@ def run() -> dict:
             cfg['last_catalyst_reeval'] = today_str
             changed = True
 
-        # Status-Stats
+        # Stats
         cs = catalyst_status(cfg)
         if cs['state'] == 'PENDING':
             stats['pending'] += 1
@@ -156,7 +151,7 @@ def run() -> dict:
 
 
 if __name__ == '__main__':
-    stats = run()
+    s = run()
     print('\n── Catalyst Re-Eval Summary ──')
-    for k, v in stats.items():
+    for k, v in s.items():
         print(f'  {k:15} {v}')
