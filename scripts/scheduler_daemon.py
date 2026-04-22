@@ -126,6 +126,13 @@ SCHEDULE = [
     ('Commodity Refresh',   'commodity_refresh.py',             [],                7,  0,  None,        False),  # tgl. 07:00 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
+    # Phase 23 — Catalyst-to-Profiteer Engine: News → Sektor → Profiteer-Tickers
+    # Läuft 5x/Tag (alle ~3h zwischen 06-22) — News-Pipeline läuft 4x/Tag, ein Tick versetzt
+    ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          6,  50, None,        False),
+    ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          10, 50, None,        False),
+    ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          14, 50, None,        False),
+    ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          18, 50, None,        False),
+    ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          22, 30, None,        False),
     ('Watchlist Rebuild',   'thesis_watchlist.py',              ['--tick'],        8,  45, None,        False),  # tgl. 08:45
     ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], False),
     ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        False),
