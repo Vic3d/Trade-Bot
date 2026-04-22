@@ -524,6 +524,12 @@ def run_monitoring_cycle() -> dict:
 
     for thesis_id in active_theses:
         try:
+            # ── Auto-Init: Baseline-Eintrag wenn noch keiner existiert ─
+            existing = get_thesis_status(thesis_id)
+            if not existing:
+                set_thesis_status(thesis_id, 'ACTIVE', 'auto-initialized from strategies.json')
+                results.setdefault('initialized', []).append(thesis_id)
+
             # ── Kill-Trigger prüfen ────────────────────────────────────
             triggered, match_text = check_thesis_kill_trigger(thesis_id, recent_news)
             if triggered:
