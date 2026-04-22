@@ -13,6 +13,7 @@ Schreibt in: data/trading.db → news_events
 Feld-Mapping: headline, url, source, published_at, tickers, sector, sentiment_score
 """
 import sqlite3, json, hashlib, urllib.request, xml.etree.ElementTree as ET
+import sys
 from pathlib import Path
 from datetime import datetime, date, timedelta, timezone
 from zoneinfo import ZoneInfo
@@ -20,6 +21,8 @@ _BERLIN = ZoneInfo('Europe/Berlin')
 import re
 
 import os as _os
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from core.news_pipeline import normalize_published_at  # noqa: E402
 _default_ws = '/data/.openclaw/workspace'
 if not Path(_default_ws).exists():
     _default_ws = str(Path(__file__).resolve().parent.parent)
@@ -197,7 +200,7 @@ def save_to_db(items):
             (url_hash, headline, url, source, published_at, tickers, sector,
              sentiment_score, sentiment_label, relevance_score, created_at)
             VALUES (?,?,?,?,?,?,?,?,?,?,datetime("now"))''',
-            (h, headline, url, item['source'], item.get('published_at',''),
+            (h, headline, url, item['source'], normalize_published_at(item.get('published_at','')),
              json.dumps(tickers) if tickers else None, sector,
              sentiment, label, relevance))
         new_count += 1

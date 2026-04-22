@@ -69,6 +69,41 @@ def url_hash(url):
     return hashlib.sha256(url.encode()).hexdigest()[:16]
 
 
+def normalize_published_at(published_str) -> str | None:
+    """
+    Normalisiert ein Datum-String → ISO 8601 UTC (`YYYY-MM-DDTHH:MM:SS+00:00`).
+    Garantiert dass SQLite-Datums-Funktionen wie date('now', '-7 days') funktionieren.
+    Akzeptiert: RFC 2822 ("Wed, 22 Apr 2026 14:49:00 +0000"), ISO 8601, YYYY-MM-DD.
+    Bei Parse-Fehler → aktuelle UTC-Zeit als Fallback (lieber jetzt als NULL).
+    """
+    if published_str:
+        s = str(published_str).strip()
+        # RFC 2822
+        try:
+            dt = parsedate_to_datetime(s)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).isoformat()
+        except Exception:
+            pass
+        # ISO 8601
+        try:
+            dt = datetime.fromisoformat(s.replace('Z', '+00:00'))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).isoformat()
+        except Exception:
+            pass
+        # Date only YYYY-MM-DD
+        try:
+            dt = datetime.strptime(s[:10], '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            return dt.isoformat()
+        except Exception:
+            pass
+    # Fallback
+    return datetime.now(timezone.utc).isoformat()
+
+
 def parse_article_age_hours(published_str) -> float | None:
     """
     Parst ein Datum-String und gibt das Alter in Stunden zurück.
@@ -271,7 +306,7 @@ def ingest_articles(articles, source_name='unknown', max_age_hours=None):
                                         sentiment_score, sentiment_label, relevance_score)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
-                uhash, headline, source_name, published,
+                uhash, headline, source_name, normalize_published_at(published),
                 json.dumps(tickers) if tickers else None,
                 json.dumps(sectors) if sectors else None,
                 sentiment, sentiment_label,
