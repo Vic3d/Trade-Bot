@@ -131,6 +131,10 @@ def get_next_earnings(ticker: str) -> date | None:
 
     if row and row['next_date']:
         updated = datetime.fromisoformat(row['updated'])
+        # Bug L (2026-04-22): updated ist u.U. naive (legacy-rows ohne TZ).
+        # Auf Berlin-aware normalisieren bevor subtrahiert wird.
+        if updated.tzinfo is None:
+            updated = updated.replace(tzinfo=_BERLIN)
         if datetime.now(_BERLIN) - updated < timedelta(hours=24):
             conn.close()
             try:

@@ -271,6 +271,13 @@ def to_eur(price: float, currency: str, fx: dict, ticker: str = '') -> float | N
     if currency == 'GBP' and fx.get('GBPEUR'):
         # LSE quotiert in Pence (GBX): /100 → GBP, dann * GBPEUR (GBP/EUR-Rate)
         return (price / 100) * fx['GBPEUR']
+    # Bug N (2026-04-22): DKK/SEK/CHF support — z.B. NOVO-B.CO quotiert in DKK.
+    if currency == 'DKK' and fx.get('EURDKK'):
+        return price / fx['EURDKK']
+    if currency == 'SEK' and fx.get('EURSEK'):
+        return price / fx['EURSEK']
+    if currency == 'CHF' and fx.get('EURCHF'):
+        return price / fx['EURCHF']
     log(f"WARNUNG: Unbekannte Währung '{currency}' für {ticker} — Position übersprungen")
     return None
 
@@ -1591,7 +1598,7 @@ def main():
         state['trail_sent'] = {}
 
     # ── Alle Yahoo-Ticker sammeln ──
-    yahoo_tickers = set(['EURUSD=X', 'EURNOK=X', 'GBPEUR=X'])
+    yahoo_tickers = set(['EURUSD=X', 'EURNOK=X', 'GBPEUR=X', 'EURDKK=X', 'EURSEK=X', 'EURCHF=X'])
     yahoo_tickers.add(config.get('macro', {}).get('wti_ticker', 'CL=F'))
     yahoo_tickers.add(config.get('macro', {}).get('vix_ticker', '^VIX'))
     yahoo_tickers.add(config.get('macro', {}).get('nikkei_ticker', '^N225'))
@@ -1613,7 +1620,8 @@ def main():
 
     # FX extrahieren
     fx = {}
-    for fx_key, fx_ticker in [('EURUSD', 'EURUSD=X'), ('EURNOK', 'EURNOK=X'), ('GBPEUR', 'GBPEUR=X')]:
+    for fx_key, fx_ticker in [('EURUSD', 'EURUSD=X'), ('EURNOK', 'EURNOK=X'), ('GBPEUR', 'GBPEUR=X'),
+                              ('EURDKK', 'EURDKK=X'), ('EURSEK', 'EURSEK=X'), ('EURCHF', 'EURCHF=X')]:
         if fx_ticker in prices:
             fx[fx_key] = prices[fx_ticker]['price']
 
@@ -1807,13 +1815,17 @@ def main():
     if TRADEMIND_V2:
         try:
             regime = _detect_regime()
+            # Bug M (2026-04-22): regime_detector liefert {name, vix_current,
+            # sp_return_today, trend, ...} — nicht den alten {regime, factors,
+            # velocity}-Shape. Auf neue Keys mappen.
             export['regime'] = {
-                'current': regime['regime'],
-                'velocity': regime.get('velocity', 'UNKNOWN'),
-                'vix': regime['factors'].get('vix'),
-                'sp500_vs_ma200': regime['factors'].get('sp500_vs_ma200'),
+                'current':        regime.get('name', 'UNKNOWN'),
+                'velocity':       regime.get('trend', 'UNKNOWN'),
+                'vix':            regime.get('vix_current'),
+                'sp500_momentum': regime.get('sp_momentum_5d'),
+                'switch_risk':    regime.get('switch_risk'),
             }
-            log(f"Regime: {regime['regime']} (Velocity: {regime.get('velocity')})")
+            log(f"Regime: {regime.get('name','?')} (Trend: {regime.get('trend','?')})")
         except Exception as e:
             log(f"Regime detection error: {e}")
         
