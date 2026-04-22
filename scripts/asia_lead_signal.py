@@ -46,15 +46,18 @@ INDICES = {
 
 
 def _fetch_change(ticker: str) -> dict | None:
+    import math
     try:
         import yfinance as yf
         t = yf.Ticker(ticker)
-        h = t.history(period='5d', auto_adjust=False)
+        h = t.history(period='10d', auto_adjust=False)
+        # NaN-Zeilen entfernen (yfinance liefert manchmal Lücken)
+        h = h.dropna(subset=['Close'])
         if len(h) < 2:
             return None
         last = float(h['Close'].iloc[-1])
         prev = float(h['Close'].iloc[-2])
-        if prev <= 0:
+        if math.isnan(last) or math.isnan(prev) or prev <= 0:
             return None
         change = (last - prev) / prev * 100
         return {'close': round(last, 2), 'change_pct': round(change, 2)}
