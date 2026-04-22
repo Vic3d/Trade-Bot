@@ -110,6 +110,39 @@ def _fetch_recent_news(hours: int) -> list[dict]:
 
 # ── Matching ─────────────────────────────────────────────────────────────────
 
+_VERB_STEMS = {
+    'seize', 'attack', 'close', 'open', 'impose', 'lift', 'raise', 'cut', 'block',
+    'sign', 'approve', 'reject', 'extend', 'pause', 'rally', 'surge', 'plunge',
+    'collapse', 'spike', 'rise', 'fall', 'announce', 'expand', 'reduce', 'freeze',
+    'launch', 'shut', 'restart', 'cease', 'agree', 'reroute', 'walkout', 'evacuate',
+    'damage', 'strike', 'tighten', 'ease', 'restrict', 'ban', 'remove',
+}
+
+
+def _stem_variants(word: str) -> list[str]:
+    """Generiert Verb-Tenses einer Modifier-Phrase (seize → seize, seizes, seized, seizing)."""
+    if ' ' in word:
+        # Multi-word: nur das erste Wort konjugieren
+        first, rest = word.split(' ', 1)
+        return [f'{v} {rest}' for v in _stem_variants(first)]
+    if word.lower() not in _VERB_STEMS:
+        return [word]
+    base = word.lower()
+    out = [base, base + 's', base + 'ed', base + 'ing']
+    if base.endswith('e'):
+        out += [base[:-1] + 'ed', base[:-1] + 'ing']  # seize → seized, seizing
+    return list(dict.fromkeys(out))  # dedup, keep order
+
+
+def _matches_any(haystack: str, needles: list[str]) -> str | None:
+    """Substring-Match mit Tense-Variants."""
+    for n in needles:
+        for v in _stem_variants(n.lower()):
+            if v in haystack:
+                return n
+    return None
+
+
 def match_rule(headline: str, rule: dict) -> dict | None:
     """
     Prüft ob eine Headline ein Mapping triggert.
@@ -117,7 +150,7 @@ def match_rule(headline: str, rule: dict) -> dict | None:
     """
     hl = headline.lower()
 
-    # Keyword-Match (mind. 1)
+    # Keyword-Match (mind. 1) — keywords nicht konjugieren (sind Nomen)
     matched_kw = None
     for kw in rule.get('keywords', []):
         if kw.lower() in hl:
@@ -126,13 +159,13 @@ def match_rule(headline: str, rule: dict) -> dict | None:
     if not matched_kw:
         return None
 
-    # Direction-Modifier
-    for d in rule.get('direction_up', []):
-        if d.lower() in hl:
-            return {'direction': 'BULLISH', 'confidence': 'high', 'modifier': d}
-    for d in rule.get('direction_down', []):
-        if d.lower() in hl:
-            return {'direction': 'BEARISH', 'confidence': 'high', 'modifier': d}
+    # Direction-Modifier — MIT Tense-Variants
+    up = _matches_any(hl, rule.get('direction_up', []))
+    if up:
+        return {'direction': 'BULLISH', 'confidence': 'high', 'modifier': up}
+    down = _matches_any(hl, rule.get('direction_down', []))
+    if down:
+        return {'direction': 'BEARISH', 'confidence': 'high', 'modifier': down}
 
     # Kein Modifier → base_confidence + UNCLEAR direction
     base = rule.get('base_confidence', 'medium')
