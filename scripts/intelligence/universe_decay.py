@@ -232,9 +232,9 @@ def run() -> dict:
         'date': today,
         'dormant_moves': dormant_moves,
         'resurrected': resurrected,
-        'total_active': sum(1 for v in u.values() if v.get('status') == STATUS_ACTIVE),
-        'total_dormant': sum(1 for v in u.values() if v.get('status') == STATUS_DORMANT),
-        'total_watchlist': sum(1 for v in u.values() if v.get('status') == STATUS_WATCHLIST),
+        'total_active': sum(1 for v in u.values() if isinstance(v, dict) and v.get('status') == STATUS_ACTIVE),
+        'total_dormant': sum(1 for v in u.values() if isinstance(v, dict) and v.get('status') == STATUS_DORMANT),
+        'total_watchlist': sum(1 for v in u.values() if isinstance(v, dict) and v.get('status') == STATUS_WATCHLIST),
     }
     try:
         existing = []
