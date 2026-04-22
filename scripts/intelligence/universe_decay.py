@@ -190,6 +190,13 @@ def run() -> dict:
     today = date.today().isoformat()
 
     for ticker, entry in list(u.items()):
+        # Skip Meta-Keys (_info, _count, _updated) und Legacy-Strukturen
+        # (sectors{}, etfs_for_regime_check{}) — Decay arbeitet nur auf
+        # per-Ticker-Dicts mit 'status'-Feld.
+        if ticker.startswith('_') or not isinstance(entry, dict):
+            continue
+        if 'status' not in entry:
+            continue
         # Decay check
         new_status, reason = evaluate_ticker(ticker, entry)
         if new_status == STATUS_DORMANT:

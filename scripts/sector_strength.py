@@ -161,8 +161,10 @@ def main():
     print(f"Bottom-3 (Gegenwind): {', '.join(out['bottom3'])}")
     print("\nFull Ranking:")
     for r in out['ranking']:
+        r5 = f"{r['ret_5d']:+.2f}%" if r['ret_5d'] is not None else '   n/a'
+        r20 = f"{r['ret_20d']:+.2f}%" if r['ret_20d'] is not None else '   n/a'
         print(f"  #{r['rank']:2}  {r['sector']:24}  {r['etf']}  "
-              f"5d={r['ret_5d']:+.2f}%  20d={r['ret_20d']:+.2f}%  score={r['score']:+.2f}")
+              f"5d={r5}  20d={r20}  score={r['score']:+.2f}")
 
 
 if __name__ == '__main__':
