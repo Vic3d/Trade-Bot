@@ -1026,6 +1026,11 @@ def get_exposure_breakdown(positions: list[dict] | None = None) -> dict:
             return 'AUD'
         if '.TO' in t:
             return 'CAD'
+        # Bug T (2026-04-22): SS=Shanghai, SZ=Shenzhen → CNY (vorher fälschlich USD)
+        if '.SS' in t or '.SZ' in t:
+            return 'CNY'
+        if '.SW' in t or '.VX' in t:
+            return 'CHF'
         return 'USD'
 
     by_currency: dict[str, dict] = {}

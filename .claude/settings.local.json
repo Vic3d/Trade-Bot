@@ -10,7 +10,13 @@
       "WebFetch(domain:arenax-template.webflow.io)",
       "WebFetch(domain:aeline.webflow.io)",
       "PowerShell(netstat -ano)",
-      "WebFetch(domain:unsplash.com)"
+      "WebFetch(domain:unsplash.com)",
+      "Bash(ssh root@178.104.152.135 \"pgrep -f _smoke_test.sh > /dev/null\")",
+      "Bash(ssh root@178.104.152.135 \"wc -l < /tmp/smoke_results/SUMMARY.txt 2>/dev/null || echo 0\")",
+      "Bash(ssh root@178.104.152.135 \"tail -1 /tmp/smoke_results/SUMMARY.txt 2>/dev/null\")",
+      "Bash(ssh root@178.104.152.135 \"tail -3 /tmp/smoke_results/SUMMARY.txt; echo '---'; grep -cE 'PASS|FAIL|TIMEOUT|ARGS|SKIP' /tmp/smoke_results/SUMMARY.txt\")",
+      "WebFetch(domain:rocket-rohrreinigung.de)",
+      "mcp__Claude_in_Chrome__browser_batch"
     ]
   }
 }

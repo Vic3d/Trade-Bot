@@ -121,7 +121,10 @@ def close_position(conn, row_id: int, price: float, exit_type: str,
         f' [REVIEW_EXIT:{exit_type} {datetime.now(_BERLIN).date()}]',
         exit_type, row_id
     ))
-    conn.execute("UPDATE paper_fund SET value = value + ? WHERE key='cash'",
+    # Bug R (2026-04-22): paper_fund hat key='current_cash', NICHT 'cash'.
+    # Vorher: UPDATE wirkte auf 0 Rows → Cash wurde beim Review-Exit nie
+    # zurückgebucht → Fund-Underflow.
+    conn.execute("UPDATE paper_fund SET value = value + ? WHERE key='current_cash'",
                  (shares * price - fees,))
     conn.commit()
     return pnl

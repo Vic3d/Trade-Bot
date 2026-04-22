@@ -536,8 +536,13 @@ def _execute_paper_entry_inner(
                     'blocked_by': 'ceo_halt',
                 }
             if ceo_bias == 'BEARISH':
-                # Im Bärenmarkt: nur Thesis-Plays mit hoher Conviction erlaubt
-                is_thesis = strategy.startswith(('PS_', 'PS', 'DT'))
+                # Im Bärenmarkt: nur Thesis-Plays erlaubt.
+                # Bug S (2026-04-22): vorher startswith(('PS_', 'PS', 'DT'))
+                #   - 'PS_' redundant ('PS' subsumiert)
+                #   - 'DT' = Day-Trade, KEIN Thesis-Play (würde DT durchschleusen
+                #     trotz BEARISH-Filter; geblockt nur weil Gate 0 permanent
+                #     blockt — aber Logik hier war falsch).
+                is_thesis = strategy.startswith(('PS', 'PT', 'PM'))
                 if not is_thesis:
                     return {
                         'success': False,
