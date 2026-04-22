@@ -576,9 +576,26 @@ def scheduler_loop():
 
     last_run = {}  # Verhindert Doppel-Ausführungen
 
+    # Heartbeat-File für externen Watchdog (heartbeat_monitor.py).
+    # Wird jede Minute geschrieben — wenn älter als 600s, restartet Cron-Watchdog
+    # den Scheduler. Bug K (2026-04-22): vorher fehlte das komplett → Restart-Loop.
+    HEARTBEAT_FILE = WS / 'data' / 'scheduler_heartbeat.txt'
+
+    def _write_heartbeat():
+        try:
+            HEARTBEAT_FILE.write_text(
+                datetime.now(timezone.utc).isoformat(),
+                encoding='utf-8',
+            )
+        except Exception as _e:
+            log(f'⚠️  Heartbeat-Write-Fehler: {_e}')
+
     while True:
         now = datetime.now()
         current_key = f'{now.strftime("%Y-%m-%d %H:%M")}'
+
+        # Heartbeat — JEDE Minute, vor allen Jobs
+        _write_heartbeat()
 
         # Subthread-Watchdog (vor Job-Dispatch)
         try:
