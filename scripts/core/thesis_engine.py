@@ -196,19 +196,22 @@ def check_thesis_kill_trigger(thesis_id: str, news_texts: list) -> tuple:
     return (False, '')
 
 
-def _parse_kill_trigger(kill_trigger: str) -> list:
+def _parse_kill_trigger(kill_trigger) -> list:
     """
-    Zerlegt Kill-Trigger-Text in einzelne Schlüsselwörter.
-    Trennt bei 'ODER', 'OR', Semikolon, Komma.
+    Zerlegt Kill-Trigger in einzelne Schlüsselwörter.
+    Akzeptiert String (Legacy) ODER Liste (Phase 22+).
+    Trennt String bei 'ODER', 'OR', Pipe, Semikolon.
     """
     import re
-    # Trennzeichen: ODER, OR (Wortgrenze), |, ;
+    # Phase 22+: kill_trigger ist bereits eine Liste
+    if isinstance(kill_trigger, list):
+        return [str(x).strip().strip('.,!?()[]') for x in kill_trigger if str(x).strip()]
+    if not isinstance(kill_trigger, str):
+        return []
     parts = re.split(r'\bODER\b|\bOR\b|\||\;', kill_trigger, flags=re.IGNORECASE)
     keywords = []
     for part in parts:
-        # Sonderzeichen entfernen, nur sinnvolle Schlüsselwörter
         cleaned = part.strip().strip('.,!?()[]')
-        # Kurze Abkürzungen und Preis-Angaben (z.B. "$78") als Keyword erlaubt
         if len(cleaned) >= 4:
             keywords.append(cleaned)
     return keywords
@@ -934,6 +937,8 @@ if __name__ == '__main__':
         print(f"Degradiert: {res['degraded']}")
         if res['errors']:
             print(f"Fehler: {res['errors']}")
+            # Exit-Code != 0 damit Scheduler den Fehler erkennt (vorher: silent OK)
+            _sys.exit(2)
 
     elif '--degrade' in args and len(args) >= 3:
         idx = args.index('--degrade')
