@@ -133,6 +133,11 @@ SCHEDULE = [
     ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          14, 50, None,        False),
     ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          18, 50, None,        False),
     ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          22, 30, None,        False),
+    # Thesis News Hunter — gezielte per-These KI-Bewertung (priced-in?, kill-trigger nah?), 4x/Tag
+    ('Thesis News Hunter',  'thesis_news_hunter.py',            [],                9,  0,  None,        False),
+    ('Thesis News Hunter',  'thesis_news_hunter.py',            [],                13, 0,  None,        False),
+    ('Thesis News Hunter',  'thesis_news_hunter.py',            [],                17, 0,  None,        False),
+    ('Thesis News Hunter',  'thesis_news_hunter.py',            [],                21, 0,  None,        False),
     ('Watchlist Rebuild',   'thesis_watchlist.py',              ['--tick'],        8,  45, None,        False),  # tgl. 08:45
     ('Scenario Mapper',     'scenario_mapper.py',               [],                6,  30, [0,1,2,3,4], False),
     ('Pain Trade Scanner',  'pain_trade_scanner.py',            [],                7,  0,  None,        False),

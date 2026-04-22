@@ -311,7 +311,7 @@ Gib ausschließlich ein JSON-Array zurück (kein Markdown, keine Erklärung). Fo
     "name": "Kurzer Name der These",
     "thesis": "Ursachenkette: X → Y → Z (1-2 Sätze)",
     "entry_trigger": "Konkreter, messbarer Einstiegs-Trigger",
-    "kill_trigger": "Konkreter Kill-Trigger der die These ungültig macht",
+    "kill_trigger": ["Konkreter Kill-Trigger 1 (Preisniveau, Datum, Event)", "Kill-Trigger 2 (optional, max 3)"],
     "tickers": ["TICK1", "TICK2", "TICK3"],
     "direction": "LONG / SHORT / LONG defensive / etc.",
     "timeframe": "2-4 Wochen",
@@ -395,12 +395,26 @@ def _auto_activate_thesis(thesis: dict) -> bool:
                 strategies = {}
 
         # Build strategy entry from thesis dict
+        # Phase 22: kill_trigger MUSS Liste sein (TQS + Kill-Engine erwarten Liste)
+        kt_raw = thesis.get('kill_trigger', [])
+        if isinstance(kt_raw, list):
+            kt_norm = [str(x).strip() for x in kt_raw if str(x).strip()]
+        elif isinstance(kt_raw, str) and kt_raw.strip():
+            import re as _re
+            kt_norm = [
+                p.strip().strip('.,!?')
+                for p in _re.split(r'\bODER\b|\bOR\b|\||;', kt_raw, flags=_re.IGNORECASE)
+                if len(p.strip()) >= 4
+            ]
+        else:
+            kt_norm = []
+
         new_entry = {
             'name':          thesis.get('name', thesis_id),
             'type':          'paper',
             'thesis':        thesis.get('thesis', ''),
             'entry_trigger': thesis.get('entry_trigger', ''),
-            'kill_trigger':  thesis.get('kill_trigger', ''),
+            'kill_trigger':  kt_norm,
             'tickers':       thesis.get('tickers', []),
             'direction':     thesis.get('direction', 'LONG'),
             'timeframe':     thesis.get('timeframe', ''),

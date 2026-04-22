@@ -34,7 +34,7 @@ from zoneinfo import ZoneInfo
 
 _BERLIN = ZoneInfo('Europe/Berlin')
 
-WS      = Path('/data/.openclaw/workspace')
+WS      = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent)))
 DATA    = WS / 'data'
 SCRIPTS = WS / 'scripts'
 sys.path.insert(0, str(SCRIPTS))
@@ -202,13 +202,17 @@ def build_search_queries(thesis_id: str, strategy: dict) -> list[str]:
     tickers     = strategy.get('tickers', [])
 
     # 1. Kill-Trigger Schlüsselbegriffe (höchste Priorität)
-    if kill:
+    # Phase 22: kill_trigger ist Liste — Fallback für altes String-Format
+    kill_words: list[str] = []
+    if isinstance(kill, list):
+        kill_words = [str(w).strip() for w in kill if str(w).strip()]
+    elif isinstance(kill, str) and kill:
         kill_words = [w.strip() for w in kill.replace('ODER', 'OR').split('OR')
                       if len(w.strip()) > 4]
-        for kw in kill_words[:2]:
-            clean = ' '.join(kw.split()[:4]).strip('*').strip()
-            if clean:
-                queries.append(clean)
+    for kw in kill_words[:2]:
+        clean = ' '.join(kw.split()[:4]).strip('*').strip()
+        if clean:
+            queries.append(clean)
 
     # 2. Bullish keywords (Kernthema)
     if kw_bullish:
@@ -311,11 +315,18 @@ def evaluate_with_ai(thesis_id: str, strategy: dict, articles: list[dict],
         if a.get('description'):
             articles_text += f"   {a['description'][:120]}\n"
 
+    # kill_trigger kann List oder String sein (Phase 22 Schema-Drift)
+    kt_raw = strategy.get('kill_trigger', 'nicht definiert')
+    if isinstance(kt_raw, list):
+        kt_str = ' | '.join(str(x) for x in kt_raw)[:150] if kt_raw else 'nicht definiert'
+    else:
+        kt_str = str(kt_raw)[:150]
+
     prompt = HUNTER_PROMPT.format(
         thesis_id     = thesis_id,
         name          = strategy.get('name', thesis_id),
         thesis        = strategy.get('thesis', '')[:200],
-        kill_trigger  = strategy.get('kill_trigger', 'nicht definiert')[:150],
+        kill_trigger  = kt_str,
         entry_trigger = strategy.get('entry_trigger', '')[:100],
         price_context = price_context,
         articles      = articles_text,

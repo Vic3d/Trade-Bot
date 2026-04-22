@@ -3,7 +3,13 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:finance.yahoo.com)",
-      "WebFetch(domain:stockanalysis.com)"
+      "WebFetch(domain:stockanalysis.com)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:wealthflowtemplate.webflow.io)",
+      "WebFetch(domain:axtira.webflow.io)",
+      "WebFetch(domain:arenax-template.webflow.io)",
+      "WebFetch(domain:aeline.webflow.io)",
+      "PowerShell(netstat -ano)"
     ]
   }
 }

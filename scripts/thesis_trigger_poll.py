@@ -136,7 +136,7 @@ def _recent_news(hours: int = 12) -> str:
         conn = sqlite3.connect(str(DB_PATH))
         conn.execute('PRAGMA busy_timeout=3000')
         for sql, params in (
-            ('SELECT title, summary FROM news_items WHERE published_at > ? LIMIT 500', (cutoff,)),
+            ('SELECT headline, source FROM news_events WHERE published_at > ? LIMIT 500', (cutoff,)),
             ('SELECT headline FROM news_pipeline WHERE created_at > ? LIMIT 500', (cutoff,)),
         ):
             try:

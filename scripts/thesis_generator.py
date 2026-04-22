@@ -65,8 +65,8 @@ def _portfolio_snapshot() -> dict:
     try:
         conn = sqlite3.connect(str(DB))
         cur = conn.execute("""
-          SELECT ticker, strategy_id, entry_price, entry_date, position_size_eur
-          FROM paper_trades WHERE status='OPEN'
+          SELECT ticker, strategy, entry_price, entry_date, position_size_eur
+          FROM trades WHERE status='OPEN'
         """)
         for r in cur.fetchall():
             snap['open_positions'].append({
