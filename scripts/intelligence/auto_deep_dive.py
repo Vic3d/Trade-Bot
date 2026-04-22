@@ -170,13 +170,13 @@ def _get_recent_news(ticker: str, days: int = 7) -> list[dict]:
         # Best effort - news table schema variiert
         cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
         rows = c.execute(
-            "SELECT title, COALESCE(source,'?') as source, "
-            "COALESCE(published_date, published, date) as pub "
-            "FROM news WHERE "
-            "(tickers LIKE ? OR title LIKE ? OR ticker = ?) "
-            "AND COALESCE(published_date, published, date) >= ? "
-            "ORDER BY COALESCE(published_date, published, date) DESC LIMIT 8",
-            (f'%{ticker}%', f'%{ticker}%', ticker, cutoff),
+            "SELECT headline as title, COALESCE(source,'?') as source, "
+            "published_at as pub "
+            "FROM news_events WHERE "
+            "(tickers LIKE ? OR headline LIKE ?) "
+            "AND published_at >= ? "
+            "ORDER BY published_at DESC LIMIT 8",
+            (f'%{ticker}%', f'%{ticker}%', cutoff),
         ).fetchall()
         c.close()
         return [{'title': r['title'], 'source': r['source'], 'pub': r['pub']} for r in rows]

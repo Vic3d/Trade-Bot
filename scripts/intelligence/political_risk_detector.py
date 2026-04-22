@@ -119,8 +119,8 @@ def _fetch_recent_news(days: int = 14) -> list[dict]:
     cutoff = (datetime.now() - timedelta(days=days)).isoformat()
     try:
         rows = conn.execute('''
-            SELECT title, source, published_at
-            FROM news
+            SELECT headline, source, published_at
+            FROM news_events
             WHERE published_at >= ?
             ORDER BY published_at DESC
             LIMIT 2000

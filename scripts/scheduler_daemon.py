@@ -124,8 +124,10 @@ SCHEDULE = [
     ('Catalyst Calendar',   'catalyst_calendar.py',             [],                6,  20, None,        False),
     # ── Phase 22 Core Jobs ───────────────────────────────────────────────────
     ('Commodity Refresh',   'commodity_refresh.py',             [],                7,  0,  None,        False),  # tgl. 07:00 vor Handel
+    ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
+    ('Universe Decay',      'intelligence/universe_decay.py',   [],                23, 0,  None,        False),  # tgl. 23:00 nach Tagesende
     # Phase 23 — Catalyst-to-Profiteer Engine: News → Sektor → Profiteer-Tickers
     # Läuft 5x/Tag (alle ~3h zwischen 06-22) — News-Pipeline läuft 4x/Tag, ein Tick versetzt
     ('Catalyst Engine',     'intelligence/catalyst_to_profiteer.py',  [],          6,  50, None,        False),

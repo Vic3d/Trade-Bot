@@ -237,16 +237,14 @@ def get_recent_news_texts(hours: int = 48) -> list[str]:
     conn = get_db()
     try:
         rows = conn.execute("""
-            SELECT headline, summary FROM news
-            WHERE datetime(fetched_at) >= datetime('now', ?)
-            ORDER BY fetched_at DESC LIMIT 200
+            SELECT headline, COALESCE(source, '') as src FROM news_events
+            WHERE datetime(published_at) >= datetime('now', ?)
+            ORDER BY published_at DESC LIMIT 200
         """, (f'-{hours} hours',)).fetchall()
         texts = []
         for r in rows:
             if r['headline']:
                 texts.append(r['headline'])
-            if r['summary']:
-                texts.append(r['summary'])
         return texts
     except Exception:
         return []
@@ -267,8 +265,11 @@ def check_thesis_intact(ticker: str) -> tuple[bool, str]:
     if not kill_trigger:
         return True, "Kein Kill-Trigger definiert"
 
-    # Keywords aus kill_trigger extrahieren (komma-separiert oder Freitext)
-    kill_words = [w.strip().lower() for w in kill_trigger.replace(';', ',').split(',') if len(w.strip()) > 3]
+    # Phase 22: kill_trigger ist Liste — Fallback für altes String-Format
+    if isinstance(kill_trigger, list):
+        kill_words = [str(w).strip().lower() for w in kill_trigger if str(w).strip()]
+    else:
+        kill_words = [w.strip().lower() for w in str(kill_trigger).replace(';', ',').split(',') if len(w.strip()) > 3]
     if not kill_words:
         return True, "Kill-Trigger leer"
 

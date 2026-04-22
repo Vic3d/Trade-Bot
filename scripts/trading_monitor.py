@@ -87,9 +87,9 @@ except ImportError:
 # TradeMind v2 Module (Sprint 1-4)
 try:
     from regime_detector import detect_current_regime as _detect_regime
-    from conviction_scorer import calculate_conviction as _calc_conviction_v2
-    from signal_engine import calculate_confluence as _calc_confluence
-    from risk_manager import full_risk_report as _risk_report
+    from intelligence.conviction_scorer import calculate_conviction as _calc_conviction_v2
+    from intelligence.signal_engine import calculate_confluence as _calc_confluence
+    from execution.risk_manager import full_risk_report as _risk_report
     TRADEMIND_V2 = True
 except ImportError:
     TRADEMIND_V2 = False

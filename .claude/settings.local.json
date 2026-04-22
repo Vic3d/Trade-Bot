@@ -9,7 +9,8 @@
       "WebFetch(domain:axtira.webflow.io)",
       "WebFetch(domain:arenax-template.webflow.io)",
       "WebFetch(domain:aeline.webflow.io)",
-      "PowerShell(netstat -ano)"
+      "PowerShell(netstat -ano)",
+      "WebFetch(domain:unsplash.com)"
     ]
   }
 }

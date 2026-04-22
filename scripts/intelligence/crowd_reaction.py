@@ -200,7 +200,12 @@ def simulate_crowd_reaction(
     thesis_text = thesis_cfg.get('thesis', '')
     thesis_name = thesis_cfg.get('name', thesis_id)
     entry_trigger = thesis_cfg.get('entry_trigger', '')
-    kill_trigger  = thesis_cfg.get('kill_trigger', '')
+    kt_raw = thesis_cfg.get('kill_trigger', '')
+    # Phase 22: kill_trigger ist Liste — für Prompt zu Text konvertieren
+    if isinstance(kt_raw, list):
+        kill_trigger = ' | '.join(str(x) for x in kt_raw) if kt_raw else 'nicht definiert'
+    else:
+        kill_trigger = str(kt_raw) if kt_raw else 'nicht definiert'
 
     # Build price context string
     price_parts = []
