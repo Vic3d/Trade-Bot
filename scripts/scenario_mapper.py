@@ -169,7 +169,10 @@ def call_claude(prompt: str) -> tuple[str, dict]:
         from core.llm_client import call_llm  # type: ignore
     _m = (os.getenv('ANTHROPIC_MODEL') or 'sonnet').lower()
     hint = 'opus' if 'opus' in _m else ('haiku' if 'haiku' in _m else 'sonnet')
-    return call_llm(prompt, model_hint=hint, max_tokens=4000)
+    # Bug P (2026-04-22): 4000 tokens reichten nicht für 4+ Catalysts × 3 Szenarien
+    # mit Winners/Losers. Output wurde mitten im JSON abgeschnitten → Parse-Fehler.
+    # Auf 8000 erhöht (Sonnet/Opus unterstützen >>8k).
+    return call_llm(prompt, model_hint=hint, max_tokens=8000)
 
 
 def parse_json(text: str) -> dict:
@@ -181,6 +184,10 @@ def parse_json(text: str) -> dict:
             t = m.group(1).strip()
     m = re.search(r'\{[\s\S]*\}', t)
     if not m:
+        # Bug P: Truncation erkennen — kein schließendes } gefunden.
+        if t.lstrip().startswith('{') and not t.rstrip().endswith('}'):
+            raise ValueError(f'JSON truncated (max_tokens?) — {len(t)} chars, '
+                             f'tail: ...{t[-80:]!r}')
         raise ValueError('Kein JSON im Claude-Output')
     raw = m.group(0)
     try:
