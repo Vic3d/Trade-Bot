@@ -92,9 +92,23 @@ def load_real_trades() -> tuple[list, str]:
     """).fetchall()
     conn.close()
 
+    # Bug O (2026-04-22): hmm_regime ist String (NEUTRAL/CORRECTION/BEAR/CRASH/BULL),
+    # nicht numerisch. Mapping auf Code für ML-Feature.
+    HMM_CODE = {'BULL': 2, 'NEUTRAL': 1, 'CORRECTION': 0, 'BEAR': -1, 'CRASH': -2}
+
+    def _coerce(feat: str, val):
+        if val is None:
+            return None
+        if feat == 'hmm_regime' and isinstance(val, str):
+            return HMM_CODE.get(val.upper(), 0)
+        try:
+            return float(val)
+        except (TypeError, ValueError):
+            return None
+
     samples = []
     for r in rows:
-        features = {feat: (float(r[feat]) if r[feat] is not None else None) for feat in FEATURES}
+        features = {feat: _coerce(feat, r[feat]) for feat in FEATURES}
         outcome = 1 if (r['pnl_eur'] or 0) > 0 else 0
         samples.append({'features': features, 'outcome': outcome, 'source': 'real'})
 
