@@ -194,6 +194,10 @@ def save_features(trade_id: int, features: dict) -> bool:
     """Speichert Features für einen Trade in der DB."""
     try:
         conn = sqlite3.connect(str(DB))
+        # Sub-7 Datenfix (2026-04-23): hmm_regime fehlte im UPDATE → wurde
+        # nie persistiert obwohl collect_features() es berechnet (Phase 5).
+        # Folge: K9-Bridge konnte hmm_regime nicht als market_context-Feature
+        # nutzen → Conviction-Weights basierten nur auf RSI/VIX/etc.
         conn.execute("""
             UPDATE paper_portfolio SET
                 rsi_at_entry = ?,
@@ -205,6 +209,7 @@ def save_features(trade_id: int, features: dict) -> bool:
                 hour_of_entry = ?,
                 sector_momentum = ?,
                 spy_5d_return = ?,
+                hmm_regime = ?,
                 feature_version = ?
             WHERE id = ?
         """, (
@@ -217,6 +222,7 @@ def save_features(trade_id: int, features: dict) -> bool:
             features.get('hour_of_entry'),
             features.get('sector_momentum'),
             features.get('spy_5d_return'),
+            features.get('hmm_regime'),
             features.get('feature_version', 1),
             trade_id
         ))

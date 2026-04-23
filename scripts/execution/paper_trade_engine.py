@@ -1293,7 +1293,19 @@ def _execute_paper_entry_inner(
     total_cost = shares * entry_price + fees
     
     # ── Entry ausführen ──────────────────────────────────────────────
-    regime = conviction.get('regime', 'UNKNOWN')
+    # Sub-7 Datenfix (2026-04-23): .get(...,'UNKNOWN') half nicht weil
+    # conviction['regime'] explizit None war (52% NULL in DB-Audit).
+    # Fallback auf live regime_detector wenn None.
+    regime = conviction.get('regime') or 'UNKNOWN'
+    if regime == 'UNKNOWN':
+        try:
+            import sys as _rs
+            _rs.path.insert(0, str(Path(__file__).parent.parent))
+            from regime_detector import detect_current_regime as _det
+            _r = _det()
+            regime = _r.get('name') or 'UNKNOWN'
+        except Exception:
+            pass
     vix_val = conviction.get('vix', 0)
     now = datetime.now(timezone.utc).isoformat()
     
