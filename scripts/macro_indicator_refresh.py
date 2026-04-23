@@ -42,6 +42,15 @@ INDICATORS = {
     'WTI':    'CL=F',
 }
 
+# Sub-8 V3 #4: Stooq als Fallback wenn Yahoo down/leer
+STOOQ_SYMBOLS = {
+    'SPY':    'spy.us',
+    'VIX':    '^vix',
+    'EURUSD': 'eurusd',
+    'GOLD':   'gc.f',
+    'WTI':    'cl.f',
+}
+
 
 def _fetch_bars(yahoo_symbol: str, days_back: int = 30) -> list[tuple[str, float]]:
     end_dt = datetime.now()
@@ -67,6 +76,41 @@ def _fetch_bars(yahoo_symbol: str, days_back: int = 30) -> list[tuple[str, float
         return out
     except Exception as e:
         print(f'  ❌ {yahoo_symbol}: {e}', file=sys.stderr)
+        return []
+
+
+def _fetch_bars_stooq(stooq_symbol: str, days_back: int = 30) -> list[tuple[str, float]]:
+    """Sub-8 V3 #4: Stooq Daily-CSV Fallback. Endpoint:
+       https://stooq.com/q/d/l/?s=spy.us&i=d
+    Liefert ALLE Tage; wir slicen auf days_back."""
+    url = f'https://stooq.com/q/d/l/?s={urllib.parse.quote(stooq_symbol)}&i=d'
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (MacroRefresh)'})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            text = r.read().decode('utf-8', errors='replace')
+        lines = [l for l in text.strip().splitlines() if l]
+        if len(lines) < 2 or not lines[0].lower().startswith('date'):
+            return []
+        # Header: Date,Open,High,Low,Close,Volume
+        out = []
+        cutoff = (datetime.now() - timedelta(days=days_back + 5)).strftime('%Y-%m-%d')
+        for line in lines[1:]:
+            parts = line.split(',')
+            if len(parts) < 5:
+                continue
+            d = parts[0]
+            if d < cutoff:
+                continue
+            try:
+                close = float(parts[4])
+                if close <= 0:
+                    continue
+                out.append((d, close))
+            except (ValueError, IndexError):
+                continue
+        return out
+    except Exception as e:
+        print(f'  ❌ Stooq {stooq_symbol}: {e}', file=sys.stderr)
         return []
 
 
@@ -107,6 +151,13 @@ def main():
     for ind, ysym in INDICATORS.items():
         bars = _fetch_bars(ysym, days_back=backfill_days)
         _track('yahoo', 'macro', status='ok' if bars else 'fail', note=f'{ind}={ysym}')
+        # Sub-8 V3 #4: Stooq-Fallback wenn Yahoo leer
+        if not bars and ind in STOOQ_SYMBOLS:
+            ssym = STOOQ_SYMBOLS[ind]
+            print(f'  ⚠️  Yahoo leer fuer {ind} → Stooq-Fallback ({ssym})')
+            bars = _fetch_bars_stooq(ssym, days_back=backfill_days)
+            _track('stooq', 'macro_fallback', status='ok' if bars else 'fail',
+                   note=f'{ind}={ssym}')
         if not bars:
             continue
         before = conn.execute(

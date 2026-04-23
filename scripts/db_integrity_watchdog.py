@@ -33,7 +33,12 @@ from pathlib import Path
 WS = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent)))
 DB = WS / 'data' / 'trading.db'
 LAST_ALERT = WS / 'data' / 'db_integrity_last_alert.txt'
+DRIFT_STATE = WS / 'data' / 'drift_triage_state.json'
 COOLDOWN_HOURS = 6
+# Sub-8 V3 #3: Auto-Heal Schwellen
+DRIFT_AUTOHEAL_MAX = 200.0   # > 200 EUR Drift → nie auto-heal (Mensch pruefen)
+DRIFT_AUTOHEAL_PERSIST_HOURS = 4  # selber Drift muss 4h+ stabil sein
+DRIFT_AUTOHEAL_COOLDOWN_H = 24  # nach Auto-Fix 24h Pause
 
 EXPECTED_PP_COLS = {
     'id', 'ticker', 'strategy', 'entry_price', 'entry_date', 'shares',
@@ -80,6 +85,65 @@ def _check_orphan_tranches(conn) -> list[str]:
             break
     if not fk_col:
         return issues
+
+    # Sub-8 V3 #6: Tranche-Reconciliation
+    # 6a) OPEN-Tranchen deren paper_portfolio CLOSED ist → mit-schliessen
+    stale = conn.execute(f"""
+        SELECT t.id, t.{fk_col}, p.status, p.close_price, p.close_date
+        FROM trade_tranches t
+        JOIN paper_portfolio p ON t.{fk_col} = p.id
+        WHERE t.status='OPEN' AND UPPER(p.status)='CLOSED'
+    """).fetchall()
+    if stale:
+        try:
+            for tid, _fk, _st, cp, cd in stale:
+                conn.execute(
+                    "UPDATE trade_tranches SET status='CLOSED', exit_price=?, "
+                    "exit_date=?, exit_type='AUTOHEAL_PARENT_CLOSED' WHERE id=?",
+                    (cp, cd or datetime.now(timezone.utc).isoformat(timespec='seconds'), tid),
+                )
+            conn.commit()
+            issues.append(
+                f'Tranche-Reconcile: {len(stale)} OPEN-Tranchen geschlossen '
+                f'(Parent paper_portfolio war CLOSED)'
+            )
+        except Exception as e:
+            issues.append(f'Tranche-Reconcile FAIL: {e}')
+
+    # 6b) OPEN paper_portfolio OHNE Tranchen → Trailing-Stops feuern nie
+    missing = conn.execute(f"""
+        SELECT p.id, p.ticker, p.shares
+        FROM paper_portfolio p
+        LEFT JOIN (
+            SELECT {fk_col} AS pid, COUNT(*) AS n
+            FROM trade_tranches GROUP BY {fk_col}
+        ) tc ON tc.pid = p.id
+        WHERE UPPER(p.status)='OPEN' AND p.shares IS NOT NULL AND p.shares > 0
+              AND COALESCE(tc.n, 0) = 0
+    """).fetchall()
+    if missing:
+        try:
+            for pid, _tk, sh in missing:
+                t1 = round(float(sh) / 3, 4)
+                t2 = round(float(sh) / 3, 4)
+                t3 = round(float(sh) - t1 - t2, 4)
+                for i, s in enumerate([t1, t2, t3], 1):
+                    conn.execute(
+                        f"INSERT INTO trade_tranches ({fk_col}, tranche_num, shares, "
+                        "status, created_at) VALUES (?, ?, ?, 'OPEN', datetime('now'))",
+                        (pid, i, s),
+                    )
+            conn.commit()
+            tickers = ', '.join(t for _, t, _ in missing[:5])
+            more = f' ...+{len(missing)-5}' if len(missing) > 5 else ''
+            issues.append(
+                f'Tranche-Reconcile: {len(missing)} OPEN-Positionen ohne Tranchen '
+                f'erzeugt ({tickers}{more}) — Trailing-Stops jetzt aktiv'
+            )
+        except Exception as e:
+            issues.append(f'Tranche-Backfill FAIL: {e}')
+
+    # 6c) Klassische Orphan-Detection (FK zeigt auf nicht-existente paper_portfolio)
     orphans = conn.execute(f"""
         SELECT t.{fk_col}, COUNT(*) as n
         FROM trade_tranches t
@@ -134,8 +198,107 @@ def _check_cash_drift(conn) -> list[str]:
         )
         if null_count:
             msg += f' — ACHTUNG: {null_count} OPEN ohne shares: {null_tickers}'
+        # Sub-8 V3 #3: Drift-Triage Auto-Heal
+        heal_msg = _drift_triage_autoheal(drift, null_count)
+        if heal_msg:
+            msg += f'\n  → {heal_msg}'
         issues.append(msg)
+    else:
+        # Drift weg → State zuruecksetzen, Triage neu starten
+        try:
+            if DRIFT_STATE.exists():
+                DRIFT_STATE.unlink()
+        except Exception:
+            pass
     return issues
+
+
+def _drift_triage_autoheal(drift: float, null_count: int) -> str:
+    """Sub-8 V3 #3: Versucht Cash-Drift automatisch zu reconcilen.
+
+    Sicherheits-Regeln:
+      - drift > DRIFT_AUTOHEAL_MAX (200 EUR): nie auto-heal (Bug-Symptom)
+      - null_count > 0: nie auto-heal (echter Schema-Bug, kein Sync-Issue)
+      - Nur heal wenn selber Drift (±5 EUR) >= PERSIST_HOURS stabil
+      - Nach Heal 24h Cooldown
+    """
+    import subprocess
+    now = datetime.now(timezone.utc)
+    if abs(drift) > DRIFT_AUTOHEAL_MAX:
+        return f'Auto-Heal SKIP — Drift |{drift:.0f}€| > {DRIFT_AUTOHEAL_MAX:.0f}€ (Mensch pruefen)'
+    if null_count > 0:
+        return f'Auto-Heal SKIP — {null_count} NULL-share Positionen (Schema-Bug, kein Sync-Issue)'
+
+    state = {}
+    try:
+        if DRIFT_STATE.exists():
+            state = json.loads(DRIFT_STATE.read_text())
+    except Exception:
+        state = {}
+
+    last_fix_iso = state.get('last_autofix_at')
+    if last_fix_iso:
+        try:
+            last_fix = datetime.fromisoformat(last_fix_iso)
+            if last_fix.tzinfo is None:
+                last_fix = last_fix.replace(tzinfo=timezone.utc)
+            age_h = (now - last_fix).total_seconds() / 3600
+            if age_h < DRIFT_AUTOHEAL_COOLDOWN_H:
+                return f'Auto-Heal COOLDOWN — letzter Fix vor {age_h:.1f}h (<{DRIFT_AUTOHEAL_COOLDOWN_H}h)'
+        except Exception:
+            pass
+
+    # Drift-Persistenz tracken
+    first_seen_iso = state.get('first_seen_at')
+    last_drift = state.get('last_drift')
+    same = last_drift is not None and abs(float(last_drift) - drift) <= 5.0
+    if same and first_seen_iso:
+        try:
+            first_seen = datetime.fromisoformat(first_seen_iso)
+            if first_seen.tzinfo is None:
+                first_seen = first_seen.replace(tzinfo=timezone.utc)
+            persist_h = (now - first_seen).total_seconds() / 3600
+        except Exception:
+            persist_h = 0
+    else:
+        persist_h = 0
+        first_seen_iso = now.isoformat(timespec='seconds')
+
+    if persist_h < DRIFT_AUTOHEAL_PERSIST_HOURS:
+        # Persistenz noch nicht erreicht → State updaten und warten
+        try:
+            DRIFT_STATE.write_text(json.dumps({
+                'first_seen_at': first_seen_iso,
+                'last_drift': drift,
+                'last_seen_at': now.isoformat(timespec='seconds'),
+            }, indent=2))
+        except Exception:
+            pass
+        return f'Auto-Heal WARTE — Drift {persist_h:.1f}h alt (braucht {DRIFT_AUTOHEAL_PERSIST_HOURS}h)'
+
+    # Stabil + unter Limit + nicht im Cooldown → fix
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(WS / 'scripts' / 'fund_reconciliation.py'),
+             '--fix', '--no-alert'],
+            capture_output=True, text=True, timeout=60,
+        )
+        ok = proc.returncode == 0
+        try:
+            DRIFT_STATE.write_text(json.dumps({
+                'first_seen_at': first_seen_iso,
+                'last_drift': drift,
+                'last_autofix_at': now.isoformat(timespec='seconds'),
+                'last_autofix_drift': drift,
+                'last_autofix_ok': ok,
+            }, indent=2))
+        except Exception:
+            pass
+        if ok:
+            return f'Auto-Heal OK — fund_reconciliation --fix angewendet (drift {drift:+.2f}€)'
+        return f'Auto-Heal FAIL — fund_reconciliation rc={proc.returncode}: {proc.stderr[:200]}'
+    except Exception as e:
+        return f'Auto-Heal FAIL — Exception: {e}'
 
 
 def _check_corrupt_json(conn) -> list[str]:
