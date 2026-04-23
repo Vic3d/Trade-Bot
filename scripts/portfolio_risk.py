@@ -299,11 +299,14 @@ def check_correlation(
         corr = _pearson(new_rets[-n:], pos_rets[-n:]) if n >= 10 else None
 
         # Sektor-Override: gleicher Sektor = min 0.60 Korrelation
-        # (Öl-Aktien fallen zusammen auch wenn Returns kurzfristig divergieren)
+        # (Öl-Aktien fallen zusammen auch wenn Returns kurzfristig divergieren).
+        # Bug AB (2026-04-22): vorher überschrieb der Override auch echte
+        # Anti-Korrelation (z.B. corr=-0.8 = Hedge im Sektor) → falsch.
+        # Nur überschreiben wenn corr None oder im Bereich [0, 0.60).
         pos_sector = get_sector(pos_ticker)
         if (pos_sector == new_sector and new_sector != 'unknown'):
             sector_min = 0.60
-            if corr is None or corr < sector_min:
+            if corr is None or (0 <= corr < sector_min):
                 corr = sector_min
                 log.info(f"Sector override: {new_ticker}↔{pos_ticker} ({new_sector}) → corr={corr}")
 
@@ -959,8 +962,13 @@ def get_exposure_breakdown(positions: list[dict] | None = None) -> dict:
         positions = _get_open_positions()
 
     total = sum((p.get('position_size_eur') or 0) for p in positions)
+    # Bug AC (2026-04-22): vorher total=len(positions) → Counts wurden als
+    # EUR addiert, %-Werte wurden Müll. Bei leerem Total: leeres Breakdown.
     if total <= 0:
-        total = len(positions)  # Fallback
+        return {
+            'by_sector': {}, 'by_region': {}, 'by_currency': {},
+            'total_eur': 0.0, 'position_count': len(positions),
+        }
 
     # Sektor
     by_sector: dict[str, dict] = {}
@@ -976,21 +984,25 @@ def get_exposure_breakdown(positions: list[dict] | None = None) -> dict:
         by_sector[s]['pct'] = round(by_sector[s]['eur'] / total, 3) if total > 0 else 0
 
     # Region (basierend auf Ticker-Suffix)
+    # Bug AA (2026-04-22): vorher `s in t` → '.T' in 'TTE.PA' = True
+    # → TTE.PA wurde Japan statt EU. Jetzt strict endswith.
     def _region(ticker: str) -> str:
         t = ticker.upper()
-        if any(s in t for s in ['.DE', '.PA', '.AS', '.MI', '.BR']):
+        if any(t.endswith(s) for s in ['.DE', '.PA', '.AS', '.MI', '.BR', '.SW', '.VX']):
             return 'EU'
-        if '.L' in t:
+        if t.endswith('.L'):
             return 'UK'
-        if '.OL' in t or '.CO' in t or '.ST' in t:
+        if any(t.endswith(s) for s in ['.OL', '.CO', '.ST', '.HE']):
             return 'Nordics'
-        if '.T' in t:
+        if t.endswith('.T'):
             return 'Japan'
-        if '.HK' in t:
+        if t.endswith('.HK'):
             return 'China/HK'
-        if '.AX' in t:
+        if t.endswith('.SS') or t.endswith('.SZ'):
+            return 'China/HK'
+        if t.endswith('.AX'):
             return 'Australia'
-        if '.TO' in t:
+        if t.endswith('.TO'):
             return 'Canada'
         return 'US'
 
@@ -1129,8 +1141,12 @@ def run_all_risk_checks(
 
     # Wenn base_size explizit mitgegeben wurde, nie über base_size hinausgehen
     final_size = min(corr_adjusted, base_size) if base_size else corr_adjusted
-    # Niemals unter Min
-    final_size = max(500.0, final_size)
+    # Bug AD (2026-04-22): vorher max(500, final_size) hebelte explizite
+    # Reduktion durch corr/Kelly aus (selbst wenn Risk sagt "nimm 200€"
+    # → 500€ getradet). Min nur anwenden wenn final_size > 0
+    # (Block-Pfade liefern 0 → bleiben 0).
+    if final_size > 0:
+        final_size = max(500.0, final_size)
 
     # 5. Sector Exposure
     sector = check_sector_exposure(ticker, final_size)

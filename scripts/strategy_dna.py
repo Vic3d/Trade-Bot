@@ -93,8 +93,12 @@ def load_strategy_samples() -> dict[str, list]:
     """).fetchall()
     conn.close()
 
-    # hmm_regime kann String ('NEUTRAL'/'BULLISH'/'BEARISH') oder Zahl sein
-    REGIME_MAP = {'BEARISH': 0.0, 'NEUTRAL': 1.0, 'BULLISH': 2.0, 'HALT': 0.0}
+    # hmm_regime kann String ('NEUTRAL'/'BULLISH'/'BEARISH') oder Zahl sein.
+    # Bug AF (2026-04-23): vorher BULLISH→2.0 → wurde in compute_regime_performance
+    # mit Modul-MAP {2.0:'RISK_OFF'} verwechselt → BULLISH-Trades als RISK_OFF
+    # geloggt. Jetzt aligned mit Modul-MAP (Zeile 60): BULL=0, NEUTRAL=1, RISK_OFF=2.
+    REGIME_MAP = {'BULLISH': 0.0, 'NEUTRAL': 1.0, 'BEARISH': 2.0, 'HALT': 2.0,
+                  'CORRECTION': 2.0, 'BEAR': 2.0, 'CRASH': 3.0, 'BULL': 0.0}
 
     def _to_float(feat: str, val):
         if val is None:

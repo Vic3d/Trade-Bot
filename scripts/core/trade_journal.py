@@ -2,6 +2,13 @@
 """
 Trade Journal v2 — Auto-Enrichment bei Entry + Exit
 ====================================================
+⚠️  LEGACY (Sub-7 Audit 2026-04-23):
+    Dieses Modul schreibt in die Tabelle `trades` — die ist Legacy-Archiv.
+    Single Source of Truth für neue Trades ist `paper_portfolio` via
+    `scripts/execution/paper_trade_engine.py`.
+    Siehe `data/SCHEMA.md` für Migrations-Hinweise.
+    Keine neuen Reader/Writer für `trades` hinzufügen.
+
 Jeder Trade wird automatisch mit Kontext angereichert:
 - VIX, Regime, Conviction bei Entry/Exit
 - CRV, Position Size, Risk nach 2%-Regel

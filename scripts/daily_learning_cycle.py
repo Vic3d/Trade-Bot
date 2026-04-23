@@ -284,134 +284,33 @@ def append_to_daily_log(summary: str):
     # Wenn kein Daily-Log existiert → nicht anlegen (Tagesabschluss macht das)
 
 
-# ── 5b. CONVICTION WEIGHT RECALIBRATION (Sonntags) ──────────────────────────
-
-def recalculate_conviction_weights():
-    """
-    Berechnet adaptive Conviction-Gewichte aus Trade-Ergebnissen.
-    Läuft nur Sonntags. Korreliert Faktor-Scores mit Win/Loss.
-
-    Schreibt data/conviction_weights.json mit:
-      weights: {thesis: X, technical: Y, risk_reward: Z, market_context: W}
-      computed_at: ISO timestamp
-      trade_count: N
-    """
-    if _berlin_now().weekday() != 6:  # Nur Sonntag (Berliner Zeit)
-        print("  ℹ️  Gewichte-Rekalibrierung nur Sonntags")
-        return None
-
-    conn = get_db()
-    try:
-        trades = conn.execute("""
-            SELECT id, strategy, conviction, pnl_eur, status
-            FROM paper_portfolio
-            WHERE status IN ('WIN', 'LOSS', 'CLOSED')
-              AND conviction IS NOT NULL
-              AND conviction > 0
-            ORDER BY exit_date DESC
-            LIMIT 50
-        """).fetchall()
-    except Exception as e:
-        print(f"  ⚠️  Gewichte-Rekalibrierung DB-Fehler: {e}")
-        conn.close()
-        return None
-
-    conn.close()
-
-    if len(trades) < 20:
-        print(f"  ℹ️  Zu wenig Trades ({len(trades)}/20 min) für Gewichte-Rekalibrierung")
-        return None
-
-    # Faktor-Scores aus conviction_scorer nachladen
-    factor_wins = {'thesis': 0, 'technical': 0, 'risk_reward': 0, 'market_context': 0}
-    factor_total = {'thesis': 0, 'technical': 0, 'risk_reward': 0, 'market_context': 0}
-
-    try:
-        sys.path.insert(0, str(WS / 'scripts' / 'intelligence'))
-        from conviction_scorer import calculate_conviction
-
-        for t in trades:
-            is_win = (t['pnl_eur'] or 0) > 0
-            # Re-score mit aktuellen Daten (approximation)
-            try:
-                result = calculate_conviction(
-                    ticker='_HISTORICAL',
-                    strategy=t['strategy'] or 'DEFAULT',
-                )
-                factors = result.get('factors', {})
-                for key, factor_key in [
-                    ('thesis', 'thesis_strength'),
-                    ('technical', 'technical_alignment'),
-                    ('risk_reward', 'risk_reward_quality'),
-                    ('market_context', 'market_context'),
-                ]:
-                    val = factors.get(factor_key, 0)
-                    if val > 0:
-                        factor_total[key] += 1
-                        if is_win:
-                            factor_wins[key] += 1
-            except Exception:
-                pass
-    except Exception as e:
-        print(f"  ⚠️  Faktor-Scoring Fehler: {e}")
-        return None
-
-    # Gewichte berechnen: höhere Korrelation mit Wins = höheres Gewicht
-    raw_weights = {}
-    for key in factor_total:
-        if factor_total[key] > 0:
-            raw_weights[key] = factor_wins[key] / factor_total[key]
-        else:
-            raw_weights[key] = 0.25  # Default gleichverteilt
-
-    # Normalisieren auf Summe 100 mit Constraints [10, 50]
-    total_raw = sum(raw_weights.values()) or 1
-    weights = {}
-    for key in raw_weights:
-        w = (raw_weights[key] / total_raw) * 100
-        weights[key] = max(10, min(50, round(w)))
-
-    # Re-normalisieren falls Constraints die Summe verzerrt haben
-    w_sum = sum(weights.values())
-    if w_sum != 100:
-        diff = 100 - w_sum
-        # Anpassung am größten Gewicht
-        max_key = max(weights, key=weights.get)
-        weights[max_key] += diff
-
-    output = {
-        'weights': weights,
-        'computed_at': datetime.now(timezone.utc).isoformat(),
-        'trade_count': len(trades),
-        'raw_correlations': {k: round(v, 3) for k, v in raw_weights.items()},
-    }
-
-    weights_file = WS / 'data' / 'conviction_weights.json'
-    weights_file.write_text(json.dumps(output, indent=2, ensure_ascii=False))
-
-    print(f"  ✅ Conviction-Gewichte rekalibriert: {weights} ({len(trades)} Trades)")
-    return output
-
+# ── CONVICTION WEIGHT RECALIBRATION ────────────────────────────────────────
+# ENTFERNT 2026-04-23 (Sub-7 Bug 8): recalculate_conviction_weights() rief
+# calculate_conviction(ticker='_HISTORICAL') mit LIVE-Marktdaten auf statt
+# at-entry-Snapshots → korrelierte heutige Scores mit alten Trades = Müll
+# in conviction_weights.json. Ersetzt durch K9-Bridge in feature_importance.py
+# (bridge_to_conviction_weights), die echte at-entry Snapshot-Spalten aus
+# paper_portfolio nutzt. Läuft Freitags via [5/7]-Block in run_full().
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
 
 def run_full():
     print(f"[Daily Learning Cycle] Start — {_berlin_now().strftime('%Y-%m-%d %H:%M')}")
 
-    print("\n[1/5] Alpha Decay Check...")
+    print("\n[1/7] Alpha Decay Check...")
     decay_alerts = run_alpha_decay()
 
-    print("\n[2/5] Feedback Loop (Signal-Kalibrierung)...")
+    print("\n[2/7] Feedback Loop (Signal-Kalibrierung)...")
     feedback_report = run_feedback()
 
-    print("\n[3/5] Learning Engine (Strategy Scores)...")
+    print("\n[3/7] Learning Engine (Strategy Scores)...")
     learnings = run_learning()
 
-    print("\n[3b/5] Learning → DB Sync (P0.4)...")
+    print("\n[3b/7] Learning → DB Sync (P0.4)...")
     sync_result = sync_recommendations_to_db(learnings)
     print(f"  ✅ DB Sync: {sync_result.get('synced', 0)} updates, {sync_result.get('errors', 0)} errors")
 
-    print("\n[4/5] Accuracy Report generieren...")
+    print("\n[4/7] Accuracy Report generieren...")
     accuracy = build_accuracy_report()
     print(f"  ✅ albert-accuracy.md aktualisiert")
 
@@ -427,23 +326,31 @@ def run_full():
         f"- albert-accuracy.md automatisch aktualisiert"
     )
 
-    print("\n[5/7] Conviction-Gewichte Rekalibrierung (Sonntags)...")
-    cw_result = recalculate_conviction_weights()
-
-    print("\n[6/7] Feature Importance (weekly, Freitags)...")
+    # [5/7] Feature Importance (Freitags) — schreibt conviction_weights.json
+    # via K9-Bridge (bridge_to_conviction_weights in feature_importance.main()).
+    # Ersetzt die alte recalculate_conviction_weights()-Sonntags-Routine.
+    print("\n[5/7] Feature Importance (weekly, Freitags)...")
     fi_result = {}
     if _berlin_now().weekday() == 4:  # Freitag (Berliner Zeit)
         try:
-            from feature_importance import run_analysis, print_report, export_feature_weights
+            from feature_importance import (
+                run_analysis, export_feature_weights, bridge_to_conviction_weights,
+            )
             fi_result = run_analysis(quick=True)
-            weights = export_feature_weights(fi_result.get('composite_scores', {}))
+            export_feature_weights(fi_result.get('composite_scores', {}))
+            bridged = bridge_to_conviction_weights(fi_result.get('composite_scores', {}))
+            if bridged:
+                w = bridged['weights']
+                print(f"  ✅ Conviction-Weights (K9-Bridge): "
+                      f"thesis={w['thesis']} tech={w['technical']} "
+                      f"rr={w['risk_reward']} mkt={w['market_context']}")
             print(f"  ✅ Feature Importance: Top={list(fi_result.get('composite_scores',{}).items())[:1]}")
         except Exception as e:
             print(f"  ⚠️  Feature Importance Fehler (nicht kritisch): {e}")
     else:
         print("  ℹ️  Wöchentlich (Freitag) — heute kein Run")
 
-    print("\n[7/7] Daily Log updaten...")
+    print("\n[6/7] Daily Log updaten...")
     fi_note = f"\n- Feature Importance: {len(fi_result.get('composite_scores',{}))} Features analysiert" if fi_result else ""
     summary = (
         f"Learning Cycle abgeschlossen:\n"
@@ -455,7 +362,7 @@ def run_full():
     append_to_daily_log(summary)
     print(f"  ✅ Daily Log aktualisiert")
 
-    print("\n[8/8] State Snapshot regenerieren...")
+    print("\n[7/7] State Snapshot regenerieren...")
     try:
         import sqlite3 as _sql
         _db = WS / 'data/trading.db'

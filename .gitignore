@@ -57,3 +57,4 @@ memory/newswire.db
 memory/*.db
 /lernbot/
 .vercel
+_smoke_*.sh

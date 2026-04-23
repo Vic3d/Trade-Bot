@@ -73,7 +73,24 @@ def _bar(pct: float, width: int = 14) -> str:
 # ─── State ───────────────────────────────────────────────────────────────────
 def gather_state() -> dict:
     positions = _get_open_positions()
-    fund_total = sum(p.get('position_size_eur', 0.0) or 0.0 for p in positions) or 25000.0
+    # Bug Z (2026-04-22): vorher nur Summe der offenen Positionen → Cash fehlte
+    # → alle %-Anteile (Sektor, VaR/Fund) systematisch zu hoch.
+    _pos_eur = sum(p.get('position_size_eur', 0.0) or 0.0 for p in positions)
+    _cash_eur = 0.0
+    try:
+        import sqlite3 as _sql
+        from pathlib import Path as _P
+        import os as _o
+        _db = _P(_o.getenv('TRADEMIND_HOME', '/opt/trademind')) / 'data' / 'trading.db'
+        if _db.exists():
+            _c = _sql.connect(str(_db))
+            _r = _c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+            _c.close()
+            if _r:
+                _cash_eur = float(_r[0] or 0)
+    except Exception:
+        pass
+    fund_total = (_cash_eur + _pos_eur) or 25000.0
 
     matrix, tickers, meta = load_current_matrix()
     if matrix.size == 0:

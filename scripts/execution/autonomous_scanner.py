@@ -1025,7 +1025,6 @@ def run_scan(max_new_trades: int = 5) -> list:
 
     results = []
     new_trades = 0
-    pending_added = 0
 
     for tier, items in merged_universe.items():
         if new_trades >= max_new_trades:

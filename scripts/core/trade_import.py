@@ -2,6 +2,10 @@
 """
 Trade Import — CSV/JSON Import für Trade Republic & Co.
 ========================================================
+⚠️  LEGACY (Sub-7 Audit 2026-04-23):
+    Schreibt in `trades` (Legacy-Archiv). Für neue Imports bitte direkt
+    `paper_portfolio` befüllen. Siehe `data/SCHEMA.md`.
+
 Importiert bestehende Trade-History in die DB.
 Unterstützt: Trade Republic CSV, Custom JSON.
 

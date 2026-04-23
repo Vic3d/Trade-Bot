@@ -44,18 +44,21 @@ def get_db():
 def sector_exposure():
     """Berechnet Sektor-Konzentration offener Positionen."""
     conn = get_db()
+    # Bug Y (2026-04-22): vorher FROM trades — falsche Tabelle (13 Zombies aus
+    # DT5-Era). Active Positions liegen in paper_portfolio. Spalte
+    # position_size_eur existiert dort nicht → aus entry_price*shares berechnen.
     trades = conn.execute("""
-        SELECT ticker, position_size_eur, entry_price, shares
-        FROM trades WHERE status='OPEN'
+        SELECT ticker, entry_price, shares
+        FROM paper_portfolio WHERE status='OPEN'
     """).fetchall()
     conn.close()
-    
+
     sectors = defaultdict(lambda: {'tickers': [], 'total_eur': 0, 'count': 0})
     total_portfolio = 0
-    
+
     for t in trades:
         ticker = t['ticker']
-        pos_eur = t['position_size_eur'] or (t['entry_price'] * (t['shares'] or 1))
+        pos_eur = (t['entry_price'] or 0) * (t['shares'] or 1)
         sector = SECTOR_MAP.get(ticker, 'Other')
         
         sectors[sector]['tickers'].append(ticker)
@@ -82,10 +85,12 @@ def sector_exposure():
 def portfolio_drawdown():
     """Berechnet aktuellen Drawdown basierend auf geschlossenen Trades."""
     conn = get_db()
+    # Bug Y: paper_portfolio nutzt status='CLOSED' (nicht WIN/LOSS),
+    # exit_date heißt close_date.
     trades = conn.execute("""
-        SELECT pnl_eur, exit_date FROM trades 
-        WHERE status IN ('WIN','LOSS') AND pnl_eur IS NOT NULL
-        ORDER BY exit_date
+        SELECT pnl_eur, close_date AS exit_date FROM paper_portfolio
+        WHERE status='CLOSED' AND pnl_eur IS NOT NULL
+        ORDER BY close_date
     """).fetchall()
     conn.close()
     
@@ -120,7 +125,7 @@ def portfolio_drawdown():
 def position_count_check(max_positions=5):
     """Prüft ob Positions-Limit erreicht ist."""
     conn = get_db()
-    count = conn.execute("SELECT COUNT(*) FROM trades WHERE status='OPEN'").fetchone()[0]
+    count = conn.execute("SELECT COUNT(*) FROM paper_portfolio WHERE status='OPEN'").fetchone()[0]
     conn.close()
     return {
         'open_positions': count,
@@ -139,7 +144,7 @@ def correlation_risk():
     
     conn = get_db()
     open_tickers = [r['ticker'] for r in conn.execute(
-        "SELECT DISTINCT ticker FROM trades WHERE status='OPEN'"
+        "SELECT DISTINCT ticker FROM paper_portfolio WHERE status='OPEN'"
     ).fetchall()]
     conn.close()
     

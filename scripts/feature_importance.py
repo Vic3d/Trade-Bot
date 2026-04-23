@@ -519,14 +519,9 @@ def bridge_to_conviction_weights(composite: dict) -> dict | None:
         from datetime import datetime as _dt, timezone as _tz
         out_path = WS / 'data' / 'conviction_weights.json'
 
-        # Schreibe nur wenn aktuelle Datei älter als 7 Tage (daily_learning hat Vorrang)
-        try:
-            if out_path.exists():
-                age_d = (_dt.now().timestamp() - out_path.stat().st_mtime) / 86400.0
-                if age_d < 7:
-                    return None  # daily_learning hat es schon kürzlich aktualisiert
-        except Exception:
-            pass
+        # Bug 8 (2026-04-23): Vorrang-Check entfernt — die alte Sonntags-
+        # Funktion recalculate_conviction_weights() in daily_learning_cycle.py
+        # ist gelöscht. K9-Bridge ist nun einziger Schreiber dieser Datei.
 
         tech_keys = ['rsi_at_entry', 'volume_ratio', 'atr_pct_at_entry', 'ma50_distance']
         mkt_keys = ['vix_at_entry', 'hmm_regime', 'spy_5d_return', 'sector_momentum']

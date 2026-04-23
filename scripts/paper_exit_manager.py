@@ -515,11 +515,58 @@ def run() -> tuple[list, list]:
     closed_records  = []
     trailing_updates = []
 
+    # ── Bug V (2026-04-22): Force-Exit-Queue von event_auto_exit konsumieren ──
+    # event_auto_exit.py schreibt data/force_exit_queue.json bei kritischen
+    # Events (Iran-Peace, Trump-Pharma). Vorher wurde die Queue NIE gelesen
+    # → Dead-Code-Pfad → keine automatischen Event-Exits.
+    try:
+        import os as _os, json as _json
+        from pathlib import Path as _Path
+        _q_path = _Path(_os.getenv('TRADEMIND_HOME', '/opt/trademind')) / 'data' / 'force_exit_queue.json'
+        if _q_path.exists():
+            _q = _json.loads(_q_path.read_text(encoding='utf-8'))
+            _entries = _q.get('entries', [])
+            if _entries:
+                _force_tickers = {str(e.get('ticker', '')).upper(): e for e in _entries}
+                _matched_ids = []
+                for _t in open_trades:
+                    if (_t['ticker'] or '').upper() in _force_tickers:
+                        _entry = _t['entry_price'] or 0
+                        _shares = _t['shares'] or 1
+                        _fees = _t['fees'] or 1.0
+                        _price = get_price(_t['ticker']) or _entry
+                        _e = _force_tickers[(_t['ticker'] or '').upper()]
+                        _reason = _e.get('reason', 'event_auto_exit')
+                        _pnl = close_position(conn, _t['id'], _price, 'EVENT_AUTO_EXIT',
+                                              _entry, _shares, _fees)
+                        closed_records.append(
+                            f"EVENT_AUTO_EXIT {_t['ticker']} | {_entry:.2f}->{_price:.2f} | "
+                            f"PnL: {_pnl:+.2f}EUR | reason={_reason}"
+                        )
+                        send_alert(f"EVENT AUTO EXIT: {_t['ticker']} ({_reason}) | PnL: {_pnl:+.2f}EUR")
+                        _matched_ids.append(_t['id'])
+                if _matched_ids:
+                    open_trades = [_t for _t in open_trades if _t['id'] not in _matched_ids]
+                _q_path.write_text(_json.dumps({'entries': [], 'last_drained_at':
+                    datetime.now(ZoneInfo('UTC')).isoformat(timespec='seconds')},
+                    indent=2), encoding='utf-8')
+    except Exception as _e_q:
+        print(f"⚠️  Force-Exit-Queue-Drain Fehler: {_e_q}")
+
     for t in open_trades:
         ticker  = t['ticker']
         entry   = t['entry_price'] or 0
         stop    = t['stop_price'] or (entry * 0.93)
+        # Bug U (2026-04-22): Sanity-Check — wenn stop >= entry, ist DB-Wert
+        # kaputt (z.B. SIE.DE id=60: stop=234.4 > entry=204.7). Ohne Check
+        # würde Hard-Stop-1 sofort feuern (price <= stop ist trivial wahr).
+        if entry > 0 and stop >= entry:
+            print(f"⚠️  {ticker}: stop={stop:.2f} >= entry={entry:.2f} — fallback auf 0.93*entry")
+            stop = entry * 0.93
         target  = t['target_price'] or (entry * 1.15)
+        # Symmetrischer Sanity-Check: target muss > entry sein (sonst Tranche-Logic kaputt).
+        if entry > 0 and target <= entry:
+            target = entry * 1.15
         shares  = t['shares'] or 1
         fees    = t['fees'] or 1.0
         strategy = t['strategy'] or 'DEFAULT'
@@ -550,9 +597,14 @@ def run() -> tuple[list, list]:
             try:
                 import zoneinfo
                 now_berlin = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
-                entry_dt_tz = datetime.fromisoformat(str(t['entry_date'])).replace(
-                    tzinfo=zoneinfo.ZoneInfo('UTC')
-                ).astimezone(zoneinfo.ZoneInfo('Europe/Berlin'))
+                # Bug X (2026-04-22): vorher wurde .replace(tzinfo=UTC) blind
+                # gesetzt — wenn entry_date schon TZ-aware war, wurde die
+                # Original-TZ überschrieben.
+                _raw = str(t['entry_date'])
+                _ed = datetime.fromisoformat(_raw)
+                if _ed.tzinfo is None:
+                    _ed = _ed.replace(tzinfo=zoneinfo.ZoneInfo('UTC'))
+                entry_dt_tz = _ed.astimezone(zoneinfo.ZoneInfo('Europe/Berlin'))
                 same_day = entry_dt_tz.date() == now_berlin.date()
                 force = (same_day and (now_berlin.hour > 21 or
                          (now_berlin.hour == 21 and now_berlin.minute >= 50))) or (not same_day)

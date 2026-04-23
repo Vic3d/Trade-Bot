@@ -113,11 +113,24 @@ def _yahoo_raw(ticker: str, range_: str = '5d') -> dict | None:
     url = (f'https://query2.finance.yahoo.com/v8/finance/chart/'
            f'{ticker}?interval=1d&range={range_}')
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    status = 'ok'
     try:
         with urllib.request.urlopen(req, timeout=8) as r:
-            return json.load(r)
+            data = json.load(r)
+        return data
     except Exception:
+        status = 'fail'
         return None
+    finally:
+        # Sub-8 V2 (B): API-Quota tracken
+        try:
+            import sys as _sys
+            from pathlib import Path as _P
+            _sys.path.insert(0, str(_P(__file__).resolve().parent.parent))
+            from api_quota_tracker import track as _track
+            _track('yahoo', 'live_data', status=status, note=f'{ticker}/{range_}')
+        except Exception:
+            pass
 
 
 # ─── PREISE ──────────────────────────────────────────────────────────────────

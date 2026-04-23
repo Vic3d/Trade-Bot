@@ -105,19 +105,20 @@ SCHEDULE = [
     ('Overnight Collector', 'overnight_collector.py',  [],                        20, 30, [0,1,2,3,4]),  # US Close
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
-    ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,  30, [0,1,2,3,4], True),
-    ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4], True),
-    ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4], True),
-    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4], True),
-    ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None,        True),
-    # ── Phase 22.4 — Discord-Dispatcher Flush-Jobs ──────────────────────────
-    # MEDIUM-Queue wird 4x/Tag gebuendelt versendet (09/12/17/21:55).
-    # LOW-Queue wird nur 1x abends konsolidiert (vor Abend-Report).
-    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     9,  0,  None,        False),
-    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     12, 0,  None,        False),
-    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     17, 0,  None,        False),
-    ('Discord Flush MED',   'discord_dispatcher.py',      ['--flush-medium'],     21, 55, None,        False),
-    ('Discord Flush LOW',   'discord_dispatcher.py',      ['--flush-low'],        21, 58, None,        False),
+    # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
+    ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,   0, [0,1,2,3,4], True),
+    # Morgen-Digest: Portfolio-Status + gequeute Alerts aus der Nacht (08:05)
+    ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,   5, [0,1,2,3,4]),
+    # Xetra/US Opening: nur noch ohne discord=True (kein extra Ping)
+    ('Xetra Opening',       'us_opening_report.py',       [],                    9,  30, [0,1,2,3,4]),
+    ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4]),
+    # Abend-Digest: Tages-Events + Trades + Lernloop-Summary (ersetzt rohen Abend-Report)
+    ('Abend-Digest',        'daily_digest.py',            ['evening'],           20, 0,  [0,1,2,3,4]),
+    # Sonntags-Wochen-Digest: enthält _signal_alpha_block (Sub-7 #1)
+    ('Sonntags-Digest',     'daily_digest.py',            ['evening'],           20, 0,  [6]),
+    # Abend-Report: Details (kein extra Discord-Ping mehr, nur als Log)
+    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4]),
+    ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None),
     # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15
     ('Weekly Summary',      'weekly_summary.py',          [],                    21, 0,  [6],         True),  # So 21:00
@@ -170,7 +171,97 @@ SCHEDULE = [
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
-    ('Midterm Bias Refresh','midterm_election_bias.py',[],                        23, 0,  [6]),  # Sonntag
+    # ── Phase 3: State Sync (JSONs → SQL, nach Daily Learning) ──
+    ('State Sync',          'state_sync.py',           [],                        23, 5,  None),
+    # P2.13 — Memory-Index regenerieren (queryable history)
+    ('Memory Index',        'memory_index.py',         [],                        23, 30, None),
+    # K1 — Victor-Feedback Trust-Score (täglich aus Reactions berechnen)
+    ('Victor Trust',        'victor_feedback.py',      [],                        23, 20, None),
+    # ── Phase 4/5/6.7/6.9: Integrity + Truth Jobs ──
+    ('Fund Reconciliation', 'fund_reconciliation.py',  ['--fix'],                 23, 15, None),   # tgl. 23:15 nach State Sync (Sub-8 V2: --fix aktiv)
+    ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
+    ('Proposal Expirer',    'proposal_expirer.py',     [],                        14, 30, None),   # mittags nochmal
+    ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
+    # ── Sub-8: Monitoring/Watchdogs (2026-04-23) ──
+    ('Macro Refresh',       'macro_indicator_refresh.py', [],                      6, 5,  None),   # tgl. 06:05 — SPY/VIX/EURUSD/GOLD/WTI vor allen Health-Checks
+    ('DB Integrity',        'db_integrity_watchdog.py', [],                        6, 30, None),   # tgl. vor Stale-Data
+    ('Meta Health',         'meta_health_watchdog.py',  [],                        8, 45, None),   # tgl. nach Morning Brief
+    ('Meta Health',         'meta_health_watchdog.py',  [],                       20, 45, None),   # abends nochmal
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                        9, 45, [0,1,2,3,4]),  # Marktzeiten
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       11, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       13, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       15, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       17, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       19, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       21, 45, [0,1,2,3,4]),
+    ('Health Digest',       'health_digest.py',         [],                       22, 30, None),   # tgl. nach Daily Learning
+    ('Archive Stale Trades','archive_stale_trades.py', [],                         3,  0, [6]),    # So nur
+    # Phase 24 aggressive: stündlich 08-22h (vorher alle 2h) + max 8/Run
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     8, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     9, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    10, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    11, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    12, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    13, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    14, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    15, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    16, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    17, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    18, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    19, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    20, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    21, 10, None),
+    ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                    22, 10, None),
+    # ── Phase 7: Validierungs-Jobs (vor Honesty Report) ──
+    ('Verdict Accuracy',    'verdict_accuracy_tracker.py', [],                    21, 50, None),
+    ('Conviction Backtest', 'conviction_backtest.py',  [],                        21, 52, None),
+    ('Edge Attribution',    'edge_attribution.py',     ['--apply'],               21, 54, None),
+    ('Readiness Tracker',   'readiness_tracker.py',    [],                        21, 56, None),
+    ('Honesty Report',      'honesty_report.py',       [],                        22,  5, None),
+    ('Equity Snapshot',     'equity_snapshot.py',      [],                        22, 40, [0,1,2,3,4,5,6]),  # Phase 9 — MUSS vor Daily Learning (22:45) laufen, sonst nutzt Learning Stale-Equity
+    ('Insider Refresh',     'intelligence/insider_refresh.py', [],                7,  30, [0,1,2,3,4]),  # Phase 10 — SEC Form 4 Mo-Fr
+    ('Macro Brain',         'intelligence/macro_brain.py',     [],                7,  45, [0,1,2,3,4,5,6]),  # Phase 11 — FRED Regime tgl.
+    ('Macro Brain',         'intelligence/macro_brain.py',     [],                15, 30, [0,1,2,3,4]),  # Phase 11 — US Pre-Open Update
+    # ── Phase 20: Universe Maintenance (vor Auto Deep Dive) ──
+    ('Universe Expander',   'intelligence/universe_expander.py', [],              1,  0,  None),  # tgl. 01:00 — News→Discovery
+    ('Universe Decay',      'intelligence/universe_decay.py',    [],              2,  0,  None),  # tgl. 02:00 — Auto-dormant
+    # ── Phase 21 Pro: Correlation Matrix + Risk Dashboard ──
+    ('Correlation Matrix',  'correlation_refresh.py',            [],              7,  15, [0,1,2,3,4]),
+    # ── Phase 25: Sector Strength + Asia Lead + Earnings Calendar ──
+    ('Sector Strength',     'sector_strength.py',                [],              7,  20, [0,1,2,3,4]),  # vor Morning Brief
+    ('Asia Lead Signal',    'asia_lead_signal.py',               [],              7,   0, [0,1,2,3,4]),  # Asia-Close → vor 7:30 fertig
+    ('Earnings Refresh',    'earnings_calendar.py',              [],              6,  30, [0]),         # Mo wöchentlich
+    ('Risk Dashboard AM',   'risk_dashboard.py',                 ['--morning'],   7,  30, [0,1,2,3,4], True),
+    ('Risk Dashboard PM',   'risk_dashboard.py',                 ['--evening'],  21,  0,  [0,1,2,3,4]),
+    # ── Phase 12: Auto Deep Dive (nightly verdict refresh, rule-based, no LLM) ──
+    ('Auto Deep Dive',      'intelligence/auto_deepdive.py',   [],                2,  30, None),  # tgl. 02:30
+    # ── Phase 14: Position Watchdog (alle 2h während Marktzeiten) ──
+    # Watchdog läuft xx:05, Proposal Executor xx:25 — entzerrt Race vs Portfolio-State
+    ('Position Watchdog',   'position_watchdog.py',            [],                10, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                12, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                14, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                16, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                18, 5,  [0,1,2,3,4]),
+    ('Position Watchdog',   'position_watchdog.py',            [],                20, 5,  [0,1,2,3,4]),
+    # ── Phase 18: Proposal Executor (globale Börsenzeiten, alle 2h, NACH Watchdog) ──
+    ('Proposal Executor',   'proposal_executor.py',            [],                 8, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                10, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                12, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                14, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                16, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                18, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                20, 25, [0,1,2,3,4]),
+    ('Proposal Executor',   'proposal_executor.py',            [],                22, 25, [0,1,2,3,4]),
+    # ── Phase 18: Autonomous Pipeline (alle 2h, K8: xx:10 NACH Watchdog xx:05) ──
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                 9, 10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                11,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                13,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                15,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                17,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                19,10, [0,1,2,3,4]),
+    ('Autonomous Pipeline', 'autonomous_pipeline.py',          [],                21,10, [0,1,2,3,4]),
+    # ── Phase 16: Signal-Level Learning (Sonntag Vormittag) ──
+    ('Signal Learning',     'intelligence/signal_learning.py', [],                9,  30, [6]),
     ('RL Training',         'rl_trainer.py',           ['--train', '200000'],     2,  0,  None),
     # ── Geo-Watcher: stuetzen PS1 (Iran-Oel) + PS17/18 (Trade-War) ────────────
     # Beide lightweight RSS-Scraper, stuendlich aktive Stunden (07-23) 7d/Woche
