@@ -175,70 +175,83 @@ def compute_risk_adjusted_return(pnl_list: list) -> float:
 def analyze_trailing_stops() -> dict:
     """Analysiert ob Trailing Stops Gewinne schützen oder zu früh rauswerfen.
 
-    Bug 7 (2026-04-23) bekannt: Liest aus `trades`-Tabelle (264 alte DT-Era
-    Records inkl. Zombies), nicht paper_portfolio (Single-Source-of-Truth).
-    `paper_portfolio` hat keine `trail_count`/`max_unrealized_pct`-Spalten —
-    Trail-Daten leben in `trade_tranches`. Korrekter Fix erfordert Schema-
-    Migration oder JOIN über trade_tranches; bis dahin ist Statistik
-    informativ, nicht autoritativ. Wird in Sub-9 (Infrastruktur) adressiert.
+    Sub-7 #2 Fix (2026-04-23): Single-Source = paper_portfolio + trade_tranches.
+    "Mit Trail" = Trade hat ≥1 Tranche-Exit (Tranche 1/2/3 ausgelöst).
+    "Ohne Trail" = CLOSED ohne Tranche-Aktivität (Hard Stop, Manual, etc).
+    Wenn trade_tranches leer ist → noch keine Trail-Events — informativ
+    leeres Resultat statt irreführende Zombie-Statistik aus alter `trades`-
+    Tabelle.
     """
     conn = get_db()
-    # Trades MIT Trail vs OHNE Trail
+
+    # Trades mit Trail-Aktivität (haben mind. 1 Tranche-Eintrag)
     with_trail = conn.execute("""
         SELECT COUNT(*) as n,
-        SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) as wins,
-        COALESCE(AVG(pnl_pct), 0) as avg_pct,
-        COALESCE(SUM(pnl_eur), 0) as total_pnl,
-        COALESCE(AVG(max_unrealized_pct), 0) as avg_max_unrealized,
-        COALESCE(AVG(trail_count), 0) as avg_trails
-        FROM trades WHERE status IN ('WIN','LOSS') AND trail_count > 0
+        SUM(CASE WHEN p.pnl_eur > 0 THEN 1 ELSE 0 END) as wins,
+        COALESCE(AVG(p.pnl_pct), 0) as avg_pct,
+        COALESCE(SUM(p.pnl_eur), 0) as total_pnl,
+        (SELECT COALESCE(AVG(c), 0) FROM
+            (SELECT COUNT(*) as c FROM trade_tranches GROUP BY trade_id)) as avg_trails
+        FROM paper_portfolio p
+        WHERE p.status = 'CLOSED'
+          AND p.id IN (SELECT DISTINCT trade_id FROM trade_tranches)
     """).fetchone()
 
+    # Trades ohne Trail-Aktivität (Hard Stop, Manual, Thesis-Invalidated, etc.)
     without_trail = conn.execute("""
         SELECT COUNT(*) as n,
-        SUM(CASE WHEN status='WIN' THEN 1 ELSE 0 END) as wins,
-        COALESCE(AVG(pnl_pct), 0) as avg_pct,
-        COALESCE(SUM(pnl_eur), 0) as total_pnl,
-        COALESCE(AVG(max_unrealized_pct), 0) as avg_max_unrealized
-        FROM trades WHERE status IN ('WIN','LOSS') AND (trail_count IS NULL OR trail_count = 0)
+        SUM(CASE WHEN p.pnl_eur > 0 THEN 1 ELSE 0 END) as wins,
+        COALESCE(AVG(p.pnl_pct), 0) as avg_pct,
+        COALESCE(SUM(p.pnl_eur), 0) as total_pnl
+        FROM paper_portfolio p
+        WHERE p.status = 'CLOSED'
+          AND p.id NOT IN (SELECT DISTINCT trade_id FROM trade_tranches)
     """).fetchone()
 
-    # Wie viel Gewinn lassen wir auf dem Tisch?
-    # max_unrealized_pct vs actual pnl_pct → "Slippage"
+    # "Left on table" Approximation: Trades die stark im Plus waren aber
+    # mit kleinerem PnL geschlossen haben (>5% PnL Differenz heuristisch).
+    # paper_portfolio hat kein max_unrealized_pct → ATR-basierte Schätzung
+    # via expected_exit_price wenn vorhanden, sonst übersprungen.
     slippage = conn.execute("""
-        SELECT ticker, strategy, max_unrealized_pct, pnl_pct,
-        (max_unrealized_pct - pnl_pct) as left_on_table,
-        trail_count, exit_type
-        FROM trades WHERE status IN ('WIN','LOSS')
-        AND max_unrealized_pct > 1.0
-        ORDER BY (max_unrealized_pct - pnl_pct) DESC LIMIT 5
+        SELECT ticker, strategy, expected_exit_price, close_price, pnl_pct,
+               exit_type
+        FROM paper_portfolio
+        WHERE status = 'CLOSED'
+          AND expected_exit_price IS NOT NULL
+          AND close_price IS NOT NULL
+          AND expected_exit_price > close_price
+        ORDER BY (expected_exit_price - close_price) DESC LIMIT 5
     """).fetchall()
 
     conn.close()
 
+    n_with = with_trail['n'] or 0
+    n_without = without_trail['n'] or 0
+
     result = {
         'with_trail': {
-            'trades': with_trail['n'] or 0,
-            'win_rate': round((with_trail['wins'] or 0) / max(with_trail['n'] or 1, 1) * 100, 1),
+            'trades': n_with,
+            'win_rate': round((with_trail['wins'] or 0) / max(n_with, 1) * 100, 1) if n_with > 0 else 0.0,
             'avg_pnl_pct': round(with_trail['avg_pct'] or 0, 2),
             'total_pnl': round(with_trail['total_pnl'] or 0, 2),
-            'avg_max_unrealized': round(with_trail['avg_max_unrealized'] or 0, 2),
             'avg_trail_count': round(with_trail['avg_trails'] or 0, 1),
         },
         'without_trail': {
-            'trades': without_trail['n'] or 0,
-            'win_rate': round((without_trail['wins'] or 0) / max(without_trail['n'] or 1, 1) * 100, 1),
+            'trades': n_without,
+            'win_rate': round((without_trail['wins'] or 0) / max(n_without, 1) * 100, 1) if n_without > 0 else 0.0,
             'avg_pnl_pct': round(without_trail['avg_pct'] or 0, 2),
             'total_pnl': round(without_trail['total_pnl'] or 0, 2),
-            'avg_max_unrealized': round(without_trail['avg_max_unrealized'] or 0, 2),
         },
         'worst_left_on_table': [
             {'ticker': r['ticker'], 'strategy': r['strategy'],
-             'max_unrealized': round(r['max_unrealized_pct'] or 0, 2),
-             'actual_pnl': round(r['pnl_pct'] or 0, 2),
-             'left_on_table': round(r['left_on_table'] or 0, 2)}
+             'expected_exit': round(r['expected_exit_price'] or 0, 2),
+             'actual_close': round(r['close_price'] or 0, 2),
+             'pnl_pct': round(r['pnl_pct'] or 0, 2),
+             'exit_type': r['exit_type'] or '?'}
             for r in slippage
-        ]
+        ],
+        'note': ('trade_tranches noch nicht populiert — Tranche-System aktiv aber'
+                 ' bisher kein Exit-Event geloggt') if n_with == 0 else None,
     }
     return result
 
@@ -386,36 +399,96 @@ def detect_patterns() -> dict:
     }
 
 
+def _adaptive_thresholds() -> dict:
+    """Sub-7 #3: Berechnet adaptive Recommendation-Schwellen aus dem
+    rolling 90-Tage-Median des Portfolios. Verhindert dass im Bear-Markt
+    alle Strategien als SUSPEND gebrandmarkt werden, weil dann selbst
+    eine 35%-WR-Strategie überdurchschnittlich gut sein kann.
+
+    Fallback auf hardcodierte Defaults wenn nicht genug Daten (<20 Trades
+    in 90d) — bewährte Werte aus 12.04.2026 Audit.
+    """
+    DEFAULTS = {
+        'suspend_wr': 0.30, 'suspend_combo_wr': 0.45,
+        'reduce_wr': 0.50, 'elevate_wr': 0.60,
+        'suspend_pnl': -200.0, 'reduce_pnl': -100.0,
+    }
+    try:
+        conn = get_db()
+        rows = conn.execute("""
+            SELECT pnl_eur FROM paper_portfolio
+            WHERE status = 'CLOSED' AND pnl_eur IS NOT NULL
+              AND close_date >= date('now', '-90 day')
+        """).fetchall()
+        conn.close()
+        if len(rows) < 20:
+            return DEFAULTS
+        pnls = sorted(r[0] for r in rows)
+        wins = sum(1 for p in pnls if p > 0)
+        baseline_wr = wins / len(pnls)
+        # Adaptive Schwellen: -10pp vom Median für SUSPEND, +10pp für ELEVATE
+        # Begrenzt auf [0.20, 0.40] für SUSPEND damit Schutzfunktion erhalten bleibt.
+        suspend_wr = max(0.20, min(0.40, baseline_wr - 0.10))
+        suspend_combo_wr = max(0.35, min(0.55, baseline_wr - 0.05))
+        reduce_wr = max(0.40, min(0.60, baseline_wr))
+        elevate_wr = max(0.50, min(0.70, baseline_wr + 0.10))
+        # P&L-Schwellen: 25%-Quartil als REDUCE, 10%-Quartil als SUSPEND
+        # (negative Schwellen — schlechtester Quartil)
+        if len(pnls) >= 10:
+            q10 = pnls[max(0, int(len(pnls) * 0.10) - 1)]
+            q25 = pnls[max(0, int(len(pnls) * 0.25) - 1)]
+            suspend_pnl = min(-100.0, q10 * 5)  # 5x worst-decile als kumulativer Verlust
+            reduce_pnl = min(-50.0, q25 * 3)
+        else:
+            suspend_pnl = DEFAULTS['suspend_pnl']
+            reduce_pnl = DEFAULTS['reduce_pnl']
+        return {
+            'suspend_wr': suspend_wr, 'suspend_combo_wr': suspend_combo_wr,
+            'reduce_wr': reduce_wr, 'elevate_wr': elevate_wr,
+            'suspend_pnl': suspend_pnl, 'reduce_pnl': reduce_pnl,
+            'baseline_wr': baseline_wr, 'sample_n': len(pnls),
+        }
+    except Exception:
+        return DEFAULTS
+
+
 def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0) -> str:
     """
     Gibt Empfehlung basierend auf Win-Rate, Anzahl Trades UND realem P&L.
 
-    BUG FIX: Vorher nur Win-Rate → DT2 (41% WR, -579€) und DT4 (40% WR, -858€)
-    bekamen 'KEEP' obwohl sie dauerhaft Geld verlieren. Jetzt wird P&L mitgewichtet.
+    BUG FIX (12.04.2026): Vorher nur Win-Rate → DT2 (41% WR, -579€) und DT4
+    (40% WR, -858€) bekamen 'KEEP' obwohl sie dauerhaft Geld verlieren.
+
+    Sub-7 #3 (23.04.2026): Schwellen sind jetzt adaptiv aus dem rolling
+    90-Tage-Portfolio-Median (siehe _adaptive_thresholds). Bear-Markt
+    Schutz: in schwachem Marktumfeld werden Schwellen automatisch nach
+    unten verschoben.
 
     Logik:
-    - SUSPEND: Win-Rate < 30% ODER (Win-Rate < 45% UND P&L negativ mit 15+ Trades)
-    - REDUCE:  Win-Rate 30-45% UND P&L negativ (genug Daten aber kein Edge)
-    - ELEVATE: Win-Rate > 60% UND P&L positiv
+    - SUSPEND: WR < suspend_wr ODER (WR < suspend_combo_wr UND P&L < suspend_pnl mit 15+ Trades)
+    - REDUCE:  WR < reduce_wr UND P&L < reduce_pnl (genug Daten aber kein Edge)
+    - ELEVATE: WR > elevate_wr UND P&L positiv
     - KEEP:    Alles dazwischen
     """
     if trades < 10:
         return 'INSUFFICIENT_DATA'
 
+    th = _adaptive_thresholds()
+
     # Harte SUSPEND-Bedingungen
-    if win_rate < 0.30:
+    if win_rate < th['suspend_wr']:
         return 'SUSPEND'
 
-    # P&L-gewichtete SUSPEND: Strategie verliert Geld trotz moderater Win-Rate
-    if trades >= 15 and win_rate < 0.45 and total_pnl_eur < -200:
+    # P&L-gewichtete SUSPEND: Strategie verliert Geld trotz moderater WR
+    if trades >= 15 and win_rate < th['suspend_combo_wr'] and total_pnl_eur < th['suspend_pnl']:
         return 'SUSPEND'
 
     # REDUCE: Positiver Ansatz aber negatives Ergebnis — Conviction runter
-    if trades >= 10 and total_pnl_eur < -100 and win_rate < 0.50:
+    if trades >= 10 and total_pnl_eur < th['reduce_pnl'] and win_rate < th['reduce_wr']:
         return 'REDUCE'
 
     # ELEVATE: Nur wenn sowohl Win-Rate als auch P&L gut
-    if win_rate > 0.60 and total_pnl_eur > 0:
+    if win_rate > th['elevate_wr'] and total_pnl_eur > 0:
         return 'ELEVATE'
 
     return 'KEEP'

@@ -81,6 +81,8 @@ SCHEDULE = [
     ('US Opening',          'us_opening_report.py',       [],                    16, 30, [0,1,2,3,4]),
     # Abend-Digest: Tages-Events + Trades + Lernloop-Summary (ersetzt rohen Abend-Report)
     ('Abend-Digest',        'daily_digest.py',            ['evening'],           20, 0,  [0,1,2,3,4]),
+    # Sonntags-Wochen-Digest: enthält _signal_alpha_block (Sub-7 #1)
+    ('Sonntags-Digest',     'daily_digest.py',            ['evening'],           20, 0,  [6]),
     # Abend-Report: Details (kein extra Discord-Ping mehr, nur als Log)
     ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4]),
     ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None),

@@ -261,6 +261,50 @@ def _learning_block() -> str:
     return '\n'.join(lines)
 
 
+def _signal_alpha_block() -> str:
+    """Sonntags: Top-3 echte Signal-Alphas aus signal_learning.run().
+    Filter: |ΔWR| ≥ 15 UND yes_n ≥ 10 UND no_n ≥ 10 (statistisch tragfähig).
+    """
+    try:
+        from datetime import datetime as _dt
+        # Berlin time = UTC+1/+2; sunday check unabhängig von TZ ausreichend genau
+        if _dt.now().weekday() != 6:
+            return ''
+        report = _load(DATA / 'signal_alpha.json', {})
+        experiments = report.get('experiments', {})
+        if not experiments:
+            return ''
+        # Filter & sort by |ΔWR|
+        candidates = []
+        for name, exp in experiments.items():
+            yn = exp.get('yes', {}).get('n', 0)
+            nn = exp.get('no', {}).get('n', 0)
+            d_wr = exp.get('delta_wr', 0)
+            d_pnl = exp.get('delta_pnl_pct', 0)
+            if yn >= 10 and nn >= 10 and abs(d_wr) >= 15:
+                candidates.append((name, d_wr, d_pnl, yn, nn,
+                                   exp.get('yes', {}).get('wr', 0)))
+        if not candidates:
+            return '\n📈 **Signal-Alphas:** _keine statistisch tragfähigen Edges (n≥10, |ΔWR|≥15) diese Woche_'
+        candidates.sort(key=lambda x: abs(x[1]), reverse=True)
+        lines = ['\n📈 **Signal-Alphas (Wochenreport)**']
+        for name, d_wr, d_pnl, yn, nn, yes_wr in candidates[:3]:
+            arrow = '🟢' if d_wr > 0 else '🔴'
+            lines.append(
+                f'  {arrow} `{name}`: ΔWR {d_wr:+.0f}% (yes: {yes_wr:.0f}% n={yn} | no n={nn}) '
+                f'| ΔPnL {d_pnl:+.1f}%'
+            )
+        baseline = report.get('baseline', {})
+        if baseline:
+            lines.append(
+                f'  _Baseline: n={baseline.get("n", 0)}, '
+                f'WR {baseline.get("wr", 0):.0f}%, PnL {baseline.get("total_pnl_eur", 0):+.0f}€_'
+            )
+        return '\n'.join(lines)
+    except Exception as e:
+        return f'_Signal-Alpha: {e}_'
+
+
 def _autonomy_block() -> str:
     cfg = _load(DATA / 'autonomy_config.json', {})
     mode = cfg.get('mode', '?')
@@ -377,6 +421,7 @@ def evening_digest() -> None:
         _universe_block(),
         _cost_drag_block(),
         _learning_block(),
+        _signal_alpha_block(),
         '',
         _autonomy_block(),
     ]
