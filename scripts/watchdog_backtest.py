@@ -176,13 +176,14 @@ def s5_tranche_missing(verbose: bool = False) -> tuple[bool, str]:
         issues = _check_tranche_reconciliation(conn2)
         conn2.close()
 
+        # WICHTIG: tranche-count NOCH innerhalb des with-Blocks lesen,
+        # sonst ist tempdir bereits geloescht.
+        conn3 = sqlite3.connect(str(db))
+        tranche_count = conn3.execute("SELECT COUNT(*) FROM trade_tranches").fetchone()[0]
+        conn3.close()
+
     if verbose:
         for i in issues: print('   issue:', i)
-    # Akzeptiert: entweder issue gemeldet ODER backfill stillschweigend gemacht
-    # Wir checken ob Tranche jetzt existiert ODER ein Issue gemeldet wurde
-    conn3 = sqlite3.connect(str(db))
-    tranche_count = conn3.execute("SELECT COUNT(*) FROM trade_tranches").fetchone()[0]
-    conn3.close()
     ok = tranche_count > 0 or len(issues) > 0
     return (ok, f'tranches={tranche_count} issues={len(issues)}')
 
