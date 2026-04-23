@@ -22,6 +22,15 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Sub-8 V3-fix: Line-buffered stdout — ohne das war der Log >17h "stale"
+# obwohl der Prozess lief. Block-Buffering haelt Print-Output 4KB lang
+# zurueck wenn stdout kein TTY ist (Direct-Start in Datei).
+try:
+    sys.stdout.reconfigure(line_buffering=True)
+    sys.stderr.reconfigure(line_buffering=True)
+except Exception:
+    pass
+
 # Sub-8 fix 2026-04-23: harter Pfad /data/.openclaw/ war Crash-Ursache (FileNotFoundError beim PID-Schreiben).
 WS = Path(os.getenv('TRADEMIND_HOME', '/opt/trademind'))
 if not WS.exists():
@@ -125,11 +134,20 @@ def run_monitor():
     last_vix = None
     alerted_ids = set()  # Trade-IDs für die bereits ein Alert gesendet wurde
     check_count = 0
+    last_heartbeat = 0.0
 
     while True:
         try:
             market_open = is_market_hours()
             interval = POLL_INTERVAL_MARKET if market_open else POLL_INTERVAL_OFFHOURS
+
+            # Sub-8 V3-fix: Heartbeat alle 10min auch off-hours, damit
+            # meta_health Stale-Log-Detection nicht False-Positive feuert.
+            now_ts = time.time()
+            if now_ts - last_heartbeat > 600:
+                state = 'OPEN' if market_open else 'CLOSED'
+                print(f"[PriceMonitor] heartbeat market={state} checks={check_count}")
+                last_heartbeat = now_ts
 
             if not market_open:
                 time.sleep(interval)

@@ -124,10 +124,12 @@ def _try_restart(name: str) -> str | None:
                 return (f' → AUTO-HEAL SKIP: {script.name} laeuft bereits '
                         f'(stale log != toter Prozess; manuell pruefen)')
             log = DATA / f'{name}.log'
+            env = dict(os.environ)
+            env['PYTHONUNBUFFERED'] = '1'  # V3-fix: sonst Block-Buffering → stale log
             subprocess.Popen(
                 [sys.executable, str(script)],
                 stdout=open(log, 'a'), stderr=subprocess.STDOUT,
-                start_new_session=True,
+                start_new_session=True, env=env,
             )
             return f' → AUTO-HEAL: direct-start {script.name} (PID detached)'
         return f' → AUTO-HEAL FAIL: kein Service/Script fuer {name}'
