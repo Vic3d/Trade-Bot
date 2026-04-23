@@ -86,7 +86,15 @@ def _check_orphan_tranches(conn) -> list[str]:
     if not fk_col:
         return issues
 
-    # Sub-8 V3 #6: Tranche-Reconciliation
+    # Sub-8 V3 #6: Tranche-Reconciliation — schema-tolerant
+    # Verschiedene Migrations-Stände nutzen tranche_num ODER tranche_nr,
+    # exit_type ODER exit_reason. Dynamisch detecten.
+    num_col = 'tranche_num' if 'tranche_num' in cols else (
+        'tranche_nr' if 'tranche_nr' in cols else None)
+    exit_type_col = 'exit_type' if 'exit_type' in cols else (
+        'exit_reason' if 'exit_reason' in cols else None)
+    has_created = 'created_at' in cols
+
     # 6a) OPEN-Tranchen deren paper_portfolio CLOSED ist → mit-schliessen
     stale = conn.execute(f"""
         SELECT t.id, t.{fk_col}, p.status, p.close_price, p.close_date
@@ -94,12 +102,12 @@ def _check_orphan_tranches(conn) -> list[str]:
         JOIN paper_portfolio p ON t.{fk_col} = p.id
         WHERE t.status='OPEN' AND UPPER(p.status)='CLOSED'
     """).fetchall()
-    if stale:
+    if stale and exit_type_col:
         try:
             for tid, _fk, _st, cp, cd in stale:
                 conn.execute(
-                    "UPDATE trade_tranches SET status='CLOSED', exit_price=?, "
-                    "exit_date=?, exit_type='AUTOHEAL_PARENT_CLOSED' WHERE id=?",
+                    f"UPDATE trade_tranches SET status='CLOSED', exit_price=?, "
+                    f"exit_date=?, {exit_type_col}='AUTOHEAL_PARENT_CLOSED' WHERE id=?",
                     (cp, cd or datetime.now(timezone.utc).isoformat(timespec='seconds'), tid),
                 )
             conn.commit()
@@ -111,37 +119,43 @@ def _check_orphan_tranches(conn) -> list[str]:
             issues.append(f'Tranche-Reconcile FAIL: {e}')
 
     # 6b) OPEN paper_portfolio OHNE Tranchen → Trailing-Stops feuern nie
-    missing = conn.execute(f"""
-        SELECT p.id, p.ticker, p.shares
-        FROM paper_portfolio p
-        LEFT JOIN (
-            SELECT {fk_col} AS pid, COUNT(*) AS n
-            FROM trade_tranches GROUP BY {fk_col}
-        ) tc ON tc.pid = p.id
-        WHERE UPPER(p.status)='OPEN' AND p.shares IS NOT NULL AND p.shares > 0
-              AND COALESCE(tc.n, 0) = 0
-    """).fetchall()
-    if missing:
-        try:
-            for pid, _tk, sh in missing:
-                t1 = round(float(sh) / 3, 4)
-                t2 = round(float(sh) / 3, 4)
-                t3 = round(float(sh) - t1 - t2, 4)
-                for i, s in enumerate([t1, t2, t3], 1):
-                    conn.execute(
-                        f"INSERT INTO trade_tranches ({fk_col}, tranche_num, shares, "
-                        "status, created_at) VALUES (?, ?, ?, 'OPEN', datetime('now'))",
-                        (pid, i, s),
-                    )
-            conn.commit()
-            tickers = ', '.join(t for _, t, _ in missing[:5])
-            more = f' ...+{len(missing)-5}' if len(missing) > 5 else ''
-            issues.append(
-                f'Tranche-Reconcile: {len(missing)} OPEN-Positionen ohne Tranchen '
-                f'erzeugt ({tickers}{more}) — Trailing-Stops jetzt aktiv'
-            )
-        except Exception as e:
-            issues.append(f'Tranche-Backfill FAIL: {e}')
+    if num_col:
+        missing = conn.execute(f"""
+            SELECT p.id, p.ticker, p.shares
+            FROM paper_portfolio p
+            LEFT JOIN (
+                SELECT {fk_col} AS pid, COUNT(*) AS n
+                FROM trade_tranches GROUP BY {fk_col}
+            ) tc ON tc.pid = p.id
+            WHERE UPPER(p.status)='OPEN' AND p.shares IS NOT NULL AND p.shares > 0
+                  AND COALESCE(tc.n, 0) = 0
+        """).fetchall()
+        if missing:
+            try:
+                cols_ins = [fk_col, num_col, 'shares', 'status']
+                vals_ph = '?, ?, ?, ?'
+                if has_created:
+                    cols_ins.append('created_at')
+                    vals_ph += ", datetime('now')"
+                col_list = ', '.join(cols_ins)
+                for pid, _tk, sh in missing:
+                    t1 = round(float(sh) / 3, 4)
+                    t2 = round(float(sh) / 3, 4)
+                    t3 = round(float(sh) - t1 - t2, 4)
+                    for i, s in enumerate([t1, t2, t3], 1):
+                        conn.execute(
+                            f"INSERT INTO trade_tranches ({col_list}) VALUES ({vals_ph})",
+                            (pid, i, s, 'OPEN'),
+                        )
+                conn.commit()
+                tickers = ', '.join(t for _, t, _ in missing[:5])
+                more = f' ...+{len(missing)-5}' if len(missing) > 5 else ''
+                issues.append(
+                    f'Tranche-Reconcile: {len(missing)} OPEN-Positionen ohne Tranchen '
+                    f'erzeugt ({tickers}{more}) — Trailing-Stops jetzt aktiv'
+                )
+            except Exception as e:
+                issues.append(f'Tranche-Backfill FAIL: {e}')
 
     # 6c) Klassische Orphan-Detection (FK zeigt auf nicht-existente paper_portfolio)
     orphans = conn.execute(f"""
