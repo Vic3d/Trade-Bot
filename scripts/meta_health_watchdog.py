@@ -60,34 +60,69 @@ def _file_age_min(p: Path) -> float | None:
     return age
 
 
+def _is_running(script_name: str) -> bool:
+    """Sub-8 V3-fix: pgrep-Check vor Direct-Start verhindert Duplikate."""
+    import subprocess
+    try:
+        r = subprocess.run(
+            ['pgrep', '-f', script_name], capture_output=True, text=True, timeout=5
+        )
+        return r.returncode == 0 and bool(r.stdout.strip())
+    except Exception:
+        return False
+
+
+def _systemd_unit_exists(svc: str) -> bool:
+    """Sub-8 V3-fix: nicht restarten was nicht existiert."""
+    import subprocess
+    try:
+        r = subprocess.run(
+            ['systemctl', 'list-unit-files', f'{svc}.service'],
+            capture_output=True, text=True, timeout=5
+        )
+        return r.returncode == 0 and svc in r.stdout
+    except Exception:
+        return False
+
+
 def _try_restart(name: str) -> str | None:
-    """Sub-8 V2 (C): Auto-Heal für bekannte Daemons.
-    Versucht price_monitor und heartbeat_monitor systemd-restart oder Direct-Start.
-    Gibt Status-Suffix zurück oder None.
+    """Sub-8 V2 (C) + V3-fix: Auto-Heal für bekannte Daemons.
+
+    V3 Fixes:
+    - systemd-Service nur versuchen wenn Unit-File existiert
+    - Direct-Start nur wenn Prozess NICHT bereits läuft (pgrep)
+      → Stale-Log != toter Prozess; Duplikate vermeiden
     """
     import subprocess
-    # systemd-Service-Mapping (Linux/VPS)
+    # systemd-Service-Mapping (nur Services die als Unit existieren)
     svc_map = {
         'price_monitor': 'trademind-price-monitor',
         'heartbeat_monitor': 'trademind-heartbeat',
         'scheduler': 'trademind-scheduler',
     }
+    script_map = {
+        'price_monitor': WS / 'scripts' / 'price_monitor.py',
+        'heartbeat_monitor': WS / 'scripts' / 'heartbeat_monitor.py',
+    }
     svc = svc_map.get(name)
-    if not svc:
-        return None
+    script = script_map.get(name)
+
     try:
-        r = subprocess.run(
-            ['systemctl', 'restart', svc],
-            timeout=15, capture_output=True, text=True
-        )
-        if r.returncode == 0:
-            return f' → AUTO-HEAL: systemctl restart {svc} OK'
-        # Fallback: Direct-Start im Hintergrund
-        script_map = {
-            'price_monitor': WS / 'scripts' / 'price_monitor.py',
-        }
-        script = script_map.get(name)
+        # 1. systemctl Versuch nur wenn Unit existiert
+        if svc and _systemd_unit_exists(svc):
+            r = subprocess.run(
+                ['systemctl', 'restart', svc],
+                timeout=15, capture_output=True, text=True
+            )
+            if r.returncode == 0:
+                return f' → AUTO-HEAL: systemctl restart {svc} OK'
+            return f' → AUTO-HEAL FAIL: systemctl {svc} rc={r.returncode}'
+
+        # 2. Direct-Start nur wenn Script existiert UND Prozess NICHT läuft
         if script and script.exists():
+            if _is_running(script.name):
+                return (f' → AUTO-HEAL SKIP: {script.name} laeuft bereits '
+                        f'(stale log != toter Prozess; manuell pruefen)')
             log = DATA / f'{name}.log'
             subprocess.Popen(
                 [sys.executable, str(script)],
@@ -95,7 +130,7 @@ def _try_restart(name: str) -> str | None:
                 start_new_session=True,
             )
             return f' → AUTO-HEAL: direct-start {script.name} (PID detached)'
-        return f' → AUTO-HEAL FAIL: systemctl rc={r.returncode}'
+        return f' → AUTO-HEAL FAIL: kein Service/Script fuer {name}'
     except Exception as e:
         return f' → AUTO-HEAL CRASH: {e}'
 
