@@ -186,6 +186,11 @@ SCHEDULE = [
     ('Macro Refresh',       'macro_indicator_refresh.py', [],                      6, 5,  None),   # tgl. 06:05 — SPY/VIX/EURUSD/GOLD/WTI vor allen Health-Checks
     # ── Sub-10: Heartbeat Monitor alle 15 Min (war vorher externer Cron, jetzt scheduler-intern) ──
     ('Heartbeat Monitor',   'heartbeat_monitor.py',   [],                          '*', '*/15', None),
+    # ── Sub-9: Concentration Trim Advisor — 2x taeglich (Morgens vor Open + Abends nach Close) ──
+    ('Trim Advisor',        'concentration_trim_advisor.py', [],                   8,  10, [0,1,2,3,4]),
+    ('Trim Advisor',        'concentration_trim_advisor.py', [],                   22, 30, [0,1,2,3,4]),
+    # ── Sub-11: Watchdog Backtest — wöchentlich (Sa Mittag), Discord bei Failure ──
+    ('Watchdog Backtest',   'watchdog_backtest.py',   [],                          12,  0, [5], True),
     ('DB Integrity',        'db_integrity_watchdog.py', [],                        6, 30, None),   # tgl. vor Stale-Data
     ('Meta Health',         'meta_health_watchdog.py',  [],                        8, 45, None),   # tgl. nach Morning Brief
     ('Meta Health',         'meta_health_watchdog.py',  [],                       20, 45, None),   # abends nochmal
