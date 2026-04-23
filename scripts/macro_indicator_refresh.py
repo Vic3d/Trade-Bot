@@ -80,38 +80,32 @@ def _fetch_bars(yahoo_symbol: str, days_back: int = 30) -> list[tuple[str, float
 
 
 def _fetch_bars_stooq(stooq_symbol: str, days_back: int = 30) -> list[tuple[str, float]]:
-    """Sub-8 V3 #4: Stooq Daily-CSV Fallback. Endpoint:
-       https://stooq.com/q/d/l/?s=spy.us&i=d
-    Liefert ALLE Tage; wir slicen auf days_back."""
-    url = f'https://stooq.com/q/d/l/?s={urllib.parse.quote(stooq_symbol)}&i=d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (MacroRefresh)'})
-    try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            text = r.read().decode('utf-8', errors='replace')
-        lines = [l for l in text.strip().splitlines() if l]
-        if len(lines) < 2 or not lines[0].lower().startswith('date'):
-            return []
-        # Header: Date,Open,High,Low,Close,Volume
-        out = []
-        cutoff = (datetime.now() - timedelta(days=days_back + 5)).strftime('%Y-%m-%d')
-        for line in lines[1:]:
-            parts = line.split(',')
-            if len(parts) < 5:
-                continue
-            d = parts[0]
-            if d < cutoff:
-                continue
-            try:
-                close = float(parts[4])
-                if close <= 0:
-                    continue
-                out.append((d, close))
-            except (ValueError, IndexError):
-                continue
-        return out
-    except Exception as e:
-        print(f'  ❌ Stooq {stooq_symbol}: {e}', file=sys.stderr)
-        return []
+    """Sub-8 V3 #4 (retired 2026-04-23): Stooq fordert seit kurzem API-Key
+    fuer den Free-CSV-Endpoint. Funktion bleibt als Stub damit Aufrufer
+    nicht crashen — gibt immer [] zurueck.
+
+    Echter Fallback laeuft jetzt ueber _fetch_bars_yahoo_retry().
+    """
+    return []
+
+
+def _fetch_bars_yahoo_retry(yahoo_symbol: str, days_back: int = 30,
+                             max_attempts: int = 3) -> list[tuple[str, float]]:
+    """Yahoo retry-with-backoff: 1s, 3s, 7s. Genug fuer transiente 5xx/Timeouts.
+
+    Sub-8 V3-fix: ersetzt den nicht mehr funktionierenden Stooq-Fallback.
+    """
+    import time as _time
+    delays = [1, 3, 7][:max_attempts]
+    for i, delay in enumerate(delays, 1):
+        bars = _fetch_bars(yahoo_symbol, days_back=days_back)
+        if bars:
+            if i > 1:
+                print(f'  ✅ Yahoo retry erfolgreich nach Versuch {i}', file=sys.stderr)
+            return bars
+        if i < len(delays):
+            _time.sleep(delay)
+    return []
 
 
 def _ensure_schema(conn) -> None:
@@ -151,13 +145,13 @@ def main():
     for ind, ysym in INDICATORS.items():
         bars = _fetch_bars(ysym, days_back=backfill_days)
         _track('yahoo', 'macro', status='ok' if bars else 'fail', note=f'{ind}={ysym}')
-        # Sub-8 V3 #4: Stooq-Fallback wenn Yahoo leer
-        if not bars and ind in STOOQ_SYMBOLS:
-            ssym = STOOQ_SYMBOLS[ind]
-            print(f'  ⚠️  Yahoo leer fuer {ind} → Stooq-Fallback ({ssym})')
-            bars = _fetch_bars_stooq(ssym, days_back=backfill_days)
-            _track('stooq', 'macro_fallback', status='ok' if bars else 'fail',
-                   note=f'{ind}={ssym}')
+        # Sub-8 V3-fix: Stooq tot (API-Key) → Yahoo retry-with-backoff
+        if not bars:
+            print(f'  ⚠️  Yahoo leer fuer {ind} → Retry-with-backoff')
+            bars = _fetch_bars_yahoo_retry(ysym, days_back=backfill_days,
+                                           max_attempts=2)
+            _track('yahoo', 'macro_retry', status='ok' if bars else 'fail',
+                   note=f'{ind}={ysym}')
         if not bars:
             continue
         before = conn.execute(

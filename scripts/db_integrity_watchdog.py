@@ -426,9 +426,10 @@ def _check_concentration(conn) -> list[str]:
     """
     issues: list[str] = []
     try:
+        # V3-fix: status case-insensitive (Schema nutzt 'OPEN' uppercase)
         rows = conn.execute(
             "SELECT ticker, COALESCE(shares,0)*COALESCE(entry_price,0) AS cost "
-            "FROM paper_portfolio WHERE status='open'"
+            "FROM paper_portfolio WHERE UPPER(status)='OPEN'"
         ).fetchall()
     except Exception as e:
         return [f'concentration query failed: {e}']

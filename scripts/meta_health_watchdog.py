@@ -116,6 +116,13 @@ def _try_restart(name: str) -> str | None:
             )
             if r.returncode == 0:
                 return f' → AUTO-HEAL: systemctl restart {svc} OK'
+            # V3-fix: trademind-user hat keine systemctl-Rechte fuer system-services
+            stderr_lower = (r.stderr or '').lower()
+            if any(s in stderr_lower for s in (
+                'access denied', 'authentication', 'polkit', 'permission',
+                'interactive authentication required'
+            )):
+                return f' → AUTO-HEAL SKIP: kein systemctl-Recht fuer {svc} (sudoers fix noetig)'
             return f' → AUTO-HEAL FAIL: systemctl {svc} rc={r.returncode}'
 
         # 2. Direct-Start nur wenn Script existiert UND Prozess NICHT läuft

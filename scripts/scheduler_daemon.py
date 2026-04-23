@@ -184,6 +184,8 @@ SCHEDULE = [
     ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
     # ── Sub-8: Monitoring/Watchdogs (2026-04-23) ──
     ('Macro Refresh',       'macro_indicator_refresh.py', [],                      6, 5,  None),   # tgl. 06:05 — SPY/VIX/EURUSD/GOLD/WTI vor allen Health-Checks
+    # ── Sub-10: Heartbeat Monitor alle 15 Min (war vorher externer Cron, jetzt scheduler-intern) ──
+    ('Heartbeat Monitor',   'heartbeat_monitor.py',   [],                          '*', '*/15', None),
     ('DB Integrity',        'db_integrity_watchdog.py', [],                        6, 30, None),   # tgl. vor Stale-Data
     ('Meta Health',         'meta_health_watchdog.py',  [],                        8, 45, None),   # tgl. nach Morning Brief
     ('Meta Health',         'meta_health_watchdog.py',  [],                       20, 45, None),   # abends nochmal
@@ -578,10 +580,37 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
 
 # ── Scheduler Loop ────────────────────────────────────────────────────────────
 
-def should_run(hour: int, minute: int, weekdays) -> bool:
-    """Prüft ob ein Job jetzt laufen soll (innerhalb ±30s Fenster)."""
+def should_run(hour, minute, weekdays) -> bool:
+    """Prüft ob ein Job jetzt laufen soll (innerhalb ±30s Fenster).
+
+    Sub-10 Erweiterung: hour/minute unterstuetzen jetzt auch:
+      - int  (klassisch, exakt: hour=9, minute=30)
+      - '*'  (jede Stunde bzw. jede Minute)
+      - '*/N' (alle N Stunden/Minuten, z.B. minute='*/15')
+      - list[int] (mehrere erlaubte Werte, z.B. minute=[0,15,30,45])
+    Backward-compatible: bestehende int-Eintraege funktionieren unveraendert.
+    """
     now = datetime.now()
-    if now.hour != hour or abs(now.minute - minute) > 0:
+
+    def _match(val, current: int, mod: int) -> bool:
+        if isinstance(val, int):
+            return current == val
+        if isinstance(val, (list, tuple, set)):
+            return current in val
+        if isinstance(val, str):
+            if val == '*':
+                return True
+            if val.startswith('*/'):
+                try:
+                    n = int(val[2:])
+                    return n > 0 and current % n == 0
+                except ValueError:
+                    return False
+        return False
+
+    if not _match(hour, now.hour, 24):
+        return False
+    if not _match(minute, now.minute, 60):
         return False
     if weekdays is not None and now.weekday() not in weekdays:
         return False
