@@ -114,10 +114,12 @@ def _recency_weight(exit_date_str: str | None, half_life_days: int = 60) -> floa
     if not exit_date_str:
         return 1.0
     try:
-        from datetime import datetime as _dt
+        from datetime import datetime as _dt, timezone as _tz
         # Akzeptiert YYYY-MM-DD oder ISO
         ed = _dt.fromisoformat(str(exit_date_str)[:19].replace('T', ' '))
-        age_days = max(0, (_dt.utcnow() - ed).days)
+        # Bug 6 (2026-04-23): _dt.utcnow() in Py3.12+ deprecated → naive UTC.
+        now_utc = _dt.now(_tz.utc).replace(tzinfo=None)
+        age_days = max(0, (now_utc - ed).days)
         return 0.5 ** (age_days / half_life_days)
     except Exception:
         return 1.0
@@ -171,7 +173,15 @@ def compute_risk_adjusted_return(pnl_list: list) -> float:
 
 
 def analyze_trailing_stops() -> dict:
-    """Analysiert ob Trailing Stops Gewinne schützen oder zu früh rauswerfen."""
+    """Analysiert ob Trailing Stops Gewinne schützen oder zu früh rauswerfen.
+
+    Bug 7 (2026-04-23) bekannt: Liest aus `trades`-Tabelle (264 alte DT-Era
+    Records inkl. Zombies), nicht paper_portfolio (Single-Source-of-Truth).
+    `paper_portfolio` hat keine `trail_count`/`max_unrealized_pct`-Spalten —
+    Trail-Daten leben in `trade_tranches`. Korrekter Fix erfordert Schema-
+    Migration oder JOIN über trade_tranches; bis dahin ist Statistik
+    informativ, nicht autoritativ. Wird in Sub-9 (Infrastruktur) adressiert.
+    """
     conn = get_db()
     # Trades MIT Trail vs OHNE Trail
     with_trail = conn.execute("""
@@ -616,7 +626,11 @@ def generate_weekly_report():
     # ─ Strategy Ranking (nach Risk-Adjusted Return) ─
     # Empfehlungen einbauen
     for strat_id, a in strategy_analysis.items():
-        a['recommendation'] = get_recommendation(a['win_rate'], a['trades'])
+        # Bug AE (2026-04-23): vorher 2-Arg → P&L-Gewichtung wurde umgangen,
+        # DT-Strategien erschienen wieder als KEEP trotz negativem P&L.
+        a['recommendation'] = get_recommendation(
+            a['win_rate'], a['trades'], a.get('total_pnl_eur', 0.0)
+        )
     ranked = sorted(
         [(k, v) for k, v in strategy_analysis.items() if v['trades'] >= 3],
         key=lambda x: x[1]['risk_adj_return'],

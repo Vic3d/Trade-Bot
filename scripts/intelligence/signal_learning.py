@@ -45,12 +45,22 @@ def _fetch_closed_trades() -> list[dict]:
     try:
         c = sqlite3.connect(str(DB))
         c.row_factory = sqlite3.Row
+        # Bug 5 (2026-04-23): vorher FROM trades → 13 DT5-Zombies aus alter
+        # Tabelle. paper_portfolio ist Single-Source-of-Truth (siehe Sub-6).
+        # Spalten-Mapping: exit_price=close_price, conviction_at_entry=conviction,
+        # holding_days = julianday(close_date)-julianday(entry_date).
+        # `result` existiert nicht in paper_portfolio, wird hier nicht benötigt.
         rows = c.execute("""
-            SELECT id, ticker, strategy, entry_price, exit_price,
-                   pnl_pct, pnl_eur, conviction_at_entry, regime_at_entry,
-                   vix_at_entry, holding_days, result, exit_type
-              FROM trades
-             WHERE status IN ('CLOSED','WIN','LOSS') AND pnl_pct IS NOT NULL
+            SELECT id, ticker, strategy, entry_price,
+                   close_price AS exit_price,
+                   pnl_pct, pnl_eur,
+                   conviction AS conviction_at_entry,
+                   regime_at_entry, vix_at_entry,
+                   CAST(julianday(close_date) - julianday(entry_date) AS INTEGER)
+                       AS holding_days,
+                   exit_type
+              FROM paper_portfolio
+             WHERE status = 'CLOSED' AND pnl_pct IS NOT NULL
         """).fetchall()
         c.close()
         out = [dict(r) for r in rows]
