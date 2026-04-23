@@ -46,7 +46,9 @@ COOLDOWN_HOURS = 6
 # nicht (Scripts laufen via anderem Mechanismus). Stattdessen aktive Logs.
 LOG_CHECKS = [
     ('scheduler',          'scheduler.log',             5),
-    ('heartbeat_monitor',  'heartbeat_monitor.log',     15),
+    # heartbeat_monitor entfernt 2026-04-23: laeuft jetzt scheduler-intern
+    # alle 15min (Sub-10), Output geht in scheduler.log nicht mehr in
+    # heartbeat_monitor.log. Stale-Check war daher false-positive.
     ('price_monitor',      'price_monitor.log',         60),
     ('observation_mode',   'observation_mode.log',      90),
     ('watchdog',           'watchdog.log',              180),
