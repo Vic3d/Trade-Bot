@@ -107,6 +107,18 @@ SCHEDULE = [
     ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
     ('Proposal Expirer',    'proposal_expirer.py',     [],                        14, 30, None),   # mittags nochmal
     ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
+    # ── Sub-8: Monitoring/Watchdogs (2026-04-23) ──
+    ('DB Integrity',        'db_integrity_watchdog.py', [],                        6, 30, None),   # tgl. vor Stale-Data
+    ('Meta Health',         'meta_health_watchdog.py',  [],                        8, 45, None),   # tgl. nach Morning Brief
+    ('Meta Health',         'meta_health_watchdog.py',  [],                       20, 45, None),   # abends nochmal
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                        9, 45, [0,1,2,3,4]),  # Marktzeiten
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       11, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       13, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       15, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       17, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       19, 45, [0,1,2,3,4]),
+    ('Anomaly Brake',       'anomaly_brake.py',         [],                       21, 45, [0,1,2,3,4]),
+    ('Health Digest',       'health_digest.py',         [],                       22, 30, None),   # tgl. nach Daily Learning
     ('Archive Stale Trades','archive_stale_trades.py', [],                         3,  0, [6]),    # So nur
     # Phase 24 aggressive: stündlich 08-22h (vorher alle 2h) + max 8/Run
     ('Deepdive Queue Proc', 'deepdive_queue_processor.py', [],                     8, 10, None),
