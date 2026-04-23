@@ -120,8 +120,12 @@ def _check_orphan_tranches(conn) -> list[str]:
 
     # 6b) OPEN paper_portfolio OHNE Tranchen → Trailing-Stops feuern nie
     if num_col:
+        # NOT-NULL Spalten (außer id/PK) detecten — dynamisch befuellen
+        notnull_cols = {c[1] for c in conn.execute(
+            'PRAGMA table_info(trade_tranches)').fetchall() if c[3] == 1 and c[5] == 0}
+        has_entry_price = 'entry_price' in cols
         missing = conn.execute(f"""
-            SELECT p.id, p.ticker, p.shares
+            SELECT p.id, p.ticker, p.shares, p.entry_price
             FROM paper_portfolio p
             LEFT JOIN (
                 SELECT {fk_col} AS pid, COUNT(*) AS n
@@ -132,23 +136,33 @@ def _check_orphan_tranches(conn) -> list[str]:
         """).fetchall()
         if missing:
             try:
+                # Pflichtspalten — alle NOT NULL Spalten muessen befuellt werden
                 cols_ins = [fk_col, num_col, 'shares', 'status']
-                vals_ph = '?, ?, ?, ?'
+                if has_entry_price:
+                    cols_ins.append('entry_price')
                 if has_created:
                     cols_ins.append('created_at')
-                    vals_ph += ", datetime('now')"
+                vals_ph_list = ['?'] * len(cols_ins)
+                # created_at ist datetime('now')
+                if has_created:
+                    vals_ph_list[-1] = "datetime('now')"
                 col_list = ', '.join(cols_ins)
-                for pid, _tk, sh in missing:
+                vals_ph = ', '.join(vals_ph_list)
+                for pid, _tk, sh, ep in missing:
                     t1 = round(float(sh) / 3, 4)
                     t2 = round(float(sh) / 3, 4)
                     t3 = round(float(sh) - t1 - t2, 4)
+                    ep_val = float(ep) if ep else 0.0
                     for i, s in enumerate([t1, t2, t3], 1):
+                        params = [pid, i, s, 'OPEN']
+                        if has_entry_price:
+                            params.append(ep_val)
                         conn.execute(
                             f"INSERT INTO trade_tranches ({col_list}) VALUES ({vals_ph})",
-                            (pid, i, s, 'OPEN'),
+                            tuple(params),
                         )
                 conn.commit()
-                tickers = ', '.join(t for _, t, _ in missing[:5])
+                tickers = ', '.join(t for _, t, _, _ in missing[:5])
                 more = f' ...+{len(missing)-5}' if len(missing) > 5 else ''
                 issues.append(
                     f'Tranche-Reconcile: {len(missing)} OPEN-Positionen ohne Tranchen '
