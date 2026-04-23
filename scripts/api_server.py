@@ -182,7 +182,7 @@ def api_strategies() -> dict:
 
 
 def api_theses() -> dict:
-    """Alle Thesen aus strategies.json mit Genesis + Status."""
+    """Alle Thesen aus strategies.json mit Genesis + Status (Liste)."""
     s = _safe_json(DATA / 'strategies.json')
     out = []
     for sid, meta in s.items():
@@ -194,14 +194,108 @@ def api_theses() -> dict:
             'name':     meta.get('name', sid),
             'type':     meta.get('type', '?'),
             'status':   meta.get('status', 'active'),
+            'health':   meta.get('health', ''),
+            'sector':   meta.get('sector', ''),
             'created':  gen.get('created', ''),
             'trigger':  gen.get('trigger', ''),
             'logical_chain': gen.get('logical_chain', ''),
             'tickers':  meta.get('tickers') or meta.get('targets') or [],
-            'thesis_strength': meta.get('thesis_strength', None),
+            'conviction_current': gen.get('conviction_current'),
+            'conviction_start':   gen.get('conviction_at_start'),
+            'win_rate': meta.get('win_rate'),
+            'n_trades': meta.get('n_trades'),
+            'pnl':      meta.get('pnl'),
         })
     out.sort(key=lambda x: (x['status'] != 'active', x['id']))
     return {'theses': out, 'count': len(out)}
+
+
+def api_thesis_detail(tid: str) -> dict:
+    """Einzelne These mit allen Details (Genesis, Trigger, Sources, Counter-Args)."""
+    s = _safe_json(DATA / 'strategies.json')
+    meta = s.get(tid)
+    if not isinstance(meta, dict):
+        return {'error': f'Thesis {tid} not found'}
+    gen = meta.get('genesis', {}) or {}
+    perf = meta.get('performance', {}) or {}
+    pmgmt = meta.get('position_management', {}) or {}
+    return {
+        'id':         tid,
+        'name':       meta.get('name', tid),
+        'type':       meta.get('type', '?'),
+        'status':     meta.get('status', 'active'),
+        'health':     meta.get('health', ''),
+        'sector':     meta.get('sector', ''),
+        'regime':     meta.get('regime', ''),
+        'horizon_weeks': meta.get('horizon_weeks'),
+        'thesis':     meta.get('thesis', ''),
+        'entry_trigger': meta.get('entry_trigger', ''),
+        'kill_trigger':  meta.get('kill_trigger', ''),
+        'learning_question': meta.get('learning_question', ''),
+        'catalyst':   meta.get('catalyst', ''),
+        'tickers':    meta.get('tickers') or meta.get('targets') or [],
+        'keywords_bullish': meta.get('keywords_bullish', []),
+        'keywords_bearish': meta.get('keywords_bearish', []),
+        'genesis': {
+            'created':         gen.get('created', ''),
+            'trigger':         gen.get('trigger', ''),
+            'analysis_steps':  gen.get('analysis_steps', []),
+            'logical_chain':   gen.get('logical_chain', ''),
+            'counter_arguments_checked': gen.get('counter_arguments_checked', []),
+            'sources':         gen.get('sources', []),
+            'conviction_start': gen.get('conviction_at_start'),
+            'conviction_current': gen.get('conviction_current'),
+            'last_updated':    gen.get('last_updated', ''),
+            'feedback_history': gen.get('feedback_history', []),
+        },
+        'performance': {
+            'win_rate': meta.get('win_rate'),
+            'n_trades': meta.get('n_trades'),
+            'wins':     meta.get('wins'),
+            'losses':   meta.get('losses'),
+            'pnl':      meta.get('pnl'),
+            'avg_pnl':  meta.get('avg_pnl'),
+            'win_loss_ratio': meta.get('win_loss_ratio'),
+        },
+        'position_management': pmgmt,
+        'last_evaluated': meta.get('last_evaluated', ''),
+    }
+
+
+def api_fund() -> dict:
+    """Cash, Equity, Total Capital, P&L."""
+    conn = get_db()
+    fund = dict(conn.execute("SELECT key, value FROM paper_fund").fetchall())
+    starting = float(fund.get('starting_capital', 25000))
+    cash     = float(fund.get('current_cash', 0))
+    realized = float(fund.get('total_realized_pnl', 0))
+    # Equity = sum(market value of open positions)
+    rows = conn.execute(
+        "SELECT ticker, shares, entry_price FROM paper_portfolio WHERE UPPER(status)='OPEN'"
+    ).fetchall()
+    equity = 0.0
+    unrealized = 0.0
+    for r in rows:
+        pr = conn.execute(
+            'SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1', (r['ticker'],)
+        ).fetchone()
+        cur = pr['close'] if pr else r['entry_price']
+        val = (cur or 0) * (r['shares'] or 0)
+        equity += val
+        unrealized += ((cur or r['entry_price']) - r['entry_price']) * (r['shares'] or 0)
+    conn.close()
+    total = cash + equity
+    return {
+        'starting_capital': round(starting, 2),
+        'current_cash':     round(cash, 2),
+        'equity_value':     round(equity, 2),
+        'total_capital':    round(total, 2),
+        'realized_pnl':     round(realized, 2),
+        'unrealized_pnl':   round(unrealized, 2),
+        'total_pnl':        round(total - starting, 2),
+        'total_pnl_pct':    round((total - starting) / starting * 100, 2) if starting else 0,
+        'cash_pct':         round(cash / total * 100, 1) if total else 0,
+    }
 
 
 def api_signals() -> dict:
@@ -422,9 +516,13 @@ def api_dashboard_data() -> dict:
     anomalies  = api_anomalies()
     trades     = api_recent_trades(10)
     jobs       = api_jobs()
+    fund       = api_fund()
+    theses     = api_theses()
 
     return {
         **market,
+        'fund':            fund,
+        'theses':          theses['theses'],
         'total_pnl':       performance.get('total_pnl', 0),
         'win_rate':        performance.get('win_rate_all', 0),
         'open_positions':  portfolio['count'],
@@ -461,6 +559,7 @@ ROUTES = {
     '/api/recent-trades':   lambda q: api_recent_trades(int(q.get('limit', ['20'])[0])),
     '/api/discord-feed':    lambda q: api_discord_feed(int(q.get('limit', ['30'])[0])),
     '/api/jobs':            lambda q: api_jobs(),
+    '/api/fund':            lambda q: api_fund(),
     '/api/dashboard-data':  lambda q: api_dashboard_data(),
 }
 
@@ -481,6 +580,15 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._json(api_advisory(tid))
             except Exception:
                 self._json({'error': 'invalid id'}, 400)
+            return
+
+        # Thesis Detail: /api/thesis/PS_NVO
+        if path.startswith('/api/thesis/'):
+            tid = path.split('/', 3)[-1]
+            try:
+                self._json(api_thesis_detail(tid))
+            except Exception as e:
+                self._json({'error': str(e)}, 500)
             return
 
         # Dashboard HTML — Priorität: dashboard/index.html → dashboard.html

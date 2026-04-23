@@ -116,11 +116,38 @@
   .thesis-card {
     background: var(--bg3); border-left: 3px solid var(--accent);
     padding: 12px 14px; margin-bottom: 10px; border-radius: 4px;
+    cursor: pointer; transition: background 0.15s, transform 0.15s;
   }
+  .thesis-card:hover { background: #2c333d; transform: translateX(2px); }
   .thesis-card h3 { margin: 0 0 4px 0; font-size: 14px; }
   .thesis-card .trigger { color: var(--fg2); font-size: 12px; margin: 4px 0; }
   .thesis-card .chain { font-size: 12px; color: var(--fg); margin: 6px 0; font-style: italic; }
   .thesis-card .meta { font-size: 11px; color: var(--fg3); margin-top: 8px; }
+  .thesis-card .perf { font-size: 11px; margin-top: 4px; }
+  .thesis-card .hint { color: var(--accent); font-size: 11px; float: right; }
+
+  /* Modal */
+  .modal-bg {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7); display: none; z-index: 100;
+    align-items: flex-start; justify-content: center; padding: 30px 12px; overflow-y: auto;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    max-width: 800px; width: 100%; padding: 20px 24px; position: relative;
+  }
+  .modal h2 { margin: 0 0 4px 0; font-size: 18px; }
+  .modal h3 { margin: 16px 0 6px 0; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .modal .close-x {
+    position: absolute; top: 10px; right: 14px; font-size: 24px; cursor: pointer;
+    color: var(--fg2); background: none; border: none;
+  }
+  .modal .close-x:hover { color: var(--red); }
+  .modal p { margin: 6px 0; line-height: 1.5; }
+  .modal ul { margin: 6px 0; padding-left: 20px; line-height: 1.5; }
+  .modal .source { background: var(--bg3); padding: 6px 10px; margin: 4px 0; border-radius: 4px; font-size: 12px; }
+  .modal .source a { color: var(--accent); text-decoration: none; word-break: break-all; }
 
   .discord-msg {
     padding: 8px 12px; margin: 4px 0; border-radius: 4px;
@@ -161,6 +188,8 @@
 <header>
   <h1>🧠 <span class="accent">TradeMind</span> Dashboard</h1>
   <div class="meta-row">
+    <span>💰 Cash <b id="m-cash" style="color:var(--green)">…</b></span>
+    <span>📊 Equity <b id="m-equity">…</b></span>
     <span>VIX <b id="m-vix">…</b></span>
     <span>EUR/USD <b id="m-fx">…</b></span>
     <span>Regime <b id="m-regime">…</b></span>
@@ -184,10 +213,12 @@
   <!-- OVERVIEW -->
   <section id="tab-overview" class="tab-content active">
     <div class="grid grid-4" style="margin-bottom: 14px">
-      <div class="card"><h2>Total P&amp;L</h2><div class="big" id="kpi-pnl">…</div><div class="sub" id="kpi-pnl-sub"></div></div>
-      <div class="card"><h2>Win-Rate</h2><div class="big" id="kpi-wr">…</div><div class="sub" id="kpi-wr-sub"></div></div>
-      <div class="card"><h2>Open Positions</h2><div class="big" id="kpi-open">…</div><div class="sub">aktiv</div></div>
-      <div class="card"><h2>Drawdown</h2><div class="big" id="kpi-dd">…</div><div class="sub">max 30d</div></div>
+      <div class="card"><h2>💰 Cash verfügbar</h2><div class="big pos" id="kpi-cash">…</div><div class="sub" id="kpi-cash-sub"></div></div>
+      <div class="card"><h2>📊 Total Capital</h2><div class="big" id="kpi-total">…</div><div class="sub" id="kpi-total-sub"></div></div>
+      <div class="card"><h2>📈 Total P&amp;L</h2><div class="big" id="kpi-pnl">…</div><div class="sub" id="kpi-pnl-sub"></div></div>
+      <div class="card"><h2>🎯 Win-Rate</h2><div class="big" id="kpi-wr">…</div><div class="sub" id="kpi-wr-sub"></div></div>
+      <div class="card"><h2>💼 Open Positions</h2><div class="big" id="kpi-open">…</div><div class="sub">aktiv</div></div>
+      <div class="card"><h2>📉 Drawdown</h2><div class="big" id="kpi-dd">…</div><div class="sub">max 30d</div></div>
     </div>
     <div class="grid grid-2">
       <div class="card">
@@ -224,7 +255,7 @@
   <!-- THESES -->
   <section id="tab-theses" class="tab-content">
     <div class="card">
-      <h2>Aktive Thesen</h2>
+      <h2>Aktive Thesen <span style="font-weight:400;color:var(--fg2);font-size:12px">(klicken für Details)</span></h2>
       <div id="theses-list" class="loading">lade…</div>
     </div>
   </section>
@@ -270,6 +301,14 @@
   </section>
 </main>
 
+<!-- Thesis Detail Modal -->
+<div class="modal-bg" id="thesis-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <div id="modal-content">lade…</div>
+  </div>
+</div>
+
 <footer>
   TradeMind v2 · Auto-Refresh alle 30s · <a href="/api/dashboard-data" style="color:var(--accent)">Raw API</a>
 </footer>
@@ -308,6 +347,9 @@ async function fetchJSON(url) {
 }
 
 function renderHeader(d) {
+  const f = d.fund || {};
+  document.getElementById('m-cash').textContent = f.current_cash != null ? Math.round(f.current_cash).toLocaleString('de-DE') + '€' : '—';
+  document.getElementById('m-equity').textContent = f.equity_value != null ? Math.round(f.equity_value).toLocaleString('de-DE') + '€' : '—';
   document.getElementById('m-vix').textContent = d.vix?.value?.toFixed(1) ?? '—';
   document.getElementById('m-fx').textContent  = d.eurusd?.toFixed(4) ?? '—';
   document.getElementById('m-regime').textContent = d.regime ?? '—';
@@ -316,7 +358,20 @@ function renderHeader(d) {
 }
 
 function renderKPIs(d) {
-  const pnl = d.total_pnl ?? 0;
+  const f = d.fund || {};
+  // Cash
+  const cash = f.current_cash ?? 0;
+  document.getElementById('kpi-cash').textContent = Math.round(cash).toLocaleString('de-DE') + '€';
+  document.getElementById('kpi-cash-sub').textContent = (f.cash_pct ?? 0).toFixed(1) + '% des Kapitals';
+  // Total Capital
+  const tot = f.total_capital ?? 0;
+  document.getElementById('kpi-total').textContent = Math.round(tot).toLocaleString('de-DE') + '€';
+  const tpct = f.total_pnl_pct ?? 0;
+  const tpEl = document.getElementById('kpi-total-sub');
+  tpEl.textContent = (tpct >= 0 ? '+' : '') + tpct.toFixed(2) + '% seit Start (' + Math.round(f.starting_capital ?? 25000).toLocaleString('de-DE') + '€)';
+  tpEl.className = 'sub ' + cls(tpct);
+
+  const pnl = d.total_pnl ?? f.total_pnl ?? 0;
   const pEl = document.getElementById('kpi-pnl');
   pEl.textContent = fmtEur(pnl);
   pEl.className = 'big ' + cls(pnl);
@@ -447,20 +502,93 @@ async function renderTheses() {
     document.getElementById('theses-list').innerHTML = '<div class="sub">Keine aktiven Thesen</div>';
     return;
   }
+  const healthPill = h => {
+    const c = (h === 'STRONG' || h === 'GOOD') ? 'green' : (h === 'WEAK' ? 'yellow' : (h === 'INVALIDATED' ? 'red' : 'gray'));
+    return h ? `<span class="pill ${c}">${esc(h)}</span>` : '';
+  };
   const html = active.map(t => `
-    <div class="thesis-card">
-      <h3>${esc(t.id)} — ${esc(t.name)} <span class="pill blue">${esc(t.type)}</span></h3>
+    <div class="thesis-card" onclick="openThesis('${esc(t.id)}')">
+      <span class="hint">▶ Details</span>
+      <h3>${esc(t.id)} — ${esc(t.name)} <span class="pill blue">${esc(t.type)}</span> ${healthPill(t.health)}</h3>
       ${t.trigger ? `<div class="trigger">⚡ ${esc(t.trigger)}</div>` : ''}
-      ${t.logical_chain ? `<div class="chain">🧠 ${esc(t.logical_chain)}</div>` : ''}
+      ${t.logical_chain ? `<div class="chain">🧠 ${esc(t.logical_chain).substring(0, 200)}${t.logical_chain.length > 200 ? '…' : ''}</div>` : ''}
+      ${(t.n_trades != null && t.n_trades > 0) ? `<div class="perf">📊 ${t.n_trades} Trades · WR ${(t.win_rate ?? 0).toFixed(0)}% · P&L <span class="${cls(t.pnl)}">${fmtEur(t.pnl)}</span> · Conviction ${t.conviction_current ?? '?'}/100</div>` : ''}
       <div class="meta">
         ${t.tickers?.length ? `Tickers: ${t.tickers.slice(0, 8).map(x => `<span class="pill gray">${esc(x)}</span>`).join(' ')} ${t.tickers.length > 8 ? `+${t.tickers.length - 8}` : ''}<br>` : ''}
-        ${t.created ? `Created: ${esc(t.created)}` : ''}
-        ${t.thesis_strength ? ` · Strength: ${t.thesis_strength}/100` : ''}
+        ${t.sector ? `Sektor: ${esc(t.sector)} · ` : ''}${t.created ? `Created: ${esc(t.created)}` : ''}
       </div>
     </div>
   `).join('');
   document.getElementById('theses-list').innerHTML = html;
 }
+
+async function openThesis(tid) {
+  const m = document.getElementById('thesis-modal');
+  const c = document.getElementById('modal-content');
+  c.innerHTML = '<div class="loading">lade Thesis-Details…</div>';
+  m.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  const t = await fetchJSON('/api/thesis/' + encodeURIComponent(tid));
+  if (!t || t.error) {
+    c.innerHTML = '<div class="error">' + esc(t?.error || 'Fehler beim Laden') + '</div>';
+    return;
+  }
+  const g = t.genesis || {};
+  const p = t.performance || {};
+  const list = arr => (arr && arr.length) ? '<ul>' + arr.map(x => `<li>${esc(typeof x === 'string' ? x : JSON.stringify(x))}</li>`).join('') + '</ul>' : '<p class="sub">—</p>';
+  const sources = (g.sources && g.sources.length) ? g.sources.map(s => {
+    if (typeof s === 'string') return `<div class="source">${esc(s)}</div>`;
+    const url = s.url || s.link || '';
+    const title = s.title || s.name || url;
+    return `<div class="source">${url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(title)}</a>` : esc(title)}${s.date ? ` <span class="sub">(${esc(s.date)})</span>` : ''}</div>`;
+  }).join('') : '<p class="sub">— keine Quellen hinterlegt —</p>';
+
+  c.innerHTML = `
+    <h2>${esc(t.id)} — ${esc(t.name)}</h2>
+    <div style="margin: 6px 0">
+      <span class="pill blue">${esc(t.type)}</span>
+      ${t.health ? `<span class="pill ${(t.health==='STRONG'||t.health==='GOOD')?'green':(t.health==='WEAK'?'yellow':'red')}">${esc(t.health)}</span>` : ''}
+      ${t.sector ? `<span class="pill gray">${esc(t.sector)}</span>` : ''}
+      ${t.regime ? `<span class="pill gray">Regime: ${esc(t.regime)}</span>` : ''}
+      ${t.horizon_weeks ? `<span class="pill gray">${t.horizon_weeks} Wochen</span>` : ''}
+    </div>
+
+    ${t.thesis ? `<h3>📝 These</h3><p>${esc(t.thesis)}</p>` : ''}
+
+    ${t.catalyst ? `<h3>⚡ Katalysator</h3><p>${esc(t.catalyst)}</p>` : ''}
+
+    ${g.logical_chain ? `<h3>🧠 Logische Kette</h3><p>${esc(g.logical_chain)}</p>` : ''}
+
+    ${g.analysis_steps?.length ? `<h3>🔬 Analyse-Schritte</h3>${list(g.analysis_steps)}` : ''}
+
+    ${g.counter_arguments_checked?.length ? `<h3>⚖️ Geprüfte Gegen-Argumente</h3>${list(g.counter_arguments_checked)}` : ''}
+
+    ${t.entry_trigger ? `<h3>🎯 Entry-Trigger</h3><p>${esc(t.entry_trigger)}</p>` : ''}
+    ${t.kill_trigger ? `<h3>💀 Kill-Trigger</h3><p>${esc(t.kill_trigger)}</p>` : ''}
+    ${t.learning_question ? `<h3>❓ Lern-Frage</h3><p>${esc(t.learning_question)}</p>` : ''}
+
+    ${t.tickers?.length ? `<h3>📈 Tickers</h3><div>${t.tickers.map(x => `<span class="pill blue" style="margin:2px">${esc(x)}</span>`).join(' ')}</div>` : ''}
+
+    ${(p.n_trades != null) ? `
+    <h3>📊 Performance</h3>
+    <p>${p.n_trades || 0} Trades · ${p.wins || 0}W / ${p.losses || 0}L · WR <b>${(p.win_rate ?? 0).toFixed(0)}%</b> · P&L <b class="${cls(p.pnl)}">${fmtEur(p.pnl)}</b> · ⌀ ${fmtEur(p.avg_pnl)}</p>
+    ` : ''}
+
+    <h3>🔭 Conviction</h3>
+    <p>Start: <b>${g.conviction_start ?? '?'}/100</b> → Aktuell: <b>${g.conviction_current ?? '?'}/100</b>${g.last_updated ? ` <span class="sub">(${esc(g.last_updated)})</span>` : ''}</p>
+
+    <h3>🔗 Quellen</h3>
+    ${sources}
+
+    ${g.created ? `<p class="sub" style="margin-top:14px">Erstellt: ${esc(g.created)}${g.trigger ? ` · Trigger: ${esc(g.trigger)}` : ''}</p>` : ''}
+  `;
+}
+
+function closeModal() {
+  document.getElementById('thesis-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 function renderRisk(risk) {
   if (!risk) {
