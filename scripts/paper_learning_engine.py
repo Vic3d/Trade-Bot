@@ -473,13 +473,22 @@ def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0)
     if trades < 10:
         return 'INSUFFICIENT_DATA'
 
+    # ── Hard Guardrails (NICHT adaptiv) ──
+    # Verhindern dass Bear-Markt-Adaptive eine Geldvernichter-Strategie schützt.
+    # Sub-7 #3 Hotfix: Ohne diese Klausel bekam DT4 (40% WR, -858€, 112 Trades)
+    # in einem Bear-Markt mit baseline_wr=16% ein KEEP — falsch.
+    if trades >= 30 and total_pnl_eur < -500:
+        return 'SUSPEND'  # Klares Geldvernichter-Profil, unabhängig von Marktphase
+    if trades >= 15 and total_pnl_eur < -300 and win_rate < 0.45:
+        return 'SUSPEND'  # Genug Daten + nennenswerter Verlust + schwache WR
+
     th = _adaptive_thresholds()
 
-    # Harte SUSPEND-Bedingungen
+    # Adaptive SUSPEND: WR deutlich unter Markt-Baseline
     if win_rate < th['suspend_wr']:
         return 'SUSPEND'
 
-    # P&L-gewichtete SUSPEND: Strategie verliert Geld trotz moderater WR
+    # Adaptive P&L-SUSPEND: Strategie verliert Geld trotz moderater WR
     if trades >= 15 and win_rate < th['suspend_combo_wr'] and total_pnl_eur < th['suspend_pnl']:
         return 'SUSPEND'
 
@@ -487,8 +496,9 @@ def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0)
     if trades >= 10 and total_pnl_eur < th['reduce_pnl'] and win_rate < th['reduce_wr']:
         return 'REDUCE'
 
-    # ELEVATE: Nur wenn sowohl Win-Rate als auch P&L gut
-    if win_rate > th['elevate_wr'] and total_pnl_eur > 0:
+    # ELEVATE: Nur wenn sowohl Win-Rate als auch P&L gut (UND mind. 10 Trades,
+    # plus stricter Trade-Count damit ein 5-Trade-Hotrun keine ELEVATE auslöst)
+    if trades >= 10 and win_rate > th['elevate_wr'] and total_pnl_eur > 0:
         return 'ELEVATE'
 
     return 'KEEP'
