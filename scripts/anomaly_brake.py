@@ -281,7 +281,11 @@ def run(dry_run: bool = False, test: bool = False) -> int:
     print(full)
     if not dry_run:
         _send_alert(full)
-    return 1
+    # Bugfix 2026-04-23: vorher rc=1 → Scheduler markierte das als
+    # "Fehler" obwohl der Trigger Absicht ist (HALT wurde ja gesetzt +
+    # Discord-Alert ist raus). Job-Errors Digest zeigte das als Job-Fail.
+    # Jetzt rc=0; Status geht ueber Discord/Halt-File raus.
+    return 0
 
 
 def main():

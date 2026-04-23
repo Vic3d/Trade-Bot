@@ -1025,6 +1025,7 @@ def run_scan(max_new_trades: int = 5) -> list:
 
     results = []
     new_trades = 0
+    pending_added = 0  # Bugfix 2026-04-23: war nicht initialisiert → UnboundLocalError
 
     for tier, items in merged_universe.items():
         if new_trades >= max_new_trades:
