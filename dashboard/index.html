@@ -6,157 +6,594 @@
 <title>TradeMind Dashboard</title>
 <style>
   :root {
-    --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
-    --green: #00d4a0; --red: #ff4d6d; --yellow: #ffd166;
-    --blue: #4facfe; --text: #e2e8f0; --muted: #64748b;
+    --bg: #0d1117; --bg2: #161b22; --bg3: #21262d;
+    --fg: #e6edf3; --fg2: #8b949e; --fg3: #6e7681;
+    --accent: #58a6ff; --green: #3fb950; --red: #f85149; --yellow: #d29922; --orange: #db6d28;
+    --border: #30363d;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; padding: 24px; }
-  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
-  .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-  .card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-  .card-value { font-size: 1.8rem; font-weight: 700; }
-  .card-value.green { color: var(--green); }
-  .card-value.red   { color: var(--red); }
-  .card-value.yellow{ color: var(--yellow); }
-  .section { margin-bottom: 24px; }
-  .section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 8px 12px; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 10px 12px; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
-  tr:last-child td { border-bottom: none; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-  .badge-green { background: rgba(0,212,160,0.15); color: var(--green); }
-  .badge-red   { background: rgba(255,77,109,0.15); color: var(--red); }
-  .badge-yellow{ background: rgba(255,209,102,0.15); color: var(--yellow); }
-  .badge-blue  { background: rgba(79,172,254,0.15); color: var(--blue); }
-  .bar-container { background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
-  .bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
-  .regime-indicator { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; }
-  .news-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-  .news-item:last-child { border-bottom: none; }
-  .news-thesis { font-size: 0.75rem; color: var(--blue); margin-top: 2px; }
-  .loading { color: var(--muted); font-style: italic; }
-  @media (max-width: 600px) { body { padding: 12px; } }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--fg);
+    font-size: 14px;
+  }
+  header {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  header h1 {
+    font-size: 18px; margin: 0; font-weight: 600;
+  }
+  header h1 .accent { color: var(--accent); }
+  .meta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .meta-row span { color: var(--fg2); font-size: 12px; }
+  .meta-row span b { color: var(--fg); }
+  #refresh-btn {
+    background: var(--bg3); color: var(--fg); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;
+  }
+  #refresh-btn:hover { background: var(--accent); color: white; }
+
+  nav.tabs {
+    display: flex; gap: 0; background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav.tabs button {
+    background: transparent; border: none; color: var(--fg2);
+    padding: 12px 18px; cursor: pointer; font-size: 13px;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+  }
+  nav.tabs button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  nav.tabs button:hover { color: var(--fg); }
+  nav.tabs button .badge {
+    background: var(--red); color: white; padding: 1px 6px; border-radius: 10px;
+    font-size: 10px; margin-left: 6px; font-weight: 600;
+  }
+  nav.tabs button .badge.warn { background: var(--yellow); }
+  nav.tabs button .badge.ok { background: var(--green); }
+
+  main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .grid { display: grid; gap: 14px; }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+
+  .card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px;
+  }
+  .card h2 {
+    font-size: 13px; color: var(--fg2); text-transform: uppercase;
+    letter-spacing: 0.5px; margin: 0 0 8px 0; font-weight: 600;
+  }
+  .card .big {
+    font-size: 26px; font-weight: 700; margin: 4px 0;
+  }
+  .card .sub { color: var(--fg2); font-size: 12px; }
+  .pos { color: var(--green); }
+  .neg { color: var(--red); }
+  .warn { color: var(--yellow); }
+  .neutral { color: var(--fg2); }
+
+  table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  table th {
+    text-align: left; padding: 8px 10px; color: var(--fg2);
+    font-weight: 600; font-size: 11px; text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  table td {
+    padding: 10px; border-bottom: 1px solid var(--border);
+  }
+  table tr:hover { background: var(--bg3); }
+  table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .pill {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 600;
+  }
+  .pill.green { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+  .pill.red { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+  .pill.yellow { background: rgba(210, 153, 34, 0.15); color: var(--yellow); }
+  .pill.gray { background: rgba(139, 148, 158, 0.15); color: var(--fg2); }
+  .pill.blue { background: rgba(88, 166, 255, 0.15); color: var(--accent); }
+
+  .bar {
+    height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden;
+    margin-top: 4px;
+  }
+  .bar-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+  .bar-fill.red { background: var(--red); }
+  .bar-fill.yellow { background: var(--yellow); }
+  .bar-fill.green { background: var(--green); }
+
+  .thesis-card {
+    background: var(--bg3); border-left: 3px solid var(--accent);
+    padding: 12px 14px; margin-bottom: 10px; border-radius: 4px;
+  }
+  .thesis-card h3 { margin: 0 0 4px 0; font-size: 14px; }
+  .thesis-card .trigger { color: var(--fg2); font-size: 12px; margin: 4px 0; }
+  .thesis-card .chain { font-size: 12px; color: var(--fg); margin: 6px 0; font-style: italic; }
+  .thesis-card .meta { font-size: 11px; color: var(--fg3); margin-top: 8px; }
+
+  .discord-msg {
+    padding: 8px 12px; margin: 4px 0; border-radius: 4px;
+    background: var(--bg3); font-size: 12px;
+  }
+  .discord-msg.albert { border-left: 3px solid var(--accent); }
+  .discord-msg.victor { border-left: 3px solid var(--green); }
+  .discord-msg .role { font-weight: 600; font-size: 11px; color: var(--fg2); }
+  .discord-msg .ts { color: var(--fg3); font-size: 10px; float: right; }
+  .discord-msg pre {
+    background: transparent; margin: 4px 0 0 0; white-space: pre-wrap;
+    font-family: inherit; font-size: 12px;
+  }
+
+  .health-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .health-row:last-child { border-bottom: none; }
+  .health-row .name { color: var(--fg); }
+  .health-row .age { color: var(--fg2); font-size: 11px; }
+
+  .loading { color: var(--fg2); font-style: italic; padding: 20px; text-align: center; }
+  .error { color: var(--red); padding: 12px; }
+  footer {
+    text-align: center; padding: 20px; color: var(--fg3); font-size: 11px;
+  }
+  @media (max-width: 700px) {
+    main { padding: 12px; }
+    header { padding: 10px 12px; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .card .big { font-size: 22px; }
+    nav.tabs button { padding: 10px 12px; font-size: 12px; }
+  }
 </style>
 </head>
 <body>
 
-<h1>🎩 TradeMind Dashboard</h1>
-<p class="subtitle" id="last-update">Wird geladen...</p>
-
-<div class="grid" id="stats-grid">
-  <div class="card"><div class="card-label">Fund P&L</div><div class="card-value" id="total-pnl">—</div></div>
-  <div class="card"><div class="card-label">Win-Rate</div><div class="card-value" id="win-rate">—</div></div>
-  <div class="card"><div class="card-label">Offene Positionen</div><div class="card-value" id="open-pos">—</div></div>
-  <div class="card"><div class="card-label">Closed Trades</div><div class="card-value" id="closed-trades">—</div></div>
-  <div class="card"><div class="card-label">Regime / VIX</div><div class="card-value" id="regime-vix">—</div></div>
-  <div class="card"><div class="card-label">News Gate</div><div class="card-value" id="news-gate">—</div></div>
-</div>
-
-<div class="section">
-  <h2>Offene Positionen</h2>
-  <div style="overflow-x:auto;">
-  <table>
-    <thead><tr><th>Ticker</th><th>Strategie</th><th>Entry</th><th>Stop</th><th>Ziel</th><th>P&L</th><th>Conviction</th></tr></thead>
-    <tbody id="positions-table"><tr><td colspan="7" class="loading">Lade...</td></tr></tbody>
-  </table>
+<header>
+  <h1>🧠 <span class="accent">TradeMind</span> Dashboard</h1>
+  <div class="meta-row">
+    <span>VIX <b id="m-vix">…</b></span>
+    <span>EUR/USD <b id="m-fx">…</b></span>
+    <span>Regime <b id="m-regime">…</b></span>
+    <span>CEO <b id="m-ceo">…</b></span>
+    <span id="m-updated">…</span>
+    <button id="refresh-btn" onclick="loadAll()">⟳ Refresh</button>
   </div>
-</div>
+</header>
 
-<div class="section">
-  <h2>Aktive Thesen</h2>
-  <div id="theses-list" class="loading">Lade...</div>
-</div>
+<nav class="tabs" id="tabs">
+  <button class="active" data-tab="overview">📊 Overview</button>
+  <button data-tab="positions">💼 Positionen</button>
+  <button data-tab="trades">📜 Trades</button>
+  <button data-tab="theses">🧬 Thesen</button>
+  <button data-tab="risk">⚠️ Risiko</button>
+  <button data-tab="health">🩺 Health <span id="badge-health" class="badge ok" style="display:none">0</span></button>
+  <button data-tab="discord">💬 Discord</button>
+</nav>
 
-<div class="section">
-  <h2>Letzte News (Hits)</h2>
-  <div id="news-list" class="loading">Lade...</div>
-</div>
+<main>
+  <!-- OVERVIEW -->
+  <section id="tab-overview" class="tab-content active">
+    <div class="grid grid-4" style="margin-bottom: 14px">
+      <div class="card"><h2>Total P&amp;L</h2><div class="big" id="kpi-pnl">…</div><div class="sub" id="kpi-pnl-sub"></div></div>
+      <div class="card"><h2>Win-Rate</h2><div class="big" id="kpi-wr">…</div><div class="sub" id="kpi-wr-sub"></div></div>
+      <div class="card"><h2>Open Positions</h2><div class="big" id="kpi-open">…</div><div class="sub">aktiv</div></div>
+      <div class="card"><h2>Drawdown</h2><div class="big" id="kpi-dd">…</div><div class="sub">max 30d</div></div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Markt-Status</h2>
+        <div id="ov-market" class="loading">lade…</div>
+      </div>
+      <div class="card">
+        <h2>Letzte Anomalien (24h)</h2>
+        <div id="ov-anomalies" class="loading">lade…</div>
+      </div>
+    </div>
+  </section>
 
-<div class="section">
-  <h2>Strategie-Performance</h2>
-  <div style="overflow-x:auto;">
-  <table>
-    <thead><tr><th>Strategie</th><th>Trades</th><th>Win-Rate</th><th>P&L</th><th>Status</th></tr></thead>
-    <tbody id="strategy-table"><tr><td colspan="5" class="loading">Lade...</td></tr></tbody>
-  </table>
-  </div>
-</div>
+  <!-- POSITIONS -->
+  <section id="tab-positions" class="tab-content">
+    <div class="card">
+      <h2>Offene Positionen</h2>
+      <div id="positions-table" class="loading">lade…</div>
+    </div>
+  </section>
+
+  <!-- TRADES -->
+  <section id="tab-trades" class="tab-content">
+    <div class="card">
+      <h2>Letzte 20 geschlossene Trades</h2>
+      <div id="trades-table" class="loading">lade…</div>
+    </div>
+    <div class="card" style="margin-top: 14px">
+      <h2>Strategie-Performance</h2>
+      <div id="strategies-table" class="loading">lade…</div>
+    </div>
+  </section>
+
+  <!-- THESES -->
+  <section id="tab-theses" class="tab-content">
+    <div class="card">
+      <h2>Aktive Thesen</h2>
+      <div id="theses-list" class="loading">lade…</div>
+    </div>
+  </section>
+
+  <!-- RISK -->
+  <section id="tab-risk" class="tab-content">
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Konzentration (Equity-Anteil)</h2>
+        <div id="risk-concentration" class="loading">lade…</div>
+      </div>
+      <div class="card">
+        <h2>Findings &amp; Warnungen</h2>
+        <div id="risk-findings" class="loading">lade…</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 14px">
+      <h2>Korrelations-Universum</h2>
+      <div id="risk-corr" class="loading">lade…</div>
+    </div>
+  </section>
+
+  <!-- HEALTH -->
+  <section id="tab-health" class="tab-content">
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Watchdogs</h2>
+        <div id="health-watchdogs" class="loading">lade…</div>
+      </div>
+      <div class="card">
+        <h2>Job-Status (24h)</h2>
+        <div id="health-jobs" class="loading">lade…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCORD -->
+  <section id="tab-discord" class="tab-content">
+    <div class="card">
+      <h2>Letzte Discord-Messages</h2>
+      <div id="discord-feed" class="loading">lade…</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  TradeMind v2 · Auto-Refresh alle 30s · <a href="/api/dashboard-data" style="color:var(--accent)">Raw API</a>
+</footer>
 
 <script>
-async function loadDashboard() {
+const fmtEur = n => (n == null) ? '—' : (n >= 0 ? '+' : '') + n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '€';
+const fmtPct = n => (n == null) ? '—' : (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+const cls    = n => (n == null) ? 'neutral' : (n > 0 ? 'pos' : (n < 0 ? 'neg' : 'neutral'));
+const esc    = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ago    = ts => {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const m = Math.round((Date.now() - d.getTime()) / 60000);
+  if (m < 1) return 'gerade eben';
+  if (m < 60) return m + ' min';
+  if (m < 1440) return Math.round(m/60) + ' h';
+  return Math.round(m/1440) + ' d';
+};
+
+const tabs = document.querySelectorAll('nav.tabs button');
+tabs.forEach(t => t.onclick = () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+});
+
+async function fetchJSON(url) {
   try {
-    const r = await fetch('/api/dashboard-data');
-    const data = await r.json();
-    renderDashboard(data);
-  } catch(e) {
-    // Fallback: direkt aus JSON-Dateien (lokaler Modus)
-    document.getElementById('last-update').textContent = 'API nicht verfügbar — statische Ansicht';
+    const r = await fetch(url);
+    return await r.json();
+  } catch (e) {
+    console.error('fetch fail', url, e);
+    return null;
   }
 }
 
-function pnlClass(v) { return v > 0 ? 'green' : v < 0 ? 'red' : ''; }
-function pnlStr(v)   { return v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(1) + '%'; }
-
-function renderDashboard(d) {
-  document.getElementById('last-update').textContent = 'Zuletzt: ' + new Date().toLocaleString('de-DE');
-  document.getElementById('total-pnl').textContent = (d.total_pnl >= 0 ? '+' : '') + d.total_pnl.toFixed(0) + '€';
-  document.getElementById('total-pnl').className = 'card-value ' + pnlClass(d.total_pnl);
-  document.getElementById('win-rate').textContent = d.win_rate + '%';
-  document.getElementById('win-rate').className = 'card-value ' + (d.win_rate >= 55 ? 'green' : d.win_rate >= 45 ? 'yellow' : 'red');
-  document.getElementById('open-pos').textContent = d.open_positions;
-  document.getElementById('closed-trades').textContent = d.closed_trades;
-  document.getElementById('regime-vix').textContent = d.regime + ' / ' + d.vix;
-  document.getElementById('regime-vix').className = 'card-value ' + (d.regime === 'BULL_CALM' ? 'green' : d.regime === 'CRASH' || d.regime === 'CRISIS' ? 'red' : 'yellow');
-  document.getElementById('news-gate').textContent = d.news_relevant ? '🟢 Aktiv' : '⬜ Neutral';
-
-  // Positionen
-  const posHtml = (d.positions || []).map(p => `
-    <tr>
-      <td><strong>${p.ticker}</strong></td>
-      <td><span class="badge badge-blue">${p.strategy}</span></td>
-      <td>${p.entry.toFixed(2)}</td>
-      <td>${p.stop ? p.stop.toFixed(2) : '—'}</td>
-      <td>${p.target ? p.target.toFixed(2) : '—'}</td>
-      <td class="${pnlClass(p.pnl_pct)}">${pnlStr(p.pnl_pct)}</td>
-      <td>
-        <div class="bar-container"><div class="bar" style="width:${p.conviction||0}%;background:${p.conviction>=65?'var(--green)':p.conviction>=45?'var(--yellow)':'var(--red)'}"></div></div>
-        <small>${p.conviction||'?'}/100</small>
-      </td>
-    </tr>`).join('');
-  document.getElementById('positions-table').innerHTML = posHtml || '<tr><td colspan="7" style="color:var(--muted)">Keine offenen Positionen</td></tr>';
-
-  // Thesen
-  const thesenHtml = (d.active_theses || []).map(t => `
-    <span class="badge badge-${t.active ? 'green' : 'blue'}" style="margin:4px">${t.id}: ${t.name}</span>
-  `).join('');
-  document.getElementById('theses-list').innerHTML = thesenHtml || '<span style="color:var(--muted)">Keine aktiven Thesen</span>';
-
-  // News
-  const newsHtml = (d.news_hits || []).slice(0,8).map(n => `
-    <div class="news-item">
-      ${n.headline}
-      <div class="news-thesis">${n.thesis} · ${n.source}</div>
-    </div>`).join('');
-  document.getElementById('news-list').innerHTML = newsHtml || '<span style="color:var(--muted)">Keine News-Hits</span>';
-
-  // Strategie-Performance
-  const stratHtml = (d.strategies || []).map(s => `
-    <tr>
-      <td>${s.id}</td>
-      <td>${s.trades}</td>
-      <td class="${pnlClass(s.wr - 50)}">${s.wr}%</td>
-      <td class="${pnlClass(s.pnl)}">${s.pnl >= 0 ? '+' : ''}${s.pnl.toFixed(0)}€</td>
-      <td><span class="badge badge-${s.wr>=60?'green':s.wr>=45?'yellow':'red'}">${s.wr>=60?'✅ STARK':s.wr>=45?'⚠️ OK':'❌ WEAK'}</span></td>
-    </tr>`).join('');
-  document.getElementById('strategy-table').innerHTML = stratHtml || '<tr><td colspan="5" style="color:var(--muted)">Keine Daten</td></tr>';
+function renderHeader(d) {
+  document.getElementById('m-vix').textContent = d.vix?.value?.toFixed(1) ?? '—';
+  document.getElementById('m-fx').textContent  = d.eurusd?.toFixed(4) ?? '—';
+  document.getElementById('m-regime').textContent = d.regime ?? '—';
+  document.getElementById('m-ceo').textContent = d.ceo_mode ?? '—';
+  document.getElementById('m-updated').innerHTML = '⟳ ' + ago(d.generated_at);
 }
 
-loadDashboard();
-setInterval(loadDashboard, 60000);  // Refresh jede Minute
+function renderKPIs(d) {
+  const pnl = d.total_pnl ?? 0;
+  const pEl = document.getElementById('kpi-pnl');
+  pEl.textContent = fmtEur(pnl);
+  pEl.className = 'big ' + cls(pnl);
+  document.getElementById('kpi-pnl-sub').textContent = (d.closed_trades ?? 0) + ' geschlossen';
+
+  const wr = d.win_rate ?? 0;
+  document.getElementById('kpi-wr').textContent = wr.toFixed(1) + '%';
+  document.getElementById('kpi-wr').className = 'big ' + (wr >= 50 ? 'pos' : (wr >= 40 ? 'warn' : 'neg'));
+  document.getElementById('kpi-wr-sub').textContent = 'Sharpe ' + (d.sharpe ?? 0).toFixed(2);
+
+  document.getElementById('kpi-open').textContent = d.open_positions ?? 0;
+
+  const dd = d.max_drawdown ?? 0;
+  document.getElementById('kpi-dd').textContent = '-' + dd.toFixed(1) + '%';
+  document.getElementById('kpi-dd').className = 'big ' + (dd > 15 ? 'neg' : (dd > 8 ? 'warn' : 'neutral'));
+}
+
+function renderOverviewMarket(d) {
+  const html = `
+    <div class="health-row"><span class="name">VIX</span><b>${d.vix?.value?.toFixed(2) ?? '—'}</b></div>
+    <div class="health-row"><span class="name">SPY</span><b>${d.spy?.value?.toFixed(2) ?? '—'}</b></div>
+    <div class="health-row"><span class="name">EUR/USD</span><b>${d.eurusd?.toFixed(4) ?? '—'}</b></div>
+    <div class="health-row"><span class="name">Regime</span><span class="pill blue">${d.regime ?? '—'}</span></div>
+    <div class="health-row"><span class="name">CEO Mode</span><span class="pill ${d.ceo_mode === 'AGGRESSIVE' ? 'green' : (d.ceo_mode === 'DEFENSIVE' ? 'yellow' : (d.ceo_mode === 'HALT' ? 'red' : 'gray'))}">${d.ceo_mode ?? '—'}</span></div>
+    ${d.ceo_reason ? `<div style="font-size:11px;color:var(--fg2);margin-top:8px">📝 ${esc(d.ceo_reason)}</div>` : ''}
+  `;
+  document.getElementById('ov-market').innerHTML = html;
+}
+
+function renderOverviewAnomalies(count, anomalies) {
+  if (!anomalies || anomalies.length === 0) {
+    document.getElementById('ov-anomalies').innerHTML = '<div class="sub">✅ Keine Trigger in 24h</div>';
+    return;
+  }
+  const html = anomalies.slice(-5).reverse().map(a => `
+    <div class="discord-msg" style="border-left-color:var(--red)">
+      <span class="ts">${ago(a.ts)}</span>
+      <div>${a.triggers.map(t => `<span class="pill red">${esc(t.name)}</span> ${esc(t.detail)}`).join('<br>')}</div>
+    </div>
+  `).join('');
+  document.getElementById('ov-anomalies').innerHTML = `<div class="sub" style="margin-bottom:8px">${count} Trigger(s) in 24h</div>` + html;
+}
+
+function renderPositions(positions) {
+  if (!positions || positions.length === 0) {
+    document.getElementById('positions-table').innerHTML = '<div class="sub">Keine offenen Positionen</div>';
+    return;
+  }
+  const rows = positions.map(p => `
+    <tr>
+      <td><b>${esc(p.ticker)}</b></td>
+      <td><span class="pill blue">${esc(p.strategy)}</span></td>
+      <td class="num">${p.shares?.toFixed(2) ?? '—'}</td>
+      <td class="num">${p.entry?.toFixed(2) ?? '—'}€</td>
+      <td class="num">${p.current?.toFixed(2) ?? '—'}€</td>
+      <td class="num">${p.stop?.toFixed(2) ?? '—'}€</td>
+      <td class="num">${p.target?.toFixed(2) ?? '—'}€</td>
+      <td class="num ${cls(p.pnl_pct)}">${fmtPct(p.pnl_pct)}</td>
+      <td class="num ${cls(p.pnl_eur)}">${fmtEur(p.pnl_eur)}</td>
+      <td class="num">${p.value_eur?.toFixed(0) ?? '—'}€</td>
+    </tr>
+  `).join('');
+  document.getElementById('positions-table').innerHTML = `
+    <table>
+      <thead><tr><th>Ticker</th><th>Strategie</th><th class="num">Shares</th><th class="num">Entry</th><th class="num">Aktuell</th><th class="num">Stop</th><th class="num">Target</th><th class="num">P&amp;L %</th><th class="num">P&amp;L €</th><th class="num">Wert</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function renderTrades(trades) {
+  if (!trades || trades.length === 0) {
+    document.getElementById('trades-table').innerHTML = '<div class="sub">Keine geschlossenen Trades</div>';
+    return;
+  }
+  const rows = trades.map(t => `
+    <tr>
+      <td>${esc(t.close_date?.split('T')[0] ?? '—')}</td>
+      <td><b>${esc(t.ticker)}</b></td>
+      <td><span class="pill blue">${esc(t.strategy ?? '—')}</span></td>
+      <td class="num">${t.entry?.toFixed(2) ?? '—'}</td>
+      <td class="num">${t.close?.toFixed(2) ?? '—'}</td>
+      <td class="num ${cls(t.pnl_eur)}">${fmtEur(t.pnl_eur)}</td>
+      <td class="num ${cls(t.pnl_pct)}">${fmtPct(t.pnl_pct)}</td>
+      <td><span class="pill ${t.exit_type?.toUpperCase().includes('SL') ? 'red' : (t.exit_type?.toUpperCase().includes('TP') ? 'green' : 'gray')}">${esc(t.exit_type ?? '—')}</span></td>
+    </tr>
+  `).join('');
+  document.getElementById('trades-table').innerHTML = `
+    <table>
+      <thead><tr><th>Close-Datum</th><th>Ticker</th><th>Strategie</th><th class="num">Entry</th><th class="num">Close</th><th class="num">P&amp;L €</th><th class="num">P&amp;L %</th><th>Exit-Typ</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function renderStrategies(strategies) {
+  if (!strategies || strategies.length === 0) {
+    document.getElementById('strategies-table').innerHTML = '<div class="sub">Keine Strategie-Daten</div>';
+    return;
+  }
+  const recColor = r => ({SUSPEND:'red', REDUCE:'yellow', KEEP:'gray', ELEVATE:'green', OBSERVE:'blue'}[r] ?? 'gray');
+  const rows = strategies.map(s => `
+    <tr>
+      <td><b>${esc(s.id)}</b></td>
+      <td class="num">${s.trades}</td>
+      <td class="num ${s.win_rate >= 50 ? 'pos' : (s.win_rate >= 40 ? 'warn' : 'neg')}">${s.win_rate.toFixed(1)}%</td>
+      <td class="num ${cls(s.pnl)}">${fmtEur(s.pnl)}</td>
+      <td class="num ${cls(s.avg_return)}">${fmtPct(s.avg_return)}</td>
+      <td><span class="pill ${recColor(s.recommendation)}">${esc(s.recommendation)}</span></td>
+    </tr>
+  `).join('');
+  document.getElementById('strategies-table').innerHTML = `
+    <table>
+      <thead><tr><th>Strategie</th><th class="num">Trades</th><th class="num">WR</th><th class="num">P&amp;L</th><th class="num">⌀ Return</th><th>Empfehlung</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+async function renderTheses() {
+  const d = await fetchJSON('/api/theses');
+  if (!d || !d.theses) {
+    document.getElementById('theses-list').innerHTML = '<div class="error">Fehler beim Laden</div>';
+    return;
+  }
+  const active = d.theses.filter(t => t.status === 'active' || !t.status);
+  if (active.length === 0) {
+    document.getElementById('theses-list').innerHTML = '<div class="sub">Keine aktiven Thesen</div>';
+    return;
+  }
+  const html = active.map(t => `
+    <div class="thesis-card">
+      <h3>${esc(t.id)} — ${esc(t.name)} <span class="pill blue">${esc(t.type)}</span></h3>
+      ${t.trigger ? `<div class="trigger">⚡ ${esc(t.trigger)}</div>` : ''}
+      ${t.logical_chain ? `<div class="chain">🧠 ${esc(t.logical_chain)}</div>` : ''}
+      <div class="meta">
+        ${t.tickers?.length ? `Tickers: ${t.tickers.slice(0, 8).map(x => `<span class="pill gray">${esc(x)}</span>`).join(' ')} ${t.tickers.length > 8 ? `+${t.tickers.length - 8}` : ''}<br>` : ''}
+        ${t.created ? `Created: ${esc(t.created)}` : ''}
+        ${t.thesis_strength ? ` · Strength: ${t.thesis_strength}/100` : ''}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('theses-list').innerHTML = html;
+}
+
+function renderRisk(risk) {
+  if (!risk) {
+    document.getElementById('risk-concentration').innerHTML = '<div class="error">keine Daten</div>';
+    return;
+  }
+  // Concentration
+  const conc = risk.breakdown.map(b => `
+    <div style="margin-bottom: 10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <span><b>${esc(b.ticker)}</b></span>
+        <span class="${b.pct > 30 ? 'neg' : (b.pct > 20 ? 'warn' : 'neutral')}">${b.pct.toFixed(1)}% · ${fmtEur(b.value)}</span>
+      </div>
+      <div class="bar"><div class="bar-fill ${b.pct > 30 ? 'red' : (b.pct > 20 ? 'yellow' : 'green')}" style="width:${Math.min(b.pct, 100)}%"></div></div>
+    </div>
+  `).join('') + `<div class="sub" style="margin-top:8px">Equity gesamt: <b>${fmtEur(risk.equity_eur)}</b></div>`;
+  document.getElementById('risk-concentration').innerHTML = conc;
+
+  // Findings
+  if (!risk.findings || risk.findings.length === 0) {
+    document.getElementById('risk-findings').innerHTML = '<div class="sub">✅ Keine Findings</div>';
+  } else {
+    document.getElementById('risk-findings').innerHTML = risk.findings.map(f => `
+      <div class="discord-msg" style="border-left-color: ${f.severity === 'HIGH' ? 'var(--red)' : 'var(--yellow)'}">
+        <span class="pill ${f.severity === 'HIGH' ? 'red' : 'yellow'}">${esc(f.severity)}</span>
+        <span class="pill gray">${esc(f.kind)}</span>
+        <div style="margin-top: 4px">${esc(f.msg)}</div>
+      </div>
+    `).join('');
+  }
+
+  // Correlations
+  document.getElementById('risk-corr').innerHTML = `
+    <div class="sub">Letztes Update: <b>${esc(risk.correlations_updated)}</b> · ${risk.correlations_count} Tickers im Universum</div>
+  `;
+}
+
+function renderHealth(health, jobs) {
+  if (!health) return;
+  const statusPill = (s, age) => {
+    const cls = s === 'OK' ? 'green' : (s === 'STALE' ? 'yellow' : 'red');
+    return `<span class="pill ${cls}">${s}</span>` + (age != null ? `<span class="age" style="margin-left:8px">${age}min</span>` : '');
+  };
+  const wd = `
+    <div class="health-row"><span class="name">Scheduler-Log</span><div>${statusPill(health.scheduler_log.status, health.scheduler_log.age_min)}</div></div>
+    <div class="health-row"><span class="name">Meta-Health</span><div>${statusPill(health.meta_health.status, health.meta_health.age_min)}</div></div>
+    <div class="health-row"><span class="name">Heartbeat</span><div>${statusPill(health.heartbeat.status, health.heartbeat.age_min)}</div></div>
+    <div class="health-row"><span class="name">Price Monitor</span><div>${statusPill(health.price_monitor.status, health.price_monitor.age_min)}</div></div>
+    <div class="health-row"><span class="name">Anomaly Brake (last halt)</span><div>${statusPill(health.anomaly_brake.status, health.anomaly_brake.age_min)}</div></div>
+    <div class="health-row"><span class="name">DB Integrity (last alert)</span><div>${statusPill(health.last_db_alert.status, health.last_db_alert.age_min)}</div></div>
+  `;
+  document.getElementById('health-watchdogs').innerHTML = wd;
+
+  // Jobs
+  if (!jobs) return;
+  let html = `<div class="sub" style="margin-bottom:8px">Errors (24h): <b class="${jobs.errors_24h > 0 ? 'neg' : 'pos'}">${jobs.errors_24h}</b></div>`;
+  if (jobs.errors && jobs.errors.length > 0) {
+    html += '<h3 style="font-size:13px;color:var(--red);margin:8px 0 4px 0">Letzte Errors:</h3>';
+    html += jobs.errors.slice(-10).reverse().map(e => `
+      <div class="discord-msg" style="border-left-color:var(--red)">
+        <span class="ts">${esc(e.ts)}</span>
+        <div><b>${esc(e.name)}</b>: ${esc(e.msg)}</div>
+      </div>
+    `).join('');
+  }
+  if (jobs.last_ok && jobs.last_ok.length > 0) {
+    html += '<h3 style="font-size:13px;color:var(--fg2);margin:12px 0 4px 0">Last-OK Timestamps:</h3>';
+    html += '<div style="font-size:12px">';
+    html += jobs.last_ok.map(j => `<div class="health-row"><span>${esc(j.name)}</span><span class="age">${esc(j.ts)}</span></div>`).join('');
+    html += '</div>';
+  }
+  document.getElementById('health-jobs').innerHTML = html;
+
+  // Badge
+  const badge = document.getElementById('badge-health');
+  if (jobs.errors_24h > 0) {
+    badge.textContent = jobs.errors_24h;
+    badge.className = 'badge';
+    badge.style.display = '';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+async function renderDiscord() {
+  const d = await fetchJSON('/api/discord-feed?limit=30');
+  if (!d || !d.messages) {
+    document.getElementById('discord-feed').innerHTML = '<div class="error">Fehler</div>';
+    return;
+  }
+  if (d.messages.length === 0) {
+    document.getElementById('discord-feed').innerHTML = '<div class="sub">Keine Messages</div>';
+    return;
+  }
+  const html = d.messages.map(m => `
+    <div class="discord-msg ${m.role === 'victor' ? 'victor' : 'albert'}">
+      <span class="role">${esc(m.role ?? 'system')}</span>
+      <span class="ts">${ago(m.ts)}</span>
+      <pre>${esc(m.content ?? '').substring(0, 500)}${(m.content ?? '').length > 500 ? '…' : ''}</pre>
+    </div>
+  `).join('');
+  document.getElementById('discord-feed').innerHTML = html;
+}
+
+async function loadAll() {
+  const d = await fetchJSON('/api/dashboard-data');
+  if (!d) return;
+  renderHeader(d);
+  renderKPIs(d);
+  renderOverviewMarket(d);
+  renderPositions(d.positions);
+  renderStrategies(d.strategies);
+  renderRisk(d.risk);
+  renderHealth(d.health, {errors_24h: d.job_errors_24h, errors: [], last_ok: []});
+
+  // Anomalies + jobs separate
+  const [anom, jobs] = await Promise.all([
+    fetchJSON('/api/anomalies'),
+    fetchJSON('/api/jobs'),
+  ]);
+  if (anom) renderOverviewAnomalies(anom.count, anom.triggers);
+  if (jobs) renderHealth(d.health, jobs);
+
+  // Trades + theses + discord lazily
+  const trades = await fetchJSON('/api/recent-trades?limit=20');
+  if (trades) renderTrades(trades.trades);
+
+  renderTheses();
+  renderDiscord();
+}
+
+loadAll();
+setInterval(loadAll, 30000);
 </script>
 </body>
 </html>
