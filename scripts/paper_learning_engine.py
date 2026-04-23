@@ -479,7 +479,7 @@ def get_recommendation(win_rate: float, trades: int, total_pnl_eur: float = 0.0)
     # in einem Bear-Markt mit baseline_wr=16% ein KEEP — falsch.
     if trades >= 30 and total_pnl_eur < -500:
         return 'SUSPEND'  # Klares Geldvernichter-Profil, unabhängig von Marktphase
-    if trades >= 15 and total_pnl_eur < -300 and win_rate < 0.45:
+    if trades >= 12 and total_pnl_eur < -300 and win_rate < 0.45:
         return 'SUSPEND'  # Genug Daten + nennenswerter Verlust + schwache WR
 
     th = _adaptive_thresholds()
