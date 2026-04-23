@@ -104,30 +104,60 @@ def _open_drawdown(conn) -> tuple[bool, str]:
 
 
 def _portfolio_drawdown(conn) -> tuple[bool, str]:
-    """30d-Equity-Hoch vs aktuelle Equity."""
+    """30d-Equity-Hoch vs aktuelle Equity, market-relativ.
+
+    In starkem Bear-Markt (SPY -15%) wäre absolutes -10% Portfolio-DD normal.
+    Daher: Trigger nur wenn Portfolio-DD den SPY-DD um >5pp unterschreitet
+    (= echtes Underperformance-Signal). Fallback auf absolut wenn kein SPY.
+    """
     fund = dict(conn.execute("SELECT key, value FROM paper_fund").fetchall())
     starting = float(fund.get('starting_capital', 25000))
     realized = float(fund.get('total_realized_pnl', 0))
     current_equity = starting + realized
-    # 30d Equity-Verlauf approximieren via cumsum closed PnL
     cutoff = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
     closes = conn.execute("""
         SELECT pnl_eur FROM paper_portfolio
         WHERE status='CLOSED' AND close_date >= ?
         ORDER BY close_date ASC
     """, (cutoff,)).fetchall()
-    # Re-compute equity-curve backward
     equity = current_equity
     peak = current_equity
     for (pnl,) in reversed(closes):
-        equity -= float(pnl or 0)  # rückwärts gehen
+        equity -= float(pnl or 0)
         if equity > peak:
             peak = equity
     if peak <= 0:
         return False, ''
     dd_pct = (current_equity - peak) / peak * 100
+
+    # Markt-Baseline aus macro_daily.SPY
+    spy_dd = None
+    try:
+        spy_rows = conn.execute("""
+            SELECT value FROM macro_daily
+            WHERE indicator='SPY' AND date >= ?
+            ORDER BY date ASC
+        """, (cutoff,)).fetchall()
+        if len(spy_rows) >= 5:
+            vals = [float(r[0]) for r in spy_rows if r[0]]
+            spy_peak = max(vals)
+            spy_now = vals[-1]
+            spy_dd = (spy_now - spy_peak) / spy_peak * 100
+    except Exception:
+        pass
+
+    if spy_dd is not None:
+        # Underperformance-Trigger: Portfolio mind. 5pp schlechter als SPY
+        if dd_pct < spy_dd - 5.0 and dd_pct < PORTFOLIO_DRAWDOWN_PCT:
+            return True, (
+                f'Underperformance: PF={dd_pct:.1f}% vs SPY={spy_dd:.1f}% '
+                f'(peak={peak:.0f}€, jetzt={current_equity:.0f}€)'
+            )
+        return False, ''
+
+    # Fallback ohne SPY: absoluter Threshold
     if dd_pct < PORTFOLIO_DRAWDOWN_PCT:
-        return True, f'Drawdown vom 30d-Peak: {dd_pct:.1f}% (peak={peak:.0f}€, jetzt={current_equity:.0f}€)'
+        return True, f'Drawdown vom 30d-Peak: {dd_pct:.1f}% (peak={peak:.0f}€)'
     return False, ''
 
 

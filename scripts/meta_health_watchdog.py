@@ -70,21 +70,32 @@ def _check_logs() -> list[str]:
 
 
 def _check_discord_webhook() -> list[str]:
+    """Probiert verschiedene Discord-Setups (Webhook ODER Bot-Token)."""
     issues = []
+    sys.path.insert(0, str(WS / 'scripts'))
+
+    # Variante 1: Bot-Token (TradeMind nutzt Bot, kein Webhook)
+    if os.getenv('DISCORD_BOT_TOKEN') or os.getenv('TRADEMIND_DISCORD_TOKEN'):
+        return []  # Bot-Setup → discord_sender wird selbst checken
+
+    # Variante 2: Klassischer Webhook
     url = os.getenv('DISCORD_WEBHOOK_URL') or os.getenv('TRADEMIND_DISCORD_WEBHOOK')
     if not url:
-        # Fallback: discord_sender Modul probieren
         try:
-            sys.path.insert(0, str(WS / 'scripts'))
             from discord_sender import WEBHOOK_URL  # type: ignore
             url = WEBHOOK_URL
         except Exception:
-            issues.append('Discord-Webhook URL nicht konfiguriert')
+            try:
+                from discord_sender import BOT_TOKEN  # type: ignore
+                if BOT_TOKEN:
+                    return []  # Bot-Mode
+            except Exception:
+                pass
+            issues.append('Weder Discord-Webhook noch Bot-Token konfiguriert')
             return issues
     try:
         req = urllib.request.Request(url, method='GET')
         with urllib.request.urlopen(req, timeout=5) as r:
-            # Discord antwortet mit 200 + JSON oder 405 — beides ok
             if r.status not in (200, 405):
                 issues.append(f'Discord-Webhook HTTP {r.status}')
     except Exception as e:

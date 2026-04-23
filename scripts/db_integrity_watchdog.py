@@ -93,6 +93,11 @@ def _check_orphan_tranches(conn) -> list[str]:
 
 
 def _check_cash_drift(conn) -> list[str]:
+    """Cash-Bilanz: starting + realized_pnl - open_cost = current_cash (±5€).
+
+    NULL-shares-Positionen werden separat gemeldet — sie verfälschen open_cost
+    weil entry_price * NULL = NULL → SUM() ignoriert sie.
+    """
     issues = []
     fund = dict(conn.execute("SELECT key, value FROM paper_fund").fetchall())
     starting = float(fund.get('starting_capital', 0))
@@ -100,17 +105,27 @@ def _check_cash_drift(conn) -> list[str]:
     cash = float(fund.get('current_cash', 0))
     open_cost = conn.execute("""
         SELECT COALESCE(SUM(entry_price * shares), 0)
-        FROM paper_portfolio WHERE status = 'OPEN'
+        FROM paper_portfolio
+        WHERE status = 'OPEN' AND shares IS NOT NULL AND shares > 0
     """).fetchone()[0]
+    null_share_open = conn.execute("""
+        SELECT COUNT(*), GROUP_CONCAT(ticker || '#' || id, ',')
+        FROM paper_portfolio
+        WHERE status = 'OPEN' AND (shares IS NULL OR shares <= 0)
+    """).fetchone()
+    null_count, null_tickers = null_share_open[0] or 0, null_share_open[1] or ''
+
     expected = starting + realized - open_cost
     drift = cash - expected
-    # 5€ Toleranz für Rundung/Slippage/Fees
     if abs(drift) > 5.0:
-        issues.append(
+        msg = (
             f'Cash-Drift: cash={cash:.2f}€ vs erwartet={expected:.2f}€ '
             f'(diff={drift:+.2f}€, starting={starting:.0f}, realized={realized:+.0f}, '
-            f'open_cost={open_cost:.0f})'
+            f'open_cost_clean={open_cost:.0f})'
         )
+        if null_count:
+            msg += f' — ACHTUNG: {null_count} OPEN ohne shares: {null_tickers}'
+        issues.append(msg)
     return issues
 
 
@@ -155,12 +170,14 @@ def _check_open_without_stop(conn) -> list[str]:
 
 
 def _check_negative_shares(conn) -> list[str]:
+    """SQLite: NULL ist NICHT <= 0, daher explizit prüfen."""
     issues = []
     rows = conn.execute(
-        "SELECT id, ticker, shares FROM paper_portfolio WHERE shares <= 0"
+        "SELECT id, ticker, status, shares FROM paper_portfolio "
+        "WHERE shares IS NULL OR shares <= 0"
     ).fetchall()
-    for rid, ticker, shares in rows:
-        issues.append(f'Negative/Null shares: id={rid} {ticker} shares={shares}')
+    for rid, ticker, status, shares in rows:
+        issues.append(f'Bad shares: id={rid} {ticker} status={status} shares={shares!r}')
     return issues
 
 

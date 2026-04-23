@@ -95,16 +95,24 @@ def _section_watchdogs() -> str:
 
 
 def _section_job_errors() -> str:
+    """Filtert ERROR-Lines aus scheduler.log nur aus den letzten 24h.
+
+    Erwartet Format mit ISO-Datum am Zeilen-Anfang: '[YYYY-MM-DD HH:MM:SS]'.
+    """
     log = DATA / 'scheduler.log'
     if not log.exists():
         return 'Job-Errors (24h): scheduler.log fehlt'
-    cutoff = datetime.now() - timedelta(hours=24)
+    cutoff = (datetime.now() - timedelta(hours=24)).strftime('%Y-%m-%d %H:%M')
+    cutoff_marker = f'[{cutoff}'
     err_count = 0
     samples = []
     try:
-        # Tail last 5000 lines (cheap)
         lines = log.read_text(errors='replace').splitlines()[-5000:]
         for ln in lines:
+            # Skip Zeilen ohne Timestamp oder vor cutoff
+            m = re.match(r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})', ln)
+            if not m or m.group(1) < cutoff:
+                continue
             if 'ERROR' in ln or '❌' in ln or 'CRASHED' in ln:
                 err_count += 1
                 if len(samples) < 3:
