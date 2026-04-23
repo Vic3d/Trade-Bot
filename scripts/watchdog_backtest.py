@@ -156,16 +156,14 @@ def s4_macro_stale(verbose: bool = False) -> tuple[bool, str]:
 
 
 def s5_tranche_missing(verbose: bool = False) -> tuple[bool, str]:
-    """CLOSED-Position ohne Tranchen → Tranche-Reconciliation muss
-    backfill/issue erkennen."""
+    """OPEN-Position OHNE Tranchen → Reconciliation muss 3 Tranchen
+    backfilen (Trailing-Stops haengen daran)."""
     with tempfile.TemporaryDirectory() as td:
         db = Path(td) / 'trading.db'
         conn = _make_test_db(db)
         conn.execute("INSERT INTO paper_portfolio (ticker, strategy, status, shares, "
-                     "entry_price, close_price, close_date, pnl_eur, exit_type) "
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                     ('XYZ', 'PS_TEST', 'CLOSED', 10, 100.0, 110.0,
-                      datetime.now(timezone.utc).isoformat(), 100.0, 'TARGET'))
+                     "entry_price) VALUES (?, ?, ?, ?, ?)",
+                     ('XYZ', 'PS_TEST', 'OPEN', 30, 100.0))
         conn.commit(); conn.close()
 
         try:
