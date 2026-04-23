@@ -67,22 +67,19 @@ fi
 
 # ─── 2. Auf GitHub pushen ───────────────────────────────────────────
 
-echo "[2/4] Push zu GitHub..."
+BRANCH=$(git -C "$(dirname "$0")/.." branch --show-current)
+echo "[2/4] Push zu GitHub (branch: $BRANCH)..."
 if [ "$DRY_RUN" = false ]; then
-    git -C "$(dirname "$0")/.." push origin master 2>&1 || {
-        echo "  Push fehlgeschlagen — versuche aktuellen Branch..."
-        BRANCH=$(git -C "$(dirname "$0")/.." branch --show-current)
-        git -C "$(dirname "$0")/.." push origin "$BRANCH" 2>&1
-    }
+    git -C "$(dirname "$0")/.." push origin "$BRANCH" 2>&1
 else
     echo "  [DRY-RUN] würde pushen"
 fi
 
 # ─── 3. Server: Pull + Merge ────────────────────────────────────────
 
-echo "[3/4] Server aktualisieren..."
+echo "[3/4] Server aktualisieren (branch: $BRANCH)..."
 if [ "$DRY_RUN" = false ]; then
-    ssh -o StrictHostKeyChecking=no "$VPS" bash << 'REMOTE'
+    ssh -o StrictHostKeyChecking=no "$VPS" "BRANCH='$BRANCH' bash -s" << 'REMOTE'
 set -e
 cd /opt/trademind
 
@@ -92,9 +89,14 @@ git stash push --quiet -m "deploy-autostash-$(date +%Y%m%d-%H%M)" -- \
     data/ceo_directive.json data/trading_learnings.json data/strategy_dna.json \
     memory/ 2>/dev/null || true
 
-# Neueste Version holen
+# Neueste Version holen — merge vom selben Branch der lokal gepusht wurde
 git fetch origin --quiet
-git merge origin/master --no-edit -X theirs 2>&1 | grep -v "^Already" || true
+CURRENT=$(git branch --show-current)
+if [ "$CURRENT" != "$BRANCH" ]; then
+    echo "  ⚠️  VPS auf '$CURRENT', wechsle zu '$BRANCH'..."
+    git checkout "$BRANCH" 2>&1 || git checkout -b "$BRANCH" "origin/$BRANCH"
+fi
+git merge "origin/$BRANCH" --no-edit -X theirs 2>&1 | grep -v "^Already" || true
 
 # Bot-State wiederherstellen (Daten überschreiben frische Defaults)
 git checkout stash@{0} -- \
