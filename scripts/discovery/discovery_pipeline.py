@@ -4,7 +4,7 @@ Discovery Pipeline — Phase 7.15 Orchestrator
 ==============================================
 Zentrale Aggregation:
   1. prune_expired() — Alte Kandidaten entfernen
-  2. Promote KAUFEN-Verdicts zu strategies.json (status='probation')
+  2. Promote KAUFEN-Verdicts zu strategies.json (status='active', vollautonom)
   3. Reject NICHT_KAUFEN-Verdicts
   4. Status-Report: Wieviele pending/analyzing/promoted/rejected
   5. Discord-Summary (optional)
@@ -18,7 +18,8 @@ Ablauf einmal taeglich (07:15):
 Strategien-Promotion:
   - Nur Ticker die PRIORITY >= 0.5 UND Verdict KAUFEN UND Confidence >= 70 haben
   - Auto-created Strategy-ID: PS_DISC_<TICKER>
-  - status='probation' — bleibt geblockt bis Victor das auf 'active' setzt
+  - status='active' direkt — handelbar im naechsten Entry-Window
+  - Schutz liegt bei den Paper-Trade-Guards (Tier, Block 4b, Falling Knife, etc.)
   - genesis.trigger = Summary aus Sources + Verdict-Reasoning
 
 CLI:
@@ -267,8 +268,9 @@ def run(dry: bool = False, report_only: bool = False) -> dict:
                 promoted_count += 1
                 print(f'  + PROMOTED {ticker} (conf {conf})')
                 try_send_discord(
-                    f'🎯 DISCOVERY: **{ticker}** wurde promoted als PS_DISC_{ticker} '
-                    f'(Deep-Dive KAUFEN conf={conf}) — status=probation, deine Freigabe noetig.'
+                    f'🎯 DISCOVERY: **{ticker}** autonom aktiviert als PS_DISC_{ticker} '
+                    f'(Deep-Dive KAUFEN conf={conf}) — handelbar im naechsten Entry-Window. '
+                    f'Stoppen mit "Stopp PS_DISC_{ticker}".'
                 )
         elif verdict_label == 'NICHT_KAUFEN' and not dry:
             mark_status(ticker, 'rejected', note=f'Deep-Dive NICHT_KAUFEN conf={conf}')
