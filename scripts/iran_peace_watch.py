@@ -26,6 +26,17 @@ PEACE_KEYWORDS = [
     'friedensgespräche iran', 'hormuz öffnung',
 ]
 
+# Bug W (2026-04-22): Negationen, die ein Peace-Match invalidieren —
+# event_auto_exit konsumiert ANY new hash als IRAN_PEACE_SIGNED → False-Positives
+# wie "Trump rejects iran ceasefire" würden Defense+Oil-Positionen schließen.
+NEGATION_KEYWORDS = [
+    'reject', 'rejects', 'rejected', 'collapse', 'collapses', 'collapsed',
+    'fails', 'failed', 'breakdown', 'breaks down', 'no deal', 'walk out',
+    'walked out', 'abandons', 'abandoned', 'abgebrochen', 'gescheitert',
+    'scheitert', 'lehnt ab', 'kein deal', 'pause',
+    'suspend', 'suspended', 'ausgesetzt',
+]
+
 QUERIES = [
     'Iran ceasefire peace 2026',
     'Iran Waffenstillstand Friedensgespräche',
@@ -88,6 +99,9 @@ def run():
                 continue
             low = title.lower()
             matched = [kw for kw in PEACE_KEYWORDS if kw in low]
+            # Bug W: Negation aussortieren — "rejected/collapsed/failed" = keine Peace.
+            if matched and any(neg in low for neg in NEGATION_KEYWORDS):
+                continue
             if matched:
                 new_signals.append({
                     'title': title,
