@@ -22,7 +22,10 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-WS = Path('/data/.openclaw/workspace')
+# Sub-8 fix 2026-04-23: harter Pfad /data/.openclaw/ war Crash-Ursache (FileNotFoundError beim PID-Schreiben).
+WS = Path(os.getenv('TRADEMIND_HOME', '/opt/trademind'))
+if not WS.exists():
+    WS = Path(__file__).resolve().parent.parent
 DB = WS / 'data/trading.db'
 PID_FILE = WS / 'data/price_monitor.pid'
 

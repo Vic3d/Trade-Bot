@@ -103,11 +103,12 @@ SCHEDULE = [
     # K1 — Victor-Feedback Trust-Score (täglich aus Reactions berechnen)
     ('Victor Trust',        'victor_feedback.py',      [],                        23, 20, None),
     # ── Phase 4/5/6.7/6.9: Integrity + Truth Jobs ──
-    ('Fund Reconciliation', 'fund_reconciliation.py',  [],                        23, 15, None),   # tgl. 23:15 nach State Sync
+    ('Fund Reconciliation', 'fund_reconciliation.py',  ['--fix'],                 23, 15, None),   # tgl. 23:15 nach State Sync (Sub-8 V2: --fix aktiv)
     ('Proposal Expirer',    'proposal_expirer.py',     [],                         6, 30, None),   # tgl. früh
     ('Proposal Expirer',    'proposal_expirer.py',     [],                        14, 30, None),   # mittags nochmal
     ('Stale Data Watchdog', 'stale_data_watchdog.py',  [],                         6, 45, None),   # tgl. früh
     # ── Sub-8: Monitoring/Watchdogs (2026-04-23) ──
+    ('Macro Refresh',       'macro_indicator_refresh.py', [],                      6, 5,  None),   # tgl. 06:05 — SPY/VIX/EURUSD/GOLD/WTI vor allen Health-Checks
     ('DB Integrity',        'db_integrity_watchdog.py', [],                        6, 30, None),   # tgl. vor Stale-Data
     ('Meta Health',         'meta_health_watchdog.py',  [],                        8, 45, None),   # tgl. nach Morning Brief
     ('Meta Health',         'meta_health_watchdog.py',  [],                       20, 45, None),   # abends nochmal

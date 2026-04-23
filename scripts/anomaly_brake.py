@@ -161,6 +161,26 @@ def _portfolio_drawdown(conn) -> tuple[bool, str]:
     return False, ''
 
 
+def _halt_already_active() -> bool:
+    """Sub-8 V2 (E): Doppel-HALT-Suppression.
+    Skip wenn CEO bereits HALT signalisiert UND halt_until in der Zukunft."""
+    if not CEO_FILE.exists():
+        return False
+    try:
+        data = json.loads(CEO_FILE.read_text())
+        if not data.get('trading_halt'):
+            return False
+        until = data.get('halt_until')
+        if not until:
+            return True  # HALT ohne Ablauf = aktiv
+        until_dt = datetime.fromisoformat(until)
+        if until_dt.tzinfo is None:
+            until_dt = until_dt.replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc) < until_dt
+    except Exception:
+        return False
+
+
 def _set_halt(reason: str, dry_run: bool) -> None:
     if dry_run:
         print(f'[DRY] Würde CEO HALT setzen: {reason}')
@@ -246,6 +266,10 @@ def run(dry_run: bool = False, test: bool = False) -> int:
     for n, d in triggers:
         msg_lines.append(f'  • [{n}] {d}')
 
+    if _halt_already_active():
+        # Sub-8 V2: HALT bereits aktiv → Discord-Spam unterdrücken, nur loggen
+        print(f'[{ts}] HALT bereits aktiv (CEO directive) — kein neuer Alert/HALT')
+        return 0
     if _halt_cooldown_ok():
         reason = '; '.join(f'{n}: {d}' for n, d in triggers)
         _set_halt(reason, dry_run)

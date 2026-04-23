@@ -108,6 +108,15 @@ def _check_cash_drift(conn) -> list[str]:
         FROM paper_portfolio
         WHERE status = 'OPEN' AND shares IS NOT NULL AND shares > 0
     """).fetchone()[0]
+    # Sub-8 V2 (D): Fees auf OPEN Positionen mit einrechnen, falls Spalte existiert
+    pp_cols = {c[1] for c in conn.execute('PRAGMA table_info(paper_portfolio)').fetchall()}
+    fees_open = 0.0
+    if 'fees' in pp_cols:
+        r_fees = conn.execute("""
+            SELECT COALESCE(SUM(fees), 0) FROM paper_portfolio
+            WHERE status='OPEN' AND shares IS NOT NULL AND shares > 0
+        """).fetchone()
+        fees_open = float(r_fees[0] or 0)
     null_share_open = conn.execute("""
         SELECT COUNT(*), GROUP_CONCAT(ticker || '#' || id, ',')
         FROM paper_portfolio
@@ -115,13 +124,13 @@ def _check_cash_drift(conn) -> list[str]:
     """).fetchone()
     null_count, null_tickers = null_share_open[0] or 0, null_share_open[1] or ''
 
-    expected = starting + realized - open_cost
+    expected = starting + realized - open_cost - fees_open
     drift = cash - expected
     if abs(drift) > 5.0:
         msg = (
             f'Cash-Drift: cash={cash:.2f}€ vs erwartet={expected:.2f}€ '
             f'(diff={drift:+.2f}€, starting={starting:.0f}, realized={realized:+.0f}, '
-            f'open_cost_clean={open_cost:.0f})'
+            f'open_cost_clean={open_cost:.0f}, fees_open={fees_open:.0f})'
         )
         if null_count:
             msg += f' — ACHTUNG: {null_count} OPEN ohne shares: {null_tickers}'
@@ -177,6 +186,7 @@ def _check_macro_stale(conn) -> list[str]:
     issues = []
     from datetime import timedelta
     cutoff = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+    stale_inds = []
     for ind in ('SPY', 'VIX'):
         r = conn.execute(
             "SELECT MAX(date) FROM macro_daily WHERE indicator = ?", (ind,)
@@ -184,6 +194,23 @@ def _check_macro_stale(conn) -> list[str]:
         last = r[0] if r else None
         if not last or last < cutoff:
             issues.append(f'macro_daily.{ind} stale: letzter Wert {last} (cutoff {cutoff})')
+            stale_inds.append(ind)
+    # Sub-8 V2 (F): Auto-Heal — Refresh-Script ausführen wenn stale
+    if stale_inds:
+        try:
+            import subprocess
+            script = WS / 'scripts' / 'macro_indicator_refresh.py'
+            if script.exists():
+                r = subprocess.run(
+                    [sys.executable, str(script), '--backfill-days', '14'],
+                    timeout=60, capture_output=True, text=True
+                )
+                if r.returncode == 0:
+                    issues.append(f'  → Auto-Heal: macro_indicator_refresh ausgeführt ({", ".join(stale_inds)})')
+                else:
+                    issues.append(f'  → Auto-Heal FAIL: rc={r.returncode} stderr={r.stderr[:200]}')
+        except Exception as e:
+            issues.append(f'  → Auto-Heal CRASH: {e}')
     return issues
 
 

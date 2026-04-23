@@ -94,32 +94,50 @@ def _section_watchdogs() -> str:
     return '\n'.join(lines)
 
 
+# Sub-8 V2 (E): Bekannte rekurrierende Failures, die wir nicht im Digest sehen wollen.
+# Format: case-insensitive Substring-Match auf Log-Zeile.
+JOB_ERROR_SUPPRESSION = (
+    'rl training',          # ML-Modul, läuft auf VPS ohne GPU oft fail
+    'rl_trainer',
+    'tensorflow',
+    'cuda',
+    'no module named torch',
+)
+
+
 def _section_job_errors() -> str:
     """Filtert ERROR-Lines aus scheduler.log nur aus den letzten 24h.
 
     Erwartet Format mit ISO-Datum am Zeilen-Anfang: '[YYYY-MM-DD HH:MM:SS]'.
+    Bekannte rekurrierende Fails (siehe JOB_ERROR_SUPPRESSION) werden separat gezählt.
     """
     log = DATA / 'scheduler.log'
     if not log.exists():
         return 'Job-Errors (24h): scheduler.log fehlt'
     cutoff = (datetime.now() - timedelta(hours=24)).strftime('%Y-%m-%d %H:%M')
-    cutoff_marker = f'[{cutoff}'
     err_count = 0
+    suppressed = 0
     samples = []
     try:
         lines = log.read_text(errors='replace').splitlines()[-5000:]
         for ln in lines:
-            # Skip Zeilen ohne Timestamp oder vor cutoff
             m = re.match(r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})', ln)
             if not m or m.group(1) < cutoff:
                 continue
             if 'ERROR' in ln or '❌' in ln or 'CRASHED' in ln:
+                ln_low = ln.lower()
+                if any(s in ln_low for s in JOB_ERROR_SUPPRESSION):
+                    suppressed += 1
+                    continue
                 err_count += 1
                 if len(samples) < 3:
                     samples.append(ln[:120])
     except Exception as e:
         return f'Job-Errors: read fail ({e})'
-    out = [f'Job-Errors (24h): {err_count}']
+    header = f'Job-Errors (24h): {err_count}'
+    if suppressed:
+        header += f' (+{suppressed} known/suppressed)'
+    out = [header]
     for s in samples:
         out.append(f'  - {s}')
     return '\n'.join(out)

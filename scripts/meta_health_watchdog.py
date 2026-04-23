@@ -60,15 +60,63 @@ def _file_age_min(p: Path) -> float | None:
     return age
 
 
+def _try_restart(name: str) -> str | None:
+    """Sub-8 V2 (C): Auto-Heal für bekannte Daemons.
+    Versucht price_monitor und heartbeat_monitor systemd-restart oder Direct-Start.
+    Gibt Status-Suffix zurück oder None.
+    """
+    import subprocess
+    # systemd-Service-Mapping (Linux/VPS)
+    svc_map = {
+        'price_monitor': 'trademind-price-monitor',
+        'heartbeat_monitor': 'trademind-heartbeat',
+        'scheduler': 'trademind-scheduler',
+    }
+    svc = svc_map.get(name)
+    if not svc:
+        return None
+    try:
+        r = subprocess.run(
+            ['systemctl', 'restart', svc],
+            timeout=15, capture_output=True, text=True
+        )
+        if r.returncode == 0:
+            return f' → AUTO-HEAL: systemctl restart {svc} OK'
+        # Fallback: Direct-Start im Hintergrund
+        script_map = {
+            'price_monitor': WS / 'scripts' / 'price_monitor.py',
+        }
+        script = script_map.get(name)
+        if script and script.exists():
+            log = DATA / f'{name}.log'
+            subprocess.Popen(
+                [sys.executable, str(script)],
+                stdout=open(log, 'a'), stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
+            return f' → AUTO-HEAL: direct-start {script.name} (PID detached)'
+        return f' → AUTO-HEAL FAIL: systemctl rc={r.returncode}'
+    except Exception as e:
+        return f' → AUTO-HEAL CRASH: {e}'
+
+
 def _check_logs() -> list[str]:
     issues = []
     for name, fname, max_age in LOG_CHECKS:
         p = DATA / fname
         age = _file_age_min(p)
         if age is None:
-            issues.append(f'{name}: Log-File fehlt ({fname})')
+            msg = f'{name}: Log-File fehlt ({fname})'
+            heal = _try_restart(name)
+            if heal:
+                msg += heal
+            issues.append(msg)
         elif age > max_age:
-            issues.append(f'{name}: Log {age:.0f}min alt (max {max_age}min)')
+            msg = f'{name}: Log {age:.0f}min alt (max {max_age}min)'
+            heal = _try_restart(name)
+            if heal:
+                msg += heal
+            issues.append(msg)
     return issues
 
 

@@ -505,6 +505,15 @@ def ask_albert(message: str) -> str:
                 {'role': 'user', 'content': message}
             ],
         )
+        # Sub-8 V2 (B): API-Quota tracken
+        try:
+            from api_quota_tracker import track as _track_api
+            usage = getattr(response, 'usage', None)
+            tokens = (getattr(usage, 'input_tokens', 0) + getattr(usage, 'output_tokens', 0)) if usage else None
+            _track_api('anthropic', 'discord_chat', tokens=tokens, status='ok',
+                       note=CLAUDE_MODEL)
+        except Exception:
+            pass
         return response.content[0].text.strip()
 
     except ImportError:
@@ -514,6 +523,11 @@ def ask_albert(message: str) -> str:
         )
     except Exception as e:
         error_str = str(e)[:200]
+        try:
+            from api_quota_tracker import track as _track_api
+            _track_api('anthropic', 'discord_chat', status='fail', note=error_str[:80])
+        except Exception:
+            pass
         print(f'[Albert] Claude API Fehler: {error_str}', flush=True)
         return (
             f'⚠️ **Albert temporär nicht verfügbar** — API-Fehler: {error_str}\n'
