@@ -52,7 +52,7 @@ fi
 
 # ─── 1. Lokale Änderungen commiten (falls nötig) ────────────────────
 
-UNCOMMITTED=$(git -C "$(dirname "$0")/.." status --porcelain -- scripts/ data/strategies.json 2>/dev/null | grep -v '^??' | wc -l)
+UNCOMMITTED=$(git -C "$(dirname "$0")/.." status --porcelain -- scripts/ data/strategies.json 2>/dev/null | { grep -v '^??' || true; } | wc -l)
 if [ "$UNCOMMITTED" -gt 0 ]; then
     echo "[1/4] Uncommitted Änderungen gefunden — commite automatisch..."
     if [ "$DRY_RUN" = false ]; then
