@@ -372,7 +372,36 @@ def _execute_paper_entry_inner(
     style: str = 'swing',
     source: str = 'auto',
 ) -> dict:
-    """Eigentliche Trade-Execution mit allen Guards."""
+    """Eigentliche Trade-Execution mit allen Guards.
+
+    Guard-Reihenfolge (Sub-7 ToC, 2026-04-23):
+        Guard -1   KILL-SWITCH (CEO halt)              ~L389
+        Guard 0a   Entry-Zeitfenster (Morgen-Block)    ~L415
+        Guard 0    Preis-Frische                       ~L430
+        Guard 0b   Stop < Entry (Long)                 ~L439
+        Guard 0c   Minimum CRV 1.3:1                   ~L458
+        Guard 0c3  Cost-Hurdle Gate (Phase 19a)        ~L470
+        Guard 0    CEO Directive Check                 ~L501
+        Guard 0c2  Deep Dive Verdict Gate              ~L542
+        Guard 0d   Deep Dive Pre-Trade Gate            ~L667
+        Guard 1    Thesis + Conviction Check           ~L796
+        Guard 2    Conviction Score (>=45)             ~L814
+        Guard 2b   Wöchentl. Trade-Limit (atomic)      ~L847
+        Guard 3    Max Positionen                      ~L898
+        Guard 4    Kein Duplikat                       ~L909
+        Guard 5    Sektor-Limit (Count + %)            ~L919
+        Guard 5c   Region-%-Limit (US/EU/Asia)         ~L957
+        Guard 5b   Style-spezifische Checks            ~L979
+        Guard 5d   Marginal-VaR Pre-Trade (Phase 21)   ~L1004
+        Guard 5p9  Portfolio Risk Mgmt 2.0 (Phase 9)   ~L1140
+        Guard 6b   Position <15% vom Fund              ~L1254
+        Guard 6c   Cash >10% nach Trade                ~L1268
+
+    HINWEIS: Volle Modularisierung in `scripts/execution/guards/`
+    aufgeschoben (Sub-9b) — braucht erst Test-Fixtures pro Guard
+    bevor 1080-Zeilen-Funktion sicher zerschnitten werden kann.
+    Sub-7 (2026-04-23): nur ToC + Sektion-Marker eingeführt.
+    """
     ticker = ticker.upper()
 
     # ── Style automatisch aus Strategie ableiten ──────────────────────

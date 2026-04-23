@@ -2,6 +2,11 @@
 """
 position_update.py — Single Source of Truth Updater
 
+⚠️  LEGACY (Sub-7 Audit 2026-04-23):
+    Stop-Updates auf der `trades`-Tabelle (Legacy-Archiv). Für aktive Paper-
+    Positionen bitte `paper_portfolio.stop_price` direkt updaten oder den
+    Discord-Bot ("Stop TICKER PREIS") nutzen. Siehe `data/SCHEMA.md`.
+
 Wenn Victor eine Position-Änderung meldet, NUR dieses Script aufrufen.
 Es updated trading_config.json + pushed zu GitHub + regeneriert Snapshot.
 
