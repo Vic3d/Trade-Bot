@@ -88,6 +88,9 @@ SCHEDULE = [
     ('Earnings Cache',      'earnings_calendar.py',               [],             6,  35, [0],         False),
     # Asia Lead Signal — täglich vor Morgen-Briefing (Frühindikator US/EU-Open)
     ('Asia Lead Signal',    'asia_lead_signal.py',                [],             7,  0,  None,        False),
+    # Phase 21 — Korrelations-Matrix (Ledoit-Wolf + EWMA + Conditional)
+    # Vor Handelsstart, nach Asia-Lead. Schreibt data/correlations.json
+    ('Correlation Matrix',  'correlation_refresh.py',             [],             7,  15, [0,1,2,3,4]),
     # Price-Backfill: laedt Historie fuer neu discovered Tickers (Auto-DD braucht >=60d)
     ('Discovery Price BF',  'discovery/price_backfill.py',        [],             6,  45, [0,1,2,3,4], False),
     # Pipeline: nach Auto-DD (07:30) — promoted/rejected auf Basis der neuen Verdikts
