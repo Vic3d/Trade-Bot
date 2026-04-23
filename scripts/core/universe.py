@@ -64,14 +64,23 @@ SCANNABLE_STATUSES = {STATUS_ACTIVE, STATUS_WATCHLIST}
 # ── Low-Level I/O ─────────────────────────────────────────────────────────────
 
 def load_universe() -> dict:
-    """Lädt das gesamte Universum. Leeres Dict wenn Datei fehlt."""
+    """Lädt das gesamte Universum. Leeres Dict wenn Datei fehlt.
+
+    Bugfix 2026-04-23: filtert Metadaten-Keys (`_info`, `_count`, `_updated`)
+    raus damit Aufrufer die nur Ticker→dict-Eintraege erwarten nicht ueber
+    'str/int has no attribute get' crashen (siehe autonomous_scanner.py:1002).
+    """
     if not UNIVERSE_FILE.exists():
         return {}
     try:
-        return json.loads(UNIVERSE_FILE.read_text(encoding='utf-8'))
+        raw = json.loads(UNIVERSE_FILE.read_text(encoding='utf-8'))
     except Exception as e:
         print(f"[universe] load failed: {e}")
         return {}
+    # Nur dict-Werte zurueckgeben (Ticker-Eintraege). Underscore-Keys
+    # bleiben als Metadaten in der Datei, aber nicht in der API.
+    return {k: v for k, v in raw.items()
+            if isinstance(v, dict) and not k.startswith('_')}
 
 
 def save_universe(u: dict) -> None:
