@@ -226,6 +226,43 @@ def _check_negative_shares(conn) -> list[str]:
     return issues
 
 
+def _check_concentration(conn) -> list[str]:
+    """Sub-8 V3 #2: Concentration-Watchdog.
+
+    Warnt wenn eine Position >40% des Portfolio-Werts (open_cost) belegt
+    oder Top-3 zusammen >70%. Ziel: ASML-style 51.9% Klumpenrisiko fruh
+    sichtbar, bevor ein Earnings-Miss das Konto ueberproportional trifft.
+    """
+    issues: list[str] = []
+    try:
+        rows = conn.execute(
+            "SELECT ticker, COALESCE(shares,0)*COALESCE(entry_price,0) AS cost "
+            "FROM paper_portfolio WHERE status='open'"
+        ).fetchall()
+    except Exception as e:
+        return [f'concentration query failed: {e}']
+    costs = [(t, float(c)) for t, c in rows if c and c > 0]
+    total = sum(c for _, c in costs)
+    if total <= 0 or not costs:
+        return issues
+    costs.sort(key=lambda x: x[1], reverse=True)
+    top1_t, top1_c = costs[0]
+    top1_pct = top1_c / total * 100
+    if top1_pct > 40.0:
+        issues.append(
+            f'CONCENTRATION single: {top1_t} = {top1_pct:.1f}% '
+            f'({top1_c:.0f}EUR / {total:.0f}EUR portfolio) — Klumpenrisiko'
+        )
+    if len(costs) >= 3:
+        top3_pct = sum(c for _, c in costs[:3]) / total * 100
+        if top3_pct > 70.0:
+            top3_names = ', '.join(t for t, _ in costs[:3])
+            issues.append(
+                f'CONCENTRATION top3: {top3_names} = {top3_pct:.1f}% — Diversifikation schwach'
+            )
+    return issues
+
+
 def _alert_cooldown_ok() -> bool:
     if not LAST_ALERT.exists():
         return True
@@ -265,6 +302,7 @@ def run(quiet: bool = False, test: bool = False) -> int:
             _check_open_without_stop,
             _check_negative_shares,
             _check_macro_stale,
+            _check_concentration,
         ):
             try:
                 issues.extend(fn(conn))

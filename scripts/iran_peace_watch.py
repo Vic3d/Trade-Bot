@@ -33,7 +33,7 @@ NEGATION_KEYWORDS = [
     'reject', 'rejects', 'rejected', 'collapse', 'collapses', 'collapsed',
     'fails', 'failed', 'breakdown', 'breaks down', 'no deal', 'walk out',
     'walked out', 'abandons', 'abandoned', 'abgebrochen', 'gescheitert',
-    'scheitert', 'lehnt ab', 'kein deal', 'pause',
+    'scheitert', 'lehnt ab', 'lehnt iran ab', 'kein deal', 'pause',
     'suspend', 'suspended', 'ausgesetzt',
 ]
 

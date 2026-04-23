@@ -545,8 +545,10 @@ def run() -> tuple[list, list]:
                         )
                         send_alert(f"EVENT AUTO EXIT: {_t['ticker']} ({_reason}) | PnL: {_pnl:+.2f}EUR")
                         _matched_ids.append(_t['id'])
+                # Geschlossene Trades aus der weiteren Iteration entfernen
                 if _matched_ids:
                     open_trades = [_t for _t in open_trades if _t['id'] not in _matched_ids]
+                # Queue leeren (alle Entries konsumiert, auch die ohne offene Position)
                 _q_path.write_text(_json.dumps({'entries': [], 'last_drained_at':
                     datetime.now(ZoneInfo('UTC')).isoformat(timespec='seconds')},
                     indent=2), encoding='utf-8')
@@ -599,9 +601,9 @@ def run() -> tuple[list, list]:
                 now_berlin = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
                 # Bug X (2026-04-22): vorher wurde .replace(tzinfo=UTC) blind
                 # gesetzt — wenn entry_date schon TZ-aware war, wurde die
-                # Original-TZ überschrieben.
+                # Original-TZ überschrieben. Jetzt: nur wenn naive UTC anhängen.
                 _raw = str(t['entry_date'])
-                _ed = datetime.fromisoformat(_raw)
+                _ed = datetime.fromisoformat(_raw[:19] if 'T' not in _raw[:11] else _raw)
                 if _ed.tzinfo is None:
                     _ed = _ed.replace(tzinfo=zoneinfo.ZoneInfo('UTC'))
                 entry_dt_tz = _ed.astimezone(zoneinfo.ZoneInfo('Europe/Berlin'))

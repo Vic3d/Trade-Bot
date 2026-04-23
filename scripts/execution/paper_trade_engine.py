@@ -1460,9 +1460,43 @@ def _execute_paper_entry_inner(
     except Exception as _e:
         pass  # Gate-Fehler nicht blockierend
     # ─────────────────────────────────────────────────────────────────
-    
+
+    # ── Sub-8 V3 Guard: Write-Time Validation ────────────────────────
+    # Verhindert MUV2-artige Bugs (NULL shares, 0/Negative Werte) an der
+    # Quelle. Vor Sub-8 V3 wurden solche Bugs erst Wochen spaeter vom
+    # db_integrity_watchdog gefangen.
+    _write_errs = []
+    if shares is None or not isinstance(shares, (int, float)) or shares <= 0:
+        _write_errs.append(f'shares invalid: {shares!r}')
+    if entry_price is None or entry_price <= 0:
+        _write_errs.append(f'entry_price invalid: {entry_price!r}')
+    if stop_price is None or stop_price <= 0:
+        _write_errs.append(f'stop_price invalid: {stop_price!r}')
+    if fees is None or fees < 0:
+        _write_errs.append(f'fees invalid: {fees!r}')
+    if not ticker or not strategy:
+        _write_errs.append(f'ticker/strategy empty: {ticker!r}/{strategy!r}')
+    if _write_errs:
+        conn.close()
+        try:
+            import sys as _sys
+            _sys.path.insert(0, str(Path(__file__).parent.parent))
+            from discord_sender import send as _alert
+            _alert(
+                f'🚨 **Write-Validation BLOCKED Trade** {ticker}/{strategy}\n'
+                f'```\n' + '\n'.join(_write_errs) + '\n```'
+            )
+        except Exception:
+            pass
+        return {
+            'success': False, 'trade_id': None,
+            'message': f'❌ Write-Validation: {"; ".join(_write_errs)}',
+            'blocked_by': 'write_validation',
+        }
+    # ─────────────────────────────────────────────────────────────────
+
     conn.execute("""
-        INSERT INTO paper_portfolio 
+        INSERT INTO paper_portfolio
         (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,
          status, fees, notes, style, conviction, regime_at_entry, sector)
         VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, ?, ?, ?, ?)

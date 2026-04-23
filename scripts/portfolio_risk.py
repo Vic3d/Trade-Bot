@@ -1020,28 +1020,30 @@ def get_exposure_breakdown(positions: list[dict] | None = None) -> dict:
     # Währung
     def _currency(ticker: str) -> str:
         t = ticker.upper()
-        if any(s in t for s in ['.DE', '.PA', '.AS', '.MI', '.BR']):
+        # Bug AA (2026-04-22): substring `s in t` matchte falsch
+        # ('.T' in 'TTE.PA' = True). Jetzt strict endswith.
+        if any(t.endswith(s) for s in ['.DE', '.PA', '.AS', '.MI', '.BR']):
             return 'EUR'
-        if '.L' in t:
+        if t.endswith('.L'):
             return 'GBP'
-        if '.OL' in t:
+        if t.endswith('.OL'):
             return 'NOK'
-        if '.CO' in t:
+        if t.endswith('.CO'):
             return 'DKK'
-        if '.ST' in t:
+        if t.endswith('.ST'):
             return 'SEK'
-        if '.T' in t:
+        if t.endswith('.T'):
             return 'JPY'
-        if '.HK' in t:
+        if t.endswith('.HK'):
             return 'HKD'
-        if '.AX' in t:
+        if t.endswith('.AX'):
             return 'AUD'
-        if '.TO' in t:
+        if t.endswith('.TO'):
             return 'CAD'
-        # Bug T (2026-04-22): SS=Shanghai, SZ=Shenzhen → CNY (vorher fälschlich USD)
-        if '.SS' in t or '.SZ' in t:
+        # Bug T: SS=Shanghai, SZ=Shenzhen → CNY
+        if t.endswith('.SS') or t.endswith('.SZ'):
             return 'CNY'
-        if '.SW' in t or '.VX' in t:
+        if t.endswith('.SW') or t.endswith('.VX'):
             return 'CHF'
         return 'USD'
 

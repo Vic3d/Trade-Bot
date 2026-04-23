@@ -25,6 +25,31 @@ echo "════════════════════════�
 echo "  TradeMind Deploy"
 echo "═══════════════════════════════════════════════════"
 
+# ─── 0. Pre-Deploy Compile-Hook (Sub-8 V3 #5) ──────────────────────
+# Verhindert Deploy von Syntax-kaputten Python-Dateien. SyntaxError
+# auf VPS killt Scheduler-Job stumm; lokaler py_compile bricht hier ab.
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+echo "[0/4] Pre-Deploy Compile-Check..."
+if [ "$DRY_RUN" = false ]; then
+    COMPILE_FAIL=0
+    while IFS= read -r -d '' f; do
+        if ! python -m py_compile "$f" 2>/tmp/compile_err.$$; then
+            echo "  ❌ SyntaxError: $f"
+            cat /tmp/compile_err.$$
+            COMPILE_FAIL=1
+        fi
+    done < <(find "$REPO_ROOT/scripts" -name '*.py' -not -path '*/_archive/*' -print0)
+    rm -f /tmp/compile_err.$$
+    if [ "$COMPILE_FAIL" -ne 0 ]; then
+        echo "  Deploy ABGEBROCHEN — SyntaxError(s) oben fixen."
+        exit 1
+    fi
+    echo "  Compile OK"
+else
+    echo "  [DRY-RUN] würde compile-checken"
+fi
+
 # ─── 1. Lokale Änderungen commiten (falls nötig) ────────────────────
 
 UNCOMMITTED=$(git -C "$(dirname "$0")/.." status --porcelain -- scripts/ data/strategies.json 2>/dev/null | grep -v '^??' | wc -l)
