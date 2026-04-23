@@ -169,6 +169,24 @@ def _check_open_without_stop(conn) -> list[str]:
     return issues
 
 
+def _check_macro_stale(conn) -> list[str]:
+    """macro_daily Indikatoren (SPY, VIX) sollen <7d alt sein.
+    Sub-8 Bugfix: SPY auf VPS war seit 2026-03-25 nicht refreshed
+    → anomaly_brake market-relative DD-Check fiel auf Fallback zurück.
+    """
+    issues = []
+    from datetime import timedelta
+    cutoff = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+    for ind in ('SPY', 'VIX'):
+        r = conn.execute(
+            "SELECT MAX(date) FROM macro_daily WHERE indicator = ?", (ind,)
+        ).fetchone()
+        last = r[0] if r else None
+        if not last or last < cutoff:
+            issues.append(f'macro_daily.{ind} stale: letzter Wert {last} (cutoff {cutoff})')
+    return issues
+
+
 def _check_negative_shares(conn) -> list[str]:
     """SQLite: NULL ist NICHT <= 0, daher explizit prüfen."""
     issues = []
@@ -219,6 +237,7 @@ def run(quiet: bool = False, test: bool = False) -> int:
             _check_schema_drift,
             _check_open_without_stop,
             _check_negative_shares,
+            _check_macro_stale,
         ):
             try:
                 issues.extend(fn(conn))

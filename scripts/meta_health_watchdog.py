@@ -42,11 +42,14 @@ LAST_ALERT = DATA / 'meta_health_last_alert.txt'
 COOLDOWN_HOURS = 6
 
 # (komponente, log-pfad relativ, max-alter-min)
+# Sub-8 Bugfix: alert_dispatcher.log + trading_monitor.log existieren auf VPS
+# nicht (Scripts laufen via anderem Mechanismus). Stattdessen aktive Logs.
 LOG_CHECKS = [
-    ('heartbeat_monitor',  'heartbeat_monitor.log',     15),
-    ('alert_dispatcher',   'alert_dispatcher.log',      30),
-    ('trading_monitor',    'trading_monitor.log',       30),
     ('scheduler',          'scheduler.log',             5),
+    ('heartbeat_monitor',  'heartbeat_monitor.log',     15),
+    ('price_monitor',      'price_monitor.log',         60),
+    ('observation_mode',   'observation_mode.log',      90),
+    ('watchdog',           'watchdog.log',              180),
 ]
 
 
