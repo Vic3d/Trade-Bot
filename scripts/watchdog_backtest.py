@@ -56,7 +56,8 @@ def _make_test_db(path: Path) -> sqlite3.Connection:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             trade_id INTEGER, tranche_nr INTEGER,
             shares REAL, entry_price REAL, exit_price REAL,
-            exit_reason TEXT, created_at TEXT
+            exit_reason TEXT, created_at TEXT,
+            status TEXT DEFAULT 'OPEN'
         );
         CREATE TABLE paper_fund (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
