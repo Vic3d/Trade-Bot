@@ -608,6 +608,16 @@ def ask_albert(message: str) -> str:
             return '⚠️ **Albert offline** — Model-Konfig fehlerhaft. Admin wurde informiert.'
         if '529' in error_str or 'overloaded' in error_str.lower():
             return '⚠️ **Albert ueberlastet** — Anthropic-API momentan ueberfordert. Kurz warten.'
+        # Häufigster 400-Grund: Credits leer. Klar ansagen statt JSON dumpen.
+        es_low = error_str.lower()
+        if 'credit balance' in es_low or 'low to access' in es_low or 'plans & billing' in es_low:
+            return ('💳 **Anthropic-Credits aufgebraucht** — Albert kann gerade nicht antworten.\n'
+                    'Victor: bitte auf https://console.anthropic.com/settings/billing aufladen '
+                    '(Auto-Reload empfohlen). Danach bin ich sofort wieder da.')
+        if '401' in error_str or 'invalid x-api-key' in es_low or 'authentication_error' in es_low:
+            return '🔑 **Albert offline** — Anthropic-API-Key ungueltig oder abgelaufen. Admin pruefen.'
+        if '429' in error_str or 'rate_limit' in es_low:
+            return '⏳ **Albert ueberlastet** — Rate-Limit erreicht. In ca. 1 Minute erneut versuchen.'
         return (
             f'⚠️ **Albert temporär nicht verfügbar** — API-Fehler: {error_str[:80]}\n'
             f'Bitte in wenigen Minuten erneut versuchen.'
