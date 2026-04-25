@@ -247,10 +247,10 @@ def load_context() -> str:
 
             closed = conn.execute("""
                 SELECT ticker, strategy, pnl_eur, pnl_pct,
-                       COALESCE(exit_date, entry_date) as exit_date
+                       COALESCE(close_date, entry_date) as exit_date
                 FROM paper_portfolio
                 WHERE status IN ('WIN','LOSS','CLOSED')
-                ORDER BY COALESCE(exit_date, entry_date) DESC LIMIT 8
+                ORDER BY COALESCE(close_date, entry_date) DESC LIMIT 8
             """).fetchall()
 
             conn.close()
