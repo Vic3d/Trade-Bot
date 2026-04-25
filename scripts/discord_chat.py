@@ -540,26 +540,17 @@ def _enrich_with_memory(message: str) -> str:
 
 def ask_albert(message: str) -> str:
     """
-    Ruft Claude API mit Alberts Persona + aktuellem Kontext auf.
+    Ruft LLM (CLI/API) mit Alberts Persona + aktuellem Kontext auf.
+    Provider-Reihenfolge: Claude CLI (Max-Subscription) -> Anthropic API -> OpenAI.
     Gibt Alberts Antwort zurück (oder Fallback-Nachricht).
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
-    # Fallback: aus deploy/.env laden
-    if not api_key:
-        _env = WS / 'deploy' / '.env'
-        if _env.exists():
-            for _line in _env.read_text(encoding="utf-8").splitlines():
-                if _line.startswith('ANTHROPIC_API_KEY=') and len(_line) > 19:
-                    api_key = _line.split('=', 1)[1].strip()
-                    break
-    if not api_key:
-        return (
-            '⚠️ **Albert offline** — ANTHROPIC_API_KEY nicht gesetzt. '
-            'Bitte in deploy/.env oder als Umgebungsvariable konfigurieren.'
-        )
-
     try:
-        import anthropic
+        # core.llm_client kapselt Provider-Routing + Subscription-Billing
+        try:
+            from core.llm_client import call_llm
+        except ImportError:
+            sys.path.insert(0, str(WS / 'scripts'))
+            from core.llm_client import call_llm  # type: ignore
 
         context = load_context()
         # K2 — Ticker-spezifische Memory-Hits + Victor-Trust anhängen
@@ -568,31 +559,23 @@ def ask_albert(message: str) -> str:
             context = f'{context}\n{mem_extra}'
         system_prompt = f'{ALBERT_PERSONA}\n\n{context}'
 
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=CLAUDE_MODEL,
-            max_tokens=1000,
-            system=system_prompt,
-            messages=[
-                {'role': 'user', 'content': message}
-            ],
-        )
-        # Sub-8 V2 (B): API-Quota tracken
+        # CLI/API beide ohne natives system-prompt-Param → concat
+        full_prompt = f'{system_prompt}\n\n---\n\nUSER: {message}'
+
+        # Modell-Hint: opus war default — fuer Chat reicht sonnet (schneller, billiger).
+        # Soft-Cap downgraded ohnehin auf haiku wenn API-Budget knapp wird.
+        text, usage = call_llm(full_prompt, model_hint='opus', max_tokens=1000)
+
         try:
             from api_quota_tracker import track as _track_api
-            usage = getattr(response, 'usage', None)
-            tokens = (getattr(usage, 'input_tokens', 0) + getattr(usage, 'output_tokens', 0)) if usage else None
-            _track_api('anthropic', 'discord_chat', tokens=tokens, status='ok',
-                       note=CLAUDE_MODEL)
+            tokens = usage.get('input_tokens', 0) + usage.get('output_tokens', 0)
+            _track_api(usage.get('provider', 'unknown'), 'discord_chat',
+                       tokens=tokens, status='ok',
+                       note=f"{usage.get('model','?')}/{usage.get('billing','api')}")
         except Exception:
             pass
-        return response.content[0].text.strip()
+        return (text or '').strip() or '⚠️ Albert hat keine Antwort generiert.'
 
-    except ImportError:
-        return (
-            '⚠️ **Albert offline** — `anthropic` Package nicht installiert. '
-            'Bitte `pip install anthropic` ausführen.'
-        )
     except Exception as e:
         error_str = str(e)[:200]
         try:
