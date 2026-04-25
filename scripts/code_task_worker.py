@@ -148,6 +148,25 @@ Victors Auftrag:
             cmd, input=prompt, capture_output=True, text=True,
             timeout=timeout_sec, check=False, env=env, cwd=str(WS),
         )
+        # Stage 3 — Shared Session existiert noch nicht? Retry ohne --resume
+        # (erste Albert-Antwort erstellt sie implizit nicht — nur interaktive
+        # Sessions werden registriert. Daher: ohne resume erneut versuchen.)
+        if (result.returncode != 0 and
+            'No conversation found' in (result.stderr + result.stdout) and
+            '--resume' in cmd):
+            print('[code_task] shared session not found → retry without --resume',
+                  file=sys.stderr)
+            cmd_clean = [c for c in cmd if c != '--resume']
+            # auch das Argument nach --resume entfernen
+            try:
+                idx = cmd.index('--resume')
+                cmd_clean = cmd[:idx] + cmd[idx+2:]
+            except ValueError:
+                pass
+            result = subprocess.run(
+                cmd_clean, input=prompt, capture_output=True, text=True,
+                timeout=timeout_sec, check=False, env=env, cwd=str(WS),
+            )
     except subprocess.TimeoutExpired:
         elapsed = (datetime.now() - started).total_seconds()
         msg = f'⏰ **Code-Task Timeout** nach {elapsed:.0f}s. Versuche kleinere Aufgabe.'

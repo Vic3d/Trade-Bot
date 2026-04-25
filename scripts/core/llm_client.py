@@ -217,6 +217,18 @@ def _call_claude_cli(prompt: str, model_alias: str, max_tokens: int) -> tuple[st
             check=False,
             env=cli_env,
         )
+        # Stage 3 Fallback: --resume gegen nicht-existente Session → retry ohne
+        if (result.returncode != 0 and '--resume' in cmd and
+                'No conversation found' in (result.stderr + result.stdout)):
+            try:
+                _idx = cmd.index('--resume')
+                _cmd_fb = cmd[:_idx] + cmd[_idx+2:] + ['--no-session-persistence']
+            except ValueError:
+                _cmd_fb = [c for c in cmd if c != '--resume']
+            result = subprocess.run(
+                _cmd_fb, input=prompt, capture_output=True, text=True,
+                timeout=120, check=False, env=cli_env,
+            )
     except subprocess.TimeoutExpired:
         raise RuntimeError('claude CLI timeout (120s)')
 
