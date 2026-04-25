@@ -1286,6 +1286,24 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Memory-Proposal Handler ───────────────────────────────────
+        # "Speichern 1,3" / "Speichern alle" / "Verwerfen" → schreibt
+        # die heute morgens vorgeschlagenen Einträge in memory/*.md.
+        _ml = content_lower.strip()
+        if _ml.startswith('speichern') or _ml.startswith('verwerfen'):
+            try:
+                from memory_proposal_apply import apply_command
+                _resp = apply_command(content)
+                _send_message(_resp, CHANNEL_ID)
+                _log_chat('albert', _resp)
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] memory-proposal-handler error: {_e}', flush=True)
+                # fall through to normal flow
+
         # ── Stage 2: Code-Task → Claude Code Headless ─────────────────
         # Klassifiziert die Nachricht. Bei "code" → spawn `claude -p` mit
         # vollem Repo-Zugriff, Antwort zurück nach Discord. Bei "chat" →

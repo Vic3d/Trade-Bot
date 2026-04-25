@@ -168,6 +168,8 @@ SCHEDULE = [
     ('Auto Deep Dive',      'auto_deep_dive_runner.py',   ['full'],              20, 0,  [6],         False),
     # ─────────────────────────────────────────────────────────────────────────
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
+    # ── Memory-Vorschlag (Albert proposed Daily-Learnings für memory/*.md) ──
+    ('Memory Proposal',     'daily_memory_proposal.py', [],                       21, 45, None),
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
