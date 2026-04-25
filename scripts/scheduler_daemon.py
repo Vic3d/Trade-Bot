@@ -360,6 +360,24 @@ SCHEDULE += [
     ('Feature Importance',  'feature_importance.py',   [],                        22, 30, [4]),   # Fr
     # ── Phase 6: Autonome Thesen-Entdeckung — taeglich ─────────────────────
     ('Thesis Discovery',   'intelligence/thesis_discovery.py', [],              5,  0,  None),   # Taeglich 05:00 CEST (vor EU-Open)
+    # ── Fast Discovery: Trigger thesis_discovery sofort bei Geo-Alert HIGH ──
+    # Läuft alle 30min, prüft ceo_directive.json. Bei LOW/MEDIUM→HIGH Transition
+    # spawnt es thesis_discovery.py (statt 12h auf nächste 05:00 zu warten).
+    # Debounce 4h, max 3 Trigger/Tag.
+    ('Fast Discovery 09', 'fast_discovery_trigger.py', [],   9,  15, None),
+    ('Fast Discovery 10', 'fast_discovery_trigger.py', [],   10, 15, None),
+    ('Fast Discovery 11', 'fast_discovery_trigger.py', [],   11, 15, None),
+    ('Fast Discovery 12', 'fast_discovery_trigger.py', [],   12, 15, None),
+    ('Fast Discovery 13', 'fast_discovery_trigger.py', [],   13, 15, None),
+    ('Fast Discovery 14', 'fast_discovery_trigger.py', [],   14, 15, None),
+    ('Fast Discovery 15', 'fast_discovery_trigger.py', [],   15, 15, None),
+    ('Fast Discovery 16', 'fast_discovery_trigger.py', [],   16, 15, None),
+    ('Fast Discovery 17', 'fast_discovery_trigger.py', [],   17, 15, None),
+    ('Fast Discovery 18', 'fast_discovery_trigger.py', [],   18, 15, None),
+    ('Fast Discovery 19', 'fast_discovery_trigger.py', [],   19, 15, None),
+    ('Fast Discovery 20', 'fast_discovery_trigger.py', [],   20, 15, None),
+    ('Fast Discovery 21', 'fast_discovery_trigger.py', [],   21, 15, None),
+    ('Fast Discovery 22', 'fast_discovery_trigger.py', [],   22, 15, None),
     # ═══════════════════════════════════════════════════════════════════════════
     # ── Autonomous Scanner — GLOBAL (ALLE Zeiten in CEST / deutscher Zeit) ────
     # ═══════════════════════════════════════════════════════════════════════════
