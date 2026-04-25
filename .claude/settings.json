@@ -9,5 +9,19 @@
       "Grep(*)"
     ],
     "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/hooks/inject_albert_context.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
   }
 }
