@@ -429,6 +429,10 @@ SCHEDULE += [
     # ── Backtest v2: So+Mi 08:00 CEST (nach Thesis Discovery 07:00 CEST) ────────
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [6]),   # So 08:00 CEST
     ('Backtest v2',   'backtest_engine_v2.py',           [],         8,  0,  [2]),   # Mi 08:00 CEST (Mid-Week Refresh)
+    # ── Phase 23: Macro-Liquidity Tracker — 2x taeglich (07:00 vor EU-Open + 14:00 vor US-Open) ──
+    # FRED-Daten werden taeglich aktualisiert. Repo-Stress-Alarm via Discord bei SOFR-IORB > 10bps.
+    ('Macro Liquidity', 'macro/net_liquidity_tracker.py', [],         7,  0,  None),
+    ('Macro Liquidity', 'macro/net_liquidity_tracker.py', [],         14, 0,  None),
 ]
 
 

@@ -4290,6 +4290,9 @@ def build_directive(sources: dict, hist: dict, health: dict,
     # P4.B: Multi-Timeframe Analysis
     multi_timeframe = analyze_multi_timeframe(market_data=live_market_data)
 
+    # Phase 23: Macro-Liquidity (3-Channel-Score: CB / Credit / Repo)
+    macro_liq = _load_macro_liquidity()
+
     # Trading-Mode bestimmen (P1.A + P2.B + P4.A + P4.B)
     mode, mode_reason = determine_trading_mode(
         vix=vix,
@@ -4423,9 +4426,35 @@ def build_directive(sources: dict, hist: dict, health: dict,
 
         # Signal Tracker Intelligence
         'signal_tracker': hist.get('signal_tracker'),
+
+        # Phase 23 — Makro-Liquiditaet (3-Channel-Framework Eriksen)
+        'liquidity': macro_liq,
     }
 
     return directive
+
+
+def _load_macro_liquidity() -> dict:
+    """Phase 23 — laedt aktuellen Snapshot aus data/macro_liquidity.json."""
+    path = WS / 'data' / 'macro_liquidity.json'
+    if not path.exists():
+        return {'available': False, 'reason': 'no_snapshot'}
+    try:
+        snap = json.loads(path.read_text(encoding='utf-8'))
+        return {
+            'available': True,
+            'composite_regime': snap.get('composite_regime'),
+            'composite_score': snap.get('composite_score'),
+            'cb_regime': snap.get('central_bank', {}).get('regime'),
+            'cb_30d_change_pct': snap.get('central_bank', {}).get('net_liq_30d_change_pct'),
+            'credit_regime': snap.get('credit_creation', {}).get('regime'),
+            'credit_yoy_pct': snap.get('credit_creation', {}).get('busloans_yoy_pct'),
+            'repo_stress': snap.get('repo_stress', {}).get('level'),
+            'sofr_iorb_bps': snap.get('repo_stress', {}).get('sofr_iorb_bps'),
+            'updated_at': snap.get('timestamp'),
+        }
+    except Exception as e:
+        return {'available': False, 'reason': f'load_error: {e}'}
 
 
 def _generate_ceo_notes(mode: str, vix: float, hist: dict, regime: str) -> str:

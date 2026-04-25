@@ -48,6 +48,19 @@ DB = WS / 'data' / 'trading.db'
 LEARNINGS = WS / 'data' / 'trading_learnings.json'
 RISK_STATE = WS / 'data' / 'risk_state.json'
 LOG_FILE = WS / 'data' / 'portfolio_risk.log'
+MACRO_LIQ = WS / 'data' / 'macro_liquidity.json'  # Phase 23
+
+
+def _load_repo_stress() -> str:
+    """Phase 23 — liest aktuelles Repo-Stress-Level aus macro_liquidity.json.
+    Returns: 'low' | 'elevated' | 'crisis'. Default 'low' wenn File fehlt."""
+    try:
+        if MACRO_LIQ.exists():
+            data = json.loads(MACRO_LIQ.read_text(encoding='utf-8'))
+            return (data.get('repo_stress') or {}).get('level', 'low')
+    except Exception:
+        pass
+    return 'low'
 
 log = logging.getLogger('portfolio_risk')
 if not log.handlers:
@@ -274,6 +287,19 @@ def check_correlation(
     if not positions:
         return result_base
 
+    # Phase 23: Repo-Stress-Override — bei Stress werden ALLE Korrelationen
+    # auf min 0.95 gepinnt, weil dann Margin-Calls alles gleichzeitig auflösen.
+    # Effekt: in elevated/crisis-Phasen blocken zusätzliche Positionen früher,
+    # weil das Cluster-Risiko temporär extrem ist.
+    repo_stress = _load_repo_stress()
+    repo_override_floor = None
+    if repo_stress == 'crisis':
+        repo_override_floor = 0.95
+        log.warning(f'REPO-CRISIS: Korrelations-Floor auf {repo_override_floor} gepinnt')
+    elif repo_stress == 'elevated':
+        repo_override_floor = 0.80
+        log.info(f'REPO-STRESS elevated: Korrelations-Floor auf {repo_override_floor}')
+
     new_prices = _get_price_series(new_ticker, days=30)
     if len(new_prices) < 15:
         log.info(f"Korrelation skipped: {new_ticker} hat nur {len(new_prices)} Kurse")
@@ -313,6 +339,10 @@ def check_correlation(
         if corr is None:
             continue
 
+        # Phase 23: Repo-Stress-Override
+        if repo_override_floor is not None and corr < repo_override_floor:
+            corr = repo_override_floor
+
         all_corrs.append((pos_ticker, round(corr, 3)))
         if abs(corr) > abs(max_corr):
             max_corr = corr
@@ -321,16 +351,18 @@ def check_correlation(
 
     # Entscheidung: Block wenn 2+ hoch korreliert
     if len(high_correlated) >= max_correlated:
+        repo_note = f' [REPO-{repo_stress.upper()}]' if repo_override_floor else ''
         return {
             'blocked': True,
             'reason': (
-                f'CLUSTER_RISK: {len(high_correlated)} Positionen korrelieren > {threshold_block} '
+                f'CLUSTER_RISK{repo_note}: {len(high_correlated)} Positionen korrelieren > {threshold_block} '
                 f'({", ".join(f"{t}={c}" for t, c in high_correlated)})'
             ),
             'max_correlation': round(max_corr, 3),
             'correlated_with': high_correlated,
             'size_factor': 0.0,
             'cluster_warning': None,
+            'repo_stress': repo_stress,
         }
 
     # Size-Factor: abgestufte Reduktion bei mittlerer Korrelation
