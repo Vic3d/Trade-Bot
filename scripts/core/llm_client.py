@@ -187,10 +187,20 @@ def _call_claude_cli(prompt: str, model_alias: str, max_tokens: int) -> tuple[st
         '-p',
         '--model', model_alias,
         '--output-format', 'json',
-        '--no-session-persistence',
         '--disable-slash-commands',    # keine skills laden
         '--setting-sources', 'user',   # nur user settings, keine project/local
     ]
+
+    # Stage 3 — Volle Fusion: optional eine Shared Session zwischen Albert
+    # und Claude Code CLI. Wenn LLM_SHARED_SESSION_ID gesetzt ist, hängen
+    # alle Albert-Antworten an dieselbe Session an, die ich (CLI) auch
+    # via `claude --resume <id>` benutzen kann → echte gemeinsame History.
+    # Default: --no-session-persistence (jede Antwort isoliert, billiger).
+    _shared_sid = os.getenv('LLM_SHARED_SESSION_ID', '').strip()
+    if _shared_sid:
+        cmd.extend(['--resume', _shared_sid])
+    else:
+        cmd.append('--no-session-persistence')
 
     # WICHTIG: ANTHROPIC_API_KEY wird vom CLI bevorzugt vor OAuth-Token!
     # Wir wollen aber Subscription-Billing → API_KEY unsetzen fuer den Subprocess.

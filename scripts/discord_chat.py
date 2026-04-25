@@ -43,6 +43,7 @@ CHAT_LOG = DATA / 'discord_chat_log.jsonl'  # Persistentes Chat-Log für Claude 
 
 
 def _log_chat(role, content, ts=""):
+    """Legacy chat log + Stage-1 Shared Memory (conversation_log.jsonl)."""
     try:
         from datetime import datetime as _dt
         CHAT_LOG.parent.mkdir(parents=True, exist_ok=True)
@@ -51,6 +52,15 @@ def _log_chat(role, content, ts=""):
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
     except Exception as _e:
         print(f"[Albert] _log_chat error: {_e}", flush=True)
+
+    # Stage 1 — geteiltes Bewusstsein mit Claude Code CLI
+    try:
+        from conversation_log import append as _conv_append
+        _speaker = 'victor' if role in ('victor', 'user') else 'albert'
+        _r = 'user' if _speaker == 'victor' else 'agent'
+        _conv_append(source='discord', role=_r, speaker=_speaker, content=content)
+    except Exception as _e:
+        print(f"[Albert] conversation_log append error: {_e}", flush=True)
 
 # Discord-Konstanten
 CHANNEL_ID    = '1492225799062032484'   # Victors DM-Kanal für Albert-Chat
@@ -179,6 +189,15 @@ def load_context() -> str:
     parts: list[str] = []
     now_str = datetime.now(_BERLIN).strftime('%Y-%m-%d %H:%M')
     parts.append(f'=== ALBERT KONTEXT (Stand: {now_str}) ===\n')
+
+    # Stage 3 — geteiltes Bewusstsein: was hat Claude Code zuletzt gemacht?
+    try:
+        from conversation_log import format_for_context as _conv_ctx
+        _shared = _conv_ctx(n=12, max_chars=1500)
+        if _shared:
+            parts.append(_shared + '\n')
+    except Exception:
+        pass
 
     db_file = DATA / 'trading.db'
 
@@ -1267,24 +1286,50 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
-        # ── Eskalation an Claude Code bei System/Code-Anfragen ────────
-        _code_keywords = ('fix', 'code', 'script', 'bug', 'fehler im system',
-                          'anpassen', 'ändern', 'änder', 'umbauen', 'cron',
-                          'pfad', 'path', 'deploy', 'scheduler', 'updaten')
-        is_code_request = any(kw in content_lower for kw in _code_keywords)
-        if is_code_request:
+        # ── Stage 2: Code-Task → Claude Code Headless ─────────────────
+        # Klassifiziert die Nachricht. Bei "code" → spawn `claude -p` mit
+        # vollem Repo-Zugriff, Antwort zurück nach Discord. Bei "chat" →
+        # normale Albert-Antwort über ask_albert().
+        try:
+            from code_task_worker import classify_message, handle_code_task
+            _msg_class = classify_message(content)
+        except Exception as _e:
+            print(f'[Albert] classify failed: {_e}', flush=True)
+            _msg_class = 'chat'
+
+        if _msg_class == 'code':
+            print(f'[Albert] Routing → Claude Code (Code-Task erkannt)', flush=True)
+            _send_typing(CHANNEL_ID)
+            # Discord-Reply: Albert kündigt an, dass er an Claude Code übergibt
+            _send_message(
+                '🔀 _Code-Task erkannt — übergebe an Claude Code, kann 1-5 Minuten dauern…_',
+                CHANNEL_ID,
+            )
+            try:
+                _cc_response = handle_code_task(content)
+            except Exception as _e:
+                _cc_response = f'⚠️ Code-Task crashed: {type(_e).__name__}: {_e}'
+            # Antwort senden (chunked falls > 2000)
+            for _i in range(0, len(_cc_response), 1900):
+                _send_message(_cc_response[_i:_i + 1900], CHANNEL_ID)
+                time.sleep(0.5)
+            # Legacy Request-Log + Shared-Log-Eintrag (Albert-Side)
             try:
                 _req_file = DATA / 'claude_code_requests.jsonl'
-                _req = json.dumps({
-                    'ts': datetime.now().isoformat(),
-                    'from': 'victor_via_discord',
-                    'message': content,
-                    'status': 'pending',
-                }, ensure_ascii=False)
                 with open(_req_file, 'a', encoding='utf-8') as _f:
-                    _f.write(_req + '\n')
+                    _f.write(json.dumps({
+                        'ts': datetime.now().isoformat(),
+                        'from': 'victor_via_discord',
+                        'message': content,
+                        'status': 'handled_inline',
+                    }, ensure_ascii=False) + '\n')
             except Exception:
                 pass
+            # State updaten und nächste Nachricht
+            state['last_message_id'] = highest_id
+            state['last_poll'] = datetime.now().isoformat()
+            _save_state(state)
+            continue
 
         # Typing-Indikator senden
         _send_typing(CHANNEL_ID)
@@ -1297,6 +1342,9 @@ def poll_once() -> None:
 
         # SAVE-Marker aus Antwort entfernen bevor sie Victor angezeigt wird
         response = _strip_save_markers(response)
+
+        # Stage 1 — Albert-Antwort ins Shared Log
+        _log_chat('albert', response)
 
         # Antwort senden (bei langen Antworten in Chunks aufteilen)
         if len(response) <= 2000:
