@@ -356,6 +356,22 @@ def compose_morning(state: dict) -> str:
     )
 
 
+# ─── Public API für daily_digest.py ──────────────────────────────────────────
+def generate_risk_block() -> str:
+    """Phase 21: Risk-Block für Morning-Digest.
+
+    Wird von daily_digest.py importiert. Liefert kompakten Discord-formatierten
+    Block (Markdown). Bei Fehler/keinem Datenstand: leerer String → Block fällt
+    im Digest unsichtbar weg.
+    """
+    try:
+        state = gather_state()
+        return compose_morning(state)
+    except Exception as e:
+        # Niemals den Digest crashen — Risk-Block ist optional.
+        return f'📊 **Risk Dashboard**\n_nicht verfuegbar: {type(e).__name__}_'
+
+
 # ─── Main ────────────────────────────────────────────────────────────────────
 def main():
     ap = argparse.ArgumentParser()
