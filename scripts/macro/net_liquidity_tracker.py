@@ -38,14 +38,28 @@ OUT_FILE = WS / 'data' / 'macro_liquidity.json'
 
 # FRED-Series die wir ziehen
 FRED_SERIES = {
-    'WALCL':       'Fed Total Assets (Mrd USD, weekly Wed)',
-    'WTREGEN':     'Treasury General Account (Mrd USD, weekly)',
-    'RRPONTSYD':   'Reverse Repo Operations (Mrd USD, daily)',
+    'WALCL':       'Fed Total Assets (Millions USD, weekly Wed)',
+    'WTREGEN':     'Treasury General Account (Millions USD, weekly)',
+    'RRPONTSYD':   'Reverse Repo Operations (Trillions USD, daily)',
     'SOFR':        'Secured Overnight Financing Rate (%, daily)',
     'IORB':        'Interest on Reserve Balances (%, daily)',
-    'BUSLOANS':    'C&I Loans (Mrd USD, weekly)',
-    'TOTBKCR':     'Total Bank Credit (Mrd USD, weekly)',
+    'BUSLOANS':    'C&I Loans (Billions USD, weekly)',
+    'TOTBKCR':     'Total Bank Credit (Billions USD, weekly)',
 }
+
+# Konvertierungs-Faktoren → einheitlich Mrd USD (Billions)
+TO_BILLIONS = {
+    'WALCL':     1 / 1000,   # Millions → Billions
+    'WTREGEN':   1 / 1000,   # Millions → Billions
+    'RRPONTSYD': 1000,        # Trillions → Billions
+    'BUSLOANS':  1,           # already Billions
+    'TOTBKCR':   1,           # already Billions
+}
+
+
+def _to_bn(series: str, value: float) -> float:
+    """Normalisiert FRED-Wert auf Mrd USD."""
+    return value * TO_BILLIONS.get(series, 1.0)
 
 FRED_CSV_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}'
 
@@ -58,14 +72,15 @@ SOFR_SPREAD_CRISIS_BPS   = 25
 # FRED-Pull (ohne API-Key, freier CSV-Endpoint)
 # ──────────────────────────────────────────────────────────────────────────
 
-def _fetch_fred(series: str, timeout: int = 30) -> list[tuple[str, float]]:
+def _fetch_fred(series: str, timeout: int = 15) -> list[tuple[str, float]]:
     """Returnt Liste von (date_str, value) absteigend sortiert (neueste zuerst)."""
     url = FRED_CSV_URL.format(series=series)
-    req = urllib.request.Request(url, headers={'User-Agent': 'TradeMind/1.0 (+macro-tracker)'})
+    # WICHTIG: FRED blockt JEDEN custom User-Agent (timeout statt 403).
+    # Default 'Python-urllib/3.x' klappt sofort. Daher kein Request-Wrapping.
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
             raw = resp.read().decode('utf-8', errors='replace')
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as e:
         raise RuntimeError(f'FRED fetch fehlgeschlagen ({series}): {e}')
 
     rows: list[tuple[str, float]] = []
@@ -126,26 +141,35 @@ def compute_liquidity_snapshot() -> dict:
     data: dict[str, list] = {}
     errors: list[str] = []
     for series in FRED_SERIES:
+        print(f'[macro]   fetching {series} ...', flush=True)
         try:
-            data[series] = _fetch_fred(series)
+            rows = _fetch_fred(series)
+            data[series] = rows
+            latest = rows[0] if rows else ('-', 0)
+            print(f'[macro]     ok ({len(rows)} rows, latest {latest[0]} = {latest[1]})', flush=True)
         except Exception as e:
             errors.append(f'{series}: {e}')
             data[series] = []
+            print(f'[macro]     ERR: {e}', flush=True)
 
-    # ─── Kanal 1: Zentralbank-Liquiditaet ───
-    walcl_date, walcl = _latest(data['WALCL'])
-    _, tga = _latest(data['WTREGEN'])
-    _, rrp = _latest(data['RRPONTSYD'])
-    # FRED-Einheiten: WALCL & WTREGEN in Mrd USD; RRPONTSYD in Mrd USD
-    net_liq_bn = walcl - tga - rrp  # in Mrd USD
+    # ─── Kanal 1: Zentralbank-Liquiditaet (alles in Mrd USD) ───
+    walcl_date, walcl_raw = _latest(data['WALCL'])
+    _, tga_raw = _latest(data['WTREGEN'])
+    _, rrp_raw = _latest(data['RRPONTSYD'])
+    walcl_bn = _to_bn('WALCL', walcl_raw)
+    tga_bn = _to_bn('WTREGEN', tga_raw)
+    rrp_bn = _to_bn('RRPONTSYD', rrp_raw)
+    net_liq_bn = walcl_bn - tga_bn - rrp_bn
 
-    # 30-Tage-Aenderung
-    _, walcl_30d = _value_at_offset(data['WALCL'], 30)
-    _, tga_30d = _value_at_offset(data['WTREGEN'], 30)
-    _, rrp_30d = _value_at_offset(data['RRPONTSYD'], 30)
+    # 30-Tage-Aenderung (auch normalisiert)
+    _, walcl_30d_raw = _value_at_offset(data['WALCL'], 30)
+    _, tga_30d_raw = _value_at_offset(data['WTREGEN'], 30)
+    _, rrp_30d_raw = _value_at_offset(data['RRPONTSYD'], 30)
     net_liq_30d_change_pct = None
-    if walcl_30d and tga_30d is not None and rrp_30d is not None:
-        prev = walcl_30d - tga_30d - rrp_30d
+    if walcl_30d_raw and tga_30d_raw is not None and rrp_30d_raw is not None:
+        prev = (_to_bn('WALCL', walcl_30d_raw)
+                - _to_bn('WTREGEN', tga_30d_raw)
+                - _to_bn('RRPONTSYD', rrp_30d_raw))
         if prev != 0:
             net_liq_30d_change_pct = round(((net_liq_bn - prev) / abs(prev)) * 100, 2)
 
@@ -211,9 +235,9 @@ def compute_liquidity_snapshot() -> dict:
             'regime': cb_regime,
             'net_liquidity_bn_usd': round(net_liq_bn, 1),
             'net_liq_30d_change_pct': net_liq_30d_change_pct,
-            'walcl_bn': round(walcl, 1),
-            'tga_bn': round(tga, 1),
-            'rrp_bn': round(rrp, 1),
+            'walcl_bn': round(walcl_bn, 1),
+            'tga_bn': round(tga_bn, 1),
+            'rrp_bn': round(rrp_bn, 1),
             'as_of': walcl_date,
         },
         # Kanal 2
