@@ -1,0 +1,13 @@
+{
+  "_comment": "Phase 23 (Erichsen-Formel): position_eur = portfolio * risk_pct/100 / (entry-stop) * entry. Aktivieren via autonomy_config.json mit 'sizing_mode': 'risk_based'.",
+  "risk_pct_by_prefix": {
+    "PS_": 1.0,
+    "PT": 1.0,
+    "PM": 0.5,
+    "S": 0.5
+  },
+  "default_risk_pct": 1.0,
+  "min_shares": 5,
+  "max_position_pct": 15.0,
+  "absolute_min_eur": 100.0
+}

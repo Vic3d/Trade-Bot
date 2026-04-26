@@ -226,6 +226,39 @@ class EntryGate:
                                news_headline, news_source, regime, vix)
             return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': None}
 
+        # ─── Gate 0r: Repo-Stress (Phase 24 / Erichsen-Liquidität) ─────
+        # Wenn SOFR-IORB-Spread > 25bps (Crisis): keine neuen Entries.
+        # Bei 'elevated' (>10bps): nur PS_*-Thesen (defensive Macro), kein PM/Momentum.
+        try:
+            import json as _rj
+            from pathlib import Path as _RPath
+            _ws_root = _RPath(__file__).resolve().parent.parent
+            _liq_path = _ws_root / 'data' / 'liquidity_snapshot.json'
+            if _liq_path.exists():
+                _liq = _rj.loads(_liq_path.read_text(encoding='utf-8'))
+                _rs = (_liq.get('repo_stress') or {}).get('level', 'low')
+                _bps = (_liq.get('repo_stress') or {}).get('sofr_iorb_bps')
+                if _rs == 'crisis':
+                    reason = (
+                        f"GATE0r REPO-CRISIS: SOFR-IORB Spread = {_bps}bps "
+                        f"(>25bps). Liquiditätskontraktion akut — keine neuen Entries."
+                    )
+                    self._log_blocked(ticker, strategy, 'GATE0R_REPO_CRISIS', reason,
+                                       news_headline, news_source, regime, vix)
+                    return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': None}
+                if _rs == 'elevated' and not strategy_upper.startswith(('PS_', 'PT')):
+                    reason = (
+                        f"GATE0r REPO-ELEVATED: Spread {_bps}bps. Bei elevated stress "
+                        f"nur PS_*/PT-Thesen (defensiv), kein '{strategy}' (Momentum)."
+                    )
+                    self._log_blocked(ticker, strategy, 'GATE0R_REPO_ELEVATED', reason,
+                                       news_headline, news_source, regime, vix)
+                    return {'allowed': False, 'reason': reason, 'warnings': warnings, 'tier': None}
+                if _rs == 'elevated':
+                    warnings.append(f'Repo-Stress elevated ({_bps}bps) — Größe tendenziell verkleinern')
+        except Exception as _re:
+            pass  # silent: repo-data nicht critical für Trade
+
         # ─── Gate 0q: Thesis-Kill Quarantäne (P1.7) ────────────────────
         # Strategien die in den letzten 48h einen THESIS_INVALIDATED Exit hatten
         # bekommen eine Auszeit (kein Re-Entry direkt nach Kill).

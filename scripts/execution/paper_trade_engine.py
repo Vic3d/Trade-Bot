@@ -1345,6 +1345,22 @@ def _execute_paper_entry_inner(
                     f"risk={_sz['risk_eur']}€ ({_sz['risk_pct_of_portfolio']}%) "
                     f"reason={_sz['reason']}"
                 )
+        elif _auto.get('sizing_mode') == 'risk_based':
+            # Phase 23: Erichsen-Formel — Position aus EUR-Risiko ableiten
+            from execution.risk_based_sizing import size_position_risk_based as _rb_size
+            _sz = _rb_size(
+                strategy=strategy,
+                portfolio_value_eur=portfolio_value,
+                entry_price=entry_price,
+                stop_price=stop_price,
+            )
+            if not _sz.get('skip') and _sz.get('shares', 0) > 0:
+                shares_from_risk = int(_sz['shares'])
+                print(
+                    f"[sizer] risk_based: {_sz['shares']} shares "
+                    f"risk={_sz['risk_eur']}€ ({_sz['risk_pct']}%) "
+                    f"reason={_sz['reason']}"
+                )
     except Exception as _sz_e:
         import logging as _sz_log
         _sz_log.getLogger('paper_trade_engine').warning(f'vol_target sizing skipped: {_sz_e}')
@@ -1357,6 +1373,21 @@ def _execute_paper_entry_inner(
             'message': f'❌ Position sizing returned 0 shares (conviction={conv_score:.0f}, entry={entry_price:.2f}, stop={stop_price:.2f})',
             'blocked_by': 'sizing_zero',
         }
+
+    # Phase 27: Crowded-Trade Halving (Differenzierungs-Audit)
+    # Wenn die Strategie im letzten Audit als "crowded" markiert wurde,
+    # wird die Position halbiert (kein Edge → kleineres Bet).
+    try:
+        import json as _cj
+        _strats_path = DB_PATH.parent / 'strategies.json'
+        if _strats_path.exists():
+            _strats = _cj.loads(_strats_path.read_text(encoding='utf-8'))
+            _sdata = _strats.get(strategy) if isinstance(_strats, dict) else None
+            if isinstance(_sdata, dict) and _sdata.get('_crowded'):
+                shares_from_risk = max(1, int(shares_from_risk * 0.5))
+                print(f"[crowded-halving] {strategy} ist crowded — Position halbiert")
+    except Exception:
+        pass
 
     # Phase 9: Dynamic Cap aus Kelly + VIX + Sector Check (oder 1500€ Fallback)
     MAX_POSITION_EUR = phase9_cap

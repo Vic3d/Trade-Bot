@@ -170,6 +170,10 @@ SCHEDULE = [
     ('Performance Tracker', 'performance_tracker.py',  [],                        21, 30, None),  # täglich
     # ── Memory-Vorschlag (Albert proposed Daily-Learnings für memory/*.md) ──
     ('Memory Proposal',     'daily_memory_proposal.py', [],                       21, 45, None),
+    # ── Phase 25: Weekly Skipped-Trades Review (Mo 08:00) ──
+    ('Skipped Review',      'weekly_skipped_review.py', [],                        8,  0,  [0]),
+    # ── Phase 27: Differenzierungs-Audit (1. So jedes Monats 06:00) ──
+    ('Differentiation Audit','intelligence/differentiation_audit.py', [],          6,  0,  [6]),
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
     ('Alpha Decay',         'alpha_decay.py',          [],                        21, 0,  None),
     ('Daily Learning',      'daily_learning_cycle.py', [],                        22, 45, None),
