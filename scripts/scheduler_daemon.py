@@ -172,6 +172,8 @@ SCHEDULE = [
     ('Memory Proposal',     'daily_memory_proposal.py', [],                       21, 45, None),
     # ── Phase 25: Weekly Skipped-Trades Review (Mo 08:00) ──
     ('Skipped Review',      'weekly_skipped_review.py', [],                        8,  0,  [0]),
+    # ── Phase 23b: Sizing A/B-Test Review (Mo 08:15) ──
+    ('Sizing AB Review',    'sizing_ab_review.py',     [],                         8, 15,  [0]),
     # ── Phase 27: Differenzierungs-Audit (1. So jedes Monats 06:00) ──
     ('Differentiation Audit','intelligence/differentiation_audit.py', [],          6,  0,  [6]),
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr

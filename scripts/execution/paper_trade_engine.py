@@ -1361,6 +1361,25 @@ def _execute_paper_entry_inner(
                     f"risk={_sz['risk_eur']}€ ({_sz['risk_pct']}%) "
                     f"reason={_sz['reason']}"
                 )
+        elif _auto.get('sizing_mode') == 'ab_test':
+            # Phase 23b: A/B-Test conviction vs risk_based — beide loggen
+            from execution.sizing_ab_test import compute_both as _ab_compute, log_decision as _ab_log
+            _ab = _ab_compute(
+                ticker=ticker, strategy=strategy,
+                entry_price=entry_price, stop_price=stop_price,
+                portfolio_value_eur=portfolio_value,
+                conviction_score=int(conv_score) if conv_score else None,
+            )
+            if _ab['shares_used'] > 0:
+                shares_from_risk = int(_ab['shares_used'])
+                print(
+                    f"[sizer] ab_test mode={_ab['mode_used']}: "
+                    f"used={_ab['shares_used']} (conv={_ab['shares_conviction']}, "
+                    f"rb={_ab['shares_risk_based']})"
+                )
+                # Log NACH execute_paper_entry, weil trade_id erst dann existiert.
+                # Workaround: Log jetzt ohne trade_id, später ggf. nachziehen.
+                _ab_log(ticker, strategy, entry_price, stop_price, portfolio_value, _ab)
     except Exception as _sz_e:
         import logging as _sz_log
         _sz_log.getLogger('paper_trade_engine').warning(f'vol_target sizing skipped: {_sz_e}')
