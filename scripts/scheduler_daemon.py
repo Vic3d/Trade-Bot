@@ -174,6 +174,9 @@ SCHEDULE = [
     ('Skipped Review',      'weekly_skipped_review.py', [],                        8,  0,  [0]),
     # ── Phase 23b: Sizing A/B-Test Review (Mo 08:15) ──
     ('Sizing AB Review',    'sizing_ab_review.py',     [],                         8, 15,  [0]),
+    # ── Phase 28: Shadow-Trades Counterfactual Tracking ──
+    ('Shadow Evaluator',    'shadow_evaluator.py',     [],                         23, 30, None),  # täglich
+    ('Shadow Thesis Review','shadow_thesis_review.py', [],                         8, 30,  [0]),    # Mo
     # ── Phase 27: Differenzierungs-Audit (1. So jedes Monats 06:00) ──
     ('Differentiation Audit','intelligence/differentiation_audit.py', [],          6,  0,  [6]),
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr

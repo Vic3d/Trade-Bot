@@ -1080,6 +1080,22 @@ def run_scan(max_new_trades: int = 5) -> list:
             target = setup['target']
             reason = setup['reason']
 
+            # Phase 28: Shadow Trade Logging — jedes Setup wird hypothetisch
+            # getrackt (für späteren Thesen-Vergleich), unabhängig davon
+            # ob es real ausgeführt wird oder nicht.
+            try:
+                import sys as _shsys
+                if str(WS / 'scripts') not in _shsys.path:
+                    _shsys.path.insert(0, str(WS / 'scripts'))
+                from shadow_trades import record_setup as _shadow_rec
+                _shadow_id = _shadow_rec(
+                    ticker=ticker, strategy=strategy,
+                    entry=entry, stop=stop, target=target,
+                    source='autonomous_scanner',
+                )
+            except Exception as _she:
+                _shadow_id = None
+
             # Phase 20: record signal (tier-based baseline conviction)
             try:
                 from core.universe import record_signal as _rec_sig
@@ -1124,6 +1140,22 @@ def run_scan(max_new_trades: int = 5) -> list:
             result['tier'] = tier
             result['reason'] = reason
             results.append(result)
+
+            # Phase 28: Shadow-Trade-Update: wenn real ausgeführt, link
+            # zur trade_id; sonst blocked_reason für Counterfactual-Analyse.
+            try:
+                if _shadow_id:
+                    from shadow_trades import record_setup as _shadow_rec2
+                    _shadow_rec2(
+                        ticker=ticker, strategy=strategy,
+                        entry=entry, stop=stop, target=target,
+                        source='autonomous_scanner',
+                        executed_real=bool(result.get('success')),
+                        real_trade_id=result.get('trade_id'),
+                        blocked_reason=(result.get('blocked_by') or result.get('reason')) if not result.get('success') else None,
+                    )
+            except Exception:
+                pass
 
             if result.get('success'):
                 new_trades += 1
