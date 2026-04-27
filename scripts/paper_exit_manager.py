@@ -578,6 +578,21 @@ def run() -> tuple[list, list]:
         if not price:
             continue
 
+        # ── Currency-Mismatch Sanity Check (Bug-Fix 2026-04-27) ────
+        # entry/stop kommen aus DB potenziell in Original-Currency
+        # (NOK, DKK, GBp), price kommt via get_price_eur immer in EUR.
+        # Wenn ratio zwischen 0.5 und 2.0 ausbricht: Currency-Mismatch
+        # vermutet → Stop/Target/CB-Checks SKIPPEN (sonst -91% Verlust).
+        if entry and entry > 0:
+            _ratio = price / entry
+            if _ratio < 0.5 or _ratio > 2.0:
+                print(f"⚠️  {ticker}: Currency-Mismatch verdächtig — entry={entry:.2f}, price={price:.2f}, ratio={_ratio:.2f}x — alle Stops übersprungen.")
+                try:
+                    send_alert(f"⚠️ {ticker} Currency-Mismatch: entry {entry:.2f} vs price {price:.2f} EUR (ratio {_ratio:.2f}x). Stops übersprungen — manueller Check.")
+                except Exception:
+                    pass
+                continue
+
         # Hold time
         try:
             entry_dt = datetime.fromisoformat(str(t['entry_date'])[:19])

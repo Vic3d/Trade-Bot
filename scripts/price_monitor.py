@@ -133,6 +133,7 @@ def run_monitor():
 
     last_vix = None
     alerted_ids = set()  # Trade-IDs für die bereits ein Alert gesendet wurde
+    _currency_warned_ids = set()  # Trade-IDs für die Currency-Mismatch Alert gesendet wurde
     check_count = 0
     last_heartbeat = 0.0
 
@@ -190,6 +191,25 @@ def run_monitor():
                 price = get_price_eur(ticker)
                 if not price:
                     continue
+
+                # ── Currency-Mismatch Sanity Check (Bug-Fix 2026-04-27) ──
+                # entry/stop kommen aus DB in Original-Currency (NOK, DKK, GBp),
+                # price kommt via get_price_eur immer in EUR. Wenn die Werte
+                # mehr als 50% auseinander liegen, ist es vermutlich ein
+                # Currency-Mismatch — kein Stop/Target feuern lassen!
+                # Realer Tages-Move >50% ist praktisch nie ohne Halt der Aktie.
+                if entry and entry > 0:
+                    ratio = price / entry
+                    if ratio < 0.5 or ratio > 2.0:
+                        if tid not in _currency_warned_ids:
+                            send_alert(
+                                f"⚠️ **Currency-Mismatch verdächtig** — {ticker} ({strat})\n"
+                                f"Entry (DB): {entry:.2f} | Price (EUR): {price:.2f} | Ratio: {ratio:.2f}x\n"
+                                f"Stop/Target-Check übersprungen — manueller Check nötig.\n"
+                                f"Vermutlich Original-Currency (z.B. NOK/DKK/GBp) vs EUR."
+                            )
+                            _currency_warned_ids.add(tid)
+                        continue  # SKIP — kein Stop, kein Target, keine Aktion
 
                 move_pct = (price - entry) / entry * 100
 
