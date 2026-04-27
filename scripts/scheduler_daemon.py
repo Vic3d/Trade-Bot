@@ -196,6 +196,15 @@ SCHEDULE = [
     # Speichert tägliche Selbsteinschätzung in ceo_self_reflections.jsonl
     # → enables historische Vergleiche ("wie war ich vor 7d?")
     ('CEO Self Reflection', 'ceo_self_assessment.py', [], 23, 45, None),
+    # ── Phase 34a: Narrative Self / Identity-Document (täglich 23:50) ──
+    # Aktualisiert memory/ceo-identity.md inkrementell → kontinuierliche
+    # Selbst-Story über Tage und Wochen.
+    ('CEO Narrative Self', 'ceo_narrative_self.py', [], 23, 50, None),
+    # ── Phase 34d: Dream-Phase (täglich 02:00) ──
+    # Strategische Konsolidierung wie REM-Schlaf. Sucht latente Patterns,
+    # Inkonsistenzen, generiert Strategic Insights die länger leben als
+    # normale Lessons. Output → memory/ceo-dream-log.md
+    ('CEO Dream', 'ceo_dream.py', [], 2, 0, None),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,

@@ -256,7 +256,36 @@ def build_smart_prompt(state: dict, proposals: list[dict],
     }
     role = persona_instr.get(persona, persona_instr['ceo'])
 
+    # Phase 34a: Identity-Anchor in jeden Prompt
+    identity_anchor = ''
+    try:
+        from ceo_narrative_self import get_identity_for_prompt
+        ident = get_identity_for_prompt()
+        if ident:
+            identity_anchor = f"\n═══ DEINE IDENTITÄT (wer du bist) ═══\n{ident[:1500]}\n"
+    except Exception:
+        pass
+
+    # Strategic Insights aus Dream-Phase
+    strategic_str = ''
+    try:
+        from pathlib import Path as _P
+        si_file = _P(WS) / 'data' / 'ceo_strategic_insights.jsonl'
+        if si_file.exists():
+            insights = []
+            for ln in si_file.read_text(encoding='utf-8').strip().split('\n')[-10:]:
+                try:
+                    insights.append(json.loads(ln).get('insight', ''))
+                except Exception:
+                    continue
+            if insights:
+                strategic_str = '\n═══ STRATEGISCHE INSIGHTS (aus Dream-Phasen) ═══\n' + \
+                               '\n'.join(f'  💡 {i}' for i in insights[-5:]) + '\n'
+    except Exception:
+        pass
+
     return f"""{role}
+{identity_anchor}{strategic_str}
 
 ═══ AKTUELLER MARKT-STATE ═══
 Mode: {directive.get('mode','?')} | Regime: {directive.get('regime','?')} | VIX: {directive.get('vix','?')}
