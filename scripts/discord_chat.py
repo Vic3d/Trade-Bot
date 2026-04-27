@@ -1286,6 +1286,38 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Self-Assessment Handler ────────────────────────────────────
+        # Victor fragt: "wie gut findest du das system" / "wie läufts" /
+        # "selbsteinschätzung" / "wie geht es dir" → CEO-Self-Assessment.
+        _self_kws = (
+            'wie gut findest du', 'wie gut findest du dich',
+            'wie gut findest du das system', 'bewerte dich',
+            'bewerte das system', 'selbsteinschätzung', 'selbsteinschaetzung',
+            'wie läufts', 'wie laeufts', 'wie läuft es', 'wie laeuft es',
+            'wie läuft das system', 'wie laeuft das system',
+            'wie geht es dir', 'wie gehts dir', 'wie zufrieden bist du',
+            'bist du zufrieden', 'wie schätzt du dich ein', 'wie schaetzt du dich ein',
+            'wie ist dein eindruck', 'gib mir deine einschätzung',
+        )
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _self_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from ceo_self_assessment import generate_self_assessment
+                _resp = generate_self_assessment()
+                # Discord 2000 char limit — chunked
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] self-assessment error: {_e}', flush=True)
+                # fall through
+
         # ── Memory-Proposal Handler ───────────────────────────────────
         # "Speichern 1,3" / "Speichern alle" / "Verwerfen" → schreibt
         # die heute morgens vorgeschlagenen Einträge in memory/*.md.
