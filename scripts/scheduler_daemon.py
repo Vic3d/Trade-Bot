@@ -177,6 +177,15 @@ SCHEDULE = [
     # ── Phase 28: Shadow-Trades Counterfactual Tracking ──
     ('Shadow Evaluator',    'shadow_evaluator.py',     [],                         23, 30, None),  # täglich
     ('Shadow Thesis Review','shadow_thesis_review.py', [],                         8, 30,  [0]),    # Mo
+    # ── Phase 31: Goal-Function Score (täglich 22:30) ──
+    # Berechnet Utility = pnl + sharpe×1000 - drawdown×200 - concentration.
+    # Trend-Trigger für Phase 31b (Auto-Adjust) — heute nur Logging+Discord.
+    ('Goal Score', 'goal_function.py', [], 22, 30, None),
+    # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
+    # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
+    # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,
+    # Discord-Push mit Empfehlungen.
+    ('Param Auto Tuner', 'parameter_auto_tuner.py', [], 6, 0, [0]),
     # ── Phase 29: System-Health-Monitor (alle 30min, 24/7) ──
     # 9 Health-Checks, Auto-Repair wo möglich. Discord-Alert nur bei WARN/FAIL.
     ('Health Monitor', 'system_health_monitor.py', [],  0, 15, None),
