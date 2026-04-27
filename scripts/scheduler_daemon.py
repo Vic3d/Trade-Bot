@@ -184,6 +184,10 @@ SCHEDULE = [
     # RL-light: Bei Trend-Decline (>5%) verschärft min_crv/pos%/sektor%.
     # Bei Trend-Improve + alle Targets met → lockern. Bounded.
     ('Goal Auto Adjust', 'goal_auto_adjust.py', [], 22, 45, None),
+    # ── Phase 32c: CEO-Reflection (täglich 23:15) ──
+    # Vergleicht heutige Decisions mit Outcomes, extrahiert Lessons via LLM.
+    # Lessons werden vom CEO-Brain in jedem nächsten Run als Kontext geladen.
+    ('CEO Reflection', 'ceo_reflection.py', [], 23, 15, None),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,

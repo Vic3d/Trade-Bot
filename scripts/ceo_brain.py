@@ -177,29 +177,65 @@ def gather_inputs() -> dict:
 
 def decide_llm(state: dict) -> list[dict]:
     """
-    Fragt LLM für jeden Proposal: EXECUTE / SKIP / WATCH + reason.
-    Returns: [{ticker, strategy, action, reason}, ...]
+    Phase 32: Smart-Mode mit Memory + Lessons + Multi-Agent.
+    Returns: [{ticker, strategy, action, reason, confidence, ...}, ...]
     """
     proposals = state['proposals_pending']
     if not proposals:
         return []
 
-    # Zu viele Proposals? Nur Top-30 priorisiert
     proposals = proposals[:30]
 
+    # Phase 32: Lade Memory + Lessons + Tool-Data
+    try:
+        from ceo_intelligence import (
+            load_decision_memory, load_lessons, gather_tool_data,
+            synthesize_decisions,
+        )
+    except Exception as e:
+        print(f'[ceo_brain] Smart-Mode nicht verfuegbar ({e}) — fallback altes Prompt')
+        return _decide_legacy(state, proposals)
+
+    memory = load_decision_memory(n=20)
+    lessons = load_lessons(max_age_days=60, limit=30)
+    tickers = [p.get('ticker', '') for p in proposals]
+    tool_data = gather_tool_data(tickers)
+
+    # Multi-Agent off bei wenig Proposals (Cost-Optimierung)
+    use_multi = len(proposals) >= 3
+
+    decisions = synthesize_decisions(
+        state, proposals, memory, lessons, tool_data,
+        multi_agent=use_multi,
+    )
+
+    # _meta-Eintrag rausfiltern für return
+    meta_entries = [d for d in decisions if d.get('_meta')]
+    real_decisions = [d for d in decisions if not d.get('_meta')]
+
+    if meta_entries:
+        m = meta_entries[0]
+        print(f'[ceo_brain] Market: {m.get("market_assessment","")[:150]}')
+        print(f'[ceo_brain] Portfolio: {m.get("portfolio_assessment","")[:150]}')
+
+    if not real_decisions:
+        print('[ceo_brain] Smart-Decisions leer — fallback Rules')
+        return decide_rules(state)
+
+    return real_decisions
+
+
+def _decide_legacy(state: dict, proposals: list[dict]) -> list[dict]:
+    """Alter prompt-flow als notfall fallback."""
     prompt = _build_prompt(state, proposals)
     try:
         from core.llm_client import call_llm
         text, _usage = call_llm(prompt, model_hint='sonnet', max_tokens=3000)
     except Exception as e:
-        print(f'[ceo_brain] LLM-Call fehlgeschlagen: {e} — fallback auf Rules')
+        print(f'[ceo_brain] legacy LLM error: {e} — Rules fallback')
         return decide_rules(state)
-
     decisions = _parse_llm_response(text, proposals)
-    if not decisions:
-        print('[ceo_brain] LLM-Response nicht parsebar — fallback auf Rules')
-        return decide_rules(state)
-    return decisions
+    return decisions or decide_rules(state)
 
 
 def _build_prompt(state: dict, proposals: list[dict]) -> str:
