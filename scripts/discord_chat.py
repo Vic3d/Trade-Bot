@@ -1286,6 +1286,108 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Self-Improvement Approval Handler ──────────────────────────
+        # "implement 1,3" / "implement alle" / "verwerfen alle"
+        # → spawnt Claude Code via code_task_worker mit Proposal-Text
+        _content_norm = content_lower.strip()
+        if (_content_norm.startswith('implement ') or
+            _content_norm.startswith('implementiere ') or
+            (_content_norm.startswith('verwerfen ') and 'proposal' in _content_norm) or
+            _content_norm == 'implement alle' or
+            _content_norm == 'implementiere alle'):
+            try:
+                _send_typing(CHANNEL_ID)
+                from ceo_self_improvement import (
+                    load_pending_proposals, mark_proposal_status,
+                )
+                payload = load_pending_proposals()
+                proposals = payload.get('proposals', [])
+                pending = [p for p in proposals if p.get('status') == 'pending']
+
+                if not pending:
+                    _send_message('📭 Keine offenen Self-Improvement-Vorschläge.', CHANNEL_ID)
+                    state['last_message_id'] = highest_id
+                    state['last_poll'] = datetime.now().isoformat()
+                    _save_state(state)
+                    continue
+
+                # Verwerfen-Pfad
+                if 'verwerfen' in _content_norm:
+                    for p in pending:
+                        mark_proposal_status(p['id'], 'rejected', 'Victor verworfen')
+                    _send_message(f'🗑️ {len(pending)} Vorschläge verworfen.', CHANNEL_ID)
+                    state['last_message_id'] = highest_id
+                    state['last_poll'] = datetime.now().isoformat()
+                    _save_state(state)
+                    continue
+
+                # Implement-Pfad
+                import re as _re
+                if 'alle' in _content_norm:
+                    target_ids = [p['id'] for p in pending]
+                else:
+                    nums = _re.findall(r'\d+', _content_norm)
+                    target_ids = [int(n) for n in nums]
+
+                target_proposals = [p for p in pending if p.get('id') in target_ids]
+                if not target_proposals:
+                    _send_message('❓ Keine passenden Vorschläge gefunden. '
+                                  'Beispiel: `implement 1,3` oder `implement alle`.', CHANNEL_ID)
+                    state['last_message_id'] = highest_id
+                    state['last_poll'] = datetime.now().isoformat()
+                    _save_state(state)
+                    continue
+
+                _send_message(f'🛠️ Spawne Claude Code für {len(target_proposals)} '
+                              f'Vorschlag/Vorschläge — kann 5-10 Minuten dauern…',
+                              CHANNEL_ID)
+
+                # Compose task for Claude Code
+                tasks_text = '\n\n'.join(
+                    f"### Vorschlag {p['id']}: {p.get('title', '?')}\n"
+                    f"**Was:** {p.get('what', '')}\n"
+                    f"**Warum:** {p.get('why', '')}\n"
+                    f"**Wie:** {p.get('how', '')}\n"
+                    f"**Erwarteter Effekt:** {p.get('expected_impact', '')}\n"
+                    f"**Risiko:** {p.get('risk', '')}\n"
+                    f"**Aufwand:** {p.get('effort', 'medium')}"
+                    for p in target_proposals
+                )
+                code_task = (
+                    f'Self-Improvement-Implementation. Albert hat folgende Verbesserungen '
+                    f'für sich vorgeschlagen. Implementiere sie sauber:\n\n'
+                    f'{tasks_text}\n\n'
+                    f'WICHTIG:\n'
+                    f'- Keine Änderung an: paper_exit_manager.py (Stop-Loss), '
+                    f'Hard-Safety-Guards, PERMANENTLY_BLOCKED_STRATEGIES.\n'
+                    f'- Code committen + zum Server pushen (siehe deploy/deploy.sh).\n'
+                    f'- Discord-Bestätigung am Ende mit Zusammenfassung was gebaut wurde.'
+                )
+
+                try:
+                    from code_task_worker import handle_code_task
+                    _resp = handle_code_task(code_task, timeout_sec=600)
+                    # Mark als implemented (oder failed im Notes)
+                    for p in target_proposals:
+                        mark_proposal_status(p['id'], 'implemented',
+                                              note=_resp[:200])
+                    for _i in range(0, len(_resp), 1900):
+                        _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                        time.sleep(0.5)
+                except Exception as _ce:
+                    err = f'⚠️ Implementation fehlgeschlagen: {_ce}'
+                    _send_message(err, CHANNEL_ID)
+                    for p in target_proposals:
+                        mark_proposal_status(p['id'], 'failed', note=str(_ce)[:200])
+
+                _log_chat('albert', f'Self-improvement implement: {target_ids}')
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] self-improvement-handler error: {_e}', flush=True)
+
         # ── Trade-Reasoning Handler ────────────────────────────────────
         # "Warum hast du UNH gekauft?" / "Erklär mir Trade 76" / "Warum trade XYZ"
         _trade_why_kws = (

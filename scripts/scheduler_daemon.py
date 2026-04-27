@@ -205,6 +205,11 @@ SCHEDULE = [
     # Inkonsistenzen, generiert Strategic Insights die länger leben als
     # normale Lessons. Output → memory/ceo-dream-log.md
     ('CEO Dream', 'ceo_dream.py', [], 2, 0, None),
+    # ── Phase 35: Self-Improvement (Sa 23:00 wöchentlich) ──
+    # CEO introspektiert + generiert Verbesserungs-Vorschläge für sich
+    # selbst. Discord-Push mit Liste, Victor approved via "implement N",
+    # spawnt code_task_worker → Claude Code baut + deployt.
+    ('CEO Self Improvement', 'ceo_self_improvement.py', [], 23, 0, [5]),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,
