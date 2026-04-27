@@ -177,6 +177,16 @@ SCHEDULE = [
     # ── Phase 28: Shadow-Trades Counterfactual Tracking ──
     ('Shadow Evaluator',    'shadow_evaluator.py',     [],                         23, 30, None),  # täglich
     ('Shadow Thesis Review','shadow_thesis_review.py', [],                         8, 30,  [0]),    # Mo
+    # ── Phase 29: System-Health-Monitor (alle 30min, 24/7) ──
+    # 9 Health-Checks, Auto-Repair wo möglich. Discord-Alert nur bei WARN/FAIL.
+    ('Health Monitor', 'system_health_monitor.py', [],  0, 15, None),
+    ('Health Monitor', 'system_health_monitor.py', [],  3, 15, None),
+    ('Health Monitor', 'system_health_monitor.py', [],  6, 15, None),
+    ('Health Monitor', 'system_health_monitor.py', [],  9, 45, None),
+    ('Health Monitor', 'system_health_monitor.py', [], 12, 45, None),
+    ('Health Monitor', 'system_health_monitor.py', [], 15, 45, None),
+    ('Health Monitor', 'system_health_monitor.py', [], 18, 45, None),
+    ('Health Monitor', 'system_health_monitor.py', [], 21, 45, None),
     # ── Phase 28a: CEO-Brain — zentrale Trade-Entscheidung alle 30min ──
     # Statt 10 unabhängige Guards: EINE Stimme die alles sieht und entscheidet.
     # Läuft nur im Trading-Fenster (10:00-22:00 CEST), Mo-Fr.

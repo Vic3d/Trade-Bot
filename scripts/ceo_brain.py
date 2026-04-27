@@ -439,6 +439,24 @@ def main() -> int:
         return 0
 
     # Try LLM first, fallback to rules
+    # Phase 29: Health-Monitor setzt .llm_fallback_active wenn LLM down
+    _fallback_flag = WS / 'data' / '.llm_fallback_active'
+    if _fallback_flag.exists():
+        # Wenn Flag älter als 60min → ignorieren (LLM könnte wieder laufen)
+        try:
+            _age_min = (datetime.now().timestamp() - _fallback_flag.stat().st_mtime) / 60
+            if _age_min > 60:
+                _fallback_flag.unlink()
+                print(f'[ceo_brain] LLM-Fallback-Flag {_age_min:.0f}min alt → entfernt')
+            else:
+                print(f'[ceo_brain] LLM-Fallback aktiv (Health-Monitor) → Rules')
+                decisions = decide_rules(state)
+                summary = execute_decisions(decisions)
+                print(f'\nRules-Mode Summary: {summary}')
+                return 0
+        except Exception:
+            pass
+
     try:
         decisions = decide_llm(state)
         if decisions:
