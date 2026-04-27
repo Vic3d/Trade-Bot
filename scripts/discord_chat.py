@@ -1286,6 +1286,60 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Trade-Reasoning Handler ────────────────────────────────────
+        # "Warum hast du UNH gekauft?" / "Erklär mir Trade 76" / "Warum trade XYZ"
+        _trade_why_kws = (
+            'warum hast du', 'warum trade', 'warum tradest du',
+            'warum kauf', 'warum gekauft', 'warum verkauf',
+            'erklär mir trade', 'erklaer mir trade', 'erkläre trade', 'erklaere trade',
+            'begründ', 'begruend', 'reasoning für', 'reasoning fuer',
+            'wieso hast du', 'wieso trade',
+        )
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _trade_why_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from ceo_trade_reasoning import explain_trade
+                # Pass full content so explain_trade can extract ticker/trade-id
+                _resp = explain_trade(content)
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] trade-reasoning error: {_e}', flush=True)
+
+        # ── Reflection-Vergleich Handler ────────────────────────────────
+        # "Vergleich mit letzter Woche" / "wie war ich vor 7 tagen"
+        _refl_kws = (
+            'vergleich mit', 'wie war ich vor', 'wie war ich gestern',
+            'rückblick', 'rueckblick', 'vergleich zu', 'verlauf der',
+            'wie hat sich', 'historischer vergleich',
+        )
+        if any(kw in _content_norm for kw in _refl_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from ceo_self_assessment import compare_to_past
+                # Days extrahieren wenn möglich
+                import re as _re
+                _m = _re.search(r'(\d+)\s*tag', _content_norm)
+                _days = int(_m.group(1)) if _m else 7
+                _resp = compare_to_past(days_ago=_days)
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] reflection-compare error: {_e}', flush=True)
+
         # ── Self-Assessment Handler ────────────────────────────────────
         # Victor fragt: "wie gut findest du das system" / "wie läufts" /
         # "selbsteinschätzung" / "wie geht es dir" → CEO-Self-Assessment.
@@ -1299,7 +1353,6 @@ def poll_once() -> None:
             'bist du zufrieden', 'wie schätzt du dich ein', 'wie schaetzt du dich ein',
             'wie ist dein eindruck', 'gib mir deine einschätzung',
         )
-        _content_norm = content_lower.strip()
         if any(kw in _content_norm for kw in _self_kws):
             try:
                 _send_typing(CHANNEL_ID)

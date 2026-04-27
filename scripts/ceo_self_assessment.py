@@ -38,6 +38,7 @@ MOOD_FILE         = WS / 'data' / 'ceo_mood.json'
 HYPOTHESES_FILE   = WS / 'data' / 'ceo_hypotheses.jsonl'
 DIRECTIVE_FILE    = WS / 'data' / 'ceo_directive.json'
 AUTONOMY_CONFIG   = WS / 'data' / 'autonomy_config.json'
+REFLECTIONS_LOG   = WS / 'data' / 'ceo_self_reflections.jsonl'
 
 
 def _load_json(path: Path, default=None):
@@ -281,20 +282,12 @@ WICHTIG: Antworte als Albert (Ich-Form). Keine Floskeln. Konkrete Zahlen wo imme
 
 
 def generate_self_assessment() -> str:
-    """Returns Discord-tauglichen Markdown-Text mit Selbsteinschätzung."""
+    """Returns Discord-tauglichen Markdown-Text mit Selbsteinschätzung.
+    Persistiert auch in REFLECTIONS_LOG für historische Vergleiche."""
     state = gather_self_state()
-
-    try:
-        from core.llm_client import call_llm
-        prompt = build_self_assessment_prompt(state)
-        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=1500)
-        if text and text.strip():
-            return text.strip()
-    except Exception as e:
-        print(f'[self_assess] LLM error: {e}', file=sys.stderr)
-
-    # Fallback (regelbasiert) wenn LLM down
-    return _fallback_assessment(state)
+    text = generate_self_assessment_with_state(state)
+    save_reflection(text, state)
+    return text
 
 
 def _fallback_assessment(state: dict) -> str:
@@ -338,12 +331,136 @@ Ich bin operativ, mein Risk-Profil ist diszipliniert. {targets_met}/3 Targets er
 (Fallback-Antwort ohne LLM — Calibration noch dünn.)"""
 
 
+def save_reflection(text: str, state: dict) -> None:
+    """Persistiert tägliche Selbsteinschätzung mit Snapshot der Kennzahlen."""
+    try:
+        REFLECTIONS_LOG.parent.mkdir(parents=True, exist_ok=True)
+        # Extract Vertrauen-Score wenn vorhanden ("Vertrauen in mich selbst: X/10")
+        import re
+        m = re.search(r'(?:vertrauen[^:]*:\s*)(\d+(?:\.\d+)?)\s*/\s*10', text, re.IGNORECASE)
+        score = float(m.group(1)) if m else None
+
+        entry = {
+            'ts': datetime.now().isoformat(timespec='seconds'),
+            'date': datetime.now().strftime('%Y-%m-%d'),
+            'self_score_10': score,
+            'snapshot': {
+                'pnl_30d': (state.get('performance_30d') or {}).get('pnl_eur'),
+                'wr_30d': (state.get('performance_30d') or {}).get('win_rate'),
+                'utility': (state.get('goal') or {}).get('utility'),
+                'sharpe': (state.get('goal') or {}).get('sharpe'),
+                'mood': (state.get('mood') or {}).get('current'),
+                'calibration_n': (state.get('calibration') or {}).get('sample_size'),
+                'calibration_bias': (state.get('calibration') or {}).get('overconfidence_bias'),
+                'lessons_permanent': (state.get('lessons') or {}).get('permanent_count'),
+            },
+            'text': text[:3000],
+        }
+        with open(REFLECTIONS_LOG, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + '\n')
+    except Exception as e:
+        print(f'[self_assess] save_reflection error: {e}', file=sys.stderr)
+
+
+def load_past_reflections(days_ago: int = 7) -> list[dict]:
+    """Lädt letzte N Tage Reflections."""
+    if not REFLECTIONS_LOG.exists():
+        return []
+    cutoff = (datetime.now() - timedelta(days=days_ago + 2)).date()
+    out = []
+    for ln in REFLECTIONS_LOG.read_text(encoding='utf-8').strip().split('\n'):
+        try:
+            d = json.loads(ln)
+            d_date = datetime.fromisoformat(d.get('date'))
+            if d_date.date() >= cutoff:
+                out.append(d)
+        except Exception:
+            continue
+    return out
+
+
+def compare_to_past(days_ago: int = 7) -> str:
+    """Vergleicht aktuelle Selbsteinschätzung mit der von vor N Tagen."""
+    history = load_past_reflections(days_ago=days_ago + 2)
+    if not history:
+        return ('📭 Noch keine historischen Selbsteinschätzungen gespeichert. '
+                'Tägliche Reflektion läuft erst ab heute.')
+
+    # Find Reflection ungefähr von vor `days_ago` Tagen
+    target_date = (datetime.now() - timedelta(days=days_ago)).date()
+    closest = None
+    closest_delta = 999
+    for r in history:
+        try:
+            r_date = datetime.fromisoformat(r['date']).date()
+            delta = abs((r_date - target_date).days)
+            if delta < closest_delta:
+                closest_delta = delta
+                closest = r
+        except Exception:
+            continue
+    if not closest:
+        return f'📭 Keine Reflection vor {days_ago} Tagen gefunden.'
+
+    # Aktueller State
+    current_state = gather_self_state()
+    current_pnl = (current_state.get('performance_30d') or {}).get('pnl_eur', 0)
+    current_wr = (current_state.get('performance_30d') or {}).get('win_rate', 0)
+    current_util = (current_state.get('goal') or {}).get('utility', 0)
+    current_sharpe = (current_state.get('goal') or {}).get('sharpe', 0)
+
+    past = closest['snapshot']
+    past_score = closest.get('self_score_10', '?')
+    past_date = closest['date']
+
+    lines = [
+        f'📅 **Vergleich: heute vs {past_date} ({closest_delta}d Differenz zum Ziel)**',
+        '',
+        f'**Performance 30d:**',
+        f'  PnL: {(past.get("pnl_30d") or 0):+.0f}€ → {current_pnl:+.0f}€',
+        f'  WR: {past.get("wr_30d","?")}% → {current_wr}%',
+        '',
+        f'**Goal-Score:**',
+        f'  Utility: {past.get("utility","?")} → {current_util}',
+        f'  Sharpe: {past.get("sharpe","?")} → {current_sharpe}',
+        '',
+        f'**Bewusstsein:**',
+        f'  Mood: {past.get("mood","?")} → {(current_state.get("mood") or {}).get("current","?")}',
+        f'  Calibration-Samples: {past.get("calibration_n","0") or 0} → '
+        f'{(current_state.get("calibration") or {}).get("sample_size","0") or 0}',
+        f'  Permanent-Lessons: {past.get("lessons_permanent","0") or 0} → '
+        f'{(current_state.get("lessons") or {}).get("permanent_count","0") or 0}',
+        '',
+        f'**Mein Vertrauen damals: {past_score}/10**',
+        '',
+        f'_Damalige Reflexion (Auszug):_',
+        f'> {(closest.get("text") or "")[:500]}',
+    ]
+    return '\n'.join(lines)
+
+
 def main() -> int:
-    """CLI-Modus für lokales Testen."""
+    """CLI-Modus für lokales Testen + speichert Reflection."""
     print('─── CEO Self-Assessment ───')
-    text = generate_self_assessment()
+    state = gather_self_state()
+    text = generate_self_assessment_with_state(state)
     print(text)
+    # Persistiere für historische Vergleiche
+    save_reflection(text, state)
     return 0
+
+
+def generate_self_assessment_with_state(state: dict) -> str:
+    """Wrapper: state wird einmal gesammelt damit save_reflection denselben snapshot bekommt."""
+    try:
+        from core.llm_client import call_llm
+        prompt = build_self_assessment_prompt(state)
+        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=1500)
+        if text and text.strip():
+            return text.strip()
+    except Exception as e:
+        print(f'[self_assess] LLM error: {e}', file=sys.stderr)
+    return _fallback_assessment(state)
 
 
 if __name__ == '__main__':

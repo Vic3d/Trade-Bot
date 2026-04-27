@@ -192,6 +192,10 @@ SCHEDULE = [
     # Update Calibration, Mood, Hypotheses, World-Events.
     # Output wird vom CEO-Brain im nächsten Run gelesen.
     ('CEO Consciousness', 'ceo_consciousness.py', [], 23, 30, None),
+    # ── CEO-Self-Reflection (täglich 23:45) ──
+    # Speichert tägliche Selbsteinschätzung in ceo_self_reflections.jsonl
+    # → enables historische Vergleiche ("wie war ich vor 7d?")
+    ('CEO Self Reflection', 'ceo_self_assessment.py', [], 23, 45, None),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,
