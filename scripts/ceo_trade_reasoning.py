@@ -112,13 +112,51 @@ def explain_trade(query: str) -> str:
             pass
 
     # Sonst: ist es ein Ticker?
+    # Skip-Liste: häufige Wörter die wie Ticker aussehen aber keine sind
+    SKIP_WORDS = {
+        'WARUM', 'WIESO', 'HAST', 'TRADE', 'ERKLAR', 'ERKLAER', 'BEGRUND',
+        'BEGRUEND', 'DU', 'DAS', 'DEN', 'DIE', 'DER', 'EIN', 'EINE',
+        'GEKAUFT', 'KAUF', 'VERKAUF', 'VERKAUFT', 'TRADEST', 'MIR',
+        'MICH', 'IST', 'WAR', 'BIST', 'WIE', 'WAS', 'WO', 'WANN',
+        'OPEN', 'CLOSED', 'WIN', 'LOSS', 'ME', 'MIT', 'ZU', 'VON',
+    }
     if not trade_id:
-        # Extract erstes Token in Caps
+        # Bevorzuge Tokens mit Punkt/Strich (BMW.DE, EQNR.OL, BA.L) → klar Ticker
+        candidates_with_dot = []
+        candidates_pure = []
         for tok in query.split():
-            tok = tok.strip('?,.!').upper()
-            if 1 <= len(tok) <= 8 and tok.replace('.', '').replace('-', '').isalnum():
-                ticker = tok
-                break
+            tok = tok.strip('?,.!()[]{}"\'\'').upper()
+            if not tok or tok in SKIP_WORDS:
+                continue
+            if not (1 <= len(tok) <= 10):
+                continue
+            if not tok.replace('.', '').replace('-', '').isalnum():
+                continue
+            if '.' in tok or '-' in tok:
+                candidates_with_dot.append(tok)
+            else:
+                candidates_pure.append(tok)
+        if candidates_with_dot:
+            ticker = candidates_with_dot[0]
+        elif candidates_pure:
+            # Bei pure caps: nur 2-5 char Tickers + DB-Lookup
+            for c in candidates_pure:
+                if 2 <= len(c) <= 5:
+                    # DB Check ob Ticker existiert
+                    try:
+                        conn = sqlite3.connect(str(DB))
+                        row = conn.execute(
+                            "SELECT 1 FROM paper_portfolio WHERE ticker = ? LIMIT 1", (c,)
+                        ).fetchone()
+                        conn.close()
+                        if row:
+                            ticker = c
+                            break
+                    except Exception:
+                        pass
+            if not ticker and candidates_pure:
+                # Letzter Fallback: nimm wenigstens irgendeinen
+                ticker = candidates_pure[0]
 
     if not ticker and not trade_id:
         return ('❓ Kein Ticker erkannt. Beispiel: "Warum hast du UNH gekauft?" '
