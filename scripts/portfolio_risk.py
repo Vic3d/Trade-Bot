@@ -630,8 +630,22 @@ def volatility_adjusted_size(base_size: float, vix: float | None = None) -> dict
 def check_sector_exposure(
     new_ticker: str,
     new_size_eur: float,
-    max_sector_pct: float = 0.30,
+    max_sector_pct: float | None = None,
 ) -> dict:
+    # Phase 31b: lese sector_cap_pct aus autonomy_config.json (Default 30%)
+    if max_sector_pct is None:
+        max_sector_pct = 0.30
+        try:
+            import json as _sjson
+            from pathlib import Path as _SPath
+            _ac = _SPath(__file__).resolve().parent.parent / 'data' / 'autonomy_config.json'
+            if _ac.exists():
+                _cfg = _sjson.loads(_ac.read_text(encoding='utf-8'))
+                _val = _cfg.get('sector_cap_pct')
+                if _val is not None:
+                    max_sector_pct = float(_val) / 100.0
+        except Exception:
+            pass
     """
     Prüft ob neue Position den Sektor über den Grenzwert drücken würde.
 

@@ -308,23 +308,35 @@ class EntryGate:
             warnings.append(f"Unbekannte Quelle '{news_source}' — Qualität nicht verifiziert")
 
         # ─── Gate 2b: Block 4b — Politisches/Regulatorisches Risiko ───────
-        # Pflicht seit 29.03.2026: Ticker in Pharma/Healthcare IMMER warnen.
-        # Wenn politische Keywords in Headline → Warning (kein Hard Block, aber
-        # wird in Discord sichtbar gemacht damit Victor entscheiden kann).
-        ticker_l = ticker.lower()
-        _pol_sector = any(s in ticker_l or s in headline_l for s in POLITICAL_RISK_SECTORS)
-        _pol_kw_match = next((kw for kw in POLITICAL_RISK_KEYWORDS if kw in headline_l), None)
-        if _pol_kw_match:
-            warnings.append(
-                f"⚠️ Block 4b: Politisches Risiko erkannt — '{_pol_kw_match}' in Headline. "
-                f"Explizit prüfen: Preisregulierung, Staatliche Eingriffe, Zölle. "
-                f"Erst wenn Block 4b sauber ist → Trade erlaubt."
-            )
-        elif _pol_sector:
-            warnings.append(
-                f"⚠️ Block 4b: Pharma/Healthcare-Ticker '{ticker}' — politisches Risiko "
-                f"immer prüfen (IRA, MFN-Pricing, Trump-Deals). Deepdive-Protokoll Schritt 4b."
-            )
+        # Phase 31b (2026-04-27): Victor-Anweisung "ethische Trades vernachlässigbar".
+        # Block 4b kann via autonomy_config.json {"ethical_filter_off": true} deaktiviert
+        # werden. Default bleibt aktiv (Warning) — Off-Switch macht Pharma-Trades sauber.
+        _ethical_off = False
+        try:
+            import json as _ejson
+            from pathlib import Path as _EPath
+            _ec = _EPath(__file__).resolve().parent.parent / 'data' / 'autonomy_config.json'
+            if _ec.exists():
+                _ecfg = _ejson.loads(_ec.read_text(encoding='utf-8'))
+                _ethical_off = bool(_ecfg.get('ethical_filter_off', False))
+        except Exception:
+            pass
+
+        if not _ethical_off:
+            ticker_l = ticker.lower()
+            _pol_sector = any(s in ticker_l or s in headline_l for s in POLITICAL_RISK_SECTORS)
+            _pol_kw_match = next((kw for kw in POLITICAL_RISK_KEYWORDS if kw in headline_l), None)
+            if _pol_kw_match:
+                warnings.append(
+                    f"⚠️ Block 4b: Politisches Risiko erkannt — '{_pol_kw_match}' in Headline. "
+                    f"Explizit prüfen: Preisregulierung, Staatliche Eingriffe, Zölle. "
+                    f"Erst wenn Block 4b sauber ist → Trade erlaubt."
+                )
+            elif _pol_sector:
+                warnings.append(
+                    f"⚠️ Block 4b: Pharma/Healthcare-Ticker '{ticker}' — politisches Risiko "
+                    f"immer prüfen (IRA, MFN-Pricing, Trump-Deals). Deepdive-Protokoll Schritt 4b."
+                )
 
         # ─── Gate 3: Regime Compatibility ──────────────────────────────
         regime_upper = (regime or '').upper()

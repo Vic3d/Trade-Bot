@@ -179,8 +179,11 @@ SCHEDULE = [
     ('Shadow Thesis Review','shadow_thesis_review.py', [],                         8, 30,  [0]),    # Mo
     # ── Phase 31: Goal-Function Score (täglich 22:30) ──
     # Berechnet Utility = pnl + sharpe×1000 - drawdown×200 - concentration.
-    # Trend-Trigger für Phase 31b (Auto-Adjust) — heute nur Logging+Discord.
     ('Goal Score', 'goal_function.py', [], 22, 30, None),
+    # ── Phase 31b: Goal-Auto-Adjust (täglich 22:45 nach goal_function) ──
+    # RL-light: Bei Trend-Decline (>5%) verschärft min_crv/pos%/sektor%.
+    # Bei Trend-Improve + alle Targets met → lockern. Bounded.
+    ('Goal Auto Adjust', 'goal_auto_adjust.py', [], 22, 45, None),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,

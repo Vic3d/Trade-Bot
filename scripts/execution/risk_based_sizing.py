@@ -47,12 +47,22 @@ DEFAULT_CONFIG = {
 
 
 def _load_config() -> dict:
+    cfg = dict(DEFAULT_CONFIG)
     if SIZING_CONFIG.exists():
         try:
-            return {**DEFAULT_CONFIG, **json.loads(SIZING_CONFIG.read_text(encoding='utf-8'))}
+            cfg.update(json.loads(SIZING_CONFIG.read_text(encoding='utf-8')))
         except Exception:
             pass
-    return DEFAULT_CONFIG
+    # Phase 31b: max_position_pct kann durch autonomy_config überschrieben werden
+    try:
+        autonomy_path = WS / 'data' / 'autonomy_config.json'
+        if autonomy_path.exists():
+            ac = json.loads(autonomy_path.read_text(encoding='utf-8'))
+            if 'max_position_pct' in ac:
+                cfg['max_position_pct'] = float(ac['max_position_pct'])
+    except Exception:
+        pass
+    return cfg
 
 
 def _get_risk_pct(strategy: str, cfg: dict) -> float:

@@ -543,15 +543,26 @@ def _execute_paper_entry_inner(
     except Exception as _e:
         pass  # Fallback: Stop unverändert
 
-    # ── Guard 0c: Minimum CRV 1.3:1 (Victor 2026-04-20: von 2.0 gelockert) ─
+    # ── Guard 0c: Minimum CRV (Phase 31b: dynamisch via autonomy_config.json) ─
     _reward = abs(target_price - entry_price)
     _risk = abs(entry_price - stop_price)
     _crv = _reward / _risk if _risk > 0 else 0
-    if _crv < 1.3:
+    # Phase 31b: Lese adjusted min_crv (Default 1.3)
+    _min_crv = 1.3
+    try:
+        import json as _ajson
+        from pathlib import Path as _APath
+        _ac_path = _APath(__file__).resolve().parent.parent.parent / 'data' / 'autonomy_config.json'
+        if _ac_path.exists():
+            _ac = _ajson.loads(_ac_path.read_text(encoding='utf-8'))
+            _min_crv = float(_ac.get('min_crv', 1.3))
+    except Exception:
+        pass
+    if _crv < _min_crv:
         return {
             'success': False,
             'trade_id': None,
-            'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < 1.3:1 Minimum',
+            'message': f'❌ {ticker}: CRV {_crv:.1f}:1 < {_min_crv:.1f}:1 Minimum (autonomy-tuned)',
             'blocked_by': 'crv_minimum',
         }
 
