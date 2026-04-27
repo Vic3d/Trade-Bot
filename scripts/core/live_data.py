@@ -77,7 +77,13 @@ def get_fx_factor(ticker: str) -> float:
 
     eurusd = get_eurusd()
     if not eurusd:
-        return 1.0  # Fallback: unkonvertiert
+        # 2026-04-27: Silent 1.0-Fallback ist gefährlich — verursachte EQNR/NVO
+        # Phantom-Stops (-2406€). Loud-Fail mit Marker damit Caller (z.B.
+        # paper_trade_engine Guard 0e) FX-Mismatch erkennen kann.
+        import sys as _fxlogsys
+        print(f'[FX] WARNING: EURUSD-Rate nicht verfuegbar, fx_factor=1.0 für {ticker}'
+              f' ({currency}) — Caller MUSS Sanity-Check machen!', file=_fxlogsys.stderr)
+        return 1.0  # Fallback: unkonvertiert (riskant)
 
     if currency == 'GBp':
         # London: Pence → GBP (÷100), dann GBP→EUR
@@ -95,8 +101,13 @@ def get_fx_factor(ticker: str) -> float:
         try:
             fx_rate = fx_data['chart']['result'][0]['meta']['regularMarketPrice']
             return fx_rate / eurusd
-        except Exception:
-            pass
+        except Exception as _fxe:
+            # 2026-04-27: Silent fallback verursachte NOK/DKK Phantom-Stops.
+            # Loud-Fail damit Caller einen Mismatch erkennt.
+            import sys as _fxlogsys
+            print(f'[FX] WARNING: {fx_pair} fetch failed für {ticker} ({currency}): {_fxe}'
+                  f' — fx_factor=1.0 fallback. Caller MUSS sanity-checken!',
+                  file=_fxlogsys.stderr)
 
     # USD → EUR
     return 1.0 / eurusd

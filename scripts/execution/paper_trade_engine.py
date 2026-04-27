@@ -495,6 +495,44 @@ def _execute_paper_entry_inner(
             'blocked_by': 'invalid_stop',
         }
 
+    # ── Guard 0e: FX-Currency-Sanity (Phase: Stop-Loss Bug-Fix 2026-04-27) ──
+    # Verhindert dass entry/stop/target in Original-Currency (NOK/DKK/GBp/SEK)
+    # in die DB gelangen, wenn get_fx_factor silent auf 1.0 zurückgefallen ist.
+    # Bisheriger Schaden: EQNR.OL+NVO Phantom-Stops bei -91%/-84% (-2406€).
+    # Logik: Live EUR-Preis vs. übergebener entry_price. Wenn Ratio nicht
+    # in [0.75, 1.33] → FX-Konvertierung war fehlerhaft. Trade ablehnen.
+    try:
+        import sys as _fxsys
+        _fxsys.path.insert(0, str(Path(__file__).parent.parent))
+        from core.live_data import get_price_eur as _get_eur
+        _live_eur = _get_eur(ticker)
+        if _live_eur and _live_eur > 0 and entry_price > 0:
+            _ratio = _live_eur / entry_price
+            if _ratio < 0.75 or _ratio > 1.33:
+                _msg = (
+                    f'❌ {ticker}: FX-Sanity gescheitert — Entry-Preis {entry_price:.2f} '
+                    f'vs Live-EUR {_live_eur:.2f} (Ratio {_ratio:.2f}x). '
+                    f'Vermutlich Original-Currency (NOK/DKK/GBp) statt EUR. '
+                    f'Trade abgelehnt um Phantom-Stop-Bug zu verhindern.'
+                )
+                print(_msg)
+                try:
+                    import sys as _sys2
+                    _sys2.path.insert(0, str(Path(__file__).parent.parent))
+                    from discord_sender import send as _alert
+                    _alert(f'⚠️ **FX-Sanity Block** {ticker}\n{_msg[:1500]}')
+                except Exception:
+                    pass
+                return {
+                    'success': False, 'trade_id': None,
+                    'message': _msg, 'blocked_by': 'fx_sanity',
+                }
+    except Exception as _fxe:
+        print(f'[fx-sanity] check skipped ({type(_fxe).__name__}): {_fxe}')
+        # Defensive: bei Fehler im Check NICHT blockieren (sonst Lock-out
+        # bei Yahoo-Outage). Currency-Mismatch wird dann vom price_monitor
+        # ratio-Check (Lese-Pfad) abgefangen.
+
     # ── P25-6: ATR-basierter Stop-Adjust (Cap auf -10%) ──────────
     try:
         from stop_calculator import adjust_stop_if_too_wide
