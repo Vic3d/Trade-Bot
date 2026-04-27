@@ -209,6 +209,41 @@ def decide_llm(state: dict) -> list[dict]:
         multi_agent=use_multi,
     )
 
+    # Phase 33: Consciousness-Layer drüberlegen
+    try:
+        from ceo_consciousness import (
+            adjust_confidence, select_optimal_subset, detect_mood,
+        )
+        # 33a: Calibration auf jede Decision anwenden
+        for d in decisions:
+            if d.get('_meta'):
+                continue
+            raw_conf = d.get('confidence', 0.5)
+            d['confidence'] = adjust_confidence(raw_conf)
+            d['_raw_confidence'] = raw_conf
+            # Re-apply confidence-filter
+            if d.get('action') == 'EXECUTE' and d['confidence'] < 0.5:
+                d['action'] = 'WATCH'
+                d['reason'] = (d.get('reason', '') +
+                               f' | DEMOTED: calibrated conf {d["confidence"]} < 0.5')
+
+        # 33e: Mood-Multiplier auf alle EXECUTE
+        mood = detect_mood(window_trades=10)
+        if mood.get('mood') in ('tilt', 'caution'):
+            for d in decisions:
+                if d.get('action') == 'EXECUTE':
+                    d['_mood_multiplier'] = mood['size_multiplier']
+                    d['reason'] = (d.get('reason', '') +
+                                  f' | mood={mood["mood"]} → size×{mood["size_multiplier"]}')
+
+        # 33b: Portfolio-Level Selection (nur Top-N gleichzeitig)
+        cash = state.get('cash_eur', 0)
+        decisions = select_optimal_subset(
+            decisions, cash_available=cash, max_positions=3,
+        )
+    except Exception as e:
+        print(f'[ceo_brain] Consciousness layer error: {e}', file=sys.stderr)
+
     # _meta-Eintrag rausfiltern für return
     meta_entries = [d for d in decisions if d.get('_meta')]
     real_decisions = [d for d in decisions if not d.get('_meta')]
@@ -429,13 +464,19 @@ def execute_decisions(decisions: list[dict]) -> dict:
         summary['execute'] += 1
         try:
             from execution.paper_trade_engine import execute_paper_entry
+            # Phase 33e: Mood-Multiplier wirkt sich aufs Sizing aus.
+            # Wir können via thesis-string Hinweis weitergeben, paper_trade_engine
+            # könnte ihn lesen. Für jetzt: Multiplier-Info in thesis loggen.
+            mood_mult = d.get('_mood_multiplier', 1.0)
+            mood_str = f' | mood_size_mult={mood_mult}' if mood_mult != 1.0 else ''
             result = execute_paper_entry(
                 ticker=d['ticker'],
                 strategy=d['strategy'],
                 entry_price=d['entry'],
                 stop_price=d['stop'],
                 target_price=d['target'],
-                thesis=f'[CEO-Brain] {d.get("reason","")} | {d.get("thesis","")[:200]}',
+                thesis=f'[CEO-Brain] conf={d.get("confidence",0):.2f}{mood_str} | '
+                       f'{d.get("reason","")[:150]} | {d.get("thesis","")[:150]}',
                 source='ceo_brain',
             )
             success = bool(result.get('success'))

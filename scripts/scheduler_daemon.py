@@ -188,6 +188,10 @@ SCHEDULE = [
     # Vergleicht heutige Decisions mit Outcomes, extrahiert Lessons via LLM.
     # Lessons werden vom CEO-Brain in jedem nächsten Run als Kontext geladen.
     ('CEO Reflection', 'ceo_reflection.py', [], 23, 15, None),
+    # ── Phase 33: CEO-Consciousness (täglich 23:30) ──
+    # Update Calibration, Mood, Hypotheses, World-Events.
+    # Output wird vom CEO-Brain im nächsten Run gelesen.
+    ('CEO Consciousness', 'ceo_consciousness.py', [], 23, 30, None),
     # ── Phase 30b: Parameter-Auto-Tuning (Mo 06:00 wöchentlich) ──
     # Berechnet aus letzten 60d closed Trades optimale Stop/CRV/Hold-Werte
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,
