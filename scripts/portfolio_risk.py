@@ -119,11 +119,56 @@ TICKER_SECTOR: dict[str, str] = {
     'HUT': 'crypto',
     # Industrial
     'SIE.DE': 'industrial', 'GE': 'industrial', 'HON': 'industrial',
+    'CAT': 'industrial', 'DE': 'industrial', 'ENR.DE': 'industrial',
+    'PRY.MI': 'industrial',
     # Materials / Mining
     'AG': 'mining', 'GOLD': 'mining', 'NEM': 'mining', 'FCX': 'mining',
-    'MOS': 'materials', 'ADM': 'materials',
+    'MOS': 'materials', 'ADM': 'materials', 'WPM': 'mining', 'RGLD': 'mining',
+    'FNV': 'mining', 'TECK': 'mining', 'SCCO': 'mining', 'RIO.L': 'mining',
+    'BHP': 'mining', 'CCJ': 'mining', 'UEC': 'mining', 'NXE': 'mining',
+    'UUUU': 'mining', 'MP': 'mining',
     # Agriculture
+    'CF': 'materials', 'NTR': 'materials',
+    # ─── 2026-04-27 Erweiterung: Lücken aus Live-Portfolio gefüllt ──
     'ANET': 'tech_networking',  # Arista Networks
+    # EU Native (waren als 'unknown' markiert)
+    'ASML.AS': 'semi',           # Amsterdam Listing
+    'MUV2.DE': 'insurance',      # Münchener Rück
+    'ALV.DE': 'insurance',       # Allianz (overrides financial)
+    'SREN.SW': 'insurance',
+    'HNR1.DE': 'insurance',
+    # Healthcare-Insurer (separater Cluster vs Pharma)
+    'HUM': 'healthcare', 'ELV': 'healthcare', 'CI': 'healthcare', 'CNC': 'healthcare',
+    # Power Grid (Phase 26 Theme)
+    'NEXT.PA': 'power_grid', 'NKT.CO': 'power_grid',
+    'VST': 'power_grid', 'AWK': 'utilities', 'DLR': 'data_center',
+    'EQIX': 'data_center', 'VRT': 'data_center',
+    # Shipping (separat von oil — Logistik)
+    'ZIM': 'shipping', 'SBLK': 'shipping', 'MATX': 'shipping',
+    # Aerospace / Defense EU
+    'LDO.MI': 'defense', 'SAAB-B.ST': 'defense', 'AIR.DE': 'defense',
+    'KOG.OL': 'defense', 'HO.PA': 'defense',
+    # Auto EU
+    'STLAM.MI': 'auto', 'STLAP.PA': 'auto', 'CON.DE': 'auto',
+    # Energy EU/Andere
+    'GALP.LS': 'energy', 'REP.MC': 'energy', 'ENI.MI': 'energy',
+    'APA': 'energy',
+    # Pharma extended
+    'TMO': 'pharma', 'DHR': 'pharma', 'NOVO-B.CO': 'pharma',
+    # Software extended
+    'IBM': 'software', 'TEAM': 'software', 'MDB': 'software', 'AI': 'software',
+    # Financial extended
+    'AXP': 'financial', 'COF': 'financial', 'CME': 'financial', 'MCO': 'financial',
+    # Quantum (high-vol cluster)
+    'IONQ': 'quantum', 'RGTI': 'quantum', 'QBTS': 'quantum',
+    # Consumer extended
+    'KO': 'consumer', 'PG': 'consumer', 'XLP': 'consumer',
+    # Logistics
+    'LHA.DE': 'logistics', 'DAL': 'logistics',
+    # Other EU
+    'SAP': 'software', 'BMW.DE': 'auto', 'BAYN.DE': 'pharma',
+    'BE': 'industrial', 'MTX.DE': 'industrial', 'EOAN.DE': 'utilities',
+    'RWE.DE': 'utilities',
 }
 
 def get_sector(ticker: str) -> str:

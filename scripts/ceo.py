@@ -5517,6 +5517,47 @@ def main():
     # ── Schritt 6: Direktive schreiben (wenn nicht --report) ──────────────────
     if not args.report:
         directive_path = WS / 'data/ceo_directive.json'
+        # ── Override-Schutz (Phase 27b 2026-04-27) ──────────────────────────
+        # Wenn eine bestehende Direktive ein _locked_until Feld hat und das in
+        # der Zukunft liegt, dann ist es ein manueller Override (z.B. via
+        # Discord oder CLI) — wir überschreiben NICHT, sondern überspringen.
+        # Lock-TTL wird vom Setter beim Override mitgegeben (default 4h).
+        try:
+            if directive_path.exists():
+                from datetime import datetime as _dt, timezone as _tz
+                _existing = json.loads(directive_path.read_text(encoding='utf-8'))
+                _lock_until = _existing.get('_locked_until')
+                if _lock_until:
+                    try:
+                        _lock_dt = _dt.fromisoformat(str(_lock_until).replace('Z', '+00:00'))
+                        if _lock_dt.tzinfo is None:
+                            _lock_dt = _lock_dt.replace(tzinfo=_tz.utc)
+                        _now_utc = _dt.now(_tz.utc)
+                        if _lock_dt > _now_utc:
+                            _remaining_min = int((_lock_dt - _now_utc).total_seconds() / 60)
+                            print(f'🔒 CEO-Direktive LOCKED (manueller Override aktiv, '
+                                  f'noch {_remaining_min}min) — Auto-Update übersprungen.')
+                            print(f'   Lock-Setter: {_existing.get("_locked_by", "unknown")}')
+                            print(f'   Lock-Reason: {_existing.get("_locked_reason", "—")}')
+                            # Trotzdem in directive_history für Audit-Trail loggen,
+                            # aber File NICHT überschreiben
+                            try:
+                                _hist_path = WS / 'data' / 'directive_history' / f'auto_skipped_{_dt.now().strftime("%Y%m%d_%H%M%S")}.json'
+                                _hist_path.parent.mkdir(parents=True, exist_ok=True)
+                                _hist_path.write_text(json.dumps({
+                                    'attempted_at': _now_utc.isoformat(timespec='seconds'),
+                                    'attempted_directive': directive,
+                                    'skipped_reason': 'manual_lock_active',
+                                    'lock_until': str(_lock_until),
+                                }, indent=2, ensure_ascii=False), encoding='utf-8')
+                            except Exception:
+                                pass
+                            return  # Skip the write
+                    except Exception as _le:
+                        print(f'⚠️ Lock-Parsing fehlgeschlagen: {_le} — ignoriere Lock')
+        except Exception as _oe:
+            print(f'⚠️ Override-Check fehlgeschlagen ({_oe}) — schreibe trotzdem')
+
         try:
             atomic_write_json(directive_path, directive)
             print(f'✅ CEO-Direktive geschrieben: {directive_path}')

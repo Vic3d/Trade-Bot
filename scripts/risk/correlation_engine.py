@@ -410,11 +410,18 @@ DATA_DIR = WORKSPACE / 'data'
 def save_correlation_matrix(matrix: np.ndarray, tickers: list[str], metadata: dict) -> Path:
     """Speichert aktuelle Matrix nach data/correlations.json."""
     path = DATA_DIR / 'correlations.json'
+    _now_iso = datetime.now(timezone.utc).isoformat()
+    # 2026-04-27: Bug-Fix — Guard 5d MVaR sucht computed_at/timestamp in metadata.
+    # Vorher wurde nur 'updated' top-level geschrieben → metadata leer → matrix
+    # age = infinity → Trade-Block. Jetzt: timestamp auch in metadata.
+    enriched_metadata = {k: (v if not isinstance(v, np.generic) else v.item()) for k, v in metadata.items()}
+    enriched_metadata['computed_at'] = _now_iso
     payload = {
-        'updated': datetime.now(timezone.utc).isoformat(),
+        'updated': _now_iso,
+        'computed_at': _now_iso,  # auch top-level für andere Konsumenten
         'tickers': tickers,
         'matrix': matrix.tolist(),
-        'metadata': {k: (v if not isinstance(v, np.generic) else v.item()) for k, v in metadata.items()},
+        'metadata': enriched_metadata,
     }
     path.write_text(json.dumps(payload, indent=2), encoding='utf-8')
     return path
@@ -447,10 +454,15 @@ def load_current_matrix() -> tuple[np.ndarray, list[str], dict]:
     data = json.loads(path.read_text(encoding='utf-8'))
     # Backwards-compat: alte Files schrieben 'matrix', neue 'aggregated'
     matrix_data = data.get('matrix') or data.get('aggregated') or []
+    metadata = data.get('metadata', {})
+    # 2026-04-27 Fix: Wenn metadata kein computed_at hat, top-level übernehmen.
+    # Sonst meldet Guard 5d MVaR matrix_age = infinity → blockiert alle Trades.
+    if 'computed_at' not in metadata and 'updated' in data:
+        metadata['computed_at'] = data['updated']
     return (
         np.asarray(matrix_data),
         data.get('tickers', []),
-        data.get('metadata', {}),
+        metadata,
     )
 
 
