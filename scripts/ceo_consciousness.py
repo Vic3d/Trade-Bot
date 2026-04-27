@@ -309,18 +309,18 @@ def get_upcoming_events(tickers: list[str], days_ahead: int = 7) -> dict:
             placeholders = ','.join('?' * len(tickers)) if tickers else "''"
             tk_list = tickers if tickers else ['']
             cur = c.execute(f"""
-                SELECT ticker, earnings_date FROM earnings_calendar
+                SELECT ticker, next_date FROM earnings_calendar
                 WHERE ticker IN ({placeholders})
-                  AND earnings_date BETWEEN ? AND ?
-                ORDER BY earnings_date
+                  AND next_date BETWEEN ? AND ?
+                ORDER BY next_date
             """, tk_list + [datetime.now().strftime('%Y-%m-%d'),
                             cutoff_date.strftime('%Y-%m-%d')])
             for r in cur:
                 try:
-                    e_dt = datetime.fromisoformat(str(r['earnings_date'])[:10])
+                    e_dt = datetime.fromisoformat(str(r['next_date'])[:10])
                     out['earnings'].append({
                         'ticker': r['ticker'],
-                        'date': str(r['earnings_date'])[:10],
+                        'date': str(r['next_date'])[:10],
                         'days_away': (e_dt - datetime.now()).days,
                     })
                 except Exception:
