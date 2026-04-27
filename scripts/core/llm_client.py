@@ -272,17 +272,21 @@ def _call_claude_cli(prompt: str, model_alias: str, max_tokens: int) -> tuple[st
     }
 
 
-def _call_anthropic(prompt: str, model: str, max_tokens: int) -> tuple[str, dict]:
+def _call_anthropic(prompt: str, model: str, max_tokens: int,
+                    system: str = '') -> tuple[str, dict]:
     import anthropic
     api_key = os.getenv('ANTHROPIC_API_KEY')
     if not api_key:
         raise RuntimeError('ANTHROPIC_API_KEY fehlt')
     client = anthropic.Anthropic(api_key=api_key)
-    resp = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[{'role': 'user', 'content': prompt}],
-    )
+    kwargs = {
+        'model': model,
+        'max_tokens': max_tokens,
+        'messages': [{'role': 'user', 'content': prompt}],
+    }
+    if system:
+        kwargs['system'] = system
+    resp = client.messages.create(**kwargs)
     text = resp.content[0].text if resp.content else ''
     in_tok = resp.usage.input_tokens if resp.usage else 0
     out_tok = resp.usage.output_tokens if resp.usage else 0
@@ -331,12 +335,20 @@ class LLMBudgetExceeded(RuntimeError):
 
 
 def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
-             allow_fallback: bool = True) -> tuple[str, dict]:
+             allow_fallback: bool = True, system: str = '') -> tuple[str, dict]:
     """
     Provider-Reihenfolge (default): Claude CLI (Abo) → Anthropic API → OpenAI.
     CLI bevorzugt → kostet nichts (Subscription), Fallback bei Rate-Limit/Auth-Fail.
     Respektiert API-Tages-Budget nur fuer kostenpflichtige Provider (anthropic/openai).
+
+    system: Optional system-prompt. Wird bei API-Calls als system-Parameter gesetzt,
+            bei CLI als prefix in den Prompt geschrieben (CLI hat kein separates system).
     """
+    # System prompt für CLI inline einbauen (CLI hat kein separates system param)
+    if system:
+        prompt_combined = f"=== SYSTEM ===\n{system}\n\n=== USER ===\n{prompt}"
+    else:
+        prompt_combined = prompt
     anth_model = ANTHROPIC_MODEL_MAP.get(model_hint, 'claude-sonnet-4-5')
     oai_model = OPENAI_MODEL_MAP.get(model_hint, 'gpt-4o')
     cli_alias = CLI_MODEL_MAP.get(model_hint, 'sonnet')
@@ -354,7 +366,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
             if not _cli_available():
                 continue
             try:
-                text, usage = _call_claude_cli(prompt, cli_alias, max_tokens)
+                text, usage = _call_claude_cli(prompt_combined, cli_alias, max_tokens)
                 # Kein _add_cost — laeuft ueber Abo
                 tried.append('cli')
                 return text, usage
@@ -388,7 +400,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
                 print(f"[llm] ⚠️  Soft-Cap (${spent:.2f}/${DEFAULT_BUDGET_USD}) → haiku")
             for attempt in range(2):
                 try:
-                    text, usage = _call_anthropic(prompt, local_anth_model, max_tokens)
+                    text, usage = _call_anthropic(prompt, local_anth_model, max_tokens, system=system)
                     _add_cost(usage['cost_usd_est'], 'anthropic')
                     tried.append('anthropic')
                     if 'cli' in ' '.join(tried[:-1]):

@@ -413,25 +413,24 @@ Bei keiner Aktion: nur HOLD zurückgeben.
 
 
 def call_ai(context: str) -> dict | None:
-    """Ruft Claude API auf und gibt die geparsten Decisions zurück."""
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
-    if not api_key:
-        log('ANTHROPIC_API_KEY nicht gesetzt — abbruch', 'ERROR')
+    """Ruft LLM auf (CLI-First via Subscription) und gibt die geparsten Decisions zurück."""
+    try:
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent))
+        from core.llm_client import call_llm as _call_llm
+    except ImportError:
+        log('core.llm_client nicht ladbar — abbruch', 'ERROR')
         return None
 
     try:
-        import anthropic
-        client   = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=CLAUDE_MODEL,
+        raw, _usage = _call_llm(
+            context + '\n\nTreff jetzt deine Entscheidungen. Antworte NUR mit JSON.',
+            model_hint='sonnet',
             max_tokens=2000,
             system=SYSTEM_PROMPT,
-            messages=[{
-                'role':    'user',
-                'content': context + '\n\nTreff jetzt deine Entscheidungen. Antworte NUR mit JSON.'
-            }],
         )
-        raw = response.content[0].text.strip()
+        raw = (raw or '').strip()
 
         # JSON aus Antwort extrahieren (manchmal mit ```json``` umhüllt)
         if raw.startswith('```'):
@@ -462,12 +461,12 @@ def execute_deep_dive(ticker: str, reason: str, dry_run: bool = False) -> str:
     if dry_run:
         return 'KAUFEN'  # Dry-run: assume positive
 
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
-    if not api_key:
-        return 'WARTEN'
-
     try:
-        import anthropic
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent))
+        from core.llm_client import call_llm as _call_llm
+
         deepdive_prompt_file = MEMORY / 'deepdive-protokoll.md'
         protocol = deepdive_prompt_file.read_text(encoding='utf-8') if deepdive_prompt_file.exists() else ''
 
@@ -485,13 +484,8 @@ NICHT_KAUFEN — wenn fundamentale Probleme oder zu hohes Risiko
 
 Antworte mit: VERDICT: [KAUFEN/WARTEN/NICHT_KAUFEN]"""
 
-        client   = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=CLAUDE_MODEL,
-            max_tokens=800,
-            messages=[{'role': 'user', 'content': prompt}],
-        )
-        response_text = response.content[0].text
+        response_text, _usage = _call_llm(prompt, model_hint='sonnet', max_tokens=800)
+        response_text = response_text or ''
 
         # Verdict extrahieren
         verdict = 'WARTEN'
@@ -995,18 +989,15 @@ Antworte NUR mit JSON:
 }"""
 
     try:
-        import anthropic
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model='claude-sonnet-4-5',  # Kosteneffizient: ~$0.03 pro Call
-            max_tokens=800,
-            system=reactive_prompt,
-            messages=[{
-                'role': 'user',
-                'content': '\n'.join(context_parts) + '\n\nEntscheide jetzt. NUR JSON.'
-            }],
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent))
+        from core.llm_client import call_llm as _call_llm
+        raw, _usage = _call_llm(
+            '\n'.join(context_parts) + '\n\nEntscheide jetzt. NUR JSON.',
+            model_hint='sonnet', max_tokens=800, system=reactive_prompt,
         )
-        raw = response.content[0].text.strip()
+        raw = (raw or '').strip()
         if raw.startswith('```'):
             raw = raw.split('```')[1]
             if raw.startswith('json'):

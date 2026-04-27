@@ -121,31 +121,16 @@ Nur Extractions mit confidence >= 60 einschliessen. Lieber leer lassen als raten
 
 
 def call_claude(prompt: str) -> dict:
-    api_key = os.environ.get('ANTHROPIC_API_KEY')
-    if not api_key:
-        raise RuntimeError('ANTHROPIC_API_KEY nicht gesetzt')
-    try:
-        import anthropic
-    except ImportError:
-        raise RuntimeError('anthropic package nicht installiert')
-
-    model = os.environ.get('ANTHROPIC_MODEL', 'claude-sonnet-4-5')
-    client = anthropic.Anthropic(api_key=api_key)
-    resp = client.messages.create(
-        model=model,
-        max_tokens=2000,
-        messages=[{'role': 'user', 'content': prompt}],
-    )
-    text = resp.content[0].text if resp.content else ''
+    # 2026-04-27: Migration auf call_llm (CLI-First via OAuth)
+    import sys as _llmsys
+    from pathlib import Path as _LP
+    _llmsys.path.insert(0, str(_LP(__file__).resolve().parent.parent))
+    from core.llm_client import call_llm as _call_llm
+    text, usage = _call_llm(prompt, model_hint='sonnet', max_tokens=2000)
+    text = text or ''
     m = re.search(r'\{[\s\S]*\}', text)
     if not m:
-        raise ValueError(f'Kein JSON im Claude-Output: {text[:200]}')
-    usage = {
-        'input_tokens': getattr(resp.usage, 'input_tokens', 0) if resp.usage else 0,
-        'output_tokens': getattr(resp.usage, 'output_tokens', 0) if resp.usage else 0,
-    }
-    # Sonnet: $3/MTok input, $15/MTok output
-    usage['cost_usd_est'] = (usage['input_tokens'] * 3 + usage['output_tokens'] * 15) / 1_000_000
+        raise ValueError(f'Kein JSON im LLM-Output: {text[:200]}')
     return {'data': json.loads(m.group(0)), 'usage': usage}
 
 

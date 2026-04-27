@@ -349,13 +349,12 @@ KEY_FINDINGS: <3-5 stichpunkte, max 300 zeichen>
 Bei NICHT_KAUFEN oder WARTEN: ENTRY/STOP/ZIEL_1 trotzdem setzen (hypothetisch) oder 0."""
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=LLM_MODEL,
-            max_tokens=LLM_MAX_TOKENS,
-            messages=[{'role': 'user', 'content': prompt}],
-        )
-        raw = response.content[0].text.strip() if response.content else ''
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent.parent))
+        from core.llm_client import call_llm as _call_llm
+        raw, _usage = _call_llm(prompt, model_hint='sonnet', max_tokens=LLM_MAX_TOKENS)
+        raw = (raw or '').strip()
     except Exception as e:
         log.warning(f'  {ticker}: LLM-Call fehlgeschlagen: {str(e)[:120]}')
         return None

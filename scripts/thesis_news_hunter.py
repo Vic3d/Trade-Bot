@@ -334,14 +334,12 @@ def evaluate_with_ai(thesis_id: str, strategy: dict, articles: list[dict],
     )
 
     try:
-        import anthropic
-        client   = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=CLAUDE_MODEL,
-            max_tokens=600,
-            messages=[{'role': 'user', 'content': prompt}],
-        )
-        raw = response.content[0].text.strip()
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent))
+        from core.llm_client import call_llm as _call_llm
+        raw, _usage = _call_llm(prompt, model_hint='sonnet', max_tokens=600)
+        raw = (raw or '').strip()
         if raw.startswith('```'):
             raw = raw.split('```')[1]
             if raw.startswith('json'):

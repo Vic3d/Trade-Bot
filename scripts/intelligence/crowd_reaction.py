@@ -98,22 +98,14 @@ def _load_thesis(thesis_id: str) -> dict:
 # ─── Claude call ─────────────────────────────────────────────────────────────
 
 def _call_claude(user_prompt: str) -> dict:
-    """
-    Single Claude haiku call. Returns parsed JSON dict or raises.
-    """
-    import anthropic
-
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
-    client = anthropic.Anthropic(api_key=api_key)
-
-    message = client.messages.create(
-        model='claude-haiku-4-5',
-        max_tokens=512,
-        system=SYSTEM_PROMPT,
-        messages=[{'role': 'user', 'content': user_prompt}],
-    )
-
-    raw = message.content[0].text.strip()
+    """Single LLM call (CLI-First via OAuth). Returns parsed JSON dict or raises."""
+    import sys as _llmsys
+    from pathlib import Path as _LP
+    _llmsys.path.insert(0, str(_LP(__file__).resolve().parent.parent))
+    from core.llm_client import call_llm as _call_llm
+    raw, _usage = _call_llm(user_prompt, model_hint='haiku',
+                             max_tokens=512, system=SYSTEM_PROMPT)
+    raw = (raw or '').strip()
 
     # Strip markdown code fences if present
     if raw.startswith('```'):

@@ -228,15 +228,15 @@ def discover_theses_with_claude(headlines: list[dict], existing: list[dict]) -> 
     Call Anthropic API (claude-opus-4-5) to identify 2-3 structural trades.
     Returns list of thesis dicts, empty list on error.
     """
-    api_key = os.environ.get('ANTHROPIC_API_KEY', '')
-    if not api_key:
-        print('[thesis_discovery] ANTHROPIC_API_KEY not set — skipping Claude call', flush=True)
-        return []
-
+    # 2026-04-27: Migration auf call_llm (CLI-First via OAuth-Subscription)
+    # statt direkt anthropic API. Spart Geld + nutzt Abo.
     try:
-        import anthropic
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent.parent))
+        from core.llm_client import call_llm as _call_llm
     except ImportError:
-        print('[thesis_discovery] anthropic package not installed', flush=True)
+        print('[thesis_discovery] core.llm_client nicht ladbar', flush=True)
         return []
 
     # Format headlines for prompt
@@ -328,17 +328,15 @@ Regeln:
 """
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model='claude-haiku-4-5-20241022',
-            max_tokens=2000,
+        raw_text, _usage = _call_llm(
+            user_prompt, model_hint='haiku', max_tokens=2000,
             system=system_prompt,
-            messages=[{'role': 'user', 'content': user_prompt}],
         )
-        raw_text = response.content[0].text.strip()
-        print(f'[thesis_discovery] Claude response length: {len(raw_text)} chars', flush=True)
+        raw_text = (raw_text or '').strip()
+        print(f'[thesis_discovery] LLM response length: {len(raw_text)} chars '
+              f'(provider={_usage.get("provider","?")})', flush=True)
     except Exception as e:
-        print(f'[thesis_discovery] Claude API error: {e}', flush=True)
+        print(f'[thesis_discovery] LLM error: {e}', flush=True)
         return []
 
     # Parse JSON — handle possible markdown code blocks

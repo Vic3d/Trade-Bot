@@ -27,7 +27,10 @@ def extract_entities(headline: str) -> dict:
     Gibt immer ein valides Dict zurück (Fallback bei Fehler).
     """
     try:
-        client = anthropic.Anthropic()
+        import sys as _llmsys
+        from pathlib import Path as _LP
+        _llmsys.path.insert(0, str(_LP(__file__).resolve().parent))
+        from core.llm_client import call_llm as _call_llm
         prompt = (
             f'Headline: "{headline}"\n'
             f'Strategies: {STRATEGY_CONTEXT}\n'
@@ -38,12 +41,8 @@ def extract_entities(headline: str) -> dict:
             f'"confidence": 0.0-1.0, '
             f'"why": "one sentence"}}'
         )
-        msg = client.messages.create(
-            model="claude-haiku-4-5",
-            max_tokens=200,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        raw = msg.content[0].text.strip()
+        raw, _usage = _call_llm(prompt, model_hint='haiku', max_tokens=200)
+        raw = (raw or '').strip()
         # Strip markdown code fences if present
         if raw.startswith("```"):
             raw = raw.split("```")[1]
