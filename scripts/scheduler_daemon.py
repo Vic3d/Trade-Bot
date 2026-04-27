@@ -177,6 +177,34 @@ SCHEDULE = [
     # ── Phase 28: Shadow-Trades Counterfactual Tracking ──
     ('Shadow Evaluator',    'shadow_evaluator.py',     [],                         23, 30, None),  # täglich
     ('Shadow Thesis Review','shadow_thesis_review.py', [],                         8, 30,  [0]),    # Mo
+    # ── Phase 28a: CEO-Brain — zentrale Trade-Entscheidung alle 30min ──
+    # Statt 10 unabhängige Guards: EINE Stimme die alles sieht und entscheidet.
+    # Läuft nur im Trading-Fenster (10:00-22:00 CEST), Mo-Fr.
+    ('CEO Brain', 'ceo_brain.py', [], 10,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 10, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 11,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 11, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 12,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 12, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 13,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 13, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 14,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 14, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 15,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 15, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 16,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 16, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 17,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 17, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 18,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 18, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 19,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 19, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 20,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 20, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 21,  0, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 21, 30, [0,1,2,3,4]),
+    ('CEO Brain', 'ceo_brain.py', [], 22,  0, [0,1,2,3,4]),
     # ── Phase 27: Differenzierungs-Audit (1. So jedes Monats 06:00) ──
     ('Differentiation Audit','intelligence/differentiation_audit.py', [],          6,  0,  [6]),
     ('Advisory Backfill',   'advisory_layer.py',       ['--backfill'],            22, 0,  [0,1,2,3,4]),  # Mo-Fr
