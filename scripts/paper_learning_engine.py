@@ -603,18 +603,29 @@ def update_strategy_scores() -> list:
         wins = analysis['wins']
         losses = analysis['losses']
         avg_pct = analysis['avg_pnl_pct']
-        # avg_win_pct / avg_loss_pct getrennt aus DB ziehen
+        # avg_win_pct / avg_loss_pct aus BEIDEN Tabellen (paper_portfolio + trades).
+        # Phase 42c-fix: trades-Tabelle (Day-Trades) wurde vorher übersehen — PS5
+        # hatte dort einen -329€ Loss der nicht eingerechnet war.
         try:
             conn = get_db()
-            row = conn.execute(
-                "SELECT AVG(CASE WHEN pnl_eur > 0 THEN pnl_pct END) as avg_win, "
-                "       AVG(CASE WHEN pnl_eur < 0 THEN pnl_pct END) as avg_loss "
-                "FROM paper_portfolio WHERE strategy=? AND status IN ('CLOSED','WIN','LOSS')",
+            row1 = conn.execute(
+                "SELECT pnl_pct FROM paper_portfolio "
+                "WHERE strategy=? AND status IN ('CLOSED','WIN','LOSS') "
+                "AND pnl_pct IS NOT NULL",
                 (strat_id,),
-            ).fetchone()
-            avg_win_pct = float(row[0] or 0)
-            avg_loss_pct = float(row[1] or 0)
+            ).fetchall()
+            row2 = conn.execute(
+                "SELECT pnl_pct FROM trades "
+                "WHERE strategy=? AND status IN ('WIN','LOSS') "
+                "AND pnl_pct IS NOT NULL",
+                (strat_id,),
+            ).fetchall()
             conn.close()
+            all_pcts = [float(r[0]) for r in (list(row1) + list(row2))]
+            wins_pcts  = [p for p in all_pcts if p > 0]
+            losses_pcts = [p for p in all_pcts if p < 0]
+            avg_win_pct  = sum(wins_pcts) / len(wins_pcts) if wins_pcts else 0.0
+            avg_loss_pct = sum(losses_pcts) / len(losses_pcts) if losses_pcts else 0.0
         except Exception:
             avg_win_pct = avg_pct if avg_pct > 0 else 0
             avg_loss_pct = avg_pct if avg_pct < 0 else 0
