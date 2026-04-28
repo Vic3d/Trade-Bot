@@ -215,6 +215,11 @@ SCHEDULE = [
     # pro Strategie-Typ. Schreibt nach data/strategy_params_tuned.json,
     # Discord-Push mit Empfehlungen.
     ('Param Auto Tuner', 'parameter_auto_tuner.py', [], 6, 0, [0]),
+    # ── Daily Position-Audit: 2x täglich Live-Check aller OPEN-Positionen ──
+    # 08:30 CEST (vor Markt-Öffnung) + 22:00 (nach Close).
+    # Verifiziert entry/stop/target gegen Live-Preis, postet Discord-Report.
+    ('Daily Position Audit', 'daily_position_audit.py', [], 8, 30, None),
+    ('Daily Position Audit', 'daily_position_audit.py', [], 22, 0, None),
     # ── Phase 29: System-Health-Monitor (alle 30min, 24/7) ──
     # 9 Health-Checks, Auto-Repair wo möglich. Discord-Alert nur bei WARN/FAIL.
     ('Health Monitor', 'system_health_monitor.py', [],  0, 15, None),

@@ -296,6 +296,58 @@ def check_discord() -> dict:
         return _result('C9_discord', 'FAIL', f'{type(e).__name__}: {e}')
 
 
+def _restart_price_monitor() -> str:
+    """Auto-Repair: kill existing + restart."""
+    try:
+        # Kill existing
+        subprocess.run(['pkill', '-9', '-f', 'price_monitor.py'],
+                       capture_output=True, timeout=5)
+        # Remove PID file
+        pid_file = WS / 'data' / 'price_monitor.pid'
+        if pid_file.exists():
+            pid_file.unlink()
+        # Restart as trademind user
+        subprocess.Popen(
+            ['nohup', 'sudo', '-u', 'trademind',
+             '/opt/trademind/venv/bin/python3',
+             str(WS / 'scripts' / 'price_monitor.py')],
+            stdout=open(str(WS / 'data' / 'price_monitor.log'), 'a'),
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        return 'restarted'
+    except Exception as e:
+        return f'restart_failed: {e}'
+
+
+def check_price_monitor() -> dict:
+    """C10: price_monitor.log letzter Heartbeat <10min alt?
+    War 3 Tage tot ohne dass es jemand gemerkt hat (28.04.2026).
+    Damit das nie wieder passiert."""
+    log_path = WS / 'data' / 'price_monitor.log'
+    if not log_path.exists():
+        return _result('C10_price_monitor', 'FAIL', 'log file fehlt')
+    try:
+        age_min = (datetime.now() - datetime.fromtimestamp(log_path.stat().st_mtime)).total_seconds() / 60
+        if age_min > 30:
+            # AUTO-FIX: restart
+            fix_result = _restart_price_monitor()
+            return _result('C10_price_monitor', 'FAIL',
+                           f'log {age_min:.0f}min alt — process eingefroren → {fix_result}',
+                           {'autofix': fix_result})
+        if age_min > 10:
+            return _result('C10_price_monitor', 'WARN', f'log {age_min:.0f}min alt')
+        # Auch: hat checks-counter sich bewegt?
+        tail = log_path.read_text(encoding='utf-8').strip().split('\n')[-5:]
+        last_checks_lines = [l for l in tail if 'checks=' in l]
+        if last_checks_lines:
+            return _result('C10_price_monitor', 'OK',
+                           f'{age_min:.0f}min ago: {last_checks_lines[-1][-60:]}')
+        return _result('C10_price_monitor', 'OK', f'{age_min:.0f}min ago')
+    except Exception as e:
+        return _result('C10_price_monitor', 'WARN', str(e)[:100])
+
+
 # ─── Main ────────────────────────────────────────────────────────────────
 
 def run_all_checks() -> list[dict]:
@@ -309,6 +361,7 @@ def run_all_checks() -> list[dict]:
         check_trade_anomalies(),
         check_fx(),
         check_discord(),
+        check_price_monitor(),
     ]
     return checks
 
