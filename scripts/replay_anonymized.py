@@ -93,13 +93,16 @@ def make_clean_proposal(trade: dict) -> dict:
     }
 
 
-def run_replay(n: int = 20, toggles: dict | None = None) -> dict:
-    """Replay mit optionalen Phase-Toggles."""
+def run_replay(n: int = 20, toggles: dict | None = None,
+                batch_size: int = 4) -> dict:
+    """Replay mit optionalen Phase-Toggles.
+    Phase 41-Fix: Batch-Verarbeitung (max 4 proposals/LLM-Call) damit Tool-Loop
+    nicht timeoutet. Plus Mock-Verdicts injecten damit Rules-Engine nicht alles
+    auf "Verdict zu alt" blockt."""
     from ceo_brain import decide_llm
 
     toggles = toggles or {}
 
-    # Set toggle env vars (read by Phases) — lightweight feature flags
     if toggles.get('no_pattern_block'):
         os.environ['DISABLE_PATTERN_BLOCK'] = '1'
     if toggles.get('no_heatmap'):
@@ -115,20 +118,38 @@ def run_replay(n: int = 20, toggles: dict | None = None) -> dict:
 
     proposals = [make_clean_proposal(t) for t in trades]
 
-    state = {
-        'proposals_pending': proposals,
-        'open_positions': [],
-        'cash_eur': 25000,
-        'fund_value': 25000,
-        'directive': {'mode': 'BULLISH', 'vix': 18, 'geo_alert_level': 'MEDIUM'},
-        'verdicts': {},
-    }
+    # Bug-Fix: Mock-Verdicts injecten damit Rules-Engine nicht alles auf
+    # "Verdict zu alt" blockt. Wir geben jedem Test-Ticker frisches KAUFEN.
+    mock_verdicts = {}
+    today_iso = datetime.now().isoformat(timespec='seconds')
+    for p in proposals:
+        mock_verdicts[p['ticker']] = {
+            'verdict': 'KAUFEN',
+            'date': today_iso,
+            'reasoning': 'Mock-Verdict für Replay-Test',
+            'analyst': 'replay_test',
+        }
 
-    print(f'  {len(proposals)} clean proposals → CEO-Brain (toggles: {toggles or "all-on"}) ...')
+    print(f'  {len(proposals)} clean proposals → batch_size={batch_size} '
+          f'(toggles: {toggles or "all-on"}) ...')
     t0 = time.time()
-    decisions = decide_llm(state)
+    decisions = []
+    for batch_start in range(0, len(proposals), batch_size):
+        batch = proposals[batch_start:batch_start + batch_size]
+        state = {
+            'proposals_pending': batch,
+            'open_positions': [],
+            'cash_eur': 25000,
+            'fund_value': 25000,
+            'directive': {'mode': 'BULLISH', 'vix': 18, 'geo_alert_level': 'MEDIUM'},
+            'verdicts': mock_verdicts,
+        }
+        print(f'    Batch {batch_start//batch_size + 1}: {len(batch)} proposals ...')
+        bd = decide_llm(state)
+        decisions.extend(bd)
+        print(f'      → {len(bd)} decisions')
     elapsed = time.time() - t0
-    print(f'  CEO antwortete in {elapsed:.1f}s mit {len(decisions)} decisions')
+    print(f'  TOTAL: {elapsed:.1f}s, {len(decisions)} decisions')
 
     # Cleanup env vars
     for env_key in ('DISABLE_PATTERN_BLOCK', 'DISABLE_HEATMAP_MULT',
