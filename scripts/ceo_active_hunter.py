@@ -317,22 +317,31 @@ def call_hunter_llm(prompt: str, model_hint: str = 'sonnet',
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _resolve_live_price(ticker: str) -> float:
-    """Phase 43-fix: Holt Live-Preis aus DB für Hunter-Setup."""
+    """Phase 43-fix: Holt aktuellsten Preis aus DB für Hunter-Setup.
+    Versucht: prices (täglich) → live_data → paper_portfolio close."""
+    # 1. prices-Tabelle (täglich OHLCV, neueste Zeile)
     try:
         c = sqlite3.connect(str(DB))
-        # live_prices oder prices_eur Tabelle (je nach Schema)
-        for table in ('live_prices', 'prices_eur', 'price_cache'):
-            try:
-                row = c.execute(
-                    f"SELECT price_eur FROM {table} WHERE ticker=? "
-                    f"ORDER BY ts DESC LIMIT 1", (ticker,)
-                ).fetchone()
-                if row and row[0]:
-                    c.close()
-                    return float(row[0])
-            except Exception:
-                continue
-        # Fallback: letzter close aus paper_portfolio (neue Trades)
+        row = c.execute(
+            "SELECT close FROM prices WHERE ticker=? "
+            "ORDER BY date DESC LIMIT 1", (ticker,)
+        ).fetchone()
+        c.close()
+        if row and row[0]:
+            return float(row[0])
+    except Exception:
+        pass
+    # 2. live_data (EUR-konvertiert)
+    try:
+        from core.live_data import get_price_eur
+        p = get_price_eur(ticker)
+        if p:
+            return float(p)
+    except Exception:
+        pass
+    # 3. Letzter close aus paper_portfolio
+    try:
+        c = sqlite3.connect(str(DB))
         row = c.execute(
             "SELECT close_price FROM paper_portfolio WHERE ticker=? "
             "AND close_price IS NOT NULL ORDER BY id DESC LIMIT 1",
@@ -341,14 +350,6 @@ def _resolve_live_price(ticker: str) -> float:
         c.close()
         if row and row[0]:
             return float(row[0])
-    except Exception:
-        pass
-    # Letzter Resort: live_data
-    try:
-        from core.live_data import get_price_eur
-        p = get_price_eur(ticker)
-        if p:
-            return float(p)
     except Exception:
         pass
     return 0.0

@@ -1,0 +1,24 @@
+[Unit]
+Description=TradeMind CEO-Brain Active Daemon (Phase 43)
+After=network.target trademind-scheduler.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=trademind
+Group=trademind
+WorkingDirectory=/opt/trademind
+Environment="TRADEMIND_HOME=/opt/trademind"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/usr/bin/python3 /opt/trademind/scripts/ceo_daemon.py
+Restart=on-failure
+RestartSec=30
+StandardOutput=append:/opt/trademind/data/ceo_daemon.log
+StandardError=append:/opt/trademind/data/ceo_daemon.log
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target
