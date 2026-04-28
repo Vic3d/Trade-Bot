@@ -215,11 +215,16 @@ def decide_llm(state: dict) -> list[dict]:
         )
         print(f'[ceo_brain] Tool-Loop empty → Multi-Agent fallback ({len(decisions)} decisions)')
 
-    # Phase 33: Consciousness-Layer drüberlegen
+    # Phase 33+38b: Consciousness + Pattern-Enforcement-Layer
     try:
         from ceo_consciousness import (
             adjust_confidence, select_optimal_subset, detect_mood,
         )
+        # Phase 38b: Pattern-Enforcement (Anti-Pattern Hard-Block + Heatmap-Sizing)
+        from ceo_pattern_learning import (
+            check_proposal_against_patterns, get_hour_multiplier,
+        )
+
         # 33a: Calibration auf jede Decision anwenden
         for d in decisions:
             if d.get('_meta'):
@@ -233,14 +238,54 @@ def decide_llm(state: dict) -> list[dict]:
                 d['reason'] = (d.get('reason', '') +
                                f' | DEMOTED: calibrated conf {d["confidence"]} < 0.5')
 
+            # === Phase 38b: Anti-Pattern Hard-Enforcement ===
+            try:
+                proposal_for_check = {
+                    'strategy': d.get('strategy'),
+                    'sector': d.get('sector', ''),
+                }
+                pattern_matches = check_proposal_against_patterns(proposal_for_check)
+                d['_pattern_matches'] = pattern_matches
+                if pattern_matches and d.get('action') == 'EXECUTE':
+                    has_critical = any(p.get('severity') == 'critical' for p in pattern_matches)
+                    if has_critical:
+                        d['action'] = 'WATCH'
+                        d['reason'] = (d.get('reason', '') +
+                                      f' | ANTI-PATTERN BLOCK: {len(pattern_matches)} critical match(es)')
+                        d['_pattern_blocked'] = True
+                    else:
+                        # Warning-Pattern → confidence reduzieren
+                        d['confidence'] = max(0, d['confidence'] - 0.15)
+                        d['reason'] = (d.get('reason', '') +
+                                      f' | conf -0.15 wegen anti-pattern warning')
+                        if d['confidence'] < 0.5:
+                            d['action'] = 'WATCH'
+            except Exception as _pe:
+                print(f'[pattern-enforce] error: {_pe}', file=sys.stderr)
+
+            # === Phase 38b: Heatmap-basiertes Sizing ===
+            try:
+                hour_mult = get_hour_multiplier(d.get('strategy', ''))
+                # Combined mit existing _mood_multiplier
+                existing = d.get('_mood_multiplier', 1.0)
+                combined = existing * hour_mult.get('multiplier', 1.0)
+                d['_hour_multiplier'] = hour_mult.get('multiplier', 1.0)
+                d['_mood_multiplier'] = combined
+                if hour_mult.get('multiplier', 1.0) != 1.0:
+                    d['reason'] = (d.get('reason', '') +
+                                  f' | heatmap: {hour_mult["reason"]} → ×{hour_mult["multiplier"]}')
+            except Exception as _he:
+                print(f'[heatmap-sizing] error: {_he}', file=sys.stderr)
+
         # 33e: Mood-Multiplier auf alle EXECUTE
         mood = detect_mood(window_trades=10)
         if mood.get('mood') in ('tilt', 'caution'):
             for d in decisions:
                 if d.get('action') == 'EXECUTE':
-                    d['_mood_multiplier'] = mood['size_multiplier']
+                    existing = d.get('_mood_multiplier', 1.0)
+                    d['_mood_multiplier'] = existing * mood['size_multiplier']
                     d['reason'] = (d.get('reason', '') +
-                                  f' | mood={mood["mood"]} → size×{mood["size_multiplier"]}')
+                                  f' | mood={mood["mood"]} → ×{mood["size_multiplier"]}')
 
         # 33b: Portfolio-Level Selection (nur Top-N gleichzeitig)
         cash = state.get('cash_eur', 0)

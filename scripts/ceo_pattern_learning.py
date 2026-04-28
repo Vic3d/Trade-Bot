@@ -324,6 +324,15 @@ def detect_anti_patterns(min_occurrences: int = 3, min_loss_rate: float = 0.7,
         'patterns': anti_patterns,
     }
 
+    # Phase 38b: Diff vs vorheriger Detection (für Realtime-Alert bei NEUEN critical)
+    previous_patterns = []
+    if ANTI_PATTERNS_FILE.exists():
+        try:
+            old = json.loads(ANTI_PATTERNS_FILE.read_text(encoding='utf-8'))
+            previous_patterns = old.get('patterns', [])
+        except Exception:
+            pass
+
     # Persist
     try:
         ANTI_PATTERNS_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -331,6 +340,24 @@ def detect_anti_patterns(min_occurrences: int = 3, min_loss_rate: float = 0.7,
                                        encoding='utf-8')
     except Exception:
         pass
+
+    # Phase 38b: Sofort-Alert bei NEUEN critical
+    new_critical = detect_new_critical_patterns(previous_patterns=previous_patterns)
+    if new_critical:
+        try:
+            sys.path.insert(0, str(WS / 'scripts'))
+            from discord_dispatcher import send_alert, TIER_HIGH
+            lines = [f'🚨 **{len(new_critical)} NEUE critical Anti-Pattern{"s" if len(new_critical)>1 else ""}!**']
+            for ap in new_critical[:5]:
+                lines.append(f"  · `{ap['pattern_type']}` `{ap['pattern_key']}` "
+                             f"n={ap['n_occurrences']} loss-rate={ap['loss_rate']:.0%} "
+                             f"avg {ap['avg_pnl_eur']:+.0f}€"
+                             + (f' ({ap["_change"]})' if ap.get('_change') else ''))
+            lines.append('\n_CEO-Brain wird diese Patterns ab nächstem Run automatisch enforcen._')
+            send_alert('\n'.join(lines), tier=TIER_HIGH, category='anti_pattern_critical',
+                       dedupe_key=f'apcrit_{datetime.now().strftime("%Y-%m-%d")}')
+        except Exception as e:
+            print(f'[anti-pattern] alert error: {e}', file=sys.stderr)
 
     return payload
 
@@ -346,8 +373,9 @@ def load_anti_patterns() -> list[dict]:
         return []
 
 
-def check_proposal_against_patterns(proposal: dict) -> list[dict]:
+def check_proposal_against_patterns(proposal: dict, current_hour: int | None = None) -> list[dict]:
     """Returns Liste matchender Anti-Patterns für ein Proposal.
+    Phase 38b: jetzt mit current_hour für strategy_x_hour-Match.
     CEO sollte EXECUTE blockieren wenn ≥1 critical match."""
     patterns = load_anti_patterns()
     if not patterns:
@@ -355,21 +383,113 @@ def check_proposal_against_patterns(proposal: dict) -> list[dict]:
 
     matches = []
     strat = proposal.get('strategy', '')
-    sector = proposal.get('sector', '')
+    sector = proposal.get('sector', '') or 'unk'
+
+    if current_hour is None:
+        current_hour = datetime.now().hour
+    cur_hour_bucket = (
+        'morning_06-11' if 6 <= current_hour < 12
+        else 'afternoon_12-17' if 12 <= current_hour < 18
+        else 'evening_18-22' if 18 <= current_hour < 22
+        else 'night_22-06'
+    )
 
     for ap in patterns:
         ptype = ap.get('pattern_type', '')
         pkey = ap.get('pattern_key', '')
 
-        if ptype == 'strategy_x_hour' and pkey.startswith(strat + '|'):
-            matches.append(ap)
+        if ptype == 'strategy_x_hour':
+            # Match nur wenn aktuelle Stunde im pattern-bucket UND strategy passt
+            expected_key = f'{strat}|{cur_hour_bucket}'
+            if pkey == expected_key:
+                matches.append({**ap, '_match_reason': f'now is {cur_hour_bucket}'})
         elif ptype == 'strategy_x_sector' and pkey == f'{strat}|{sector}':
             matches.append(ap)
         elif ptype == 'sector_x_vix' and pkey.startswith(sector + '|'):
             matches.append(ap)
-        # rsi/vix-bucket-checks brauchen aktuelle Marktdaten — skip für now
 
     return matches
+
+
+def get_hour_multiplier(strategy: str, current_hour: int | None = None) -> dict:
+    """Phase 38b: Position-Size-Multiplier basierend auf Strategy×Hour Heatmap.
+    Best-Hour: 1.2x, Worst-Hour: 0.5x, Standard: 1.0x.
+    Returns: {multiplier, reason, best_hour, worst_hour, current_avg_pnl}
+    """
+    if current_hour is None:
+        current_hour = datetime.now().hour
+
+    try:
+        h = compute_strategy_hour_heatmap(days=60)
+        matrix = h.get('matrix', {})
+        best_hours = h.get('best_hours', {})
+    except Exception:
+        return {'multiplier': 1.0, 'reason': 'no_heatmap_data'}
+
+    strat_data = matrix.get(strategy)
+    if not strat_data:
+        return {'multiplier': 1.0, 'reason': f'no_history_for_{strategy}'}
+
+    bh = best_hours.get(strategy, {})
+    best_hour = bh.get('best_hour')
+    worst_hour = bh.get('worst_hour')
+    current_data = strat_data.get(current_hour, strat_data.get(str(current_hour)))
+
+    multiplier = 1.0
+    reason = 'standard'
+
+    # Aktuelle Stunde im Heatmap?
+    if current_data and current_data.get('n', 0) >= 2:
+        avg_pnl = current_data.get('avg_pnl', 0)
+        if avg_pnl > 50:
+            multiplier = 1.2
+            reason = f'positive_hour ({avg_pnl:+.0f}€ avg, n={current_data["n"]})'
+        elif avg_pnl < -20:
+            multiplier = 0.5
+            reason = f'losing_hour ({avg_pnl:+.0f}€ avg, n={current_data["n"]})'
+    elif current_hour == best_hour:
+        multiplier = 1.2
+        reason = f'best_hour_for_{strategy}'
+    elif current_hour == worst_hour:
+        multiplier = 0.5
+        reason = f'worst_hour_for_{strategy}'
+
+    return {
+        'multiplier': multiplier,
+        'reason': reason,
+        'current_hour': current_hour,
+        'best_hour': best_hour,
+        'worst_hour': worst_hour,
+        'current_avg_pnl': current_data.get('avg_pnl') if current_data else None,
+    }
+
+
+def detect_new_critical_patterns(previous_patterns: list[dict] | None = None) -> list[dict]:
+    """Phase 38b: Detection von NEUEN critical patterns seit letztem Run.
+    Returns Liste die NEU oder schlimmer geworden sind."""
+    current = load_anti_patterns()
+    new_critical = []
+
+    if previous_patterns is None:
+        # Default: erste Run, alle critical sind 'neu' im Sinne "bis jetzt unbekannt"
+        return [p for p in current if p.get('severity') == 'critical']
+
+    prev_keys = {f"{p['pattern_type']}::{p['pattern_key']}" for p in previous_patterns}
+    for p in current:
+        if p.get('severity') != 'critical':
+            continue
+        key = f"{p['pattern_type']}::{p['pattern_key']}"
+        if key not in prev_keys:
+            new_critical.append(p)
+        else:
+            # Schon bekannt — schauen ob worse geworden
+            old = next((x for x in previous_patterns
+                        if f"{x['pattern_type']}::{x['pattern_key']}" == key), None)
+            if old and p['n_occurrences'] > old.get('n_occurrences', 0):
+                p['_change'] = f'worsened: n {old["n_occurrences"]} → {p["n_occurrences"]}'
+                new_critical.append(p)
+
+    return new_critical
 
 
 # ═══════════════════════════════════════════════════════════════════════════
