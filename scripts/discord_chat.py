@@ -1286,6 +1286,45 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Pattern-Learning Handler (Phase 38) ────────────────────────
+        # "heatmap" / "patterns" / "anti-patterns" / "similar X Y"
+        _pl_kws = ('heatmap', 'pattern', 'anti-pattern', 'antipattern',
+                    'similar setups', 'verluste-muster', 'loss patterns')
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _pl_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from ceo_pattern_learning import (
+                    compute_strategy_hour_heatmap, heatmap_to_markdown,
+                    detect_anti_patterns,
+                )
+                if 'heatmap' in _content_norm:
+                    h = compute_strategy_hour_heatmap(days=60)
+                    _resp = heatmap_to_markdown(h, top_n=15)
+                else:
+                    p = detect_anti_patterns()
+                    pats = p.get('patterns', [])[:15]
+                    if not pats:
+                        _resp = '✅ Keine kritischen Anti-Patterns gefunden.'
+                    else:
+                        lines = [f'⚠️ **Anti-Patterns** (n≥3, loss-rate≥70%) — {len(pats)} aktiv:']
+                        for ap in pats:
+                            sev = '🚨' if ap['severity'] == 'critical' else '⚠️'
+                            lines.append(f"  {sev} `{ap['pattern_type']:<22}` "
+                                         f"{ap['pattern_key']:<35} n={ap['n_occurrences']} "
+                                         f"loss={ap['loss_rate']:.0%} avg={ap['avg_pnl_eur']:+.0f}€")
+                        _resp = '\n'.join(lines)
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] pattern-learning-handler error: {_e}', flush=True)
+
         # ── Kalender/Markt-Status Handler ──────────────────────────────
         _cal_kws = (
             'was ist heute', 'welcher tag', 'welches datum', 'wie spät', 'wie spaet',

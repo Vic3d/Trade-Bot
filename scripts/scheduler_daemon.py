@@ -188,6 +188,10 @@ SCHEDULE = [
     # Vergleicht heutige Decisions mit Outcomes, extrahiert Lessons via LLM.
     # Lessons werden vom CEO-Brain in jedem nächsten Run als Kontext geladen.
     ('CEO Reflection', 'ceo_reflection.py', [], 23, 15, None),
+    # ── Phase 38: Anti-Pattern Detection (täglich 22:55) ──
+    # Scannt closed Trades nach Patterns mit hoher Loss-Rate.
+    # CEO-Brain liest die Liste in jedem nächsten Run als Pre-Fetch.
+    ('Anti-Pattern Detect', 'ceo_pattern_learning.py', ['patterns'], 22, 55, None),
     # ── Phase 33: CEO-Consciousness (täglich 23:30) ──
     # Update Calibration, Mood, Hypotheses, World-Events.
     # Output wird vom CEO-Brain im nächsten Run gelesen.

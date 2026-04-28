@@ -216,6 +216,29 @@ def tool_web_search(query: str) -> dict:
         return {'error': f'web_search failed: {e}'}
 
 
+# Phase 38: Pattern-Learning Tools
+def tool_find_similar_setups(strategy: str, ticker: str, sector: str = '') -> dict:
+    try:
+        from ceo_pattern_learning import find_similar_setup_history
+        return find_similar_setup_history(strategy=strategy, ticker=ticker,
+                                            sector=sector or None, days=90)
+    except Exception as e:
+        return {'error': str(e)[:200]}
+
+
+def tool_check_anti_patterns(strategy: str, sector: str = '') -> dict:
+    try:
+        from ceo_pattern_learning import check_proposal_against_patterns
+        matches = check_proposal_against_patterns({'strategy': strategy, 'sector': sector})
+        return {
+            'strategy': strategy, 'sector': sector,
+            'matches': matches[:5],
+            'has_critical': any(m.get('severity') == 'critical' for m in matches),
+        }
+    except Exception as e:
+        return {'error': str(e)[:200]}
+
+
 # Tool-Registry
 TOOLS = {
     'get_correlation':           tool_get_correlation,
@@ -224,6 +247,8 @@ TOOLS = {
     'get_sector_exposure':       tool_get_sector_exposure,
     'get_recent_trades':         tool_get_recent_trades,
     'web_search':                tool_web_search,
+    'find_similar_setups':       tool_find_similar_setups,
+    'check_anti_patterns':       tool_check_anti_patterns,
 }
 
 
@@ -250,6 +275,8 @@ Diese Tools rufst du selbst auf um Daten zu sammeln:
 4. get_sector_exposure()                         → Aktuelle Sektoren
 5. get_recent_trades(filter_value, n=5)          → Historische Performance
 6. web_search(query)                             → Live-Web-Search
+7. find_similar_setups(strategy, ticker, sector) → Pattern-Match (WR, avg_pnl)
+8. check_anti_patterns(strategy, sector)         → Bekannte Verlierer-Patterns
 
 ═══ ANTWORT-PROTOKOLL — STRIKT ═══
 
@@ -278,19 +305,66 @@ Wenn du final_decision lieferst aber das Schema nicht stimmt → wird verworfen.
 def auto_pre_tool_calls(proposals: list) -> dict:
     """Pre-fetcht die wichtigsten Tools BEVOR LLM dran ist.
     Damit hat LLM auch ohne Tool-Calls vollständigen Kontext.
-    Verhindert "ich brauche Daten" Loop-Stop."""
+    Phase 38: + find_similar_setups + anti_patterns + heatmap_best_hour."""
     pre_data = {}
     try:
         pre_data['sector_exposure'] = tool_get_sector_exposure()
     except Exception:
         pass
-    # Pro Ticker: 1-2 historische Trades + News
+
+    # Phase 38: Anti-Patterns global laden (warnt LLM vor bekannten Fallen)
+    try:
+        from ceo_pattern_learning import load_anti_patterns
+        ap = load_anti_patterns()
+        if ap:
+            pre_data['active_anti_patterns'] = [
+                {'type': p['pattern_type'], 'key': p['pattern_key'],
+                 'loss_rate': p['loss_rate'], 'n': p['n_occurrences'],
+                 'severity': p['severity']}
+                for p in ap[:10]
+            ]
+    except Exception:
+        pass
+
+    # Phase 38: Strategy×Hour-Heatmap Top-Insights
+    try:
+        from ceo_pattern_learning import compute_strategy_hour_heatmap
+        h = compute_strategy_hour_heatmap(days=60)
+        pre_data['best_hours_per_strategy'] = h.get('best_hours', {})
+    except Exception:
+        pass
+
+    # Per Ticker: history + news + similar_setups + anti-pattern check
     for p in proposals[:8]:
         tk = p.get('ticker', '')
         if not tk:
             continue
+        strat = p.get('strategy', '')
+        sector = p.get('sector', '') or ''
+
         pre_data[f'{tk}_news'] = tool_get_recent_news(tk, hours=24)
         pre_data[f'{tk}_history'] = tool_get_recent_trades(tk, n=3)
+
+        # Phase 38: similar setup history
+        try:
+            from ceo_pattern_learning import find_similar_setup_history
+            pre_data[f'{tk}_similar_setups'] = find_similar_setup_history(
+                strategy=strat, ticker=tk, sector=sector or None, days=90,
+            )
+        except Exception:
+            pass
+
+        # Phase 38: anti-pattern check
+        try:
+            from ceo_pattern_learning import check_proposal_against_patterns
+            matches = check_proposal_against_patterns(
+                {'strategy': strat, 'sector': sector}
+            )
+            if matches:
+                pre_data[f'{tk}_anti_pattern_warnings'] = matches[:3]
+        except Exception:
+            pass
+
     return pre_data
 
 
