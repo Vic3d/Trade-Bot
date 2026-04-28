@@ -316,6 +316,44 @@ def call_hunter_llm(prompt: str, model_hint: str = 'sonnet',
 # Setup → Proposal Translator
 # ═══════════════════════════════════════════════════════════════════════════
 
+def _resolve_live_price(ticker: str) -> float:
+    """Phase 43-fix: Holt Live-Preis aus DB für Hunter-Setup."""
+    try:
+        c = sqlite3.connect(str(DB))
+        # live_prices oder prices_eur Tabelle (je nach Schema)
+        for table in ('live_prices', 'prices_eur', 'price_cache'):
+            try:
+                row = c.execute(
+                    f"SELECT price_eur FROM {table} WHERE ticker=? "
+                    f"ORDER BY ts DESC LIMIT 1", (ticker,)
+                ).fetchone()
+                if row and row[0]:
+                    c.close()
+                    return float(row[0])
+            except Exception:
+                continue
+        # Fallback: letzter close aus paper_portfolio (neue Trades)
+        row = c.execute(
+            "SELECT close_price FROM paper_portfolio WHERE ticker=? "
+            "AND close_price IS NOT NULL ORDER BY id DESC LIMIT 1",
+            (ticker,)
+        ).fetchone()
+        c.close()
+        if row and row[0]:
+            return float(row[0])
+    except Exception:
+        pass
+    # Letzter Resort: live_data
+    try:
+        from core.live_data import get_price_eur
+        p = get_price_eur(ticker)
+        if p:
+            return float(p)
+    except Exception:
+        pass
+    return 0.0
+
+
 def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
     """Konvertiere Hunter-Setups in proposals.json Format."""
     proposals = []
@@ -330,14 +368,19 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
         entry = float(s.get('entry_price') or 0)
         stop_pct = float(s.get('stop_pct') or 6)
         target_pct = float(s.get('target_pct') or 12)
-        # Wenn entry=0, signalisiert "current market" → engine resolved es
+        # Phase 43-fix: wenn entry=0, hole Live-Preis aus DB
+        if entry <= 0:
+            entry = _resolve_live_price(ticker)
+            if entry <= 0:
+                print(f'[hunter] skip {ticker}: kein Live-Preis verfügbar', file=sys.stderr)
+                continue
         proposals.append({
             'id': f"ceo_{uuid.uuid4().hex[:10]}",
             'ticker': ticker,
             'strategy': strategy,
-            'entry_price': entry,
-            'stop_price': round(entry * (1 - stop_pct / 100), 2) if entry else 0,
-            'target_price': round(entry * (1 + target_pct / 100), 2) if entry else 0,
+            'entry_price': round(entry, 2),
+            'stop_price': round(entry * (1 - stop_pct / 100), 2),
+            'target_price': round(entry * (1 + target_pct / 100), 2),
             'stop_pct': stop_pct,
             'target_pct': target_pct,
             'thesis': str(s.get('thesis', ''))[:300],
