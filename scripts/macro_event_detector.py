@@ -154,31 +154,22 @@ def mark_event_in_db(event_id: int, bundle_name: str, severity_score: float,
         "UPDATE news_events SET relevance_score=? WHERE id=? AND relevance_score < ?",
         (severity_score, event_id, severity_score),
     )
-    # Markiere als Macro-Event in commodity_kill_events
-    try:
-        c.execute(
-            "INSERT INTO commodity_kill_events (event_type, severity, "
-            "    impact_tickers, news_event_id, detected_at) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (bundle_name, severity_score, json.dumps(impact_tickers),
-             event_id, datetime.utcnow().isoformat()),
-        )
-    except sqlite3.OperationalError:
-        # Tabelle existiert evtl. mit anderem Schema → erstelle wenn nötig
-        c.execute("""CREATE TABLE IF NOT EXISTS commodity_kill_events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            event_type TEXT, severity REAL,
-            impact_tickers TEXT, news_event_id INTEGER,
-            detected_at TEXT,
-            UNIQUE(event_type, news_event_id)
-        )""")
-        c.execute(
-            "INSERT OR IGNORE INTO commodity_kill_events "
-            "(event_type, severity, impact_tickers, news_event_id, detected_at) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (bundle_name, severity_score, json.dumps(impact_tickers),
-             event_id, datetime.utcnow().isoformat()),
-        )
+    # Phase 42b — Eigene Tabelle macro_events (commodity_kill_events war
+    # bereits durch alte Commodity-Threshold-Logik belegt mit anderem Schema).
+    c.execute("""CREATE TABLE IF NOT EXISTS macro_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        event_type TEXT, severity REAL,
+        impact_tickers TEXT, news_event_id INTEGER,
+        detected_at TEXT,
+        UNIQUE(event_type, news_event_id)
+    )""")
+    c.execute(
+        "INSERT OR IGNORE INTO macro_events "
+        "(event_type, severity, impact_tickers, news_event_id, detected_at) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (bundle_name, severity_score, json.dumps(impact_tickers),
+         event_id, datetime.utcnow().isoformat()),
+    )
     c.commit()
     c.close()
 
