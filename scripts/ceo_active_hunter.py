@@ -375,13 +375,19 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
             if entry <= 0:
                 print(f'[hunter] skip {ticker}: kein Live-Preis verfügbar', file=sys.stderr)
                 continue
+        stop_price = round(entry * (1 - stop_pct / 100), 2)
+        target_price = round(entry * (1 + target_pct / 100), 2)
         proposals.append({
             'id': f"ceo_{uuid.uuid4().hex[:10]}",
             'ticker': ticker,
             'strategy': strategy,
             'entry_price': round(entry, 2),
-            'stop_price': round(entry * (1 - stop_pct / 100), 2),
-            'target_price': round(entry * (1 + target_pct / 100), 2),
+            'stop_price': stop_price,
+            'target_price': target_price,
+            # Phase 43-fix: ceo_brain.py liest 'stop' und 'target' (nicht stop_price/target_price)
+            'stop': stop_price,
+            'target': target_price,
+            'target_1': target_price,
             'stop_pct': stop_pct,
             'target_pct': target_pct,
             'thesis': str(s.get('thesis', ''))[:300],
