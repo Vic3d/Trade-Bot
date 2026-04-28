@@ -50,9 +50,14 @@ DAEMON_LOG      = WS / 'data' / 'ceo_daemon.log'
 
 CET = ZoneInfo('Europe/Berlin')
 
-WAKE_MARKET     = 5 * 60      # 5min in Marktstunden
-WAKE_OFFHOURS   = 30 * 60     # 30min off-hours
-EVENT_POLL_SEC  = 30          # Event-Queue alle 30s checken
+# Phase 43 Pillar A-Voll: Multi-Tier-Loops
+HOT_INTERVAL    = 30          # 30s — Event-Queue + Stop/Tranche-Check (regelbasiert)
+WARM_INTERVAL   = 3 * 60      # 3min — Position-Health (selektiv LLM)
+COLD_MARKET     = 15 * 60     # 15min in Marktstunden — HUNTING/DECIDING (LLM)
+COLD_OFFHOURS   = 30 * 60     # 30min off-hours
+WAKE_MARKET     = HOT_INTERVAL  # legacy alias
+WAKE_OFFHOURS   = HOT_INTERVAL
+EVENT_POLL_SEC  = 5           # 5s sleep-chunks (responsive)
 MIN_HUNT_GAP    = 15 * 60     # max 1 Hunt pro 15min
 
 _running = True
@@ -367,7 +372,7 @@ def state_MONITORING(state: dict) -> str:
 
 
 def state_REFLECTING(state: dict) -> str:
-    """EOD-Reflection."""
+    """EOD-Reflection — self-assessment + Phase 43 Pillar C self-reflection."""
     _log('💭 REFLECTING — EOD-Review')
     try:
         from ceo_self_assessment import run_self_assessment
@@ -375,7 +380,37 @@ def state_REFLECTING(state: dict) -> str:
         _log(f'  self-assessment: {str(r)[:200]}')
     except Exception as e:
         _log(f'  self_assessment err: {e}')
+
+    # Phase 43 Pillar C: Self-Reflection (war ich zu vorsichtig?)
+    try:
+        from ceo_self_reflection import reflect
+        r = reflect(days=30)
+        _log(f'  self-reflection: missed=+{r["missed_wins_eur"]:.0f}€ '
+             f'avoided=-{r["avoided_losses_eur"]:.0f}€ '
+             f'net_bias={r["net_bias_cost_eur"]:+.0f}€')
+        _log(f'  recommendation: {r["recommendation"][:150]}')
+    except Exception as e:
+        _log(f'  self_reflection err: {e}')
+
     state['last_reflect_ts'] = _now_iso()
+    return 'IDLE'
+
+
+def state_INITIATIVE(state: dict) -> str:
+    """Phase 43 Pillar D: Eigeninitiative — CEO darf Tickers ergänzen."""
+    _log('💡 INITIATIVE — strategy ticker proposals')
+    try:
+        from ceo_initiative import propose_initiatives
+        r = propose_initiatives()
+        if r.get('error'):
+            _log(f'  err: {r["error"]}')
+        else:
+            _log(f'  thinking: {r.get("thinking", "")[:160]}')
+            ar = r.get('apply_result', {})
+            _log(f'  applied: {ar.get("applied", 0)} / {ar.get("attempted", 0)}')
+    except Exception as e:
+        _log(f'  initiative err: {e}')
+    state['last_initiative_ts'] = _now_iso()
     return 'IDLE'
 
 
@@ -446,10 +481,15 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
         except Exception:
             pass
 
-    # 6. EOD Reflection
+    # 6. EOD Reflection (22-23 CET)
     last_refl = (state.get('last_reflect_ts') or '')[:10]
     if 22 <= hour < 23 and last_refl != today and now_cet.weekday() < 5:
         return 'REFLECTING'
+
+    # 7. Phase 43 Pillar D: Initiative (1x/Tag um 09-10 CET nach Reconnais)
+    last_init = (state.get('last_initiative_ts') or '')[:10]
+    if 9 <= hour < 10 and last_init != today and now_cet.weekday() < 5:
+        return 'INITIATIVE'
 
     return 'IDLE'
 
@@ -460,6 +500,7 @@ STATE_HANDLERS = {
     'DECIDING':   state_DECIDING,
     'MONITORING': state_MONITORING,
     'REFLECTING': state_REFLECTING,
+    'INITIATIVE': state_INITIATIVE,
 }
 
 
@@ -500,9 +541,142 @@ def run_once(force_state: str | None = None) -> str:
     return result_state
 
 
+def run_hot_tick() -> dict:
+    """Phase 43 Pillar A-Voll: Hot-Loop (30s).
+    Regelbasiert, KEIN LLM. Aufgaben:
+      · Event-Queue drain → wake cold-loop wenn macro_event
+      · Pro Open-Position: Stop-Price >= Live-Preis → emergency exit
+      · Tranche-Trigger: Live >= tranche_trigger_price → partial close
+    """
+    result = {'events': 0, 'stops_hit': 0, 'tranches_fired': 0}
+
+    # 1. Events sind in queue, werden vom cold-loop geholt — wir checken nur Anwesenheit
+    if EVENT_QUEUE.exists():
+        try:
+            events = json.loads(EVENT_QUEUE.read_text(encoding='utf-8'))
+            if isinstance(events, list):
+                result['events'] = len(events)
+        except Exception:
+            pass
+
+    # 2. Stop-Hit-Check pro Open-Position (rules-based, schnell)
+    try:
+        c = sqlite3.connect(str(DB))
+        opens = c.execute(
+            "SELECT id, ticker, strategy, entry_price, stop_price, shares "
+            "FROM paper_portfolio WHERE status='OPEN' AND stop_price IS NOT NULL"
+        ).fetchall()
+        c.close()
+        for trade_id, ticker, strategy, entry, stop, shares in opens:
+            try:
+                # Live-Preis aus prices-Tabelle (täglich) oder live_data
+                from ceo_active_hunter import _resolve_live_price
+                live = _resolve_live_price(ticker)
+                if live <= 0 or not stop:
+                    continue
+                if live <= float(stop):
+                    # Stop hit! Emergency exit
+                    _log(f'  🚨 STOP-HIT: {ticker} live={live:.2f} <= stop={stop} '
+                         f'(trade {trade_id}) → emergency close')
+                    try:
+                        from paper_exit_manager import close_position
+                        r = close_position(trade_id, exit_reason='STOP_HIT_HOT')
+                        if r:
+                            result['stops_hit'] += 1
+                    except Exception as e:
+                        _log(f'    close_position failed: {e}')
+            except Exception:
+                continue
+    except Exception as e:
+        _log(f'  hot stop-check err: {e}')
+
+    # 3. Tranche-Trigger (Phase 43: nur Logging, vollständige Logik in paper_exit_manager)
+    try:
+        from paper_exit_manager import check_tranche_triggers
+        r = check_tranche_triggers()
+        if r:
+            result['tranches_fired'] = r.get('triggered', 0) if isinstance(r, dict) else 0
+    except Exception:
+        pass  # Funktion existiert evtl. nicht
+
+    return result
+
+
+def run_warm_tick() -> dict:
+    """Phase 43 Pillar A-Voll: Warm-Loop (3min).
+    Selektiv LLM. Aufgaben:
+      · Pro Open-Position: Thesis-Health-Check (rules + News-Match)
+      · Bei 3+ Yellow-Flags: re-eval flag setzen
+      · News auf Open-Ticker letzte 3min → mark for next cold cycle
+    """
+    result = {'positions_checked': 0, 'yellow_flags': 0, 'news_alerts': 0}
+
+    try:
+        c = sqlite3.connect(str(DB))
+        opens = c.execute(
+            "SELECT id, ticker, strategy, entry_price, stop_price, "
+            "       target_price, sector, entry_date "
+            "FROM paper_portfolio WHERE status='OPEN'"
+        ).fetchall()
+
+        cutoff = (datetime.utcnow() - timedelta(minutes=3)).strftime('%Y-%m-%d %H:%M:%S')
+        for trade_id, ticker, strategy, entry, stop, target, sector, entry_date in opens:
+            result['positions_checked'] += 1
+            yellow = 0
+            from ceo_active_hunter import _resolve_live_price
+            live = _resolve_live_price(ticker)
+            # Yellow-Flag 1: Stop-Distance < 2%
+            if live > 0 and stop and (live - float(stop)) / live < 0.02:
+                yellow += 1
+            # Yellow-Flag 2: Position underwater > 4%
+            if live > 0 and entry and (live - float(entry)) / float(entry) < -0.04:
+                yellow += 1
+            # Yellow-Flag 3: Recent news mit bearish sentiment
+            try:
+                rows = c.execute(
+                    "SELECT COUNT(*) FROM news_events "
+                    "WHERE created_at >= ? AND sentiment_label='bearish' "
+                    "AND (tickers LIKE ? OR sector=?)",
+                    (cutoff, f'%{ticker}%', sector or '')
+                ).fetchone()
+                if rows and rows[0] > 0:
+                    yellow += 1
+                    result['news_alerts'] += 1
+            except Exception:
+                pass
+            if yellow >= 2:
+                result['yellow_flags'] += 1
+                _log(f'  ⚠ {ticker} ({strategy}): {yellow} yellow flags '
+                     f'(live={live:.2f}, entry={entry}, stop={stop})')
+                # Mark for cold-cycle reeval (write to event-queue)
+                try:
+                    qf = WS / 'data' / 'ceo_event_queue.json'
+                    q = []
+                    if qf.exists():
+                        q = json.loads(qf.read_text())
+                    q.append({
+                        'type':       'position_health_alert',
+                        'pushed_at':  _now_iso(),
+                        'payload':    {'ticker': ticker, 'strategy': strategy,
+                                        'trade_id': trade_id, 'yellow_count': yellow},
+                    })
+                    qf.write_text(json.dumps(q[-50:], indent=2))
+                except Exception:
+                    pass
+        c.close()
+    except Exception as e:
+        _log(f'  warm err: {e}')
+
+    return result
+
+
 def main_loop() -> int:
-    """Endlos-Loop bis SIGTERM."""
-    _log(f'🚀 CEO-Daemon started (pid={os.getpid()})')
+    """Phase 43 Pillar A-Voll: Multi-Tier-Loop.
+    HOT (30s)  → regelbasiert, Stop-Hits + Event-Queue
+    WARM (3min)→ Position-Health + News-Match
+    COLD (15min)→ Full state-machine (HUNTING/DECIDING/MONITORING)
+    """
+    _log(f'🚀 CEO-Daemon started (pid={os.getpid()}) — multi-tier mode')
 
     def _shutdown(*_args):
         global _running
@@ -511,35 +685,50 @@ def main_loop() -> int:
     signal.signal(signal.SIGTERM, _shutdown)
     signal.signal(signal.SIGINT, _shutdown)
 
-    last_full_cycle = 0.0
+    last_hot  = 0.0
+    last_warm = 0.0
+    last_cold = 0.0
+    cold_log_skip = 0
+
     while _running:
         _heartbeat()
         try:
             now = time.time()
-            wake_interval = WAKE_MARKET if _is_market_hours() else WAKE_OFFHOURS
-            do_cycle = (now - last_full_cycle) >= wake_interval
 
-            # Event-poll inzwischen
-            events = []
-            if EVENT_QUEUE.exists():
-                events = _drain_event_queue()
-                if events:
-                    do_cycle = True
-                    # Re-write events in queue so the cycle picks them up
-                    EVENT_QUEUE.write_text(json.dumps(events), encoding='utf-8')
+            # HOT LOOP (30s)
+            if now - last_hot >= HOT_INTERVAL:
+                last_hot = now
+                hot = run_hot_tick()
+                if hot['events'] or hot['stops_hit'] or hot['tranches_fired']:
+                    _log(f'🔥 HOT: events={hot["events"]} stops={hot["stops_hit"]} '
+                         f'tranches={hot["tranches_fired"]}')
 
-            if do_cycle:
-                last_full_cycle = now
+            # WARM LOOP (3min, nur in Marktstunden)
+            if _is_market_hours() and now - last_warm >= WARM_INTERVAL:
+                last_warm = now
+                warm = run_warm_tick()
+                if warm['positions_checked'] > 0:
+                    _log(f'🌡 WARM: checked={warm["positions_checked"]} '
+                         f'yellow_flags={warm["yellow_flags"]} '
+                         f'news_alerts={warm["news_alerts"]}')
+
+            # COLD LOOP (15min in Marktstunden, 30min off-hours)
+            cold_interval = COLD_MARKET if _is_market_hours() else COLD_OFFHOURS
+            event_present = EVENT_QUEUE.exists() and EVENT_QUEUE.stat().st_size > 5
+            should_cold = (now - last_cold >= cold_interval) or event_present
+            if should_cold:
+                last_cold = now
                 # Run states bis IDLE
-                for _ in range(5):  # max 5 Transitions pro Wake-Cycle
+                for _ in range(5):
                     next_st = run_once()
                     if next_st == 'IDLE':
                         break
+
         except Exception as e:
             _log(f'❌ loop error: {e}')
             traceback.print_exc(file=sys.stderr)
 
-        # Schlafe in kleinen Chunks für responsive shutdown
+        # Schlafe in kleinen Chunks für responsive shutdown (5s)
         for _ in range(EVENT_POLL_SEC):
             if not _running:
                 break
