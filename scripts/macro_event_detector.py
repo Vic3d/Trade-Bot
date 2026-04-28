@@ -177,13 +177,10 @@ def mark_event_in_db(event_id: int, bundle_name: str, severity_score: float,
 def push_discord_alert(matches: list[dict]) -> bool:
     """Sende Critical/High-Events an Discord (via vorhandenen Bot/Webhook)."""
     try:
-        from discord_chat import send_message_to_user
-    except Exception:
-        try:
-            from discord_chat import _send_to_user as send_message_to_user
-        except Exception:
-            print('[macro_detector] Discord push not available', file=sys.stderr)
-            return False
+        from discord_chat import _send_message as send_message_to_user
+    except Exception as e:
+        print(f'[macro_detector] Discord push not available: {e}', file=sys.stderr)
+        return False
 
     text_parts = ['🚨 **BREAKING MACRO EVENT DETECTED** 🚨\n']
     for m in matches[:5]:
