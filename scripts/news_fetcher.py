@@ -32,7 +32,11 @@ POLYGON  = os.getenv('POLYGON_KEY',  'UratMpPH0sxlZeDYcSaiXsK_g6C1_7ml')
 FINNHUB  = os.getenv('FINNHUB_KEY',  'd6o6lm1r01qu09ciaj3gd6o6lm1r01qu09ciaj40')
 
 def _get(url, timeout=8):
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    # Phase 42b: SEC verlangt identifizierenden UA mit Kontakt
+    ua = ('TradeMind/1.0 (vincent@brandingbrothers.de) Mozilla/5.0'
+          if 'sec.gov' in url
+          else 'Mozilla/5.0 (compatible; TradeMind/1.0)')
+    req = urllib.request.Request(url, headers={'User-Agent': ua})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.read()
@@ -113,7 +117,11 @@ def detect_reversal_candle(ticker, interval_minutes=5, lookback=20):
     """
     import json, urllib.request
     url = f'https://query2.finance.yahoo.com/v8/finance/chart/{ticker}?interval={interval_minutes}m&range=1d'
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    # Phase 42b: SEC verlangt identifizierenden UA mit Kontakt
+    ua = ('TradeMind/1.0 (vincent@brandingbrothers.de) Mozilla/5.0'
+          if 'sec.gov' in url
+          else 'Mozilla/5.0 (compatible; TradeMind/1.0)')
+    req = urllib.request.Request(url, headers={'User-Agent': ua})
     try:
         with urllib.request.urlopen(req, timeout=8) as r:
             data = json.load(r)
@@ -311,6 +319,7 @@ EXTRA_FEEDS = {
     'rigzone':       'https://www.rigzone.com/news/rss/rigzone_latest.aspx',   # Oil/Gas industry
     'kitco_metals':  'https://www.kitco.com/rss/KitcoNews.xml',                # Gold/Silver/Metals
     'mining_com':    'https://www.mining.com/feed/',                           # Mining sector
+    # NOTE: maritime_executive entfernt (alle URLs 404), iea_news 403, energyvoice 403
     # ── Phase 42b — Geopolitik / Breaking ────────────────────────────────────
     'reuters_world': 'https://feeds.reuters.com/Reuters/worldNews',            # Reuters World
     'bbc_business':  'https://feeds.bbci.co.uk/news/business/rss.xml',         # BBC Business
@@ -367,9 +376,9 @@ EXTRA_FEEDS = {
     'mish_talk':       'https://mishtalk.com/feed/',                            # Mish Shedlock
 
     # ── Energy / Oil specific (zusätzlich) ───────────────────────────────────
-    'iea_news':        'https://www.iea.org/api/news/rss',                     # International Energy Agency
-    'naturalgasintel': 'https://www.naturalgasintel.com/category/news/feed/',  # NatGas Intelligence
-    'energyvoice':     'https://www.energyvoice.com/feed/',                    # Energy Voice (UK)
+    # 'iea_news':      'https://www.iea.org/api/news/rss',                     # 403 anti-bot, dropped
+    'naturalgasintel': 'https://naturalgasintel.com/feed/',                    # NatGas Intelligence (ohne www)
+    # 'energyvoice':   'https://www.energyvoice.com/feed/',                    # 403 anti-bot, dropped
     'worldoil':        'https://www.worldoil.com/rss',                         # World Oil
 
     # ── SEC EDGAR Filings ────────────────────────────────────────────────────
@@ -392,8 +401,8 @@ EXTRA_FEEDS = {
     'cfr_news':        'https://www.cfr.org/rss-feeds/all',                    # Council on Foreign Relations
 
     # ── Russia / Eastern Europe ──────────────────────────────────────────────
-    'rferl':           'https://www.rferl.org/api/zoqveiqyiqe',                # Radio Free Europe (Russia/EE)
-    'kyiv_independent':'https://kyivindependent.com/feed/',                    # Kyiv Independent
+    # 'rferl':         'https://www.rferl.org/api/zoqveiqyiqe',                # 11-byte empty response, dropped
+    # 'kyiv_independent':'https://kyivindependent.com/feed/',                  # 404, dropped (kein offizielles RSS)
 
     # ── Indien / Emerging Markets ────────────────────────────────────────────
     'economic_times':  'https://economictimes.indiatimes.com/rssfeedstopstories.cms',  # India biggest

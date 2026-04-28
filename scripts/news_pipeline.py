@@ -280,9 +280,9 @@ def run(verbose=True):
     all_items = []
     sources = [
         ('Bloomberg RSS',     bloomberg_rss),
-        ('Google News',       lambda: google_news_rss(['Iran oil Brent', 'Nvidia AI chips', 'Equinor oil Norway', 'copper mining', 'Palantir defense'])),
+        ('Google News',       lambda: google_news_rss(['Iran oil Brent', 'Nvidia AI chips', 'Equinor oil Norway', 'copper mining', 'Palantir defense', 'OPEC Saudi Arabia', 'Federal Reserve rate', 'Trump tariff China'])),
         ('Yahoo/Finnhub',     lambda: finnhub_rss(['OXY','EQNR','NVDA','PLTR','FRO'])),
-        ('Maritime Executive',maritime_executive),
+        # Maritime Executive entfernt (Phase 42b: alle URLs 404)
         ('Liveuamap',         lambda: liveuamap_headlines(['iran', 'israelpalestine', 'russia'])),
     ]
     for name, fn in sources:
@@ -395,8 +395,8 @@ def run(verbose=True):
             ac_total['inserted'] += ingest_articles(articles, source_key)['inserted']
         if verbose: print(f'  {"Alt-Finance/Contrarian":25} {ac_total["inserted"]} neu')
 
-        # Energy zusätzlich
-        en_sources = ['iea_news','naturalgasintel','energyvoice','worldoil']
+        # Energy zusätzlich (Phase 42b: iea_news/energyvoice entfernt — 403)
+        en_sources = ['naturalgasintel','worldoil']
         en_total = {'inserted': 0}
         for source_key in en_sources:
             articles = extra_news(sources=[source_key], n=4, max_age_hours=24)
@@ -435,13 +435,9 @@ def run(verbose=True):
             pol_total['inserted'] += ingest_articles(articles, source_key)['inserted']
         if verbose: print(f'  {"Politik/Policy (5)":25} {pol_total["inserted"]} neu')
 
-        # Russia / Ukraine
-        ru_sources = ['rferl','kyiv_independent']
-        ru_total = {'inserted': 0}
-        for source_key in ru_sources:
-            articles = extra_news(sources=[source_key], n=5, max_age_hours=12)
-            ru_total['inserted'] += ingest_articles(articles, source_key)['inserted']
-        if verbose: print(f'  {"Russia/Ukraine":25} {ru_total["inserted"]} neu')
+        # Russia / Ukraine — entfernt (Phase 42b: rferl 11-byte empty, kyiv 404)
+        # Ersatz: Liveuamap (iran/israel/russia) bereits in Hauptpipeline, plus
+        # Google-News query 'OPEC Saudi Arabia' schon dazu
 
         # Emerging Markets
         em_sources = ['economic_times','livemint']
