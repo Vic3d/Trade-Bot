@@ -382,6 +382,157 @@ def get_auto_dd_section() -> str:
         return f"🔬 Auto-Deep-Dive: (Log-Lesefehler: {e})"
 
 
+def get_ceo_activity_section() -> str:
+    """Phase 43: Was hat Albert (CEO-Daemon) seit 19:00 gestern getan?
+    Quellen:
+      · ceo_decisions.jsonl (HUNT, DECIDE, EXECUTE, WATCH, SKIP)
+      · ceo_initiative_log.jsonl (Ticker-Adds)
+      · ceo_self_reflection.json (last reflection)
+      · ceo_daemon.log (Hot-Loop-Triggers wie Stop-Hits, Position-Alerts)
+    """
+    try:
+        from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+        import json as _json, os as _os
+        from pathlib import Path as _Path
+        WS = _Path(_os.getenv('TRADEMIND_HOME',
+                                str(_Path(__file__).resolve().parent.parent)))
+
+        # Cutoff: gestern 19:00 CET (≈ 17:00 UTC)
+        now = _dt.now(_tz.utc)
+        cutoff = now - _td(hours=14)
+        cutoff_iso = cutoff.isoformat()
+
+        lines = []
+
+        # 1. Decisions (DECIDING-Cycles)
+        decisions_log = WS / 'data' / 'ceo_decisions.jsonl'
+        n_executed = n_watch = n_skip = n_blocked = 0
+        executes_detail = []
+        if decisions_log.exists():
+            with open(decisions_log, encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        d = _json.loads(line)
+                    except Exception:
+                        continue
+                    if (d.get('ts') or '') < cutoff_iso:
+                        continue
+                    ev = d.get('event')
+                    if ev == 'execute':
+                        if d.get('success'):
+                            n_executed += 1
+                            executes_detail.append(
+                                f"  ✅ {d.get('ticker','?')} ({d.get('strategy','?')}) "
+                                f"@ {d.get('entry','?')} conf={d.get('confidence','?'):.2f}"
+                                if isinstance(d.get('confidence'), (int, float))
+                                else f"  ✅ {d.get('ticker','?')} ({d.get('strategy','?')})"
+                            )
+                        else:
+                            n_blocked += 1
+                            executes_detail.append(
+                                f"  ❌ {d.get('ticker','?')} ({d.get('strategy','?')}) "
+                                f"blocked: {d.get('blocked_by','?')}"
+                            )
+                    elif ev == 'watch':
+                        n_watch += 1
+                    elif ev == 'skip':
+                        n_skip += 1
+        lines.append(f"📊 Decisions: ✅ {n_executed} executed | ❌ {n_blocked} blocked | "
+                     f"👀 {n_watch} watch | ⏸ {n_skip} skip")
+        for ex in executes_detail[:8]:
+            lines.append(ex)
+
+        # 2. Initiative (Ticker-Adds)
+        init_log = WS / 'data' / 'ceo_initiative_log.jsonl'
+        if init_log.exists():
+            init_lines = []
+            with open(init_log, encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        d = _json.loads(line)
+                    except Exception:
+                        continue
+                    if (d.get('ts') or '') < cutoff_iso:
+                        continue
+                    if d.get('action') == 'ticker_add':
+                        init_lines.append(
+                            f"  💡 {d.get('strategy_id','?')} += {d.get('tickers',[])} "
+                            f"({(d.get('reason','') or '')[:80]})"
+                        )
+            if init_lines:
+                lines.append('')
+                lines.append(f'💡 Eigeninitiative ({len(init_lines)} Adds):')
+                lines.extend(init_lines[:5])
+
+        # 3. Hot-Loop Aktivität (Stop-Hits, Yellow-Flags)
+        daemon_log = WS / 'data' / 'ceo_daemon.log'
+        n_stops_hit = n_yellow_flags = n_macro_events = n_hunts = 0
+        if daemon_log.exists():
+            try:
+                content = daemon_log.read_text(encoding='utf-8', errors='replace')
+                cutoff_local = (_dt.now() - _td(hours=14)).strftime('%Y-%m-%d %H:%M')
+                for line in content.split('\n'):
+                    # Lines look like [2026-04-28 19:30:25] message
+                    if not line.startswith('['):
+                        continue
+                    line_ts = line[1:17]
+                    if line_ts < cutoff_local:
+                        continue
+                    if 'STOP-HIT' in line:
+                        n_stops_hit += 1
+                    if 'WARM:' in line and 'yellow_flags=' in line:
+                        # parse yellow_flags=N
+                        try:
+                            yf = int(line.split('yellow_flags=')[1].split()[0])
+                            n_yellow_flags += yf
+                        except Exception:
+                            pass
+                    if 'Event-Trigger' in line and 'macro' in line.lower():
+                        n_macro_events += 1
+                    if 'HUNTING' in line and 'active setup search' in line:
+                        n_hunts += 1
+            except Exception:
+                pass
+        lines.append('')
+        lines.append(f"🔄 Loops: 🎯 {n_hunts} hunts | 🚨 {n_stops_hit} stop-hits | "
+                     f"⚠ {n_yellow_flags} yellow-flags | ⚡ {n_macro_events} macro-events")
+
+        # 4. Self-Reflection (letzte)
+        refl_file = WS / 'data' / 'ceo_self_reflection.json'
+        if refl_file.exists():
+            try:
+                r = _json.loads(refl_file.read_text(encoding='utf-8'))
+                lines.append('')
+                lines.append(
+                    f"🪞 Reflection ({r.get('window_days', '?')}d): "
+                    f"missed +{r.get('missed_wins_eur', 0):.0f}€ | "
+                    f"avoided -{r.get('avoided_losses_eur', 0):.0f}€ | "
+                    f"net-bias {r.get('net_bias_cost_eur', 0):+.0f}€"
+                )
+                if r.get('recommendation') and 'neutral' not in r['recommendation'].lower():
+                    lines.append(f"  → {r['recommendation'][:160]}")
+            except Exception:
+                pass
+
+        # 5. Daemon-Status
+        state_file = WS / 'data' / 'ceo_daemon_state.json'
+        if state_file.exists():
+            try:
+                s = _json.loads(state_file.read_text(encoding='utf-8'))
+                lines.append('')
+                lines.append(
+                    f"⚙ Daemon: state={s.get('state', '?')} | "
+                    f"cycles={s.get('cycle_count', 0)} | "
+                    f"last_hunt={(s.get('last_hunt_ts') or 'never')[:16]}"
+                )
+            except Exception:
+                pass
+
+        return '\n'.join(lines) if lines else ''
+    except Exception as e:
+        return f'(CEO-Aktivität Report-Fehler: {e})'
+
+
 def generate_briefing() -> str:
     """Hauptfunktion: generiert den vollständigen Briefing-Text."""
     today = date.today().isoformat()
@@ -540,6 +691,10 @@ def generate_briefing() -> str:
     auto_dd_section = get_auto_dd_section()
     auto_dd_block = f"\n━━ AUTO-DEEP-DIVE ━━\n{auto_dd_section}\n" if auto_dd_section else ""
 
+    # ── Phase 43: CEO Activity Report (was hat Albert über Nacht gemacht?) ───
+    ceo_activity_section = get_ceo_activity_section()
+    ceo_activity_block = f"\n━━ CEO-AKTIVITÄT (seit 19:00 gestern) ━━\n{ceo_activity_section}\n" if ceo_activity_section else ""
+
     # ── Phase 22 5-Block (oben einhaengen) ───────────────────────────────────
     phase22_block = ''
     try:
@@ -558,7 +713,7 @@ def generate_briefing() -> str:
 
 ━━ NEU SEIT 19:00 GESTERN ━━
 {chr(10).join(strategy_section_lines)}
-{geo_section}{trend_block}{auto_dd_block}
+{geo_section}{trend_block}{auto_dd_block}{ceo_activity_block}
 ━━ MARKTKONTEXT ━━
 Brent: {brent_str} | VIX: {vix_str} | EUR/USD: {eurusd_str}
 
