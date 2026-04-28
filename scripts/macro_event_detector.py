@@ -202,6 +202,25 @@ def push_discord_alert(matches: list[dict]) -> bool:
         return False
 
 
+def push_to_ceo_event_queue(event_type: str, payload: dict) -> None:
+    """Phase 43: weckt ceo_daemon.py durch Event-Queue."""
+    queue_file = WS / 'data' / 'ceo_event_queue.json'
+    queue = []
+    if queue_file.exists():
+        try:
+            queue = json.loads(queue_file.read_text())
+            if not isinstance(queue, list):
+                queue = []
+        except Exception:
+            queue = []
+    queue.append({
+        'type':       event_type,
+        'payload':    payload,
+        'pushed_at':  datetime.utcnow().isoformat(),
+    })
+    queue_file.write_text(json.dumps(queue[-50:], indent=2))
+
+
 def trigger_auto_reeval(impact_tickers: list[str]) -> dict:
     """Markiere Open-Positions zur Re-Evaluation durch Albert."""
     c = sqlite3.connect(str(DB))
@@ -289,6 +308,14 @@ def run(hours: int = 1, test_mode: bool = False) -> dict:
             all_impact = list({t for m in new_to_push for t in m['impact_tickers']})
             reeval_result = trigger_auto_reeval(all_impact)
             marker.write_text(json.dumps(log_data, indent=2))
+            # Phase 43: Daemon-Event-Queue füttern
+            for m in new_to_push:
+                push_to_ceo_event_queue('macro_event', {
+                    'event_type':     m['bundle'],
+                    'severity':       m['severity'],
+                    'headline':       m['headline'],
+                    'impact_tickers': m['impact_tickers'],
+                })
 
     return {
         'scanned_news': len(news),

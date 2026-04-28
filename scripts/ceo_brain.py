@@ -585,8 +585,23 @@ def main() -> int:
           f'cash {state["cash_eur"]:.0f}EUR, mode {state["directive"].get("mode","?")}')
 
     if n_pending == 0:
-        print('Keine pending Proposals — skip.')
-        return 0
+        # Phase 43: Active CEO — bei 0 Proposals nicht mehr exit, sondern hunten.
+        print('Keine pending Proposals — Active-Hunter starten...')
+        try:
+            from ceo_active_hunter import hunt_for_setups
+            r = hunt_for_setups(max_new=3)
+            print(f'  Hunter: {r["setups_proposed"]} setups, '
+                  f'{r["proposals_written"]} written ({r.get("thinking", "")[:120]})')
+            # Re-load state mit neuen Proposals
+            state = gather_inputs()
+            n_pending = len(state['proposals_pending'])
+            if n_pending == 0:
+                print('  Hunter brachte keine neuen Setups — fertig.')
+                return 0
+            print(f'  Hunter brachte {n_pending} neue Proposals → weiter mit decide.')
+        except Exception as e:
+            print(f'  Hunter failed: {e} — exit.', file=sys.stderr)
+            return 0
 
     # Try LLM first, fallback to rules
     # Phase 29: Health-Monitor setzt .llm_fallback_active wenn LLM down
