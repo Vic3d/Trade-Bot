@@ -349,6 +349,8 @@ def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS
 # Pydantic Models (für strukturierte Outputs)
 # ═══════════════════════════════════════════════════════════════════════════
 
+PYDANTIC_AVAILABLE = False
+_CEOFinalDecision = None
 try:
     from pydantic import BaseModel, Field, ValidationError
     from typing import Literal, Optional, List
@@ -370,24 +372,42 @@ try:
         decisions: List[CEODecisionItem]
         tool_calls_used: Optional[List[str]] = None
 
+    _CEOFinalDecision = CEOFinalDecision
     PYDANTIC_AVAILABLE = True
+except Exception as _pyd_err:
+    # ImportError ODER AttributeError (gebrochenes system-inspect) → manual fallback
+    print(f'[ceo_tools] Pydantic nicht verfügbar ({_pyd_err}) — manual validation',
+          file=sys.stderr)
 
-    def validate_decision(payload: dict) -> tuple[bool, dict]:
-        """Returns (is_valid, validated_dict_or_errors)."""
+
+def validate_decision(payload: dict) -> tuple[bool, dict]:
+    """Returns (is_valid, validated_dict_or_errors)."""
+    if PYDANTIC_AVAILABLE and _CEOFinalDecision is not None:
         try:
-            obj = CEOFinalDecision(**payload)
+            obj = _CEOFinalDecision(**payload)
             return True, obj.model_dump()
-        except ValidationError as e:
-            return False, {'errors': e.errors()}
-except ImportError:
-    PYDANTIC_AVAILABLE = False
-    def validate_decision(payload: dict) -> tuple[bool, dict]:
-        # Best-effort manual validation
-        if not isinstance(payload, dict):
-            return False, {'error': 'not a dict'}
-        if 'decisions' not in payload:
-            return False, {'error': 'missing decisions field'}
-        return True, payload
+        except Exception as e:
+            return False, {'errors': str(e)[:500]}
+    # Manual best-effort
+    if not isinstance(payload, dict):
+        return False, {'error': 'not a dict'}
+    if 'decisions' not in payload:
+        return False, {'error': 'missing decisions field'}
+    # Sanity-check decisions
+    for d in payload.get('decisions', []):
+        if not isinstance(d, dict):
+            return False, {'error': 'decision item not dict'}
+        if 'ticker' not in d or 'action' not in d:
+            return False, {'error': f'decision missing ticker/action: {d}'}
+        action = str(d.get('action', '')).upper()
+        if action not in ('EXECUTE', 'SKIP', 'WATCH'):
+            d['action'] = 'WATCH'  # coerce
+        try:
+            conf = float(d.get('confidence', 0.5))
+            d['confidence'] = max(0.0, min(1.0, conf))
+        except Exception:
+            d['confidence'] = 0.5
+    return True, payload
 
 
 if __name__ == '__main__':
