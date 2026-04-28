@@ -242,34 +242,56 @@ def execute_tool(name: str, args: dict) -> dict:
 def get_tool_definitions_for_prompt() -> str:
     """Markdown-Block der Tool-Verfügbarkeit für LLM-Prompt."""
     return """═══ VERFÜGBARE TOOLS ═══
-Du kannst diese Tools selbst aufrufen wenn du mehr Daten brauchst:
+Diese Tools rufst du selbst auf um Daten zu sammeln:
 
-1. get_correlation(ticker_a, ticker_b, days=30)
-   → Pearson-Korrelation zwischen 2 Tickers
+1. get_correlation(ticker_a, ticker_b, days=30)  → Pearson-Korrelation
+2. get_recent_news(ticker, hours=12)             → News-Headlines DB
+3. simulate_position_impact(ticker, eur_size)    → Sektor-Impact-Check
+4. get_sector_exposure()                         → Aktuelle Sektoren
+5. get_recent_trades(filter_value, n=5)          → Historische Performance
+6. web_search(query)                             → Live-Web-Search
 
-2. get_recent_news(ticker, hours=12)
-   → Letzte News-Headlines aus DB für Ticker
+═══ ANTWORT-PROTOKOLL — STRIKT ═══
 
-3. simulate_position_impact(ticker, eur_size)
-   → Wie verändert sich Sektor-Exposure durch neue Position?
+JEDE deiner Antworten ist GENAU EINE der zwei Optionen:
 
-4. get_sector_exposure()
-   → Aktuelle Sektor-Verteilung des Portfolios
+Option A — Tool-Call (mache MINDESTENS 2 Tool-Calls bevor du finalisierst):
+{"tool_call": {"name": "get_sector_exposure", "args": {}}}
 
-5. get_recent_trades(filter_value, n=5)
-   → Letzte N closed Trades für einen Ticker ODER Strategy
+Option B — Final Decision (NUR wenn du genug Daten hast):
+{"final_decision": {
+  "market_assessment": "1-2 Sätze über aktuelle Markt-Lage",
+  "portfolio_assessment": "1-2 Sätze über Portfolio-Risk",
+  "decisions": [
+    {"ticker": "X", "strategy": "Y", "action": "EXECUTE|SKIP|WATCH",
+     "confidence": 0.7, "bull_case": "...", "bear_case": "...",
+     "reasoning": "...", "expected_outcome_pct": 5.0, "memory_reference": ""}
+  ],
+  "tool_calls_used": ["get_sector_exposure", "get_correlation"]
+}}
 
-6. web_search(query)
-   → Live-Web-Search (für aktuelle Events außerhalb unserer DB)
-
-Nutze Tools sparsam — nur wenn relevant für aktuelle Decision.
-
-ANTWORT-PROTOKOLL (strikt):
-- Wenn du ein Tool aufrufen willst, antworte NUR mit:
-  {"tool_call": {"name": "tool_name", "args": {...}}}
-- Wenn du fertig bist mit Reasoning, antworte mit:
-  {"final_decision": <dein Output-JSON>}
+KEINE anderen Felder. KEIN Markdown-Code-Fence. STRIKT JSON.
+Wenn du final_decision lieferst aber das Schema nicht stimmt → wird verworfen.
 """
+
+
+def auto_pre_tool_calls(proposals: list) -> dict:
+    """Pre-fetcht die wichtigsten Tools BEVOR LLM dran ist.
+    Damit hat LLM auch ohne Tool-Calls vollständigen Kontext.
+    Verhindert "ich brauche Daten" Loop-Stop."""
+    pre_data = {}
+    try:
+        pre_data['sector_exposure'] = tool_get_sector_exposure()
+    except Exception:
+        pass
+    # Pro Ticker: 1-2 historische Trades + News
+    for p in proposals[:8]:
+        tk = p.get('ticker', '')
+        if not tk:
+            continue
+        pre_data[f'{tk}_news'] = tool_get_recent_news(tk, hours=24)
+        pre_data[f'{tk}_history'] = tool_get_recent_trades(tk, n=3)
+    return pre_data
 
 
 def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS,

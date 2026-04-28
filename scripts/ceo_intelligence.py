@@ -369,11 +369,15 @@ def synthesize_decisions_with_tools(state: dict, proposals: list[dict],
     try:
         from ceo_tools import (
             get_tool_definitions_for_prompt, run_tool_loop,
-            validate_decision,
+            validate_decision, auto_pre_tool_calls,
         )
     except Exception as e:
         print(f'[ceo_intel] Tool-Loop nicht verfügbar ({e}) — fallback', file=sys.stderr)
         return []
+
+    # Phase 37 Fix: pre-fetch wichtige Tools bevor LLM dran ist (damit es nicht
+    # "ich brauche Daten" als Ausrede für fehlendes Schema nutzt)
+    pre_tool_data = auto_pre_tool_calls(proposals)
 
     # Build initial prompt (slimmer than build_smart_prompt — Tools liefern Details)
     directive = state.get('directive', {})
@@ -403,6 +407,8 @@ def synthesize_decisions_with_tools(state: dict, proposals: list[dict],
     except Exception:
         pass
 
+    pre_data_str = json.dumps(pre_tool_data, default=str)[:3000]
+
     initial_prompt = f"""Du bist CEO-Brain (Smart-Mode mit Tools, Phase 37).
 {cal_block}
 
@@ -416,29 +422,20 @@ Cash: {state['cash_eur']:.0f}EUR ({cash_pct:.0f}%)
 
 ═══ PROPOSALS ZU ENTSCHEIDEN ═══{proposals_str}
 
+═══ PRE-FETCHED CONTEXT (du hast diese Daten schon — du musst sie nicht abrufen) ═══
+{pre_data_str}
+
 {get_tool_definitions_for_prompt()}
 
 ═══ AUFGABE ═══
 Pro Proposal: EXECUTE / SKIP / WATCH mit confidence (0.0-1.0).
 Confidence < 0.5 → automatisch WATCH.
 
-Wenn unklar → nutze Tools (z.B. get_correlation um Klumpenrisiko zu prüfen,
-web_search bei aktuellen News-Events, simulate_position_impact für Sektor-Cap).
+Du hast schon viel Pre-Data oben. Tools nur wenn DRINGEND (z.B. spezifische
+Korrelation zwischen 2 Tickern fehlt, oder web_search bei Eilmeldung).
 
-Nutze max 4-5 Tool-Calls insgesamt — fokussiert.
-
-WENN FERTIG, antworte:
-{{"final_decision": {{
-  "market_assessment": "1-2 Sätze",
-  "portfolio_assessment": "1-2 Sätze",
-  "decisions": [
-    {{"ticker": "...", "strategy": "...", "action": "EXECUTE|SKIP|WATCH",
-      "confidence": 0.X, "bull_case": "...", "bear_case": "...",
-      "reasoning": "...", "expected_outcome_pct": N,
-      "memory_reference": ""}}
-  ],
-  "tool_calls_used": ["..."]
-}}}}"""
+Du KANNST direkt mit final_decision antworten wenn Pre-Data ausreicht.
+WICHTIG: STRIKT das Schema oben einhalten."""
 
     result = run_tool_loop(initial_prompt, max_iterations=6, model_hint='sonnet',
                             max_tokens=2500)
