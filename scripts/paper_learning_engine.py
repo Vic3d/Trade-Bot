@@ -588,6 +588,55 @@ def update_strategy_scores() -> list:
                 f"(WR {analysis['win_rate']:.0%}, PnL {pnl_val:+.0f}€, ELEVATE)"
             )
 
+    # Phase 42c — Performance-Block per Strategy schreiben (war ein Bug:
+    # `performance.total_trades` blieb auf 0 weil nur archived/learning_system.py
+    # diesen Block setzte). Jetzt wird er hier konsistent aus analysis befüllt.
+    now_iso = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    perf_updated = 0
+    for strat_id, analysis in strategy_analysis.items():
+        if strat_id not in strategies:
+            continue
+        n_trades = analysis['trades']
+        if n_trades == 0:
+            continue
+        # Build perf-Block aus analysis + pnl-Listen
+        wins = analysis['wins']
+        losses = analysis['losses']
+        avg_pct = analysis['avg_pnl_pct']
+        # avg_win_pct / avg_loss_pct getrennt aus DB ziehen
+        try:
+            conn = get_db()
+            row = conn.execute(
+                "SELECT AVG(CASE WHEN pnl_eur > 0 THEN pnl_pct END) as avg_win, "
+                "       AVG(CASE WHEN pnl_eur < 0 THEN pnl_pct END) as avg_loss "
+                "FROM paper_portfolio WHERE strategy=? AND status IN ('CLOSED','WIN','LOSS')",
+                (strat_id,),
+            ).fetchone()
+            avg_win_pct = float(row[0] or 0)
+            avg_loss_pct = float(row[1] or 0)
+            conn.close()
+        except Exception:
+            avg_win_pct = avg_pct if avg_pct > 0 else 0
+            avg_loss_pct = avg_pct if avg_pct < 0 else 0
+        # Expectancy = WR * avg_win + (1-WR) * avg_loss (in %)
+        wr = analysis['win_rate']
+        expectancy = round(wr * avg_win_pct + (1 - wr) * avg_loss_pct, 2)
+        strategies[strat_id]['performance'] = {
+            'total_trades': n_trades,
+            'wins': wins,
+            'losses': losses,
+            'win_rate': round(wr, 3),
+            'avg_win_pct': round(avg_win_pct, 2),
+            'avg_loss_pct': round(avg_loss_pct, 2),
+            'expectancy': expectancy,
+            'total_pnl_eur': analysis.get('total_pnl_eur', 0.0),
+            'risk_adj_return': analysis.get('risk_adj_return', 0.0),
+            'last_evaluated': now_iso,
+        }
+        perf_updated += 1
+    if perf_updated:
+        changes.append(f'  ✓ performance-Block aktualisiert für {perf_updated} Strategien')
+
     atomic_write_json(STRATEGIES_JSON, strategies)
     return changes
 
