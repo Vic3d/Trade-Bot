@@ -186,11 +186,11 @@ def decide_llm(state: dict) -> list[dict]:
 
     proposals = proposals[:30]
 
-    # Phase 32: Lade Memory + Lessons + Tool-Data
+    # Phase 32+37: Lade Memory + Lessons (Tools werden on-demand vom LLM gerufen)
     try:
         from ceo_intelligence import (
-            load_decision_memory, load_lessons, gather_tool_data,
-            synthesize_decisions,
+            load_decision_memory, load_lessons,
+            synthesize_decisions, synthesize_decisions_with_tools,
         )
     except Exception as e:
         print(f'[ceo_brain] Smart-Mode nicht verfuegbar ({e}) — fallback altes Prompt')
@@ -198,16 +198,22 @@ def decide_llm(state: dict) -> list[dict]:
 
     memory = load_decision_memory(n=20)
     lessons = load_lessons(max_age_days=60, limit=30)
-    tickers = [p.get('ticker', '') for p in proposals]
-    tool_data = gather_tool_data(tickers)
 
-    # Multi-Agent off bei wenig Proposals (Cost-Optimierung)
-    use_multi = len(proposals) >= 3
-
-    decisions = synthesize_decisions(
-        state, proposals, memory, lessons, tool_data,
-        multi_agent=use_multi,
-    )
+    # Phase 37: Versuche Tool-Loop zuerst
+    decisions = synthesize_decisions_with_tools(state, proposals, memory, lessons)
+    if decisions:
+        print(f'[ceo_brain] Tool-Loop OK ({len(decisions)} decisions)')
+    else:
+        # Fallback Multi-Agent (Phase 32e)
+        from ceo_intelligence import gather_tool_data
+        tickers = [p.get('ticker', '') for p in proposals]
+        tool_data = gather_tool_data(tickers)
+        use_multi = len(proposals) >= 3
+        decisions = synthesize_decisions(
+            state, proposals, memory, lessons, tool_data,
+            multi_agent=use_multi,
+        )
+        print(f'[ceo_brain] Tool-Loop empty → Multi-Agent fallback ({len(decisions)} decisions)')
 
     # Phase 33: Consciousness-Layer drüberlegen
     try:

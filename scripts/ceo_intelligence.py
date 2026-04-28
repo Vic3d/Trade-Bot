@@ -357,6 +357,153 @@ def run_persona(state: dict, proposals: list[dict],
         return ''
 
 
+def synthesize_decisions_with_tools(state: dict, proposals: list[dict],
+                                       memory: list[dict], lessons: list[dict]) -> list[dict]:
+    """
+    Phase 37: Tool-Loop-Variante. CEO bekommt Tools statt pre-computed bundle.
+    LLM kann iterativ get_correlation, get_recent_news, web_search etc. aufrufen
+    bis er final_decision liefert. Pydantic-validiert.
+    """
+    if not proposals:
+        return []
+    try:
+        from ceo_tools import (
+            get_tool_definitions_for_prompt, run_tool_loop,
+            validate_decision,
+        )
+    except Exception as e:
+        print(f'[ceo_intel] Tool-Loop nicht verfügbar ({e}) — fallback', file=sys.stderr)
+        return []
+
+    # Build initial prompt (slimmer than build_smart_prompt — Tools liefern Details)
+    directive = state.get('directive', {})
+    cash_pct = state['cash_eur'] / state['fund_value'] * 100 if state['fund_value'] else 0
+    open_pos = '\n'.join(
+        f"  · {p['ticker']} ({p['strategy']}) {p['position_eur']:.0f}EUR"
+        for p in state.get('open_positions', [])
+    ) or '  (keine)'
+
+    proposals_str = ''
+    for i, p in enumerate(proposals[:30], 1):
+        proposals_str += (
+            f"\n[{i}] {p.get('ticker','?')} | {p.get('strategy','?')} | "
+            f"entry={p.get('entry_price','?')} stop={p.get('stop','?')} "
+            f"target={p.get('target_1') or p.get('target','?')} | "
+            f"thesis: {(p.get('thesis','') or '')[:120]}"
+        )
+
+    lessons_str = '\n'.join(f'  · {l.get("lesson","")[:200]}' for l in lessons[-8:]) \
+                    or '  (keine)'
+
+    # Calendar
+    cal_block = ''
+    try:
+        from calendar_service import format_for_prompt as _cal
+        cal_block = '\n' + _cal()
+    except Exception:
+        pass
+
+    initial_prompt = f"""Du bist CEO-Brain (Smart-Mode mit Tools, Phase 37).
+{cal_block}
+
+═══ PORTFOLIO ═══
+Mode: {directive.get('mode','?')} | VIX: {directive.get('vix','?')} | Geo: {directive.get('geo_alert_level','?')}
+Cash: {state['cash_eur']:.0f}EUR ({cash_pct:.0f}%)
+{open_pos}
+
+═══ DEINE LESSONS (letzte) ═══
+{lessons_str}
+
+═══ PROPOSALS ZU ENTSCHEIDEN ═══{proposals_str}
+
+{get_tool_definitions_for_prompt()}
+
+═══ AUFGABE ═══
+Pro Proposal: EXECUTE / SKIP / WATCH mit confidence (0.0-1.0).
+Confidence < 0.5 → automatisch WATCH.
+
+Wenn unklar → nutze Tools (z.B. get_correlation um Klumpenrisiko zu prüfen,
+web_search bei aktuellen News-Events, simulate_position_impact für Sektor-Cap).
+
+Nutze max 4-5 Tool-Calls insgesamt — fokussiert.
+
+WENN FERTIG, antworte:
+{{"final_decision": {{
+  "market_assessment": "1-2 Sätze",
+  "portfolio_assessment": "1-2 Sätze",
+  "decisions": [
+    {{"ticker": "...", "strategy": "...", "action": "EXECUTE|SKIP|WATCH",
+      "confidence": 0.X, "bull_case": "...", "bear_case": "...",
+      "reasoning": "...", "expected_outcome_pct": N,
+      "memory_reference": ""}}
+  ],
+  "tool_calls_used": ["..."]
+}}}}"""
+
+    result = run_tool_loop(initial_prompt, max_iterations=6, model_hint='sonnet',
+                            max_tokens=2500)
+
+    if 'error' in result:
+        print(f'[ceo_intel] Tool-Loop error: {result["error"]}', file=sys.stderr)
+        return []
+
+    final = result.get('final_decision', {})
+    if not isinstance(final, dict):
+        return []
+
+    # Pydantic-validate
+    is_valid, validated = validate_decision(final)
+    if not is_valid:
+        print(f'[ceo_intel] Pydantic validation failed: {validated}', file=sys.stderr)
+        # Try to use raw anyway if it has decisions
+        if 'decisions' in final:
+            validated = final
+        else:
+            return []
+
+    # Convert to expected format
+    out = []
+    if validated.get('market_assessment') or validated.get('portfolio_assessment'):
+        out.append({
+            '_meta': True,
+            'market_assessment': validated.get('market_assessment', '')[:400],
+            'portfolio_assessment': validated.get('portfolio_assessment', '')[:400],
+            'tool_calls_used': validated.get('tool_calls_used', []),
+            'tool_iterations': result.get('tool_calls_made', 0),
+        })
+
+    for idx, d in enumerate(validated.get('decisions', [])):
+        if not isinstance(d, dict):
+            continue
+        # Find matching proposal
+        tk = d.get('ticker')
+        matched = next((p for p in proposals if p.get('ticker') == tk), None)
+        if not matched:
+            continue
+        action = d.get('action', 'SKIP').upper()
+        conf = float(d.get('confidence', 0.5))
+        if action == 'EXECUTE' and conf < 0.5:
+            action = 'WATCH'
+        out.append({
+            'ticker': tk,
+            'strategy': matched.get('strategy', d.get('strategy')),
+            'entry': float(matched.get('entry_price', 0)),
+            'stop': float(matched.get('stop', 0)),
+            'target': float(matched.get('target_1') or matched.get('target', 0)),
+            'thesis': matched.get('thesis', ''),
+            'action': action,
+            'confidence': conf,
+            'reason': d.get('reasoning', '')[:300],
+            'bull_case': d.get('bull_case', '')[:200],
+            'bear_case': d.get('bear_case', '')[:200],
+            'expected_pct': float(d.get('expected_outcome_pct', 0)),
+            'memory_ref': d.get('memory_reference', '')[:200],
+            'source': 'tool_loop',
+        })
+
+    return out
+
+
 def synthesize_decisions(state: dict, proposals: list[dict],
                           memory: list[dict], lessons: list[dict],
                           tool_data: dict, multi_agent: bool = True) -> list[dict]:
