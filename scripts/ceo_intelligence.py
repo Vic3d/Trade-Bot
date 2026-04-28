@@ -447,6 +447,15 @@ Confidence < 0.5 → automatisch WATCH.
 Du hast schon viel Pre-Data oben. Tools nur wenn DRINGEND (z.B. spezifische
 Korrelation zwischen 2 Tickern fehlt, oder web_search bei Eilmeldung).
 
+═══ COLD-START-REGEL (Phase 41b) ═══
+Wenn 'strategy_stats' für eine Strategie cold_start=true zeigt (n<5 Trades),
+ist FEHLENDE HISTORIE KEIN SKIP-GRUND. Verlasse dich dann auf:
+  • Conviction-Score (technical+thesis+R:R+market)
+  • Anti-Pattern-Check (falls vorhanden → ja, dann skippen)
+  • Aktuelle Setup-Qualität (Stop unter Entry, gutes CRV, Sektor-OK)
+Default bei Cold-Start ohne Anti-Pattern: WATCH bei conf<0.55, EXECUTE bei conf>=0.55.
+Begründe NICHT mit "kein historisches Edge" — das ist bei Cold-Start zirkulär.
+
 Du KANNST direkt mit final_decision antworten wenn Pre-Data ausreicht.
 WICHTIG: STRIKT das Schema oben einhalten."""
 

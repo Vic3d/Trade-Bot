@@ -302,10 +302,40 @@ Wenn du final_decision lieferst aber das Schema nicht stimmt → wird verworfen.
 """
 
 
+def _strategy_n_trades(strategy_id: str) -> dict:
+    """Phase 41b: n_trades + win_rate + cold_start-Flag pro Strategy.
+    cold_start=True wenn n<5 → 'kein historisches Edge' ist KEIN SKIP-Grund."""
+    try:
+        c = sqlite3.connect(str(DB))
+        rows = c.execute(
+            "SELECT pnl_eur FROM paper_portfolio "
+            "WHERE strategy=? AND status IN ('CLOSED','WIN','LOSS') "
+            "AND pnl_eur IS NOT NULL",
+            (strategy_id,),
+        ).fetchall()
+        c.close()
+        n = len(rows)
+        if n == 0:
+            return {'n_trades': 0, 'cold_start': True, 'win_rate': None,
+                    'avg_pnl_eur': None}
+        pnls = [float(r[0]) for r in rows]
+        wins = sum(1 for p in pnls if p > 0)
+        return {
+            'n_trades': n,
+            'cold_start': n < 5,
+            'win_rate': round(wins / n * 100, 1),
+            'avg_pnl_eur': round(sum(pnls) / n, 1),
+        }
+    except Exception:
+        return {'n_trades': 0, 'cold_start': True, 'win_rate': None,
+                'avg_pnl_eur': None}
+
+
 def auto_pre_tool_calls(proposals: list) -> dict:
     """Pre-fetcht die wichtigsten Tools BEVOR LLM dran ist.
     Damit hat LLM auch ohne Tool-Calls vollständigen Kontext.
-    Phase 38: + find_similar_setups + anti_patterns + heatmap_best_hour."""
+    Phase 38: + find_similar_setups + anti_patterns + heatmap_best_hour.
+    Phase 41b: + strategy_stats mit cold_start-Flag."""
     pre_data = {}
     try:
         pre_data['sector_exposure'] = tool_get_sector_exposure()
@@ -333,6 +363,22 @@ def auto_pre_tool_calls(proposals: list) -> dict:
         pre_data['best_hours_per_strategy'] = h.get('best_hours', {})
     except Exception:
         pass
+
+    # Phase 41b: Cold-Start-Übersicht aller Proposal-Strategien
+    cold_starts = []
+    strategy_stats_summary = {}
+    for p in proposals[:8]:
+        s = p.get('strategy', '')
+        if not s or s in strategy_stats_summary:
+            continue
+        st = _strategy_n_trades(s)
+        strategy_stats_summary[s] = st
+        if st['cold_start']:
+            cold_starts.append({'strategy': s, 'n_trades': st['n_trades']})
+    if strategy_stats_summary:
+        pre_data['strategy_stats'] = strategy_stats_summary
+    if cold_starts:
+        pre_data['cold_start_strategies'] = cold_starts
 
     # Per Ticker: history + news + similar_setups + anti-pattern check
     for p in proposals[:8]:

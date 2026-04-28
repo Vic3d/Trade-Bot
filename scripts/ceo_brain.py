@@ -406,6 +406,8 @@ Letzte 5 Trades:
 • Mode DEFENSIVE: nur PS_*/PT-Strategien EXECUTE, sonst SKIP
 • Mode BULLISH: liberaler, auch PM/Setups
 • Wenn 5+ Open Positions schon: nur EXECUTE wenn Setup deutlich überlegen
+• COLD-START (Phase 41b): Strategien mit <5 historischen Trades NICHT mit "kein Edge" skippen.
+  Falls Setup technisch ok + kein Anti-Pattern: EXECUTE wenn Verdict frisch, sonst WATCH.
 
 ANTWORT-FORMAT — STRIKT JSON, SONST NICHTS:
 {{
