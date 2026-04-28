@@ -1286,6 +1286,31 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Kalender/Markt-Status Handler ──────────────────────────────
+        _cal_kws = (
+            'was ist heute', 'welcher tag', 'welches datum', 'wie spät', 'wie spaet',
+            'markt offen', 'markt status', 'kalender', 'wann öffnet', 'wann oeffnet',
+            'wann schließt', 'wann schliesst', 'feiertag', 'fed meeting',
+            'earnings diese woche', 'earnings nächste', 'earnings naechste',
+            'was steht an', 'was kommt diese woche', 'wochenplan',
+        )
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _cal_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from calendar_service import format_for_prompt
+                _resp = '📅 ' + format_for_prompt()
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] calendar-handler error: {_e}', flush=True)
+
         # ── Self-Improvement Approval Handler ──────────────────────────
         # "implement 1,3" / "implement alle" / "verwerfen alle"
         # → spawnt Claude Code via code_task_worker mit Proposal-Text

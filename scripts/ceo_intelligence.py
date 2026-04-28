@@ -256,6 +256,14 @@ def build_smart_prompt(state: dict, proposals: list[dict],
     }
     role = persona_instr.get(persona, persona_instr['ceo'])
 
+    # Phase 36: Calendar/Markt-Status — damit CEO nie raten muss welcher Tag ist
+    calendar_block = ''
+    try:
+        from calendar_service import format_for_prompt as _cal_prompt
+        calendar_block = '\n' + _cal_prompt() + '\n'
+    except Exception:
+        pass
+
     # Phase 34a: Identity-Anchor in jeden Prompt
     identity_anchor = ''
     try:
@@ -285,7 +293,7 @@ def build_smart_prompt(state: dict, proposals: list[dict],
         pass
 
     return f"""{role}
-{identity_anchor}{strategic_str}
+{calendar_block}{identity_anchor}{strategic_str}
 
 ═══ AKTUELLER MARKT-STATE ═══
 Mode: {directive.get('mode','?')} | Regime: {directive.get('regime','?')} | VIX: {directive.get('vix','?')}

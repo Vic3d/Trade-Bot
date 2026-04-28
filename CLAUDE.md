@@ -191,6 +191,28 @@ tail -f /opt/trademind/data/scheduler.log
 
 ---
 
+## ABSOLUTE REGELN für Claude (CLI/Albert) — nicht verhandelbar
+
+### 🚫 NIEMALS RATEN
+Wenn eine Frage Faktencheck erfordert (Datum, Wochentag, Markt-Status, Preis,
+Earnings-Datum, Server-State, was ist passiert seit…), **IMMER prüfen**.
+Nie aus dem Bauch antworten. Tools verfügbar:
+- `Bash: date` für Zeit/Wochentag
+- DB-Query für Trade-/Portfolio-State
+- SSH für Server-State
+- `cat ceo_directive.json` für aktuellen Mode
+- Calendar-Service für Markt-/Earnings-Kalender (Phase 36)
+
+### ✅ Gebrauchte Tools statt Bauchgefühl
+Wenn Tool gebaut wurde (z.B. `ceo_override.py` für Mode-Lock), **muss es benutzt
+werden** wenn die Situation passt. Nicht nur bauen und liegen lassen.
+
+### ✅ Keine Floskeln, keine Halluzinationen
+"Heute ist Montag" ohne `date`-Check = Halluzination = Fehler.
+Lieber sagen "warte, ich check kurz" und dann prüfen.
+
+---
+
 ## Performance-Snapshot (Stand 09.04.2026)
 
 | | |
