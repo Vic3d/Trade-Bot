@@ -277,6 +277,26 @@ def decide_llm(state: dict) -> list[dict]:
             except Exception as _he:
                 print(f'[heatmap-sizing] error: {_he}', file=sys.stderr)
 
+            # === Phase 39: Strategy-Lifecycle (Probation/Suspended-Check) ===
+            try:
+                from strategy_lifecycle import get_size_multiplier as _lc_mult
+                lc_mult = _lc_mult(d.get('strategy', ''))
+                if lc_mult == 0.0:
+                    # SUSPENDED oder RETIRED → Hard-Block
+                    d['action'] = 'WATCH'
+                    d['reason'] = (d.get('reason', '') +
+                                  f' | LIFECYCLE BLOCK: strategy in SUSPENDED/RETIRED')
+                    d['_lifecycle_blocked'] = True
+                elif lc_mult < 1.0:
+                    # PROBATION → Halbierte Größe
+                    existing = d.get('_mood_multiplier', 1.0)
+                    d['_mood_multiplier'] = existing * lc_mult
+                    d['_lifecycle_multiplier'] = lc_mult
+                    d['reason'] = (d.get('reason', '') +
+                                  f' | PROBATION × {lc_mult}')
+            except Exception as _lce:
+                print(f'[lifecycle-sizing] error: {_lce}', file=sys.stderr)
+
         # 33e: Mood-Multiplier auf alle EXECUTE
         mood = detect_mood(window_trades=10)
         if mood.get('mood') in ('tilt', 'caution'):

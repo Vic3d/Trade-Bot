@@ -188,6 +188,10 @@ SCHEDULE = [
     # Vergleicht heutige Decisions mit Outcomes, extrahiert Lessons via LLM.
     # Lessons werden vom CEO-Brain in jedem nächsten Run als Kontext geladen.
     ('CEO Reflection', 'ceo_reflection.py', [], 23, 15, None),
+    # ── Phase 39: Strategy-Lifecycle (täglich 23:00 nach Anti-Pattern-Refresh) ──
+    # Managed: ACTIVE → PROBATION → SUSPENDED → RETIRED Lifecycle.
+    # Reaktiviert via Shadow-Test wenn Cooldown vorbei.
+    ('Strategy Lifecycle', 'strategy_lifecycle.py', [], 23, 5, None),
     # ── Phase 38: Anti-Pattern Detection (täglich 22:55) ──
     # Scannt closed Trades nach Patterns mit hoher Loss-Rate.
     # CEO-Brain liest die Liste in jedem nächsten Run als Pre-Fetch.

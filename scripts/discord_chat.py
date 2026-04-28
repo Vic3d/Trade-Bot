@@ -1286,6 +1286,39 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Strategy-Lifecycle Handler (Phase 39) ──────────────────────
+        # "lifecycle" / "probation" / "suspended strategien" → overview
+        _lc_kws = ('lifecycle', 'probation', 'probationary', 'suspended strateg',
+                    'strategy status', 'strategien status', 'retired')
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _lc_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from strategy_lifecycle import get_lifecycle_overview
+                ov = get_lifecycle_overview()
+                lines = ['🔄 **Strategy-Lifecycle Overview**']
+                for state in ('ACTIVE', 'PROBATION', 'SUSPENDED', 'RETIRED'):
+                    items = ov.get(state, [])
+                    icon = {'ACTIVE': '✅', 'PROBATION': '⚠️',
+                            'SUSPENDED': '🚫', 'RETIRED': '⚰️'}[state]
+                    lines.append(f'\n{icon} **{state}** ({len(items)})')
+                    for it in items[:8]:
+                        if it.get('reason'):
+                            lines.append(f"  · `{it['id']}` — {it['reason'][:80]}")
+                        else:
+                            lines.append(f"  · `{it['id']}`")
+                _resp = '\n'.join(lines)
+                for _i in range(0, len(_resp), 1900):
+                    _send_message(_resp[_i:_i + 1900], CHANNEL_ID)
+                    time.sleep(0.5)
+                _log_chat('albert', _resp[:2000])
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] lifecycle-handler error: {_e}', flush=True)
+
         # ── Pattern-Learning Handler (Phase 38) ────────────────────────
         # "heatmap" / "patterns" / "anti-patterns" / "similar X Y"
         _pl_kws = ('heatmap', 'pattern', 'anti-pattern', 'antipattern',
