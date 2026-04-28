@@ -1286,6 +1286,31 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Capabilities Handler (Phase 40z) ────────────────────────────
+        _cap_kws = ('was kannst du', 'capabilities', 'fähigkeiten', 'faehigkeiten',
+                    'was kann das system', 'features', 'phasen', 'tools list')
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _cap_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from pathlib import Path as _P
+                cap_file = _P('/opt/trademind/memory/ceo-capabilities.md')
+                if not cap_file.exists():
+                    _send_message('📭 Capabilities-Doc noch nicht generiert. '
+                                  'Läuft täglich 23:55 — oder manuell triggern.', CHANNEL_ID)
+                else:
+                    txt = cap_file.read_text(encoding='utf-8')
+                    for _i in range(0, len(txt), 1900):
+                        _send_message(txt[_i:_i+1900], CHANNEL_ID)
+                        time.sleep(0.5)
+                _log_chat('albert', 'capabilities sent')
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] capabilities-handler error: {_e}', flush=True)
+
         # ── Strategy-Lifecycle Handler (Phase 39) ──────────────────────
         # "lifecycle" / "probation" / "suspended strategien" → overview
         _lc_kws = ('lifecycle', 'probation', 'probationary', 'suspended strateg',

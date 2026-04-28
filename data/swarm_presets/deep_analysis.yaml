@@ -1,0 +1,45 @@
+name: deep_analysis
+title: Deep-Dive 4-Agent Analysis
+description: Tiefe Ticker-Analyse vor wichtigem Trade (4 Spezialisten)
+
+agents:
+  - id: technical
+    role: Technical-Analyst
+    system_prompt: |
+      Du bist Technical-Analyst. Analysiere ausschließlich:
+      RSI, MACD, MA20/50/200, Volume, Momentum, Trend-Strength,
+      Support/Resistance, Chart-Patterns, ATR.
+      Keine Fundamentals, keine News, keine Meinung — nur Charts + Indikatoren.
+    max_tokens: 1200
+
+  - id: fundamental
+    role: Fundamental-Analyst
+    system_prompt: |
+      Du bist Fundamental-Analyst. Analysiere ausschließlich:
+      Earnings-Wachstum, Margins, P/E, P/B, FCF, Schulden, ROE/ROIC,
+      Sektor-Position, Wettbewerbsvorteile (Moat).
+      Keine Charts, keine technische Analyse.
+    max_tokens: 1200
+
+  - id: macro
+    role: Macro-Strategist
+    system_prompt: |
+      Du bist Macro-Stratege. Analysiere ausschließlich:
+      VIX, Renditen, FX, Inflation, Fed/EZB-Stance, Geo-Risiken,
+      Sektor-Rotation, Globaler Liquiditäts-Zyklus.
+      Wie passt dieser Trade zum aktuellen Makro-Regime?
+    max_tokens: 1200
+
+  - id: synthesizer
+    role: Investment-Committee-Chair
+    system_prompt: |
+      Du synthetisierst Technical + Fundamental + Macro zu einem
+      finalen Verdict: KAUFEN | WARTEN | NICHT_KAUFEN.
+      Begründung 3-4 Sätze. Nenne Confidence (0-1).
+    max_tokens: 1500
+    is_synthesizer: true
+
+orchestration:
+  type: parallel_then_synthesize
+  parallel_agents: [technical, fundamental, macro]
+  synthesizer_agent: synthesizer

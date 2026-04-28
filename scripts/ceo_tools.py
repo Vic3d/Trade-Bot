@@ -372,14 +372,37 @@ def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS
                    model_hint: str = 'sonnet', max_tokens: int = 2500) -> dict:
     """
     Tool-Loop: LLM kann iterativ Tools aufrufen bis es ein final_decision liefert.
+    Phase 40c: Context-Compression bei langen Loops.
     Returns: dict mit 'final_decision' (oder 'error' bei Loop-Stop).
     """
     from core.llm_client import call_llm
 
     conversation = initial_prompt
     iterations = []
+    compression_stats = []
+
+    # Phase 40c: Compression-Helper
+    try:
+        from context_compression import apply_all_layers as _compress
+    except Exception:
+        _compress = None
 
     for i in range(max_iterations):
+        # Phase 40c: vor jedem Call Compression anwenden bei langen Conversations
+        if _compress and i >= 3 and len(conversation) > 30000:
+            # Build messages-list aus dem akkumulierten conversation-string
+            # Einfache Heuristik: split bei [ITERATION N]
+            parts = conversation.split('\n\n[ITERATION ')
+            if len(parts) > 3:
+                # Wir können den string nicht einfach modifizieren ohne msg-struktur
+                # Stattdessen: trim middle if über 50k chars
+                if len(conversation) > 50000:
+                    conversation = (parts[0]
+                                     + f'\n\n[CONTEXT COMPRESSED: {len(parts)-3} middle iterations summarized]\n\n[ITERATION '
+                                     + '\n\n[ITERATION '.join(parts[-3:]))
+                    compression_stats.append({'iter': i, 'kept_last': 3,
+                                              'removed': len(parts) - 3})
+
         try:
             text, _usage = call_llm(conversation, model_hint=model_hint,
                                      max_tokens=max_tokens)
@@ -410,6 +433,7 @@ def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS
                 'final_decision': parsed['final_decision'],
                 'iterations': iterations,
                 'tool_calls_made': len(iterations),
+                'compression_stats': compression_stats,
             }
 
         # Tool call?

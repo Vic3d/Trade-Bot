@@ -188,6 +188,9 @@ SCHEDULE = [
     # Vergleicht heutige Decisions mit Outcomes, extrahiert Lessons via LLM.
     # Lessons werden vom CEO-Brain in jedem nächsten Run als Kontext geladen.
     ('CEO Reflection', 'ceo_reflection.py', [], 23, 15, None),
+    # ── Phase 40z: CEO-Capabilities-Doc Refresh (täglich 23:55) ──
+    # Aktualisiert memory/ceo-capabilities.md → CEO weiß was er kann.
+    ('CEO Capabilities Refresh', 'generate_ceo_capabilities.py', [], 23, 55, None),
     # ── Phase 39: Strategy-Lifecycle (täglich 23:00 nach Anti-Pattern-Refresh) ──
     # Managed: ACTIVE → PROBATION → SUSPENDED → RETIRED Lifecycle.
     # Reaktiviert via Shadow-Test wenn Cooldown vorbei.

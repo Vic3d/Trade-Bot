@@ -70,8 +70,24 @@ CLI_MODEL_MAP = {
 }
 
 # Provider-Reihenfolge (kann via ENV gesetzt werden)
-# Default: cli (Abo) → anthropic (API) → openai (Fallback)
-PROVIDER_ORDER = os.getenv('LLM_PROVIDER_ORDER', 'cli,anthropic,openai').split(',')
+# Phase 40g: Erweitert um deepseek (DeepSeek-V3 via OpenAI-API-compatible)
+# Default: cli (Abo) → anthropic (API) → deepseek (cheap) → openai
+PROVIDER_ORDER = os.getenv(
+    'LLM_PROVIDER_ORDER',
+    'cli,anthropic,deepseek,openai'
+).split(',')
+
+# DeepSeek-V3 ist OpenAI-API-kompatibel (https://api.deepseek.com)
+# Pricing 2026: $0.27/MTok input, $1.10/MTok output (sehr günstig vs anthropic)
+DEEPSEEK_MODEL_MAP = {
+    'sonnet': 'deepseek-chat',   # V3
+    'opus':   'deepseek-reasoner',  # R1
+    'haiku':  'deepseek-chat',
+}
+PRICE_DEEPSEEK = {
+    'deepseek-chat':     (0.27, 1.10),
+    'deepseek-reasoner': (0.55, 2.19),
+}
 
 # Welche model_hints duerfen ueberhaupt CLI nutzen?
 # Default: alle. Setze z.B. 'sonnet,opus' um Haiku-Bulk-Jobs auf API zu lassen.
@@ -326,6 +342,38 @@ def _call_openai(prompt: str, model: str, max_tokens: int) -> tuple[str, dict]:
     }
 
 
+def _call_deepseek(prompt: str, model: str, max_tokens: int,
+                    system: str = '') -> tuple[str, dict]:
+    """Phase 40g: DeepSeek-V3 via OpenAI-compatible API.
+    Sehr günstig: $0.27/$1.10 per MTok in/out (vs Anthropic Sonnet $3/$15)."""
+    try:
+        import openai
+    except ImportError:
+        raise RuntimeError('openai SDK fehlt — pip install openai (auch für DeepSeek)')
+    api_key = os.getenv('DEEPSEEK_API_KEY')
+    if not api_key:
+        raise RuntimeError('DEEPSEEK_API_KEY fehlt')
+    client = openai.OpenAI(api_key=api_key, base_url='https://api.deepseek.com')
+    msgs = []
+    if system:
+        msgs.append({'role': 'system', 'content': system})
+    msgs.append({'role': 'user', 'content': prompt})
+    resp = client.chat.completions.create(
+        model=model, max_tokens=max_tokens, messages=msgs,
+    )
+    text = resp.choices[0].message.content if resp.choices else ''
+    usage = resp.usage
+    in_tok = usage.prompt_tokens if usage else 0
+    out_tok = usage.completion_tokens if usage else 0
+    price_in, price_out = PRICE_DEEPSEEK.get(model, (0.27, 1.10))
+    cost = (in_tok * price_in + out_tok * price_out) / 1_000_000
+    return text, {
+        'provider': 'deepseek', 'model': model,
+        'input_tokens': in_tok, 'output_tokens': out_tok,
+        'cost_usd_est': round(cost, 4),
+    }
+
+
 # ──────────────────────────────────────────────────────────────────────────
 # Public API
 # ──────────────────────────────────────────────────────────────────────────
@@ -421,7 +469,23 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
             _log_fallback(str(last_err)[:200], 'anthropic', 'openai')
             continue
 
-        # ---- 3) OpenAI Fallback ----
+        # ---- 3) DeepSeek Fallback (Phase 40g — günstig) ----
+        if provider == 'deepseek':
+            try:
+                ds_model = DEEPSEEK_MODEL_MAP.get(model_hint, 'deepseek-chat')
+                text, usage = _call_deepseek(prompt, ds_model, max_tokens, system=system)
+                _add_cost(usage['cost_usd_est'], 'deepseek')
+                tried.append('deepseek')
+                if 'cli' in ' '.join(tried[:-1]) or 'anthropic' in ' '.join(tried[:-1]):
+                    usage['fallback_from'] = tried[0] if tried else 'unknown'
+                return text, usage
+            except Exception as e:
+                last_err = e
+                tried.append(f'deepseek({str(e)[:50]})')
+                _log_fallback(str(e)[:200], 'deepseek', 'openai')
+                continue
+
+        # ---- 4) OpenAI Fallback ----
         if provider == 'openai':
             try:
                 text, usage = _call_openai(prompt, oai_model, max_tokens)

@@ -264,6 +264,19 @@ def build_smart_prompt(state: dict, proposals: list[dict],
     except Exception:
         pass
 
+    # Phase 40z: Capabilities-Awareness — CEO weiß welche Tools/Phasen er hat
+    capabilities_summary = ''
+    try:
+        cap_file = WS / 'memory' / 'ceo-capabilities.md'
+        if cap_file.exists():
+            cap_text = cap_file.read_text(encoding='utf-8')
+            # Take only "Übersicht" + "Decision-Pfade" + "Sizing-Stack" sections
+            # Compact summary statt full doc
+            capabilities_summary = ('\n═══ DEINE FÄHIGKEITEN (du hast Zugriff auf) ═══\n'
+                + cap_text[:2000] + '\n')
+    except Exception:
+        pass
+
     # Phase 34a: Identity-Anchor in jeden Prompt
     identity_anchor = ''
     try:
@@ -293,7 +306,7 @@ def build_smart_prompt(state: dict, proposals: list[dict],
         pass
 
     return f"""{role}
-{calendar_block}{identity_anchor}{strategic_str}
+{calendar_block}{capabilities_summary}{identity_anchor}{strategic_str}
 
 ═══ AKTUELLER MARKT-STATE ═══
 Mode: {directive.get('mode','?')} | Regime: {directive.get('regime','?')} | VIX: {directive.get('vix','?')}
