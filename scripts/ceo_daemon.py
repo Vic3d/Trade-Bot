@@ -134,6 +134,7 @@ def _drain_event_queue() -> list[dict]:
 
 
 def _count_pending_proposals() -> int:
+    """Phase 43: zählt nur status='pending'/'active'/None (NICHT 'watching'/'rejected')."""
     if not PROPOSALS_FILE.exists():
         return 0
     try:
@@ -144,6 +145,94 @@ def _count_pending_proposals() -> int:
             return 0
         return sum(1 for p in data if isinstance(p, dict)
                    and p.get('status') in ('pending', 'active', None))
+    except Exception:
+        return 0
+
+
+def _expire_stale_proposals() -> int:
+    """Phase 43 Pillar A: Expire pending proposals älter als 4h."""
+    if not PROPOSALS_FILE.exists():
+        return 0
+    try:
+        data = json.loads(PROPOSALS_FILE.read_text(encoding='utf-8'))
+        if isinstance(data, dict):
+            meta = {k: v for k, v in data.items() if k != 'proposals'}
+            props = data.get('proposals', [])
+        else:
+            meta = {}
+            props = data if isinstance(data, list) else []
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=4)).isoformat()
+        expired = 0
+        for p in props:
+            if not isinstance(p, dict):
+                continue
+            if (p.get('status') in ('pending', 'active', None)
+                    and (p.get('created_at') or '') < cutoff):
+                p['status'] = 'expired'
+                p['status_changed_at'] = datetime.now(timezone.utc).isoformat()
+                expired += 1
+        if expired:
+            out = {**meta, 'proposals': props} if meta else props
+            PROPOSALS_FILE.write_text(
+                json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8'
+            )
+        return expired
+    except Exception:
+        return 0
+
+
+def _count_watching_proposals_due_for_reeval() -> int:
+    """Phase 43 Pillar A: Watching-Proposals die re-eval brauchen.
+    Trigger: 60min seit letztem Decide UND (neue Macro-Events ODER Preis±2%)."""
+    if not PROPOSALS_FILE.exists():
+        return 0
+    try:
+        data = json.loads(PROPOSALS_FILE.read_text(encoding='utf-8'))
+        if isinstance(data, dict):
+            data = data.get('proposals', [])
+        if not isinstance(data, list):
+            return 0
+        cutoff = (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()
+        return sum(1 for p in data if isinstance(p, dict)
+                   and p.get('status') == 'watching'
+                   and (p.get('status_changed_at') or '') < cutoff)
+    except Exception:
+        return 0
+
+
+def _promote_watching_to_pending() -> int:
+    """Phase 43 Pillar A: stale watching-Proposals zurück auf pending für Re-Eval."""
+    if not PROPOSALS_FILE.exists():
+        return 0
+    try:
+        data = json.loads(PROPOSALS_FILE.read_text(encoding='utf-8'))
+        if isinstance(data, dict):
+            meta = {k: v for k, v in data.items() if k != 'proposals'}
+            props = data.get('proposals', [])
+        else:
+            meta = {}
+            props = data if isinstance(data, list) else []
+        cutoff = (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()
+        promoted = 0
+        for p in props:
+            if not isinstance(p, dict):
+                continue
+            if (p.get('status') == 'watching'
+                    and (p.get('status_changed_at') or '') < cutoff):
+                p['status'] = 'pending'
+                p['status_changed_at'] = datetime.now(timezone.utc).isoformat()
+                p.setdefault('decision_history', []).append({
+                    'ts': p['status_changed_at'],
+                    'new_status': 'pending',
+                    'reason': 'auto_reeval_60min',
+                })
+                promoted += 1
+        if promoted:
+            out = {**meta, 'proposals': props} if meta else props
+            PROPOSALS_FILE.write_text(
+                json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8'
+            )
+        return promoted
     except Exception:
         return 0
 
@@ -308,6 +397,12 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
     today = now_cet.strftime('%Y-%m-%d')
     hour = now_cet.hour
 
+    # 0. Lifecycle: expire pending älter 4h, promote watching älter 60min
+    n_expired = _expire_stale_proposals()
+    n_promoted = _promote_watching_to_pending()
+    if n_expired or n_promoted:
+        _log(f'  ↻ lifecycle: expired={n_expired} watching→pending={n_promoted}')
+
     # 1. Events
     if events:
         for ev in events:
@@ -320,11 +415,8 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
     if 7 <= hour < 9 and last_recon != today and now_cet.weekday() < 5:
         return 'RECONNAIS'
 
-    # 3. Pending proposals
-    if _count_pending_proposals() > 0:
-        return 'DECIDING'
-
-    # 4. Active Hunting in Marktstunden
+    # 3. HUNTING-Priorität wenn lange nicht gehunt UND Marktstunden
+    # (Phase 43 Pillar A: vor DECIDING, sonst hunger nach neuen Setups)
     if _is_market_hours():
         last_hunt = state.get('last_hunt_ts')
         if not last_hunt:
@@ -336,6 +428,10 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
                 return 'HUNTING'
         except Exception:
             return 'HUNTING'
+
+    # 4. Pending proposals (nach Hunt-Prio)
+    if _count_pending_proposals() > 0:
+        return 'DECIDING'
 
     # 5. Position Monitoring alle 15min in Marktstunden
     if _is_market_hours():

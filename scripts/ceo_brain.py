@@ -232,11 +232,64 @@ def decide_llm(state: dict) -> list[dict]:
             raw_conf = d.get('confidence', 0.5)
             d['confidence'] = adjust_confidence(raw_conf)
             d['_raw_confidence'] = raw_conf
-            # Re-apply confidence-filter
+
+            # Phase 43 Pillar B: Confidence-Boosts für High-Quality-Triggers
+            boosts = []
+            try:
+                # Boost 1: aktives Macro-Event letzte 6h (HIGH/CRITICAL severity)
+                import sqlite3 as _sql
+                _conn = _sql.connect(str(DB))
+                cnt = _conn.execute(
+                    "SELECT COUNT(*) FROM macro_events "
+                    "WHERE detected_at >= datetime('now','-6 hours') "
+                    "AND severity >= 0.9"
+                ).fetchone()[0]
+                _conn.close()
+                if cnt > 0:
+                    d['confidence'] = min(0.99, d['confidence'] + 0.10)
+                    boosts.append(f'macro+0.10 (n={cnt})')
+            except Exception:
+                pass
+            try:
+                # Boost 2: Cold-Start ohne Anti-Pattern (strategy n_trades < 5)
+                _strat = d.get('strategy', '')
+                from ceo_tools import _strategy_n_trades
+                _stats = _strategy_n_trades(_strat)
+                if _stats['cold_start'] and not d.get('_pattern_matches'):
+                    d['confidence'] = min(0.99, d['confidence'] + 0.05)
+                    boosts.append(f'cold-start+0.05 (n={_stats["n_trades"]})')
+            except Exception:
+                pass
+            try:
+                # Boost 3: Strategy hat aktuell positive expectancy + n>=5
+                from ceo_tools import _strategy_n_trades as _ns
+                _strat = d.get('strategy', '')
+                _stats = _ns(_strat)
+                if not _stats['cold_start']:
+                    _wr = _stats.get('win_rate') or 0
+                    if _wr >= 60:
+                        d['confidence'] = min(0.99, d['confidence'] + 0.05)
+                        boosts.append(f'high-WR+0.05 ({_wr}%)')
+            except Exception:
+                pass
+            if boosts:
+                d['_conf_boosts'] = boosts
+                d['reason'] = (d.get('reason', '') + f' | boosts: {", ".join(boosts)}')
+
+            # Re-apply confidence-filter (jetzt nach Boosts)
             if d.get('action') == 'EXECUTE' and d['confidence'] < 0.5:
                 d['action'] = 'WATCH'
                 d['reason'] = (d.get('reason', '') +
                                f' | DEMOTED: calibrated conf {d["confidence"]} < 0.5')
+
+            # Phase 43 Pillar B: PROMOTE WATCH→EXECUTE wenn nach Boost stark genug
+            if (d.get('action') == 'WATCH' and d['confidence'] >= 0.55
+                    and not d.get('_pattern_blocked')
+                    and not d.get('_lifecycle_blocked')):
+                d['action'] = 'EXECUTE'
+                d['reason'] = (d.get('reason', '') +
+                               f' | PROMOTED WATCH→EXECUTE: conf {d["confidence"]:.2f} >= 0.55 (Phase 43b)')
+                d['_promoted'] = True
 
             # === Phase 38b: Anti-Pattern Hard-Enforcement ===
             try:
@@ -514,20 +567,69 @@ def decide_rules(state: dict) -> list[dict]:
 
 # ─── Ausführen ────────────────────────────────────────────────────────────
 
+def _update_proposal_status(ticker: str, strategy: str, new_status: str,
+                             extra: dict | None = None) -> None:
+    """Phase 43 Pillar A: Lifecycle. Setzt Proposal-Status.
+    pending → watching | rejected | executed | expired
+    """
+    if not PROPOSALS_FILE.exists():
+        return
+    try:
+        data = json.loads(PROPOSALS_FILE.read_text(encoding='utf-8'))
+        if isinstance(data, dict):
+            meta = {k: v for k, v in data.items() if k != 'proposals'}
+            props = data.get('proposals', [])
+        else:
+            meta = {}
+            props = data if isinstance(data, list) else []
+        now = datetime.now(timezone.utc).isoformat()
+        updated = 0
+        for p in props:
+            if not isinstance(p, dict):
+                continue
+            if (p.get('ticker') == ticker and p.get('strategy') == strategy
+                    and p.get('status') in ('pending', 'active', None)):
+                p['status'] = new_status
+                p['status_changed_at'] = now
+                p.setdefault('decision_history', []).append({
+                    'ts': now, 'new_status': new_status,
+                    **({k: v for k, v in (extra or {}).items() if isinstance(v, (str, int, float, bool))})
+                })
+                updated += 1
+        if updated:
+            out = {**meta, 'proposals': props} if meta else props
+            PROPOSALS_FILE.write_text(
+                json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8'
+            )
+    except Exception as e:
+        print(f'[lifecycle] update_proposal_status err: {e}', file=sys.stderr)
+
+
 def execute_decisions(decisions: list[dict]) -> dict:
-    """Setzt EXECUTE-Entscheidungen um. Hard-Safety-Guards bleiben aktiv."""
+    """Setzt EXECUTE-Entscheidungen um. Hard-Safety-Guards bleiben aktiv.
+    Phase 43 Pillar A: nach Decision wird Proposal-Status aktualisiert
+    (pending → watching/rejected/executed) damit kein DECIDING-Loop entsteht."""
     summary = {'execute': 0, 'skip': 0, 'watch': 0, 'failed': 0,
                'success': 0, 'blocked_by': {}}
 
     for d in decisions:
         action = d['action']
+        ticker = d.get('ticker', '')
+        strategy = d.get('strategy', '')
         if action == 'WATCH':
             summary['watch'] += 1
             _log_decision({**d, 'event': 'watch'})
+            # Phase 43 Pillar A: WATCH → Proposal-Status auf "watching"
+            _update_proposal_status(ticker, strategy, 'watching',
+                                     {'confidence': d.get('confidence'),
+                                      'reason': str(d.get('reason', ''))[:120]})
             continue
         if action == 'SKIP':
             summary['skip'] += 1
             _log_decision({**d, 'event': 'skip'})
+            _update_proposal_status(ticker, strategy, 'rejected',
+                                     {'confidence': d.get('confidence'),
+                                      'reason': str(d.get('reason', ''))[:120]})
             continue
         if action != 'EXECUTE':
             summary['failed'] += 1
@@ -565,6 +667,12 @@ def execute_decisions(decisions: list[dict]) -> dict:
                 'message': (result.get('message') or '')[:300],
                 'blocked_by': result.get('blocked_by'),
             })
+            # Phase 43 Pillar A: EXECUTE → 'executed' oder 'execute_blocked'
+            new_status = 'executed' if success else 'execute_blocked'
+            _update_proposal_status(ticker, strategy, new_status,
+                                     {'success': success,
+                                      'blocked_by': str(result.get('blocked_by') or ''),
+                                      'trade_id': result.get('trade_id')})
         except Exception as e:
             summary['failed'] += 1
             print(f'[ceo_brain] execute crashed for {d["ticker"]}: {e}', file=sys.stderr)
