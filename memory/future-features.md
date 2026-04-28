@@ -86,6 +86,38 @@ Wenn ein "later"-Feature relevant wird:
 
 ---
 
+## News-Sources Backlog (API-basiert, später wenn Budget)
+
+Recherchiert 2026-04-28 — Premium/API-Sources die wir später ergänzen können:
+
+### 🟡 LATER — GDELT Project (gratis, aber Setup-Aufwand)
+**URL:** https://www.gdeltproject.org/
+**Wert:** Globale News-Sentiment-Analyse, 100+ Sprachen, 15min Update-Frequenz
+**Wann nützlich:** Cross-Language Macro-Detection (z.B. chinesische/arabische Quellen)
+**Aufwand:** ~4-6h für Adapter (REST API + GDELT Doc Tool)
+**Trigger:** Wenn wir Asien/MENA-Coverage verbessern wollen
+
+### 🟡 LATER — Marketaux (Freemium API)
+**URL:** https://www.marketaux.com/
+**Wert:** Tickerspezifische News + Sentiment, 100 calls/day free
+**Aufwand:** ~2h
+**Trigger:** Wenn wir per-Ticker-News verbessern wollen (aktuell yahoo_finance + finnhub)
+
+### 🟡 LATER — Earnings Feed / SEC-API.io (Freemium)
+**URL:** https://earningsfeed.com/api oder https://sec-api.io/
+**Wert:** SEC EDGAR Real-Time (60s Latency vs SEC RSS 10min)
+**Aufwand:** ~3h
+**Trigger:** Wenn 8-K-RSS-Latenz uns wichtige Events kostet
+
+### 🔴 PAID — Refinitiv / Bloomberg / Polygon (>$1k/Monat)
+Nur sinnvoll wenn echtes Geld → derzeit nicht relevant.
+
+### 🔴 PAID — Newsquawk / Benzinga Pro
+Premium-Streams mit 10-30s Latency für Day-Trading. Wir tradern Swing/Thesis,
+brauchen das nicht. Nur reaktivieren wenn DT wieder aktiv.
+
+---
+
 ## Lizenz-Hinweis
 Fincept ist **AGPL-3.0** — wenn wir Code (nicht nur JSON-Configs/Prompts) übernehmen,
 muss unser Repo entweder auch AGPL bleiben oder die Übernahme als

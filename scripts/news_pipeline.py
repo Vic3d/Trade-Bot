@@ -179,18 +179,72 @@ def simple_sentiment(headline):
     label = 'bullish' if score > 0.2 else 'bearish' if score < -0.2 else 'neutral'
     return round(min(max(score, -1), 1), 2), label
 
+_STOPWORDS = {
+    'the','a','an','and','or','but','in','on','at','to','for','of','with',
+    'by','from','as','is','was','are','were','be','been','being','have','has',
+    'had','do','does','did','will','would','could','should','may','might','can',
+    'this','that','these','those','it','its','they','them','their','i','you',
+    'he','she','we','him','her','us','my','your','our','their','der','die','das',
+    'den','dem','des','und','oder','aber','in','an','auf','zu','für','von','mit',
+    'bei','ist','war','sind','waren','sein','wird','würde','könnte','sollte',
+    'kann','dies','jenes','sie','er','wir','ihn','ihm','ihr','mein','dein','sein',
+    "'s","says","reports","report","new","news",
+}
+
+def _normalize_for_dedup(text: str) -> set:
+    """Token-Set für semantischen Dedup (lowercase, stopwords entfernt)."""
+    import re as _re
+    text = (text or '').lower()
+    # Punctuation raus, splitten
+    tokens = _re.findall(r"[a-zäöüß]{3,}", text)
+    return {t for t in tokens if t not in _STOPWORDS}
+
+
+def _jaccard(a: set, b: set) -> float:
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def _is_semantic_duplicate(db, headline: str, threshold: float = 0.7,
+                              hours_back: int = 24) -> bool:
+    """Phase 42b: Vergleicht headline gegen jüngste 200 News, Jaccard > threshold = dup."""
+    try:
+        rows = db.execute(
+            "SELECT headline FROM news_events "
+            "WHERE created_at >= datetime('now', '-' || ? || ' hours') "
+            "ORDER BY id DESC LIMIT 200",
+            (hours_back,),
+        ).fetchall()
+    except Exception:
+        return False
+    new_tokens = _normalize_for_dedup(headline)
+    if len(new_tokens) < 4:
+        return False  # Zu wenig Tokens für sichere Aussage
+    for (existing,) in rows:
+        existing_tokens = _normalize_for_dedup(existing)
+        if _jaccard(new_tokens, existing_tokens) >= threshold:
+            return True
+    return False
+
+
 def save_to_db(items):
     db = sqlite3.connect(DB)
     new_count = 0
+    skipped_semantic = 0
     for item in items:
         headline = item.get('headline', '').strip()
         if not headline or len(headline) < 10:
             continue
         url = item.get('url', '')
         h = hashlib.md5((headline + url).encode()).hexdigest()[:16]
-        # Duplikat-Check
+        # Duplikat-Check Layer 1: exact url-hash
         exists = db.execute('SELECT 1 FROM news_events WHERE url_hash=?', (h,)).fetchone()
         if exists:
+            continue
+        # Phase 42b — Layer 2: semantic dedup via token-set Jaccard
+        if _is_semantic_duplicate(db, headline):
+            skipped_semantic += 1
             continue
         tickers = detect_tickers(headline)
         sector = detect_sector(headline)
@@ -262,6 +316,148 @@ def run(verbose=True):
             result = ingest_articles(articles, source_key)
             intl_total['inserted'] += result['inserted']
         if verbose: print(f'  {"International (HB/Nikkei/FT)":25} {intl_total["inserted"]} neu')
+
+        # Phase 42b — Energy/Commodities
+        energy_sources = ['oilprice', 'rigzone', 'kitco_metals', 'mining_com']
+        e_total = {'inserted': 0}
+        for source_key in energy_sources:
+            articles = extra_news(sources=[source_key], n=6, max_age_hours=12)
+            e_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Energy/Commodities":25} {e_total["inserted"]} neu')
+
+        # Phase 42b — Geopolitik/Breaking
+        geo_sources = ['reuters_world', 'bbc_business', 'cnbc_world', 'cnbc_economy', 'cnbc_finance']
+        g_total = {'inserted': 0}
+        for source_key in geo_sources:
+            articles = extra_news(sources=[source_key], n=8, max_age_hours=8)
+            g_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Geopolitik/Breaking":25} {g_total["inserted"]} neu')
+
+        # Phase 42b — Central Banks
+        cb_sources = ['fed_press', 'ecb_news', 'imf_news']
+        c_total = {'inserted': 0}
+        for source_key in cb_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=24)
+            c_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Central Banks (Fed/ECB/IMF)":25} {c_total["inserted"]} neu')
+
+        # Phase 42b — Tech / Crypto
+        tech_sources = ['techcrunch', 'theverge', 'arstechnica', 'coindesk']
+        t_total = {'inserted': 0}
+        for source_key in tech_sources:
+            articles = extra_news(sources=[source_key], n=5, max_age_hours=8)
+            t_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Tech/Crypto":25} {t_total["inserted"]} neu')
+
+        # Phase 42b — Asia broader
+        asia_sources = ['scmp_business', 'reuters_china']
+        a_total = {'inserted': 0}
+        for source_key in asia_sources:
+            articles = extra_news(sources=[source_key], n=5, max_age_hours=12)
+            a_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Asia (SCMP/Reuters CN)":25} {a_total["inserted"]} neu')
+
+        # Phase 42b — Defense / Military
+        def_sources = ['defense_news', 'janes']
+        d_total = {'inserted': 0}
+        for source_key in def_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=24)
+            d_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Defense (DefNews/Janes)":25} {d_total["inserted"]} neu')
+
+        # Phase 42b — German extra
+        de_sources = ['spiegel_wirt', 'tagesschau_wt', 'manager_mag']
+        de_total = {'inserted': 0}
+        for source_key in de_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=12)
+            de_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"German (Spiegel/TS/Manager)":25} {de_total["inserted"]} neu')
+
+        # ╔════════════════════════════════════════════════════════════════════╗
+        # ║ Phase 42b — RESEARCHED ADDITIONS                                  ║
+        # ╚════════════════════════════════════════════════════════════════════╝
+
+        # Mainstream Finance
+        mf_sources = ['nasdaq_markets','benzinga','yahoo_finance','seeking_alpha',
+                       'reuters_business','reuters_top','forbes_business','fox_business',
+                       'guardian_business','wapo_business','nbcnews_business']
+        mf_total = {'inserted': 0}
+        for source_key in mf_sources:
+            articles = extra_news(sources=[source_key], n=6, max_age_hours=8)
+            mf_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Mainstream-Finance (11)":25} {mf_total["inserted"]} neu')
+
+        # Alt-Finance / Contrarian
+        ac_sources = ['zerohedge','naked_capitalism','moneyweek','wolfstreet','mish_talk']
+        ac_total = {'inserted': 0}
+        for source_key in ac_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=12)
+            ac_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Alt-Finance/Contrarian":25} {ac_total["inserted"]} neu')
+
+        # Energy zusätzlich
+        en_sources = ['iea_news','naturalgasintel','energyvoice','worldoil']
+        en_total = {'inserted': 0}
+        for source_key in en_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=24)
+            en_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Energy zusätzl. (IEA+)":25} {en_total["inserted"]} neu')
+
+        # SEC EDGAR — kritisch für 8-K Material Events
+        sec_sources = ['sec_8k','sec_form4']
+        sec_total = {'inserted': 0}
+        for source_key in sec_sources:
+            articles = extra_news(sources=[source_key], n=10, max_age_hours=4)
+            sec_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"SEC EDGAR (8-K + Form4)":25} {sec_total["inserted"]} neu')
+
+        # Central Banks zusätzlich
+        cb2_sources = ['boe_news','boj_news','snb_news']
+        cb2_total = {'inserted': 0}
+        for source_key in cb2_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=24)
+            cb2_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Central Banks zusätzl.":25} {cb2_total["inserted"]} neu')
+
+        # Crypto zusätzlich
+        cr_sources = ['cointelegraph','decrypt','the_block']
+        cr_total = {'inserted': 0}
+        for source_key in cr_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=8)
+            cr_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Crypto zusätzl.":25} {cr_total["inserted"]} neu')
+
+        # Politik / Policy
+        pol_sources = ['politico','foreign_policy','cfr_news','thehill','axios_business']
+        pol_total = {'inserted': 0}
+        for source_key in pol_sources:
+            articles = extra_news(sources=[source_key], n=5, max_age_hours=12)
+            pol_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Politik/Policy (5)":25} {pol_total["inserted"]} neu')
+
+        # Russia / Ukraine
+        ru_sources = ['rferl','kyiv_independent']
+        ru_total = {'inserted': 0}
+        for source_key in ru_sources:
+            articles = extra_news(sources=[source_key], n=5, max_age_hours=12)
+            ru_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Russia/Ukraine":25} {ru_total["inserted"]} neu')
+
+        # Emerging Markets
+        em_sources = ['economic_times','livemint']
+        em_total = {'inserted': 0}
+        for source_key in em_sources:
+            articles = extra_news(sources=[source_key], n=4, max_age_hours=12)
+            em_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"India/EM":25} {em_total["inserted"]} neu')
+
+        # Auto / EV
+        auto_sources = ['electrek','autocar']
+        auto_total = {'inserted': 0}
+        for source_key in auto_sources:
+            articles = extra_news(sources=[source_key], n=3, max_age_hours=24)
+            auto_total['inserted'] += ingest_articles(articles, source_key)['inserted']
+        if verbose: print(f'  {"Auto/EV":25} {auto_total["inserted"]} neu')
     except Exception as e:
         if verbose: print(f'  Extra Sources FEHLER: {e}')
 

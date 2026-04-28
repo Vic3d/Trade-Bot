@@ -103,6 +103,13 @@ SCHEDULE = [
     ('Overnight Collector', 'overnight_collector.py',  [],                        8,  25, [0,1,2,3,4]),  # vor Briefing
     ('Overnight Collector', 'overnight_collector.py',  [],                        14, 0,  [0,1,2,3,4]),  # US Opening
     ('Overnight Collector', 'overnight_collector.py',  [],                        20, 30, [0,1,2,3,4]),  # US Close
+    # ── Phase 42b — High-Frequency News-Pipeline (alle 30min in Marktstunden) ─
+    # Keine Event-Pipeline (das macht overnight_collector), nur reines News-Fetching.
+    # Marktstunden Mo-Fr 09-22 CET → alle 30min, Off-hours alle 2h.
+    ('News Pipeline Fast',  'news_pipeline.py',        [],            '9-22', '*/30', [0,1,2,3,4]),
+    ('News Pipeline Slow',  'news_pipeline.py',        [],            '*/2',   0,     None),
+    # ── Phase 42b — Macro-Event-Detector (alle 15min, sucht Breaking-Macro) ──
+    ('Macro Event Detector','macro_event_detector.py', [],            '*',    '*/15', None),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)

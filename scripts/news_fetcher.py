@@ -306,6 +306,106 @@ EXTRA_FEEDS = {
     'handelsblatt':  'https://www.handelsblatt.com/contentexport/feed/top-themen',  # Handelsblatt (DE)
     'nikkei_asia':   'https://asia.nikkei.com/rss/feed/nar',                   # Nikkei Asia (JP/Asia)
     'ft_markets':    'https://www.ft.com/rss/home/uk',                         # Financial Times
+    # ── Phase 42b — Energy / Commodities ─────────────────────────────────────
+    'oilprice':      'https://oilprice.com/rss/main',                          # OilPrice.com (OPEC, crude)
+    'rigzone':       'https://www.rigzone.com/news/rss/rigzone_latest.aspx',   # Oil/Gas industry
+    'kitco_metals':  'https://www.kitco.com/rss/KitcoNews.xml',                # Gold/Silver/Metals
+    'mining_com':    'https://www.mining.com/feed/',                           # Mining sector
+    # ── Phase 42b — Geopolitik / Breaking ────────────────────────────────────
+    'reuters_world': 'https://feeds.reuters.com/Reuters/worldNews',            # Reuters World
+    'bbc_business':  'https://feeds.bbci.co.uk/news/business/rss.xml',         # BBC Business
+    'ap_topnews':    'https://feeds.apnews.com/rss/apf-topnews',               # AP Top News
+    'ap_business':   'https://feeds.apnews.com/rss/apf-business',              # AP Business
+    'ap_world':      'https://feeds.apnews.com/rss/apf-worldnews',             # AP World
+    'cnbc_top':      'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114',  # CNBC Top
+    'cnbc_world':    'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362',  # CNBC World
+    'cnbc_economy':  'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258',   # CNBC Economy
+    'cnbc_finance':  'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664',   # CNBC Finance
+    # ── Phase 42b — Central Banks / Macro ────────────────────────────────────
+    'fed_press':     'https://www.federalreserve.gov/feeds/press_all.xml',     # Fed press releases
+    'ecb_news':      'https://www.ecb.europa.eu/rss/press.html',               # ECB press
+    'imf_news':      'https://www.imf.org/en/News/RSS?Language=ENG',           # IMF news
+    # ── Phase 42b — Crypto/Risk-on Indicators ────────────────────────────────
+    'coindesk':      'https://www.coindesk.com/arc/outboundfeeds/rss/',        # Coindesk
+    # ── Phase 42b — Tech ─────────────────────────────────────────────────────
+    'techcrunch':    'https://techcrunch.com/feed/',                           # TechCrunch
+    'theverge':      'https://www.theverge.com/rss/index.xml',                 # The Verge
+    'arstechnica':   'https://feeds.arstechnica.com/arstechnica/index',        # Ars Technica
+    # ── Phase 42b — Asia broader ─────────────────────────────────────────────
+    'scmp_business': 'https://www.scmp.com/rss/2/feed',                        # South China Morning Post Business
+    'reuters_china': 'https://feeds.reuters.com/reuters/CNTopNews',            # Reuters China
+    # ── Phase 42b — Defense / Military ───────────────────────────────────────
+    'defense_news':  'https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml',  # Defense News
+    'janes':         'https://www.janes.com/feeds/news',                       # Janes Defence
+    # ── Phase 42b — German extra ─────────────────────────────────────────────
+    'spiegel_wirt':  'https://www.spiegel.de/wirtschaft/index.rss',            # Spiegel Wirtschaft
+    'tagesschau_wt': 'https://www.tagesschau.de/wirtschaft/index~rss2.xml',    # Tagesschau Wirtschaft
+    'manager_mag':   'https://www.manager-magazin.de/wirtschaft/index.rss',    # Manager Magazin
+
+    # ╔════════════════════════════════════════════════════════════════════════╗
+    # ║ Phase 42b — RESEARCHED ADDITIONS (Web-Search 2026-04-28)              ║
+    # ╚════════════════════════════════════════════════════════════════════════╝
+
+    # ── Mainstream Finance ───────────────────────────────────────────────────
+    'nasdaq_markets':  'https://www.nasdaq.com/feed/rssoutbound?category=Markets',
+    'benzinga':        'https://feeds.benzinga.com/benzinga',
+    'yahoo_finance':   'https://finance.yahoo.com/news/rssindex',
+    'seeking_alpha':   'https://seekingalpha.com/feed.xml',
+    'reuters_business':'https://feeds.reuters.com/reuters/businessNews',
+    'reuters_top':     'https://feeds.reuters.com/reuters/topNews',
+    'forbes_business': 'https://www.forbes.com/business/feed/',
+    'fox_business':    'https://feeds.foxbusiness.com/foxbusiness/latest',
+    'guardian_business':'https://www.theguardian.com/business/rss',
+    'wapo_business':   'https://feeds.washingtonpost.com/rss/business',
+    'nbcnews_business':'https://feeds.nbcnews.com/nbcnews/public/business',
+
+    # ── Alt-Finance / Contrarian ─────────────────────────────────────────────
+    'zerohedge':       'https://feeds.feedburner.com/zerohedge/feed',
+    'naked_capitalism':'https://www.nakedcapitalism.com/feed',
+    'moneyweek':       'https://moneyweek.com/feed/all',
+    'wolfstreet':      'https://wolfstreet.com/feed/',                          # Wolf Richter
+    'mish_talk':       'https://mishtalk.com/feed/',                            # Mish Shedlock
+
+    # ── Energy / Oil specific (zusätzlich) ───────────────────────────────────
+    'iea_news':        'https://www.iea.org/api/news/rss',                     # International Energy Agency
+    'naturalgasintel': 'https://www.naturalgasintel.com/category/news/feed/',  # NatGas Intelligence
+    'energyvoice':     'https://www.energyvoice.com/feed/',                    # Energy Voice (UK)
+    'worldoil':        'https://www.worldoil.com/rss',                         # World Oil
+
+    # ── SEC EDGAR Filings ────────────────────────────────────────────────────
+    'sec_8k':          'https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=8-K&output=atom',  # Material Events
+    'sec_form4':       'https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&output=atom',    # Insider Trades
+
+    # ── Central Banks (zusätzlich) ───────────────────────────────────────────
+    'boe_news':        'https://www.bankofengland.co.uk/rss/news',             # Bank of England
+    'boj_news':        'https://www.boj.or.jp/en/rss/whatsnew.xml',            # Bank of Japan
+    'snb_news':        'https://www.snb.ch/en/rss/news',                       # Swiss National Bank
+
+    # ── Crypto (zusätzlich) ──────────────────────────────────────────────────
+    'cointelegraph':   'https://cointelegraph.com/rss',
+    'decrypt':         'https://decrypt.co/feed',
+    'the_block':       'https://www.theblock.co/rss.xml',
+
+    # ── Politik / Policy ─────────────────────────────────────────────────────
+    'politico':        'https://rss.politico.com/politics-news.xml',
+    'foreign_policy':  'https://foreignpolicy.com/feed/',                      # Foreign Policy Mag
+    'cfr_news':        'https://www.cfr.org/rss-feeds/all',                    # Council on Foreign Relations
+
+    # ── Russia / Eastern Europe ──────────────────────────────────────────────
+    'rferl':           'https://www.rferl.org/api/zoqveiqyiqe',                # Radio Free Europe (Russia/EE)
+    'kyiv_independent':'https://kyivindependent.com/feed/',                    # Kyiv Independent
+
+    # ── Indien / Emerging Markets ────────────────────────────────────────────
+    'economic_times':  'https://economictimes.indiatimes.com/rssfeedstopstories.cms',  # India biggest
+    'livemint':        'https://www.livemint.com/rss/markets',                 # India Markets
+
+    # ── Auto / EV / Tech-Industrie ───────────────────────────────────────────
+    'electrek':        'https://electrek.co/feed/',                            # EV/Tesla
+    'autocar':         'https://www.autocar.co.uk/rss',                        # UK auto industry
+
+    # ── Trump-spezifisch / US-Politik (relevant für PS_*-Strategien) ─────────
+    'thehill':         'https://thehill.com/feed/',                            # The Hill (US Politics)
+    'axios_business':  'https://api.axios.com/feed/business',                  # Axios Business
 }
 
 def extra_news(sources=None, n=5, max_age_hours=4):
