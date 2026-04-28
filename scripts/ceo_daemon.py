@@ -349,10 +349,10 @@ def state_MONITORING(state: dict) -> str:
 
         # Trigger Thesis-Engine (Kill-Trigger)
         try:
-            from core.thesis_engine import monitor_all_open
-            r = monitor_all_open()
+            from core.thesis_engine import run_monitoring_cycle
+            r = run_monitoring_cycle()
             if r:
-                _log(f'  thesis_engine: {r}')
+                _log(f'  thesis_engine: {str(r)[:160]}')
         except Exception as e:
             _log(f'  thesis_engine err: {e}')
 

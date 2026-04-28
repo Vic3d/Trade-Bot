@@ -92,11 +92,12 @@ def estimate_outcome(watch: dict) -> dict | None:
 
     # 1. Echter Trade nach watch_ts?
     try:
+        # Trick: substr(entry_date,1,10) damit Date-Vergleich nicht durch TIME bricht
         row = c.execute(
             "SELECT pnl_eur, pnl_pct, status, close_date "
             "FROM paper_portfolio WHERE ticker=? AND strategy=? "
             "AND status IN ('CLOSED','WIN','LOSS') "
-            "AND entry_date >= ? "
+            "AND substr(COALESCE(entry_date,''),1,10) >= ? "
             "ORDER BY entry_date ASC LIMIT 1",
             (ticker, strategy, watch_ts[:10]),
         ).fetchone()
