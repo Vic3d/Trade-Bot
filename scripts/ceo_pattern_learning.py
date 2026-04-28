@@ -249,7 +249,7 @@ def detect_anti_patterns(min_occurrences: int = 3, min_loss_rate: float = 0.7,
         c = sqlite3.connect(str(DB))
         c.row_factory = sqlite3.Row
         rows = c.execute("""
-            SELECT strategy, sector, entry_date, pnl_eur, pnl_pct, exit_type,
+            SELECT strategy, sector, ticker, entry_date, pnl_eur, pnl_pct, exit_type,
                    rsi_at_entry, vix_at_entry
             FROM paper_portfolio
             WHERE status IN ('WIN','LOSS','CLOSED')
@@ -279,13 +279,16 @@ def detect_anti_patterns(min_occurrences: int = 3, min_loss_rate: float = 0.7,
         sector = r['sector'] or 'unk'
         strat = r['strategy'] or 'unk'
 
-        # Pattern: 4-Tuple
+        # Pattern: 6 Dimensionen
+        ticker_id = (r['ticker'] if 'ticker' in r.keys() else 'unk') if hasattr(r, 'keys') else 'unk'
         keys = [
             ('strategy_x_hour', f'{strat}|{hour_bucket}'),
             ('sector_x_vix',    f'{sector}|vix={vix_b}'),
             ('strategy_x_rsi',  f'{strat}|rsi={rsi_b}'),
             ('strategy_x_sector', f'{strat}|{sector}'),
             ('rsi_x_vix',       f'rsi={rsi_b}|vix={vix_b}'),
+            # NEU Phase 38c: strategy×ticker — fängt "Strategy X läuft generell aber bei Ticker Y nicht"
+            ('strategy_x_ticker', f'{strat}|{ticker_id}'),
         ]
         for ptype, pkey in keys:
             full_key = f'{ptype}::{pkey}'
@@ -294,11 +297,19 @@ def detect_anti_patterns(min_occurrences: int = 3, min_loss_rate: float = 0.7,
     # Filter: nur Patterns mit min_occurrences AND high loss-rate
     anti_patterns = []
     for full_key, pnls in pattern_buckets.items():
-        if len(pnls) < min_occurrences:
+        # Phase 38c: strategy_x_ticker → niedrigere Schwelle (n>=2, loss>=100%)
+        # weil hier ein 2/2-Verlust schon klares Signal ist
+        if 'strategy_x_ticker' in full_key:
+            min_n = 2
+            min_lr = 1.0
+        else:
+            min_n = min_occurrences
+            min_lr = min_loss_rate
+        if len(pnls) < min_n:
             continue
         losses = sum(1 for p in pnls if p <= 0)
         loss_rate = losses / len(pnls)
-        if loss_rate < min_loss_rate:
+        if loss_rate < min_lr:
             continue
         avg_pnl = mean(pnls)
         ptype, pkey = full_key.split('::', 1)
@@ -384,6 +395,7 @@ def check_proposal_against_patterns(proposal: dict, current_hour: int | None = N
     matches = []
     strat = proposal.get('strategy', '')
     sector = proposal.get('sector', '') or 'unk'
+    ticker = proposal.get('ticker', '')
 
     if current_hour is None:
         current_hour = datetime.now().hour
@@ -399,7 +411,6 @@ def check_proposal_against_patterns(proposal: dict, current_hour: int | None = N
         pkey = ap.get('pattern_key', '')
 
         if ptype == 'strategy_x_hour':
-            # Match nur wenn aktuelle Stunde im pattern-bucket UND strategy passt
             expected_key = f'{strat}|{cur_hour_bucket}'
             if pkey == expected_key:
                 matches.append({**ap, '_match_reason': f'now is {cur_hour_bucket}'})
@@ -407,6 +418,9 @@ def check_proposal_against_patterns(proposal: dict, current_hour: int | None = N
             matches.append(ap)
         elif ptype == 'sector_x_vix' and pkey.startswith(sector + '|'):
             matches.append(ap)
+        # Phase 38c: strategy_x_ticker — exakter Ticker+Strategy Match
+        elif ptype == 'strategy_x_ticker' and ticker and pkey == f'{strat}|{ticker}':
+            matches.append({**ap, '_match_reason': f'historical loss-pattern for {ticker}+{strat}'})
 
     return matches
 

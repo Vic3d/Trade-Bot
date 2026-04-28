@@ -369,17 +369,23 @@ def auto_pre_tool_calls(proposals: list) -> dict:
 
 
 def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS,
-                   model_hint: str = 'sonnet', max_tokens: int = 2500) -> dict:
+                   model_hint: str = 'sonnet', max_tokens: int = 2500,
+                   hard_timeout_sec: int = 90) -> dict:
     """
     Tool-Loop: LLM kann iterativ Tools aufrufen bis es ein final_decision liefert.
     Phase 40c: Context-Compression bei langen Loops.
+    Phase 41a: Hard-Timeout pro Iteration + JSON-Retry bei Parse-Fehler.
     Returns: dict mit 'final_decision' (oder 'error' bei Loop-Stop).
     """
+    import time as _time
     from core.llm_client import call_llm
 
     conversation = initial_prompt
     iterations = []
     compression_stats = []
+    json_retry_count = 0
+    MAX_JSON_RETRIES = 2
+    overall_start = _time.time()
 
     # Phase 40c: Compression-Helper
     try:
@@ -403,6 +409,11 @@ def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS
                     compression_stats.append({'iter': i, 'kept_last': 3,
                                               'removed': len(parts) - 3})
 
+        # Phase 41a: Overall hard-timeout
+        if _time.time() - overall_start > hard_timeout_sec * max_iterations:
+            return {'error': f'overall hard-timeout after {hard_timeout_sec * max_iterations}s',
+                    'iterations': iterations}
+
         try:
             text, _usage = call_llm(conversation, model_hint=model_hint,
                                      max_tokens=max_tokens)
@@ -418,14 +429,33 @@ def run_tool_loop(initial_prompt: str, max_iterations: int = MAX_TOOL_ITERATIONS
                 text_clean = text_clean.rsplit('```', 1)[0]
         i1, j1 = text_clean.find('{'), text_clean.rfind('}')
         if i1 < 0 or j1 < 0:
-            return {'error': 'no JSON in response', 'raw': text_clean[:500],
-                    'iterations': iterations}
+            # Phase 41a: kein JSON → re-prompt
+            if json_retry_count < MAX_JSON_RETRIES:
+                json_retry_count += 1
+                conversation += (
+                    f'\n\n[ITERATION {i+1} ERROR] Deine Antwort enthielt kein '
+                    f'parseable JSON. Antworte JETZT NUR mit valid JSON: entweder '
+                    f'{{"tool_call": {{...}}}} ODER {{"final_decision": {{...}}}}. '
+                    f'KEIN Markdown, KEIN Prosa-Text.'
+                )
+                continue
+            return {'error': 'no JSON in response after retries',
+                    'raw': text_clean[:500], 'iterations': iterations}
 
         try:
             parsed = json.loads(text_clean[i1:j1+1])
         except json.JSONDecodeError as e:
-            return {'error': f'JSON parse failed: {e}', 'raw': text_clean[:500],
-                    'iterations': iterations}
+            # Phase 41a: invalid JSON → re-prompt mit konkreter Fehlermeldung
+            if json_retry_count < MAX_JSON_RETRIES:
+                json_retry_count += 1
+                conversation += (
+                    f'\n\n[ITERATION {i+1} ERROR] Dein JSON war kaputt: {str(e)[:100]}. '
+                    f'Antworte ERNEUT mit STRIKT validem JSON. Nur tool_call ODER final_decision.'
+                )
+                print(f'[tool_loop] JSON retry {json_retry_count}/{MAX_JSON_RETRIES}: {str(e)[:80]}')
+                continue
+            return {'error': f'JSON parse failed after retries: {e}',
+                    'raw': text_clean[:500], 'iterations': iterations}
 
         # Final?
         if 'final_decision' in parsed:
