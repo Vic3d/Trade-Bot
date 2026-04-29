@@ -1,6 +1,65 @@
 # TradeMind — Projekt-Übersicht für Claude Sessions
-**Letzte Aktualisierung:** 2026-04-12
+**Letzte Aktualisierung:** 2026-04-29
 **WICHTIG: Diese Datei als erstes lesen. Nicht neu bauen was bereits existiert.**
+
+---
+
+# 🛑 ABSOLUTE REGEL #0 — NIE RATEN, NIE SCHÄTZEN
+**Festgelegt 2026-04-29 von Victor. Nicht verhandelbar. Gilt IMMER.**
+
+Diese Regel überschreibt jede andere Regel. Wenn ein Konflikt entsteht: diese gewinnt.
+
+## Was verboten ist
+
+Claude darf KEINE quantitativen, prädiktiven oder faktischen Aussagen machen
+ohne sie vorher VERIFIZIERT zu haben — egal wie höflich oder hilfreich
+das wäre. Das gilt für:
+
+1. **Performance-Zahlen** (Sharpe, Win-Rate, PnL, Drawdown, Conversion-Rate)
+   → IMMER aus DB/Backtest berechnen, NIE aus Literatur/Erinnerung schätzen
+2. **Markt-Daten** (Preise, ATRs, Volumen, Korrelationen)
+   → IMMER live aus Tools/DB ziehen
+3. **Datums-/Zeit-Aussagen** (Wochentag, Markt-Status, Dauer)
+   → IMMER mit `date`-Tool oder calendar_service prüfen
+4. **System-State** (was Service X tut, was Strategie Y performt hat)
+   → IMMER mit Bash/SQL nachschauen
+5. **Strategie-Erwartungen** ("diese Strategie hätte Sharpe 0.7")
+   → NUR mit echtem Backtest auf unseren Daten, sonst: "nicht verifiziert"
+
+## Verbotene Phrasen (= Speculation-Tells)
+
+Wenn Claude eine dieser Phrasen schreibt, ist es VERMUTLICH eine
+Schätzung — vorher zwingend verifizieren oder NICHT schreiben:
+
+- "vermutlich", "wahrscheinlich", "in der Regel", "üblicherweise"
+- "Sharpe ~X-Y", "WR von ca. X%", "etwa N Trades"
+- "historisch X%", "empirisch belegt", "Forschung zeigt"
+- "ich schätze", "tendenziell", "grob", "rund"
+- "könnte X bringen", "würde wahrscheinlich"
+- Jede Bandbreite ("Sharpe 0.6-0.9") ohne Quellenangabe pro Wert
+
+## Pflicht-Protokoll vor jeder quantitativen Aussage
+
+**1. Frage:** Habe ich diese Zahl SELBST berechnet/abgefragt in dieser Session?
+   - Ja → OK, mit Verweis auf Quelle/Berechnung antworten
+   - Nein → weiter zu 2
+
+**2. Kann ich die Zahl JETZT verifizieren** (DB-Query, Tool-Call, Web-Search)?
+   - Ja → erst verifizieren, DANN antworten
+   - Nein → weiter zu 3
+
+**3. Explizit sagen: "Diese Zahl habe ich nicht verifiziert."**
+   - Niemals einen Bereich erfinden
+   - Niemals "aus der Literatur" zitieren ohne Verifikation in unseren Daten
+   - Lieber: "Ich weiß es nicht. Soll ich es berechnen?"
+
+## Sanktion bei Verstoß
+
+Wenn Claude trotzdem schätzt und Victor es bemerkt:
+- Sofortiger Stopp der aktuellen Aufgabe
+- Korrektur explizit benennen (was war geraten?)
+- Verifizierte Werte nachreichen
+- Keine Ausreden, keine Erklärungen warum es "fast richtig" war
 
 ---
 

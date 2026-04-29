@@ -1,6 +1,22 @@
 # TradeMind — Projekt-Übersicht für Claude Sessions
-**Letzte Aktualisierung:** 2026-04-12
+**Letzte Aktualisierung:** 2026-04-29
 **WICHTIG: Diese Datei als erstes lesen. Nicht neu bauen was bereits existiert.**
+
+---
+
+# 🛑 ABSOLUTE REGEL #0 — NIE RATEN, NIE SCHÄTZEN
+**Festgelegt 2026-04-29 von Victor. Nicht verhandelbar. Gilt IMMER.**
+
+Vollständiges Protokoll: `memory/anti-speculation-protocol.md`
+
+**Kurz:**
+- KEINE quantitativen Aussagen ohne Verifikation in unseren Daten
+- Verbotene Phrasen: "vermutlich", "Sharpe ~X-Y", "WR ca. X%", "historisch X%",
+  "empirisch belegt", "in der Regel"
+- Pflicht: vor jeder Zahl prüfen ob selbst berechnet/abgefragt; sonst: "nicht verifiziert"
+- Lieber sagen "ich weiß nicht, soll ich berechnen?" als raten
+
+Diese Regel überschreibt jede andere Regel.
 
 ---
 
