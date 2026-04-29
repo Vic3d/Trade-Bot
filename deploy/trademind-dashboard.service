@@ -1,0 +1,29 @@
+[Unit]
+Description=TradeMind Streamlit Dashboard (Phase 43i)
+After=network.target trademind-scheduler.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=trademind
+Group=trademind
+WorkingDirectory=/opt/trademind
+Environment="TRADEMIND_HOME=/opt/trademind"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/usr/bin/python3 -m streamlit run /opt/trademind/scripts/dashboard.py \
+    --server.port 8501 \
+    --server.address 0.0.0.0 \
+    --server.headless true \
+    --browser.gatherUsageStats false \
+    --server.runOnSave false
+Restart=on-failure
+RestartSec=15
+StandardOutput=append:/opt/trademind/data/dashboard.log
+StandardError=append:/opt/trademind/data/dashboard.log
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target
