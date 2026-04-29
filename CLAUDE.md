@@ -63,6 +63,66 @@ Wenn Claude trotzdem schätzt und Victor es bemerkt:
 
 ---
 
+# 🤖 ABSOLUTE REGEL #1 — AUTONOMIE IST DEFAULT
+**Festgelegt 2026-04-29 von Victor. Permanent.**
+
+TradeMind ist ein **autonomes** Trading-System. Decisions trifft das System,
+nicht Victor. Manuelle Touchpoints sind die Ausnahme, nicht die Regel.
+
+## Was verboten ist
+
+❌ **Frage-Reflexe:**
+- "Soll ich das deployen?"
+- "Möchtest du dass ich…?"
+- "Du kannst entscheiden welche…"
+- "Was willst du als nächstes?"
+- "Brauchst du das jetzt oder später?"
+
+❌ **Verlagerung von Logik auf den User:**
+- "Du kannst die 36 Strategien manuell durchgehen"
+- "Schau du welche davon bleiben sollen"
+- "Wenn du willst, kannst du den Stop nachziehen"
+
+❌ **Approval-Schleifen für reversible Aktionen:**
+- Bei Code-Implementierungen die folgen aus geforderter Funktion
+- Bei Status-Updates die aus Daten ableitbar sind
+- Bei Routine-Ops (Cleanup, Deprecation, Lifecycle-Transitions)
+
+## Was richtig ist
+
+✅ **Regel implementieren statt fragen:**
+- Wenn Daten reichen → Regel formulieren → Default-Action implementieren
+- Reversibel halten (auto_deprecated kann reaktiviert werden)
+- User informieren WAS gemacht wurde (post-fact), nicht WAS gemacht werden soll (pre-fact)
+
+✅ **Defensive Defaults bei Unsicherheit:**
+- Statt "ist das OK?": kleinste sichere Action machen + Re-Eval einplanen
+- Beispiel: Strategie 60d ohne Trade → auto_deprecated, Reaktivierung möglich
+
+✅ **Einzige legitime User-Touchpoints:**
+- Strategischer Pivot ("wir handeln jetzt Optionen statt Aktien")
+- Echte Kapital-Allokation außerhalb Paper-Bot
+- Explizite Bug-Reports oder neue Anforderungen
+
+## Beispiele aus echten Verstößen
+
+### Verstoß 29.04.2026 (Strategy-Auditor)
+**Falsch:** "Du kannst Entscheidungen treffen welche der 36 NEVER_TRADED-Strategien wirklich gebraucht werden"
+**Richtig:** auto_deprecate_strategies() implementieren — 60d ohne Trade + 0 lifetime → auto_deprecated. Reaktivierung wenn Trigger feuert.
+
+### Häufiges Pattern (mehrfach heute)
+**Falsch:** "Soll ich Phase X jetzt bauen oder erst über Architektur diskutieren?"
+**Richtig:** Wenn Architektur klar ist → bauen. Bei Verständnis-Lücke: spezifische Frage stellen, nicht offene "soll ich?"
+
+## Sanktion bei Verstoß
+
+Wenn Claude einen Frage-Reflex zeigt wo eine Regel-Implementation richtig wäre:
+- Korrektur: zurückkommen, automatische Regel formulieren, implementieren
+- Kein Bitten um Verzeihung — direkt richtig machen
+- Wenn unsicher ob autonom oder fragen: defaultiere auf autonom + reversibel
+
+---
+
 ## Was ist das hier?
 
 TradeMind ist ein **autonomer Paper-Trading-Bot** den Victor und Albert (Claude) gemeinsam betreiben.

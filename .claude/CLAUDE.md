@@ -16,7 +16,21 @@ Vollständiges Protokoll: `memory/anti-speculation-protocol.md`
 - Pflicht: vor jeder Zahl prüfen ob selbst berechnet/abgefragt; sonst: "nicht verifiziert"
 - Lieber sagen "ich weiß nicht, soll ich berechnen?" als raten
 
-Diese Regel überschreibt jede andere Regel.
+# 🤖 ABSOLUTE REGEL #1 — AUTONOMIE IST DEFAULT
+**Festgelegt 2026-04-29 von Victor. Permanent.**
+
+TradeMind ist ein autonomes System. Decisions trifft das SYSTEM, nicht Victor.
+
+**Kurz:**
+- ❌ Keine Frage-Reflexe ("soll ich…?", "möchtest du…?", "du kannst…")
+- ❌ Keine Verlagerung von Logik auf den User
+- ✅ Regel implementieren + Default-Action ausführen
+- ✅ Reversibel halten + post-fact informieren statt pre-fact fragen
+- Bei Unsicherheit: defensives Default + Re-Eval, nicht User-Frage
+
+Ausnahmen: strategischer Pivot, Bug-Reports, neue Anforderungen.
+
+Beide Regeln überschreiben jede andere Regel.
 
 ---
 
