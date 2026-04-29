@@ -370,13 +370,14 @@ def count_open_tranches(conn: sqlite3.Connection, trade_id: int) -> int:
 
 # ─── Discord alert ────────────────────────────────────────────────────────────
 
-def send_alert(message: str) -> None:
-    """Send Discord alert via Dispatcher (Phase 22.4 Priority-Tiering).
+def send_alert(message: str, dedupe_key: str | None = None) -> None:
+    """Send Discord alert via Dispatcher (Phase 22.4 + Phase 43e Dedup).
     Auto-Tier nach Keyword-Heuristik:
       HIGH   — STOP HIT, CIRCUIT BREAKER, EVENT-AUTO-EXIT, THESIS KILL,
                AUTO-DD EXIT (alle alpha-relevanten Exits)
       MEDIUM — TRANCHE-Exits (teilweise Gewinnmitnahme)
       LOW    — Rest (MAX_HOLD, Debug)
+    Auto-Dedupe für Currency-Mismatch (häufiger wiederholter Block).
     """
     try:
         import sys as _sys
@@ -388,9 +389,18 @@ def send_alert(message: str) -> None:
             tier = TIER_HIGH
         elif 'TRANCHE' in m_up:
             tier = TIER_MEDIUM
+        elif 'CURRENCY-MISMATCH' in m_up:
+            # Phase 43e: Currency-Mismatch dedupen pro Ticker (1h cooldown)
+            tier = TIER_HIGH
+            if not dedupe_key:
+                # Extract ticker aus Message (1. Token)
+                import re as _re
+                m = _re.match(r'.*?([A-Z]{1,5}(?:\.[A-Z]{1,3})?)', message)
+                if m:
+                    dedupe_key = f'currency_mismatch_{m.group(1)}'
         else:
             tier = TIER_LOW
-        _dispatch(message, tier=tier, category='exit')
+        _dispatch(message, tier=tier, category='exit', dedupe_key=dedupe_key)
     except Exception as e:
         print(f"[exit_manager] alert error: {e}")
 

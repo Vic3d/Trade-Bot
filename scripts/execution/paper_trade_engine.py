@@ -516,11 +516,18 @@ def _execute_paper_entry_inner(
                     f'Trade abgelehnt um Phantom-Stop-Bug zu verhindern.'
                 )
                 print(_msg)
+                # Phase 43e/f: nicht direkt discord_sender, sondern via
+                # notification_policy mit Dedup-Key (sonst spammt 1x pro
+                # Cold-Cycle = alle 15min derselbe Block).
                 try:
                     import sys as _sys2
                     _sys2.path.insert(0, str(Path(__file__).parent.parent))
-                    from discord_sender import send as _alert
-                    _alert(f'⚠️ **FX-Sanity Block** {ticker}\n{_msg[:1500]}')
+                    from discord_dispatcher import send_alert as _alert, TIER_HIGH
+                    _alert(
+                        f'⚠️ **FX-Sanity Block** {ticker}\n{_msg[:1500]}',
+                        tier=TIER_HIGH, category='system.fx_sanity',
+                        dedupe_key=f'fx_sanity_{ticker}',  # 1h cooldown pro Ticker
+                    )
                 except Exception:
                     pass
                 return {
