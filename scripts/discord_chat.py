@@ -486,6 +486,38 @@ DEINE FÄHIGKEITEN:
 - Risikomanagement und Exits
 - Strategiebegründungen und Backtesting-Insights
 - Performance-Analyse und Lernzyklen
+- Aktive Setup-Suche (Hunter), Macro-Event-Detection, Multi-Tier-Loops
+
+═══ INTENT-VERSTÄNDNIS (Phase 43c) ═══
+Wenn Victor nach AKTIEN-VORSCHLÄGEN, TRADE-IDEEN, "was würde der CEO machen",
+"such mir Aktien", "WKN", "Setups" o.ä. fragt:
+  → Das wird vom Hunter-Handler abgefangen (vor dir).
+  → Falls nicht: SAGE Victor er soll "such mir Aktien" oder "trade-vorschläge"
+    schreiben — DAS triggert den Live-Hunter.
+  → ANTWORTE NIEMALS mit "du musst die Kommandos folgen" o.ä. — das ist
+    nichtssagend und wertlos.
+
+Wenn Victor nach AKTIEN-INFO (Name/WKN/ISIN) fragt:
+  → Format IMMER: "Voller Name (TICKER, WKN xxxxxx)".
+  → Beispiel: "Equinor ASA (EQNR.OL, WKN 675213)".
+
+Wenn Victor nach STATUS / BERICHT / LAGE fragt:
+  → Konkrete Zahlen aus Portfolio + Recent Decisions.
+  → Nicht: generisch "alles läuft".
+
+Wenn Victor eine FRAGE zur ENTSCHEIDUNG des CEO stellt:
+  → Erkläre die KONKRETE Logik: welche Phase 43-Boosts gegriffen haben
+    (Macro +0.10, Cold-Start +0.05, High-WR +0.05), welche Guards geblockt,
+    welcher Hunter-Trigger gefeuert hat.
+  → NIEMALS ausweichen.
+
+Verfügbare Discord-Commands (kannst du Victor nennen):
+  · "Deep Dive TICKER"              → 6-Schritt Deep Dive
+  · "such mir Aktien" / "Setups"   → Live-Hunter-Run mit WKNs
+  · "Heatmap" / "Anti-Patterns"     → Pattern-Learning-Insights
+  · "Lifecycle" / "Strategy Status" → Strategie-Übersicht
+  · "Capabilities"                  → Was kannst du alles?
+  · "Stopp PS_X"                    → Strategie pausieren
 
 KOMMUNIKATIONSSTIL:
 - Kurze, präzise Sätze. Keine Füllwörter.
@@ -1285,6 +1317,116 @@ def poll_once() -> None:
         )
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
+
+        # ── Phase 43: Hunter-Intent-Handler ──────────────────────────────
+        # Victor: "such mir aktien", "trade-vorschläge", "was würde der CEO machen",
+        #         "wkn", "trade ideen", "find me setups", "neue setups"
+        _hunter_kws = (
+            'such mir aktien', 'such mir trades', 'aktien raussuchen',
+            'aktien rausuchen', 'aktien rausgesucht', 'aktien finden',
+            'trade-vorschläge', 'trade vorschläge', 'trade ideen', 'trade ideas',
+            'was würde der ceo', 'was wuerde der ceo',
+            'was würde albert', 'was wuerde albert',
+            'wkn-nummer', 'wkn nummer', 'find me setups',
+            'neue setups', 'setups vorschlagen', 'aktien vorschlagen',
+            'was siehst du am markt', 'was sind die top trades',
+            'welche aktien jetzt', 'jetzt kaufen',
+        )
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _hunter_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                _send_message(
+                    '🎯 Lass mich kurz den Markt scannen — sammle News, Macro-Events und '
+                    'aktive Strategien... (~30-60s)',
+                    CHANNEL_ID
+                )
+                # Reset Hunter-Cooldown im Daemon-State (damit Hunter sofort läuft)
+                try:
+                    import json as _hjson
+                    _hstate_file = WS / 'data' / 'ceo_daemon_state.json'
+                    if _hstate_file.exists():
+                        _hs = _hjson.loads(_hstate_file.read_text())
+                        _hs['last_hunt_ts'] = None
+                        _hstate_file.write_text(_hjson.dumps(_hs, indent=2))
+                except Exception:
+                    pass
+
+                from ceo_active_hunter import hunt_for_setups
+                from ticker_lookup import lookup as _lookup
+                r = hunt_for_setups(max_new=5, dry_run=True)
+
+                if r.get('error'):
+                    _send_message(f'❌ Hunter-Fehler: {r["error"]}', CHANNEL_ID)
+                else:
+                    n = len(r.get('setups', []))
+                    if n == 0:
+                        _send_message(
+                            f'ℹ️ Aktuell keine überzeugenden Setups (Markt ruhig oder '
+                            f'Trigger fehlen).\n\n**Albert\'s Sicht:**\n{r.get("thinking", "—")}',
+                            CHANNEL_ID
+                        )
+                    else:
+                        # Format mit voller Info
+                        lines = [
+                            f'🎯 **CEO-Hunter findet {n} Setup(s)** (live, dry-run)',
+                            '',
+                            f'**Albert\'s Sicht auf den Markt:**',
+                            f'_{r.get("thinking", "")[:400]}_',
+                            '',
+                            '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+                        ]
+                        for i, s in enumerate(r['setups'], 1):
+                            tk = s.get('ticker', '?')
+                            info = _lookup(tk)
+                            entry = s.get('entry_price') or 0
+                            stop_pct = s.get('stop_pct', 6)
+                            target_pct = s.get('target_pct', 12)
+                            stop_eur = entry * (1 - stop_pct/100) if entry else 0
+                            target_eur = entry * (1 + target_pct/100) if entry else 0
+                            conf = s.get('confidence', 0)
+                            strat = s.get('strategy', '?')
+                            trigger = s.get('trigger', '?')
+                            thesis = (s.get('thesis', '') or '')[:200]
+
+                            lines.extend([
+                                '',
+                                f'**{i}. {info["name"]}**',
+                                f'   📌 Ticker: `{tk}` | WKN: `{info["wkn"]}` | ISIN: `{info["isin"]}`',
+                                f'   🏛 Börse: {info["exchange"]} | Währung: {info["currency"]}',
+                                f'   💼 Strategie: `{strat}` | Trigger: `{trigger}`',
+                                f'   📊 Conviction: **{conf:.2f}**',
+                                f'   💰 Entry: {entry:.2f} {info["currency"]} | '
+                                f'Stop: {stop_eur:.2f} (-{stop_pct}%) | '
+                                f'Target: {target_eur:.2f} (+{target_pct}%)',
+                                f'   💡 Thesis: _{thesis}_',
+                            ])
+
+                        lines.extend([
+                            '',
+                            '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+                            '**CEO-Decision-Logik (mit Phase 43 Boosts):**',
+                            '· Macro-Event aktiv: +0.10 Conviction',
+                            '· Cold-Start (n<5) ohne Anti-Pattern: +0.05',
+                            '· High-WR-Strategie (≥60%): +0.05',
+                            '· Bei Conv ≥0.55 + Guards passed → EXECUTE',
+                            '',
+                            '_Dies ist ein Live-Hunter-Run (dry-run = nicht ausgeführt). '
+                            'Der CEO-Daemon entscheidet im nächsten Cold-Cycle automatisch._',
+                        ])
+                        _resp = '\n'.join(lines)
+                        for _i in range(0, len(_resp), 1900):
+                            _send_message(_resp[_i:_i+1900], CHANNEL_ID)
+                            time.sleep(0.5)
+
+                _log_chat('albert', f'hunter request: {n} setups returned')
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] hunter-handler error: {_e}', flush=True)
+                _send_message(f'❌ Hunter-Handler-Fehler: {_e}', CHANNEL_ID)
 
         # ── Capabilities Handler (Phase 40z) ────────────────────────────
         _cap_kws = ('was kannst du', 'capabilities', 'fähigkeiten', 'faehigkeiten',
