@@ -112,6 +112,8 @@ SCHEDULE = [
     ('Macro Event Detector','macro_event_detector.py', [],            '*',    '*/15', None),
     # ── Phase 43d — Bodenbildung-Detector (1x täglich nach Marktschluss) ────
     ('Bodenbildung Scan',   'bodenbildung_detector.py', ['--all-watchlist'], 22, 30, [0,1,2,3,4]),
+    # ── Phase 43k — A/B-Strategy-Test Live-Update (alle 30min Marktstunden) ──
+    ('AB Strategy Update',  'ab_strategy_runner.py',  ['--update'],         '9-22', '*/30', [0,1,2,3,4]),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
