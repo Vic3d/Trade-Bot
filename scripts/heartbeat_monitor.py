@@ -100,7 +100,29 @@ def _last_alert_ago_min() -> float:
         return 9999.0
 
 
-def _send_discord(msg: str) -> bool:
+def _send_discord(msg: str, silent: bool = False) -> bool:
+    """Phase 43e: silent=True → nur ceo_inbox, kein Discord-Push.
+    Default silent=False bleibt für echte Crashes erhalten."""
+    # Immer in ceo_inbox loggen (CEO-Sicht)
+    try:
+        from ceo_inbox import write_event
+        is_recovery = '✅' in msg or 'recovered' in msg.lower()
+        is_crash = '🚨' in msg or 'crash' in msg.lower()
+        write_event(
+            event_type='scheduler.recovered' if is_recovery
+                        else 'scheduler.crash' if is_crash
+                        else 'heartbeat.event',
+            message=msg[:300],
+            severity='info' if is_recovery else 'critical' if is_crash else 'warning',
+            category='health',
+            user_pinged=(not silent),
+        )
+    except Exception:
+        pass
+
+    if silent:
+        return True  # nur Inbox, kein Discord
+
     try:
         from discord_sender import send
         send(msg)
@@ -146,8 +168,11 @@ def run(test: bool = False) -> int:
 
     if all_ok:
         if prev_state == 'UNHEALTHY':
-            # Recovery
-            _send_discord(f'✅ **Scheduler recovered**\nHeartbeat: {hb_msg}\nSystemd: {sd_msg}')
+            # Recovery — Phase 43e: nur Inbox, kein Discord-Spam
+            _send_discord(
+                f'✅ **Scheduler recovered**\nHeartbeat: {hb_msg}\nSystemd: {sd_msg}',
+                silent=True,
+            )
             print(f'[{ts}] RECOVERED heartbeat={hb_msg} systemd={sd_msg}')
         _write_state('HEALTHY')
         return 0
@@ -165,15 +190,18 @@ def run(test: bool = False) -> int:
     print(f'[{ts}] Restart-Versuch: ok={restart_ok} msg={restart_msg}')
 
     # Alert mit Cooldown
+    # Phase 43e: nur echte länger-anhaltende Crashes pingen User.
+    # Auto-restart gelang? → silent (kein Spam)
     ago = _last_alert_ago_min()
+    alert = (
+        f'🚨 **Scheduler-Crash erkannt**\n'
+        f'{problem}\n'
+        f'Auto-Restart: {"✅ erfolgreich" if restart_ok else f"❌ {restart_msg}"}\n'
+        f'Cooldown: {ALERT_COOLDOWN_MIN}min bis nächster Alert'
+    )
+    silent_for_user = restart_ok  # Wenn Auto-Restart klappt → kein User-Ping
     if ago >= ALERT_COOLDOWN_MIN or test:
-        alert = (
-            f'🚨 **Scheduler-Crash erkannt**\n'
-            f'{problem}\n'
-            f'Auto-Restart: {"✅ erfolgreich" if restart_ok else f"❌ {restart_msg}"}\n'
-            f'Cooldown: {ALERT_COOLDOWN_MIN}min bis nächster Alert'
-        )
-        if _send_discord(alert):
+        if _send_discord(alert, silent=silent_for_user):
             try:
                 LAST_ALERT_FILE.write_text(ts)
             except Exception:

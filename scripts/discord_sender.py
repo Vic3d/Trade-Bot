@@ -98,13 +98,42 @@ def _log_outgoing(message: str) -> None:
         pass
 
 
-def send(message: str, channel_id: str = VICTOR_DM, force: bool = False) -> bool:
+def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
+          silent: bool = False) -> bool:
     """Sendet Discord-Nachricht direkt via Bot API.
+
+    Phase 43e: ALLE Nachrichten landen IMMER in ceo_inbox.jsonl (CEO-Sicht).
+    silent=True → nur Inbox, kein Discord-Push (kompletter User-Mute).
 
     Während der Nachtruhe (23:00-07:00 CET) werden Nachrichten
     automatisch in die Queue für das Morgen-Briefing geschoben.
     force=True überspringt die Nachtruhe (für echte Notfälle wie Stop-Hits).
     """
+    # Phase 43e: immer in ceo_inbox loggen
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from ceo_inbox import write_event
+        # severity aus Icons ableiten
+        if '🚨' in message[:5]:
+            sev = 'critical'
+        elif '⚠' in message[:5] or '⚠️' in message[:5]:
+            sev = 'warning'
+        else:
+            sev = 'info'
+        write_event(
+            event_type='discord_send',
+            message=message[:300],
+            severity=sev,
+            category='discord',
+            user_pinged=(not silent),
+        )
+    except Exception:
+        pass
+
+    if silent:
+        return True
+
     # Nachtruhe-Check
     if not force and _is_quiet_hours():
         print(f'[discord] Nachtruhe — in Queue geschoben: {message[:80]}...')

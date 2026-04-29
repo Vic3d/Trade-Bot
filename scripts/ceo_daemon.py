@@ -438,6 +438,22 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
     if n_expired or n_promoted:
         _log(f'  ↻ lifecycle: expired={n_expired} watching→pending={n_promoted}')
 
+    # 0b. Phase 43e: ceo_inbox-Events lesen (CEO bekommt Überblick was läuft)
+    try:
+        from ceo_inbox import read_unread
+        unread = read_unread(consumer='ceo_daemon', max_events=50)
+        if unread:
+            n_critical = sum(1 for e in unread if e.get('severity') == 'critical')
+            n_warning = sum(1 for e in unread if e.get('severity') == 'warning')
+            _log(f'  📬 inbox: {len(unread)} new events '
+                 f'({n_critical} critical, {n_warning} warning)')
+            # Critical events könnten Re-Eval triggern
+            for e in unread:
+                if e.get('severity') == 'critical' and e.get('category') in ('macro', 'health', 'trade'):
+                    _log(f'    ⚡ {e.get("event_type", "?")}: {e.get("message", "")[:80]}')
+    except Exception as _e:
+        _log(f'  inbox read err: {_e}')
+
     # 1. Events
     if events:
         for ev in events:

@@ -47,7 +47,8 @@ QUIET_END_H = 7     # 07:00
 TIER_HIGH = 'HIGH'
 TIER_MEDIUM = 'MEDIUM'
 TIER_LOW = 'LOW'
-VALID_TIERS = (TIER_HIGH, TIER_MEDIUM, TIER_LOW)
+TIER_SILENT = 'SILENT'  # Phase 43e: NIE Discord, nur ceo_inbox
+VALID_TIERS = (TIER_HIGH, TIER_MEDIUM, TIER_LOW, TIER_SILENT)
 
 
 def _now() -> datetime:
@@ -143,6 +144,26 @@ def send_alert(
     """
     if tier not in VALID_TIERS:
         tier = TIER_HIGH  # Safety-Default: im Zweifel durchlassen
+
+    # Phase 43e: ALLES → ceo_inbox (CEO-Sicht), Discord nur per Tier
+    user_pinged = False
+    try:
+        from ceo_inbox import write_event
+        # tier-zu-severity mapping
+        sev_map = {TIER_HIGH: 'critical', TIER_MEDIUM: 'warning',
+                    TIER_LOW: 'info', TIER_SILENT: 'info'}
+        write_event(
+            event_type=category, message=message,
+            severity=sev_map.get(tier, 'info'),
+            category=category,
+            user_pinged=(tier == TIER_HIGH),
+        )
+    except Exception:
+        pass
+
+    # SILENT: nur Inbox, kein Discord
+    if tier == TIER_SILENT:
+        return True
 
     if _is_duplicate(dedupe_key or ''):
         return False
