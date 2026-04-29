@@ -129,6 +129,13 @@ TICKERS = {
     'CCJ':       {'name': 'Cameco',              'wkn': '882017', 'isin': 'CA13321L1085', 'currency': 'USD', 'exchange': 'NYSE'},
     'VDC':       {'name': 'Vanguard Consumer Staples ETF','wkn': 'A0KEUK','isin': 'US92204A6071','currency':'USD','exchange':'NYSE'},
     'SIRI':      {'name': 'Sirius XM Holdings',  'wkn': 'A2P54Y', 'isin': 'US82968B1035', 'currency': 'USD', 'exchange': 'NASDAQ'},
+
+    # ── Phase 43j — Tradermacher 29.04 ───────────────────────────────────
+    'CRWV':      {'name': 'CoreWeave Inc',        'wkn': 'A40A9M', 'isin': 'US21873S1087', 'currency': 'USD', 'exchange': 'NASDAQ'},
+    'RKLB':      {'name': 'Rocket Lab USA',       'wkn': 'A3CWXJ', 'isin': 'US7731201098', 'currency': 'USD', 'exchange': 'NASDAQ'},
+    'ARM':       {'name': 'Arm Holdings',         'wkn': 'A3EVU1', 'isin': 'US0420682058', 'currency': 'USD', 'exchange': 'NASDAQ'},
+    'MRVL':      {'name': 'Marvell Technology',   'wkn': 'A2N9SC', 'isin': 'US5738741041', 'currency': 'USD', 'exchange': 'NASDAQ'},
+    'SOXX':      {'name': 'iShares Semiconductor ETF','wkn':'A0YEDL','isin':'US4642875565','currency': 'USD', 'exchange': 'NASDAQ'},
 }
 
 
