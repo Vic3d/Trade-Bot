@@ -195,6 +195,13 @@ Beachte:
   · Setup MUSS auf konkreter News, Macro-Event oder Strategy-Match basieren
   · Wenn nichts überzeugend: lieber 0 Setups als Schrott!
 
+═══ R:R-PFLICHTREGEL (Phase 44b) ═══
+- stop_pct MUSS zwischen 3 und 5 liegen (Default 4)
+- target_pct MUSS mindestens 3x stop_pct sein (R:R >= 3:1)
+- Beispiel: stop_pct=4 → target_pct >= 12
+- Größerer Stop nur wenn ATR-begründet UND target_pct entsprechend skaliert
+- Verifizierte Asymmetrie aus eigenen Daten: Avg Win 8€ vs Avg Loss 41€ (1:5 GEGEN uns) — wir invertieren das jetzt
+
 ANTWORT-FORMAT — STRIKT JSON:
 {{
   "thinking": "1-3 Sätze: was siehst du gerade am Markt?",
@@ -419,6 +426,10 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
         # Phase 44b: Default 4% / 12% = 3:1 R:R (PTJ-Style)
         stop_pct = float(s.get('stop_pct') or 4)
         target_pct = float(s.get('target_pct') or 12)
+        # Phase 44b enforcement: cap stop, sicherstellen R:R >= 3:1
+        stop_pct = max(3.0, min(5.0, stop_pct))   # cap auf [3, 5]%
+        if target_pct < stop_pct * 3:
+            target_pct = stop_pct * 3              # erzwinge 3:1 R:R
         # Phase 43-fix: wenn entry=0, hole Live-Preis aus DB
         if entry <= 0:
             entry = _resolve_live_price(ticker)

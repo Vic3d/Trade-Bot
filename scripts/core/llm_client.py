@@ -229,7 +229,7 @@ def _call_claude_cli(prompt: str, model_alias: str, max_tokens: int) -> tuple[st
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=300,
             check=False,
             env=cli_env,
         )
@@ -243,10 +243,10 @@ def _call_claude_cli(prompt: str, model_alias: str, max_tokens: int) -> tuple[st
                 _cmd_fb = [c for c in cmd if c != '--resume']
             result = subprocess.run(
                 _cmd_fb, input=prompt, capture_output=True, text=True,
-                timeout=120, check=False, env=cli_env,
+                timeout=300, check=False, env=cli_env,
             )
     except subprocess.TimeoutExpired:
-        raise RuntimeError('claude CLI timeout (120s)')
+        raise RuntimeError('claude CLI timeout (300s)')
 
     if result.returncode != 0:
         err = (result.stderr or result.stdout or '').strip()[:300]
