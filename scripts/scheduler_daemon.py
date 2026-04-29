@@ -110,6 +110,8 @@ SCHEDULE = [
     ('News Pipeline Slow',  'news_pipeline.py',        [],            '*/2',   0,     None),
     # ── Phase 42b — Macro-Event-Detector (alle 15min, sucht Breaking-Macro) ──
     ('Macro Event Detector','macro_event_detector.py', [],            '*',    '*/15', None),
+    # ── Phase 43d — Bodenbildung-Detector (1x täglich nach Marktschluss) ────
+    ('Bodenbildung Scan',   'bodenbildung_detector.py', ['--all-watchlist'], 22, 30, [0,1,2,3,4]),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
