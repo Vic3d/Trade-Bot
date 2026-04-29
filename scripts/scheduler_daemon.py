@@ -114,6 +114,8 @@ SCHEDULE = [
     ('Bodenbildung Scan',   'bodenbildung_detector.py', ['--all-watchlist'], 22, 30, [0,1,2,3,4]),
     # ── Phase 43k — A/B-Strategy-Test Live-Update (alle 30min Marktstunden) ──
     ('AB Strategy Update',  'ab_strategy_runner.py',  ['--update'],         '9-22', '*/30', [0,1,2,3,4]),
+    # ── Phase 44A2 — Strategy-Auditor (Sonntags 20:00 CET, Discord-Report) ──
+    ('Strategy Auditor',    'strategy_auditor.py',    ['--discord'],        20, 0,  [6]),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
