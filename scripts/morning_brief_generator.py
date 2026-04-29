@@ -695,6 +695,29 @@ def generate_briefing() -> str:
     ceo_activity_section = get_ceo_activity_section()
     ceo_activity_block = f"\n━━ CEO-AKTIVITÄT (seit 19:00 gestern) ━━\n{ceo_activity_section}\n" if ceo_activity_section else ""
 
+    # ── Phase 43h: Phase-43-Performance (PRIMARY METRIC seit Active-CEO-Live) ─
+    phase43_block = ""
+    try:
+        from phase43_baseline import get_performance
+        _p = get_performance()
+        if 'error' not in _p:
+            _icon = '✅' if _p['phase43_total_pnl_eur'] > 0 else '❌' if _p['phase43_total_pnl_eur'] < 0 else '·'
+            phase43_block = (
+                f"\n━━ PHASE 43 PERFORMANCE (seit {_p['baseline_ts'][:10]}, "
+                f"{_p['days_since_baseline']:.1f}d) ━━\n"
+                f"{_icon} **{_p['phase43_total_pnl_eur']:+.0f}€ "
+                f"({_p['phase43_total_pnl_pct']:+.2f}%)** | "
+                f"Realized {_p['phase43_realized_eur']:+.0f}€ | "
+                f"Unrealized {_p['phase43_unrealized_eur']:+.0f}€\n"
+                f"Trades: {_p['phase43_n_total']} "
+                f"(open {_p['phase43_n_open']}, closed {_p['phase43_n_closed']}, "
+                f"WR {_p['phase43_win_rate_pct']:.0f}%) | "
+                f"Hunter-Conversion {_p['hunter_conversion_pct']:.1f}% "
+                f"({_p['hunter_executed']}/{_p['hunter_proposals_total']})\n"
+            )
+    except Exception as _pe:
+        phase43_block = f"\n━━ PHASE 43 PERFORMANCE ━━\n(Fehler: {_pe})\n"
+
     # ── Phase 22 5-Block (oben einhaengen) ───────────────────────────────────
     phase22_block = ''
     try:
@@ -715,7 +738,7 @@ def generate_briefing() -> str:
 
     briefing = f"""🌅 Nacht-Briefing {date_str} — {time_header}
 ({event_count} neue Events, davon {tier1_count} Tier-1)
-
+{phase43_block}
 {phase22_block}━━ EXECUTIVE SUMMARY ━━
 {chr(10).join(exec_lines)}
 

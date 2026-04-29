@@ -1318,6 +1318,35 @@ def poll_once() -> None:
         if is_thesis_suggestion:
             _handle_thesis_suggestion(content)
 
+        # ── Phase 43h: Performance-Handler ────────────────────────────────
+        _perf_kws = ('performance', 'phase 43', 'phase43', 'wie laufen die trades',
+                      'wie effektiv', 'aktuelle performance', 'bilanz', 'hunter stats',
+                      'wie funktioniert der bot', 'how good is the bot')
+        _content_norm = content_lower.strip()
+        if any(kw in _content_norm for kw in _perf_kws):
+            try:
+                _send_typing(CHANNEL_ID)
+                from phase43_baseline import get_performance, format_report
+                p = get_performance()
+                if 'error' in p:
+                    _send_message(
+                        f'⚠️ Baseline noch nicht gesetzt. Admin: '
+                        f'`python3 scripts/phase43_baseline.py --init`',
+                        CHANNEL_ID
+                    )
+                else:
+                    _resp = format_report(p)
+                    for _i in range(0, len(_resp), 1900):
+                        _send_message(_resp[_i:_i+1900], CHANNEL_ID)
+                        time.sleep(0.5)
+                _log_chat('albert', 'phase43 performance sent')
+                state['last_message_id'] = highest_id
+                state['last_poll'] = datetime.now().isoformat()
+                _save_state(state)
+                continue
+            except Exception as _e:
+                print(f'[Albert] performance-handler error: {_e}', flush=True)
+
         # ── Phase 43: Hunter-Intent-Handler ──────────────────────────────
         # Victor: "such mir aktien", "trade-vorschläge", "was würde der CEO machen",
         #         "wkn", "trade ideen", "find me setups", "neue setups"

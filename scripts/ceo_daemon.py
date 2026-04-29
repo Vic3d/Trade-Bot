@@ -456,6 +456,20 @@ def _decide_next_state(state: dict, events: list[dict]) -> str:
     except Exception as _e:
         _log(f'  inbox read err: {_e}')
 
+    # 0c. Phase 43h: Phase-43-Performance ins Log (1x pro Cycle)
+    try:
+        from phase43_baseline import get_performance
+        _p = get_performance()
+        if 'error' not in _p:
+            _log(f'  📊 phase43: '
+                 f'PnL {_p["phase43_total_pnl_eur"]:+.0f}€ '
+                 f'({_p["phase43_total_pnl_pct"]:+.2f}%) | '
+                 f'trades {_p["phase43_n_total"]} '
+                 f'(closed {_p["phase43_n_closed"]} WR {_p["phase43_win_rate_pct"]:.0f}%) | '
+                 f'hunter {_p["hunter_conversion_pct"]:.1f}%')
+    except Exception:
+        pass
+
     # 1. Events
     if events:
         for ev in events:
