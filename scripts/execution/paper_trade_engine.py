@@ -495,6 +495,26 @@ def _execute_paper_entry_inner(
             'blocked_by': 'invalid_stop',
         }
 
+    # ── Guard 0d2: Learning-Insights-Block (Phase 44b/A1) ──────────────
+    # Verifiziert aus eigenen Daten: bestimmte Time/Region-Buckets verlieren
+    # systematisch (z.B. afternoon WR 33.6% bei n=122). Hard-Block bei
+    # extremer historischer Schwäche.
+    try:
+        import sys as _lisys
+        _lisys.path.insert(0, str(Path(__file__).parent.parent))
+        from learning_insights_reader import check_hard_block
+        _blocked, _block_reason = check_hard_block(ticker)
+        if _blocked:
+            conn.close()
+            return {
+                'success': False, 'trade_id': None,
+                'message': f'❌ {ticker}: Learning-Insight-Block — {_block_reason}',
+                'blocked_by': 'learning_insight_block',
+            }
+    except Exception as _le:
+        # Defensiv: bei Fehler nicht blocken
+        print(f'[learning-block] check skipped: {_le}', file=sys.stderr)
+
     # ── Guard 0e: FX-Currency-Sanity (Phase: Stop-Loss Bug-Fix 2026-04-27) ──
     # Verhindert dass entry/stop/target in Original-Currency (NOK/DKK/GBp/SEK)
     # in die DB gelangen, wenn get_fx_factor silent auf 1.0 zurückgefallen ist.

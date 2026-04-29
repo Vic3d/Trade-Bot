@@ -276,6 +276,24 @@ def decide_llm(state: dict) -> list[dict]:
                 d['_conf_boosts'] = boosts
                 d['reason'] = (d.get('reason', '') + f' | boosts: {", ".join(boosts)}')
 
+            # Phase 44b/A1: Learning-Insights — Time/Region-Penalty aus echten Daten
+            try:
+                from learning_insights_reader import get_combined_adjustment
+                adj = get_combined_adjustment(d.get('ticker', ''))
+                if adj['block']:
+                    d['action'] = 'WATCH'
+                    d['reason'] = (d.get('reason', '') +
+                                    f' | LEARNING-BLOCK: {adj["block_reason"]}')
+                    d['_learning_blocked'] = True
+                elif adj['delta'] != 0:
+                    d['confidence'] = max(0.0, min(0.99, d['confidence'] + adj['delta']))
+                    if adj['reasons']:
+                        d['_learning_adjustments'] = adj['reasons']
+                        d['reason'] = (d.get('reason', '') +
+                                        f' | learning: {adj["delta"]:+.2f} ({"; ".join(adj["reasons"])})')
+            except Exception as _le:
+                print(f'[learning-insights] error: {_le}', file=sys.stderr)
+
             # Re-apply confidence-filter (jetzt nach Boosts)
             if d.get('action') == 'EXECUTE' and d['confidence'] < 0.5:
                 d['action'] = 'WATCH'
@@ -611,6 +629,21 @@ def execute_decisions(decisions: list[dict]) -> dict:
     (pending → watching/rejected/executed) damit kein DECIDING-Loop entsteht."""
     summary = {'execute': 0, 'skip': 0, 'watch': 0, 'failed': 0,
                'success': 0, 'blocked_by': {}}
+
+    # Phase 44b/B1: Fact-Audit-Layer — pre-execute speculation check
+    try:
+        from fact_audit import audit_decision
+        for d in decisions:
+            if d.get('_meta'):
+                continue
+            r = audit_decision(d, log=True)
+            if r.status == 'BLOCK':
+                d['action'] = 'WATCH'
+                d['blocked_by_audit'] = r.reason
+                d['reason'] = (d.get('reason', '') +
+                               f' | FACT-AUDIT BLOCK: {r.reason}')
+    except Exception as _ae:
+        print(f'[fact-audit] error: {_ae}', file=sys.stderr)
 
     for d in decisions:
         action = d['action']

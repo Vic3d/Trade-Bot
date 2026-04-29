@@ -203,8 +203,8 @@ ANTWORT-FORMAT — STRIKT JSON:
       "ticker": "XOM",
       "strategy": "PS5",
       "entry_price": 0,        // 0 = current market
-      "stop_pct": 6,           // % unter entry
-      "target_pct": 12,        // % über entry
+      "stop_pct": 4,           // % unter entry (Phase 44b: war 6, enger für besseres R:R)
+      "target_pct": 12,        // % über entry (3:1 R:R)
       "thesis": "1-2 Sätze warum jetzt",
       "trigger": "macro_event|news|strategy_match|technical",
       "trigger_ref": "Welches Event/News/Strategy macht das Setup",
@@ -363,6 +363,42 @@ def _resolve_live_price(ticker: str) -> float:
     return 0.0
 
 
+def _strategy_quality_check(strategy_id: str) -> tuple[bool, str]:
+    """Phase 44b/Fix-4: Quality-Gate vor Proposal-Erzeugung.
+
+    Erlaubt nur Strategien die entweder:
+      · n >= 3 lifetime Trades haben (= existieren wirklich)
+      · ODER explizit als 'experimental' markiert sind in strategies.json
+
+    Verhindert dass Hunter Setups für 36 NEVER_TRADED-Strategien erzeugt
+    die dann durch Guards abgelehnt werden (verifiziert: 0% Conversion).
+
+    Returns: (is_quality, reason_if_not)
+    """
+    try:
+        c = sqlite3.connect(str(DB))
+        n = c.execute(
+            "SELECT COUNT(*) FROM paper_portfolio WHERE strategy=?",
+            (strategy_id,)
+        ).fetchone()[0]
+        c.close()
+        if n >= 3:
+            return True, ''
+        # Check experimental-Marker in strategies.json
+        sf = WS / 'data' / 'strategies.json'
+        if sf.exists():
+            try:
+                strats = json.loads(sf.read_text(encoding='utf-8'))
+                meta = strats.get(strategy_id, {})
+                if isinstance(meta, dict) and meta.get('experimental'):
+                    return True, ''
+            except Exception:
+                pass
+        return False, f'strategy_quality: n={n} (<3 lifetime trades, nicht experimental)'
+    except Exception:
+        return True, ''  # bei Fehler: nicht blockieren (defensiv)
+
+
 def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
     """Konvertiere Hunter-Setups in proposals.json Format."""
     proposals = []
@@ -374,8 +410,14 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
         strategy = s.get('strategy')
         if not ticker or not strategy:
             continue
+        # Phase 44b/Fix-4: Strategy-Quality-Gate
+        ok, reason = _strategy_quality_check(strategy)
+        if not ok:
+            print(f'[hunter] skip {ticker}/{strategy}: {reason}', file=sys.stderr)
+            continue
         entry = float(s.get('entry_price') or 0)
-        stop_pct = float(s.get('stop_pct') or 6)
+        # Phase 44b: Default 4% / 12% = 3:1 R:R (PTJ-Style)
+        stop_pct = float(s.get('stop_pct') or 4)
         target_pct = float(s.get('target_pct') or 12)
         # Phase 43-fix: wenn entry=0, hole Live-Preis aus DB
         if entry <= 0:
