@@ -72,8 +72,10 @@ def _now_cet() -> datetime:
 
 
 def _log(msg: str) -> None:
-    """Schreibt in stdout + ceo_daemon.log mit Timestamp."""
-    ts = _now_cet().strftime('%Y-%m-%d %H:%M:%S')
+    """Schreibt in stdout + ceo_daemon.log mit Berlin-Timestamp inkl. CET/CEST."""
+    now = _now_cet()
+    tz_abbrev = 'CEST' if now.dst() else 'CET'
+    ts = now.strftime('%Y-%m-%d %H:%M:%S') + ' ' + tz_abbrev
     line = f'[{ts}] {msg}'
     print(line, flush=True)
     try:

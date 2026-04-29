@@ -84,13 +84,53 @@ FED_MEETINGS_2026 = [
 ]
 
 
+def get_berlin_time() -> dict:
+    """Phase 43f: Single-Source-of-Truth für die Berliner Uhrzeit.
+    Liefert sowohl Zeit-String als auch volle datetime-Objekt + DST-Info.
+
+    Beispiel-Output:
+      {
+        'time_hms':    '14:32:18',
+        'time_hm':     '14:32',
+        'date':        '2026-04-29',
+        'iso':         '2026-04-29T14:32:18+02:00',
+        'tz_abbrev':   'CEST',           # automatisch CET im Winter / CEST im Sommer
+        'is_dst':      True,
+        'human':       '14:32 Mi 29.04. CEST',
+        'utc_offset':  '+02:00',
+        'unix_ts':     1745934738,
+      }
+    """
+    now_berlin = datetime.now(BERLIN)
+    is_dst = bool(now_berlin.dst())
+    tz_abbrev = 'CEST' if is_dst else 'CET'
+    weekday_short = DE_WEEKDAYS[now_berlin.weekday()][:2]  # 'Mo','Di','Mi',...
+    return {
+        'time_hms':   now_berlin.strftime('%H:%M:%S'),
+        'time_hm':    now_berlin.strftime('%H:%M'),
+        'date':       now_berlin.strftime('%Y-%m-%d'),
+        'iso':        now_berlin.isoformat(timespec='seconds'),
+        'tz_abbrev':  tz_abbrev,
+        'is_dst':     is_dst,
+        'human':      f"{now_berlin.strftime('%H:%M')} {weekday_short} "
+                       f"{now_berlin.strftime('%d.%m.')} {tz_abbrev}",
+        'utc_offset': now_berlin.strftime('%z')[:3] + ':' + now_berlin.strftime('%z')[3:],
+        'unix_ts':    int(now_berlin.timestamp()),
+    }
+
+
 def get_today_info() -> dict:
     """Echte Datums-Information — nie raten."""
     now_berlin = datetime.now(BERLIN)
+    bt = get_berlin_time()
     return {
         'datetime_berlin': now_berlin.isoformat(timespec='seconds'),
         'date': now_berlin.strftime('%Y-%m-%d'),
         'time': now_berlin.strftime('%H:%M:%S'),
+        'time_hm': now_berlin.strftime('%H:%M'),
+        'tz_abbrev': bt['tz_abbrev'],
+        'is_dst': bt['is_dst'],
+        'utc_offset': bt['utc_offset'],
         'weekday_de': DE_WEEKDAYS[now_berlin.weekday()],
         'weekday_num': now_berlin.weekday(),  # 0=Mo
         'is_weekend': now_berlin.weekday() >= 5,
@@ -297,11 +337,14 @@ def format_for_prompt() -> str:
     next_eu = time_until_next_open('EU')
     events = get_upcoming_events(days_ahead=7)
 
+    # Phase 43f: Berliner Uhrzeit als prominenter Anker-Header (CET/CEST automatisch)
+    bt = get_berlin_time()
     lines = [
         '═══ KALENDER & MARKT-STATUS ═══',
-        f"Heute:   {today['weekday_de']}, {today['date']} {today['time']} CET (KW {today['iso_week']})",
+        f"⏰ BERLIN: {bt['human']} (UTC{bt['utc_offset']}) | {today['weekday_de']}, "
+        f"{today['date']} | KW {today['iso_week']}",
         f"Markt US:    {us['status']:<20} ({us['local_time']} {us.get('tz','?').split('/')[-1]})",
-        f"Markt EU:    {eu['status']:<20} ({eu['local_time']} CET)",
+        f"Markt EU:    {eu['status']:<20} ({eu['local_time']} {bt['tz_abbrev']})",
         f"Markt Asia:  {asia['status']:<20} ({asia['local_time']} JST)",
     ]
     if us['status'] != 'open':

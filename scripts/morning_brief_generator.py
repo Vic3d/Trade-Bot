@@ -705,7 +705,15 @@ def generate_briefing() -> str:
     except Exception as _p22e:
         phase22_block = f'(Phase22-Block nicht verfuegbar: {_p22e})\n\n'
 
-    briefing = f"""🌅 Nacht-Briefing {date_str} — 07:00 MEZ
+    # Phase 43f: echte Berliner Uhrzeit (CET/CEST automatisch) statt hardcodiert "07:00 MEZ"
+    try:
+        from calendar_service import get_berlin_time
+        bt = get_berlin_time()
+        time_header = f"{bt['time_hm']} {bt['tz_abbrev']}"
+    except Exception:
+        time_header = now.strftime('%H:%M') + ' CET'
+
+    briefing = f"""🌅 Nacht-Briefing {date_str} — {time_header}
 ({event_count} neue Events, davon {tier1_count} Tier-1)
 
 {phase22_block}━━ EXECUTIVE SUMMARY ━━
