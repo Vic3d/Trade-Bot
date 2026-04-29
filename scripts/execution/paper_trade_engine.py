@@ -1147,19 +1147,21 @@ def _execute_paper_entry_inner(
 
     # ── Guard 5c: Region-%-Limit (US/EU/Asia) ────────────────────────
     # Lernung aus MD-Files: 99% US-Exposure = fatale Wette auf Dollar+Fed.
-    # Max 60% pro Region erzwingt globale Diversifikation.
+    # Max 70% pro Region erzwingt globale Diversifikation
+    # (Phase 43g: war 60%, hochgesetzt weil Hunter sonst nicht arbeiten kann
+    # bei aktuellem US-lastigen Bestand. Re-Check in 7d).
     try:
         region = classify_region(ticker)
         region_eur = get_region_exposure_eur(conn, region)
         region_pct_after = (region_eur + NEW_POS_EST) / FUND_TOTAL
-        if region_pct_after > 0.60:
+        if region_pct_after > 0.70:
             conn.close()
             return {
                 'success': False,
                 'trade_id': None,
                 'message': (
                     f'❌ Region-%-Limit: {region} würde auf '
-                    f'{region_pct_after*100:.0f}% steigen (>60% Cap). '
+                    f'{region_pct_after*100:.0f}% steigen (>70% Cap). '
                     f'Aktuell {region_eur:.0f}€ offen. Suche EU/Asia-Ticker.'
                 ),
                 'blocked_by': 'region_pct_limit',
