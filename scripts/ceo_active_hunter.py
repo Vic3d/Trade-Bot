@@ -317,29 +317,24 @@ def call_hunter_llm(prompt: str, model_hint: str = 'sonnet',
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _resolve_live_price(ticker: str) -> float:
-    """Phase 43-fix: Holt aktuellsten Preis aus DB für Hunter-Setup.
-    Versucht: prices (täglich) → live_data → paper_portfolio close."""
-    # 1. prices-Tabelle (täglich OHLCV, neueste Zeile)
-    try:
-        c = sqlite3.connect(str(DB))
-        row = c.execute(
-            "SELECT close FROM prices WHERE ticker=? "
-            "ORDER BY date DESC LIMIT 1", (ticker,)
-        ).fetchone()
-        c.close()
-        if row and row[0]:
-            return float(row[0])
-    except Exception:
-        pass
-    # 2. live_data (EUR-konvertiert)
+    """Phase 43f-fix: live_data ZUERST (EUR-konvertiert!). prices-Tabelle nur
+    als Fallback — sie hat Original-Currency (z.B. EQNR.OL in NOK), was zu
+    FX-Sanity-Blocks führt.
+
+    Reihenfolge:
+      1. core.live_data.get_price_eur (EUR-konvertiert für alle Märkte)
+      2. paper_portfolio close_price (war auch EUR)
+      3. prices-Tabelle als letzter Fallback (US-Tickers nur — dort = USD ≈ EUR)
+    """
+    # 1. live_data (EUR-konvertiert) — primärer Pfad
     try:
         from core.live_data import get_price_eur
         p = get_price_eur(ticker)
-        if p:
+        if p and float(p) > 0:
             return float(p)
     except Exception:
         pass
-    # 3. Letzter close aus paper_portfolio
+    # 2. paper_portfolio close (auch EUR)
     try:
         c = sqlite3.connect(str(DB))
         row = c.execute(
@@ -352,6 +347,19 @@ def _resolve_live_price(ticker: str) -> float:
             return float(row[0])
     except Exception:
         pass
+    # 3. prices-Tabelle (Original-Currency) — NUR für US-Tickers safe
+    if '.' not in ticker:  # kein Suffix = vermutlich US-Ticker (USD ≈ EUR-Range)
+        try:
+            c = sqlite3.connect(str(DB))
+            row = c.execute(
+                "SELECT close FROM prices WHERE ticker=? "
+                "ORDER BY date DESC LIMIT 1", (ticker,)
+            ).fetchone()
+            c.close()
+            if row and row[0]:
+                return float(row[0])
+        except Exception:
+            pass
     return 0.0
 
 
