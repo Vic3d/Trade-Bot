@@ -130,7 +130,7 @@ def load_closed_trades(days: int = 90) -> pd.DataFrame:
     rows = c.execute(
         "SELECT id, ticker, strategy, entry_price, close_price, shares, "
         "       pnl_eur, pnl_pct, status, exit_type, entry_date, close_date, sector "
-        "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS') "
+        "FROM paper_portfolio WHERE status IN ('CLOSED','WIN','LOSS','RESET_CLOSED') "
         "AND substr(close_date,1,10) >= ? "
         "ORDER BY close_date DESC",
         (cutoff,)
@@ -508,6 +508,198 @@ def tab_phase43_vs_legacy():
     st.dataframe(h_data, use_container_width=True, hide_index=True)
 
 
+@st.cache_data(ttl=30)
+def load_recent_decisions(limit: int = 50) -> pd.DataFrame:
+    """Letzte CEO-Decisions aus jsonl-Log."""
+    log_file = WS / 'data' / 'ceo_decisions.jsonl'
+    if not log_file.exists():
+        return pd.DataFrame()
+    rows = []
+    try:
+        with open(log_file, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    d = json.loads(line)
+                    rows.append({
+                        'Time':   (d.get('ts') or '')[:16],
+                        'Ticker': d.get('ticker', '?'),
+                        'Strategy': d.get('strategy', '?'),
+                        'Action': d.get('action', '?'),
+                        'Conf':   d.get('confidence'),
+                        'Event':  d.get('event', '?'),
+                        'Success': d.get('success'),
+                        'Reason': str(d.get('reason', ''))[:120],
+                    })
+                except Exception:
+                    continue
+    except Exception:
+        return pd.DataFrame()
+    if not rows:
+        return pd.DataFrame()
+    df = pd.DataFrame(rows)
+    return df.tail(limit)
+
+
+@st.cache_data(ttl=60)
+def load_shadow_trades() -> pd.DataFrame:
+    """Multi-Strategy-Shadow-Trades."""
+    try:
+        c = sqlite3.connect(str(DB))
+        c.row_factory = sqlite3.Row
+        rows = c.execute(
+            "SELECT strategy_id, ticker, status, entry_price_eur, "
+            "       last_price_eur, target_price_eur, stop_price_eur, "
+            "       unrealized_pnl_eur, realized_pnl_eur, opened_at "
+            "FROM shadow_strategy_trades ORDER BY opened_at DESC"
+        ).fetchall()
+        c.close()
+        return pd.DataFrame([dict(r) for r in rows])
+    except Exception:
+        return pd.DataFrame()
+
+
+@st.cache_data(ttl=30)
+def load_inbox_recent(hours: int = 6) -> pd.DataFrame:
+    """Letzte Inbox-Events."""
+    inbox_file = WS / 'data' / 'ceo_inbox.jsonl'
+    if not inbox_file.exists():
+        return pd.DataFrame()
+    cutoff = (datetime.now(timezone.utc).timestamp() - hours * 3600)
+    rows = []
+    try:
+        with open(inbox_file, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    e = json.loads(line)
+                    ts = datetime.fromisoformat(e.get('ts','').replace('Z','+00:00'))
+                    if ts.timestamp() < cutoff:
+                        continue
+                    rows.append({
+                        'Time':     e.get('ts','')[:16],
+                        'Severity': e.get('severity','?'),
+                        'Cat':      e.get('category','?'),
+                        'Event':    e.get('event_type','?'),
+                        'Pinged':   '🔔' if e.get('user_pinged') else '🔕',
+                        'Message':  str(e.get('message',''))[:120],
+                    })
+                except Exception:
+                    continue
+    except Exception:
+        return pd.DataFrame()
+    return pd.DataFrame(rows[-100:])
+
+
+def tab_live_activity():
+    st.subheader('⚡ Was macht Albert JETZT')
+
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        st.markdown('**Letzte 30 Decisions (live aus ceo_decisions.jsonl)**')
+        df = load_recent_decisions(limit=30)
+        if df.empty:
+            st.info('Noch keine Decisions geloggt.')
+        else:
+            df_display = df.sort_values('Time', ascending=False).head(30)
+            st.dataframe(df_display, use_container_width=True, hide_index=True,
+                          height=380)
+
+    with col2:
+        st.markdown('**Letzte Inbox-Events (6h)**')
+        df = load_inbox_recent(hours=6)
+        if df.empty:
+            st.info('Keine Events.')
+        else:
+            df_display = df.sort_values('Time', ascending=False).head(20)
+            st.dataframe(df_display[['Time','Severity','Event','Pinged']],
+                          use_container_width=True, hide_index=True, height=380)
+
+    st.markdown('---')
+    col_a, col_b = st.columns(2)
+
+    with col_a:
+        st.markdown('**Aktuelle Hunter-Proposals (letzte 20)**')
+        df = load_proposals()
+        if df.empty:
+            st.info('Keine Proposals.')
+        else:
+            ceo = df[df['Source']=='ceo_active'] if 'Source' in df.columns else df
+            if not ceo.empty:
+                ceo_display = ceo.sort_values('Created', ascending=False).head(20)
+                st.dataframe(ceo_display, use_container_width=True,
+                              hide_index=True, height=300)
+
+    with col_b:
+        st.markdown('**Daemon-State**')
+        try:
+            state_file = WS / 'data' / 'ceo_daemon_state.json'
+            if state_file.exists():
+                ds = json.loads(state_file.read_text(encoding='utf-8'))
+                relevant = {
+                    'state':                ds.get('state'),
+                    'cycle_count':          ds.get('cycle_count'),
+                    'last_hunt_ts':         (ds.get('last_hunt_ts') or '?')[:16],
+                    'last_decide_ts':       (ds.get('last_decide_ts') or '?')[:16],
+                    'last_monitor_ts':      (ds.get('last_monitor_ts') or '?')[:16],
+                }
+                for k, v in relevant.items():
+                    st.metric(k, str(v))
+        except Exception as e:
+            st.error(f'Daemon-State Fehler: {e}')
+
+
+def tab_strategy_shadow():
+    st.subheader('🔬 Multi-Strategy-Shadow — alle 41 Strategien parallel testen')
+    st.caption('Jede Strategie bekommt 800€ Shadow-Position. 5% Stop, 15% Target. '
+                'Live-Tracking. Nach 30 Tagen ehrliches Ranking.')
+
+    df = load_shadow_trades()
+    if df.empty:
+        st.info('Noch keine Shadow-Trades — Hunt läuft alle 30min in Marktstunden.')
+        return
+
+    # Per-Strategy aggregieren
+    df['pnl_total'] = df['unrealized_pnl_eur'].fillna(0) + df['realized_pnl_eur'].fillna(0)
+    agg = df.groupby('strategy_id').agg(
+        n_total=('ticker', 'count'),
+        n_open=('status', lambda x: (x=='OPEN').sum()),
+        n_closed_target=('status', lambda x: (x=='CLOSED_TARGET').sum()),
+        n_closed_stop=('status', lambda x: (x=='CLOSED_STOP').sum()),
+        realized=('realized_pnl_eur', 'sum'),
+        unrealized=('unrealized_pnl_eur', 'sum'),
+        total_pnl=('pnl_total', 'sum'),
+    ).reset_index().sort_values('total_pnl', ascending=False)
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric('Strategien', len(agg))
+    col2.metric('Total Trades', int(agg['n_total'].sum()))
+    col3.metric('Sum Realized', f'{agg["realized"].sum():+,.0f}€'.replace(',', '.'))
+    col4.metric('Sum Unrealized', f'{agg["unrealized"].sum():+,.0f}€'.replace(',', '.'))
+
+    st.markdown('---')
+    col_a, col_b = st.columns([3, 2])
+    with col_a:
+        st.markdown('**Strategy-Ranking (PnL)**')
+        st.dataframe(agg, use_container_width=True, hide_index=True, height=520)
+
+    with col_b:
+        st.markdown('**Top-10 Strategien nach PnL**')
+        top10 = agg.head(10)
+        if not top10.empty:
+            fig = px.bar(top10, x='total_pnl', y='strategy_id', orientation='h',
+                          color='total_pnl',
+                          color_continuous_scale=['#FF6347','#FFFFFF','#00C896'],
+                          color_continuous_midpoint=0)
+            fig.update_layout(height=520, margin=dict(l=0, r=0, t=10, b=0),
+                                yaxis_title='', xaxis_title='Total PnL €',
+                                showlegend=False, coloraxis_showscale=False)
+            st.plotly_chart(fig, use_container_width=True)
+
+    st.markdown('---')
+    st.markdown('**Alle Shadow-Trades**')
+    st.dataframe(df.head(100), use_container_width=True, hide_index=True, height=400)
+
+
 def tab_macro_inbox():
     st.subheader('📡 Macro-Events & CEO-Inbox')
     df_macro = load_macro_events(days=7)
@@ -585,6 +777,8 @@ def main():
 
     # Tabs
     tabs = st.tabs([
+        '⚡ Live-Activity',     # NEW: was passiert JETZT
+        '🔬 Strategy-Shadow',   # NEW: alle 41 Strategien parallel
         '📈 Performance',
         '💼 Positions',
         '📜 Trades',
@@ -593,16 +787,20 @@ def main():
         '📡 Macro & Inbox',
     ])
     with tabs[0]:
-        tab_performance()
+        tab_live_activity()
     with tabs[1]:
-        tab_positions()
+        tab_strategy_shadow()
     with tabs[2]:
-        tab_trades()
+        tab_performance()
     with tabs[3]:
-        tab_hunter()
+        tab_positions()
     with tabs[4]:
-        tab_phase43_vs_legacy()
+        tab_trades()
     with tabs[5]:
+        tab_hunter()
+    with tabs[6]:
+        tab_phase43_vs_legacy()
+    with tabs[7]:
         tab_macro_inbox()
 
     # Auto-refresh
