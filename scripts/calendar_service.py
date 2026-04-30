@@ -77,6 +77,161 @@ DE_HOLIDAYS_2026 = {
     '2026-12-31': 'Silvester (Halbtag)',
 }
 
+# Phase 44i: Multi-Exchange Holidays 2026 (Victor 2026-04-30)
+# Quelle: offizielle Boersenkalender (Euronext, LSE, SIX, Borsa Italiana, Oslo Boers etc.)
+FR_HOLIDAYS_2026 = {  # Euronext Paris (.PA)
+    '2026-01-01': "Jour de l'an",
+    '2026-04-03': 'Vendredi Saint',
+    '2026-04-06': 'Lundi de Pâques',
+    '2026-05-01': 'Fête du Travail',
+    '2026-12-25': 'Noël',
+    '2026-12-26': 'Lendemain de Noël',
+}
+NL_HOLIDAYS_2026 = {  # Euronext Amsterdam (.AS)
+    '2026-01-01': 'Nieuwjaar',
+    '2026-04-03': 'Goede Vrijdag',
+    '2026-04-06': 'Tweede Paasdag',
+    '2026-05-01': 'Dag van de Arbeid',
+    '2026-12-25': 'Kerstmis',
+    '2026-12-26': 'Tweede Kerstdag',
+}
+IT_HOLIDAYS_2026 = {  # Borsa Italiana (.MI)
+    '2026-01-01': 'Capodanno',
+    '2026-04-03': 'Venerdì Santo',
+    '2026-04-06': 'Lunedì dell Angelo',
+    '2026-05-01': 'Festa del Lavoro',
+    '2026-08-15': 'Ferragosto',
+    '2026-12-24': 'Vigilia (mezza giornata)',
+    '2026-12-25': 'Natale',
+    '2026-12-26': 'Santo Stefano',
+    '2026-12-31': 'San Silvestro (mezza giornata)',
+}
+ES_HOLIDAYS_2026 = {  # BME Madrid (.MC)
+    '2026-01-01': 'Año Nuevo',
+    '2026-01-06': 'Reyes',
+    '2026-04-03': 'Viernes Santo',
+    '2026-05-01': 'Día del Trabajo',
+    '2026-12-25': 'Navidad',
+}
+NO_HOLIDAYS_2026 = {  # Oslo Boers (.OL)
+    '2026-01-01': 'Nyttårsdag',
+    '2026-04-02': 'Skjærtorsdag',
+    '2026-04-03': 'Langfredag',
+    '2026-04-06': 'Andre Påskedag',
+    '2026-05-01': 'Arbeidernes dag',
+    '2026-05-14': 'Kristi Himmelfartsdag',
+    '2026-05-17': 'Grunnlovsdagen',
+    '2026-05-25': 'Andre Pinsedag',
+    '2026-12-24': 'Julaften (halv dag)',
+    '2026-12-25': 'Juledag',
+    '2026-12-26': 'Andre Juledag',
+    '2026-12-31': 'Nyttårsaften (halv dag)',
+}
+AT_HOLIDAYS_2026 = {  # Wiener Boerse (.VI)
+    '2026-01-01': 'Neujahr',
+    '2026-01-06': 'Heilige Drei Koenige',
+    '2026-04-03': 'Karfreitag',
+    '2026-04-06': 'Ostermontag',
+    '2026-05-01': 'Staatsfeiertag',
+    '2026-05-14': 'Christi Himmelfahrt',
+    '2026-05-25': 'Pfingstmontag',
+    '2026-06-04': 'Fronleichnam',
+    '2026-08-15': 'Mariä Himmelfahrt',
+    '2026-10-26': 'Nationalfeiertag',
+    '2026-11-01': 'Allerheiligen',
+    '2026-12-08': 'Mariä Empfaengnis',
+    '2026-12-24': 'Heiligabend (Halbtag)',
+    '2026-12-25': 'Christtag',
+    '2026-12-26': 'Stephanitag',
+    '2026-12-31': 'Silvester (Halbtag)',
+}
+UK_HOLIDAYS_2026 = {  # London Stock Exchange (.L)
+    '2026-01-01': "New Year's Day",
+    '2026-04-03': 'Good Friday',
+    '2026-04-06': 'Easter Monday',
+    '2026-05-04': 'Early May Bank Holiday',
+    '2026-05-25': 'Spring Bank Holiday',
+    '2026-08-31': 'Summer Bank Holiday',
+    '2026-12-25': 'Christmas Day',
+    '2026-12-28': 'Boxing Day (substitute)',
+}
+CH_HOLIDAYS_2026 = {  # SIX Swiss (.SW)
+    '2026-01-01': 'Neujahr',
+    '2026-01-02': 'Berchtoldstag',
+    '2026-04-03': 'Karfreitag',
+    '2026-04-06': 'Ostermontag',
+    '2026-05-01': 'Tag der Arbeit',
+    '2026-05-14': 'Auffahrt',
+    '2026-05-25': 'Pfingstmontag',
+    '2026-08-01': 'Bundesfeier',
+    '2026-12-24': 'Heiligabend (Halbtag)',
+    '2026-12-25': 'Weihnachten',
+    '2026-12-26': 'Stephanstag',
+    '2026-12-31': 'Silvester (Halbtag)',
+}
+
+EXCHANGE_HOLIDAYS = {
+    'US': US_HOLIDAYS_2026, 'DE': DE_HOLIDAYS_2026,
+    'FR': FR_HOLIDAYS_2026, 'NL': NL_HOLIDAYS_2026,
+    'IT': IT_HOLIDAYS_2026, 'ES': ES_HOLIDAYS_2026,
+    'NO': NO_HOLIDAYS_2026, 'AT': AT_HOLIDAYS_2026,
+    'UK': UK_HOLIDAYS_2026, 'CH': CH_HOLIDAYS_2026,
+}
+
+# Ticker-Suffix → Exchange-Code (fuer Holiday-Lookup)
+TICKER_SUFFIX_EXCHANGE = {
+    '.DE': 'DE', '.F': 'DE',           # Frankfurt/XETR
+    '.PA': 'FR',                         # Paris
+    '.AS': 'NL',                         # Amsterdam
+    '.MI': 'IT',                         # Milan
+    '.MC': 'ES',                         # Madrid
+    '.OL': 'NO',                         # Oslo
+    '.VI': 'AT',                         # Vienna
+    '.L': 'UK', '.LON': 'UK',           # London
+    '.SW': 'CH', '.SIX': 'CH',          # Zurich
+    '.ST': 'SE',                         # Stockholm (kein Holiday-Calendar -> default open)
+    '.CO': 'DK',                         # Copenhagen
+    '.HE': 'FI',                         # Helsinki
+    '.LS': 'PT',                         # Lisbon
+    '.IR': 'IE',                         # Dublin
+    '.WA': 'PL',                         # Warsaw
+    '.HK': 'HK',                         # Hong Kong
+    '.T': 'JP',                          # Tokyo
+    '.TO': 'CA',                         # Toronto
+    '.SS': 'CN', '.SZ': 'CN',           # Shanghai/Shenzhen
+}
+
+
+def get_exchange_for_ticker(ticker: str) -> str:
+    """Mappt Ticker auf Exchange-Code (US default wenn kein Suffix)."""
+    if not ticker:
+        return 'US'
+    tk = ticker.upper()
+    for suf, exch in TICKER_SUFFIX_EXCHANGE.items():
+        if tk.endswith(suf):
+            return exch
+    return 'US'
+
+
+def is_exchange_open_today(ticker: str, date_str: str | None = None) -> tuple[bool, str]:
+    """Returns (is_open, reason). Beruecksichtigt Wochenende + Holiday.
+    Genutzt vom Pre-Trade-Guard."""
+    from datetime import datetime as _dt
+    if not date_str:
+        date_str = _dt.now(BERLIN).strftime('%Y-%m-%d')
+    exch = get_exchange_for_ticker(ticker)
+    # Weekend
+    try:
+        dow = _dt.strptime(date_str, '%Y-%m-%d').weekday()
+        if dow >= 5:
+            return False, f'{exch}: Weekend'
+    except Exception: pass
+    # Holiday
+    holidays = EXCHANGE_HOLIDAYS.get(exch, {})
+    if date_str in holidays:
+        return False, f'{exch}: {holidays[date_str]}'
+    return True, f'{exch}: open'
+
 # Fed-Meetings 2026 (FOMC)
 FED_MEETINGS_2026 = [
     '2026-01-28', '2026-03-18', '2026-04-29', '2026-06-17',

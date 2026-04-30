@@ -490,6 +490,25 @@ def _execute_paper_entry_inner(
     except Exception:
         pass  # Bei Modul-Fehler nicht blocken (fail-open fuer Verfuegbarkeit)
 
+    # ── Guard 0e2: Exchange-Holiday-Check (Phase 44i) ─────────────────
+    # market_hours kennt nur Wochentag-Zeitfenster, nicht laenderspezifische
+    # Feiertage. Calendar-Service erweitert um EXCHANGE_HOLIDAYS Map.
+    # Auch fuer manual entries durchsetzen — Victor will keine Trades
+    # an geschlossenen Boersen, egal ob auto oder manuell.
+    try:
+        _sys3 = __import__('sys')
+        _sys3.path.insert(0, str(WORKSPACE / 'scripts'))
+        from calendar_service import is_exchange_open_today
+        _open, _reason = is_exchange_open_today(ticker)
+        if not _open:
+            return {
+                'success': False, 'trade_id': None,
+                'message': f'❌ {ticker}: Boerse geschlossen — {_reason}',
+                'blocked_by': 'exchange_holiday',
+            }
+    except Exception as _eh:
+        print(f'[Guard 0e2] holiday-check fail (non-fatal): {_eh}')
+
     # ── Guard 0: Preis-Frische ────────────────────────────────────────
     if not is_price_fresh(ticker, max_days=3):
         return {
@@ -597,7 +616,9 @@ def _execute_paper_entry_inner(
         if len(_bars) >= 5:
             # Vereinfachtes ATR: avg(high-low) der letzten N bars
             _atr_pct = sum((float(h) - float(l)) / float(c) for h, l, c in _bars if float(c) > 0) / len(_bars)
-            _atr_floor = entry_price * (1 - max(_atr_pct * 1.5, 0.04))
+            # Phase 44i: Floor auf 7% angehoben (Victor 2026-04-30) — 4% war zu eng,
+            # EQNR-Stop wurde durch 1.85% Tagesvolatilitaet getroffen.
+            _atr_floor = entry_price * (1 - max(_atr_pct * 2.0, 0.07))
             if stop_price > _atr_floor:
                 _orig_stop = stop_price
                 stop_price = round(_atr_floor, 4)
