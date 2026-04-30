@@ -257,12 +257,44 @@ def _render_phase43_header():
                 f'{p["phase43_n_wins"]}W / {p["phase43_n_losses"]}L')
 
 
+def _load_reset_dates() -> list[str]:
+    """Phase 44e: Liest paper_reset_log.jsonl für Reset-Marker im Chart."""
+    reset_log = WS / 'data' / 'paper_reset_log.jsonl'
+    dates = []
+    if reset_log.exists():
+        try:
+            with open(reset_log, encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        d = json.loads(line)
+                        ts = d.get('ts', '')[:10]
+                        if ts:
+                            dates.append(ts)
+                    except Exception:
+                        continue
+        except Exception:
+            pass
+    return dates
+
+
 def tab_performance():
     st.subheader('📈 Performance-Übersicht')
     p = load_phase43()
     if 'error' in p:
         st.warning('Phase-43-Baseline fehlt.')
         return
+
+    # Phase 44e: Reset-Banner wenn heute Reset war
+    reset_dates = _load_reset_dates()
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    if today_str in reset_dates:
+        st.success(f'🔄 **PAPER-RESET heute** ({today_str}) — '
+                    f'Cash zurück auf 25.000€, alle Open-Positions geschlossen. '
+                    f'Lerndaten (Anti-Patterns, Lifecycle, 76 Trade-Historie) bleiben.')
+    elif reset_dates:
+        last_reset = max(reset_dates)
+        st.info(f'_Letzter Paper-Reset: {last_reset}. '
+                 f'Performance-Tracking ab Reset-Zeitpunkt._')
 
     eq = load_equity_curve(days=90)
     closed = load_closed_trades(days=90)
@@ -284,6 +316,13 @@ def tab_performance():
                 hovermode='x unified',
             )
             fig.add_hline(y=0, line_dash='dash', line_color='gray')
+            # Phase 44e: Reset-Marker als vertikale Linie
+            for rd in reset_dates:
+                fig.add_vline(
+                    x=rd, line_dash='dash', line_color='#FFA500', line_width=2,
+                    annotation_text=f'🔄 Reset {rd}',
+                    annotation_position='top right',
+                )
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info('Noch keine geschlossenen Trades.')
@@ -769,6 +808,16 @@ def main():
     col_t1, col_t2 = st.columns([4, 1])
     col_t1.title('📈 TradeMind — Albert Active CEO')
     col_t2.metric('Live-Zeit', time_str)
+
+    # Phase 44e: Reset-Banner prominent oben wenn heute Reset
+    reset_dates = _load_reset_dates()
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    if today_str in reset_dates:
+        st.warning(
+            f'🔄 **PAPER-RESET HEUTE** ({today_str}) — Frischer Start mit 25.000€ Cash. '
+            f'Alle Performance-Daten ab jetzt zählen für die neue Mess-Periode. '
+            f'Lerndaten (Strategien, Anti-Patterns, 76 historische Trades) sind erhalten.'
+        )
 
     # Phase 43 Header (immer sichtbar)
     _render_phase43_header()
