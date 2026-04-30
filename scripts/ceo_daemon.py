@@ -336,8 +336,129 @@ def state_DECIDING(state: dict) -> str:
     return 'IDLE'
 
 
+def _process_macro_reeval_queue() -> dict:
+    """Phase 44c: Lese macro_reeval_queue.json, evaluiere betroffene Positionen
+    via LLM, ggf. exit oder stop nachziehen. Kein User-Touchpoint."""
+    queue_file = WS / 'data' / 'macro_reeval_queue.json'
+    if not queue_file.exists():
+        return {'processed': 0}
+    try:
+        queue = json.loads(queue_file.read_text(encoding='utf-8'))
+    except Exception:
+        return {'processed': 0}
+    if not isinstance(queue, list) or not queue:
+        return {'processed': 0}
+
+    # Dedup: nur unique trade_ids, max letzte 20
+    seen = set()
+    unique = []
+    for q in queue[-20:]:
+        if not isinstance(q, dict):
+            continue
+        tid = q.get('trade_id')
+        if tid and tid not in seen:
+            seen.add(tid)
+            unique.append(q)
+    if not unique:
+        queue_file.write_text('[]', encoding='utf-8')
+        return {'processed': 0}
+
+    # Position-Status holen
+    c = sqlite3.connect(str(DB))
+    c.row_factory = sqlite3.Row
+    placeholders = ','.join('?' * len(unique))
+    open_positions = c.execute(
+        f"SELECT id, ticker, strategy, entry_price, stop_price, target_price, "
+        f"       shares, entry_date FROM paper_portfolio "
+        f"WHERE id IN ({placeholders}) AND status='OPEN'",
+        [q['trade_id'] for q in unique]
+    ).fetchall()
+    c.close()
+
+    if not open_positions:
+        queue_file.write_text('[]', encoding='utf-8')
+        return {'processed': 0, 'note': 'positions_already_closed'}
+
+    # Pro Position autonom entscheiden
+    from ceo_active_hunter import _resolve_live_price
+    actions = {'tightened_stop': 0, 'exited': 0, 'kept': 0, 'errors': 0}
+    for r in open_positions:
+        try:
+            tid = r['id']
+            ticker = r['ticker']
+            entry = float(r['entry_price'] or 0)
+            stop = float(r['stop_price'] or 0)
+            shares = float(r['shares'] or 0)
+            live = _resolve_live_price(ticker)
+            if live <= 0:
+                actions['errors'] += 1
+                continue
+
+            unr_pct = (live - entry) / entry * 100 if entry else 0
+
+            # Regel-basierte Auto-Reaktion auf Macro-Event:
+            #   1. Wenn Position bereits underwater >2% → Stop strikt nachziehen auf -2%
+            #   2. Wenn Position underwater >5% → sofort exit (Macro-Event verschärft Risiko)
+            #   3. Wenn Position grün >0% → Stop auf Break-Even nachziehen (lock profit)
+            if unr_pct < -5:
+                # Sofort-Exit
+                try:
+                    from paper_exit_manager import close_position
+                    close_position(tid, exit_reason='MACRO_AUTO_EXIT')
+                    actions['exited'] += 1
+                    _log(f'  🚨 macro-exit: {ticker} ({unr_pct:+.1f}%) — Risiko zu hoch')
+                except Exception as _ce:
+                    _log(f'  exit err {ticker}: {_ce}')
+                    actions['errors'] += 1
+            elif unr_pct < -2:
+                # Stop strikt auf -2% vom Entry
+                new_stop = round(entry * 0.98, 2)
+                if new_stop > stop:
+                    try:
+                        c2 = sqlite3.connect(str(DB))
+                        c2.execute(
+                            "UPDATE paper_portfolio SET stop_price=?, "
+                            "  notes=COALESCE(notes,'') || ? WHERE id=?",
+                            (new_stop,
+                             f' | MACRO-TIGHTENED stop {stop:.2f}→{new_stop:.2f}',
+                             tid))
+                        c2.commit()
+                        c2.close()
+                        actions['tightened_stop'] += 1
+                        _log(f'  🔒 stop-tightened: {ticker} {stop:.2f} → {new_stop:.2f}')
+                    except Exception as _ue:
+                        _log(f'  update err {ticker}: {_ue}')
+                        actions['errors'] += 1
+            elif unr_pct > 0:
+                # Break-Even-Stop
+                if entry > stop:
+                    try:
+                        c2 = sqlite3.connect(str(DB))
+                        c2.execute(
+                            "UPDATE paper_portfolio SET stop_price=?, "
+                            "  notes=COALESCE(notes,'') || ? WHERE id=?",
+                            (round(entry, 2),
+                             f' | MACRO-BREAKEVEN stop {stop:.2f}→{entry:.2f}',
+                             tid))
+                        c2.commit()
+                        c2.close()
+                        actions['tightened_stop'] += 1
+                        _log(f'  🔒 break-even-stop: {ticker} {stop:.2f} → {entry:.2f}')
+                    except Exception:
+                        actions['errors'] += 1
+            else:
+                actions['kept'] += 1
+        except Exception as _e:
+            actions['errors'] += 1
+            _log(f'  reeval err: {_e}')
+
+    # Queue leeren
+    queue_file.write_text('[]', encoding='utf-8')
+    return {'processed': len(open_positions), **actions}
+
+
 def state_MONITORING(state: dict) -> str:
-    """Alle Open-Positions kurz checken."""
+    """Alle Open-Positions kurz checken + Macro-Reeval-Queue abarbeiten."""
     _log('👀 MONITORING — open positions check')
     try:
         c = sqlite3.connect(str(DB))
@@ -348,6 +469,17 @@ def state_MONITORING(state: dict) -> str:
         ).fetchall()
         c.close()
         _log(f'  open positions: {len(opens)}')
+
+        # Phase 44c: Macro-Reeval-Queue autonom abarbeiten (Regel #1)
+        try:
+            r = _process_macro_reeval_queue()
+            if r['processed']:
+                _log(f'  ⚡ macro-reeval: processed {r["processed"]} | '
+                     f'exited {r.get("exited",0)} | '
+                     f'tightened {r.get("tightened_stop",0)} | '
+                     f'kept {r.get("kept",0)} | errors {r.get("errors",0)}')
+        except Exception as _me:
+            _log(f'  macro-reeval err: {_me}')
 
         # Trigger Thesis-Engine (Kill-Trigger)
         try:

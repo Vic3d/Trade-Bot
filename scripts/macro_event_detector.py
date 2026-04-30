@@ -191,7 +191,7 @@ def push_discord_alert(matches: list[dict]) -> bool:
             f"   🎯 Impact-Tickers: {', '.join(m['impact_tickers'][:6])}\n"
             f"   🏭 Sectors: {', '.join(m['sectors'])}"
         )
-    text_parts.append('\n\n💡 Soll Albert die betroffenen Open-Positions reviewen?')
+    text_parts.append('\n\n_Albert reviewt die betroffenen Open-Positions automatisch im nächsten Cold-Cycle (max 15min)._')
 
     text = '\n'.join(text_parts)
     try:
