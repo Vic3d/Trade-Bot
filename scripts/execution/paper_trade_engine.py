@@ -676,7 +676,17 @@ def _execute_paper_entry_inner(
     # Kein Verdict oder WARTEN/NICHT KAUFEN → Block für autonome Entries.
     # Victor kann mit source='manual' immer manuell übersteuern.
     _is_autonomous_entry = source not in ('manual', 'victor', 'cli')
-    if _is_autonomous_entry and not _skip_0c2:
+    # Phase 44e: Aggressive-Paper-Mode lockert Verdict-Gate komplett —
+    # Hunter + downstream Guards (Anti-Pattern, Learning-Insights, Conviction)
+    # ersetzen Deep-Dive-Pflicht. Real-Money-Mode behält volle Strenge.
+    try:
+        from paper_aggressive_mode import is_aggressive as _is_aggr
+        _aggressive = _is_aggr()
+    except Exception:
+        _aggressive = False
+
+    # Im Aggressive-Mode: nur explizites NICHT_KAUFEN bleibt Blocker (mini-gate unten).
+    if _is_autonomous_entry and not _skip_0c2 and not _aggressive:
         try:
             _verdicts_file = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
             _verdict_data = {}
@@ -757,6 +767,26 @@ def _execute_paper_entry_inner(
             # KAUFEN: Trade freigegeben — weiter
         except Exception:
             pass  # Fehler im Gate → defensiv durchlassen (lieber kein Block als Blockade)
+
+    # Aggressive-Mode Mini-Gate: respektiere NICHT_KAUFEN trotzdem
+    if _is_autonomous_entry and _aggressive and not _skip_0c2:
+        try:
+            _vf = WORKSPACE / 'data' / 'deep_dive_verdicts.json'
+            if _vf.exists():
+                _vd = json.loads(_vf.read_text(encoding='utf-8'))
+                _tv = _vd.get(ticker.upper(), {})
+                if _tv.get('verdict') == 'NICHT_KAUFEN':
+                    return {
+                        'success': False,
+                        'trade_id': None,
+                        'message': (
+                            f'❌ Aggressive-Mode respektiert NICHT_KAUFEN für {ticker} '
+                            f'(vom {_tv.get("date","?")}).'
+                        ),
+                        'blocked_by': 'deep_dive_nicht_kaufen',
+                    }
+        except Exception:
+            pass
 
     # ── Guard 0-TQS: Thesis Quality Score & Autonomy Gate (Phase 22) ────────
     # Prueft Watchlist-Status + TQS-Mode + Political-Risk-Flag.
