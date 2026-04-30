@@ -317,12 +317,24 @@ def tab_performance():
             )
             fig.add_hline(y=0, line_dash='dash', line_color='gray')
             # Phase 44e: Reset-Marker als vertikale Linie
+            # Bugfix 2026-04-30: add_vline mit String-x crasht bei datetime-x-axis,
+            # nutze add_shape + add_annotation explizit.
             for rd in reset_dates:
-                fig.add_vline(
-                    x=rd, line_dash='dash', line_color='#FFA500', line_width=2,
-                    annotation_text=f'🔄 Reset {rd}',
-                    annotation_position='top right',
-                )
+                try:
+                    rd_ts = pd.to_datetime(rd)
+                    fig.add_shape(
+                        type='line', xref='x', yref='paper',
+                        x0=rd_ts, x1=rd_ts, y0=0, y1=1,
+                        line=dict(color='#FFA500', width=2, dash='dash'),
+                    )
+                    fig.add_annotation(
+                        x=rd_ts, y=1, xref='x', yref='paper',
+                        text=f'🔄 Reset {rd}', showarrow=False,
+                        font=dict(color='#FFA500', size=11),
+                        xanchor='left', yanchor='bottom',
+                    )
+                except Exception:
+                    pass
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info('Noch keine geschlossenen Trades.')
