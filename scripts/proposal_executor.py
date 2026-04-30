@@ -100,8 +100,18 @@ def _latest_price(ticker: str) -> float | None:
 
 
 def _verdict_ok(ticker: str) -> tuple[bool, str]:
+    # Aggressive-Paper-Mode: Verdict-Pflicht entfaellt, nur NICHT_KAUFEN bleibt Block
+    try:
+        from paper_aggressive_mode import is_aggressive
+        _aggr = is_aggressive()
+    except Exception:
+        _aggr = False
     verdicts = _load(VERDICTS, {})
     v = verdicts.get(ticker.upper(), {})
+    if _aggr:
+        if v and v.get('verdict') == 'NICHT_KAUFEN':
+            return False, 'NICHT_KAUFEN (aggressive respektiert)'
+        return True, 'aggressive bypass'
     if not v:
         return False, 'no verdict'
     if v.get('verdict') != 'KAUFEN':
@@ -137,6 +147,14 @@ def _trigger_met(proposal: dict) -> tuple[bool, str]:
         if '>' in trigger and price >= threshold:
             return True, f'{price:.2f} >= {threshold}'
         return False, f'not met: {price:.2f} vs {trigger}'
+
+    # Hunter-trigger types (auto-validated by hunter)
+    HUNTER_AUTO_TRIGGERS = {
+        'macro_event', 'strategy_match', 'news_catalyst',
+        'sector_rotation', 'breakout', 'auto', 'hunter',
+    }
+    if trigger.lower() in HUNTER_AUTO_TRIGGERS:
+        return True, f'hunter-auto: {trigger}'
 
     # Text-only trigger (e.g. "Q1_EARNINGS_BEAT") → skip auto-exec
     return False, f'manual trigger: {trigger}'
