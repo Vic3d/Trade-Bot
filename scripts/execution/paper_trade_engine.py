@@ -1126,6 +1126,15 @@ def _execute_paper_entry_inner(
     # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
     # ATOMIC LOCK: verhindert Race wenn 2 Scanner-Jobs parallel laufen
     MAX_TRADES_PER_WEEK = 15  # Victor 2026-04-20: von 7 erhöht — wir müssen traden um zu lernen
+    # Phase 44h: aggressive_mode kann das hochziehen
+    try:
+        from paper_aggressive_mode import get_cap as _get_cap
+        MAX_TRADES_PER_WEEK = int(_get_cap('weekly_trade_limit', MAX_TRADES_PER_WEEK))
+    except Exception:
+        pass
+    # Manuelle Entries (Victor) immer erlauben — bypass Limit
+    if source in ('manual', 'victor', 'cli'):
+        MAX_TRADES_PER_WEEK = 9999
     _trade_lock_fd = None
     try:
         from datetime import timedelta
