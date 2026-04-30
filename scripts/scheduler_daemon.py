@@ -118,6 +118,9 @@ SCHEDULE = [
     ('Strategy Auditor',    'strategy_auditor.py',    ['--discord'],        20, 0,  [6]),
     # ── Phase 44A2b — Strategy Auto-Deprecate (täglich 23:00, Regel #1) ────
     ('Strategy Auto-Deprecate','strategy_auto_deprecate.py', [],            23, 0,  None),
+    # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
+    ('Shadow Strategy Hunt',   'multi_strategy_shadow.py', ['--hunt'],      '9-22', '*/30', [0,1,2,3,4]),
+    ('Shadow Strategy Update', 'multi_strategy_shadow.py', ['--update'],    '9-22', '*/15', [0,1,2,3,4]),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
     # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)

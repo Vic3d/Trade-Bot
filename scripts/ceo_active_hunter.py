@@ -37,6 +37,16 @@ PROPOSALS_FILE  = WS / 'data' / 'proposals.json'
 DIRECTIVE_FILE  = WS / 'data' / 'ceo_directive.json'
 STRATEGIES_FILE = WS / 'data' / 'strategies.json'
 
+
+def _aggressive_position_size() -> int:
+    """Phase 44d: dynamische Position-Size aus paper_aggressive_mode."""
+    try:
+        from paper_aggressive_mode import get_cap
+        return int(get_cap('position_size_eur', 1000))
+    except Exception:
+        return 1000
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Context-Sammler
 # ═══════════════════════════════════════════════════════════════════════════
@@ -455,7 +465,8 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
             'trigger': s.get('trigger', 'ceo_active'),
             'trigger_ref': str(s.get('trigger_ref', ''))[:200],
             'confidence': float(s.get('confidence') or 0.5),
-            'size_eur': float(s.get('size_eur') or 1000),
+            # Phase 44d: dynamic size aus aggressive_mode
+            'size_eur': float(s.get('size_eur') or _aggressive_position_size()),
             'sector': s.get('sector', ''),
             'source': 'ceo_active',
             'status': 'pending',

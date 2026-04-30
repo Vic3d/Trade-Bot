@@ -1147,17 +1147,28 @@ def _execute_paper_entry_inner(
             'message': f'❌ Sektor {sector} voll ({sector_count}/{max_sector} Positionen)',
             'blocked_by': 'sector_limit',
         }
+    # Phase 44d: Caps dynamisch aus paper_aggressive_mode.py lesen
+    try:
+        import sys as _amsys
+        _amsys.path.insert(0, str(Path(__file__).parent.parent))
+        from paper_aggressive_mode import get_cap as _get_cap
+        _SECTOR_CAP = _get_cap('sector_cap_pct', 0.60)
+        _REGION_CAP = _get_cap('region_cap_pct', 0.70)
+    except Exception:
+        _SECTOR_CAP = 0.60
+        _REGION_CAP = 0.70
+
     try:
         sector_eur = get_sector_exposure_eur(conn, sector)
         sector_pct_after = (sector_eur + NEW_POS_EST) / FUND_TOTAL
-        if sector != 'UNKNOWN' and sector_pct_after > 0.60:  # war 0.40
+        if sector != 'UNKNOWN' and sector_pct_after > _SECTOR_CAP:
             conn.close()
             return {
                 'success': False,
                 'trade_id': None,
                 'message': (
                     f'❌ Sektor-%-Limit: {sector} würde auf '
-                    f'{sector_pct_after*100:.0f}% steigen (>40% Cap). '
+                    f'{sector_pct_after*100:.0f}% steigen (>{_SECTOR_CAP*100:.0f}% Cap). '
                     f'Aktuell {sector_eur:.0f}€ offen. Diversifiziere.'
                 ),
                 'blocked_by': 'sector_pct_limit',
@@ -1167,21 +1178,19 @@ def _execute_paper_entry_inner(
 
     # ── Guard 5c: Region-%-Limit (US/EU/Asia) ────────────────────────
     # Lernung aus MD-Files: 99% US-Exposure = fatale Wette auf Dollar+Fed.
-    # Max 70% pro Region erzwingt globale Diversifikation
-    # (Phase 43g: war 60%, hochgesetzt weil Hunter sonst nicht arbeiten kann
-    # bei aktuellem US-lastigen Bestand. Re-Check in 7d).
+    # Cap dynamisch aus paper_aggressive_mode (Phase 44d).
     try:
         region = classify_region(ticker)
         region_eur = get_region_exposure_eur(conn, region)
         region_pct_after = (region_eur + NEW_POS_EST) / FUND_TOTAL
-        if region_pct_after > 0.70:
+        if region_pct_after > _REGION_CAP:
             conn.close()
             return {
                 'success': False,
                 'trade_id': None,
                 'message': (
                     f'❌ Region-%-Limit: {region} würde auf '
-                    f'{region_pct_after*100:.0f}% steigen (>70% Cap). '
+                    f'{region_pct_after*100:.0f}% steigen (>{_REGION_CAP*100:.0f}% Cap). '
                     f'Aktuell {region_eur:.0f}€ offen. Suche EU/Asia-Ticker.'
                 ),
                 'blocked_by': 'region_pct_limit',
@@ -1519,20 +1528,27 @@ def _execute_paper_entry_inner(
     # Hard Cap 1500€ löst das meist, aber als explizite Regel auch hier prüfen.
     try:
         total_capital_est = cfg.get('capital', 25000)
+        # Phase 44d: max_pct dynamisch
+        try:
+            from paper_aggressive_mode import get_cap as _gc
+            _MAX_POS_PCT = _gc('max_position_pct', 0.15)
+        except Exception:
+            _MAX_POS_PCT = 0.15
         position_pct = position_eur / total_capital_est
-        if position_pct > 0.15:
-            # Trim auf 15% statt blocken (freundlichere Behandlung)
-            max_allowed_eur = total_capital_est * 0.15
+        if position_pct > _MAX_POS_PCT:
+            max_allowed_eur = total_capital_est * _MAX_POS_PCT
             shares_from_risk = int(max_allowed_eur / entry_price)
             position_eur = shares_from_risk * entry_price
     except Exception:
         pass
 
-    # ── Guard 6c: Cash nach Trade muss >10% bleiben (Trade-Vor-Checkliste) ──
-    # Regel 7 der Checkliste: "Cash nach Trade noch >10% vom Fund?"
-    total_capital_est = cfg.get('capital', 25000)  # für unten
-    # Verhindert illiquide Situationen wo wir nicht mehr auf Chancen reagieren können.
-    MIN_CASH_RESERVE_PCT = 0.10
+    # ── Guard 6c: Cash nach Trade muss >X% bleiben (Phase 44d dynamisch) ──
+    total_capital_est = cfg.get('capital', 25000)
+    try:
+        from paper_aggressive_mode import get_cap as _gc
+        MIN_CASH_RESERVE_PCT = _gc('cash_reserve_pct', 0.10)
+    except Exception:
+        MIN_CASH_RESERVE_PCT = 0.10
     try:
         remaining_cash_after = free_cash - position_eur
         if remaining_cash_after < total_capital_est * MIN_CASH_RESERVE_PCT:
