@@ -108,8 +108,8 @@ HOLD_LIMITS = {
 }
 
 # Tranche exit triggers
-TRANCHE1_TARGET_PCT = 0.03   # +3%  → exit tranche 1 (Phase 44b: war +5%, früher locken)
-TRANCHE2_TARGET_PCT = 0.08   # +8%  → exit tranche 2 (Phase 44b: war +10%)
+TRANCHE1_TARGET_PCT = 0.05   # +5%  → exit tranche 1 (Reverted 2026-04-30 from +3% nach R:R-Analyse)
+TRANCHE2_TARGET_PCT = 0.10   # +10% → exit tranche 2 (Reverted 2026-04-30 from +8%)
 CIRCUIT_BREAKER_PCT = -0.08  # -8%  single-day circuit breaker
 
 # ATR trailing multiplier for tranche 3
