@@ -517,7 +517,8 @@ def run() -> tuple[list, list]:
     open_trades = conn.execute(
         """
         SELECT id, ticker, strategy, entry_price, stop_price, target_price,
-               shares, fees, entry_date, notes, style
+               shares, fees, entry_date, notes, style,
+               COALESCE(tranche_mode, 'TRANCHES') AS tranche_mode
         FROM paper_portfolio WHERE status='OPEN'
         """
     ).fetchall()
@@ -693,7 +694,41 @@ def run() -> tuple[list, list]:
             continue
 
         # ══════════════════════════════════════════════════════════════════
-        # TRANCHE-BASED PARTIAL EXITS
+        # ══════════════════════════════════════════════════════════════════
+        # A/B-TEST 2026-04-30 → 2026-05-30: FULL_TRAIL Variante
+        # ══════════════════════════════════════════════════════════════════
+        _mode = t['tranche_mode'] if 'tranche_mode' in t.keys() else 'TRANCHES'
+        if _mode == 'FULL_TRAIL':
+            # Variante C aus Backtest: keine Tranchen, Vollposition mit
+            # Trailing-Stop bei 8% unter HWM (ATR-Proxy) sobald +5% erreicht.
+            move_after_entry = (price - entry) / entry if entry else 0
+            if move_after_entry >= 0.05:
+                # HWM aus Bars seit Entry tracken (vereinfacht: nutze price als HWM-Annaehrung)
+                hwm = max(price, entry)  # konservativ; voller HWM-Track waere besser
+                # Versuche echtes HWM aus prices-Tabelle
+                try:
+                    hwm_row = conn.execute(
+                        "SELECT MAX(high) FROM prices WHERE ticker=? AND date >= ?",
+                        (ticker, t['entry_date'][:10])
+                    ).fetchone()
+                    if hwm_row and hwm_row[0]:
+                        hwm = max(hwm, float(hwm_row[0]))
+                except Exception:
+                    pass
+                new_stop = round(hwm * 0.92, 4)
+                if new_stop > stop:
+                    conn.execute(
+                        "UPDATE paper_portfolio SET stop_price=? WHERE id=?",
+                        (new_stop, trade_id)
+                    )
+                    conn.commit()
+                    trailing_updates.append(
+                        f"FULL_TRAIL {ticker} | {stop:.2f}->{new_stop:.2f} | "
+                        f"hwm={hwm:.2f} (8% buffer)"
+                    )
+            continue  # FULL_TRAIL ueberspringt Tranche-Logik komplett
+
+        # TRANCHE-BASED PARTIAL EXITS (Default-Mode)
         # ══════════════════════════════════════════════════════════════════
 
         # Ensure tranches are created (creates 3 tranches on first run for this trade)

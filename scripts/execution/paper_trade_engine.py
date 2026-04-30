@@ -339,6 +339,19 @@ def _log_guard_result(ticker: str, strategy: str, source: str, result: dict) -> 
 
 # ─── Core: Trade Entry ───────────────────────────────────────────────
 
+def _assign_tranche_mode(conn) -> str:
+    """A/B-Test 2026-04-30 → 2026-05-30: alterniert deterministisch zwischen
+    TRANCHES (+5%/+10% Tranche-Exits) und FULL_TRAIL (Vollposition mit
+    Trailing-Stop). Verteilung 50/50 anhand naechster Trade-ID Paritaet.
+    Nach Test-Ende (2026-05-30) → tranche_ab_report.py + Entscheidung."""
+    try:
+        last_id = conn.execute("SELECT MAX(id) FROM paper_portfolio").fetchone()[0] or 0
+        next_id = last_id + 1
+        return 'TRANCHES' if (next_id % 2 == 0) else 'FULL_TRAIL'
+    except Exception:
+        return 'TRANCHES'  # fallback = altes Verhalten
+
+
 def execute_paper_entry(
     ticker: str,
     strategy: str,
@@ -1672,13 +1685,14 @@ def _execute_paper_entry_inner(
     conn.execute("""
         INSERT INTO paper_portfolio
         (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,
-         status, fees, notes, style, conviction, regime_at_entry, sector)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, ?, ?, ?, ?)
+         status, fees, notes, style, conviction, regime_at_entry, sector, tranche_mode)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, ?, ?, ?, ?, ?)
     """, (
         ticker, strategy, entry_price, now, shares,
         stop_price, target_price, fees,
         f'[AUTO-ENTRY {source}] {thesis}', style,
-        int(conv_score), regime, sector
+        int(conv_score), regime, sector,
+        _assign_tranche_mode(conn)
     ))
     
     # Cash reduzieren
