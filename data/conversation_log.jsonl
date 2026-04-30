@@ -1,0 +1,1 @@
+{"ts": "2026-04-25T17:29:30", "source": "cli", "role": "system", "speaker": "fast_discovery", "content": "Fast Discovery getriggert (geo_score=65, ok=True)", "meta": {"event": "fast_discovery_run", "ok": true, "elapsed_s": 0.471234, "geo_score": 65}}

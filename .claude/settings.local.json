@@ -16,7 +16,11 @@
       "Bash(ssh root@178.104.152.135 \"tail -1 /tmp/smoke_results/SUMMARY.txt 2>/dev/null\")",
       "Bash(ssh root@178.104.152.135 \"tail -3 /tmp/smoke_results/SUMMARY.txt; echo '---'; grep -cE 'PASS|FAIL|TIMEOUT|ARGS|SKIP' /tmp/smoke_results/SUMMARY.txt\")",
       "WebFetch(domain:rocket-rohrreinigung.de)",
-      "mcp__Claude_in_Chrome__browser_batch"
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__switch_browser",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

@@ -583,6 +583,29 @@ def _execute_paper_entry_inner(
     except Exception as _e:
         pass  # Fallback: Stop unverändert
 
+    # ── Phase 44h: ATR-basierter Stop-FLOOR (verhindert zu enge Stops) ──
+    # EQNR.OL Stop-Hit am 30.04 zeigte: -2% Stop bei 3.6% Tagesvolatilitaet
+    # = Coinflip durch Rauschen. Floor: max(1.5x ATR, 4% vom Entry).
+    try:
+        import sqlite3 as _sq3
+        _conn_atr = _sq3.connect(str(WORKSPACE / 'data' / 'trading.db'))
+        _bars = _conn_atr.execute(
+            "SELECT high, low, close FROM prices WHERE ticker=? "
+            "ORDER BY date DESC LIMIT 14", (ticker,)
+        ).fetchall()
+        _conn_atr.close()
+        if len(_bars) >= 5:
+            # Vereinfachtes ATR: avg(high-low) der letzten N bars
+            _atr_pct = sum((float(h) - float(l)) / float(c) for h, l, c in _bars if float(c) > 0) / len(_bars)
+            _atr_floor = entry_price * (1 - max(_atr_pct * 1.5, 0.04))
+            if stop_price > _atr_floor:
+                _orig_stop = stop_price
+                stop_price = round(_atr_floor, 4)
+                print(f'[ATR-Floor] {ticker}: Stop {_orig_stop:.2f}->{stop_price:.2f} '
+                      f'(ATR {_atr_pct*100:.1f}%, min 4%, Floor {((entry_price-_atr_floor)/entry_price)*100:.1f}%)')
+    except Exception as _e:
+        pass
+
     # ── Guard 0c: Minimum CRV (Phase 31b: dynamisch via autonomy_config.json) ─
     _reward = abs(target_price - entry_price)
     _risk = abs(entry_price - stop_price)

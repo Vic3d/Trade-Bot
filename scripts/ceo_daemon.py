@@ -381,20 +381,73 @@ def _process_macro_reeval_queue() -> dict:
 
     # Pro Position autonom entscheiden
     from ceo_active_hunter import _resolve_live_price
-    actions = {'tightened_stop': 0, 'exited': 0, 'kept': 0, 'errors': 0}
+    actions = {'tightened_stop': 0, 'exited': 0, 'kept': 0, 'errors': 0,
+                'cooldown_skipped': 0, 'bullish_skipped': 0}
+
+    # Phase 44h: Helper fuer Bullish-Event-Detection.
+    # Wenn das ausloesende Macro-Event den Ticker im impact_tickers hat UND
+    # der Event-Typ matched mit der Strategy-These (z.B. ENERGY_SHOCK + S1/PS1),
+    # dann ist das Event positiv fuer diese Position → kein Stop-Tightening.
+    BULLISH_PAIRS = {
+        'ENERGY_SHOCK': {'S1', 'PS1', 'PS2', 'PS18'},   # Oel/Energie
+        'WAR_SHOCK':    {'PS3', 'PS11', 'PS28', 'PS38'},  # Defense
+        'GOLD_SHOCK':   {'PS4', 'PS5'},                    # Gold/Sicherheit
+        'COPPER_SHOCK': {'PS13'},
+        'CRYPTO_SHOCK': set(),  # Crypto = ambivalent
+    }
+    def _is_bullish_event_for(ticker: str, strategy: str, queue_item: dict) -> bool:
+        try:
+            ev_type = queue_item.get('event_type') or queue_item.get('macro_event_type', '')
+            tickers_raw = queue_item.get('impact_tickers') or '[]'
+            if isinstance(tickers_raw, str):
+                tickers_list = json.loads(tickers_raw)
+            else:
+                tickers_list = list(tickers_raw)
+            if ticker not in tickers_list:
+                return False
+            return strategy in BULLISH_PAIRS.get(ev_type, set())
+        except Exception:
+            return False
+
+    # Map trade_id → matching queue_item for bullish-check
+    queue_by_tid = {q.get('trade_id'): q for q in unique if q.get('trade_id')}
+
     for r in open_positions:
         try:
             tid = r['id']
             ticker = r['ticker']
+            strategy = r['strategy'] or ''
             entry = float(r['entry_price'] or 0)
             stop = float(r['stop_price'] or 0)
             shares = float(r['shares'] or 0)
+            entry_date = r['entry_date'] or ''
             live = _resolve_live_price(ticker)
             if live <= 0:
                 actions['errors'] += 1
                 continue
 
             unr_pct = (live - entry) / entry * 100 if entry else 0
+
+            # Phase 44h Fix 1: 24h-Cooldown nach Entry — frische Trade hat
+            # noch keine Atemluft, Tightening sofort = Coinflip durch Vola.
+            try:
+                from datetime import datetime as _dt
+                _ed = _dt.fromisoformat(entry_date.replace('Z',''))
+                _hours_since_entry = (_dt.utcnow() - _ed.replace(tzinfo=None)).total_seconds() / 3600
+            except Exception:
+                _hours_since_entry = 999  # alt → kein Cooldown
+            if _hours_since_entry < 24:
+                actions['cooldown_skipped'] += 1
+                _log(f'  ⏳ cooldown: {ticker} entry vor {_hours_since_entry:.1f}h — kein Tighten')
+                continue
+
+            # Phase 44h Fix 2: Bullish-Event-Detection — wenn Event bullish
+            # fuer diesen Ticker+Strategy ist, KEIN Tightening.
+            qitem = queue_by_tid.get(tid, {})
+            if _is_bullish_event_for(ticker, strategy, qitem):
+                actions['bullish_skipped'] += 1
+                _log(f'  ✅ bullish-skip: {ticker}/{strategy} — Event {qitem.get("event_type","?")} ist FUER diese Position')
+                continue
 
             # Regel-basierte Auto-Reaktion auf Macro-Event:
             #   1. Wenn Position bereits underwater >2% → Stop strikt nachziehen auf -2%
