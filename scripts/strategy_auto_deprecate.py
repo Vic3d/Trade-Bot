@@ -75,7 +75,9 @@ def find_deprecation_candidates() -> list[dict]:
     for sid, meta in strats.items():
         if not isinstance(meta, dict):
             continue
-        if meta.get('status') != 'active':
+        # Phase 44g: alle "lebenden" Status checken (active, None, watchlist, watching, EVALUATING)
+        _st = meta.get('status')
+        if _st in ('paused', 'retired', 'auto_deprecated', 'ARCHIVED', 'DRAFT'):
             continue
         if sid in PERMANENT_BLOCKED:
             continue
@@ -115,8 +117,39 @@ def find_deprecation_candidates() -> list[dict]:
         except Exception:
             age_days = 999
 
-        # Regel: lifetime=0 AND 60d trades=0 AND 60d gate-fires=0 AND age >= 60d
+        # Trades letzte 30d (für aggressive Regel)
+        n_30d = c.execute(
+            "SELECT COUNT(*) FROM paper_portfolio "
+            "WHERE strategy=? AND substr(entry_date,1,10) >= date('now', '-30 days')",
+            (sid,)
+        ).fetchone()[0]
+
+        # Lifetime PnL
+        try:
+            pnl_row = c.execute(
+                "SELECT COALESCE(SUM(pnl_eur),0) FROM paper_portfolio WHERE strategy=?",
+                (sid,)
+            ).fetchone()
+            lifetime_pnl = float(pnl_row[0] or 0)
+        except Exception:
+            lifetime_pnl = 0.0
+
+        # Aggressive Regeln (Phase 44g):
+        # A) Klassisch: 0 lifetime AND 0 60d AND 0 gate-fires AND age>=60d  → tot
+        # B) Schwach: lifetime<=2 AND 0 30d trades AND age>=30d  → keine Edge nachweisbar
+        # C) Verlust: lifetime>2 AND PnL<0 AND 0 30d trades  → negative Edge
+        # D) Tot+old: lifetime<=1 AND 0 60d AND age>=45d  → erweiterte Karteileiche
+        deprec_reason = None
         if n_lifetime == 0 and n_60d == 0 and n_gate == 0 and age_days >= DORMANT_DAYS:
+            deprec_reason = (f'Klassisch: 0 lifetime, 0 trades 60d, 0 gate-fires 60d, age {age_days}d')
+        elif n_lifetime <= 2 and n_30d == 0 and age_days >= 30:
+            deprec_reason = (f'Schwach: lifetime {n_lifetime}<=2 trades, 0 in 30d, age {age_days}d → keine Edge')
+        elif n_lifetime > 2 and lifetime_pnl < 0 and n_30d == 0:
+            deprec_reason = (f'Negativ: lifetime {n_lifetime} trades PnL {lifetime_pnl:+.0f}€, 0 in 30d')
+        elif n_lifetime <= 1 and n_60d == 0 and age_days >= 45:
+            deprec_reason = (f'Karteileiche: lifetime {n_lifetime}, 0 in 60d, age {age_days}d')
+
+        if deprec_reason:
             candidates.append({
                 'strategy_id': sid,
                 'name': meta.get('name', sid),
@@ -124,8 +157,11 @@ def find_deprecation_candidates() -> list[dict]:
                 'genesis_date': genesis_date or '?',
                 'age_days': age_days,
                 'lifetime_trades': n_lifetime,
+                'lifetime_pnl': round(lifetime_pnl, 2),
+                'trades_30d': n_30d,
                 'trades_60d': n_60d,
                 'gate_fires_60d': n_gate,
+                'reason': deprec_reason,
             })
 
     c.close()
