@@ -1309,6 +1309,34 @@ def poll_once() -> None:
             except Exception as _te:
                 pass  # Transkript-Speicherung nie crashen lassen
 
+            # Phase 44j: Learnings extrahieren (LLM) und in research-learnings.md ablegen
+            try:
+                import sys as _sys2
+                _scripts = str(WS / 'scripts')
+                if _scripts not in _sys2.path:
+                    _sys2.path.insert(0, _scripts)
+                from research_intake import process as _research_process
+                _src = f'Discord-Transkript {datetime.now().strftime("%Y-%m-%d %H:%M")}'
+                _ri = _research_process(content, _src)
+                _l = _ri.get('learnings', {})
+                _p = _ri.get('persisted', {})
+                _msg = (
+                    f'🧠 **Learnings extrahiert** ({_p.get("verdict", "-")}):\n'
+                    f'- {_p.get("n_theses", 0)} Thesen → `data/external_theses.jsonl`\n'
+                    f'- {_p.get("n_methods", 0)} Methoden → `data/research_methods.jsonl`\n'
+                    f'- {_p.get("n_principles", 0)} Prinzipien → `memory/research-learnings.md`\n'
+                )
+                if _l.get('theses'):
+                    _msg += '\n**Top-Thesen:**\n'
+                    for _t in _l['theses'][:3]:
+                        _msg += (f"  · `{_t.get('ticker','?')}` "
+                                 f"({_t.get('direction','?')}) "
+                                 f"{(_t.get('thesis','') or '')[:100]}\n")
+                _send_message(_msg[:1900], CHANNEL_ID)
+            except Exception as _re:
+                # Learnings-Extraktion nie crashen lassen
+                print(f'[Albert] research_intake fail: {_re}', flush=True)
+
         # ── Phase 4: Thesis suggestion intake ────────────────────────────
         # If Victor writes "These:", "Thesis:", or "Strategie:" → parse as thesis
         is_thesis_suggestion = any(

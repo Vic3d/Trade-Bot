@@ -197,6 +197,9 @@ Sektor-Exposure:
 ═══ AKTIVE STRATEGIEN ({n_active}) ═══
 {strategies_str}
 
+═══ EXTERNE RESEARCH-THESEN (Top 5, von Victor eingebracht) ═══
+{research_theses_str}
+
 ═══ DEINE AUFGABE ═══
 Finde bis zu {max_new} hochwertige Setups die JETZT Sinn machen.
 Beachte:
@@ -312,6 +315,33 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
     except Exception:
         markets_open_str = '⏰ (Marktstatus nicht verfügbar)'
 
+    # Phase 44j: Externe Research-Thesen aus Victors Transkripten
+    research_theses_str = '  (keine externen Thesen)'
+    try:
+        from pathlib import Path as _P
+        _ext = _P(WS) / 'data' / 'external_theses.jsonl'
+        if _ext.exists():
+            _items = []
+            with open(_ext, encoding='utf-8') as _f:
+                for _line in _f:
+                    try: _items.append(json.loads(_line))
+                    except: pass
+            # Top-5 nach Confidence + Recency
+            _conf_rank = {'high': 3, 'med': 2, 'low': 1}
+            _items.sort(key=lambda x: (_conf_rank.get(x.get('confidence','low'), 0),
+                                        x.get('ts','')), reverse=True)
+            _lines = []
+            for _it in _items[:5]:
+                _lines.append(
+                    f"  · {_it.get('ticker','?')} ({_it.get('direction','?')}, "
+                    f"{_it.get('timeframe','?')}, conf={_it.get('confidence','?')}): "
+                    f"{(_it.get('thesis','') or '')[:120]} "
+                    f"[{_it.get('source','?')[:30]}]"
+                )
+            if _lines:
+                research_theses_str = '\n'.join(_lines)
+    except Exception: pass
+
     return HUNTER_PROMPT_TEMPLATE.format(
         mode=directive.get('mode', '?'),
         vix=directive.get('vix', '?'),
@@ -327,6 +357,7 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
         news_str=news_str,
         n_active=len(ctx['active_strategies']),
         strategies_str=strat_str,
+        research_theses_str=research_theses_str,
         max_new=max_new,
     )
 
