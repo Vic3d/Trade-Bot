@@ -181,6 +181,7 @@ Setups finden. Sei pragmatisch, nicht spekulativ — qualität > quantität.
 ═══ AKTUELLER STATE ═══
 Mode: {mode} | VIX: {vix} | Geo: {geo}
 Cash: {cash:.0f}EUR ({cash_pct:.0f}% vom Fund)
+{markets_open_str}
 Open Positions: {n_open} ({open_tickers})
 Heute schon eröffnet: {n_today} (max 7/Woche!)
 
@@ -285,12 +286,39 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
     else:
         strat_str = '  (keine)'
 
+    # Phase 44e: Markt-Open-Status injecten — Hunter darf nur Tickers
+    # für AKTUELL OFFENE Märkte vorschlagen
+    try:
+        from calendar_service import get_market_status, get_berlin_time
+        bt = get_berlin_time()
+        us = get_market_status('US')
+        eu = get_market_status('EU')
+        asia = get_market_status('ASIA')
+        markets_open = []
+        if us['status'] == 'open':
+            markets_open.append('US (NYSE/NASDAQ — Suffix nichts oder .US)')
+        if eu['status'] == 'open':
+            markets_open.append('EU (XETR=.DE, XPAR=.PA, XAMS=.AS, XMIL=.MI, XLON=.L, XOSL=.OL, XCSE=.CO)')
+        if asia['status'] == 'open':
+            markets_open.append('ASIA (XTKS=.T, XHKG=.HK, XKRX=.KS)')
+        if not markets_open:
+            markets_open = ['KEIN MARKT OFFEN — Hunter sollte 0 Setups produzieren']
+        markets_open_str = (
+            f'⏰ Berlin {bt["time_hm"]} {bt["tz_abbrev"]} — '
+            f'OFFENE MÄRKTE: {" | ".join(markets_open)}\n'
+            f'   → STRIKT NUR Tickers aus offenen Märkten vorschlagen!\n'
+            f'   → US-Tickers (z.B. XOM, AAPL) erst ab 15:30 CET handelbar.'
+        )
+    except Exception:
+        markets_open_str = '⏰ (Marktstatus nicht verfügbar)'
+
     return HUNTER_PROMPT_TEMPLATE.format(
         mode=directive.get('mode', '?'),
         vix=directive.get('vix', '?'),
         geo=directive.get('geo_alert_level', '?'),
         cash=ctx['cash_eur'],
         cash_pct=cash_pct,
+        markets_open_str=markets_open_str,
         n_open=ctx['open_count'],
         open_tickers=', '.join(ctx['open_position_tickers'][:10]) or 'none',
         n_today=ctx['today_already_opened'],
@@ -416,6 +444,20 @@ def _strategy_quality_check(strategy_id: str) -> tuple[bool, str]:
         return True, ''  # bei Fehler: nicht blockieren (defensiv)
 
 
+# Phase 44e: Häufige Ticker-Suffix-Korrekturen
+TICKER_SUFFIX_FIX = {
+    'EQNR':    'EQNR.OL',
+    'NOVO-B':  'NOVO-B.CO',
+    'NOVO':    'NOVO-B.CO',
+    'SAAB-B':  'SAAB-B.ST',
+    'RIO':     'RIO.L',
+    'BHP':     'BHP.L',
+    'BP':      'BP.L',
+    'SHELL':   'SHEL.L',
+    'BAYER':   'BAYN.DE',
+}
+
+
 def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
     """Konvertiere Hunter-Setups in proposals.json Format."""
     proposals = []
@@ -427,6 +469,9 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
         strategy = s.get('strategy')
         if not ticker or not strategy:
             continue
+        # Phase 44e: Ticker-Suffix-Auto-Fix (z.B. EQNR → EQNR.OL)
+        if ticker in TICKER_SUFFIX_FIX:
+            ticker = TICKER_SUFFIX_FIX[ticker]
         # Phase 44b/Fix-4: Strategy-Quality-Gate
         ok, reason = _strategy_quality_check(strategy)
         if not ok:
