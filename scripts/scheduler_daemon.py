@@ -146,6 +146,12 @@ SCHEDULE = [
     ('Catalyst Calendar',   'catalyst_calendar.py',             [],                6,  20, None,        False),
     # ── Phase 22 Core Jobs ───────────────────────────────────────────────────
     ('Commodity Refresh',   'commodity_refresh.py',             [],                7,  0,  None,        False),  # tgl. 07:00 vor Handel
+    # Phase 44k: Commodity-Cache-JSON fuer LLM-Konsumenten (Hunter, Discord-Bot)
+    # 4x taeglich an Markt-Pivots — Brent/VIX/Gold/Copper als Korrelations-Driver
+    ('Commodity Cache',     'commodity_price_refresh.py',       [],                7,  5,  None,        False),  # vor EU-Open
+    ('Commodity Cache',     'commodity_price_refresh.py',       [],                12, 0,  None,        False),  # Mittag
+    ('Commodity Cache',     'commodity_price_refresh.py',       [],                15, 30, None,        False),  # US-Open
+    ('Commodity Cache',     'commodity_price_refresh.py',       [],                21, 0,  None,        False),  # US-Close
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30

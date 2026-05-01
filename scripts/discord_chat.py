@@ -925,6 +925,56 @@ def _handle_thesis_suggestion(content: str) -> None:
         print(f'[Albert] Failed to store thesis suggestion: {e}', flush=True)
 
 
+# ── Phase 44k: Commodity-Price-Helper ────────────────────────────────────────
+
+def _commodity_query_match(content_lower: str) -> str | None:
+    """Erkennt Commodity-Anfragen und liefert formatierte Antwort aus dem Cache.
+    Trigger-Worte: brent, oel/oil/öl, wti, gold, silber/silver, kupfer/copper,
+    vix, dxy, dollar-index, btc/bitcoin, ng/natgas/erdgas, weizen/wheat."""
+    triggers = {
+        ('brent',): 'BZ=F', ('wti',): 'CL=F',
+        ('öl', 'oel', 'oil', 'rohöl', 'crude'): 'BZ=F',
+        ('gold',): 'GC=F', ('silber', 'silver'): 'SI=F',
+        ('kupfer', 'copper'): 'HG=F', ('platinum', 'platin'): 'PL=F',
+        ('vix',): '^VIX', ('dxy', 'dollar-index', 'dollar index'): 'DX-Y.NYB',
+        ('btc', 'bitcoin'): 'BTC-USD', ('eth', 'ethereum'): 'ETH-USD',
+        ('weizen', 'wheat'): 'ZW=F', ('mais', 'corn'): 'ZC=F',
+        ('soja', 'soybean'): 'ZS=F',
+        ('natgas', 'erdgas', 'natural gas'): 'NG=F',
+        ('s&p', 'sp500', 's+p'): '^GSPC',
+        ('dax',): '^GDAXI', ('nasdaq',): '^IXIC',
+        ('eurusd', 'eur/usd'): 'EURUSD=X',
+    }
+    found_syms = []
+    for words, sym in triggers.items():
+        if any(w in content_lower for w in words):
+            found_syms.append(sym)
+    if not found_syms:
+        return None
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from commodity_price_refresh import get_price
+        from datetime import datetime
+        out = ['📊 **Commodity-Snapshot** (Live-Cache):\n']
+        for sym in dict.fromkeys(found_syms):  # dedupe, keep order
+            p = get_price(sym)
+            if not p:
+                out.append(f'  · `{sym}` — nicht im Cache\n')
+                continue
+            arr24 = '🟢' if p.get('chg_24h_pct',0) > 0.3 else '🔴' if p.get('chg_24h_pct',0) < -0.3 else '➖'
+            arr7 = '🟢' if p.get('chg_7d_pct',0) > 1 else '🔴' if p.get('chg_7d_pct',0) < -1 else '➖'
+            out.append(
+                f'  · **{p.get("name", sym)}** {p.get("spot",0):.2f} {p.get("ccy","")}  '
+                f'{arr24} 24h {p.get("chg_24h_pct",0):+.2f}%  '
+                f'{arr7} 7d {p.get("chg_7d_pct",0):+.2f}%  '
+                f'(14d: {p.get("range_14d_low",0):.2f}–{p.get("range_14d_high",0):.2f})\n'
+            )
+        return ''.join(out)
+    except Exception as e:
+        return f'_(commodity-cache lookup err: {e})_'
+
+
 # ── Deep Dive ─────────────────────────────────────────────────────────────────
 
 def _handle_deep_dive(ticker: str) -> str:
@@ -1253,6 +1303,15 @@ def poll_once() -> None:
                 continue
 
         # ── Deep Dive Command ─────────────────────────────────────────────
+        # ── Phase 44k: Commodity-Snapshot (Brent, Gold, VIX, etc.) ───────
+        # Trigger automatisch bei kurzen Fragen die Commodities erwaehnen.
+        # Ueberbrueckt Sandbox-Permission-Issues — Bot liest aus Cache.
+        if len(content) < 250:  # Nur fuer kurze Fragen, nicht Transkripte
+            _commodity_resp = _commodity_query_match(content_lower)
+            if _commodity_resp:
+                _send_message(_commodity_resp[:1900], CHANNEL_ID)
+                # Kein 'continue' — Albert kann zusaetzlich antworten
+
         # Victor: "Deep Dive RHM.DE" oder "deep dive AAPL"
         # → Vollständige 6-Schritt-Analyse nach deepdive-protokoll.md
         deep_dive_prefixes = ('deep dive ', 'deepdive ', 'deep-dive ')

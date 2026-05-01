@@ -200,6 +200,9 @@ Sektor-Exposure:
 ═══ EXTERNE RESEARCH-THESEN (Top 5, von Victor eingebracht) ═══
 {research_theses_str}
 
+═══ COMMODITY-DRIVERS (Live-Cache) ═══
+{commodity_snapshot}
+
 ═══ DEINE AUFGABE ═══
 Finde bis zu {max_new} hochwertige Setups die JETZT Sinn machen.
 Beachte:
@@ -342,7 +345,15 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
                 research_theses_str = '\n'.join(_lines)
     except Exception: pass
 
+    # Phase 44k: Commodity-Driver-Snapshot
+    commodity_snapshot = '(commodity-cache fehlt)'
+    try:
+        from commodity_price_refresh import get_snapshot_str
+        commodity_snapshot = get_snapshot_str(top_n=12)
+    except Exception: pass
+
     return HUNTER_PROMPT_TEMPLATE.format(
+        commodity_snapshot=commodity_snapshot,
         mode=directive.get('mode', '?'),
         vix=directive.get('vix', '?'),
         geo=directive.get('geo_alert_level', '?'),
