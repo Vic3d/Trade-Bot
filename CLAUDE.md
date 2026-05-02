@@ -1,6 +1,38 @@
 # TradeMind — Projekt-Übersicht für Claude Sessions
-**Letzte Aktualisierung:** 2026-04-29
+**Letzte Aktualisierung:** 2026-05-02
 **WICHTIG: Diese Datei als erstes lesen. Nicht neu bauen was bereits existiert.**
+
+---
+
+# 🛡️ STOP-MANAGEMENT — DOKTRIN (Phase 44n, Victor 2026-05-02)
+
+**Der Stop ist heilig. Niemand fasst ihn an außer dem dokumentierten Daily-Cycle.**
+
+## Architektur (4 Layer)
+
+| Layer | Skript | Job | Frequenz |
+|---|---|---|---|
+| **1. Initial Set** | `paper_trade_engine.py` | Stop bei Entry: max(1.5×ATR, 7%), CRV ≥ 2:1 | bei Entry |
+| **2. Daily Trail** | `stop_manager_daily.py` | Chandelier Exit (HWM − VIX_mult × ATR), Ratchet-only | täglich 22:30 |
+| **3. Macro Review** | `macro_stop_review.py` | LLM bewertet Notifications, schlägt HOLD/TRAIL/LOCK/EXIT vor | 09:30 + 16:00 |
+| **4. Catalyst Widener** | `catalyst_stop_widener.py` | Vor Earnings/Fed Stop weiten | täglich 06:30 |
+
+## Kern-Regeln
+
+- **Macro-Reactor ist NOTIFICATION-ONLY** — schreibt nur in `macro_position_notifications.jsonl`. Greift nicht direkt am Stop an.
+- **Ratchet:** Stop bewegt sich nur nach OBEN, nie nach unten
+- **24h-Cooldown:** Frische Position wird nicht angefasst (Atemluft)
+- **5%-Profit-Schwelle:** Stop trailt erst ab +5% (sonst Mikro-Stop durch Tagesvolatilität)
+- **VIX-Regime:** ATR-Multiplier passt sich an: <15→2.0×, 15-25→2.5×, 25-40→3.0×, >40→3.5×
+- **Crash-Safety:** −10% live-loss → Auto-Exit (echte Risk-Control, kein Macro)
+- **Time-Stop:** 14d flat (-2%/+2%) → Exit-Empfehlung
+
+## Was NICHT passieren darf
+
+❌ Macro-Event triggert blindes Stop-Tightening (das war EQNR #97 + #123 Bug)
+❌ Stop wird auf Entry gezogen wenn Position nur 0.x% grün (Mikro-Stop-Tod)
+❌ −2%-vom-Entry-Stop nach News (zu eng — innerhalb normaler Tagesvolatilität)
+❌ Intraday-Stop-Bewegungen (Ausnahme: nur Crash-Safety bei −10%)
 
 ---
 
