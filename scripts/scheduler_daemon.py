@@ -161,6 +161,7 @@ SCHEDULE = [
     ('Calibration Tracker', 'ceo_calibration_tracker.py',       [],                23, 0,  None,        False),  # tgl. 23:00: Brier-Score
     ('Lesson Extractor',    'ceo_lesson_extractor.py',          [],                23, 15, None,        False),  # tgl. 23:15: Trade → Lessons
     ('Hypothesis Tracker',  'ceo_hypothesis_tracker.py',        [],                23, 30, None,        False),  # tgl. 23:30: Insights → Status
+    ('Conviction Recalib',  'conviction_calibration.py',        [],                22, 45, None,        False),  # tgl. 22:45: Logistic-Fit conviction → P(win)
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30

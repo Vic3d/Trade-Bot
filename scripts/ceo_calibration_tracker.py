@@ -60,10 +60,20 @@ def _compute_window(c: sqlite3.Connection, days: int | None) -> dict:
         params
     ).fetchall()
 
+    # Phase 44p: nutze logistische Eichung statt linearer Annahme
+    try:
+        from conviction_calibration import predict as _calibrated_predict
+        _use_calibrated = True
+    except Exception:
+        _use_calibrated = False
+
     samples = []
     for conv, status, pnl in rows:
         try:
-            p = float(conv) / 100.0  # conviction 0-100 → prob 0-1
+            if _use_calibrated:
+                p = _calibrated_predict(float(conv))
+            else:
+                p = float(conv) / 100.0
             o = _outcome_binary(status, pnl)
             if o is None: continue
             samples.append((p, o))
