@@ -69,24 +69,25 @@ def is_market_hours() -> bool:
         return True  # Fallback: immer aktiv
 
 
-def send_alert(msg: str):
-    """Discord-Alert via Dispatcher (Phase 22.4 Priority-Tiering).
-    Auto-Tier nach Keyword:
-      HIGH   — STOP getroffen, TARGET erreicht, Entry-Trigger, VIX-Spike
-      MEDIUM — Trailing Stop Anpassung
-      LOW    — Stop sehr nah (Frühwarnung)
+def send_alert(msg: str, dedupe_key: str | None = None):
+    """Discord-Alert via Dispatcher.
+    Phase 44u-fix: 'Stop sehr nah' Warnungen sind SILENT (nur Inbox)
+    weil sie Information sind, keine Action.
     """
     try:
-        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW
+        from discord_dispatcher import send_alert as _dispatch, TIER_HIGH, TIER_MEDIUM, TIER_LOW, TIER_SILENT
         m = msg.upper()
-        if any(k in m for k in ('STOP GETROFFEN', 'TARGET ERREICHT',
-                                 'ENTRY-TRIGGER', 'VIX-SPIKE', '🔴', '🟢', '🎯', '⚡')):
+        if any(k in m for k in ('STOP GETROFFEN', 'TARGET ERREICHT', 'VIX-SPIKE', '🔴', '🟢', '🎯')):
             tier = TIER_HIGH
+        elif 'STOP SEHR NAH' in m or 'STOP NAH' in m:
+            tier = TIER_SILENT  # Information, nicht Action
         elif 'TRAILING' in m or '🔄' in m:
+            tier = TIER_LOW  # Digest abends, nicht sofort
+        elif 'CURRENCY-MISMATCH' in m or 'ENTRY-TRIGGER' in m:
             tier = TIER_MEDIUM
         else:
             tier = TIER_LOW
-        _dispatch(msg, tier=tier, category='trade')
+        _dispatch(msg, tier=tier, category='trade', dedupe_key=dedupe_key)
     except Exception as e:
         print(f"[ALERT FAIL] {e}: {msg[:80]}")
 
@@ -273,10 +274,12 @@ def run_monitor():
                             alerted_ids.add(f"trail_{tid}")
 
                 # STOP SEHR NAH (<1.5% entfernt)
+                # Phase 44u-fix: nur 1x pro Ticker pro Tag, nicht per 0.1%-Bucket
                 if stop and price > stop:
                     dist_pct = (price - stop) / price * 100
                     if dist_pct < 1.5:
-                        alert_key = f"near_{tid}_{int(dist_pct*10)}"
+                        today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+                        alert_key = f"near_{tid}_{today}"
                         if alert_key not in alerted_ids:
                             send_alert(
                                 f"⚠️ **Stop sehr nah** — {ticker}\n"
