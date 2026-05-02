@@ -203,6 +203,11 @@ Sektor-Exposure:
 ═══ COMMODITY-DRIVERS (Live-Cache) ═══
 {commodity_snapshot}
 
+═══ MACRO-EVENT NOTIFICATIONS FUER OFFENE POSITIONEN ═══
+{macro_position_notifications}
+(Pruefe pro Notification: muss der Stop ueberdacht werden? Wenn ja, plane explizite STOP_REVIEW-Aktion.
+NIE blind tightening — der Stop wurde mit voller Kontext-Analyse gesetzt.)
+
 ═══ DEINE AUFGABE ═══
 Finde bis zu {max_new} hochwertige Setups die JETZT Sinn machen.
 Beachte:
@@ -352,8 +357,39 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
         commodity_snapshot = get_snapshot_str(top_n=12)
     except Exception: pass
 
+    # Phase 44m: Macro-Position-Notifications (last 24h, unique per ticker)
+    macro_position_notifications = '(keine Notifications)'
+    try:
+        from pathlib import Path as _P2
+        from datetime import datetime as _dt2, timezone as _tz2, timedelta as _td2
+        _nf = _P2(WS) / 'data' / 'macro_position_notifications.jsonl'
+        if _nf.exists():
+            cutoff = _dt2.now(_tz2.utc) - _td2(hours=24)
+            seen = {}
+            with open(_nf, encoding='utf-8') as _f:
+                for _l in _f:
+                    try:
+                        n = json.loads(_l)
+                        ts = _dt2.fromisoformat(n['ts'].replace('Z','+00:00'))
+                        if ts < cutoff: continue
+                        key = (n['trade_id'], n['event_type'])
+                        seen[key] = n  # last wins
+                    except: pass
+            if seen:
+                lines = []
+                for n in list(seen.values())[-10:]:
+                    lines.append(
+                        f'  · {n["ticker"]}/{n["strategy"]} ({n["event_type"]}): '
+                        f'live {n["live_price"]:.2f} entry {n["entry_price"]:.2f} '
+                        f'unr {n["unrealized_pct"]:+.1f}%, stop {n["current_stop"]:.2f} '
+                        f'({n["stop_distance_pct"]:+.1f}% von live), rec={n["recommendation"]}'
+                    )
+                macro_position_notifications = '\n'.join(lines)
+    except Exception: pass
+
     return HUNTER_PROMPT_TEMPLATE.format(
         commodity_snapshot=commodity_snapshot,
+        macro_position_notifications=macro_position_notifications,
         mode=directive.get('mode', '?'),
         vix=directive.get('vix', '?'),
         geo=directive.get('geo_alert_level', '?'),

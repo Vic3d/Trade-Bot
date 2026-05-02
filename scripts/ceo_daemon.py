@@ -428,97 +428,52 @@ def _process_macro_reeval_queue() -> dict:
 
             unr_pct = (live - entry) / entry * 100 if entry else 0
 
-            # Phase 44h Fix 1: 24h-Cooldown nach Entry — frische Trade hat
-            # noch keine Atemluft, Tightening sofort = Coinflip durch Vola.
-            try:
-                from datetime import datetime as _dt
-                _ed = _dt.fromisoformat(entry_date.replace('Z',''))
-                _hours_since_entry = (_dt.utcnow() - _ed.replace(tzinfo=None)).total_seconds() / 3600
-            except Exception:
-                _hours_since_entry = 999  # alt → kein Cooldown
-            if _hours_since_entry < 24:
-                actions['cooldown_skipped'] += 1
-                _log(f'  ⏳ cooldown: {ticker} entry vor {_hours_since_entry:.1f}h — kein Tighten')
-                continue
-
-            # Phase 44h Fix 2: Bullish-Event-Detection — wenn Event bullish
-            # fuer diesen Ticker+Strategy ist, KEIN Tightening.
+            # Phase 44m (Victor 2026-05-02): Auto-Tighten gestrichen — keine
+            # Cooldown/Bullish-Skips noetig, weil nichts mehr getightet wird.
             qitem = queue_by_tid.get(tid, {})
-            if _is_bullish_event_for(ticker, strategy, qitem):
-                actions['bullish_skipped'] += 1
-                _log(f'  ✅ bullish-skip: {ticker}/{strategy} — Event {qitem.get("event_type","?")} ist FUER diese Position')
-                continue
-
-            # Regel-basierte Auto-Reaktion auf Macro-Event:
-            #   1. Wenn Position bereits underwater >2% → Stop strikt nachziehen auf -2%
-            #   2. Wenn Position underwater >5% → sofort exit (Macro-Event verschärft Risiko)
-            #   3. Wenn Position grün >0% → Stop auf Break-Even nachziehen (lock profit)
-            if unr_pct < -5:
-                # Sofort-Exit
+            # Phase 44m (Victor 2026-05-02): Macro-Reactor ist NOTIFICATION-ONLY.
+            # Auto-Tighten gestrichen — der Stop wurde mit voller Kontext (ATR, R:R,
+            # Position-Size) gesetzt. Eine News-Headline aendert davon NICHTS.
+            # Der Reactor schreibt nur eine Notification fuer den naechsten
+            # CEO-Hunter-Cycle. CEO entscheidet bewusst, nicht der Detector.
+            #
+            # EINZIGE Ausnahme: Crash-Safety-Net bei -10% live-loss (echte Risk-Control).
+            CRASH_THRESHOLD_PCT = -10.0
+            if unr_pct <= CRASH_THRESHOLD_PCT:
+                # Echter Crash — Risiko-Control, nicht Macro-Reaktion
                 try:
                     from paper_exit_manager import close_position
-                    close_position(tid, exit_reason='MACRO_AUTO_EXIT')
+                    close_position(tid, exit_reason='CRASH_AUTO_EXIT')
                     actions['exited'] += 1
-                    _log(f'  🚨 macro-exit: {ticker} ({unr_pct:+.1f}%) — Risiko zu hoch')
+                    _log(f'  🚨 CRASH-EXIT: {ticker} ({unr_pct:+.1f}%) — echte Risk-Control')
                 except Exception as _ce:
                     _log(f'  exit err {ticker}: {_ce}')
                     actions['errors'] += 1
-            elif unr_pct < -2:
-                # Stop strikt auf -2% vom Entry
-                new_stop = round(entry * 0.98, 2)
-                if new_stop > stop:
-                    try:
-                        c2 = sqlite3.connect(str(DB))
-                        c2.execute(
-                            "UPDATE paper_portfolio SET stop_price=?, "
-                            "  notes=COALESCE(notes,'') || ? WHERE id=?",
-                            (new_stop,
-                             f' | MACRO-TIGHTENED stop {stop:.2f}→{new_stop:.2f}',
-                             tid))
-                        c2.commit()
-                        c2.close()
-                        actions['tightened_stop'] += 1
-                        _log(f'  🔒 stop-tightened: {ticker} {stop:.2f} → {new_stop:.2f}')
-                    except Exception as _ue:
-                        _log(f'  update err {ticker}: {_ue}')
-                        actions['errors'] += 1
-            elif unr_pct >= 5.0:
-                # Phase 44l: Break-Even-Stop NUR bei >=5% Polster.
-                # Vorher: jede gruene Position → Stop auf Entry → Mikro-Stops
-                # killen Trades durch normale Tagesvolatilitaet (EQNR #123 Lehre).
-                # Plus: ATR-Floor respektieren — niemals enger als entry-1.5xATR.
-                _atr_floor_stop = entry  # Default = Breakeven
-                try:
-                    _conn_atr = sqlite3.connect(str(DB))
-                    _bars = _conn_atr.execute(
-                        "SELECT high, low, close FROM prices WHERE ticker=? "
-                        "ORDER BY date DESC LIMIT 14", (ticker,)
-                    ).fetchall()
-                    _conn_atr.close()
-                    if len(_bars) >= 5:
-                        _atr_pct = sum((float(h)-float(l))/float(c) for h,l,c in _bars if float(c)>0) / len(_bars)
-                        # Floor: nicht enger als Live - 1.5xATR (laesst Atemluft)
-                        _atr_floor_stop = max(entry, live * (1 - _atr_pct * 1.5))
-                except Exception:
-                    pass
-                _new_stop = round(_atr_floor_stop, 2)
-                if _new_stop > stop:
-                    try:
-                        c2 = sqlite3.connect(str(DB))
-                        c2.execute(
-                            "UPDATE paper_portfolio SET stop_price=?, "
-                            "  notes=COALESCE(notes,'') || ? WHERE id=?",
-                            (_new_stop,
-                             f' | MACRO-PROFIT-LOCK stop {stop:.2f}→{_new_stop:.2f} (live {live:.2f}, +{unr_pct:.1f}%)',
-                             tid))
-                        c2.commit()
-                        c2.close()
-                        actions['tightened_stop'] += 1
-                        _log(f'  🔒 profit-lock-stop: {ticker} {stop:.2f} → {_new_stop:.2f} (+{unr_pct:.1f}%)')
-                    except Exception:
-                        actions['errors'] += 1
-            else:
+                continue
+
+            # Notification-Pfad: Macro-Event fuer offene Position registriert
+            # → wird von Hunter im naechsten Cycle als Kontext gelesen
+            try:
+                from pathlib import Path as _P
+                _notif_file = _P(WS) / 'data' / 'macro_position_notifications.jsonl'
+                _notif_file.parent.mkdir(parents=True, exist_ok=True)
+                _ev_type = qitem.get('event_type', 'UNKNOWN')
+                _notif = {
+                    'ts': datetime.now(timezone.utc).isoformat(),
+                    'trade_id': tid, 'ticker': ticker, 'strategy': strategy,
+                    'event_type': _ev_type,
+                    'entry_price': entry, 'live_price': live,
+                    'unrealized_pct': round(unr_pct, 2),
+                    'current_stop': stop, 'stop_distance_pct': round((live-stop)/live*100, 2),
+                    'recommendation': 'CEO_REVIEW' if abs(unr_pct) > 2 else 'INFO_ONLY',
+                }
+                with open(_notif_file, 'a', encoding='utf-8') as _nf:
+                    _nf.write(json.dumps(_notif, ensure_ascii=False) + '\n')
                 actions['kept'] += 1
+                _log(f'  📋 macro-notify: {ticker} ({unr_pct:+.1f}%) → CEO im naechsten Cycle')
+            except Exception as _ne:
+                actions['errors'] += 1
+                _log(f'  notify err: {_ne}')
         except Exception as _e:
             actions['errors'] += 1
             _log(f'  reeval err: {_e}')
