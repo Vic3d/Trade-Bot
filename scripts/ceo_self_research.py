@@ -144,25 +144,43 @@ def _generate_questions(ctx: dict) -> list[dict]:
     return []
 
 
-def _find_news(question: dict, hours: int = 48) -> list[dict]:
-    """Heuristik: extrahiere Schluesselwoerter aus question + related_to,
-    suche in news_events letzter N Stunden."""
-    if not DB.exists(): return []
-    keywords = []
-    related = (question.get('related_to') or '').lower()
-    if related: keywords.append(related)
-    # Aus Frage-Text: alle Woerter mit Grossbuchstaben (Tickers, Eigennamen)
+def _extract_keywords(question: dict) -> tuple[list[str], list[str], list[str]]:
+    """Trennt: tickers (US/EU symbols), generic keywords, sector hints."""
     import re
-    for w in re.findall(r'\b[A-Z][A-Z0-9.]{1,8}\b', question.get('question', '')):
-        keywords.append(w.lower())
-    # Aus Frage: ein paar wichtige Substantive
-    for w in ['brent', 'oil', 'iran', 'fed', 'opec', 'glyphosat', 'roundup',
-                'tariff', 'china', 'crypto', 'gold', 'copper', 'tanker',
-                'earnings', 'fomc', 'cpi', 'nfp', 'scotus']:
-        if w in question.get('question', '').lower():
-            keywords.append(w)
-    if not keywords: return []
+    q_text = question.get('question', '')
+    related = (question.get('related_to') or '').strip()
 
+    tickers, keywords, sectors = [], [], []
+    if related:
+        for r in related.replace(',', ' ').split():
+            r = r.strip()
+            if r and len(r) <= 10 and (r.isupper() or '.' in r):
+                tickers.append(r)
+            else:
+                keywords.append(r.lower())
+    for w in re.findall(r'\b[A-Z][A-Z0-9.]{1,8}\b', q_text):
+        if w not in tickers: tickers.append(w)
+
+    qlower = q_text.lower()
+    sector_map = {
+        'oil': 'energy', 'brent': 'energy', 'wti': 'energy', 'opec': 'energy', 'crude': 'energy',
+        'fed': 'politics', 'fomc': 'politics', 'powell': 'politics',
+        'trump': 'politics', 'tariff': 'politics', 'scotus': 'politics',
+        'gold': 'metals', 'silver': 'metals', 'copper': 'metals', 'mining': 'mining',
+        'china': 'politics', 'iran': 'politics', 'russia': 'politics', 'hormuz': 'energy',
+        'tech': 'technology', 'nvda': 'technology', 'ai': 'technology',
+        'crypto': 'markets', 'bitcoin': 'markets',
+        'earnings': 'markets',
+    }
+    for kw, sector in sector_map.items():
+        if kw in qlower:
+            keywords.append(kw)
+            if sector not in sectors: sectors.append(sector)
+    return tickers, list(set(keywords)), sectors
+
+
+def _query_news_db(keywords: list[str], hours: int) -> list[dict]:
+    if not DB.exists() or not keywords: return []
     try:
         c = sqlite3.connect(str(DB))
         c.row_factory = sqlite3.Row
@@ -171,13 +189,64 @@ def _find_news(question: dict, hours: int = 48) -> list[dict]:
         rows = c.execute(
             f"SELECT id, headline, source, created_at FROM news_events "
             f"WHERE created_at >= datetime('now', '-{hours} hours') "
-            f"AND ({clauses}) ORDER BY created_at DESC LIMIT 12",
+            f"AND ({clauses}) ORDER BY created_at DESC LIMIT 8",
             params
         ).fetchall()
         c.close()
-        return [dict(r) for r in rows]
+        return [{'source': r['source'], 'headline': r['headline'],
+                 'date': r['created_at'], 'origin': 'db'} for r in rows]
     except Exception:
         return []
+
+
+def _query_live_sources(tickers: list[str], sectors: list[str]) -> list[dict]:
+    """Phase 44s2: LIVE-Calls auf Bloomberg + Reuters + Finnhub.
+    Schoepft die existierenden API-Quellen aus."""
+    out = []
+    try:
+        from news_fetcher import bloomberg, reuters
+        # Bloomberg: relevante Sektoren oder Default
+        bbg_cats = sectors if sectors else ['markets']
+        for n in bloomberg(categories=bbg_cats, n=3, max_age_hours=72) or []:
+            out.append({'source': n.get('source', 'Bloomberg'),
+                        'headline': n.get('title', ''), 'date': n.get('date', ''),
+                        'origin': 'bloomberg_live'})
+        for n in reuters(categories=bbg_cats, n=3, max_age_hours=72) or []:
+            out.append({'source': n.get('source', 'Reuters'),
+                        'headline': n.get('title', ''), 'date': n.get('date', ''),
+                        'origin': 'reuters_live'})
+    except Exception as e:
+        print(f'[research] bloomberg/reuters err: {e}')
+
+    # Finnhub Company-News pro Ticker
+    try:
+        from news_fetcher import finnhub_company
+        for tk in tickers[:3]:
+            for n in finnhub_company(tk, days_back=3, n=3) or []:
+                out.append({'source': f'Finnhub/{tk}',
+                            'headline': n.get('title', ''),
+                            'date': n.get('date', ''),
+                            'origin': 'finnhub_live'})
+    except Exception as e:
+        print(f'[research] finnhub err: {e}')
+
+    return out
+
+
+def _find_news(question: dict, hours: int = 48) -> list[dict]:
+    """Multi-Source: DB + Bloomberg + Reuters + Finnhub LIVE."""
+    tickers, keywords, sectors = _extract_keywords(question)
+    db_news = _query_news_db(keywords + [t.lower() for t in tickers], hours)
+    live_news = _query_live_sources(tickers, sectors)
+    # Dedupe by headline
+    seen = set()
+    combined = []
+    for n in db_news + live_news:
+        h = (n.get('headline') or '')[:80].lower()
+        if h and h not in seen:
+            seen.add(h)
+            combined.append(n)
+    return combined[:15]
 
 
 def _synthesize(question: dict, news: list[dict]) -> dict:
@@ -187,8 +256,8 @@ def _synthesize(question: dict, news: list[dict]) -> dict:
     prompt = (
         f"Frage: {question['question']}\n"
         f"Kontext: {question.get('related_to','')}\n\n"
-        f"News-Headlines (letzte 48h, {len(news)} Stueck):\n"
-        + '\n'.join(f"  - [{n['source']}] {n['headline']}" for n in news[:10])
+        f"News-Headlines ({len(news)} Stueck, mix DB+Live):\n"
+        + '\n'.join(f"  - [{n.get('source','?')}|{n.get('origin','?')}] {n.get('headline','')}" for n in news[:12])
         + "\n\nBeantworte als JSON."
     )
     try:
