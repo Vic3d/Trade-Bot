@@ -482,6 +482,33 @@ def close_position(
         )
         conn.commit()
 
+    # Phase 44q: Bewusste Trade-Kommunikation (3-Zeilen mit Lehre)
+    try:
+        import sys as _sys9
+        _sys9.path.insert(0, str(WS / 'scripts'))
+        from trade_lifecycle_pusher import push_close as _push_close
+        ctx = conn.execute(
+            "SELECT strategy, stop_price, target_price, entry_date "
+            "FROM paper_portfolio WHERE id=?", (row_id,)
+        ).fetchone()
+        strategy = ctx['strategy'] if ctx else '?'
+        orig_stop = ctx['stop_price'] if ctx else None
+        orig_target = ctx['target_price'] if ctx else None
+        hold_hours = 0.0
+        try:
+            ed = datetime.fromisoformat((ctx['entry_date'] or '').replace('Z','+00:00'))
+            hold_hours = (datetime.now(timezone.utc) - ed).total_seconds() / 3600
+        except Exception: pass
+        _push_close(
+            ticker=ticker or '?', strategy=strategy or '?',
+            entry=entry_price, exit_price=close_price,
+            pnl_eur=pnl, pnl_pct=pnl_pct, exit_type=exit_type or 'UNKNOWN',
+            hold_hours=hold_hours,
+            original_stop=orig_stop, original_target=orig_target,
+        )
+    except Exception as _ple:
+        print(f'[lifecycle-push close] {_ple}', flush=True)
+
     return pnl
 
 

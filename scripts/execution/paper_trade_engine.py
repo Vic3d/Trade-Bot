@@ -1840,7 +1840,21 @@ def _execute_paper_entry_inner(
         f"📝 {thesis[:120] if thesis else '(kein Thesis)'}"
     )
     queue_alert(msg)
-    
+
+    # Phase 44q: Bewusste Trade-Kommunikation (3-Zeilen mit Why)
+    try:
+        import sys as _sys9
+        _sys9.path.insert(0, str(WORKSPACE / 'scripts'))
+        from trade_lifecycle_pusher import push_entry as _push_entry
+        _push_entry(
+            ticker=ticker, strategy=strategy,
+            entry=entry_price, stop=stop_price, target=target_price,
+            position_eur=position_eur, conviction=conv_score,
+            thesis=thesis, regime=regime,
+        )
+    except Exception as _ple:
+        print(f'[lifecycle-push entry] {_ple}', flush=True)
+
     return {
         'success': True,
         'trade_id': trade_id,
