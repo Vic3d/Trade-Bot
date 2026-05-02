@@ -167,6 +167,20 @@ SCHEDULE = [
     # Phase 44s: Active CEO Self-Research + YouTube-Auto-Intake
     ('CEO Self-Research',   'ceo_self_research.py',             [],                6,  0,  None,        False),  # tgl. 06:00 vor erstem Hunt
     ('YouTube Intake',      'youtube_transcript_monitor.py',    [],                7,  0,  None,        False),  # tgl. 07:00
+    # Phase 44t: News-Reactor — alle 15min position-aware News-Bewertung (Trading-Window)
+    ('News Reactor',        'news_reactor.py',                  [],                9,  15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                10, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                11, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                12, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                13, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                14, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                15, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                16, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                17, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                18, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                19, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                20, 15, [0,1,2,3,4], False),
+    ('News Reactor',        'news_reactor.py',                  [],                21, 15, [0,1,2,3,4], False),
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
