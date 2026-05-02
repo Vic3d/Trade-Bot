@@ -119,12 +119,54 @@ def _strategy_relevance(headline: str, strat: dict) -> bool:
     """Matcht Strategy-Thesis-Keywords im Headline."""
     h = headline.lower()
     thesis = strat.get('thesis', '').lower()
-    # Extrahiere markante Wörter aus Thesis (>=4 Buchstaben, keine Stoppwörter)
-    stops = {'fuer', 'durch', 'mit', 'sind', 'wird', 'kann', 'auch'}
+    stops = {'fuer', 'durch', 'mit', 'sind', 'wird', 'kann', 'auch', 'bleibt'}
     words = [w for w in re.findall(r'[a-zäöü]{5,}', thesis)
-             if w not in stops][:5]
+             if w not in stops][:8]
     for w in words:
         if w in h: return True
+    return False
+
+
+# Phase 44t2: Macro-Themen die ALLE Positions in dem Sektor betreffen
+SECTOR_MACRO_KEYWORDS = {
+    'energy':  ['oil', 'crude', 'brent', 'wti', 'opec', 'iran', 'hormuz',
+                 'energy', 'refinery', 'tanker', 'gasoline'],
+    'metals':  ['gold', 'silver', 'copper', 'mining', 'precious metal',
+                 'safe haven', 'silver miner', 'gold miner'],
+    'agri':    ['wheat', 'corn', 'soybean', 'fertilizer', 'crop', 'usda',
+                 'agriculture', 'potash', 'phosphate', 'mosaic'],
+    'macro':   ['fed', 'fomc', 'powell', 'rate cut', 'rate hike',
+                 'inflation', 'cpi', 'nfp', 'tariff', 'china', 'russia',
+                 'recession', 'gdp'],
+    'defense': ['defense', 'pentagon', 'nato', 'rearmament'],
+    'pharma':  ['fda', 'ema', 'glyphosat', 'roundup', 'monsanto',
+                 'pharmaceutical', 'drug approval'],
+}
+
+# Strategy → Sektoren-Map (was bewegt was)
+STRATEGY_SECTORS = {
+    'PS1': ['energy', 'macro'], 'S1': ['energy', 'macro'],
+    'PS2': ['energy', 'macro'],   # Tanker
+    'PS4': ['metals', 'macro'],   # Gold/Silver
+    'PS5': ['agri', 'macro'],     # Russland/Food
+    'PS13': ['metals', 'macro'],
+    'PS14': ['energy', 'macro'],  # Container-Shipping
+    'PS15': ['macro'],            # Biotech (rate-sensitiv)
+    'PS11': ['defense', 'macro'],
+    'PS28': ['defense'], 'PS38': ['defense'],
+    'PT': ['macro'],
+    'PYPL': ['macro'],
+}
+
+
+def _sector_macro_relevance(headline: str, strategy: str) -> bool:
+    """Matcht Macro-Themen die alle Positions in einem Sektor bewegen."""
+    h = headline.lower()
+    sectors = STRATEGY_SECTORS.get(strategy, ['macro'])
+    for sec in sectors:
+        for kw in SECTOR_MACRO_KEYWORDS.get(sec, []):
+            if kw in h:
+                return True
     return False
 
 
@@ -266,17 +308,17 @@ def run() -> dict:
         _save_state(state)
         return {'ts': _now(), 'note': 'no_new_news', 'evaluated': 0}
 
-    # Match news to positions
-    relevances = []  # list of (news, position)
+    # Match news to positions (3 layers: ticker → strategy → sector-macro)
+    relevances = []
     for n in new_news:
         for p in positions:
             if _ticker_relevance(n['headline'], p['ticker']):
-                relevances.append((n, p, 'ticker_match'))
-                continue
-            # Strategy-thema match (sekundär)
+                relevances.append((n, p, 'ticker_match')); continue
             strat = strats.get(p['strategy'])
             if strat and _strategy_relevance(n['headline'], strat):
-                relevances.append((n, p, 'strategy_match'))
+                relevances.append((n, p, 'strategy_match')); continue
+            if _sector_macro_relevance(n['headline'], p['strategy']):
+                relevances.append((n, p, 'sector_macro')); continue
 
     # Throttle + Cost-Cap
     eval_count = 0
