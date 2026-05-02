@@ -152,6 +152,11 @@ SCHEDULE = [
     ('Commodity Cache',     'commodity_price_refresh.py',       [],                12, 0,  None,        False),  # Mittag
     ('Commodity Cache',     'commodity_price_refresh.py',       [],                15, 30, None,        False),  # US-Open
     ('Commodity Cache',     'commodity_price_refresh.py',       [],                21, 0,  None,        False),  # US-Close
+    # Phase 44n: Professional Stop-Management (Daily-Cycle nach Close)
+    ('Catalyst Widener',    'catalyst_stop_widener.py',         [],                6,  30, [0,1,2,3,4], False),  # 06:30 vor Handel: Stops fuer Earnings/Fed weiten
+    ('Stop Manager Daily',  'stop_manager_daily.py',            [],                22, 30, [0,1,2,3,4], False),  # 22:30 nach US-Close: ATR-Trail
+    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        9,  30, [0,1,2,3,4], False),  # 09:30 nach EU-Open: LLM-Review
+    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        16, 0,  [0,1,2,3,4], False),  # 16:00 nach US-Open: 2. Review
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
