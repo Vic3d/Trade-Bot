@@ -482,21 +482,39 @@ def _process_macro_reeval_queue() -> dict:
                     except Exception as _ue:
                         _log(f'  update err {ticker}: {_ue}')
                         actions['errors'] += 1
-            elif unr_pct > 0:
-                # Break-Even-Stop
-                if entry > stop:
+            elif unr_pct >= 5.0:
+                # Phase 44l: Break-Even-Stop NUR bei >=5% Polster.
+                # Vorher: jede gruene Position → Stop auf Entry → Mikro-Stops
+                # killen Trades durch normale Tagesvolatilitaet (EQNR #123 Lehre).
+                # Plus: ATR-Floor respektieren — niemals enger als entry-1.5xATR.
+                _atr_floor_stop = entry  # Default = Breakeven
+                try:
+                    _conn_atr = sqlite3.connect(str(DB))
+                    _bars = _conn_atr.execute(
+                        "SELECT high, low, close FROM prices WHERE ticker=? "
+                        "ORDER BY date DESC LIMIT 14", (ticker,)
+                    ).fetchall()
+                    _conn_atr.close()
+                    if len(_bars) >= 5:
+                        _atr_pct = sum((float(h)-float(l))/float(c) for h,l,c in _bars if float(c)>0) / len(_bars)
+                        # Floor: nicht enger als Live - 1.5xATR (laesst Atemluft)
+                        _atr_floor_stop = max(entry, live * (1 - _atr_pct * 1.5))
+                except Exception:
+                    pass
+                _new_stop = round(_atr_floor_stop, 2)
+                if _new_stop > stop:
                     try:
                         c2 = sqlite3.connect(str(DB))
                         c2.execute(
                             "UPDATE paper_portfolio SET stop_price=?, "
                             "  notes=COALESCE(notes,'') || ? WHERE id=?",
-                            (round(entry, 2),
-                             f' | MACRO-BREAKEVEN stop {stop:.2f}→{entry:.2f}',
+                            (_new_stop,
+                             f' | MACRO-PROFIT-LOCK stop {stop:.2f}→{_new_stop:.2f} (live {live:.2f}, +{unr_pct:.1f}%)',
                              tid))
                         c2.commit()
                         c2.close()
                         actions['tightened_stop'] += 1
-                        _log(f'  🔒 break-even-stop: {ticker} {stop:.2f} → {entry:.2f}')
+                        _log(f'  🔒 profit-lock-stop: {ticker} {stop:.2f} → {_new_stop:.2f} (+{unr_pct:.1f}%)')
                     except Exception:
                         actions['errors'] += 1
             else:
