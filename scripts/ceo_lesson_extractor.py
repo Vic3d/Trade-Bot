@@ -191,7 +191,7 @@ def run() -> dict:
 
     if permanent:
         try:
-            from discord_dispatcher import send_alert, TIER_LOW
+            from discord_dispatcher import send_alert, TIER_SILENT as TIER_LOW  # Phase 44u: silent
             msg = f'📚 **{len(permanent)} neue permanente Lesson(s)** kondensiert:\n'
             for L in permanent:
                 msg += (f'\n• `{L["pattern"]}` (n={L["occurrences"]}, '

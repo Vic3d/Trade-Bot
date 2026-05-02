@@ -271,7 +271,7 @@ def push_discord_summary(deprecated: list[dict], reactivated: list[dict]) -> Non
     if not deprecated and not reactivated:
         return
     try:
-        from discord_dispatcher import send_alert, TIER_LOW
+        from discord_dispatcher import send_alert, TIER_SILENT as TIER_LOW  # Phase 44u: silent
         lines = ['🗂️ **Strategy Auto-Lifecycle (Regel #1)**\n']
         if deprecated:
             lines.append(f'**Auto-Deprecated** ({len(deprecated)} Strategien):')

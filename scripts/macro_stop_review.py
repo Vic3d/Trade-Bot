@@ -213,7 +213,7 @@ def review_pending(auto_apply: bool = False, hours_back: int = 6) -> dict:
     non_hold = [r for r in out if r['decision'].get('decision') != 'HOLD']
     if non_hold:
         try:
-            from discord_dispatcher import send_alert, TIER_MEDIUM
+            from discord_dispatcher import send_alert, TIER_LOW as TIER_MEDIUM  # Phase 44u: low
             lines = ['🧠 **Macro-Stop-Review** (LLM-Empfehlungen):\n']
             for r in non_hold[:8]:
                 d = r['decision']; n = r['notif']

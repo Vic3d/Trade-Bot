@@ -88,7 +88,9 @@ def push_close(*, ticker: str, strategy: str, entry: float, exit_price: float,
         f"{plan_line}\n"
         f"   Lehre: {lesson}"
     )
-    _send(msg)
+    # Phase 44u: HIGH nur bei signifikantem PnL-Move
+    force_high = abs(pnl_eur) >= 200 or label in ('CRASH-EXIT', 'EVENT-EXIT')
+    _send(msg, force_high=force_high)
 
 
 def _close_label(exit_type: str) -> str:
@@ -129,11 +131,13 @@ def _auto_lesson(exit_type: str, pnl_pct: float) -> str:
     return f'Exit ({pnl_pct:+.1f}%) — Lehre noch zu kondensieren'
 
 
-def _send(msg: str) -> None:
-    """Push via discord_dispatcher (Tier MEDIUM, mit Dedupe)."""
+def _send(msg: str, force_high: bool = False) -> None:
+    """Push via discord_dispatcher.
+    Phase 44u: Default MEDIUM (in Digest), HIGH nur bei Big-Loss/Big-Win."""
     try:
-        from discord_dispatcher import send_alert, TIER_MEDIUM
-        send_alert(msg[:1900], tier=TIER_MEDIUM, category='trade_lifecycle')
+        from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM
+        tier = TIER_HIGH if force_high else TIER_MEDIUM
+        send_alert(msg[:1900], tier=tier, category='trade_lifecycle')
     except Exception as e:
         print(f'[trade_lifecycle] push fail: {e}', flush=True)
 

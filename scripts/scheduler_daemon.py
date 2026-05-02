@@ -167,6 +167,9 @@ SCHEDULE = [
     # Phase 44s: Active CEO Self-Research + YouTube-Auto-Intake
     ('CEO Self-Research',   'ceo_self_research.py',             [],                6,  0,  None,        False),  # tgl. 06:00 vor erstem Hunt
     ('YouTube Intake',      'youtube_transcript_monitor.py',    [],                7,  0,  None,        False),  # tgl. 07:00
+    # Phase 44u: Discord-Digest-Flush — bündelt MEDIUM/LOW Queue statt Spam
+    ('Discord Digest MED',  'discord_dispatcher.py',            ['--flush-medium'], 12, 0, None,        False),  # Mittag
+    ('Discord Digest LOW',  'discord_dispatcher.py',            ['--flush-low'],    22, 30, None,       False),  # Abend
     # Phase 44t: News-Reactor — alle 15min position-aware News-Bewertung (Trading-Window)
     ('News Reactor',        'news_reactor.py',                  [],                9,  15, [0,1,2,3,4], False),
     ('News Reactor',        'news_reactor.py',                  [],                10, 15, [0,1,2,3,4], False),

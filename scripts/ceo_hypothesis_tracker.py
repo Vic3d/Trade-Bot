@@ -163,7 +163,7 @@ def run() -> dict:
     # Discord-Push fuer neu-validierte Hypothesen
     if promoted:
         try:
-            from discord_dispatcher import send_alert, TIER_MEDIUM
+            from discord_dispatcher import send_alert, TIER_LOW as TIER_MEDIUM  # Phase 44u: low (digest)
             lines = [f'💡 **{len(promoted)} CEO-Hypothese(n) jetzt VALIDATED** (>{OBSERVATION_DAYS}d beobachtet, Code-Skizze bereit):\n']
             for h in promoted[:5]:
                 lines.append(f'\n• "{h["hypothesis"][:140]}"')

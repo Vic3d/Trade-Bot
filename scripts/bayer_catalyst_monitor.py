@@ -186,9 +186,18 @@ def run() -> dict:
 
     if cls.get('should_push'):
         try:
-            from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM, TIER_LOW
-            tier = TIER_HIGH if cls['severity'] == 'HIGH' else (
-                   TIER_MEDIUM if cls['severity'] == 'MEDIUM' else TIER_LOW)
+            from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM, TIER_LOW, TIER_SILENT
+            # Phase 44u: HIGH nur wenn final week (<=7d) UND kritischer Move
+            days = cls.get('days_to_decision', 999)
+            in_final_week = 0 <= days <= 7
+            if cls['severity'] == 'HIGH' and in_final_week:
+                tier = TIER_HIGH
+            elif cls['severity'] == 'HIGH':
+                tier = TIER_MEDIUM  # 3% Move > 7d before Decision = nur Digest
+            elif cls['severity'] == 'MEDIUM':
+                tier = TIER_LOW
+            else:
+                tier = TIER_SILENT
             msg = _build_message(tape, news, cls)
             send_alert(msg, tier=tier, category='bayer_catalyst',
                         dedupe_key=f'bayer_catalyst_{date.today().isoformat()}')

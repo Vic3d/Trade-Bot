@@ -326,18 +326,15 @@ def run() -> dict:
     # Discord-Push fuer ACT-Findings
     acts = [(q, a) for q, a in zip(questions, answers) if a.get('impact') == 'ACT']
     reviews = [(q, a) for q, a in zip(questions, answers) if a.get('impact') == 'REVIEW']
-    if acts or reviews:
+    # Phase 44u: nur ACT-Findings durchlassen, REVIEW geht in Inbox/MD
+    if acts:
         try:
-            from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM
-            tier = TIER_HIGH if acts else TIER_MEDIUM
-            msg_lines = ['🧭 **Albert Self-Research** — Findings:']
-            for q, a in acts[:5]:
-                msg_lines.append(f"\n🚨 **ACT** — {q['question'][:100]}")
-                msg_lines.append(f"   → {a['answer'][:140]}")
-            for q, a in reviews[:5]:
-                msg_lines.append(f"\n⚠️ **REVIEW** — {q['question'][:100]}")
-                msg_lines.append(f"   → {a['answer'][:140]}")
-            msg_lines.append(f'\n_Volle Notiz: memory/ceo-daily-research/{datetime.now().strftime("%Y-%m-%d")}.md_')
+            from discord_dispatcher import send_alert, TIER_MEDIUM
+            tier = TIER_MEDIUM
+            msg_lines = ['🧭 Self-Research — ACT-Findings:']
+            for q, a in acts[:3]:
+                msg_lines.append(f"\n🚨 {q['question'][:90]}")
+                msg_lines.append(f"   → {a['answer'][:120]}")
             send_alert('\n'.join(msg_lines)[:1900], tier=tier,
                         category='self_research',
                         dedupe_key=f'self_research_{datetime.now().strftime("%Y-%m-%d")}')

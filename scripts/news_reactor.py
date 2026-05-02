@@ -345,19 +345,26 @@ def run() -> dict:
 
     _save_state(state)
 
-    # Discord-Push fuer pushed
+    # Phase 44u: nur EXIT_NOW HIGH-pingt, REVIEW_STOP geht in MEDIUM-Digest
     if pushed:
         try:
-            from discord_dispatcher import send_alert, TIER_HIGH
-            lines = [f'📰 **News-Reactor** — {len(pushed)} Position(en) brauchen Review:\n']
-            for p in pushed[:5]:
-                icon = '🚨' if p['eval'].get('impact') == 'EXIT_NOW' else '⚠️'
-                lines.append(f"{icon} **{p['ticker']}** ({p['eval'].get('impact')}, "
-                              f"conf {p['eval'].get('confidence',0):.0%})")
-                lines.append(f"   📰 {p['news'][:130]}")
-                lines.append(f"   → {p['eval'].get('reason','')[:140]}\n")
-            send_alert('\n'.join(lines)[:1900], tier=TIER_HIGH,
-                        category='news_reactor')
+            from discord_dispatcher import send_alert, TIER_HIGH, TIER_MEDIUM
+            exits = [p for p in pushed if p['eval'].get('impact') == 'EXIT_NOW']
+            reviews = [p for p in pushed if p['eval'].get('impact') == 'REVIEW_STOP']
+            for p in exits:
+                msg = (f"🚨 **EXIT_NOW {p['ticker']}** "
+                       f"(conf {p['eval'].get('confidence',0):.0%})\n"
+                       f"📰 {p['news'][:140]}\n"
+                       f"→ {p['eval'].get('reason','')[:160]}")
+                send_alert(msg[:1900], tier=TIER_HIGH, category='news_reactor_exit',
+                            dedupe_key=f'exit_{p["ticker"]}_{datetime.now(timezone.utc).strftime("%Y%m%d%H")}')
+            if reviews:
+                lines = [f'⚠️ News-Reactor — {len(reviews)} Position(en) Stop-Review:']
+                for p in reviews[:5]:
+                    lines.append(f"  · {p['ticker']} (conf {p['eval'].get('confidence',0):.0%}): "
+                                  f"{p['eval'].get('reason','')[:120]}")
+                send_alert('\n'.join(lines)[:1900], tier=TIER_MEDIUM,
+                            category='news_reactor_review')
         except Exception as e: print(f'discord push err: {e}')
 
     return {

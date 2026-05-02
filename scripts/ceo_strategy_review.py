@@ -224,7 +224,7 @@ def run(dry_run: bool = False, limit: int | None = None) -> dict:
 
         # Discord-Push (post-fact)
         try:
-            from discord_dispatcher import send_alert, TIER_LOW
+            from discord_dispatcher import send_alert, TIER_SILENT as TIER_LOW  # Phase 44u: silent
             msg = (f'🧠 **CEO Strategy Review** ({len(reviews)} reviewed)\n'
                    f'KEEP: {by_dec["KEEP"]} | WATCH: {by_dec["WATCH"]} | RETIRE: {by_dec["RETIRE"]}\n')
             ret = [r for r in reviews if r['decision']=='RETIRE'][:10]

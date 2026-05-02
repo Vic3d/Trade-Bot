@@ -144,7 +144,7 @@ def run() -> dict:
             bias_alarm = True
     if bias_alarm:
         try:
-            from discord_dispatcher import send_alert, TIER_MEDIUM
+            from discord_dispatcher import send_alert, TIER_LOW as TIER_MEDIUM  # Phase 44u: low (digest)
             w = out['last_30d'] if out['last_30d'].get('n',0) >= 10 else out['all_time']
             msg = (
                 f'⚖️ **CEO-Calibration-Alarm** ({w["verdict"]})\n'
