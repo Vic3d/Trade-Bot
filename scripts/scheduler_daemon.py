@@ -162,6 +162,8 @@ SCHEDULE = [
     ('Lesson Extractor',    'ceo_lesson_extractor.py',          [],                23, 15, None,        False),  # tgl. 23:15: Trade → Lessons
     ('Hypothesis Tracker',  'ceo_hypothesis_tracker.py',        [],                23, 30, None,        False),  # tgl. 23:30: Insights → Status
     ('Conviction Recalib',  'conviction_calibration.py',        [],                22, 45, None,        False),  # tgl. 22:45: Logistic-Fit conviction → P(win)
+    # Phase 44r: Bayer-Catalyst-Monitor (bis SCOTUS-Decision 08.07.2026)
+    ('Bayer Catalyst Watch','bayer_catalyst_monitor.py',        [],                22, 5,  None,        False),  # tgl. 22:05 nach EU-Close
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
