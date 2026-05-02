@@ -191,6 +191,8 @@ SCHEDULE = [
     ('News Reactor',        'news_reactor.py',                  [],                21, 0,  [5,6],       False),
     # Phase 44v: Sonntag-Week-Ahead-Briefing — Vorbereitung auf Mo
     ('Week Ahead Briefing', 'ceo_week_ahead_briefing.py',       [],                18, 0,  [6],         False),  # Sonntag 18:00
+    # Phase 44w: Mission-bezogene Capability-Audit (taeglich)
+    ('Capability Audit',    'ceo_capability_audit.py',          [],                23, 45, None,        False),  # tgl. 23:45 nach allen anderen Reflektionen
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30

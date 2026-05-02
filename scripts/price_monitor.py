@@ -46,6 +46,9 @@ POLL_INTERVAL_MARKET   = 60    # Sekunden zwischen Checks (Marktzeiten)
 POLL_INTERVAL_OFFHOURS = 300   # Sekunden zwischen Checks (außerhalb)
 VIX_SPIKE_THRESHOLD    = 0.10  # 10% VIX-Änderung = Alert
 TRAILING_TRIGGER_PCT   = 0.05  # 5% Gewinn = Trailing Stop vorschlagen
+# Phase 44w: Significant-Move-Trigger fuer News-Reactor
+SIGNIFICANT_MOVE_PCT   = 2.0   # >=2% intraday → trigger news_reactor sofort
+_move_triggered_today  = {}    # ticker → date des letzten Triggers
 
 
 def get_db():
@@ -212,6 +215,23 @@ def run_monitor():
                         continue  # SKIP — kein Stop, kein Target, keine Aktion
 
                 move_pct = (price - entry) / entry * 100
+
+                # Phase 44w: Significant-Move-Trigger
+                # Wenn Position |move| >= 2% intraday (gegen letztes Bewertungs-Niveau)
+                # → trigger news_reactor sofort, max 1x/Ticker/Tag
+                if abs(move_pct) >= SIGNIFICANT_MOVE_PCT:
+                    today_key = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+                    if _move_triggered_today.get(ticker) != today_key:
+                        _move_triggered_today[ticker] = today_key
+                        try:
+                            import subprocess
+                            print(f"[PRICE_MONITOR] {ticker} move {move_pct:+.1f}% → trigger news_reactor")
+                            subprocess.Popen(
+                                ['python3', str(WS / 'scripts' / 'news_reactor.py')],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                            )
+                        except Exception as _e:
+                            print(f"[PRICE_MONITOR] trigger fail: {_e}")
 
                 # STOP getroffen
                 if stop and price <= stop:

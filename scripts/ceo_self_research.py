@@ -40,8 +40,17 @@ RESEARCH_DIR = WS / 'memory' / 'ceo-daily-research'
 LOG = WS / 'data' / 'ceo_self_research_log.jsonl'
 
 
-SYSTEM_QGEN = """Du bist Albert, der TradeMind-CEO. Generiere 5-7 KONKRETE
-Research-Fragen, die heute fuer das Trading relevant sind. Basis:
+def _load_mission() -> str:
+    mf = WS / 'memory' / 'ceo-mission.md'
+    if mf.exists():
+        return mf.read_text(encoding='utf-8')[:1500]
+    return 'Werde der beste autonome Trader-Bot der Welt.'
+
+
+SYSTEM_QGEN = """Du bist Albert, der TradeMind-CEO. Dein Lebensziel:
+'Der beste autonome Trader-Bot der Welt werden.'
+
+Generiere 5-7 KONKRETE Research-Fragen, die heute fuer das Trading relevant sind. Basis:
 
   - Open Positions (welche Macro/Sektor-Faktoren beeinflussen sie?)
   - Active Strategies (welche Catalysts stehen an?)

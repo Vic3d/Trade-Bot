@@ -178,6 +178,9 @@ HUNTER_PROMPT_TEMPLATE = """Du bist Albert, autonomer CEO-Brain (Phase 43 Active
 Es gibt KEINE pending Proposals, der Markt ist offen, und du sollst SELBST
 Setups finden. Sei pragmatisch, nicht spekulativ — qualität > quantität.
 
+═══ MEINE MISSION (oberste Direktive) ═══
+{mission_str}
+
 ═══ AKTUELLER STATE ═══
 Mode: {mode} | VIX: {vix} | Geo: {geo}
 Cash: {cash:.0f}EUR ({cash_pct:.0f}% vom Fund)
@@ -387,7 +390,18 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
                 macro_position_notifications = '\n'.join(lines)
     except Exception: pass
 
+    # Phase 44w: Mission-Statement als oberste Direktive
+    mission_str = 'Werde der beste autonome Trader-Bot der Welt.'
+    try:
+        _mf = WS / 'memory' / 'ceo-mission.md'
+        if _mf.exists():
+            full = _mf.read_text(encoding='utf-8')
+            # Top 3 sektionen extrahieren (erstes ~800 chars), kompakt
+            mission_str = full[:800].replace('\n\n', '\n').strip()
+    except Exception: pass
+
     return HUNTER_PROMPT_TEMPLATE.format(
+        mission_str=mission_str,
         commodity_snapshot=commodity_snapshot,
         macro_position_notifications=macro_position_notifications,
         mode=directive.get('mode', '?'),
