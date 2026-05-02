@@ -184,6 +184,13 @@ SCHEDULE = [
     ('News Reactor',        'news_reactor.py',                  [],                19, 15, [0,1,2,3,4], False),
     ('News Reactor',        'news_reactor.py',                  [],                20, 15, [0,1,2,3,4], False),
     ('News Reactor',        'news_reactor.py',                  [],                21, 15, [0,1,2,3,4], False),
+    # Phase 44v: News-Reactor auch am Wochenende (4x/Tag, News schlafen nicht)
+    ('News Reactor',        'news_reactor.py',                  [],                10, 0,  [5,6],       False),
+    ('News Reactor',        'news_reactor.py',                  [],                14, 0,  [5,6],       False),
+    ('News Reactor',        'news_reactor.py',                  [],                18, 0,  [5,6],       False),
+    ('News Reactor',        'news_reactor.py',                  [],                21, 0,  [5,6],       False),
+    # Phase 44v: Sonntag-Week-Ahead-Briefing — Vorbereitung auf Mo
+    ('Week Ahead Briefing', 'ceo_week_ahead_briefing.py',       [],                18, 0,  [6],         False),  # Sonntag 18:00
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
