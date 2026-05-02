@@ -1,6 +1,48 @@
 # TradeMind — Projekt-Übersicht für Claude Sessions
-**Letzte Aktualisierung:** 2026-05-02
+**Letzte Aktualisierung:** 2026-05-03
 **WICHTIG: Diese Datei als erstes lesen. Nicht neu bauen was bereits existiert.**
+
+---
+
+# 🛑 PRE-RESPONSE VERIFICATION PROTOCOL (Victor 2026-05-03)
+
+**Default: langsam verifiziert, nicht schnell plausibel.**
+
+Bevor ein Satz mit folgenden Triggern fertig geschrieben wird, IMMER erst Tool-Call:
+
+| Trigger im Satz | Pflicht-Verifikation |
+|---|---|
+| Datum / Wochentag ("heute", "morgen", "Montag", "Sonntag") | `Bash: date` |
+| Open Position (Ticker-Name + Status) | `sqlite SELECT WHERE status='OPEN'` |
+| Stop / Target / Entry-Preis als konkrete Zahl | DB-Query paper_portfolio |
+| Strategy-Status (aktiv/retired/watching/paused) | `strategies.json` lesen |
+| PnL / WR / Sharpe / Brier als Zahl | DB / Calibration-Json |
+| Live-Preis (Aktie / Commodity / VIX) | `commodity_prices.json` oder yfinance |
+| Schedule-Zeit ("um X passiert Y") | `list_scheduled_tasks` oder scheduler_daemon.py |
+| Vergangenes Event ("vor X Tagen passierte Y") | Log-Datei oder Audit-jsonl |
+
+## Sanktion bei Verstoß
+
+Wenn ein Satz einen Trigger enthält UND keine frische Verifikation:
+- **NICHT schreiben** — generischer formulieren ("die offene Position", "der nächste Trading-Tag")
+- ODER **explizit "nicht verifiziert"** vermerken
+- **NIE halluzinieren**, auch nicht als "Beispiel"
+
+## Beispiel-Patterns die VERBOTEN sind
+
+❌ "wenn EQNR.OL morgen auf den Stop rast" — nicht verifiziert ob EQNR offen, nicht ob morgen Trading-Tag
+❌ "Brent steht aktuell bei 105$" — keine Live-Verifikation
+❌ "Albert hat 9 active Strategien" — könnte 9, 12, 30 sein, nicht geprüft
+
+✅ Erlaubt:
+- "Eine offene Position" (generisch, kein Spezifikum)
+- "Brent stand am 02.05 17:00 bei 108.82$ laut Cache" (verifiziert + Quelle)
+- Tool-Call → "Aktuell offen: PAAS, MOS"
+
+## Trade-Off der akzeptiert wird
+
+Langsamer + 5-30s Tool-Call-Delay vor relevanter Aussage > schnelle Halluzination + Korrektur-Loop.
+Antwortqualität schlägt Konversationsfluss.
 
 ---
 
