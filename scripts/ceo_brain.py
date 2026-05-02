@@ -378,6 +378,33 @@ def decide_llm(state: dict) -> list[dict]:
                     d['reason'] = (d.get('reason', '') +
                                   f' | mood={mood["mood"]} → ×{mood["size_multiplier"]}')
 
+        # Phase 44o: EXECUTE-Rate-Cap (Albert's eigene Forderung)
+        # Wenn execute_rate_cap < 1.0: nur die hoechst-conviction EXECUTEs behalten,
+        # Rest auf default_action (typisch WATCH) downgraden.
+        cap = float(mood.get('execute_rate_cap', 1.0))
+        default_action = mood.get('default_action', 'EXECUTE')
+        if cap < 1.0 and decisions:
+            executes = [d for d in decisions if d.get('action') == 'EXECUTE']
+            if executes:
+                max_executes = max(1, int(len(decisions) * cap))
+                if len(executes) > max_executes:
+                    # Sortiere absteigend nach conviction, behalte Top-N
+                    executes_sorted = sorted(
+                        executes,
+                        key=lambda d: float(d.get('confidence', 0) or d.get('conviction', 0) or 0),
+                        reverse=True
+                    )
+                    keep = set(id(d) for d in executes_sorted[:max_executes])
+                    downgraded = 0
+                    for d in decisions:
+                        if d.get('action') == 'EXECUTE' and id(d) not in keep:
+                            d['action'] = default_action
+                            d['reason'] = (d.get('reason', '') +
+                                f' | EXEC-CAP {cap:.0%} ({mood.get("mood")}) → {default_action}')
+                            downgraded += 1
+                    print(f'[ceo_brain] EXEC-Cap aktiv: mood={mood.get("mood")}, '
+                          f'cap={cap:.0%}, {downgraded} EXECUTEs → {default_action}')
+
         # 33b: Portfolio-Level Selection (nur Top-N gleichzeitig)
         cash = state.get('cash_eur', 0)
         decisions = select_optimal_subset(
