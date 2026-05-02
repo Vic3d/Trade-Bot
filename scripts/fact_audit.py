@@ -101,6 +101,49 @@ def _check_required_facts(decision: dict, required_facts: list[str]) -> list[str
     return missing
 
 
+def audit_text(text: str, context: str = 'llm_output',
+                  log: bool = True) -> AuditResult:
+    """Phase 44x: Pflicht-Audit fuer rohen LLM-Output (vor Konsumtion).
+
+    Wird vom call_llm()-Wrapper bei jedem Sonnet/Opus-Output aufgerufen.
+    Erkennt Speculation-Phrasen ohne Fakten-Backing.
+
+    Args:
+      text: Roh-Output vom LLM
+      context: Kategorie fuer Audit-Log (z.B. 'hunter', 'self_research', ...)
+
+    Returns: AuditResult mit status PASS|WARN (nie BLOCK fuer Roh-Text —
+    das waere zu strikt fuer narrative Antworten; nur Decision-Dicts werden
+    geblockt via audit_decision())
+    """
+    if not text:
+        return AuditResult(status='PASS', reason='empty', speculation=[], missing_facts=[])
+
+    spec = _detect_speculation(text)
+    if spec:
+        result = AuditResult(
+            status='WARN',
+            reason=f'{len(spec)} speculation_phrases im output ({context})',
+            speculation=spec, missing_facts=[],
+        )
+    else:
+        result = AuditResult(status='PASS', reason='clean', speculation=[], missing_facts=[])
+
+    if log and spec:
+        try:
+            AUDIT_LOG.parent.mkdir(parents=True, exist_ok=True)
+            with open(AUDIT_LOG, 'a', encoding='utf-8') as f:
+                f.write(json.dumps({
+                    'ts': datetime.now(timezone.utc).isoformat(),
+                    'kind': 'text_audit', 'context': context,
+                    'status': result.status, 'speculation': spec[:8],
+                    'text_preview': text[:300],
+                }, ensure_ascii=False) + '\n')
+        except Exception: pass
+
+    return result
+
+
 def audit_decision(decision: dict,
                      required_facts: list[str] | None = None,
                      log: bool = True) -> AuditResult:

@@ -382,8 +382,24 @@ class LLMBudgetExceeded(RuntimeError):
     """Raised wenn Tages-LLM-Budget aufgebraucht ist."""
 
 
+def _audit_output(text: str, context: str = 'llm') -> dict:
+    """Phase 44x: Pflicht-Audit nach jedem LLM-Output (System-seitige Regel #0).
+    Returns: {'status': PASS|WARN, 'speculation': [...], 'reason': str}"""
+    try:
+        import sys as _s
+        from pathlib import Path as _P
+        _scripts = str(_P(__file__).parent.parent)
+        if _scripts not in _s.path: _s.path.insert(0, _scripts)
+        from fact_audit import audit_text
+        r = audit_text(text, context=context, log=True)
+        return {'status': r.status, 'speculation': r.speculation, 'reason': r.reason}
+    except Exception:
+        return {'status': 'PASS', 'speculation': [], 'reason': 'audit_disabled'}
+
+
 def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
-             allow_fallback: bool = True, system: str = '') -> tuple[str, dict]:
+             allow_fallback: bool = True, system: str = '',
+             audit_context: str = 'llm') -> tuple[str, dict]:
     """
     Provider-Reihenfolge (default): Claude CLI (Abo) → Anthropic API → OpenAI.
     CLI bevorzugt → kostet nichts (Subscription), Fallback bei Rate-Limit/Auth-Fail.
@@ -391,6 +407,10 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
 
     system: Optional system-prompt. Wird bei API-Calls als system-Parameter gesetzt,
             bei CLI als prefix in den Prompt geschrieben (CLI hat kein separates system).
+    audit_context: Tag fuer fact_audit Logs (z.B. 'hunter', 'self_research').
+
+    Phase 44x: Output wird automatisch gegen BANNED_PHRASES geprueft.
+    Bei WARN: usage['fact_audit'] enthaelt warning, der Caller kann reagieren.
     """
     # System prompt für CLI inline einbauen (CLI hat kein separates system param)
     if system:
@@ -417,7 +437,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
                 text, usage = _call_claude_cli(prompt_combined, cli_alias, max_tokens)
                 # Kein _add_cost — laeuft ueber Abo
                 tried.append('cli')
-                return text, usage
+                usage["fact_audit"] = _audit_output(text, context=audit_context); return text, usage
             except Exception as e:
                 last_err = e
                 err_low = str(e).lower()
@@ -453,7 +473,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
                     tried.append('anthropic')
                     if 'cli' in ' '.join(tried[:-1]):
                         usage['fallback_from'] = 'claude_cli'
-                    return text, usage
+                    usage["fact_audit"] = _audit_output(text, context=audit_context); return text, usage
                 except Exception as e:
                     last_err = e
                     err_str = str(e).lower()
@@ -478,7 +498,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
                 tried.append('deepseek')
                 if 'cli' in ' '.join(tried[:-1]) or 'anthropic' in ' '.join(tried[:-1]):
                     usage['fallback_from'] = tried[0] if tried else 'unknown'
-                return text, usage
+                usage["fact_audit"] = _audit_output(text, context=audit_context); return text, usage
             except Exception as e:
                 last_err = e
                 tried.append(f'deepseek({str(e)[:50]})')
@@ -493,7 +513,7 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
                 usage['fallback_from'] = tried[0] if tried else 'unknown'
                 usage['fallback_reason'] = str(last_err)[:120] if last_err else ''
                 tried.append('openai')
-                return text, usage
+                usage["fact_audit"] = _audit_output(text, context=audit_context); return text, usage
             except Exception as e:
                 last_err = e
                 tried.append(f'openai({str(e)[:50]})')
