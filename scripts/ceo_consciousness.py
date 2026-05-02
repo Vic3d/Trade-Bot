@@ -402,11 +402,28 @@ def detect_mood(window_trades: int = 10) -> dict:
         multiplier = 0.7
         recommendation = 'tighter_stops'
 
+    # Phase 44o: Tilt-Haertung — neben size_multiplier auch
+    # execute_rate_cap (Frequenz-Drosselung) + default_action.
+    # Albert hat selbst gefordert: "EXECUTE-Cap 30% bei Tilt, default WATCH".
+    execute_rate_cap = 1.0
+    default_action = 'EXECUTE'
+    if mood == 'tilt':
+        execute_rate_cap = 0.30   # max 30% der Decisions duerfen EXECUTE sein
+        default_action = 'WATCH'  # bei Unsicherheit → WATCH statt EXECUTE
+    elif mood == 'caution':
+        execute_rate_cap = 0.50
+        default_action = 'WATCH'
+    elif mood == 'overconfident':
+        execute_rate_cap = 0.60   # leicht gedrosselt
+        default_action = 'EXECUTE'
+
     result = {
         'mood': mood,
         'recent_streak': f'{streak_sign}{streak_len}',
         'recent_pnl_eur': round(recent_pnl, 0),
         'size_multiplier': multiplier,
+        'execute_rate_cap': execute_rate_cap,
+        'default_action': default_action,
         'recommendation': recommendation,
         'window_trades': len(rows),
         'computed_at': datetime.now().isoformat(timespec='seconds'),
