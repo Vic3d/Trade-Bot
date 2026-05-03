@@ -162,6 +162,7 @@ def send_alert(
         'crash_safety', 'news_reactor_exit',  # echte Position-Risk
         'system_error', 'api_quota_exceeded',  # System-Notfall
         'test_reminder',                       # User-Test-Reminder
+        'ceo_action_request',                  # Phase 44aa: Albert fragt Victor
     }
 
     if _is_weekend and tier != TIER_SILENT:
