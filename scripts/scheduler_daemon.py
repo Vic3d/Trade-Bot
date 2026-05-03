@@ -202,6 +202,18 @@ SCHEDULE = [
     ('Halluz Sweeper',      'halluzination_sweeper.py',         [],                '*',  '*/30', None,  False),  # alle 30min 24/7
     # Phase 45a (Sprint 0): Mission-KPIs taeglich (Sharpe, Drawdown, Calmar)
     ('Quant Metrics',       'quant_metrics.py',                 [],                23, 50, None,        False),  # tgl. 23:50
+    # Phase 45c (Sprint 2): Feature-Engineering taeglich nach Markt-Close
+    ('Feature Engineering', 'feature_engineering.py',           ['--all'],         22, 15, None,        False),  # tgl. 22:15
+    # Phase 45d (Sprint 3): ML-Win-Prob retraining woechentlich (Sa)
+    ('ML WinProb Train',    'ml_winprob_model.py',              [],                3,  0,  [5],         False),  # Sa 03:00
+    # Phase 45e (Sprint 4): Markt-Regime alle 2h
+    ('Regime Detect',       'regime_detector.py',               [],                '*',  '0',  None,    False),  # stuendlich (Min 0)
+    # Phase 45g (Sprint 6): Multi-Asset Universe-Refresh
+    ('Multi-Asset Refresh', 'multi_asset_universe.py',          [],                7,  10, None,        False),  # tgl. 07:10
+    # Phase 45h (Sprint 7): Short-Engine Schema-Migration
+    ('Short Engine Schema', 'short_engine.py',                  [],                3,  30, [6],         False),  # So 03:30 weekly
+    # Phase 45i (Sprint 8): Real-Money-Bridge Status-Check
+    ('Real-Money Status',   'real_money_bridge.py',             [],                7,  20, None,        False),  # tgl. 07:20
     # Phase 44y: Hunter im Research-Mode auch am Wochenende (Thesen suchen + verifizieren)
     # Mo-Fr macht der CEO Brain das schon im Trading-Window. Sa/So extra:
     ('Hunter Research',     'hunter_research_mode.py',          [],                10, 30, [5,6],       False),
