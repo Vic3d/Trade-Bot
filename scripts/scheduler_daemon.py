@@ -193,6 +193,11 @@ SCHEDULE = [
     ('Week Ahead Briefing', 'ceo_week_ahead_briefing.py',       [],                18, 0,  [6],         False),  # Sonntag 18:00
     # Phase 44w: Mission-bezogene Capability-Audit (taeglich)
     ('Capability Audit',    'ceo_capability_audit.py',          [],                23, 45, None,        False),  # tgl. 23:45 nach allen anderen Reflektionen
+    # Phase 44y: Hunter im Research-Mode auch am Wochenende (Thesen suchen + verifizieren)
+    # Mo-Fr macht der CEO Brain das schon im Trading-Window. Sa/So extra:
+    ('Hunter Research',     'hunter_research_mode.py',          [],                10, 30, [5,6],       False),
+    ('Hunter Research',     'hunter_research_mode.py',          [],                15, 30, [5,6],       False),
+    ('Hunter Research',     'hunter_research_mode.py',          [],                20, 30, [5,6],       False),
     ('Insider Refresh',     'intelligence/insider_refresh.py',  [],                7,  30, None,        False),  # tgl. 07:30 vor Handel
     ('Catalyst Re-Eval',    'intelligence/catalyst_reeval.py',  [],                8,  0,  None,        False),  # tgl. 08:00
     ('Political Risk Scan', 'intelligence/political_risk_detector.py', [],         8,  30, None,        False),  # tgl. 08:30
