@@ -145,6 +145,29 @@ def send_alert(
     if tier not in VALID_TIERS:
         tier = TIER_HIGH  # Safety-Default: im Zweifel durchlassen
 
+    # Phase 44z: Weekend-Mode + Critical-Whitelist (Victor 03.05).
+    # Wochenende: alles unter HIGH wird zu SILENT (nur ceo_inbox).
+    # HIGH bleibt durch — aber NUR wenn Category in CRITICAL-Whitelist ist.
+    # Sonst Wochenend-Spam mit "Trades-Lifecycle" usw.
+    try:
+        from datetime import datetime as _dt
+        from zoneinfo import ZoneInfo as _ZI
+        _berlin_now = _dt.now(_ZI('Europe/Berlin'))
+        _is_weekend = _berlin_now.weekday() >= 5
+    except Exception:
+        _is_weekend = False
+
+    # Categories die IMMER durchkommen (echter Notfall)
+    CRITICAL_CATEGORIES = {
+        'crash_safety', 'news_reactor_exit',  # echte Position-Risk
+        'system_error', 'api_quota_exceeded',  # System-Notfall
+        'test_reminder',                       # User-Test-Reminder
+    }
+
+    if _is_weekend and tier != TIER_SILENT:
+        if category not in CRITICAL_CATEGORIES:
+            tier = TIER_SILENT  # Wochenende: Nicht-kritisches stumm
+
     # Phase 43e: ALLES → ceo_inbox (CEO-Sicht), Discord nur per Tier
     user_pinged = False
     try:

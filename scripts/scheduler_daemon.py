@@ -153,10 +153,11 @@ SCHEDULE = [
     ('Commodity Cache',     'commodity_price_refresh.py',       [],                15, 30, None,        False),  # US-Open
     ('Commodity Cache',     'commodity_price_refresh.py',       [],                21, 0,  None,        False),  # US-Close
     # Phase 44n: Professional Stop-Management (Daily-Cycle nach Close)
-    ('Catalyst Widener',    'catalyst_stop_widener.py',         [],                6,  30, [0,1,2,3,4], False),  # 06:30 vor Handel: Stops fuer Earnings/Fed weiten
-    ('Stop Manager Daily',  'stop_manager_daily.py',            [],                22, 30, [0,1,2,3,4], False),  # 22:30 nach US-Close: ATR-Trail
-    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        9,  30, [0,1,2,3,4], False),  # 09:30 nach EU-Open: LLM-Review
-    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        16, 0,  [0,1,2,3,4], False),  # 16:00 nach US-Open: 2. Review
+    # Phase 44z: Background-Jobs auf 7 Tage erweitert (idempotent — kein neuer Tape = keine Aktion)
+    ('Catalyst Widener',    'catalyst_stop_widener.py',         [],                6,  30, None,        False),  # tgl. 06:30
+    ('Stop Manager Daily',  'stop_manager_daily.py',            [],                22, 30, None,        False),  # tgl. 22:30
+    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        9,  30, None,        False),  # tgl. 09:30
+    ('Macro Stop Review',   'macro_stop_review.py',             ['--auto'],        16, 0,  None,        False),  # tgl. 16:00
     # Phase 44o: Self-Awareness-Stack
     ('Calibration Tracker', 'ceo_calibration_tracker.py',       [],                23, 0,  None,        False),  # tgl. 23:00: Brier-Score
     ('Lesson Extractor',    'ceo_lesson_extractor.py',          [],                23, 15, None,        False),  # tgl. 23:15: Trade → Lessons
