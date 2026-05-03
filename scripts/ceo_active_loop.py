@@ -182,6 +182,21 @@ def run() -> dict:
             )
         except Exception: pass
 
+    # Phase 44af: Bei HIGH oder Macro-Burst (>=5 macro events) → Deep-Inference-Engine
+    # Liest Zwischen-den-Zeilen, identifiziert NEUE Setups + Cross-Asset-Cascades
+    needs_deep_inference = (
+        obs.get('severity') == 'high' or
+        delta.get('macro_last_10min', 0) >= 5
+    )
+    if needs_deep_inference:
+        try:
+            import subprocess
+            subprocess.Popen(
+                ['python3', str(WS / 'scripts' / 'news_inference_engine.py')],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
+        except Exception: pass
+
     # Discord nur bei HIGH-Severity (CRITICAL-Whitelist)
     if obs.get('severity') == 'high':
         try:
