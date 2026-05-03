@@ -65,13 +65,13 @@ Antwort als JSON:
 def run() -> dict:
     # Eigener Prompt-Build, nutze ceo_active_hunter als context-Provider
     try:
-        from ceo_active_hunter import gather_context, _build_hunter_prompt
+        from ceo_active_hunter import gather_hunting_context, _build_hunter_prompt
         from core.llm_client import call_llm
     except Exception as e:
         return {'error': f'import_fail: {e}'}
 
     try:
-        ctx = gather_context()
+        ctx = gather_hunting_context()
         # Bauen wir den Standard-Prompt fuer Context, aber ueberschreiben System
         base_prompt = _build_hunter_prompt(ctx, max_new=5)
     except Exception as e:
