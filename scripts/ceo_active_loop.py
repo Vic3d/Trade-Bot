@@ -166,6 +166,22 @@ def run() -> dict:
                                         if k != 'open_positions'},  # zu lang
                               'obs': obs}, ensure_ascii=False) + '\n')
 
+    # Phase 44ae: Bei MED+/HIGH oder bei Macro-Activity → trigger news_reactor sofort
+    # (statt warten auf naechsten cron-slot)
+    needs_news_eval = (
+        obs.get('severity') in ('med', 'high') or
+        delta.get('macro_last_10min', 0) >= 3 or
+        delta.get('news_last_10min', 0) >= 10
+    )
+    if needs_news_eval:
+        try:
+            import subprocess
+            subprocess.Popen(
+                ['python3', str(WS / 'scripts' / 'news_reactor.py')],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
+        except Exception: pass
+
     # Discord nur bei HIGH-Severity (CRITICAL-Whitelist)
     if obs.get('severity') == 'high':
         try:
