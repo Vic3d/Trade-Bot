@@ -33,20 +33,73 @@ LOG = WS / 'data' / 'hunter_research_log.jsonl'
 def _now() -> str: return datetime.now(timezone.utc).isoformat()
 
 
+RESEARCH_SYSTEM = """Du bist Albert im RESEARCH-MODE. Es ist Wochenende oder
+ausserhalb Trading-Window. KEINE Trades werden platziert — du suchst nur Thesen
+fuer den NAECHSTEN Trading-Tag.
+
+WICHTIG: Markt-Status ist IRRELEVANT. Du sollst TROTZDEM Setups generieren,
+auch wenn Boersen geschlossen sind. Sie werden am naechsten Trading-Tag
+verifiziert + ggf. ausgefuehrt.
+
+Generiere 3-5 Setup-Kandidaten basierend auf:
+- aktuellen Macro-Events
+- News der letzten 6h
+- Active-Strategies (welche koennten Mo Morgen feuern?)
+- Externen Research-Thesen (von Victor eingebracht)
+- Open-Positions (was koennte sie Mo bewegen?)
+
+Pro Setup: ticker, strategy, why-now, was muss Mo-Morgen passieren damit Trade
+gerechtfertigt ist (Falsifikations-Check), conf 0.0-1.0.
+
+Antwort als JSON:
+{
+  "thinking": "max 400 chars analysis",
+  "setups": [
+    {"ticker": "...", "strategy": "...", "thesis": "...",
+     "monday_check": "was Mo verifizieren", "confidence": 0.7,
+     "trigger": "macro_event|news|strategy_match|catalyst"}
+  ]
+}"""
+
+
 def run() -> dict:
+    # Eigener Prompt-Build, nutze ceo_active_hunter als context-Provider
     try:
-        from ceo_active_hunter import hunt_for_setups
+        from ceo_active_hunter import gather_context, _build_hunter_prompt
+        from core.llm_client import call_llm
     except Exception as e:
-        return {'error': f'hunter_import_fail: {e}'}
+        return {'error': f'import_fail: {e}'}
 
-    # Hunt im dry_run-Mode → generiert Setups, schreibt NICHT in proposals.json
     try:
-        result = hunt_for_setups(max_new=5, dry_run=True)
+        ctx = gather_context()
+        # Bauen wir den Standard-Prompt fuer Context, aber ueberschreiben System
+        base_prompt = _build_hunter_prompt(ctx, max_new=5)
     except Exception as e:
-        return {'error': f'hunt_fail: {e}'}
+        return {'error': f'context_fail: {e}'}
 
-    setups = result.get('setups', []) if isinstance(result, dict) else []
-    thinking = result.get('thinking', '') if isinstance(result, dict) else ''
+    # Direct LLM call mit Research-System
+    try:
+        text, usage = call_llm(
+            base_prompt + "\n\nWICHTIG: RESEARCH-MODE. Markt-Status ist egal. "
+            "Generiere Setups fuer naechsten Trading-Tag.",
+            model_hint='sonnet', max_tokens=2000,
+            system=RESEARCH_SYSTEM, audit_context='hunter_research'
+        )
+    except Exception as e:
+        return {'error': f'llm_fail: {e}'}
+
+    # Parse JSON
+    setups = []
+    thinking = ''
+    try:
+        import re
+        m = re.search(r'\{.*\}', text, re.S)
+        if m:
+            j = json.loads(m.group(0))
+            setups = j.get('setups', [])
+            thinking = j.get('thinking', '')
+    except Exception as e:
+        thinking = f'(JSON-parse-fail: {e})'
     today = datetime.now().strftime('%Y-%m-%d')
     weekday = datetime.now().strftime('%A')
 
