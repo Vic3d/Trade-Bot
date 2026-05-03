@@ -199,6 +199,8 @@ SCHEDULE = [
     # Phase 44ad: CEO arbeitet kontinuierlich — alle 10min Mini-Cycle, alle 30min Halluzinations-Sweep
     ('CEO Active Loop',     'ceo_active_loop.py',               [],                '*',  '*/10', None,  False),  # alle 10min 24/7
     ('Halluz Sweeper',      'halluzination_sweeper.py',         [],                '*',  '*/30', None,  False),  # alle 30min 24/7
+    # Phase 45a (Sprint 0): Mission-KPIs taeglich (Sharpe, Drawdown, Calmar)
+    ('Quant Metrics',       'quant_metrics.py',                 [],                23, 50, None,        False),  # tgl. 23:50
     # Phase 44y: Hunter im Research-Mode auch am Wochenende (Thesen suchen + verifizieren)
     # Mo-Fr macht der CEO Brain das schon im Trading-Window. Sa/So extra:
     ('Hunter Research',     'hunter_research_mode.py',          [],                10, 30, [5,6],       False),
