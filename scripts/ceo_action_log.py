@@ -163,6 +163,42 @@ def _load_recent_audits() -> dict:
             c.close()
         except Exception: pass
 
+    # Phase 45b (Sprint 1): Backtest-Insights als Strategy-Edge-Datenquelle
+    bt_file = WS / 'data' / 'backtest_results.json'
+    if bt_file.exists():
+        try:
+            bt = json.loads(bt_file.read_text(encoding='utf-8'))
+            bt_insights = []
+            for sid, payload in bt.items():
+                if not isinstance(payload, dict) or 'overall' not in payload: continue
+                o = payload['overall']
+                bt_insights.append({
+                    'strategy': sid, 'sharpe': o.get('sharpe_ratio'),
+                    'wr_pct': round((o.get('win_rate', 0) or 0) * 100, 1),
+                    'pf': o.get('profit_factor'),
+                    'max_dd_pct': o.get('max_drawdown_pct'),
+                    'n': o.get('total_trades'),
+                    'verdict': payload.get('verdict','?')
+                })
+            # Top 5 + Bottom 3
+            bt_insights.sort(key=lambda x: -(x.get('sharpe') or 0))
+            out['backtest_top5'] = bt_insights[:5]
+            out['backtest_bottom3'] = bt_insights[-3:]
+        except Exception: pass
+
+    # Quant-Metrics Mission-Status
+    qm_file = WS / 'data' / 'quant_metrics.json'
+    if qm_file.exists():
+        try:
+            qm = json.loads(qm_file.read_text(encoding='utf-8'))
+            out['mission_kpis'] = {
+                '30d': qm.get('last_30d', {}),
+                'all_time': qm.get('all_time', {}),
+                'verdict_30d': qm.get('mission_verdict_30d'),
+                'verdict_all_time': qm.get('mission_verdict_all_time'),
+            }
+        except Exception: pass
+
     return out
 
 

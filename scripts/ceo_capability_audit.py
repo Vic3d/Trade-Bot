@@ -121,6 +121,36 @@ def _gather_data(c: sqlite3.Connection) -> dict:
             watching = sum(1 for v in s.values() if isinstance(v,dict) and v.get('status')=='watching')
             out['strategies'] = {'active': active, 'watching': watching}
         except Exception: pass
+    # Sprint 1: Quant-Metrics + Backtest-Insights laden
+    qm = WS / 'data' / 'quant_metrics.json'
+    if qm.exists():
+        try:
+            d = json.loads(qm.read_text(encoding='utf-8'))
+            out['quant_metrics'] = {
+                'sharpe_30d': d.get('last_30d', {}).get('sharpe'),
+                'sharpe_all_time': d.get('all_time', {}).get('sharpe'),
+                'max_dd_30d': d.get('last_30d', {}).get('max_drawdown_pct'),
+                'verdict_30d': d.get('mission_verdict_30d'),
+                'verdict_all_time': d.get('mission_verdict_all_time'),
+            }
+        except Exception: pass
+
+    bt = WS / 'data' / 'backtest_results.json'
+    if bt.exists():
+        try:
+            d = json.loads(bt.read_text(encoding='utf-8'))
+            top = []
+            for sid, p in d.items():
+                if not isinstance(p, dict) or 'overall' not in p: continue
+                o = p['overall']
+                top.append({'strategy': sid, 'sharpe': o.get('sharpe_ratio'),
+                             'wr': (o.get('win_rate',0) or 0) * 100,
+                             'pf': o.get('profit_factor')})
+            top.sort(key=lambda x: -(x.get('sharpe') or 0))
+            out['backtest_top5'] = top[:5]
+            out['backtest_bottom3'] = top[-3:]
+        except Exception: pass
+
     return out
 
 
