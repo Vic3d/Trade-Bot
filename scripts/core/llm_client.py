@@ -384,22 +384,53 @@ class LLMBudgetExceeded(RuntimeError):
 
 def _audit_output(text: str, context: str = 'llm') -> dict:
     """Phase 44x: Pflicht-Audit nach jedem LLM-Output (System-seitige Regel #0).
-    Returns: {'status': PASS|WARN, 'speculation': [...], 'reason': str}"""
+    Phase 44ac: PLUS halluzination_detector cross-check gegen DB.
+    Returns: {'status': PASS|WARN, 'speculation': [...], 'halluzinations': [...]}"""
+    out = {'status': 'PASS', 'speculation': [], 'halluzinations': [], 'reason': ''}
     try:
         import sys as _s
         from pathlib import Path as _P
         _scripts = str(_P(__file__).parent.parent)
         if _scripts not in _s.path: _s.path.insert(0, _scripts)
+        # Layer A: speculation (banned phrases)
         from fact_audit import audit_text
         r = audit_text(text, context=context, log=True)
-        return {'status': r.status, 'speculation': r.speculation, 'reason': r.reason}
+        out['speculation'] = r.speculation
+        if r.status != 'PASS':
+            out['status'] = 'WARN'
+            out['reason'] = r.reason
+        # Layer B: halluzination (claims vs DB)
+        from halluzination_detector import check_halluzinations
+        h = check_halluzinations(text, context=context)
+        out['halluzinations'] = h.violations
+        if h.has_violations:
+            out['status'] = 'WARN'
+            out['reason'] = f'{out.get("reason","")} + {len(h.violations)} halluzinations'.strip(' +')
+    except Exception as e:
+        out['reason'] = f'audit_partial: {e}'
+    return out
+
+
+def _inject_current_truth(prompt: str, system: str) -> tuple[str, str]:
+    """Phase 44ac: AUTO-Inject canonical 'as-of-now' truth in jeden Prompt.
+    Verhindert dass LLM sich auf veraltete MD-Files stuetzt."""
+    try:
+        import sys as _s
+        from pathlib import Path as _P
+        _scripts = str(_P(__file__).parent.parent)
+        if _scripts not in _s.path: _s.path.insert(0, _scripts)
+        from current_truth import format_for_llm
+        truth_block = format_for_llm()
+        # Truth-Block VOR existing system-prompt
+        new_system = truth_block + '\n\n' + (system or '')
+        return prompt, new_system
     except Exception:
-        return {'status': 'PASS', 'speculation': [], 'reason': 'audit_disabled'}
+        return prompt, system
 
 
 def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
              allow_fallback: bool = True, system: str = '',
-             audit_context: str = 'llm') -> tuple[str, dict]:
+             audit_context: str = 'llm', inject_truth: bool = True) -> tuple[str, dict]:
     """
     Provider-Reihenfolge (default): Claude CLI (Abo) → Anthropic API → OpenAI.
     CLI bevorzugt → kostet nichts (Subscription), Fallback bei Rate-Limit/Auth-Fail.
@@ -412,6 +443,10 @@ def call_llm(prompt: str, model_hint: str = 'sonnet', max_tokens: int = 4000,
     Phase 44x: Output wird automatisch gegen BANNED_PHRASES geprueft.
     Bei WARN: usage['fact_audit'] enthaelt warning, der Caller kann reagieren.
     """
+    # Phase 44ac: Inject Current-Truth als verbindlichen Kontext-Header
+    if inject_truth:
+        prompt, system = _inject_current_truth(prompt, system)
+
     # System prompt für CLI inline einbauen (CLI hat kein separates system param)
     if system:
         prompt_combined = f"=== SYSTEM ===\n{system}\n\n=== USER ===\n{prompt}"
