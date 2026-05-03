@@ -1286,58 +1286,62 @@ def poll_once() -> None:
         content_stripped = content.strip()
         content_lower = content_stripped.lower()
 
-        # ── Phase 44aa: CEO-Action-Request Reply-Handler ─────────────────
-        # Victor antwortet auf Albert's Fragen via:
-        #   "approve Q1" / "Q1 A" / "reject Q1" / "skip Q1"
+        # ── Phase 44ab: CEO-Action ROLLBACK-Handler ──────────────────────
+        # Albert entscheidet autonom + meldet post-fact. Victor kann
+        # Aktionen via "rollback A1" / "rollback 20260503_A1" zurueckrollen.
         import re as _re_q
         _q_match = _re_q.match(
-            r'^(approve|reject|skip|accept|ok|nein|ja)\s+(\d{8}_q\d+)|'
-            r'^(\d{8}_q\d+)\s+([abc]|approve|reject|skip)$',
+            r'^(rollback|undo|revert)\s+(\d{8}_a\d+|a\d+)$',
             content_lower
         )
         if _q_match:
             try:
                 from pathlib import Path as _P
                 _pending_f = _P(WS) / 'data' / 'ceo_action_pending.json'
-                _ans_f = _P(WS) / 'data' / 'ceo_action_answers.jsonl'
+                _rollback_log = _P(WS) / 'data' / 'ceo_action_rollbacks.jsonl'
                 pending = json.loads(_pending_f.read_text(encoding='utf-8')) if _pending_f.exists() else []
-                # Ermittle qid + verb
-                qid = None; verb = 'approve'
+                # Extract action ID
+                aid_raw = None
                 for grp in _q_match.groups():
-                    if grp and '_q' in grp.lower(): qid = grp.upper()
-                    elif grp and grp.lower() in ('approve','reject','skip','accept','ok','ja','nein','a','b','c'):
-                        verb = grp.lower()
-                # Markiere als beantwortet
+                    if grp and ('_a' in grp.lower() or grp.lower().startswith('a')):
+                        aid_raw = grp.upper()
+                # Falls Victor 'A1' statt '20260503_A1' schreibt: nimm neueste passende
+                if aid_raw and not aid_raw.startswith('2026'):
+                    cands = [x for x in pending if x.get('unique_id','').endswith('_'+aid_raw)]
+                    if cands:
+                        aid_raw = sorted(cands, key=lambda x: x.get('executed_at',''))[-1]['unique_id']
                 found = None
-                for q in pending:
-                    if q.get('unique_id','').upper() == qid:
-                        q['status'] = 'ANSWERED'
-                        q['answer'] = verb
-                        q['answered_at'] = datetime.now().isoformat()
-                        found = q
+                for a in pending:
+                    if a.get('unique_id','').upper() == aid_raw:
+                        a['rolled_back'] = True
+                        a['rollback_at'] = datetime.now().isoformat()
+                        found = a
                         break
                 _pending_f.write_text(json.dumps(pending, indent=2, ensure_ascii=False), encoding='utf-8')
                 if found:
-                    with open(_ans_f, 'a', encoding='utf-8') as _af:
-                        _af.write(json.dumps({
+                    with open(_rollback_log, 'a', encoding='utf-8') as _rf:
+                        _rf.write(json.dumps({
                             'ts': datetime.now().isoformat(),
-                            'unique_id': qid, 'answer': verb,
+                            'unique_id': aid_raw,
+                            'action_type': found.get('type'),
                             'topic': found.get('topic'),
-                            'question': found.get('question'),
+                            'original_what': found.get('what'),
                         }, ensure_ascii=False) + '\n')
                     _send_message(
-                        f'✅ {qid} ({found.get("topic","?")}) → **{verb.upper()}** notiert. '
-                        f'Albert wird das beim naechsten Cycle beruecksichtigen.',
+                        f'⏪ **{aid_raw}** ({found.get("topic","?")}) als ROLLBACK markiert.\n'
+                        f'⚠️ Hinweis: dies ist ein LOG-Eintrag — manuelle Wiederherstellung des '
+                        f'Vorzustands ggf. noetig (Albert hat bereits ausgefuehrt). '
+                        f'Original-Action: {found.get("what","")[:120]}',
                         CHANNEL_ID
                     )
                 else:
-                    _send_message(f'⚠️ Frage `{qid}` nicht in pending — schon beantwortet oder veraltet?', CHANNEL_ID)
+                    _send_message(f'⚠️ Action `{aid_raw}` nicht gefunden in pending (älter als 2 Tage oder unbekannt).', CHANNEL_ID)
                 state['last_message_id'] = highest_id
                 state['last_poll'] = datetime.now().isoformat()
                 _save_state(state)
                 continue
             except Exception as _qe:
-                print(f'[Albert] action-reply err: {_qe}', flush=True)
+                print(f'[Albert] rollback err: {_qe}', flush=True)
 
         stop_prefixes = ('stopp:', 'stopp ', 'stop:', 'stop ')
 

@@ -194,8 +194,8 @@ SCHEDULE = [
     ('Week Ahead Briefing', 'ceo_week_ahead_briefing.py',       [],                18, 0,  [6],         False),  # Sonntag 18:00
     # Phase 44w: Mission-bezogene Capability-Audit (taeglich)
     ('Capability Audit',    'ceo_capability_audit.py',          [],                23, 45, None,        False),  # tgl. 23:45 nach allen anderen Reflektionen
-    # Phase 44aa: Albert stellt Victor taeglich seine Fragen (CRITICAL-whitelist, durchgehend Wochenende)
-    ('CEO Action Requests', 'ceo_action_requests.py',           [],                7,  0,  None,        False),  # tgl. 07:00 morgens
+    # Phase 44ab: Albert ENTSCHEIDET autonom + meldet post-fact (kein Frage-System mehr)
+    ('CEO Action Log',      'ceo_action_log.py',                [],                7,  0,  None,        False),  # tgl. 07:00 — Albert entscheidet, Victor wird informiert (rollback 24h)
     # Phase 44y: Hunter im Research-Mode auch am Wochenende (Thesen suchen + verifizieren)
     # Mo-Fr macht der CEO Brain das schon im Trading-Window. Sa/So extra:
     ('Hunter Research',     'hunter_research_mode.py',          [],                10, 30, [5,6],       False),
