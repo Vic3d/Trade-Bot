@@ -1599,6 +1599,28 @@ def _execute_paper_entry_inner(
             shares_from_risk = max(1, int(shares_from_risk * _dna_size_factor))
     except Exception:
         pass
+    # Phase 45f (Sprint 5): Kelly-Sizer als zusaetzlicher Cap
+    # ML-WinProb wird als P verwendet wenn verfuegbar, sonst historische WR
+    try:
+        import sys as _sys_kelly
+        _sys_kelly.path.insert(0, str(WORKSPACE / 'scripts'))
+        from kelly_sizer import get_kelly_size
+        try:
+            from ml_winprob_model import predict_winprob
+            _ml_p = predict_winprob(ticker)
+        except Exception: _ml_p = None
+        _kelly = get_kelly_size(strategy, ml_winprob=_ml_p)
+        _kelly_eur = _kelly.get('final_position_eur', 0)
+        if _kelly_eur > 0:
+            _kelly_shares = int(_kelly_eur / entry_price) if entry_price else 0
+            if _kelly_shares < shares_from_risk:
+                print(f'[Kelly] {ticker}/{strategy}: '
+                      f'Kelly-fractional={_kelly.get("kelly_fractional",0):.3f} '
+                      f'-> {_kelly_eur:.0f}EUR ({_kelly_shares} shares) — '
+                      f'reduziert von {shares_from_risk}')
+                shares_from_risk = _kelly_shares
+    except Exception as _ke:
+        print(f'[Kelly-Sizer] non-fatal: {_ke}')
     position_eur = shares_from_risk * entry_price
     if position_eur > MAX_POSITION_EUR:
         shares_from_risk = int(MAX_POSITION_EUR / entry_price)

@@ -400,6 +400,20 @@ def _build_hunter_prompt(ctx: dict, max_new: int = 3) -> str:
             mission_str = full[:800].replace('\n\n', '\n').strip()
     except Exception: pass
 
+    # Phase 45e (Sprint 4): Markt-Regime einbeziehen — nur regime-eligible Strategies
+    regime_str = '(regime nicht verfuegbar)'
+    try:
+        rf = WS / 'data' / 'market_regime.json'
+        if rf.exists():
+            r = json.loads(rf.read_text(encoding='utf-8'))
+            regime_str = (f"REGIME: {r.get('regime','?')} "
+                           f"(conf {r.get('confidence',0):.0%}) "
+                           f"— {r.get('reasoning','')[:120]}\n"
+                           f"REGIME-ELIGIBLE STRATEGIES: "
+                           f"{', '.join(r.get('allowed_strategies',[])[:15]) or '(alle)'}")
+    except Exception: pass
+    mission_str = mission_str + '\n\n' + regime_str
+
     return HUNTER_PROMPT_TEMPLATE.format(
         mission_str=mission_str,
         commodity_snapshot=commodity_snapshot,
