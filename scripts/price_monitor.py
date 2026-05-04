@@ -57,16 +57,42 @@ def get_db():
     return conn
 
 
-def is_market_hours() -> bool:
-    """True zwischen 08:00–22:00 CET Mo-Fr."""
+def is_market_hours(ticker: str | None = None) -> bool:
+    """Phase 45j (Bug-Fix 04.05): Ticker-aware Markt-Stunden.
+    Vorher war 08:00-22:00 CET zu breit — Pre-Market-Ticks (vor 15:30 CEST
+    fuer NYSE) haben Stops getriggert. Bug-Beleg: MOS+PAAS am Mo 04.05 08:00
+    durch Pre-Market-Gap-Down ausgestoppt obwohl regulaerer NYSE noch geschlossen.
+
+    Returns True NUR waehrend regulaerer Handelszeit der Heimat-Boerse.
+    """
     try:
         import zoneinfo
         now = datetime.now(zoneinfo.ZoneInfo('Europe/Berlin'))
         if now.weekday() >= 5:  # Sa=5, So=6
             return False
-        return 8 <= now.hour < 22
+
+        h = now.hour + now.minute / 60.0
+        if not ticker:
+            # Default: alle Maerkte als "gemeinsamer Korridor" 09:00-22:00 CEST
+            return 9 <= h < 22
+
+        tu = ticker.upper()
+        # EU-Tickers (Suffix-basiert): 09:00-17:30 CEST
+        if any(tu.endswith(s) for s in ('.DE', '.PA', '.AS', '.MI', '.MC',
+                                          '.OL', '.VI', '.SW', '.L', '.ST', '.CO')):
+            return 9 <= h < 17.5
+        # UK (.L): 09:00-17:30 CEST (London-Time +1h von CEST nicht relevant fuer Range)
+        if tu.endswith('.L'):
+            return 9 <= h < 17.5
+        # Asia (.HK, .T, .SS, .SZ): 02:00-09:00 CEST (vereinfacht)
+        if any(tu.endswith(s) for s in ('.HK', '.T', '.SS', '.SZ')):
+            return 2 <= h < 9
+        # Default = US (NYSE/NASDAQ): regulaer 15:30-22:00 CEST
+        # (Pre-Market ab 10:00 wird NICHT als Markt-Open gewertet — kein Stop-Hit
+        #  auf Pre-Market-Ticks weil zu illiquide)
+        return 15.5 <= h < 22
     except Exception:
-        return True  # Fallback: immer aktiv
+        return True  # Fallback: immer aktiv (defensive)
 
 
 def send_alert(msg: str, dedupe_key: str | None = None):
@@ -194,6 +220,12 @@ def run_monitor():
 
                 price = get_price_eur(ticker)
                 if not price:
+                    continue
+
+                # Phase 45j: Pro-Ticker Markt-Open-Check.
+                # Stops nur waehrend regulaerer Handelszeit der Heimat-Boerse.
+                # Verhindert Pre-Market/After-Hours-Stop-Hits auf duennem Volumen.
+                if not is_market_hours(ticker):
                     continue
 
                 # ── Currency-Mismatch Sanity Check (Bug-Fix 2026-04-27) ──
