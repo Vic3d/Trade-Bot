@@ -42,8 +42,10 @@ POSITION_CLAIM_PATTERNS = [
 
 # Phrasen die "Strategy active" implizieren
 STRATEGY_ACTIVE_PATTERNS = [
-    r'\bstrategy\s+(PS\d+|S\d+|PT|PM|PS_[A-Z]+)\s+(?:ist|is)\s+active\b',
-    r'\b(PS\d+|S\d+|PT|PM|PS_[A-Z]+)\s+steht\s+auf\s+(?:active|allowed)\b',
+    r'\bstrategy\s+(PS\d+|S\d+|PT|PM|PS_[A-Z0-9_]+)\s+(?:ist|is)\s+active\b',
+    r'\b(PS\d+|S\d+|PT|PM|PS_[A-Z0-9_]+)\s+steht\s+auf\s+(?:active|allowed)\b',
+    # Phase 45l: "PS_NVO ist active" Pattern (war Lücke im Smoke-Test)
+    r'\b(PS\d+|S\d+|DT\d+|PS_[A-Z0-9_]+)\s+(?:ist|wurde|war)\s+active\b',
 ]
 
 # Phase 45l (PS5-Bug Fix): Status-Behauptungen cross-checken gegen
@@ -179,7 +181,7 @@ def check_halluzinations(text: str, context: str = 'llm') -> HalluzinationReport
             if key in seen_status_claims: continue
             seen_status_claims.add(key)
             actual = statuses.get(sid)
-            if actual is None:
+            if actual is None or actual == 'unknown':
                 continue  # Unbekannte SID — separate Klasse, ignorieren
             if actual != claimed_status:
                 report.violations.append({
