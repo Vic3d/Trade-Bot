@@ -72,6 +72,32 @@ def get_truth() -> dict:
             cash_row = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
             if cash_row:
                 truth['cash_eur'] = round(float(cash_row[0]), 0)
+            # Phase 45k+: closed trades letzte 7d (verhindert dass Claude sie
+            # frisch aus der DB ziehen muss bei "Wochen-Zusammenfassung")
+            truth['closed_7d'] = []
+            for r in c.execute(
+                "SELECT ticker, strategy, "
+                "  substr(close_date,1,10) AS exit_date, "
+                "  ROUND(pnl_eur,1) AS pnl_eur, "
+                "  ROUND(pnl_pct*100,1) AS pnl_pct, "
+                "  exit_type "
+                "FROM paper_portfolio "
+                "WHERE close_date >= date('now','-7 days') "
+                "  AND status IN ('CLOSED','WIN','LOSS') "
+                "  AND pnl_eur IS NOT NULL "
+                "ORDER BY close_date DESC LIMIT 25"
+            ):
+                truth['closed_7d'].append(dict(r))
+            agg = c.execute(
+                "SELECT COUNT(*) n, "
+                "  SUM(CASE WHEN pnl_eur>0 THEN 1 ELSE 0 END) wins, "
+                "  SUM(CASE WHEN pnl_eur<0 THEN 1 ELSE 0 END) losses, "
+                "  ROUND(SUM(pnl_eur),1) total_eur "
+                "FROM paper_portfolio "
+                "WHERE close_date >= date('now','-7 days') AND pnl_eur IS NOT NULL"
+            ).fetchone()
+            if agg:
+                truth['closed_7d_agg'] = dict(agg)
             c.close()
         except Exception as e:
             truth['db_error'] = str(e)
@@ -141,6 +167,24 @@ def format_for_llm(truth: dict | None = None) -> str:
     if truth.get('cash_eur') is not None:
         lines.append(f'CASH: {truth["cash_eur"]:.0f} EUR')
     lines.append('')
+
+    # Phase 45k+: Closed Trades letzte 7 Tage (Wochen-Zusammenfassung Inputs)
+    agg = truth.get('closed_7d_agg') or {}
+    closed = truth.get('closed_7d') or []
+    if agg.get('n'):
+        lines.append(
+            f'CLOSED 7d: {agg.get("n",0)} Trades '
+            f'({agg.get("wins",0)}W/{agg.get("losses",0)}L) '
+            f'PnL {agg.get("total_eur",0):+.1f} EUR'
+        )
+        for t in closed[:10]:
+            lines.append(
+                f'  - {t.get("exit_date","")}  {t["ticker"]:8s} ({t["strategy"]:8s}) '
+                f'{t["pnl_eur"]:+7.1f} EUR / {t.get("pnl_pct",0):+5.1f}%  {t.get("exit_type","")}'
+            )
+        if len(closed) > 10:
+            lines.append(f'  ... +{len(closed)-10} weitere')
+        lines.append('')
 
     # Phase 45k: Strategy-Verdicts als verbindliche Single-Source-of-Truth
     sv = truth.get('strategy_verdicts') or []
