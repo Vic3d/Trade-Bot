@@ -19,6 +19,11 @@
             "type": "command",
             "command": "python scripts/hooks/inject_albert_context.py",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python scripts/hooks/inject_current_truth.py",
+            "timeout": 6
           }
         ]
       }
