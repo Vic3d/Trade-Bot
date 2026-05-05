@@ -56,7 +56,14 @@ def load_closed_swing_trades():
 
 
 def load_closed_day_trades():
-    """Lädt abgeschlossene Day Trades aus trades-Tabelle."""
+    """Lädt abgeschlossene Day Trades aus trades-Tabelle.
+
+    Phase 45o (Victor 2026-05-05): Filter auf strategy LIKE 'DT%' weil
+    30 Phantom-Trades mit Swing-SIDs (PS/S/PT/PM) aus alter Schema-Aera
+    in dieser Tabelle leben und learnings.json fuer Swing-Strategien
+    kontaminierten (z.B. PS5 zeigte -312€ statt +18.7€).
+    Day-Trades sind per Convention DT* — alles andere gehoert in paper_portfolio.
+    """
     conn = get_db()
     rows = conn.execute("""
         SELECT id, ticker, strategy, direction, entry_price, exit_price,
@@ -67,6 +74,7 @@ def load_closed_day_trades():
           AND entry_price IS NOT NULL
           AND exit_price IS NOT NULL
           AND pnl_eur IS NOT NULL
+          AND strategy LIKE 'DT%'
     """).fetchall()
     conn.close()
     return [dict(r) for r in rows]

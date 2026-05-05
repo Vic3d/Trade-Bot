@@ -79,7 +79,7 @@ def get_truth() -> dict:
                 "SELECT ticker, strategy, "
                 "  substr(close_date,1,10) AS exit_date, "
                 "  ROUND(pnl_eur,1) AS pnl_eur, "
-                "  ROUND(pnl_pct*100,1) AS pnl_pct, "
+                "  ROUND(pnl_pct,1) AS pnl_pct, "  # Phase 45o: pnl_pct ist bereits Prozent in DB, kein *100
                 "  exit_type "
                 "FROM paper_portfolio "
                 "WHERE close_date >= date('now','-7 days') "
