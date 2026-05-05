@@ -112,6 +112,39 @@ def _strategy_statuses() -> dict[str, str]:
         return {}
 
 
+def _live_numbers() -> dict:
+    """Phase 45l: Live-Zahlen aus DB fuer Cross-Check.
+    Returns dict mit cash, sharpe_lifetime, sharpe_30d, win_rate_30d.
+    Werte koennen None sein wenn nicht verfuegbar."""
+    out = {'cash_eur': None, 'sharpe_lifetime': None, 'sharpe_30d': None,
+           'win_rate_30d_pct': None}
+    if DB.exists():
+        try:
+            c = sqlite3.connect(str(DB))
+            row = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+            if row: out['cash_eur'] = float(row[0])
+            row = c.execute(
+                "SELECT COUNT(*) n, "
+                " SUM(CASE WHEN pnl_eur>0 THEN 1 ELSE 0 END) wins "
+                "FROM paper_portfolio WHERE close_date >= date('now','-30 days') "
+                "AND pnl_eur IS NOT NULL"
+            ).fetchone()
+            if row and row[0]:
+                out['win_rate_30d_pct'] = round(100.0 * row[1] / row[0], 1)
+            c.close()
+        except Exception: pass
+    qf = WS / 'data' / 'quant_metrics.json'
+    if qf.exists():
+        try:
+            q = json.loads(qf.read_text(encoding='utf-8'))
+            at = q.get('all_time') or {}
+            out['sharpe_lifetime'] = at.get('sharpe')
+            l30 = q.get('last_30d') or {}
+            out['sharpe_30d'] = l30.get('sharpe')
+        except Exception: pass
+    return out
+
+
 def _today_weekday_de() -> str:
     try:
         from zoneinfo import ZoneInfo
@@ -190,6 +223,68 @@ def check_halluzinations(text: str, context: str = 'llm') -> HalluzinationReport
                     'truth': f'{sid} ist tatsaechlich: {actual}',
                     'snippet': text[max(0,m.start()-30):m.end()+30],
                 })
+
+    # 2c. Phase 45l: Number-Cross-Check
+    # Cash-Behauptungen (Toleranz 1.5%)
+    nums = _live_numbers()
+    if nums.get('cash_eur') is not None:
+        live_cash = nums['cash_eur']
+        # Patterns: "Cash 29.685", "Cash bei 29.685€", "29.685 EUR Cash"
+        for m in re.finditer(
+            r'(?:cash|guthaben|bestand)\s*(?:bei|von|von\s+)?\s*([\d.,]+)\s*(?:€|eur)?',
+            text, re.IGNORECASE
+        ):
+            try:
+                claimed = float(m.group(1).replace('.', '').replace(',', '.'))
+                # Heuristik: wenn unter 1000 vermutlich nicht Cash sondern Position
+                if claimed < 1000: continue
+                if abs(claimed - live_cash) / max(live_cash, 1) > 0.015:
+                    report.violations.append({
+                        'kind': 'wrong_cash',
+                        'claim': f'Text behauptet Cash {claimed:.0f} EUR',
+                        'truth': f'Cash live: {live_cash:.0f} EUR',
+                        'snippet': text[max(0,m.start()-30):m.end()+30],
+                    })
+                    break
+            except Exception: continue
+
+    # Sharpe-Behauptungen (Toleranz 0.15)
+    for label, key in [('sharpe lifetime|sharpe all', 'sharpe_lifetime'),
+                       ('sharpe 30d|sharpe letzte 30', 'sharpe_30d')]:
+        if nums.get(key) is None: continue
+        live = float(nums[key])
+        for m in re.finditer(
+            rf'(?:{label})\s*(?:bei|von|=)?\s*(-?\d+[.,]?\d*)',
+            text, re.IGNORECASE
+        ):
+            try:
+                claimed = float(m.group(1).replace(',', '.'))
+                if abs(claimed - live) > 0.15:
+                    report.violations.append({
+                        'kind': 'wrong_number',
+                        'claim': f'Text behauptet {key} = {claimed:.2f}',
+                        'truth': f'{key} live: {live:.2f}',
+                        'snippet': text[max(0,m.start()-30):m.end()+30],
+                    })
+            except Exception: continue
+
+    # WR-30d (Toleranz 3pp)
+    if nums.get('win_rate_30d_pct') is not None:
+        live_wr = nums['win_rate_30d_pct']
+        for m in re.finditer(
+            r'(?:WR|win[- ]?rate)\s+(?:30d|letzte\s+30)\s*(?:bei|von|=)?\s*(\d+[.,]?\d*)\s*%?',
+            text, re.IGNORECASE
+        ):
+            try:
+                claimed = float(m.group(1).replace(',', '.'))
+                if abs(claimed - live_wr) > 3.0:
+                    report.violations.append({
+                        'kind': 'wrong_number',
+                        'claim': f'Text behauptet WR 30d = {claimed:.1f}%',
+                        'truth': f'WR 30d live: {live_wr:.1f}%',
+                        'snippet': text[max(0,m.start()-30):m.end()+30],
+                    })
+            except Exception: continue
 
     # 3. Datums-Claims (nur wenn explizit "heute X" steht)
     for day in DAY_NAMES:

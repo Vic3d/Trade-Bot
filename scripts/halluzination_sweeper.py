@@ -40,6 +40,8 @@ LOGS_TO_SCAN = [
     'ceo_active_loop.jsonl',
     'macro_stop_decisions.jsonl',
     'fact_audit_log.jsonl',
+    # Phase 45l: CLI-Claude-Outputs (Stop-Hook audit_cli_response.py)
+    'cli_audit_violations.jsonl',
 ]
 SWEEP_REPORT = WS / 'data' / 'halluzination_sweep_report.jsonl'
 LAST_SWEEP_STATE = WS / 'data' / 'halluzination_sweep_state.json'
