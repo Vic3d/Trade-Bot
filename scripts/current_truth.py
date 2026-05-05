@@ -68,6 +68,23 @@ def get_truth() -> dict:
             ).fetchall():
                 d = dict(r)
                 d['stop_pct_from_entry'] = round((d['stop_price']/d['entry_price']-1)*100, 1) if d['entry_price'] else 0
+                # Phase 45o: Live-MTM (last close from prices-Tabelle)
+                pr = c.execute(
+                    "SELECT date, close FROM prices WHERE ticker=? "
+                    "ORDER BY date DESC LIMIT 1", (d['ticker'],)
+                ).fetchone()
+                if pr and d.get('entry_price') and d.get('shares'):
+                    last_price = float(pr[1])
+                    d['last_price'] = round(last_price, 2)
+                    d['last_price_date'] = pr[0]
+                    pnl_eur = (last_price - d['entry_price']) * d['shares']
+                    pnl_pct = (last_price / d['entry_price'] - 1) * 100
+                    d['unrealized_pnl_eur'] = round(pnl_eur, 1)
+                    d['unrealized_pnl_pct'] = round(pnl_pct, 1)
+                else:
+                    d['last_price'] = None
+                    d['unrealized_pnl_eur'] = None
+                    d['unrealized_pnl_pct'] = None
                 truth['open_positions'].append(d)
             cash_row = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
             if cash_row:
@@ -153,11 +170,19 @@ def format_for_llm(truth: dict | None = None) -> str:
     if truth.get('open_positions'):
         lines.append(f'OPEN POSITIONS ({len(truth["open_positions"])}):')
         for p in truth['open_positions']:
-            lines.append(
+            base = (
                 f"  - {p['ticker']} ({p['strategy']}) entry {p['entry_price']:.2f}, "
                 f"stop {p['stop_price']:.2f} ({p['stop_pct_from_entry']:+.1f}% vom Entry), "
                 f"target {p['target_price']:.2f}"
             )
+            # Phase 45o: Live-MTM
+            if p.get('last_price') is not None:
+                base += (
+                    f"\n      → LIVE: {p['last_price']:.2f} ({p['last_price_date']}), "
+                    f"unrealized {p['unrealized_pnl_eur']:+.1f} EUR / "
+                    f"{p['unrealized_pnl_pct']:+.1f}%"
+                )
+            lines.append(base)
     else:
         lines.append('OPEN POSITIONS: KEINE (0 offene Positionen)')
     lines.append('')
