@@ -204,6 +204,9 @@ SCHEDULE = [
     ('Quant Metrics',       'quant_metrics.py',                 [],                23, 50, None,        False),  # tgl. 23:50
     # Phase 45m (Victor 2026-05-05): Tool-Inventur ueber 30 Tage
     ('Tool Usage Tracker',  'tool_usage_tracker.py',            [],                23, 55, None,        False),  # tgl. 23:55 (nach allen anderen Jobs)
+    # Phase 45n (Victor 2026-05-05): Wochenend-Verbesserungs-Briefing
+    ('Friday Briefing',     'friday_improvement_briefing.py',   [],                18, 0,  [4],         False),  # Freitag 18:00 CET
+
     # Phase 45c (Sprint 2): Feature-Engineering taeglich nach Markt-Close
     ('Feature Engineering', 'feature_engineering.py',           ['--all'],         22, 15, None,        False),  # tgl. 22:15
     # Phase 45d (Sprint 3): ML-Win-Prob retraining woechentlich (Sa)
