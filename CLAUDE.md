@@ -44,6 +44,41 @@ Wenn ein Satz einen Trigger enthält UND keine frische Verifikation:
 Langsamer + 5-30s Tool-Call-Delay vor relevanter Aussage > schnelle Halluzination + Korrektur-Loop.
 Antwortqualität schlägt Konversationsfluss.
 
+## Verification-Tag-Konvention (Phase 45l, Victor 2026-05-05)
+
+Jede quantitative oder faktische Aussage MUSS einen Inline-Tag tragen, der die Quelle benennt.
+Tags machen Halluzinationen für jeden Leser sofort sichtbar — auch für Claude selbst beim Re-Lesen.
+
+| Tag | Bedeutung | Wann |
+|---|---|---|
+| `[✓ DB:$query]` | Frisch via DB/Tool-Call in dieser Session geprüft | Default für Zahlen |
+| `[✓ truth-block]` | Steht im injizierten Truth-Block dieser Anfrage | Schnellster Check |
+| `[⚠ summary]` | Aus Pre-Compaction-Summary, NICHT reverifiziert | Verboten ohne Re-Check |
+| `[⚠ memory]` | Aus Trainings-Erinnerung | Verboten für TradeMind-Fakten |
+| `[? unverified]` | Bewusste Schätzung, Quelle benannt | Erlaubt mit Disclaimer |
+
+Beispiele:
+
+✅ "PS5 Verdict: INSUFFICIENT [✓ truth-block]"
+✅ "Letzte 7d Closed Trades: 18 (7W/11L) [✓ DB:paper_portfolio close_date>=date(now,-7d)]"
+❌ "PS5 hat Sharpe -3.14" (kein Tag = automatisch verdächtig)
+❌ "PS5 wurde retired" (kein Tag, widerspricht truth-block — Stop-Hook würde das fangen)
+
+## Anti-Halluzinations-Layer-Stack
+
+| Layer | Mechanik | Wirkung |
+|---|---|---|
+| 1. CLAUDE.md Regel #0 | Text-Prompt | passive Erinnerung |
+| 2. UserPromptSubmit Hook → current_truth | Inject vor jedem Prompt | proaktive Wahrheits-Quelle |
+| 3. halluzination_detector | LLM-Output cross-check | für Albert (Discord) |
+| 4. Stop-Hook → audit_cli_response | Detector auch auf CLI-Output | für Claude-CLI |
+| 5. PreCompact-Hook → preserve_rules | Truth-Reinjection vor Compaction | gegen Summary-Drift |
+| 6. Verification-Tags (oben) | Inline-Quellen-Tags | sichtbar im Lesefluss |
+| 7. strategy_verdict.py | Single Source of Truth | gegen Quellen-Konflikte |
+
+Wenn ein Layer feuert (Stop-Hook violation), Korrektur in nächster Antwort + Eintrag in
+`data/cli_audit_violations.jsonl` für Postmortem.
+
 ---
 
 # 🛡️ STOP-MANAGEMENT — DOKTRIN (Phase 44n, Victor 2026-05-02)

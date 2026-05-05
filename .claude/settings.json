@@ -27,6 +27,30 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/hooks/audit_cli_response.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/hooks/preserve_rules_on_compact.py",
+            "timeout": 8
+          }
+        ]
+      }
     ]
   }
 }
