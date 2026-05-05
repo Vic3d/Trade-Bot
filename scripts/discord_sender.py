@@ -105,10 +105,52 @@ def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
     Phase 43e: ALLE Nachrichten landen IMMER in ceo_inbox.jsonl (CEO-Sicht).
     silent=True → nur Inbox, kein Discord-Push (kompletter User-Mute).
 
+    Phase 45p (Victor 2026-05-05): BRIEFINGS-ONLY-MODE.
+      Discord soll NUR die 3 Briefings + echte Notfaelle empfangen.
+      Alles andere wird automatisch silent (bleibt in ceo_inbox).
+      Whitelist: morning_brief_generator, us_opening_report,
+                 evening_report, friday_improvement_briefing,
+                 ceo_week_ahead_briefing.
+      Notfall-Caller die immer durchkommen: paper_exit_manager (Stop-Hits),
+                 crash safety im paper_trade_engine.
+
     Während der Nachtruhe (23:00-07:00 CET) werden Nachrichten
     automatisch in die Queue für das Morgen-Briefing geschoben.
     force=True überspringt die Nachtruhe (für echte Notfälle wie Stop-Hits).
     """
+    # Phase 45p: Caller-Whitelist
+    BRIEFING_CALLERS = {
+        'morning_brief_generator', 'us_opening_report', 'evening_report',
+        'friday_improvement_briefing', 'ceo_week_ahead_briefing',
+    }
+    EMERGENCY_CALLERS = {
+        # Wirkliche Notfaelle die sofort raus muessen
+        'paper_exit_manager',     # Stop-Hits
+        'crash_safety',           # -10% Crash
+        'system_error',           # API quota etc.
+        'db_integrity_watchdog',  # DB-Korruption
+    }
+    USER_TEST_CALLERS = {'discord_sender', 'test_briefing'}  # CLI-Tests
+    ALLOWED = BRIEFING_CALLERS | EMERGENCY_CALLERS | USER_TEST_CALLERS
+
+    if not silent and not force:
+        try:
+            import inspect
+            stack = inspect.stack()
+            # Suche nach erstem Frame der NICHT in discord_sender.py ist
+            caller_module = None
+            for frame in stack[1:]:
+                fn = Path(frame.filename).stem
+                if fn != 'discord_sender':
+                    caller_module = fn
+                    break
+            if caller_module and caller_module not in ALLOWED:
+                # Nicht erlaubt → silent (bleibt in ceo_inbox)
+                silent = True
+        except Exception:
+            pass  # Im Zweifel durchlassen
+
+
     # Phase 43e: immer in ceo_inbox loggen
     try:
         import sys as _sys

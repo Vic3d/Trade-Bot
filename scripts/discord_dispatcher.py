@@ -157,17 +157,27 @@ def send_alert(
     except Exception:
         _is_weekend = False
 
-    # Categories die IMMER durchkommen (echter Notfall)
-    CRITICAL_CATEGORIES = {
-        'crash_safety', 'news_reactor_exit',  # echte Position-Risk
-        'system_error', 'api_quota_exceeded',  # System-Notfall
-        'test_reminder',                       # User-Test-Reminder
-        'ceo_action_request',                  # Phase 44aa: Albert fragt Victor
+    # Phase 45p (Victor 2026-05-05): BRIEFINGS-ONLY-MODE.
+    # Discord empfaengt NUR die 3 Tages-Briefings + Friday-Briefing +
+    # echte Notfaelle. ALLES ANDERE wird SILENT (bleibt in ceo_inbox).
+    # User-Direktive: "ich will eigentlich nur noch die Briefings haben".
+    BRIEFING_CATEGORIES = {
+        'morning_brief', 'us_open_brief', 'evening_brief',
+        'friday_briefing', 'week_ahead_briefing',
     }
+    EMERGENCY_CATEGORIES = {
+        'crash_safety',           # -10% Live-Loss Auto-Exit
+        'circuit_breaker',        # Drawdown-Pause
+        'system_error',           # API/DB-Crash
+        'api_quota_exceeded',     # Anthropic-Quota leer
+        'db_integrity_watchdog',  # DB-Korruption
+        'test_reminder',          # User-Test-Reminder
+    }
+    ALLOWED_CATEGORIES = BRIEFING_CATEGORIES | EMERGENCY_CATEGORIES
 
-    if _is_weekend and tier != TIER_SILENT:
-        if category not in CRITICAL_CATEGORIES:
-            tier = TIER_SILENT  # Wochenende: Nicht-kritisches stumm
+    # IMMER (nicht nur Wochenende): wenn Category nicht erlaubt → SILENT.
+    if tier != TIER_SILENT and category not in ALLOWED_CATEGORIES:
+        tier = TIER_SILENT
 
     # Phase 43e: ALLES → ceo_inbox (CEO-Sicht), Discord nur per Tier
     user_pinged = False

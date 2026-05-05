@@ -319,6 +319,9 @@ def build_report() -> str:
     news_text      = _news_section(conn)
     theses_text    = _active_theses_section(conn)
 
+    # Phase 45p (Victor 2026-05-05): gut/schlecht/Outlook-Block
+    summary_text = _today_summary_block(conn)
+
     conn.close()
 
     sep = "━" * 34
@@ -330,6 +333,8 @@ def build_report() -> str:
         closed_text,
         sep,
         stats_text,
+        sep,
+        summary_text,
     ]
 
     if news_text:
@@ -345,6 +350,105 @@ def build_report() -> str:
     ]
 
     return "\n".join(sections)
+
+
+def _today_summary_block(conn) -> str:
+    """Phase 45p: Was lief gut / was schlecht / Ausblick.
+
+    Datenbasis: heutige Closed-Trades, offene Position-Performance,
+    Strategy-Verdicts, Mission-KPIs.
+    """
+    today = date.today().isoformat()
+    good, bad, outlook = [], [], []
+
+    # 1. Closed Trades heute
+    rows = conn.execute(
+        "SELECT ticker, strategy, ROUND(pnl_eur,1) pnl, ROUND(pnl_pct,1) pct, exit_type "
+        "FROM paper_portfolio WHERE substr(close_date,1,10)=? "
+        "AND pnl_eur IS NOT NULL", (today,)
+    ).fetchall()
+    wins = [r for r in rows if r['pnl'] > 0]
+    losses = [r for r in rows if r['pnl'] < 0]
+    for r in wins[:3]:
+        good.append(f"✅ {r['ticker']} ({r['strategy']}) +{r['pnl']}€ ({r['pct']:+.1f}%)")
+    for r in losses[:3]:
+        bad.append(f"❌ {r['ticker']} ({r['strategy']}) {r['pnl']}€ ({r['pct']:+.1f}%) → {r['exit_type'] or 'n/a'}")
+
+    # 2. Offene Positionen mit Live-MTM
+    open_rows = conn.execute(
+        "SELECT ticker, strategy, entry_price, shares FROM paper_portfolio "
+        "WHERE status='OPEN'"
+    ).fetchall()
+    for o in open_rows:
+        pr = conn.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
+            (o['ticker'],)
+        ).fetchone()
+        if not pr or not o['entry_price'] or not o['shares']:
+            continue
+        pnl_eur = (pr[0] - o['entry_price']) * o['shares']
+        pnl_pct = (pr[0]/o['entry_price'] - 1) * 100
+        if pnl_pct >= 5:
+            good.append(f"📈 {o['ticker']} ({o['strategy']}) unrealized +{pnl_eur:.0f}€ / {pnl_pct:+.1f}%")
+        elif pnl_pct <= -3:
+            bad.append(f"📉 {o['ticker']} ({o['strategy']}) unrealized {pnl_eur:+.0f}€ / {pnl_pct:+.1f}%")
+
+    # 3. Mission-KPI-Status fuer Ausblick
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from strategy_verdict import all_verdicts  # type: ignore
+        verdicts = all_verdicts()
+        n_strong = sum(1 for v in verdicts if v['verdict'] == 'STRONG_EDGE')
+        n_ok = sum(1 for v in verdicts if v['verdict'] == 'OK')
+        n_weak = sum(1 for v in verdicts if v['verdict'] == 'WEAK')
+        n_neg = sum(1 for v in verdicts if v['verdict'] == 'NEGATIVE')
+        if n_strong >= 1:
+            outlook.append(f"🎯 {n_strong} Strategien mit STRONG_EDGE — voll handelbar.")
+        if n_ok >= 1:
+            outlook.append(f"👍 {n_ok} OK-Strategien — laufen.")
+        if n_weak >= 3:
+            outlook.append(f"⚠️ {n_weak} WEAK-Strategien — Position-Size reduziert.")
+        if n_neg >= 1:
+            outlook.append(f"🚫 {n_neg} NEGATIVE_EDGE — Retire-Kandidaten naechste Woche.")
+    except Exception: pass
+
+    # Sharpe-Trend
+    try:
+        qf = WS / 'data' / 'quant_metrics.json'
+        if qf.exists():
+            import json as _json
+            q = _json.loads(qf.read_text(encoding='utf-8'))
+            s_lt = (q.get('all_time') or {}).get('sharpe')
+            s_30d = (q.get('last_30d') or {}).get('sharpe')
+            if s_lt is not None and s_30d is not None:
+                arrow = '📈' if s_30d > 0 else '📉'
+                outlook.append(f"{arrow} Sharpe lifetime {s_lt:.2f} / 30d {s_30d:+.2f}")
+                if s_30d < -0.5:
+                    outlook.append("→ 30d-Trend schwach. Naechste Woche: konservative Sizing.")
+    except Exception: pass
+
+    # Naechste Catalysts (aus calendar_service falls verfuegbar)
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from calendar_service import upcoming_events  # type: ignore
+        events = upcoming_events(days_ahead=3) or []
+        if events:
+            outlook.append(f"📅 Naechste 3 Tage: {len(events)} Catalysts (Earnings/Fed/CPI etc.)")
+    except Exception: pass
+
+    if not good: good.append("— heute keine herausragenden Gewinner")
+    if not bad:  bad.append("— heute keine signifikanten Verlierer")
+    if not outlook: outlook.append("— keine spezifischen Signale fuer kommende Tage")
+
+    out = ['📊 **TAGES-FAZIT**', '', '**Was gut lief:**']
+    out.extend(good)
+    out.extend(['', '**Was schlecht lief:**'])
+    out.extend(bad)
+    out.extend(['', '**Ausblick naechste Tage:**'])
+    out.extend(outlook)
+    return '\n'.join(out)
 
 
 def send_report():

@@ -784,7 +784,19 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
                     # dass derselbe Job bei mehrfachen Runs denselben Text spammt.
                     _day = datetime.now().strftime('%Y%m%d')
                     _slug = name.lower().replace(' ', '_')
-                    notify(filtered[:1900], tier='MEDIUM', category='job',
+                    # Phase 45p: 3 Briefings + Friday-Briefing bekommen
+                    # eigene Categories damit sie die strikte Whitelist passieren.
+                    _briefing_map = {
+                        'morgen-briefing': 'morning_brief',
+                        'us opening':      'us_open_brief',
+                        'us-opening':      'us_open_brief',
+                        'abend-report':    'evening_brief',
+                        'friday briefing': 'friday_briefing',
+                        'week ahead briefing': 'week_ahead_briefing',
+                    }
+                    _cat = _briefing_map.get(name.lower(), 'job')
+                    _tier = 'HIGH' if _cat != 'job' else 'MEDIUM'
+                    notify(filtered[:1900], tier=_tier, category=_cat,
                            dedupe_key=f'job_{_slug}_{_day}')
                     log(f'✅ {name}: OK + Discord gesendet ({len(filtered)} chars, orig {len(output)})')
                 else:
