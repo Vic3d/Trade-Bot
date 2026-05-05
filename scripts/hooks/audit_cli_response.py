@@ -135,7 +135,10 @@ def main() -> int:
     bullets = []
     for v in violations[:5]:
         if isinstance(v, dict):
-            bullets.append(f"  - {v.get('type','?')}: {v.get('claim','?')} → {v.get('reason','?')}")
+            kind = v.get('kind') or v.get('type') or '?'
+            claim = v.get('claim') or '?'
+            truth = v.get('truth') or v.get('reason') or '?'
+            bullets.append(f"  - [{kind}] {claim} | TRUTH: {truth}")
         else:
             bullets.append(f"  - {v}")
     msg = (

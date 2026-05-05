@@ -46,6 +46,27 @@ STRATEGY_ACTIVE_PATTERNS = [
     r'\b(PS\d+|S\d+|PT|PM|PS_[A-Z]+)\s+steht\s+auf\s+(?:active|allowed)\b',
 ]
 
+# Phase 45l (PS5-Bug Fix): Status-Behauptungen cross-checken gegen
+# strategies.json. Fängt 'PS5 ist retired', 'PS5 wurde paused', etc.
+STRATEGY_STATUS_PATTERNS = [
+    # "PS5 ist retired", "PS5 wurde paused", "PS5 retired", "PS5-Retire"
+    r'\b(PS_?[A-Z0-9_]+|S\d+|DT\d+|PT|PM|AR-[A-Z]+)\b'
+    r'(?:\s+(?:ist|wurde|war|wird|war\s+jetzt))?\s*[-:]?\s*'
+    r'(retired|retire|paused|pause|watching|stopp(?:ed)?|deaktiviert|killed|gekillt)',
+]
+
+# Tokens die definitiv KEINE Tickers sind (deutsche/englische Stop-Worte
+# die regex-mäßig wie Tickers aussehen). Verhindert "MIT", "DER" etc.
+TICKER_BLACKLIST = {
+    'MIT', 'DER', 'DIE', 'DAS', 'DEN', 'DEM', 'DES',
+    'EIN', 'EINE', 'EINEN', 'EINER', 'EINEM',
+    'UND', 'ODER', 'ABER', 'IST', 'WAR', 'SIND',
+    'AN', 'IN', 'ON', 'AT', 'BY', 'TO', 'OF', 'IF', 'IT', 'AS', 'IS', 'BE',
+    'CEO', 'CFO', 'CTO', 'API', 'SQL', 'CSV', 'JSON', 'HTML',
+    'OK', 'NOK', 'JA', 'NEIN', 'YES', 'NO',
+    'NEW', 'OLD', 'BIG', 'SMALL',
+}
+
 # Datum-Behauptungen
 DAY_NAMES = {'montag','dienstag','mittwoch','donnerstag','freitag','samstag','sonntag',
              'monday','tuesday','wednesday','thursday','friday','saturday','sunday'}
@@ -76,6 +97,19 @@ def _active_strategy_ids() -> set[str]:
         return set()
 
 
+def _strategy_statuses() -> dict[str, str]:
+    """Phase 45l: Vollstaendige Status-Map fuer Cross-Check.
+    Returns: {SID: 'active'|'retired'|'paused'|'watching'|...}"""
+    sf = WS / 'data' / 'strategies.json'
+    if not sf.exists(): return {}
+    try:
+        d = json.loads(sf.read_text(encoding='utf-8'))
+        return {sid: (v.get('status') or 'unknown')
+                for sid, v in d.items() if isinstance(v, dict)}
+    except Exception:
+        return {}
+
+
 def _today_weekday_de() -> str:
     try:
         from zoneinfo import ZoneInfo
@@ -99,6 +133,9 @@ def check_halluzinations(text: str, context: str = 'llm') -> HalluzinationReport
     for pat in POSITION_CLAIM_PATTERNS:
         for m in re.finditer(pat, text, re.IGNORECASE):
             ticker = m.group(1).upper()
+            # Phase 45l: Blacklist gegen False-Positives wie "MIT", "DER", "AN"
+            if ticker in TICKER_BLACKLIST: continue
+            if len(ticker) < 2: continue
             if ticker in seen_position_claims: continue
             seen_position_claims.add(ticker)
             if ticker not in open_tickers:
@@ -118,6 +155,37 @@ def check_halluzinations(text: str, context: str = 'llm') -> HalluzinationReport
                     'kind': 'strategy_not_active',
                     'claim': f'Text behauptet {sid} sei active',
                     'truth': f'Active strategies: {sorted(active_strats) or "(none)"}',
+                    'snippet': text[max(0,m.start()-30):m.end()+30],
+                })
+
+    # 2b. Phase 45l: Strategy-Status-Behauptungen cross-check
+    # Faengt 'PS5 ist retired', 'PS5-Retire', 'PS_NVO wurde paused', etc.
+    statuses = _strategy_statuses()
+    seen_status_claims = set()
+    for pat in STRATEGY_STATUS_PATTERNS:
+        for m in re.finditer(pat, text, re.IGNORECASE):
+            sid = m.group(1).upper()
+            claimed_status_raw = m.group(2).lower()
+            # Normalisiere claimed status
+            status_map = {
+                'retired': 'retired', 'retire': 'retired',
+                'paused': 'paused', 'pause': 'paused',
+                'watching': 'watching',
+                'stopped': 'paused', 'stopp': 'paused',
+                'deaktiviert': 'retired', 'killed': 'retired', 'gekillt': 'retired',
+            }
+            claimed_status = status_map.get(claimed_status_raw, claimed_status_raw)
+            key = (sid, claimed_status)
+            if key in seen_status_claims: continue
+            seen_status_claims.add(key)
+            actual = statuses.get(sid)
+            if actual is None:
+                continue  # Unbekannte SID — separate Klasse, ignorieren
+            if actual != claimed_status:
+                report.violations.append({
+                    'kind': 'strategy_status_mismatch',
+                    'claim': f'Text behauptet {sid} sei {claimed_status}',
+                    'truth': f'{sid} ist tatsaechlich: {actual}',
                     'snippet': text[max(0,m.start()-30):m.end()+30],
                 })
 
