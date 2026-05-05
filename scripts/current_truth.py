@@ -86,6 +86,30 @@ def get_truth() -> dict:
             ])
         except Exception: pass
 
+    # Phase 45k (Victor 2026-05-05): Single Source of Truth fuer Strategy-
+    # Verdicts. Ohne diesen Block koennen LLM und CLI-Claude widerspruechliche
+    # Aussagen ueber Strategien machen (PS5-Bug 05.05).
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from strategy_verdict import all_verdicts  # type: ignore
+        verdicts = all_verdicts()
+        truth['strategy_verdicts'] = [
+            {
+                'sid': v['sid'],
+                'verdict': v['verdict'],
+                'confidence': v['confidence'],
+                'rec': v['recommendation'][:120],
+                'conflicts': v['conflicts'],
+            }
+            for v in verdicts
+        ]
+        truth['strategy_conflicts'] = [
+            v['sid'] for v in verdicts if v['conflicts']
+        ]
+    except Exception as e:
+        truth['strategy_verdicts'] = []
+        truth['strategy_verdict_error'] = str(e)
+
     return truth
 
 
@@ -117,9 +141,35 @@ def format_for_llm(truth: dict | None = None) -> str:
     if truth.get('cash_eur') is not None:
         lines.append(f'CASH: {truth["cash_eur"]:.0f} EUR')
     lines.append('')
+
+    # Phase 45k: Strategy-Verdicts als verbindliche Single-Source-of-Truth
+    sv = truth.get('strategy_verdicts') or []
+    if sv:
+        lines.append(f'STRATEGY VERDICTS ({len(sv)}) — EINZIGE gueltige Quelle:')
+        # Nur Non-OK-Verdicts ausfuehrlich, OK/STRONG_EDGE compact
+        groups: dict[str, list[str]] = {}
+        for v in sv:
+            groups.setdefault(v['verdict'], []).append(v['sid'])
+        compact = ['STRONG_EDGE', 'OK']
+        for verdict in compact:
+            if verdict in groups:
+                lines.append(f'  {verdict}: {", ".join(sorted(groups[verdict]))}')
+        for v in sv:
+            if v['verdict'] in compact:
+                continue
+            tag = '⚠ CONFLICT' if v['conflicts'] else v['verdict']
+            lines.append(f'  [{tag}] {v["sid"]}: {v["rec"]}')
+        if truth.get('strategy_conflicts'):
+            lines.append('')
+            lines.append(f'CONFLICTS BETWEEN SOURCES: {", ".join(truth["strategy_conflicts"])}')
+            lines.append('  → Diese Strategien haben widerspruechliche Signale.')
+            lines.append('  → KEINE Aussage ueber Edge ohne strategy_verdict() abzufragen.')
+        lines.append('')
+
     lines.append('REGEL: Wenn du etwas ueber Positionen/Strategien/Datum schreibst,')
     lines.append('       MUSS es mit obigem Block uebereinstimmen. Kein Mention von')
     lines.append('       Tickers/Strategien die NICHT oben aufgelistet sind.')
+    lines.append('       Strategy-Edge IMMER aus STRATEGY VERDICTS, nicht aus Erinnerung.')
     lines.append('═══════════════════════════════════════════════')
     return '\n'.join(lines)
 
