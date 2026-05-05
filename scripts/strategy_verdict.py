@@ -95,11 +95,18 @@ def _src_learnings(sid: str) -> dict | None:
 
 
 def _src_backtest(sid: str) -> dict | None:
-    """backtest_v2_results.json by_strategy."""
+    """backtest_v2_results.json by_strategy (kann list ODER dict sein)."""
     b = _read_json(BACKTEST)
     if not isinstance(b, dict):
         return None
-    bs = (b.get('by_strategy') or {}).get(sid)
+    raw = b.get('by_strategy')
+    bs = None
+    if isinstance(raw, list):
+        bs = next((x for x in raw if isinstance(x, dict)
+                   and (x.get('strategy') == sid or x.get('strategy_id') == sid
+                        or x.get('sid') == sid or x.get('id') == sid)), None)
+    elif isinstance(raw, dict):
+        bs = raw.get(sid)
     if not isinstance(bs, dict):
         return None
     return {
@@ -112,16 +119,30 @@ def _src_backtest(sid: str) -> dict | None:
 
 
 def _src_quant(sid: str) -> dict | None:
-    """quant_metrics.json per_strategy — Sprint 0 Quant-Layer."""
+    """quant_metrics.json per_strategy — Sprint 0 Quant-Layer.
+
+    per_strategy ist eine LIST, nicht dict (Schema 04.05).
+    """
     q = _read_json(QUANT)
     if not isinstance(q, dict):
         return None
-    ps = (q.get('per_strategy') or {}).get(sid)
+    raw = q.get('per_strategy')
+    ps = None
+    if isinstance(raw, list):
+        ps = next((x for x in raw if isinstance(x, dict)
+                   and (x.get('strategy') == sid or x.get('strategy_id') == sid
+                        or x.get('sid') == sid)), None)
+    elif isinstance(raw, dict):
+        ps = raw.get(sid)
     if not isinstance(ps, dict):
         return None
     return {
+        'n_trades': ps.get('n_trades'),
+        'win_rate_pct': ps.get('win_rate_pct'),
+        'pnl_total_eur': ps.get('pnl_total_eur'),
+        'profit_factor': ps.get('profit_factor'),
+        'expectancy_eur': ps.get('expectancy_eur'),
         'sharpe_30d': ps.get('sharpe_30d'),
-        'sharpe_90d': ps.get('sharpe_90d'),
         'sharpe_all': ps.get('sharpe_all') or ps.get('sharpe_lifetime'),
         'mission_verdict': ps.get('mission_verdict'),
         'edge_verdict': ps.get('edge_verdict') or ps.get('verdict'),
