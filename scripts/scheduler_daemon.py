@@ -774,31 +774,35 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
         if result.returncode == 0:
             output = result.stdout.strip()
             if discord and output and len(output) > 20 and 'KEIN_SIGNAL' not in output:
-                # Filter: nur "echte" Alerts durchlassen, kein Prozess-Debug-Log.
-                # stdout enthält oft Mix aus '[job-name] processing...' (Debug) und
-                # '🚀 **Alert** ...' (für Victor). Wir filtern Zeilen mit
-                # '[...]'-Präfix und Progress-Noise raus, behalten Emoji/Bold/Headers.
-                filtered = _filter_discord_output(output)
-                if filtered and len(filtered) > 20:
-                    # MEDIUM + Dedupe pro Job-Name pro Tag — verhindert
-                    # dass derselbe Job bei mehrfachen Runs denselben Text spammt.
-                    _day = datetime.now().strftime('%Y%m%d')
-                    _slug = name.lower().replace(' ', '_')
-                    # Phase 45p: 3 Briefings + Friday-Briefing bekommen
-                    # eigene Categories damit sie die strikte Whitelist passieren.
-                    _briefing_map = {
-                        'morgen-briefing': 'morning_brief',
-                        'us opening':      'us_open_brief',
-                        'us-opening':      'us_open_brief',
-                        'abend-report':    'evening_brief',
-                        'friday briefing': 'friday_briefing',
-                        'week ahead briefing': 'week_ahead_briefing',
-                    }
-                    _cat = _briefing_map.get(name.lower(), 'job')
-                    _tier = 'HIGH' if _cat != 'job' else 'MEDIUM'
-                    notify(filtered[:1900], tier=_tier, category=_cat,
+                _day = datetime.now().strftime('%Y%m%d')
+                _slug = name.lower().replace(' ', '_')
+                # Phase 45p: 3 Briefings + Friday-Briefing bekommen
+                # eigene Categories damit sie die strikte Whitelist passieren.
+                _briefing_map = {
+                    'morgen-briefing': 'morning_brief',
+                    'us opening':      'us_open_brief',
+                    'us-opening':      'us_open_brief',
+                    'abend-report':    'evening_brief',
+                    'friday briefing': 'friday_briefing',
+                    'week ahead briefing': 'week_ahead_briefing',
+                }
+                _cat = _briefing_map.get(name.lower(), 'job')
+                _is_briefing = _cat != 'job'
+
+                # Phase 45q (Victor 2026-05-06): Briefings duerfen NICHT
+                # gefiltert werden — sie sind selbst der Inhalt. Filter
+                # warf gestern Morgen-Briefing weg ('Debug-Log').
+                # Nur Non-Briefing Job-Outputs filtern.
+                if _is_briefing:
+                    payload = output
+                else:
+                    payload = _filter_discord_output(output)
+
+                if payload and len(payload) > 20:
+                    _tier = 'HIGH' if _is_briefing else 'MEDIUM'
+                    notify(payload[:1900], tier=_tier, category=_cat,
                            dedupe_key=f'job_{_slug}_{_day}')
-                    log(f'✅ {name}: OK + Discord gesendet ({len(filtered)} chars, orig {len(output)})')
+                    log(f'✅ {name}: OK + Discord gesendet ({len(payload)} chars, orig {len(output)})')
                 else:
                     log(f'✅ {name}: OK (stdout war nur Debug-Log, kein Discord)')
             else:

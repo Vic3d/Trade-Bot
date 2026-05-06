@@ -131,7 +131,11 @@ def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
         'db_integrity_watchdog',  # DB-Korruption
     }
     USER_TEST_CALLERS = {'discord_sender', 'test_briefing'}  # CLI-Tests
-    ALLOWED = BRIEFING_CALLERS | EMERGENCY_CALLERS | USER_TEST_CALLERS
+    # Phase 45q: dispatcher + scheduler sind erlaubt weil sie EIGENE
+    # Category-Whitelists haben (BRIEFING_CATEGORIES). Wenn dispatcher
+    # einen Send durchlaesst, hat er bereits geprueft.
+    INFRA_CALLERS = {'discord_dispatcher', 'scheduler_daemon'}
+    ALLOWED = BRIEFING_CALLERS | EMERGENCY_CALLERS | USER_TEST_CALLERS | INFRA_CALLERS
 
     if not silent and not force:
         try:
