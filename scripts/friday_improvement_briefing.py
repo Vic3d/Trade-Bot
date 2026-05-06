@@ -269,7 +269,45 @@ def render_markdown(data: dict, recs: list[dict]) -> str:
         lines.append(f'### [{r["priority"]}] {r["topic"]}')
         lines.append(f'> {r["action"]}')
         lines.append('')
+
+    # Phase 45s: Narrativ-Block
+    try:
+        narrative = _friday_narrative(data, recs)
+        if narrative:
+            lines.append('## 📖 Wochen-Narrativ')
+            lines.append('')
+            lines.append(narrative)
+    except Exception:
+        pass
+
     return '\n'.join(lines)
+
+
+def _friday_narrative(data: dict, recs: list[dict]) -> str:
+    """Phase 45s: 5-7 Saetze Wochenabschluss via narrative_generator."""
+    facts: list[str] = []
+    tr = data.get('trades') or {}
+    facts.append(f"WOCHE: {tr.get('closed_n',0)} Trades ({tr.get('wins',0)}W/{tr.get('losses',0)}L), PnL {tr.get('pnl_eur',0):+.1f} EUR")
+    facts.append(f"OPEN: {tr.get('open_n',0)} Positionen, Cash {tr.get('cash_eur',0):.0f} EUR")
+    h = data.get('halluzinations') or {}
+    facts.append(f"HALLUZINATIONS: CLI {h.get('n_cli_events',0)}, Albert {h.get('n_albert_events',0)} Events")
+    if h.get('top_kinds_albert'):
+        facts.append(f"  top Albert-Kinds: {h['top_kinds_albert']}")
+    c = data.get('conflicts') or {}
+    facts.append(f"VERDICT-KONFLIKTE: {c.get('n_conflicts',0)}")
+    m = data.get('mission') or {}
+    facts.append(f"MISSION: Sharpe lifetime {m.get('sharpe_lifetime')}, 30d {m.get('sharpe_30d')}, verdict 30d {m.get('mission_verdict_30d')}")
+    if recs:
+        facts.append(f"TOP-RECOMMENDATIONS:")
+        for r in recs[:5]:
+            facts.append(f"  [{r['priority']}] {r['topic']}: {r['action'][:140]}")
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from narrative_generator import build_narrative  # type: ignore
+        return build_narrative(facts, briefing_type='friday')
+    except Exception:
+        return '\n'.join(facts)
 
 
 def push_discord(text: str) -> None:

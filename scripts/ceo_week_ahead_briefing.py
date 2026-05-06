@@ -240,16 +240,37 @@ def run() -> dict:
         encoding='utf-8'
     )
 
-    # Discord MEDIUM (in Digest)
+    # Phase 45s: Narrativ-Block fuer Week-Ahead
+    narrative = ''
     try:
-        from discord_dispatcher import send_alert, TIER_MEDIUM
-        # Kurz-Zusammenfassung
-        short = (f'📅 **Week-Ahead {week}** geschrieben.\n'
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from narrative_generator import build_narrative  # type: ignore
+        facts = [
+            f"WOCHE LETZTE: {recap.get('closed_count',0)} Trades, "
+            f"PnL {recap.get('pnl_total',0):+.0f}EUR, WR {recap.get('wr_pct',0)}%",
+            f"OFFEN AKTUELL: {len(opens)} Positionen",
+            f"CATALYSTS NAECHSTE 7d: {len(catalysts)}",
+            f"MACRO-EVENTS: {len(macro)}",
+        ]
+        for c in (catalysts or [])[:8]:
+            facts.append(f"  CAT: {str(c)[:140]}")
+        for m_ev in (macro or [])[:5]:
+            facts.append(f"  MACRO: {str(m_ev)[:140]}")
+        narrative = build_narrative(facts, briefing_type='week_ahead')
+    except Exception: pass
+
+    # Discord HIGH (Phase 45s — Briefing wie morgens auch HIGH)
+    try:
+        from discord_dispatcher import send_alert, TIER_HIGH
+        short = (f'📅 **Week-Ahead {week}**\n'
                   f'Letzte Woche: {recap["closed_count"]} Trades, '
                   f'PnL {recap["pnl_total"]:+.0f}EUR, WR {recap["wr_pct"]}%\n'
-                  f'Open: {len(opens)} | Catalysts naechste 7d: {len(catalysts)}\n'
-                  f'_Volle Notiz: memory/ceo-week-briefings/{week}.md_')
-        send_alert(short[:1900], tier=TIER_MEDIUM, category='week_ahead',
+                  f'Open: {len(opens)} | Catalysts naechste 7d: {len(catalysts)}\n')
+        if narrative:
+            short += f'\n📖 **Narrativ:**\n{narrative}\n'
+        short += f'\n_Volle Notiz: memory/ceo-week-briefings/{week}.md_'
+        send_alert(short[:1900], tier=TIER_HIGH, category='week_ahead_briefing',
                     dedupe_key=f'week_ahead_{week}')
     except Exception: pass
 
