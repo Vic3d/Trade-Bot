@@ -147,7 +147,116 @@ def report(mode: str) -> int:
         print("STOP-WARNINGS:")
         for w in warnings:
             print(f"  ⚠️ {w}")
+
+    # Phase 45r (Victor 2026-05-06): Narrativ-Block fuer US-Mode
+    # Fliesstext-Zusammenfassung: was passierte uebernacht, wie ist der Plan.
+    if mode == 'us':
+        narrative = _build_overnight_narrative(eurusd, vix, idx_label, idx_chg, ceo)
+        if narrative:
+            print()
+            print("📖 ÜBERNACHT & TAGESPLAN:")
+            print(narrative)
     return 0
+
+
+def _build_overnight_narrative(eurusd: float, vix: float,
+                               idx_label: str, idx_chg: float, ceo: dict) -> str:
+    """LLM-generiertes 3-6 Saetze Narrativ ueber Uebernacht-Geschehnisse +
+    Tagesplan. Faellt auf strukturiertes Bullet-Backup zurueck wenn LLM
+    nicht verfuegbar."""
+    import sqlite3 as _sql
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+
+    facts: list[str] = []
+    # 1. Open positions mit Live-MTM
+    try:
+        c = _sql.connect(str(WS / 'data' / 'trading.db'))
+        c.row_factory = _sql.Row
+        for r in c.execute("SELECT ticker, strategy, entry_price, shares, stop_price, target_price FROM paper_portfolio WHERE status='OPEN'"):
+            d = dict(r)
+            pr = c.execute("SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1", (d['ticker'],)).fetchone()
+            if pr and d['entry_price'] and d['shares']:
+                pnl_eur = (pr[0] - d['entry_price']) * d['shares']
+                pnl_pct = (pr[0]/d['entry_price'] - 1) * 100
+                facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f}, last {pr[0]:.2f}, unrealized {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%), stop {d['stop_price']:.2f}, target {d['target_price']:.2f}")
+        # 2. Closed gestern
+        for r in c.execute("SELECT ticker, strategy, ROUND(pnl_eur,1) pnl, exit_type FROM paper_portfolio WHERE close_date >= date('now','-1 day') AND pnl_eur IS NOT NULL"):
+            d = dict(r)
+            facts.append(f"GESTERN GESCHLOSSEN: {d['ticker']} ({d['strategy']}) {d['pnl']:+.1f}EUR via {d['exit_type'] or 'n/a'}")
+        c.close()
+    except Exception as e:
+        facts.append(f"DB-Fehler: {e}")
+
+    # 3. Markt-Snapshot
+    facts.append(f"MARKT: {idx_label} {idx_chg:+.1f}%, VIX {vix:.1f}, EURUSD {eurusd:.4f}")
+    facts.append(f"CEO-DIREKTIVE: Mode={ceo.get('mode','?')} Regime={ceo.get('regime','?')}")
+
+    # 4. Letzte 12h News-Reactor-Events (Tier 1/2)
+    try:
+        nr_log = WS / 'data' / 'news_reactor_log.jsonl'
+        if nr_log.exists():
+            cutoff = _dt.now(_tz.utc) - _td(hours=12)
+            recent = []
+            with open(nr_log, encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        obj = _json.loads(line)
+                        ts = obj.get('ts') or obj.get('timestamp')
+                        if not ts: continue
+                        t = _dt.fromisoformat(str(ts).replace('Z','+00:00'))
+                        if t.tzinfo is None: t = t.replace(tzinfo=_tz.utc)
+                        if t < cutoff: continue
+                        recent.append(obj)
+                    except Exception: continue
+            if recent:
+                facts.append(f"OVERNIGHT NEWS-REACTOR: {len(recent)} Events letzte 12h")
+                for ev in recent[-3:]:
+                    facts.append(f"  - {(ev.get('headline') or ev.get('title') or 'event')[:120]}")
+    except Exception: pass
+
+    # 5. Catalysts heute via calendar_service falls vorhanden
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from calendar_service import upcoming_events as _ue  # type: ignore
+        events = _ue(days_ahead=1) or []
+        if events:
+            facts.append(f"CATALYSTS HEUTE: {len(events)}")
+            for e in events[:5]:
+                facts.append(f"  - {str(e)[:120]}")
+    except Exception: pass
+
+    facts_block = '\n'.join(facts)
+
+    # LLM-Aufruf
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from core.llm_client import call_llm  # type: ignore
+        prompt = (
+            "Du bist Albert, der CEO eines autonomen Trading-Bots. Schreibe einen "
+            "kurzen, zusammenhaengenden Text (4-6 Saetze, KEIN Bullet-List) der "
+            "Victor zum US-Open einen klaren Ueberblick gibt:\n\n"
+            "Struktur:\n"
+            "1. Was uebernacht relevant passiert ist (News, Asia-Lead, Marktbewegung)\n"
+            "2. Was das fuer unsere offene Position(en) bedeutet\n"
+            "3. Was der Plan fuer den heutigen Handelstag ist (Catalysts, "
+            "geplante Trades, Watchlist-Schwerpunkte, was wir vermeiden)\n\n"
+            "Schreib in Du-Form an Victor. Keine Floskeln, kein Pathos. "
+            "Nimm NUR die Fakten unten — erfinde NICHTS dazu.\n\n"
+            "FAKTEN:\n"
+            f"{facts_block}\n"
+        )
+        text, _usage = call_llm(prompt, model_hint='haiku', max_tokens=600,
+                                audit_context='us_opening_narrative')
+        return (text or '').strip()
+    except Exception as e:
+        # Fallback: strukturiertes Bullet-Backup
+        return (
+            "(LLM unavailable, Fakten-Backup):\n" + facts_block
+        )
+
+
+# Inline-Imports fuer das Narrativ
+import json as _json
 
 
 def main():

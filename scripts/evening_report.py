@@ -448,7 +448,104 @@ def _today_summary_block(conn) -> str:
     out.extend(bad)
     out.extend(['', '**Ausblick naechste Tage:**'])
     out.extend(outlook)
+
+    # Phase 45r (Victor 2026-05-06): Narrativ-Block — Fliesstext
+    # zusammenhaengend, was passierte heute + Learnings.
+    narrative = _build_evening_narrative(rows, open_rows, conn)
+    if narrative:
+        out.extend(['', '📖 **TAGES-NARRATIV & LEARNINGS:**', narrative])
+
     return '\n'.join(out)
+
+
+def _build_evening_narrative(closed_today, open_rows, conn) -> str:
+    """LLM-generiertes 4-6 Saetze Narrativ ueber den Tag + Learnings.
+    Faellt auf strukturiertes Bullet-Backup zurueck wenn LLM nicht
+    verfuegbar."""
+    facts: list[str] = []
+
+    # 1. Closed today
+    if closed_today:
+        facts.append(f"CLOSED HEUTE: {len(closed_today)} Trades")
+        for r in closed_today[:6]:
+            facts.append(f"  {r['ticker']} ({r['strategy']}) {r['pnl']:+.1f}EUR ({r['pct']:+.1f}%) via {r['exit_type'] or 'n/a'}")
+    else:
+        facts.append("CLOSED HEUTE: keine")
+
+    # 2. Open positions snapshot
+    if open_rows:
+        for o in open_rows:
+            pr = conn.execute("SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1", (o['ticker'],)).fetchone()
+            if pr and o['entry_price'] and o['shares']:
+                pnl_eur = (pr[0] - o['entry_price']) * o['shares']
+                pnl_pct = (pr[0]/o['entry_price'] - 1) * 100
+                facts.append(f"OPEN: {o['ticker']} ({o['strategy']}) entry {o['entry_price']:.2f}, last {pr[0]:.2f}, unrealized {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%)")
+
+    # 3. Verdict-Distribution
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from strategy_verdict import all_verdicts as _av  # type: ignore
+        v = _av()
+        from collections import Counter as _C
+        c_v = _C(x['verdict'] for x in v)
+        facts.append(f"VERDICTS: {dict(c_v)}")
+    except Exception: pass
+
+    # 4. Quant-Sharpe
+    try:
+        import json as _j
+        qf = WS / 'data' / 'quant_metrics.json'
+        if qf.exists():
+            q = _j.loads(qf.read_text(encoding='utf-8'))
+            facts.append(f"SHARPE: lifetime {(q.get('all_time') or {}).get('sharpe')}, 30d {(q.get('last_30d') or {}).get('sharpe')}")
+    except Exception: pass
+
+    # 5. Halluzinations-Audit heute (CLI + Albert)
+    try:
+        from datetime import datetime as _dt
+        today_iso = _dt.now().date().isoformat()
+        for log_name in ('cli_audit_violations.jsonl', 'halluzination_log.jsonl'):
+            p = WS / 'data' / log_name
+            if not p.exists(): continue
+            n_today = 0
+            with open(p, encoding='utf-8', errors='replace') as f:
+                for line in f:
+                    if today_iso in line[:50]:
+                        n_today += 1
+            if n_today:
+                facts.append(f"AUDIT {log_name}: {n_today} Events heute")
+    except Exception: pass
+
+    # 6. Lessons-Trigger: alle Stop-Outs heute mit pnl<-50
+    big_losses = [r for r in (closed_today or []) if r['pnl'] < -50]
+    for r in big_losses:
+        facts.append(f"BIG LOSS HEUTE: {r['ticker']} {r['pnl']}EUR — Lesson-Kandidat")
+
+    facts_block = '\n'.join(facts)
+
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from core.llm_client import call_llm  # type: ignore
+        prompt = (
+            "Du bist Albert, der CEO eines autonomen Trading-Bots. Schreibe einen "
+            "kurzen, zusammenhaengenden Tagesabschluss-Text (4-6 Saetze, KEIN Bullet-List) "
+            "an Victor:\n\n"
+            "Struktur:\n"
+            "1. Wie lief der Tag konkret (Trades, Performance, was passierte)\n"
+            "2. Was haben wir HEUTE gelernt (Pattern, Bugs, Insights)\n"
+            "3. Wenn relevant: was passt nicht und sollte korrigiert werden\n\n"
+            "Schreib in Du-Form. Keine Floskeln. Sei ehrlich auch bei Fehlern. "
+            "Nimm NUR die Fakten unten. Wenn nichts passierte, sag das auch so.\n\n"
+            "FAKTEN:\n"
+            f"{facts_block}\n"
+        )
+        text, _usage = call_llm(prompt, model_hint='haiku', max_tokens=600,
+                                audit_context='evening_narrative')
+        return (text or '').strip()
+    except Exception:
+        return "(LLM unavailable, Fakten-Backup):\n" + facts_block
 
 
 def send_report():
