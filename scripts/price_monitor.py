@@ -268,6 +268,32 @@ def run_monitor():
 
                 # STOP getroffen
                 if stop and price <= stop:
+                    # Phase 45v (Victor 2026-05-06): Phantom-Tick-Sanity-Check.
+                    # PYPL-Bug 06.05: Yahoo lieferte 39.49 zur NYSE-Eroeffnung
+                    # obwohl Tagesrange 46-50 war. Stop wurde auf Phantom-Preis
+                    # ausgeloest. Schutz: wenn live-price > 8% vom letzten
+                    # DB-Close abweicht, NICHT sofort schliessen — log + skip.
+                    is_phantom = False
+                    try:
+                        _c = get_db()
+                        _row = _c.execute(
+                            "SELECT close FROM prices WHERE ticker=? "
+                            "ORDER BY date DESC LIMIT 1", (ticker,)
+                        ).fetchone()
+                        _c.close()
+                        if _row and _row[0]:
+                            _last_close = float(_row[0])
+                            _dev_pct = abs(price - _last_close) / _last_close * 100
+                            if _dev_pct > 8.0:
+                                print(f"[PRICE_MONITOR] ⚠ PHANTOM-CHECK {ticker}: "
+                                      f"price {price:.2f} vs last_close {_last_close:.2f} "
+                                      f"= {_dev_pct:.1f}% Abweichung — Stop NICHT ausgeloest, "
+                                      f"warte auf naechsten Tick")
+                                is_phantom = True
+                    except Exception as _e:
+                        print(f"[PRICE_MONITOR] phantom-check failed: {_e}")
+                    if is_phantom:
+                        continue
                     if tid not in alerted_ids:
                         pnl = close_position_db(tid, price, 'STOP_MONITOR', entry, shares)
                         send_alert(
