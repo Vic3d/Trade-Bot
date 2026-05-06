@@ -244,9 +244,67 @@ def _apply_stop_fix(params: dict) -> dict:
     except Exception as e: return {'ok': False, 'reason': str(e)}
 
 
+def _action_recently_applied(action_type: str, target: str,
+                              hours: int = 6) -> bool:
+    """Phase 45u: Idempotenz — prueft ob action_type+target in letzten N Stunden
+    schon ausgeführt wurde. Verhindert dass 13:00- und 19:00-Runs dieselben
+    Aktionen doppelt machen.
+    """
+    log_path = WS / 'data' / 'ceo_action_log.jsonl'
+    if not log_path.exists(): return False
+    try:
+        from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+        cutoff = _dt.now(_tz.utc) - _td(hours=hours)
+        with open(log_path, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    o = json.loads(line)
+                except Exception: continue
+                ts_str = o.get('ts')
+                if not ts_str: continue
+                try:
+                    ts = _dt.fromisoformat(str(ts_str).replace('Z', '+00:00'))
+                    if ts.tzinfo is None: ts = ts.replace(tzinfo=_tz.utc)
+                except Exception: continue
+                if ts < cutoff: continue
+                for a in (o.get('actions') or []):
+                    if a.get('type') != action_type: continue
+                    if a.get('result', {}).get('ok') is not True: continue
+                    p_old = a.get('params', {}) or {}
+                    if action_type == 'strategy_status' and p_old.get('strategy_id') == target:
+                        return True
+                    if action_type == 'stop_fix' and str(p_old.get('trade_id')) == str(target):
+                        return True
+                    if action_type == 'recalibrate' and p_old.get('target') == target:
+                        return True
+                    if action_type == 'tool_disable' and p_old.get('tool_name') == target:
+                        return True
+                    if action_type == 'sector_bias':
+                        return True  # Sector-Bias ist global, ein Run/Tag reicht
+        return False
+    except Exception:
+        return False
+
+
+def _action_target_key(action: dict) -> str:
+    """Extrahiert den dedupe-Target-Key fuer eine Action."""
+    t = action.get('type', '')
+    p = action.get('params', {}) or {}
+    if t == 'strategy_status': return str(p.get('strategy_id', '?'))
+    if t == 'stop_fix':        return str(p.get('trade_id', '?'))
+    if t == 'recalibrate':     return str(p.get('target', '?'))
+    if t == 'tool_disable':    return str(p.get('tool_name', '?'))
+    if t == 'sector_bias':     return 'GLOBAL'
+    return '?'
+
+
 def _apply_action(action: dict) -> dict:
     t = action.get('type','')
     p = action.get('params', {})
+    # Phase 45u: Idempotenz-Check vor Ausfuehrung
+    target = _action_target_key(action)
+    if _action_recently_applied(t, target, hours=6):
+        return {'ok': False, 'reason': f'idempotent_skip:{t}/{target} schon in letzten 6h ausgefuehrt'}
     if t == 'strategy_status': return _apply_strategy_status(p)
     if t == 'stop_fix': return _apply_stop_fix(p)
     if t == 'recalibrate':

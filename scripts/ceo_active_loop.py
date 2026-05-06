@@ -197,6 +197,17 @@ def run() -> dict:
             )
         except Exception: pass
 
+    # Phase 45t: Bei HIGH-Severity → Albert sofort Decision-Run triggern
+    # statt warten bis 13:00/19:00. Schliesst die Reaktivitaets-Luecke.
+    if obs.get('severity') == 'high':
+        try:
+            import subprocess as _sp
+            _sp.Popen(
+                ['python3', str(WS / 'scripts' / 'ceo_action_log.py')],
+                stdout=_sp.DEVNULL, stderr=_sp.DEVNULL
+            )
+        except Exception: pass
+
     # Discord nur bei HIGH-Severity (CRITICAL-Whitelist)
     if obs.get('severity') == 'high':
         try:

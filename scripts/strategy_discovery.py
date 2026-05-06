@@ -500,6 +500,19 @@ def auto_create_strategies(themes: list):
             if sid in strats:
                 continue
 
+            # Phase 45u: zentraler MAX_ACTIVE-Throttle
+            try:
+                import sys as _sys
+                from pathlib import Path as _P
+                _sys.path.insert(0, str(_P(__file__).resolve().parent))
+                from strategy_throttle import can_create_new_strategy, log_throttle_block  # type: ignore
+                ok, reason = can_create_new_strategy(strats)
+                if not ok:
+                    print(f'  🚫 {sid} BLOCKED: {reason}')
+                    log_throttle_block('strategy_discovery', sid)
+                    continue
+            except Exception: pass
+
             strats[sid] = {
                 'name': f"Auto: {phrase}",
                 'type': 'paper',

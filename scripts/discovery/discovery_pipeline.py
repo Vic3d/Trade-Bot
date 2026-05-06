@@ -145,6 +145,19 @@ def promote_candidate(ticker: str, candidate: dict, verdict: dict, dry: bool = F
         print(f'  ~ {sid} existiert bereits, skip Promotion')
         return False
 
+    # Phase 45u: zentraler MAX_ACTIVE-Throttle
+    try:
+        import sys as _sys
+        from pathlib import Path as _P
+        _sys.path.insert(0, str(_P(__file__).resolve().parent.parent))
+        from strategy_throttle import can_create_new_strategy, log_throttle_block  # type: ignore
+        ok, reason = can_create_new_strategy(strats)
+        if not ok:
+            print(f'  🚫 {sid} BLOCKED: {reason}')
+            log_throttle_block('discovery_pipeline', sid)
+            return False
+    except Exception: pass
+
     entry = build_strategy_entry(ticker, candidate, verdict)
 
     if dry:
