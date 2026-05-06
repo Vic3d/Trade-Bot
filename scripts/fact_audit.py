@@ -57,6 +57,25 @@ BANNED_PHRASES = [
     r'\bkönnte\s+(zu|x|ein|den)',
     r'\bdürfte\b',
     r'\bsollte\s+(zu|den|ein)',
+    # Phase 45y (C4): Erweiterte Speculation-Klassen
+    # Kausale Argumente ohne Beleg
+    r'\bdas\s+ist\s+typisch\s+für\b',
+    r'\bdas\s+klassische\s+(muster|pattern)\b',
+    r'\bnormalerweise\s+(passiert|sieht|geht)\b',
+    r'\bdas\s+sieht\s+aus\s+wie\b',
+    r'\b(scheinbar|offenbar)\s+(ist|war|wird)\b',
+    # Slippage / Markt-Mechanik ohne Daten-Verweis
+    r'\bnormales?\s+slippage\b',
+    r'\bnormales?\s+(markt|market)[-\s]risiko\b',
+    r'\bgap[-\s]down\b(?!.*\[✓)',  # Gap-Down ohne Daten-Tag
+    r'\b(klassisch|typisch).*market[-\s]impact\b',
+    # Trend-Extrapolation ohne n
+    r'\bdraei\s+(verlierer|gewinner|trades)\s+in\s+folge\b',
+    r'\bdrei\s+(in\s+folge|hintereinander)\b',
+    # Self-Confidence ohne Beleg
+    r'\bich\s+bin\s+(sicher|ueberzeugt)\b',
+    r'\bdas\s+ist\s+offensichtlich\b',
+    r'\beindeutig\s+ein\b(?!.*\[✓)',
 ]
 
 # Kompiliere für Performance

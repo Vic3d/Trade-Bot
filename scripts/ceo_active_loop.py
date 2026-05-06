@@ -199,7 +199,29 @@ def run() -> dict:
 
     # Phase 45t: Bei HIGH-Severity → Albert sofort Decision-Run triggern
     # statt warten bis 13:00/19:00. Schliesst die Reaktivitaets-Luecke.
-    if obs.get('severity') == 'high':
+    # Phase 45y (F1-Erw): Auch bei MED-Severity wenn 3x hintereinander
+    # dasselbe Pattern → Eskalation. Hat 06.05 nicht gefeuert obwohl
+    # Active-Loop 3x identisch '52 Macro-Events' beobachtete.
+    obs_text = (obs.get('observation', '') + ' ' + obs.get('action', ''))[:200]
+    state.setdefault('recent_observations', [])
+    state['recent_observations'].append(obs_text[:150])
+    state['recent_observations'] = state['recent_observations'][-5:]  # max 5
+
+    repeated_med = False
+    if obs.get('severity') == 'med' and len(state['recent_observations']) >= 3:
+        # Heuristik: wenn letzte 3 Observations >70% Wort-Overlap → repeated
+        last3 = state['recent_observations'][-3:]
+        words_a = set(last3[0].lower().split())
+        words_b = set(last3[1].lower().split())
+        words_c = set(last3[2].lower().split())
+        if words_a and words_b and words_c:
+            overlap_ab = len(words_a & words_b) / max(len(words_a | words_b), 1)
+            overlap_bc = len(words_b & words_c) / max(len(words_b | words_c), 1)
+            if overlap_ab > 0.6 and overlap_bc > 0.6:
+                repeated_med = True
+                print(f"[ACTIVE_LOOP] ⚠ Repeated MED-Pattern 3x — eskaliere zu HIGH-Behandlung")
+
+    if obs.get('severity') == 'high' or repeated_med:
         try:
             import subprocess as _sp
             _sp.Popen(
