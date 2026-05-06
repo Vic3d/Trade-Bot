@@ -203,20 +203,42 @@ def _load_recent_audits() -> dict:
 
 
 def _apply_strategy_status(params: dict) -> dict:
-    sid = params.get('strategy_id')
+    """Phase 45x (F3): Akzeptiert jetzt CSV-Listen oder Single-SID.
+    Frueher: 'DT1,DT2,DT3,DT4' wurde als ein SID 'DT1,DT2,DT3,DT4'
+    interpretiert -> unknown_sid. A4-Bug 04.05.
+    """
+    sid_raw = params.get('strategy_id', '')
     new_status = params.get('new_status')
-    if not sid or new_status not in ('paused','retired','watching','active'):
+    if not sid_raw or new_status not in ('paused','retired','watching','active'):
         return {'ok': False, 'reason': 'bad_params'}
+
+    # Phase 45x: CSV oder Liste auflösen
+    if isinstance(sid_raw, list):
+        sids = [str(s).strip() for s in sid_raw if str(s).strip()]
+    else:
+        sids = [s.strip() for s in str(sid_raw).split(',') if s.strip()]
+
     sf = WS / 'data' / 'strategies.json'
     if not sf.exists(): return {'ok': False, 'reason': 'no_strategies_file'}
     strats = json.loads(sf.read_text(encoding='utf-8'))
-    if sid not in strats: return {'ok': False, 'reason': f'unknown_sid:{sid}'}
-    old = strats[sid].get('status', '?')
-    strats[sid]['status'] = new_status
-    strats[sid]['_ceo_action_at'] = _now()
-    strats[sid]['_ceo_action_reason'] = params.get('reason','')[:200]
-    sf.write_text(json.dumps(strats, indent=2, ensure_ascii=False), encoding='utf-8')
-    return {'ok': True, 'old': old, 'new': new_status}
+
+    applied, skipped = [], []
+    for sid in sids:
+        if sid not in strats:
+            skipped.append({'sid': sid, 'reason': 'unknown_sid'})
+            continue
+        old = strats[sid].get('status', '?')
+        strats[sid]['status'] = new_status
+        strats[sid]['_ceo_action_at'] = _now()
+        strats[sid]['_ceo_action_reason'] = params.get('reason','')[:200]
+        applied.append({'sid': sid, 'old': old, 'new': new_status})
+
+    if applied:
+        sf.write_text(json.dumps(strats, indent=2, ensure_ascii=False), encoding='utf-8')
+
+    if not applied:
+        return {'ok': False, 'reason': f'all_unknown:{[x["sid"] for x in skipped]}'}
+    return {'ok': True, 'applied': applied, 'skipped': skipped}
 
 
 def _apply_stop_fix(params: dict) -> dict:

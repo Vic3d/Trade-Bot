@@ -116,6 +116,8 @@ SCHEDULE = [
     ('AB Strategy Update',  'ab_strategy_runner.py',  ['--update'],         '9-22', '*/30', [0,1,2,3,4]),
     # ── Phase 44A2 — Strategy-Auditor (Sonntags 20:00 CET, Discord-Report) ──
     ('Strategy Auditor',    'strategy_auditor.py',    ['--discord'],        20, 0,  [6]),
+    # Phase 45x (D1): Cross-Source Price-Consistency-Audit (vor Auto-Deprecate)
+    ('Price Consistency Audit', 'price_consistency_audit.py', [],            22, 30, None),
     # ── Phase 44A2b — Strategy Auto-Deprecate (täglich 23:00, Regel #1) ────
     ('Strategy Auto-Deprecate','strategy_auto_deprecate.py', [],            23, 0,  None),
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
