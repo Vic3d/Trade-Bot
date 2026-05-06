@@ -196,7 +196,11 @@ SCHEDULE = [
     # Phase 44w: Mission-bezogene Capability-Audit (taeglich)
     ('Capability Audit',    'ceo_capability_audit.py',          [],                23, 45, None,        False),  # tgl. 23:45 nach allen anderen Reflektionen
     # Phase 44ab: Albert ENTSCHEIDET autonom + meldet post-fact (kein Frage-System mehr)
-    ('CEO Action Log',      'ceo_action_log.py',                [],                7,  0,  None,        False),  # tgl. 07:00 — Albert entscheidet, Victor wird informiert (rollback 24h)
+    # Phase 45t (Victor 2026-05-06): Albert mehrmals pro Tag aktiv —
+    # Autonomie darf nicht durch 1x/Tag-Schicht gebremst werden.
+    ('CEO Action Log',      'ceo_action_log.py',                [],                7,  0,  None,        False),  # tgl. 07:00 — Morgen-Decision
+    ('CEO Action Log',      'ceo_action_log.py',                [],                13, 0,  None,        False),  # tgl. 13:00 — Mittag-Decision
+    ('CEO Action Log',      'ceo_action_log.py',                [],                19, 0,  None,        False),  # tgl. 19:00 — Abend-Decision
     # Phase 44ad: CEO arbeitet kontinuierlich — alle 10min Mini-Cycle, alle 30min Halluzinations-Sweep
     ('CEO Active Loop',     'ceo_active_loop.py',               [],                '*',  '*/10', None,  False),  # alle 10min 24/7
     ('Halluz Sweeper',      'halluzination_sweeper.py',         [],                '*',  '*/30', None,  False),  # alle 30min 24/7

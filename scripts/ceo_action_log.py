@@ -305,7 +305,10 @@ def run() -> dict:
         print(f'[action_log] LLM-fail: {e}')
 
     # Apply each action autonomously
-    today_id = datetime.now().strftime('%Y%m%d')
+    # Phase 45t: today_id mit Stunde — Albert laeuft 3x pro Tag,
+    # damit Indizes nicht kollidieren und jeder Run eigene Discord-Push
+    # hat (dedupe_key wird pro Run eindeutig).
+    today_id = datetime.now().strftime('%Y%m%d_%H%M')
     executed = []
     for i, a in enumerate(actions):
         a['unique_id'] = f'{today_id}_A{i+1}'
