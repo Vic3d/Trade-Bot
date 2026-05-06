@@ -210,8 +210,13 @@ def _build_overnight_narrative(eurusd: float, vix: float,
                     except Exception: continue
             if recent:
                 facts.append(f"OVERNIGHT NEWS-REACTOR: {len(recent)} Events letzte 12h")
-                for ev in recent[-3:]:
-                    facts.append(f"  - {(ev.get('headline') or ev.get('title') or 'event')[:120]}")
+                for ev in recent[-5:]:
+                    # Phase 45r: news_reactor schreibt news/ticker/source/eval
+                    headline = (ev.get('news') or ev.get('headline')
+                                or ev.get('title') or 'event')[:140]
+                    ticker = ev.get('ticker', '')
+                    source = ev.get('source', '')
+                    facts.append(f"  - [{ticker}] {headline} ({source})")
     except Exception: pass
 
     # 5. Catalysts heute via calendar_service falls vorhanden
