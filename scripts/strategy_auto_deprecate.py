@@ -139,6 +139,8 @@ def find_deprecation_candidates() -> list[dict]:
         # B) Schwach: lifetime<=2 AND 0 30d trades AND age>=30d  → keine Edge nachweisbar
         # C) Verlust: lifetime>2 AND PnL<0 AND 0 30d trades  → negative Edge
         # D) Tot+old: lifetime<=1 AND 0 60d AND age>=45d  → erweiterte Karteileiche
+        # E) Phase 45s: Sunset — 14d alt, 0 lifetime, <3 gate-fires → fruehes Aufraeumen
+        #    Damit der Hunter nicht unbegrenzt neue Strategien stapelt.
         deprec_reason = None
         if n_lifetime == 0 and n_60d == 0 and n_gate == 0 and age_days >= DORMANT_DAYS:
             deprec_reason = (f'Klassisch: 0 lifetime, 0 trades 60d, 0 gate-fires 60d, age {age_days}d')
@@ -148,6 +150,8 @@ def find_deprecation_candidates() -> list[dict]:
             deprec_reason = (f'Negativ: lifetime {n_lifetime} trades PnL {lifetime_pnl:+.0f}€, 0 in 30d')
         elif n_lifetime <= 1 and n_60d == 0 and age_days >= 45:
             deprec_reason = (f'Karteileiche: lifetime {n_lifetime}, 0 in 60d, age {age_days}d')
+        elif n_lifetime == 0 and n_gate < 3 and age_days >= 14:
+            deprec_reason = (f'Sunset: 14d alt, 0 lifetime, {n_gate} gate-fires → kein Interesse')
 
         if deprec_reason:
             candidates.append({

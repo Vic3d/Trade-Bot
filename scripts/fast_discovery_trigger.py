@@ -95,8 +95,38 @@ def _can_trigger(state: dict) -> tuple[bool, str]:
     return True, 'ok'
 
 
+MAX_ACTIVE_STRATEGIES = 50  # Phase 45s: Hunter-Throttle
+
+
+def _count_active_strategies() -> int:
+    """Phase 45s: Zaehlt 'lebende' Strategien (active/watching/EVALUATING/None)."""
+    sf = WS / 'data' / 'strategies.json'
+    if not sf.exists(): return 0
+    try:
+        s = json.loads(sf.read_text(encoding='utf-8'))
+        n = 0
+        for sid, v in s.items():
+            if not isinstance(v, dict): continue
+            if v.get('status') in ('paused', 'retired', 'auto_deprecated', 'ARCHIVED', 'DRAFT'):
+                continue
+            n += 1
+        return n
+    except Exception:
+        return 0
+
+
 def _spawn_discovery() -> tuple[bool, str]:
-    """Startet thesis_discovery.py synchron (mit Timeout)."""
+    """Startet thesis_discovery.py synchron (mit Timeout).
+
+    Phase 45s (Victor 2026-05-06): Hunter-Throttle. Bei >=MAX_ACTIVE_STRATEGIES
+    aktiven Strategien wird KEIN neuer Discovery-Run gestartet — der Bot
+    ist sonst in einer Stapel-Spirale (36/77 Strategien <7d alt am 06.05).
+    """
+    n_active = _count_active_strategies()
+    if n_active >= MAX_ACTIVE_STRATEGIES:
+        return False, (f'THROTTLE: {n_active} active strategies >= '
+                       f'{MAX_ACTIVE_STRATEGIES} max — auto-deprecate muss erst aufraeumen')
+
     if not DISCOVERY_PATH.exists():
         return False, f'script not found: {DISCOVERY_PATH}'
     try:

@@ -753,7 +753,71 @@ Brent: {brent_str} | VIX: {vix_str} | EUR/USD: {eurusd_str}
 {cal_block}
 _Xetra-Briefing: 08:30_"""
 
+    # Phase 45s: Narrativ-Block ans Ende fuer Fliesstext-Zusammenfassung
+    try:
+        narrative = _morning_narrative()
+        if narrative:
+            briefing += "\n\n📖 **MORGEN-NARRATIV:**\n" + narrative
+    except Exception:
+        pass
+
     return briefing
+
+
+def _morning_narrative() -> str:
+    """Phase 45s: 4-6 Saetze zum Morgen — was Nacht passierte + Tagesplan."""
+    import sqlite3 as _sql
+    facts: list[str] = []
+    try:
+        c = _sql.connect(str(DB))
+        c.row_factory = _sql.Row
+        for r in c.execute("SELECT ticker, strategy, entry_price, shares, stop_price FROM paper_portfolio WHERE status='OPEN'"):
+            d = dict(r)
+            pr = c.execute("SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1", (d['ticker'],)).fetchone()
+            if pr and d['entry_price'] and d['shares']:
+                pnl_eur = (pr[0] - d['entry_price']) * d['shares']
+                pnl_pct = (pr[0]/d['entry_price'] - 1) * 100
+                facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f} last {pr[0]:.2f} unreal {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%) stop {d['stop_price']:.2f}")
+        cash = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
+        if cash: facts.append(f"CASH: {float(cash[0]):.0f} EUR")
+        c.close()
+    except Exception: pass
+    # Overnight news (last 12h)
+    try:
+        from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+        nr = WS / 'data' / 'news_reactor_log.jsonl'
+        if nr.exists():
+            cutoff = _dt.now(_tz.utc) - _td(hours=12)
+            recent = []
+            with open(nr, encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        o = json.loads(line)
+                        ts = o.get('ts') or o.get('timestamp')
+                        if not ts: continue
+                        t = _dt.fromisoformat(str(ts).replace('Z','+00:00'))
+                        if t.tzinfo is None: t = t.replace(tzinfo=_tz.utc)
+                        if t >= cutoff: recent.append(o)
+                    except Exception: continue
+            if recent:
+                facts.append(f"OVERNIGHT NEWS: {len(recent)} Events letzte 12h")
+                for ev in recent[-5:]:
+                    headline = (ev.get('news') or 'event')[:140]
+                    facts.append(f"  [{ev.get('ticker','')}] {headline} ({ev.get('source','')})")
+    except Exception: pass
+    # CEO directive
+    try:
+        ceo = json.loads((WS/'data/ceo_directive.json').read_text(encoding='utf-8'))
+        facts.append(f"CEO-DIREKTIVE: Mode={ceo.get('mode','?')} Regime={ceo.get('regime','?')}")
+    except Exception: pass
+
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from narrative_generator import build_narrative  # type: ignore
+        return build_narrative(facts, briefing_type='morning')
+    except Exception:
+        return '\n'.join(facts)
 
 
 if __name__ == "__main__":
