@@ -224,6 +224,33 @@ def check_halluzinations(text: str, context: str = 'llm') -> HalluzinationReport
                     'snippet': text[max(0,m.start()-30):m.end()+30],
                 })
 
+    # 2d. Phase 45y (C1): Kausal-Aussagen brauchen Inline-Tag.
+    # Wenn Text Mechanik-Erklaerung enthaelt (z.B. "war Gap-Down",
+    # "Slippage", "ist typisch fuer") MUSS ein [✓ DB:...] oder
+    # [✓ truth-block] in der Naehe stehen, sonst WARN.
+    CAUSAL_PATTERNS = [
+        r'\b(?:gap[-\s]?down|gap[-\s]?up)\b',
+        r'\bslippage\b',
+        r'\bmarkt[-\s]risiko\b',
+        r'\bphantom[-\s]?(tick|preis)\b',
+        r'\bist\s+(typisch|klassisch)\s+f(ue|ü)r\b',
+        r'\b(weil|because)\s+(?!.*\[✓)',  # "weil ..." ohne nachfolgenden Tag
+    ]
+    TAG_PATTERN = r'\[(?:✓|⚠|\?)\s*[A-Za-z:_]+'
+    for pat in CAUSAL_PATTERNS:
+        for m in re.finditer(pat, text, re.IGNORECASE):
+            # Suche [✓ ...] oder [⚠ ...] in den naechsten 200 Zeichen
+            ctx_window = text[m.end():m.end()+200]
+            has_tag = bool(re.search(TAG_PATTERN, ctx_window))
+            if not has_tag:
+                report.violations.append({
+                    'kind': 'causal_claim_without_db_tag',
+                    'claim': f'Kausale Aussage ohne Daten-Tag: "{m.group(0)}"',
+                    'truth': 'Kausale Behauptungen brauchen [✓ DB:query] oder [✓ truth-block] inline',
+                    'snippet': text[max(0,m.start()-30):m.end()+50],
+                })
+                break  # ein Treffer pro Pattern reicht
+
     # 2c. Phase 45l: Number-Cross-Check
     # Cash-Behauptungen (Toleranz 1.5%)
     nums = _live_numbers()
