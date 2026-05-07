@@ -23,7 +23,7 @@ LOG = WS / 'data' / 'price_consistency_log.jsonl'
 THRESHOLD_PCT = 5.0  # Abweichung > 5% -> verdaechtig
 
 
-def audit(days: int = 7, dry_run: bool = False) -> dict:
+def audit(days: int = 14, dry_run: bool = False) -> dict:
     """Prueft alle CLOSED-Trades der letzten N Tage gegen prices-Tabelle."""
     if not DB.exists():
         return {'error': 'no_db'}
@@ -98,7 +98,7 @@ def audit(days: int = 7, dry_run: bool = False) -> dict:
 
 def main() -> int:
     dry = '--dry-run' in sys.argv
-    r = audit(days=7, dry_run=dry)
+    r = audit(days=14, dry_run=dry)  # Phase 45ab: 7d -> 14d (MOS+PAAS schluepften durch)
     print(json.dumps(r, indent=2, default=str))
     return 0 if r.get('issues_found', 0) == 0 else 1
 

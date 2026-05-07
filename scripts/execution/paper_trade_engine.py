@@ -527,6 +527,20 @@ def _execute_paper_entry_inner(
             'blocked_by': 'invalid_stop',
         }
 
+    # ── Guard 0b2 (Phase 45ab): Stop-Distance >= 4% Pflicht ─────────
+    # Postmortem Trade #123 EQNR: Stop 34.08 = Entry 34.08 → 0% Distance.
+    # Stop-Doktrin Phase 44n verlangt min 4%. Hard-Block hier durchsetzen.
+    MIN_STOP_DISTANCE_PCT = 0.04
+    stop_distance_pct = (entry_price - stop_price) / entry_price
+    if stop_distance_pct < MIN_STOP_DISTANCE_PCT:
+        return {
+            'success': False,
+            'trade_id': None,
+            'message': (f'❌ {ticker}: Stop-Distance {stop_distance_pct*100:.1f}% < '
+                        f'{MIN_STOP_DISTANCE_PCT*100:.0f}% Pflicht (Phase 44n-Doktrin)'),
+            'blocked_by': 'stop_too_tight',
+        }
+
     # ── Guard 0d2: Learning-Insights-Block (Phase 44b/A1) ──────────────
     # Verifiziert aus eigenen Daten: bestimmte Time/Region-Buckets verlieren
     # systematisch (z.B. afternoon WR 33.6% bei n=122). Hard-Block bei
