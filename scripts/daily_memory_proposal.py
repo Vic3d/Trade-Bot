@@ -173,11 +173,23 @@ def _parse_response(text: str) -> list[dict]:
             content = (p.get('content') or '').strip()
             if not content or len(content) < 20:
                 continue
+            # Phase 45aa (H2): Aktualitaets-Filter — Patterns mit Stale-
+            # Indikatoren werden mit Warning markiert (nicht gedroppt, aber
+            # sichtbar im Review).
+            content_lower = content.lower()
+            STALE_INDICATORS = [
+                'historisch', 'damals war', 'vor monaten', 'frueher war',
+                'vor jahren', 'einmal hatte', 'damals galt',
+            ]
+            stale_flag = any(ind in content_lower for ind in STALE_INDICATORS)
+            from datetime import datetime as _dt, timezone as _tz
             clean.append({
                 'target': tgt,
                 'title': (p.get('title') or 'Notiz').strip()[:100],
                 'content': content[:1200],
                 'reason': (p.get('reason') or '').strip()[:200],
+                'created_at': _dt.now(_tz.utc).isoformat(timespec='seconds'),
+                '_stale_warning': stale_flag,
             })
         return clean[:5]
     except Exception as e:

@@ -96,22 +96,31 @@ def get_truth() -> dict:
                 "SELECT ticker, strategy, "
                 "  substr(close_date,1,10) AS exit_date, "
                 "  ROUND(pnl_eur,1) AS pnl_eur, "
-                "  ROUND(pnl_pct,1) AS pnl_pct, "  # Phase 45o: pnl_pct ist bereits Prozent in DB, kein *100
+                "  ROUND(pnl_pct,1) AS pnl_pct, "  # Phase 45o
                 "  exit_type "
                 "FROM paper_portfolio "
                 "WHERE close_date >= date('now','-7 days') "
                 "  AND status IN ('CLOSED','WIN','LOSS') "
                 "  AND pnl_eur IS NOT NULL "
+                "  AND (exit_type IS NULL OR exit_type NOT LIKE 'BUG_ROLLBACK%') "  # Phase 45aa A5
                 "ORDER BY close_date DESC LIMIT 25"
             ):
                 truth['closed_7d'].append(dict(r))
+            # Phase 45aa (A5 Fix): Aggregat verwendet GLEICHE Filter wie Liste.
+            # Vorher: agg zaehlte 18 Trades (mit Tranche-Partial-Exits), Liste
+            # zeigte nur 6 (status IN CLOSED/WIN/LOSS). Inkonsistente Counts.
+            # Jetzt: beide Queries filtern auf status IN ('CLOSED','WIN','LOSS')
+            # AND exit_type NOT LIKE 'BUG_ROLLBACK%'.
             agg = c.execute(
                 "SELECT COUNT(*) n, "
                 "  SUM(CASE WHEN pnl_eur>0 THEN 1 ELSE 0 END) wins, "
                 "  SUM(CASE WHEN pnl_eur<0 THEN 1 ELSE 0 END) losses, "
                 "  ROUND(SUM(pnl_eur),1) total_eur "
                 "FROM paper_portfolio "
-                "WHERE close_date >= date('now','-7 days') AND pnl_eur IS NOT NULL"
+                "WHERE close_date >= date('now','-7 days') "
+                "  AND status IN ('CLOSED','WIN','LOSS') "
+                "  AND pnl_eur IS NOT NULL "
+                "  AND (exit_type IS NULL OR exit_type NOT LIKE 'BUG_ROLLBACK%')"
             ).fetchone()
             if agg:
                 truth['closed_7d_agg'] = dict(agg)

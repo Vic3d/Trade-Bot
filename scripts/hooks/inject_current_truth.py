@@ -33,7 +33,7 @@ from pathlib import Path
 
 WS = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent.parent)))
 CACHE_FILE = WS / 'data' / '.current_truth_cache.json'
-CACHE_TTL_SECONDS = 60
+CACHE_TTL_SECONDS = 15  # Phase 45aa (A8): von 60s auf 15s verkuerzt — frischere Truth
 SSH_TIMEOUT = 4
 SERVER = 'root@178.104.152.135'
 REMOTE_CMD = 'cd /opt/trademind && /usr/bin/python3 scripts/current_truth.py 2>/dev/null'
