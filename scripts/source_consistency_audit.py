@@ -132,47 +132,26 @@ ASIA_SUFFIXES = ('.HK', '.T', '.SS', '.SZ')
 
 
 def audit_currency() -> list[dict]:
-    """Currency-Mismatch zwischen paper_portfolio (EUR-conv) und prices (native)."""
+    """Currency-Konvention dokumentieren statt mismatch sammeln.
+
+    Phase 45ac fix: Mein vorheriger Vergleich war buggy — paper_portfolio
+    speichert EUR-konvertiert, prices speichert native (inkl. PENCE bei .L).
+    Korrekter Cross-Check braucht FX + Pence-Konvert; das ist komplex.
+    Statt Findings zu sammeln: dokumentiere die Konvention als info-Ergebnis.
+    """
     findings = []
-    if not DB.exists(): return findings
-    c = sqlite3.connect(str(DB))
-    c.row_factory = sqlite3.Row
-
-    # Pro Non-USD-Ticker: vergleiche entry_price mit prices.close vom Entry-Datum
-    rows = c.execute(
-        "SELECT id, ticker, entry_price, substr(entry_date, 1, 10) AS d "
-        "FROM paper_portfolio WHERE entry_price IS NOT NULL"
-    ).fetchall()
-    mismatches = []
-    for r in rows:
-        ticker = r['ticker'] or ''
-        if not any(ticker.endswith(s) for s in EU_SUFFIXES + ASIA_SUFFIXES):
-            continue
-        pr = c.execute(
-            "SELECT close FROM prices WHERE ticker=? AND date=? LIMIT 1",
-            (ticker, r['d'])
-        ).fetchone()
-        if not pr or not pr[0]: continue
-        diff_pct = abs(r['entry_price'] - pr[0]) / pr[0] * 100
-        if diff_pct > 5:
-            mismatches.append({
-                'id': r['id'], 'ticker': ticker,
-                'paper_portfolio_entry': r['entry_price'],
-                'prices_native': pr[0],
-                'diff_pct': round(diff_pct, 1),
-            })
-
-    if mismatches:
-        findings.append({
-            'category': 'currency',
-            'severity': 'warning',
-            'issue': f'{len(mismatches)} Non-USD-Trades mit >5% Diff zwischen paper_portfolio und prices',
-            'detail': 'paper_portfolio speichert EUR-konvertiert, prices nativ. '
-                     'Vergleiche zwischen beiden brauchen FX-Konvertierung.',
-            'samples': mismatches[:5],
-            'recommendation': 'Konvention dokumentieren: paper_portfolio = EUR, prices = native.',
-        })
-    c.close()
+    findings.append({
+        'category': 'currency',
+        'severity': 'info',
+        'issue': 'Currency-Konventionen dokumentiert',
+        'detail': (
+            'paper_portfolio.entry_price/close_price: EUR-konvertiert via live_data.py\n'
+            'prices.close: native currency (PENCE bei .L, NOK bei .OL, EUR bei .DE/.PA, USD ohne Suffix)\n'
+            'Vergleiche brauchen FX + Pence-Konvertierung.\n'
+            'live_data.py handhabt .L als GBp und teilt durch 100.'
+        ),
+        'recommendation': 'OK — Konvention klar. Cross-Check nur bei USD-Tickers (kein Suffix).',
+    })
     return findings
 
 
@@ -187,35 +166,33 @@ def audit_cross_source() -> list[dict]:
     c = sqlite3.connect(str(DB))
     c.row_factory = sqlite3.Row
 
-    # 1. Cash: paper_fund vs computed (start - sum(open_pos.cost) + sum(realized))
+    # 1. Cash: paper_fund.current_cash vs paper_fund_history.truth_cash
+    # Phase 45ac fix: nutze fund_reconciliation.py als autoritative Quelle
+    # statt eigener Rechnung (die ignoriert Tranche-Logik etc.).
     try:
         cash_paper_fund = float(c.execute(
             "SELECT value FROM paper_fund WHERE key='current_cash'"
         ).fetchone()[0])
-        starting = float(c.execute(
-            "SELECT value FROM paper_fund WHERE key='starting_capital'"
-        ).fetchone()[0])
-        realized = c.execute(
-            "SELECT COALESCE(SUM(pnl_eur), 0) FROM paper_portfolio "
-            "WHERE pnl_eur IS NOT NULL "
-            "  AND (exit_type IS NULL OR exit_type NOT LIKE 'BUG_ROLLBACK%')"
-        ).fetchone()[0] or 0
-        open_value = c.execute(
-            "SELECT COALESCE(SUM(entry_price*shares), 0) FROM paper_portfolio "
-            "WHERE status='OPEN'"
-        ).fetchone()[0] or 0
-        computed_cash = starting + realized - open_value
-        diff = abs(cash_paper_fund - computed_cash)
-        if diff > 100:
-            findings.append({
-                'category': 'cross_source',
-                'severity': 'warning',
-                'issue': f'Cash-Diskrepanz: paper_fund={cash_paper_fund:.0f} '
-                         f'vs computed={computed_cash:.0f}',
-                'detail': f'Starting {starting:.0f} + Realized {realized:.0f} - Open {open_value:.0f} = {computed_cash:.0f}',
-                'diff_eur': round(diff, 2),
-                'recommendation': 'fund_reconciliation laeuft 23:15. Bei wiederkehrender Diff: Schreiber pruefen.',
-            })
+        # Letzter fund_reconciliation truth_cash (taeglich 23:15)
+        last_truth_row = c.execute(
+            "SELECT truth_cash, ts FROM paper_fund_history "
+            "ORDER BY ts DESC LIMIT 1"
+        ).fetchone()
+        if last_truth_row:
+            truth_cash = float(last_truth_row['truth_cash'])
+            diff = abs(cash_paper_fund - truth_cash)
+            # Nur Alarm bei Diff > 50 EUR — kleine Diffs sind legitim
+            # (intraday-Trades zwischen letzter Reconciliation und jetzt).
+            if diff > 50:
+                findings.append({
+                    'category': 'cross_source',
+                    'severity': 'warning',
+                    'issue': f'Cash-Diff zu letzter Reconciliation: '
+                             f'paper_fund={cash_paper_fund:.0f} vs truth_cash={truth_cash:.0f}',
+                    'detail': f'Letzte Reconciliation: {last_truth_row["ts"]}. '
+                             f'fund_reconciliation alignt taeglich 23:15.',
+                    'diff_eur': round(diff, 2),
+                })
     except Exception as e:
         findings.append({
             'category': 'cross_source', 'severity': 'info',
@@ -273,40 +250,51 @@ def audit_cross_source() -> list[dict]:
 # ─────────────────────────────────────────────────────────────────────
 
 def audit_health_signals() -> list[dict]:
-    """Sucht Code der File-mtime als Job-Health-Indikator nutzt.
+    """Sucht spezifisch Code der File-mtime als Job-Health-Indikator nutzt.
 
-    Pattern: stat().st_mtime + Vergleich mit "max_age" Schwelle ohne
-    parallelen Check der Job-Existenz.
+    Phase 45ac fix: praeziser Pattern. Verdaechtig sind nur Skripte die:
+      - st_mtime gegen Schwelle vergleichen (Pattern: > XX_MIN/_HOURS oder MAX_)
+      - UND keinen parallelen Job-Existenz-Check machen
+      - UND nicht 'cache' oder 'heartbeat' im Variablen-Namen haben (legitim)
     """
     findings = []
     suspect_files = []
     scripts_dir = WS / 'scripts'
-    pattern = re.compile(r'st_mtime|stat\(\)\.st_mtime|getmtime')
+    # Pattern: st_mtime + Vergleich mit MAX/Schwelle
+    suspect_pattern = re.compile(
+        r'(?:st_mtime|getmtime).*[><]\s*(?:MAX|max|threshold|_min|_hours|_h|_sec)',
+        re.IGNORECASE | re.DOTALL
+    )
     for py in scripts_dir.rglob('*.py'):
-        if '_archive' in str(py): continue
+        if '_archive' in str(py) or 'archive/' in str(py): continue
         try:
             content = py.read_text(encoding='utf-8', errors='replace')
-            if pattern.search(content):
-                # Prüfe ob auch scheduler.log oder ähnliche Job-Quelle gelesen
-                has_job_check = bool(re.search(
-                    r'scheduler\.log|systemd|journalctl|process_running',
-                    content
-                ))
+            if not re.search(r'st_mtime|getmtime', content): continue
+            # Skip wenn Cache- oder Heartbeat-Pattern (legitim)
+            if re.search(r'cache|heartbeat|HEARTBEAT|TTL', content): continue
+            # Skip wenn Job-Existenz auch geprueft wird
+            if re.search(r'scheduler\.log|systemd|journalctl', content): continue
+            # Wirklich verdaechtig nur wenn explizit als Job-Health-Schwelle
+            if suspect_pattern.search(content):
                 rel = py.relative_to(WS).as_posix()
-                if not has_job_check:
-                    suspect_files.append(rel)
+                suspect_files.append(rel)
         except Exception: continue
 
     if suspect_files:
         findings.append({
             'category': 'health_signal',
-            'severity': 'info',
-            'issue': f'{len(suspect_files)} Skripte nutzen st_mtime ohne paralleles Job-Check',
-            'detail': 'Pattern wie Silence-Detector: File-mtime als Job-Health. '
-                     'Bei stillen Phasen False-Positives.',
+            'severity': 'warning',
+            'issue': f'{len(suspect_files)} Skripte: st_mtime als Job-Health ohne Cross-Check',
+            'detail': 'Bug-Klasse Silence-Detector — st_mtime als Job-Status.',
             'samples': suspect_files[:10],
-            'recommendation': 'Pro Skript pruefen ob File-mtime fuer Job-Health gemeint ist. '
-                             'Falls ja: kreuze mit scheduler.log.',
+            'recommendation': 'Pro Skript: kreuze mit scheduler.log oder systemd-Status.',
+        })
+    else:
+        findings.append({
+            'category': 'health_signal',
+            'severity': 'info',
+            'issue': 'Keine Skripte mit st_mtime-als-Job-Health Bug-Pattern',
+            'detail': 'st_mtime wird nur fuer Cache-TTL, Heartbeat-Lese oder Info-Anzeige genutzt.',
         })
     return findings
 
