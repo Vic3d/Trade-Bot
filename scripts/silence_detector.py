@@ -26,7 +26,7 @@ LOG = WS / 'data' / 'silence_log.jsonl'
 WATCHLIST = [
     # Daten-Pipeline (sollte regelmaessig laufen)
     ('data/scheduler.log',                       0.5,  'scheduler stumm'),
-    ('data/news_reactor_log.jsonl',              4.0,  'news_reactor keine Events'),
+    ('data/news_reactor_log.jsonl',              24.0, 'news_reactor keine relevanten Events'),
     ('data/ceo_active_loop.jsonl',               0.5,  'CEO-Loop steht'),
     ('data/halluzination_log.jsonl',             48.0, 'Hallu-Detector hat 48h nichts gefunden — verdaechtig sauber'),
     ('data/cli_audit_violations.jsonl',          168.0, 'CLI-Audit hat 7d nichts gefunden'),
