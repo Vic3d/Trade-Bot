@@ -44,6 +44,11 @@ def audit(days: int = 14, dry_run: bool = False) -> dict:
     for r in rows:
         d = dict(r)
         ticker = d['ticker']
+        # Phase 45ab: Skip non-USD-Tickers — paper_portfolio speichert EUR-konvertiert,
+        # prices-Tabelle nativ (NOK/EUR/GBP etc.) → Currency-Mismatch ist False-Positive.
+        # Nur US-Tickers (kein Suffix) sicher vergleichbar.
+        if '.' in ticker:
+            continue
         close_price = float(d['close_price'])
         close_date = (d['close_date'] or '')[:10]
         # Hole prices-Eintrag fuer den Tag (oder naechstgelegen)
