@@ -383,6 +383,21 @@ def _auto_activate_thesis(thesis: dict) -> bool:
     confidence = thesis.get('confidence', 0)
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
+    # Phase 45z (Victor 2026-05-07): Hunter-Throttle Loch geschlossen.
+    # thesis_discovery war der 4. Pfad ohne Throttle — PS187/190/192
+    # entstanden trotz MAX_ACTIVE=50 (54 active heute).
+    try:
+        import sys as _sys
+        from pathlib import Path as _P
+        _sys.path.insert(0, str(_P(__file__).resolve().parent.parent))
+        from strategy_throttle import can_create_new_strategy, log_throttle_block  # type: ignore
+        ok, reason = can_create_new_strategy()
+        if not ok:
+            print(f'[thesis_discovery] 🚫 {thesis_id} BLOCKED: {reason}', flush=True)
+            log_throttle_block('thesis_discovery', thesis_id)
+            return False
+    except Exception: pass
+
     # Read current strategies.json
     try:
         strategies: dict = {}

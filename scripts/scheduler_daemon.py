@@ -118,6 +118,9 @@ SCHEDULE = [
     ('Strategy Auditor',    'strategy_auditor.py',    ['--discord'],        20, 0,  [6]),
     # Phase 45x (D1): Cross-Source Price-Consistency-Audit (vor Auto-Deprecate)
     ('Price Consistency Audit', 'price_consistency_audit.py', [],            22, 30, None),
+    # Phase 45z (J1+J2): Edge-Detection — News-Free-Move + Cross-Asset-Divergence
+    ('News-Free Move Detector', 'news_free_move_detector.py',  [],          '*',  '*/15', None),
+    ('Cross-Asset Divergence',  'cross_asset_divergence.py',   [],          '*',  '*/15', None),
     # ── Phase 44A2b — Strategy Auto-Deprecate (täglich 23:00, Regel #1) ────
     ('Strategy Auto-Deprecate','strategy_auto_deprecate.py', [],            23, 0,  None),
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
