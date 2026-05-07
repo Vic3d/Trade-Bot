@@ -35,7 +35,9 @@ def audit(days: int = 14, dry_run: bool = False) -> dict:
         "FROM paper_portfolio "
         "WHERE close_price IS NOT NULL "
         "  AND close_date >= date('now', ?) "
-        "  AND (exit_type IS NULL OR exit_type NOT LIKE 'BUG_ROLLBACK%') "
+        "  AND (exit_type IS NULL OR ("
+        "    exit_type NOT LIKE 'BUG_ROLLBACK%' "
+        "    AND exit_type != 'PAPER_RESET')) "  # Phase 45ab: PAPER_RESET ist Intraday-Snapshot, kein Phantom
         "ORDER BY close_date DESC",
         (f'-{days} days',)
     ).fetchall()
