@@ -171,7 +171,8 @@ def main() -> int:
                    + '\n'.join(
                        f"  - {f['ticker']}: {f['reason']}"
                        for f in findings[:5]))
-            send_alert(msg[:1900], tier=TIER_HIGH, category='system_error',
+            # Phase 45af: detector_finding → SILENT → ceo_inbox (kein Discord)
+            send_alert(msg[:1900], tier=TIER_HIGH, category='detector_finding',
                         dedupe_key=f'news_free_move_{datetime.now().strftime("%Y%m%d_%H")}')
         except Exception: pass
     print(json.dumps(out, indent=2, default=str))

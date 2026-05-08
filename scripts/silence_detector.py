@@ -93,19 +93,29 @@ def main() -> int:
         LOG.parent.mkdir(parents=True, exist_ok=True)
         with open(LOG, 'a', encoding='utf-8') as f:
             f.write(json.dumps(out, default=str) + '\n')
-        # Alert nur bei critical/warning
+        # Phase 45af (Victor 2026-05-08): KEIN Discord mehr.
+        # Findings gehen in CEO-Inbox — der CEO sieht stumme Quellen beim
+        # nächsten Cold-Cycle und kann reagieren. Discord bleibt fuer Briefings.
         bad = [f for f in findings if f.get('severity') in ('critical', 'warning')]
         if bad:
             try:
                 sys.path.insert(0, str(WS / 'scripts'))
-                from discord_dispatcher import send_alert, TIER_HIGH
-                msg = (f"🔇 **Silence-Detector** ({len(bad)} stumme Quellen):\n"
-                       + '\n'.join(
-                           f"  - {f['path']}: {f.get('age_hours','?')}h still "
-                           f"(max {f.get('max_allowed_hours','?')}h) — {f['description']}"
-                           for f in bad[:5]))
-                send_alert(msg[:1900], tier=TIER_HIGH, category='system_error',
-                            dedupe_key=f'silence_{datetime.now().strftime("%Y%m%d_%H")}')
+                from ceo_inbox import write_event
+                for f in bad:
+                    write_event(
+                        event_type='silence.stale_signal',
+                        message=(f"{f['path']}: {f.get('age_hours','?')}h still "
+                                 f"(max {f.get('max_allowed_hours','?')}h) — {f['description']}"),
+                        severity=f.get('severity', 'warning'),
+                        category='health',
+                        user_pinged=False,
+                        payload={
+                            'path': f.get('path'),
+                            'age_hours': f.get('age_hours'),
+                            'max_allowed_hours': f.get('max_allowed_hours'),
+                            'kind': f.get('kind'),
+                        },
+                    )
             except Exception: pass
     print(json.dumps(out, indent=2, default=str))
     return 0

@@ -97,7 +97,8 @@ def audit(days: int = 14, dry_run: bool = False) -> dict:
                        f"DB {i['close_price_db']} vs Markt {i['market_close_same_day']} "
                        f"({i['deviation_pct']}% Abweichung)"
                        for i in issues[:5]))
-            send_alert(msg[:1900], tier=TIER_HIGH, category='system_error',
+            # Phase 45af: detector_finding → SILENT → ceo_inbox (kein Discord)
+            send_alert(msg[:1900], tier=TIER_HIGH, category='detector_finding',
                         dedupe_key=f'price_audit_{datetime.now().date()}')
         except Exception: pass
     return result

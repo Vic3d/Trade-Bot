@@ -166,8 +166,9 @@ def run() -> dict:
             lines.append('Typen:')
             for k, n in by_kind.most_common():
                 lines.append(f'  · {k}: {n}')
+            # Phase 45af: detector_finding → SILENT → ceo_inbox (kein Discord)
             send_alert('\n'.join(lines)[:1900], tier=TIER_HIGH,
-                        category='system_error',
+                        category='detector_finding',
                         dedupe_key=f'halluz_sweep_{datetime.now().strftime("%Y%m%d_%H")}')
         except Exception: pass
 

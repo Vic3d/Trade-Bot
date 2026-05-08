@@ -117,7 +117,8 @@ def main() -> int:
             msg = (f"🚨 **Cross-Asset-Divergence** ({len(findings)} Findings):\n"
                    + '\n'.join(f"  - {f['cluster']}: {f['reason']}"
                                for f in findings[:3]))
-            send_alert(msg[:1900], tier=TIER_HIGH, category='system_error',
+            # Phase 45af: detector_finding → SILENT → ceo_inbox (kein Discord)
+            send_alert(msg[:1900], tier=TIER_HIGH, category='detector_finding',
                         dedupe_key=f'divergence_{datetime.now().strftime("%Y%m%d_%H")}')
         except Exception: pass
     print(json.dumps(out, indent=2, default=str))
