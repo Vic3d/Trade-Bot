@@ -541,6 +541,34 @@ def _execute_paper_entry_inner(
             'blocked_by': 'stop_too_tight',
         }
 
+    # ── Guard 0b3: Ticker-Price-Sanity (Phase 45ag, FRO.OL Bug-Fix) ──────
+    # Lernung: Trade #127 FRO.OL entry=32.81 (war NYSE-FRO-USD) bei Markt-
+    # Preis 356 NOK → Live-Lookup verglich falsche Listings → Phantom +985%.
+    # Defensiv: entry_price MUSS in 50%-Range des letzten Markt-Schluss
+    # für diesen ticker liegen. Sonst Ticker-Listing-Mismatch.
+    try:
+        _last_close_row = conn.execute(
+            "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
+            (ticker,)
+        ).fetchone()
+        if _last_close_row and _last_close_row[0]:
+            _last_close = float(_last_close_row[0])
+            if _last_close > 0:
+                _dev = abs(entry_price - _last_close) / _last_close
+                if _dev > 0.50:
+                    conn.close()
+                    return {
+                        'success': False, 'trade_id': None,
+                        'message': (
+                            f'❌ Ticker-Price-Mismatch: {ticker} entry={entry_price:.2f} '
+                            f'vs Markt-Schluss {_last_close:.2f} ({_dev*100:.0f}% Abweichung). '
+                            f'Listing-Mismatch (USD/NOK/EUR vermengt?). Trade abgelehnt.'
+                        ),
+                        'blocked_by': 'ticker_price_mismatch',
+                    }
+    except Exception as _tpe:
+        print(f'[Guard 0b3] ticker-price-sanity skipped: {_tpe}', file=sys.stderr)
+
     # ── Guard 0d2: Learning-Insights-Block (Phase 44b/A1) ──────────────
     # Verifiziert aus eigenen Daten: bestimmte Time/Region-Buckets verlieren
     # systematisch (z.B. afternoon WR 33.6% bei n=122). Hard-Block bei
