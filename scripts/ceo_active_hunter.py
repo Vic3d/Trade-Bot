@@ -220,12 +220,16 @@ Beachte:
   · Setup MUSS auf konkreter News, Macro-Event oder Strategy-Match basieren
   · Wenn nichts überzeugend: lieber 0 Setups als Schrott!
 
-═══ R:R-PFLICHTREGEL (Phase 44b) ═══
-- stop_pct MUSS zwischen 3 und 5 liegen (Default 4)
-- target_pct MUSS mindestens 3x stop_pct sein (R:R >= 3:1)
-- Beispiel: stop_pct=4 → target_pct >= 12
+═══ R:R-PFLICHTREGEL (Phase 44b + 45ad Härtung) ═══
+- stop_pct MUSS zwischen 4 und 6 liegen (Default 5) — Phase 45ab Guard 0b2 blockt < 4%
+- target_pct MUSS mindestens 3x stop_pct sein (R:R >= 3:1, mit Puffer für Slippage)
+- Beispiel: stop_pct=5 → target_pct >= 15
 - Größerer Stop nur wenn ATR-begründet UND target_pct entsprechend skaliert
 - Verifizierte Asymmetrie aus eigenen Daten: Avg Win 8€ vs Avg Loss 41€ (1:5 GEGEN uns) — wir invertieren das jetzt
+- KRITISCH (07.05): Gestern 8/13 Setups blocked mit 'crv_minimum' und 3/13 mit
+  'stop_too_tight'. Wenn dein vorgeschlagenes target_pct nach Slippage unter
+  3x stop_pct fällt, geht der Trade nie durch. **PRÜFE pro Setup explizit:
+  R:R-Berechnung mit Live-Preis als Reference, NICHT Entry-Price.**
 
 ANTWORT-FORMAT — STRIKT JSON:
 {{
@@ -584,11 +588,13 @@ def setups_to_proposals(setups: list[dict], thinking: str = '') -> list[dict]:
             print(f'[hunter] skip {ticker}/{strategy}: {reason}', file=sys.stderr)
             continue
         entry = float(s.get('entry_price') or 0)
-        # Phase 44b: Default 4% / 12% = 3:1 R:R (PTJ-Style)
-        stop_pct = float(s.get('stop_pct') or 4)
-        target_pct = float(s.get('target_pct') or 12)
-        # Phase 44b enforcement: cap stop, sicherstellen R:R >= 3:1
-        stop_pct = max(3.0, min(5.0, stop_pct))   # cap auf [3, 5]%
+        # Phase 44b: Default 5% / 15% = 3:1 R:R (PTJ-Style)
+        # Phase 45ad: Default-Stop von 4 auf 5% angehoben — Phase 45ab Guard 0b2
+        # blockt <4%, Puffer schützt gegen Live-Preis-Drift bei Execute.
+        stop_pct = float(s.get('stop_pct') or 5)
+        target_pct = float(s.get('target_pct') or 15)
+        # Phase 45ad enforcement: cap stop auf [4, 6]% — VOR Guard 0b2-Konflikt schützen
+        stop_pct = max(4.0, min(6.0, stop_pct))
         if target_pct < stop_pct * 3:
             target_pct = stop_pct * 3              # erzwinge 3:1 R:R
         # Phase 43-fix: wenn entry=0, hole Live-Preis aus DB
