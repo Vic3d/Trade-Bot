@@ -1105,6 +1105,31 @@ def _execute_paper_entry_inner(
                 'blocked_by': 'regime_unknown',
             }
 
+    # ── Guard 0g: Liquidity Hard-Filter (Phase 45ae, Tradermacher-Methodik) ──
+    # Lernung: 5 historische Phantom-Tick-Rollbacks (PYPL, SMCI, UEC, MOS, PAAS)
+    # alle bei dünn gehandelten Tickers. Dirk's Methodik: Marketcap > 750M,
+    # ADR > 3%, Volumen > 1M, Preis > 5$. Bypass für manuelle Entries —
+    # Victor kann bewusst durchtraden wenn er weiß was er tut.
+    if source not in ('manual', 'victor', 'cli', 'paper_lab'):
+        try:
+            sys.path.insert(0, str(WORKSPACE / 'scripts'))
+            from liquidity_filter import passes_liquidity
+            _ok, _reason, _det = passes_liquidity(ticker, current_price_usd=entry_price)
+            if not _ok:
+                return {
+                    'success': False,
+                    'trade_id': None,
+                    'message': (
+                        f'❌ Liquidity Hard-Filter: {ticker} → {_reason}. '
+                        f'Tradermacher-Schwellen (Marketcap >750M, ADR >3%, '
+                        f'Volumen >1M, Preis >5$). Phantom-Tick-Schutz.'
+                    ),
+                    'blocked_by': 'liquidity_too_low',
+                    'liquidity_details': _det,
+                }
+        except Exception as _le:
+            print(f'[Guard 0g] liquidity-check fail (non-fatal): {_le}')
+
     # ── Guard 1: Thesis + Conviction Check ──────────────────────────────
     # Phase 2: VIX is no longer a hard block — only a conviction modifier.
     # Hard blocks are: thesis INVALIDATED or CRV < 2.0
