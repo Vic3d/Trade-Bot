@@ -30,13 +30,15 @@ LOG = WS / 'data' / 'janitor_log.jsonl'
 
 # Pattern → max_age_days
 PATTERNS = [
-    ('.bak.', 30),
-    ('_seen.json', 30),
+    ('.bak.', 14),  # Phase 45ag: 30d→14d für Auto-Backups
+    ('_seen.json', 14),
     ('.tmp', 1),
     ('.swp', 1),
-    ('test_mode.json', 30),
-    ('broad_scanner_', 30),
+    ('test_mode.json', 14),
+    ('broad_scanner_', 14),
     ('discord_queue_low.jsonl.archive', 7),
+    ('alternative_data.json', 30),  # 418h alt, nichts mehr
+    ('midterm_bias.json', 30),       # 379h alt
 ]
 
 # Hard-Whitelist (nie löschen)
