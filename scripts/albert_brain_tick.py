@@ -31,6 +31,12 @@ LAST_TICK  = WS / 'data' / 'albert_last_tick.json'
 INBOX      = WS / 'data' / 'ceo_inbox.jsonl'
 DB         = WS / 'data' / 'trading.db'
 SNAPSHOT   = WS / 'memory' / 'state-snapshot.md'
+# Phase 45ak: Methodik + Phase-Awareness
+METHODIK   = WS / 'memory' / 'tradermacher-methodik.md'
+DEEPDIVE   = WS / 'memory' / 'deepdive-protokoll.md'
+DIRECTIVE  = WS / 'data' / 'ceo_directive.json'
+REGIME     = WS / 'data' / 'current_regime.json'
+STRATS     = WS / 'data' / 'strategies.json'
 
 MAX_DIARY_TAIL = 800   # letzte N Zeichen aus diary lesen (Memory)
 MAX_INBOX_NEW  = 30    # letzte N inbox-events seit last tick
@@ -124,6 +130,29 @@ def tick() -> dict:
     trades       = _last_3_trades()
     goals        = _read_goals()
 
+    # Phase 45ak: Methodik + Phase-Awareness
+    methodik = _read_tail(METHODIK, 2000)
+    deepdive_short = _read_tail(DEEPDIVE, 800)
+    directive = ''
+    try:
+        if DIRECTIVE.exists():
+            d = json.loads(DIRECTIVE.read_text(encoding='utf-8'))
+            directive = f"{d.get('mode','?')} — {d.get('reason','')[:120]}"
+    except Exception: pass
+    regime = ''
+    try:
+        if REGIME.exists():
+            r = json.loads(REGIME.read_text(encoding='utf-8'))
+            regime = f"{r.get('regime','?')} (VIX {r.get('vix','?')})"
+    except Exception: pass
+    n_active_strats = 0
+    try:
+        if STRATS.exists():
+            sj = json.loads(STRATS.read_text(encoding='utf-8'))
+            n_active_strats = sum(1 for v in sj.values()
+                                   if isinstance(v, dict) and v.get('status') == 'active')
+    except Exception: pass
+
     # Skip wenn nichts Neues passiert ist
     if not new_events and (now - datetime.fromisoformat(last_ts.replace('Z','+00:00'))).total_seconds() < 600:
         return {'skipped': True, 'reason': 'nothing_new'}
@@ -149,9 +178,20 @@ Diese Woche: {goals.get('weekly', '?')}
 Diesen Monat: {goals.get('monthly', '?')}
 Aktueller Fokus: {goals.get('current_focus', '?')}
 
+═══ MARKT-KONTEXT ═══
+CEO-Directive: {directive or 'unbekannt'}
+Regime: {regime or 'unbekannt'}
+Active Strategien: {n_active_strats}
+
 ═══ WAS DIE WELT TUT (seit letztem Tick) ═══
 Neue Events: {len(new_events)} ({events_summary})
-Letzte Trades: {json.dumps([{k: v for k, v in t.items() if k in ('ticker','status','pnl_eur','exit_type')} for t in trades], ensure_ascii=False)}
+Letzte Trades: {json.dumps([{{k: v for k, v in t.items() if k in ('ticker','status','pnl_eur','exit_type')}} for t in trades], ensure_ascii=False)}
+
+═══ DEINE METHODIK (Tradermacher-Lernung, PFLICHT BEACHTEN) ═══
+{methodik or '(keine geladen)'}
+
+═══ DEINE DEEP-DIVE-DOKTRIN ═══
+{deepdive_short or '(keine geladen)'}
 
 ═══ DEINE LETZTEN GEDANKEN (Tagebuch-Ende) ═══
 {diary_tail or '(noch nichts geschrieben)'}
@@ -162,23 +202,25 @@ Letzte Trades: {json.dumps([{k: v for k, v in t.items() if k in ('ticker','statu
 ═══ AKTUELLE SYSTEM-LAGE ═══
 {snapshot or '(snapshot nicht da)'}
 
-DEINE AUFGABE FÜR DIESEN TICK (max 100 Wörter total):
+DEINE AUFGABE FÜR DIESEN TICK (max 150 Wörter total):
 
-1. **Ein Gedanke** (1-2 Sätze) — was beschäftigt dich JETZT?
-   Sei spezifisch. Beziehe dich auf konkrete Tickers/Events/Trades.
-   Kein Generic ("ich beobachte den Markt"). Konkret ("PYPL macht mich nervös weil...").
+1. **Ein Gedanke** (2-3 Sätze) — was beschäftigt dich JETZT?
+   Drei Schichten: (a) Markt-Phase: in welcher Phase sind wir? Risk-On/Off?
+                   Welche Sektoren bewegen sich? (b) Konkrete Tickers/Trades.
+                   (c) Wenn relevant: was passt zur Tradermacher-Methodik?
 
 2. **0-3 Selbst-Aktionen** als JSON-Array (kann leer sein).
-   Aktion = was DU dir selbst aufträgst zu tun.
-   Format: [{{"action": "check_X", "reason": "...", "priority": "high|med|low"}}]
-   Beispiele: "check_correlation_oil_today", "review_strategy_PS5_drift",
-              "reread_thesis_FRO", "monitor_iran_news"
-   NUR NEUE Aktionen — wenn nichts wirklich Neues, leeres Array [].
+   Erlaubte action-types:
+     - "check_X" / "review_X" / "monitor_X"  → Daten/Strategie ansehen
+     - "propose_strategy:NAME"  → neue Strategie vorschlagen (wird gequeued)
+     - "kill_strategy:ID"        → bestehende Strategie deprecaten vorschlagen
+     - "rotate_focus:SEKTOR"     → Fokus-Verschiebung vorschlagen
+   Format: [{{"action": "...", "reason": "...", "priority": "high|med|low"}}]
 
 ANTWORTE EXAKT IN DIESEM FORMAT:
 
 ```
-GEDANKE: <dein 1-2 Satz Gedanke>
+GEDANKE: <dein 2-3 Satz Gedanke mit Phase-Awareness>
 
 ACTIONS: <JSON array oder []>
 ```

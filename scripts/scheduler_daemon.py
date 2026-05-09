@@ -140,6 +140,10 @@ SCHEDULE = [
     ('Albert Goal-Tracker',    'albert_goal_tracker.py',       [],           23,  0, None),
     # Stufe 3: Self-Review täglich 23:30 (nach goal_tracker)
     ('Albert Self-Review',     'albert_self_review.py',        [],           23, 30, None),
+    # ── Phase 45ak — Albert-Strategist (täglich 06:30 mit OPUS) ────────────
+    # Liest Methodik + Strategien + News + Tagebuch, proposiert Strategie-Aktionen.
+    # Output landet im Morgen-Briefing 08:00.
+    ('Albert Strategist',      'albert_strategist.py',         [],            6, 30, [0,1,2,3,4]),
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
     # Sprint 0 cleanup: multi_strategy_shadow archiviert (wird durch Sprint-1 Backtest-Framework ersetzt)
     # ('Shadow Strategy Hunt',   'multi_strategy_shadow.py', ['--hunt'],      '9-22', '*/30', [0,1,2,3,4]),

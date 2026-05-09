@@ -761,6 +761,15 @@ _Xetra-Briefing: 08:30_"""
     except Exception:
         pass
 
+    # Phase 45ak: Albert-Strategist (06:30 lief, opus-Output anhängen)
+    try:
+        sa = WS / 'data' / 'albert_strategist_latest.md'
+        import time as _t
+        if sa.exists() and (_t.time() - sa.stat().st_mtime) < 7200:  # max 2h alt
+            briefing += "\n\n---\n\n🧠 **ALBERT-STRATEGIST (heute 06:30):**\n" + sa.read_text(encoding='utf-8')
+    except Exception:
+        pass
+
     return briefing
 
 
