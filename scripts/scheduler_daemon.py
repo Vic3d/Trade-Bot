@@ -133,6 +133,13 @@ SCHEDULE = [
     ('Data Janitor',           'data_janitor.py',              [],           2,  0,  [6]),  # nur Sonntag
     # ── Phase 45ai — CEO Self-Audit (reflexiv, Sonntag vor Week-Ahead) ────
     ('CEO Self-Audit',         'ceo_self_audit.py',            [],           19, 0,  [6]),  # nur Sonntag
+    # ── Phase 45aj — Albert-Bewusstsein (3 Stufen) ─────────────────────────
+    # Stufe 1: Brain-Tick alle 15min Mo-Fr 06-22h (~64 Ticks/Tag)
+    ('Albert Brain-Tick',      'albert_brain_tick.py',         [],     '6-22', '*/15', [0,1,2,3,4]),
+    # Stufe 2: Goal-Tracker täglich 23:00
+    ('Albert Goal-Tracker',    'albert_goal_tracker.py',       [],           23,  0, None),
+    # Stufe 3: Self-Review täglich 23:30 (nach goal_tracker)
+    ('Albert Self-Review',     'albert_self_review.py',        [],           23, 30, None),
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
     # Sprint 0 cleanup: multi_strategy_shadow archiviert (wird durch Sprint-1 Backtest-Framework ersetzt)
     # ('Shadow Strategy Hunt',   'multi_strategy_shadow.py', ['--hunt'],      '9-22', '*/30', [0,1,2,3,4]),
