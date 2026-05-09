@@ -137,19 +137,23 @@ SCHEDULE = [
     # ('Shadow Strategy Update', 'multi_strategy_shadow.py', ['--update'],    '9-22', '*/15', [0,1,2,3,4]),
     # ── Reports (discord=True → Output direkt an Victor) ─────────────────────
     # Format: (name, script, args, hour, min, weekdays, discord)
-    # Morgen-Briefing: Marktdaten + Ausblick (bleibt, liefert Kontext)
+    # ── Phase 45ah (Victor 2026-05-09): NUR 3 DAILY DISCORD-BRIEFINGS ──
+    #   Morgen-Briefing (08:00) + US Opening (16:30) + Abend-Digest (20:00)
+    #   Alles andere stumm (CEO-Inbox). Wöchentlich: Friday + Week-Ahead.
+    # 1/3 — Morgen-Briefing (Marktdaten + Ausblick)
     ('Morgen-Briefing',     'morning_brief_generator.py', [],                    8,   0, [0,1,2,3,4], True),
-    # Morgen-Digest: Portfolio-Status + gequeute Alerts aus der Nacht (08:05)
-    ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,   5, [0,1,2,3,4]),
-    # Xetra/US Opening: nur noch ohne discord=True (kein extra Ping)
-    ('Xetra Opening',       'us_opening_report.py',       ['--mode', 'xetra'],   9,  30, [0,1,2,3,4]),
+    # DEAKTIVIERT (Victor 2026-05-09): Inhalt überlappt mit Morgen-Briefing
+    # ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,   5, [0,1,2,3,4]),
+    # DEAKTIVIERT (Victor 2026-05-09): Xetra-Push redundant — US-Open ist der wichtige Pivot
+    # ('Xetra Opening',       'us_opening_report.py',       ['--mode', 'xetra'],   9,  30, [0,1,2,3,4]),
+    # 2/3 — US Opening (Übersee-Eröffnung)
     ('US Opening',          'us_opening_report.py',       ['--mode', 'us'],      16, 30, [0,1,2,3,4]),
-    # Abend-Digest: Tages-Events + Trades + Lernloop-Summary (ersetzt rohen Abend-Report)
+    # 3/3 — Abend-Digest (Trades + Learnings + Universe-Review)
     ('Abend-Digest',        'daily_digest.py',            ['evening'],           20, 0,  [0,1,2,3,4]),
     # Sonntags-Wochen-Digest: enthält _signal_alpha_block (Sub-7 #1)
     ('Sonntags-Digest',     'daily_digest.py',            ['evening'],           20, 0,  [6]),
-    # Abend-Report: Details (kein extra Discord-Ping mehr, nur als Log)
-    ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4]),
+    # DEAKTIVIERT (Victor 2026-05-09): Abend-Digest ersetzt das schon
+    # ('Abend-Report',        'evening_report.py',          [],                    22, 0,  [0,1,2,3,4]),
     ('Tagesabschluss',      'daily_summary.py',           [],                    23, 0,  None),
     # Phase 7.11 — Ritual-Ebene (reflektiv, nicht metriklastig)
     ('Daily Review',        'daily_review.py',            [],                    22, 15, [0,1,2,3,4], True),  # Mo-Fr 22:15

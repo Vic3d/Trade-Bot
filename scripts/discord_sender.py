@@ -120,11 +120,14 @@ def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
     """
     # Phase 45p: Caller-Whitelist
     BRIEFING_CALLERS = {
-        'morning_brief_generator', 'us_opening_report', 'evening_report',
-        'friday_improvement_briefing', 'ceo_week_ahead_briefing',
-        # Phase 45ah (Victor 2026-05-09): Abend-/Morgen-Digest war stumm —
-        # daily_digest fehlte hier, deshalb kam Friday Abend-Briefing nicht an.
-        'daily_digest',
+        # Phase 45ah (Victor 2026-05-09): EXAKT 3 DAILY + WEEKLY EXTRAS.
+        # Alles andere → CEO-Inbox.
+        'morning_brief_generator',     # 08:00 Morgen-Briefing
+        'us_opening_report',           # 16:30 US-Open (Xetra-Job deaktiviert)
+        'daily_digest',                # 20:00 Abend-Digest (8:05-Job deaktiviert)
+        'friday_improvement_briefing', # Fr 18:00 wöchentlich
+        'ceo_week_ahead_briefing',     # So wöchentlich
+        # entfernt: 'evening_report' (Job deaktiviert)
     }
     EMERGENCY_CALLERS = {
         # Wirkliche Notfaelle die sofort raus muessen
