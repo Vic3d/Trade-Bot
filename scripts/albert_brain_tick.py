@@ -186,7 +186,8 @@ ACTIONS: <JSON array oder []>
 
     try:
         from llm_client import call_llm
-        text, _ = call_llm(prompt, model_hint='haiku', max_tokens=400)
+        # Phase 45aj+ (Victor 2026-05-09): sonnet statt haiku — Albert braucht Tiefe
+        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=500)
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 

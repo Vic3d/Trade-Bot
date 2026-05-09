@@ -68,7 +68,8 @@ ANTWORTE in Markdown, max 400 Wörter. Sprich in ICH-Form. Sei selbstkritisch.""
 
     try:
         from llm_client import call_llm
-        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=1200)
+        # Phase 45aj+ (Victor 2026-05-09): opus für strategische Selbst-Reflexion
+        text, _ = call_llm(prompt, model_hint='opus', max_tokens=1500)
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 

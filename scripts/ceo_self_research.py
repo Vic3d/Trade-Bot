@@ -142,7 +142,7 @@ def _generate_questions(ctx: dict) -> list[dict]:
     )
     try:
         from core.llm_client import call_llm
-        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=900,
+        text, _ = call_llm(prompt, model_hint='opus', max_tokens=900,
                             system=SYSTEM_QGEN)
         import re
         m = re.search(r'\[.*\]', text, re.S)
@@ -271,7 +271,7 @@ def _synthesize(question: dict, news: list[dict]) -> dict:
     )
     try:
         from core.llm_client import call_llm
-        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=400,
+        text, _ = call_llm(prompt, model_hint='opus', max_tokens=400,
                             system=SYSTEM_SYNTH)
         import re
         m = re.search(r'\{.*\}', text, re.S)
