@@ -153,6 +153,14 @@ def tick() -> dict:
                                    if isinstance(v, dict) and v.get('status') == 'active')
     except Exception: pass
 
+    # Pre-compute trades summary für f-string (Escape-safe)
+    trades_summary = json.dumps(
+        [{k: v for k, v in t.items()
+          if k in ('ticker', 'status', 'pnl_eur', 'exit_type')}
+         for t in trades],
+        ensure_ascii=False
+    )
+
     # Skip wenn nichts Neues passiert ist
     if not new_events and (now - datetime.fromisoformat(last_ts.replace('Z','+00:00'))).total_seconds() < 600:
         return {'skipped': True, 'reason': 'nothing_new'}
@@ -185,7 +193,7 @@ Active Strategien: {n_active_strats}
 
 ═══ WAS DIE WELT TUT (seit letztem Tick) ═══
 Neue Events: {len(new_events)} ({events_summary})
-Letzte Trades: {json.dumps([{{k: v for k, v in t.items() if k in ('ticker','status','pnl_eur','exit_type')}} for t in trades], ensure_ascii=False)}
+Letzte Trades: {trades_summary}
 
 ═══ DEINE METHODIK (Tradermacher-Lernung, PFLICHT BEACHTEN) ═══
 {methodik or '(keine geladen)'}

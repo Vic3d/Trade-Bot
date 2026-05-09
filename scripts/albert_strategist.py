@@ -129,6 +129,12 @@ def run() -> dict:
     recent_acts  = _gather_recent_actions()
     perf         = _trade_perf_summary(30)
 
+    # Pre-compute Strings für f-string (vermeidet Escape-Hell)
+    recent_acts_summary = json.dumps(
+        [{'a': a.get('action'), 'r': (a.get('reason') or '')[:80]} for a in recent_acts],
+        ensure_ascii=False, indent=2
+    )
+
     prompt = f"""Du bist Albert, AI-CEO und Trader. Heute Morgen 06:30 ist DEIN
 strategischer Slot — der Moment, in dem du als CEO wirklich denkst:
 "Was machen wir heute? Welche Strategien funktionieren? Was muss raus?
@@ -169,7 +175,7 @@ Lifecycle-Status: {lifecycle.get('counts', {})}
 {rules}
 
 ═══ SELF-ACTIONS DIE BRAIN-TICK GEQUEUED HAT ═══
-{json.dumps([{{'a': a.get('action'), 'r': a.get('reason','')[:80]}} for a in recent_acts], ensure_ascii=False, indent=2)}
+{recent_acts_summary}
 
 ═══ DEINE AUFGABE ═══
 
