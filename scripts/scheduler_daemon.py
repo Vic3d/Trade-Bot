@@ -138,6 +138,9 @@ SCHEDULE = [
     # Wochenenden: weniger Markt-Events, aber News/Geo/Strategie-Reflexion läuft.
     # Stufe 1: Brain-Tick alle 15min RUND UM DIE UHR (~96 Ticks/Tag)
     ('Albert Brain-Tick',      'albert_brain_tick.py',         [],            '*', '*/15', None),
+    # ── Phase 45al — Decision-Review (Albert lernt aus eigenen Decisions) ──
+    # Täglich 22:00, prüft fällige Strategist-Proposals (evaluate_after_days)
+    ('Albert Decision-Review', 'albert_decision_review.py',    [],           22,  0, None),
     # Stufe 2: Goal-Tracker täglich 23:00
     ('Albert Goal-Tracker',    'albert_goal_tracker.py',       [],           23,  0, None),
     # Stufe 3: Self-Review täglich 23:30 (nach goal_tracker)

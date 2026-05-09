@@ -135,6 +135,26 @@ def run() -> dict:
         ensure_ascii=False, indent=2
     )
 
+    # Track-Record: letzte 10 Entscheidungen mit Verdict (wenn vorhanden)
+    verdicts_file = WS / 'data' / 'albert_decision_verdicts.jsonl'
+    track_record = []
+    if verdicts_file.exists():
+        try:
+            with open(verdicts_file, encoding='utf-8') as f:
+                for line in f:
+                    try: track_record.append(json.loads(line))
+                    except Exception: pass
+        except Exception: pass
+    track_record_summary = json.dumps(
+        [{'date': v.get('reviewed_at', '')[:10],
+          'action': v.get('proposal', {}).get('action'),
+          'target': v.get('proposal', {}).get('target'),
+          'verdict': v.get('verdict'),
+          'lesson': (v.get('lesson') or '')[:120]}
+         for v in track_record[-10:]],
+        ensure_ascii=False, indent=2
+    ) if track_record else '(noch kein Track-Record — erste Reviews ab morgen)'
+
     prompt = f"""Du bist Albert, AI-CEO und Trader. Heute Morgen 06:30 ist DEIN
 strategischer Slot — der Moment, in dem du als CEO wirklich denkst:
 "Was machen wir heute? Welche Strategien funktionieren? Was muss raus?
@@ -177,6 +197,9 @@ Lifecycle-Status: {lifecycle.get('counts', {})}
 ═══ SELF-ACTIONS DIE BRAIN-TICK GEQUEUED HAT ═══
 {recent_acts_summary}
 
+═══ DEINE LETZTEN ENTSCHEIDUNGEN (Track-Record, max 10) ═══
+{track_record_summary}
+
 ═══ DEINE AUFGABE ═══
 
 Heute morgen, als CEO, sollst du DREI Dinge liefern. Sei konkret, kurz,
@@ -189,16 +212,20 @@ Was würde Dirk-Tradermacher heute tun?
 
 ## 2. STRATEGIE-VORSCHLÄGE (max 5 Items, JSON)
 Konkrete Aktionen die heute/diese Woche umgesetzt werden sollen.
+WICHTIG: Jede Proposal MUSS einen messbaren expected_outcome haben damit
+du später retrospektiv beurteilen kannst ob die Entscheidung richtig war.
 Format pro Item:
 {{
   "action": "create_strategy" | "kill_strategy" | "pause_strategy" | "rotate_focus",
   "target": "PS_NEUE_ID oder bestehende ID oder Sektor-Name",
-  "tickers": ["TICK1","TICK2"],   // nur bei create
+  "tickers": ["TICK1","TICK2"],
   "thesis": "warum diese Strategie? Was ist der Edge?",
   "trigger": "wann triggert sie? (konkrete Bedingung)",
   "stop_logic": "wo ist der Stop?",
   "priority": "high|med|low",
-  "rationale": "in 1 Satz: warum jetzt?"
+  "rationale": "in 1 Satz: warum jetzt?",
+  "expected_outcome": "WAS messbares erwartest du? z.B. 'PS_HLAG +5% binnen 14d nach Suez-Reopening' oder 'PS1-Pause spart -50€/Woche Hallu-Schaden'",
+  "evaluate_after_days": 7
 }}
 
 ## 3. WAS WÜRDE ALBERT HEUTE PERSÖNLICH TRADEN? (max 80 Wörter)
