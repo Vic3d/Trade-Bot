@@ -122,6 +122,9 @@ def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
     BRIEFING_CALLERS = {
         'morning_brief_generator', 'us_opening_report', 'evening_report',
         'friday_improvement_briefing', 'ceo_week_ahead_briefing',
+        # Phase 45ah (Victor 2026-05-09): Abend-/Morgen-Digest war stumm —
+        # daily_digest fehlte hier, deshalb kam Friday Abend-Briefing nicht an.
+        'daily_digest',
     }
     EMERGENCY_CALLERS = {
         # Wirkliche Notfaelle die sofort raus muessen
