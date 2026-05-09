@@ -185,8 +185,7 @@ Zahlen aus dem Daten-Block oben — keine erfundenen Werte.
 """
 
     try:
-        text, meta = call_llm(prompt, model_hint='sonnet', max_tokens=2000,
-                               purpose='ceo_self_audit')
+        text, meta = call_llm(prompt, model_hint='sonnet', max_tokens=2000)
     except Exception as e:
         return {'error': f'llm_call_failed: {e}', 'ctx': ctx}
 
