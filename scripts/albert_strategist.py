@@ -225,8 +225,13 @@ Format pro Item:
   "priority": "high|med|low",
   "rationale": "in 1 Satz: warum jetzt?",
   "expected_outcome": "WAS messbares erwartest du? z.B. 'PS_HLAG +5% binnen 14d nach Suez-Reopening' oder 'PS1-Pause spart -50€/Woche Hallu-Schaden'",
-  "evaluate_after_days": 7
+  "evaluate_after_days": 1   // ← WÄHLE PASSEND: 1=taktisch (Cleanup, Pause), 3=Setup-Test, 7=Strategy-Pivot, 14=Thesis-Play
 }}
+
+WICHTIG: kurze Fenster wenn möglich. Lieber 1-Tag-Reviews die schnell Feedback geben,
+als 7-Tage-Reviews die zu spät kommen. Strategische Entscheidungen brauchen längere
+Fenster, taktische (Cleanup, Pause, Sweep) reichen 1-2 Tage. Du musst SO SCHNELL
+WIE MÖGLICH lernen ob deine Decisions richtig waren.
 
 ## 3. WAS WÜRDE ALBERT HEUTE PERSÖNLICH TRADEN? (max 80 Wörter)
 Wenn der Markt heute öffnet, welche 1-2 konkreten Setups würdest du nehmen?
