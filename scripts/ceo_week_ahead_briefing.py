@@ -225,10 +225,22 @@ def run() -> dict:
     BRIEFINGS_DIR.mkdir(parents=True, exist_ok=True)
     week = datetime.now().strftime('%Y-W%W')
     file = BRIEFINGS_DIR / f'{week}.md'
+
+    # Phase 45ai: CEO-Self-Audit anhängen (wenn heute generiert, So 19:00).
+    self_audit_block = ''
+    try:
+        sa = WS / 'data' / 'ceo_self_audit_latest.md'
+        if sa.exists() and (datetime.now().timestamp() - sa.stat().st_mtime) < 86400:
+            self_audit_block = ('\n\n---\n\n## 🪞 Albert Self-Audit\n\n'
+                                + sa.read_text(encoding='utf-8'))
+    except Exception:
+        pass
+
     full = (f"# Week-Ahead-Briefing {week}\n"
             f"*Geschrieben Sonntag {datetime.now().strftime('%d.%m.%Y %H:%M')} CET. "
             f"Vorbereitung auf neue Trading-Woche.*\n\n"
-            f"---\n\n{briefing}")
+            f"---\n\n{briefing}"
+            f"{self_audit_block}")
     file.write_text(full, encoding='utf-8')
 
     # Directive extrahieren -> separate File die Mo-Hunter liest

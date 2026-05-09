@@ -131,6 +131,8 @@ SCHEDULE = [
     ('Strategy Lifecycle Audit','strategy_lifecycle_audit.py', [],           23, 30, None),
     ('Strategy Dead Sweeper',  'strategy_dead_sweeper.py',     [],           23, 45, None),
     ('Data Janitor',           'data_janitor.py',              [],           2,  0,  [6]),  # nur Sonntag
+    # ── Phase 45ai — CEO Self-Audit (reflexiv, Sonntag vor Week-Ahead) ────
+    ('CEO Self-Audit',         'ceo_self_audit.py',            [],           19, 0,  [6]),  # nur Sonntag
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
     # Sprint 0 cleanup: multi_strategy_shadow archiviert (wird durch Sprint-1 Backtest-Framework ersetzt)
     # ('Shadow Strategy Hunt',   'multi_strategy_shadow.py', ['--hunt'],      '9-22', '*/30', [0,1,2,3,4]),

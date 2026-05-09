@@ -509,6 +509,42 @@ def _execute_paper_entry_inner(
     except Exception as _eh:
         print(f'[Guard 0e2] holiday-check fail (non-fatal): {_eh}')
 
+    # ── Guard 0a2: Pre-Entry-Validator (Phase 45ai, Meta-Layer) ──────────
+    # 7-Check Plausibility-Sweep — fängt alle 5 historischen Phantom-Bug-
+    # Klassen + alle ähnlichen unbekannten zukünftigen. Block bei JEDEM
+    # Failure. Logs in ceo_inbox damit Albert sie im Self-Audit sieht.
+    if source not in ('manual', 'victor', 'cli', 'paper_lab'):
+        try:
+            sys.path.insert(0, str(WORKSPACE / 'scripts'))
+            from pre_entry_validator import validate as _pre_validate
+            _ok, _issues, _det = _pre_validate(
+                ticker, entry_price, stop_price, target_price,
+                direction='long'
+            )
+            if not _ok:
+                # In CEO-Inbox loggen (für Self-Audit)
+                try:
+                    from ceo_inbox import write_event
+                    write_event(
+                        event_type='pre_entry_block',
+                        message=f"{ticker} blocked: {', '.join(_issues[:3])}",
+                        severity='warning', category='health',
+                        user_pinged=False,
+                        payload={'issues': _issues, 'details': _det,
+                                 'strategy': strategy, 'source': source},
+                    )
+                except Exception: pass
+                return {
+                    'success': False, 'trade_id': None,
+                    'message': (f'❌ Pre-Entry-Validator: {ticker} blockiert. '
+                                f'Issues: {"; ".join(_issues)}'),
+                    'blocked_by': 'pre_entry_validator',
+                    'pre_entry_issues': _issues,
+                    'pre_entry_details': _det,
+                }
+        except Exception as _pve:
+            print(f'[Guard 0a2] pre-entry-validator skipped: {_pve}', file=sys.stderr)
+
     # ── Guard 0: Preis-Frische ────────────────────────────────────────
     if not is_price_fresh(ticker, max_days=3):
         return {
