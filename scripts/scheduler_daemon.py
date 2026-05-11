@@ -860,7 +860,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
 
 # ── Scheduler Loop ────────────────────────────────────────────────────────────
 
-def should_run(hour, minute, weekdays) -> bool:
+def should_run(hour, minute, weekdays, now=None) -> bool:
     """Prüft ob ein Job jetzt laufen soll (innerhalb ±30s Fenster).
 
     Sub-10 Erweiterung: hour/minute unterstuetzen jetzt auch:
@@ -869,8 +869,14 @@ def should_run(hour, minute, weekdays) -> bool:
       - '*/N' (alle N Stunden/Minuten, z.B. minute='*/15')
       - list[int] (mehrere erlaubte Werte, z.B. minute=[0,15,30,45])
     Backward-compatible: bestehende int-Eintraege funktionieren unveraendert.
+
+    Phase 45am (Victor 2026-05-11): now-Param injizierbar — Loop friert
+    Zeit am Anfang ein, damit langsame Jobs die spätere Job-Slots nicht
+    überspringen (Bug: Morgen-Briefing 08:00 verpasst weil vorherige Jobs
+    bis 08:01 brauchten).
     """
-    now = datetime.now()
+    if now is None:
+        now = datetime.now()
 
     def _match(val, current: int, mod: int) -> bool:
         if isinstance(val, int):
@@ -1006,6 +1012,11 @@ def scheduler_loop():
         except Exception as _hc_err:
             log(f'⚠️  Healthcheck-Fehler: {_hc_err}')
 
+        # Phase 45am: Loop-Snapshot — alle Jobs in diesem Pass sehen die
+        # SELBE Zeit, auch wenn vorherige Jobs lang gelaufen sind.
+        # Verhindert dass Briefing-Slot 08:00 verpasst wird wenn vorherige
+        # 08:00-Jobs sequentiell bis 08:01 dauern.
+        loop_now = now
         for entry in SCHEDULE:
             name, script, args, hour, minute, weekdays = entry[:6]
             discord_send = entry[6] if len(entry) > 6 else False
@@ -1014,7 +1025,7 @@ def scheduler_loop():
             if job_key in last_run:
                 continue
 
-            if should_run(hour, minute, weekdays):
+            if should_run(hour, minute, weekdays, now=loop_now):
                 last_run[job_key] = True
                 # Cleanup alter Einträge
                 if len(last_run) > 1000:
