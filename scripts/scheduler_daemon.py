@@ -141,6 +141,9 @@ SCHEDULE = [
     # ── Phase 45al — Decision-Review (Albert lernt aus eigenen Decisions) ──
     # Täglich 22:00, prüft fällige Strategist-Proposals (evaluate_after_days)
     ('Albert Decision-Review', 'albert_decision_review.py',    [],           22,  0, None),
+    # ── Phase 45aq Layer B3 + D3 — Tranche-Exits + Stress-Test ───────────
+    ('Tranche Exit Manager',   'tranche_exit_manager.py',      [],           22, 15, None),
+    ('Stress Scenario Tester', 'stress_scenario_tester.py',    [],           22, 30, None),
     # Stufe 2: Goal-Tracker täglich 23:00
     ('Albert Goal-Tracker',    'albert_goal_tracker.py',       [],           23,  0, None),
     # Stufe 3: Self-Review täglich 23:30 (nach goal_tracker)
@@ -148,10 +151,15 @@ SCHEDULE = [
     # ── Phase 45ao — Markt-Pulse + Genesis + Setup-Patterns + Live-Trigger ──
     # Layer 1+2: Markt-Puls 06:00 (Sektor-ETFs, Drilldown, RS-vs-SPY)
     ('Market Pulse Scanner',   'market_pulse_scanner.py',      [],            6,  0, None),
+    # ── Phase 45aq — Macro-Regime + Sentiment + Stress + Story ───────────
+    ('Macro Regime Detector',  'macro_regime_detector.py',     [],            6,  5, None),
+    ('Sentiment Contrarian',   'sentiment_contrarian.py',      [],            6, 10, None),
     # Layer 3: News-Cross 06:15
     ('Sector News Correlator', 'sector_news_correlator.py',    [],            6, 15, None),
     # Layer 4: Genesis 06:20 (OPUS — generiert neue Strategy-Proposals)
     ('Strategy Genesis Engine','strategy_genesis_engine.py',   [],            6, 20, None),
+    # Phase 45aq Layer E: Story-Tagger 06:25 vor Strategist
+    ('Position Story Tagger',  'position_story_tagger.py',     [],            6, 25, None),
     # Layer 5: Setup-Patterns alle 30min waehrend US-Markt (15-22 CET)
     ('Setup Pattern Detector', 'setup_pattern_detector.py',    [],     '15-22', '*/30', [0,1,2,3,4]),
     # Layer 6: Live-Trigger alle 15min waehrend US-Markt

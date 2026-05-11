@@ -509,6 +509,39 @@ def _execute_paper_entry_inner(
     except Exception as _eh:
         print(f'[Guard 0e2] holiday-check fail (non-fatal): {_eh}')
 
+    # ── Guard 0h: Portfolio-Concentration-Cap (Phase 45aq) ──────────────
+    # Verhindert dass >35% Portfolio in EINER Korrelations-Cluster sind.
+    # Heute-Bug: GDX+PAAS+WPM = 75% in Edelmetall = 1 Trade verkleidet als 3.
+    if source not in ('manual', 'victor', 'cli', 'paper_lab'):
+        try:
+            sys.path.insert(0, str(WORKSPACE / 'scripts'))
+            from portfolio_concentration_guard import passes_concentration
+            # Schätze Position-Size für Cap-Check
+            _est_size_eur = float(getattr(globals().get('_default_size', None), '__call__', lambda: 1000)())
+            try:
+                _est_size_eur = entry_price * 20  # Grobe Schätzung 20 Shares
+            except Exception:
+                _est_size_eur = 1000.0
+            _ok, _reason, _det = passes_concentration(ticker, _est_size_eur)
+            if not _ok:
+                try:
+                    from ceo_inbox import write_event
+                    write_event(
+                        event_type='concentration_block',
+                        message=f"{ticker} blocked: {_reason}",
+                        severity='warning', category='health',
+                        user_pinged=False, payload=_det,
+                    )
+                except Exception: pass
+                return {
+                    'success': False, 'trade_id': None,
+                    'message': f'❌ Concentration-Guard: {ticker} — {_reason}',
+                    'blocked_by': 'concentration_cap',
+                    'details': _det,
+                }
+        except Exception as _ce:
+            print(f'[Guard 0h] concentration check skipped: {_ce}', file=sys.stderr)
+
     # ── Guard 0a2: Pre-Entry-Validator (Phase 45ai, Meta-Layer) ──────────
     # 7-Check Plausibility-Sweep — fängt alle 5 historischen Phantom-Bug-
     # Klassen + alle ähnlichen unbekannten zukünftigen. Block bei JEDEM
