@@ -21,7 +21,9 @@ WS = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent
 DB = WS / 'data' / 'trading.db'
 
 # Schwellen (justierbar)
-MAX_PRICE_DEV_VS_DB     = 0.50  # Entry vs DB-Last-Close
+# Phase 45ap: 50% → 20% verschärft. PAAS-Bug (USD vs EUR Mismatch ~18%)
+# wäre mit 50% durchgerutscht und ist mit 20% gefangen.
+MAX_PRICE_DEV_VS_DB     = 0.20  # Entry vs DB-Last-Close (war 0.50)
 MAX_LIVE_DEV_VS_DB      = 0.10  # Live yfinance vs DB-Last-Close
 MAX_STALE_PRICE_DAYS    = 5     # DB-Last-Close darf nicht älter als
 MIN_PRICE_USD           = 1.0   # Penny-Stock-Floor

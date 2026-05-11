@@ -74,13 +74,35 @@ def get_truth() -> dict:
                     "ORDER BY date DESC LIMIT 1", (d['ticker'],)
                 ).fetchone()
                 if pr and d.get('entry_price') and d.get('shares'):
-                    last_price = float(pr[1])
-                    d['last_price'] = round(last_price, 2)
+                    last_price_native = float(pr[1])
+                    # Phase 45ap (Victor 2026-05-11): FX-Konvertierung Pflicht!
+                    # entry_price ist in EUR (autonomous_scanner konvertiert),
+                    # prices.close ist nativ (USD/NOK/GBP). Vorher wurden EUR
+                    # und USD direkt verglichen → fake +18% bei PAAS-Bug.
+                    try:
+                        import sys as _sys
+                        _sys.path.insert(0, str(WS / 'scripts' / 'core'))
+                        _sys.path.insert(0, str(WS / 'scripts'))
+                        from live_data import get_fx_factor
+                        fx = get_fx_factor(d['ticker']) or 1.0
+                    except Exception:
+                        fx = 1.0
+                    last_price_eur = last_price_native * fx
+                    d['last_price_native'] = round(last_price_native, 2)
+                    d['last_price'] = round(last_price_eur, 2)
+                    d['fx_factor'] = round(fx, 4)
                     d['last_price_date'] = pr[0]
-                    pnl_eur = (last_price - d['entry_price']) * d['shares']
-                    pnl_pct = (last_price / d['entry_price'] - 1) * 100
+                    pnl_eur = (last_price_eur - d['entry_price']) * d['shares']
+                    pnl_pct = (last_price_eur / d['entry_price'] - 1) * 100
                     d['unrealized_pnl_eur'] = round(pnl_eur, 1)
                     d['unrealized_pnl_pct'] = round(pnl_pct, 1)
+                    # FX-Sanity-Assertion: wenn fx != 1.0 und entry vs native
+                    # > 30% abweicht, warne (kann Bug-Indikator sein)
+                    if fx != 1.0 and last_price_native > 0:
+                        implied_native = d['entry_price'] / fx
+                        dev_pct = abs(last_price_native - implied_native) / last_price_native * 100
+                        d['fx_sanity_dev_pct'] = round(dev_pct, 1)
+                        d['fx_sanity_warning'] = dev_pct > 30
                 else:
                     d['last_price'] = None
                     d['unrealized_pnl_eur'] = None
@@ -184,13 +206,20 @@ def format_for_llm(truth: dict | None = None) -> str:
                 f"stop {p['stop_price']:.2f} ({p['stop_pct_from_entry']:+.1f}% vom Entry), "
                 f"target {p['target_price']:.2f}"
             )
-            # Phase 45o: Live-MTM
+            # Phase 45o + 45ap: Live-MTM mit FX-Konvertierung
             if p.get('last_price') is not None:
                 base += (
-                    f"\n      → LIVE: {p['last_price']:.2f} ({p['last_price_date']}), "
+                    f"\n      → LIVE: {p['last_price']:.2f} EUR "
+                )
+                if p.get('last_price_native') and p.get('fx_factor', 1.0) != 1.0:
+                    base += f"(native {p['last_price_native']:.2f}, fx={p['fx_factor']}) "
+                base += (
+                    f"({p['last_price_date']}), "
                     f"unrealized {p['unrealized_pnl_eur']:+.1f} EUR / "
                     f"{p['unrealized_pnl_pct']:+.1f}%"
                 )
+                if p.get('fx_sanity_warning'):
+                    base += f"\n      ⚠️  FX-SANITY WARNUNG: dev {p.get('fx_sanity_dev_pct')}% — Currency-Mismatch möglich"
             lines.append(base)
     else:
         lines.append('OPEN POSITIONS: KEINE (0 offene Positionen)')
