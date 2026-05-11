@@ -129,6 +129,57 @@ def run() -> dict:
     recent_acts  = _gather_recent_actions()
     perf         = _trade_perf_summary(30)
 
+    # Phase 45ao: Markt-Puls + News-Correlation als Pflicht-Kontext
+    market_pulse_str = '(market_pulse_latest.json nicht gefunden)'
+    try:
+        mp_file = WS / 'data' / 'market_pulse_latest.json'
+        if mp_file.exists():
+            mp = json.loads(mp_file.read_text(encoding='utf-8'))
+            market_pulse_str = (
+                f"TOP-5 OUT-PERFORMER (5d): "
+                + ', '.join(f"{e['ticker']}({e['sector']}, {e['chg_5d']:+}%)" for e in mp.get('top_5d', [])[:5])
+                + "\nTOP-5 BESCHLEUNIGER: "
+                + ', '.join(f"{e['ticker']}({e['chg_5d']:+}%/{e['chg_30d']:+}%)" for e in mp.get('accelerating', [])[:5])
+                + "\nDRILLDOWN Top-3: "
+                + '; '.join(
+                    f"{etf}: " + ', '.join(c['ticker'] + f"({c['trend']})" for c in comps[:4])
+                    for etf, comps in list(mp.get('drilldowns', {}).items())[:3]
+                  )
+            )
+    except Exception as _e:
+        market_pulse_str = f'(market_pulse parse-err: {_e})'
+
+    news_corr_str = '(sector_news_correlation.json nicht gefunden)'
+    try:
+        nc_file = WS / 'data' / 'sector_news_correlation.json'
+        if nc_file.exists():
+            nc = json.loads(nc_file.read_text(encoding='utf-8'))
+            hc = nc.get('high_conviction', [])
+            structural = nc.get('structural', [])
+            traps = nc.get('traps', [])
+            news_corr_str = (
+                f"HIGH_CONVICTION (Markt+News): " + ', '.join(c['ticker'] for c in hc[:5])
+                + f"\nSTRUCTURAL (Markt ohne News): " + ', '.join(c['ticker'] for c in structural[:5])
+                + f"\nTRAPS (vermeiden!): " + ', '.join(c['ticker'] for c in traps[:5])
+            )
+    except Exception: pass
+
+    genesis_str = '(noch keine Genesis-Proposals heute)'
+    try:
+        gen_file = WS / 'data' / 'strategy_genesis_log.jsonl'
+        if gen_file.exists():
+            lines = gen_file.read_text(encoding='utf-8').strip().splitlines()
+            if lines:
+                last = json.loads(lines[-1])
+                today_str = datetime.now().strftime('%Y-%m-%d')
+                if last.get('ts', '').startswith(today_str):
+                    props = last.get('proposals', [])
+                    genesis_str = f"{len(props)} Genesis-Proposals heute: " + json.dumps(
+                        [{'action': p.get('action'), 'target': p.get('target'),
+                          'tickers': p.get('tickers'), 'thesis': p.get('thesis','')[:100]}
+                         for p in props[:4]], ensure_ascii=False, indent=2)
+    except Exception: pass
+
     # Pre-compute Strings für f-string (vermeidet Escape-Hell)
     recent_acts_summary = json.dumps(
         [{'a': a.get('action'), 'r': (a.get('reason') or '')[:80]} for a in recent_acts],
@@ -199,6 +250,19 @@ Lifecycle-Status: {lifecycle.get('counts', {})}
 
 ═══ DEINE LETZTEN ENTSCHEIDUNGEN (Track-Record, max 10) ═══
 {track_record_summary}
+
+═══ MARKT-PULS (Phase 45ao Layer 1+2 — heute 06:00) ═══
+{market_pulse_str}
+
+═══ NEWS-CROSS (Phase 45ao Layer 3 — Markt + News kombiniert) ═══
+{news_corr_str}
+
+═══ GENESIS-PROPOSALS (Phase 45ao Layer 4 — automatische Gap-Vorschläge) ═══
+{genesis_str}
+
+WICHTIG: Wenn HIGH_CONVICTION oder STRUCTURAL Sektoren aktiv sind, MUSST du
+sie in deinen Vorschlägen berücksichtigen. Wenn du KEINE Strategie für einen
+Top-5d-Sektor hast (siehe Genesis), proposiere create_strategy.
 
 ═══ DEINE AUFGABE ═══
 

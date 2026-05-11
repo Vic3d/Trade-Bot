@@ -145,8 +145,18 @@ SCHEDULE = [
     ('Albert Goal-Tracker',    'albert_goal_tracker.py',       [],           23,  0, None),
     # Stufe 3: Self-Review täglich 23:30 (nach goal_tracker)
     ('Albert Self-Review',     'albert_self_review.py',        [],           23, 30, None),
-    # ── Phase 45ak/al — Albert-Strategist täglich 06:30, 7 Tage/Woche ──────
-    # Auch So Vorbereitung auf Woche, Sa Wochen-Recap-Vertiefung
+    # ── Phase 45ao — Markt-Pulse + Genesis + Setup-Patterns + Live-Trigger ──
+    # Layer 1+2: Markt-Puls 06:00 (Sektor-ETFs, Drilldown, RS-vs-SPY)
+    ('Market Pulse Scanner',   'market_pulse_scanner.py',      [],            6,  0, None),
+    # Layer 3: News-Cross 06:15
+    ('Sector News Correlator', 'sector_news_correlator.py',    [],            6, 15, None),
+    # Layer 4: Genesis 06:20 (OPUS — generiert neue Strategy-Proposals)
+    ('Strategy Genesis Engine','strategy_genesis_engine.py',   [],            6, 20, None),
+    # Layer 5: Setup-Patterns alle 30min waehrend US-Markt (15-22 CET)
+    ('Setup Pattern Detector', 'setup_pattern_detector.py',    [],     '15-22', '*/30', [0,1,2,3,4]),
+    # Layer 6: Live-Trigger alle 15min waehrend US-Markt
+    ('Live Trigger Watcher',   'live_trigger_watcher.py',      [],     '15-22', '*/15', [0,1,2,3,4]),
+    # ── Phase 45ak/al — Albert-Strategist täglich 06:30, liest die Layer 1-4 ──
     ('Albert Strategist',      'albert_strategist.py',         [],            6, 30, None),
     # ── Phase 44d — Multi-Strategy-Shadow (alle 41 Strategien parallel testen) ──
     # Sprint 0 cleanup: multi_strategy_shadow archiviert (wird durch Sprint-1 Backtest-Framework ersetzt)
