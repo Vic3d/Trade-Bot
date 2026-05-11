@@ -163,9 +163,9 @@ SCHEDULE = [
     # ('Morgen-Digest',       'daily_digest.py',            ['morning'],           8,   5, [0,1,2,3,4]),
     # DEAKTIVIERT (Victor 2026-05-09): Xetra-Push redundant — US-Open ist der wichtige Pivot
     # ('Xetra Opening',       'us_opening_report.py',       ['--mode', 'xetra'],   9,  30, [0,1,2,3,4]),
-    # 2/3 — US Opening (Übersee-Eröffnung)
-    ('US Opening',          'us_opening_report.py',       ['--mode', 'us'],      16, 30, [0,1,2,3,4]),
-    # 3/3 — Abend-Digest (Trades + Learnings + Universe-Review)
+    # 2/3 — US Opening (Übersee-Eröffnung) — Phase 45an: discord=True für Narrative-Push
+    ('US Opening',          'us_opening_report.py',       ['--mode', 'us'],      16, 30, [0,1,2,3,4], True),
+    # 3/3 — Abend-Digest (Trades + Learnings + Universe-Review) — sendet selbst via _send()
     ('Abend-Digest',        'daily_digest.py',            ['evening'],           20, 0,  [0,1,2,3,4]),
     # Sonntags-Wochen-Digest: enthält _signal_alpha_block (Sub-7 #1)
     ('Sonntags-Digest',     'daily_digest.py',            ['evening'],           20, 0,  [6]),
@@ -834,8 +834,10 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
                 # Bullet-Tabellen. Wenn Narrativ-Marker gefunden → nur den
                 # Block ab Marker pushen. Volltext bleibt im scheduler.log.
                 if _is_briefing:
+                    # Phase 45an: Narrativ-Marker — alle bekannten Briefing-Heads
                     _markers = ['📖 **MORGEN-NARRATIV:**', '📖 **US-OPEN-NARRATIV:**',
-                                '📖 **ABEND-NARRATIV:**', '📖 **NARRATIV:**', '📖 **']
+                                '📖 **ABEND-NARRATIV:**', '📖 **NARRATIV:**',
+                                '📖 ÜBERNACHT', '📖 TAGESPLAN', '📖 **', '📖 ']
                     payload = output
                     for _mk in _markers:
                         if _mk in output:
