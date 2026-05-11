@@ -311,11 +311,13 @@ def _friday_narrative(data: dict, recs: list[dict]) -> str:
 
 
 def push_discord(text: str) -> None:
-    """Discord-HIGH push via dispatcher (wenn verfuegbar)."""
+    """Discord-HIGH push (Phase 45an Fix — send_alert statt dispatch)."""
     try:
         sys.path.insert(0, str(WS / 'scripts'))
-        from discord_dispatcher import dispatch  # type: ignore
-        dispatch(text, tier='HIGH', category='friday_briefing')
+        from discord_dispatcher import send_alert  # type: ignore
+        from datetime import datetime as _dt
+        send_alert(text, tier="HIGH", category="friday_briefing",
+                   dedupe_key=f"friday_{_dt.now().date()}")
     except Exception as e:
         print(f'[discord push failed: {e}]', file=sys.stderr)
 
