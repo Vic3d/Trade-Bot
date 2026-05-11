@@ -407,32 +407,48 @@ def morning_digest() -> None:
 
 
 def evening_digest() -> None:
-    """20:00 CET — Abend-Digest."""
+    """20:00 CET — Abend-Digest.
+
+    Phase 45an (Victor 2026-05-11): Discord bekommt NUR Narrative-Text-Form,
+    keine Bullet-Liste mehr. Full-Detail bleibt im File für Archiv.
+    """
     from discord_queue import flush_and_send, queue_size
 
     n = queue_size()
-    header = f'🌆 **Abend-Digest** {date.today().isoformat()}'
+    header = f'🌆 **ABEND-NARRATIV** {date.today().isoformat()}'
 
-    msg_parts = [
-        header,
-        '',
+    # Full briefing wird als Facts gesammelt
+    facts_blocks = [
         _portfolio_block(),
         _closed_today_block(),
         _universe_block(),
         _cost_drag_block(),
         _learning_block(),
         _signal_alpha_block(),
-        '',
         _autonomy_block(),
     ]
-    preamble = '\n'.join(p for p in msg_parts if p is not None)
+    full_briefing = '\n'.join(p for p in facts_blocks if p is not None)
+
+    # Narrative bauen (Fliesstext für Discord)
+    narrative_payload = header + '\n\n'
+    try:
+        import sys as _sys
+        from pathlib import Path as _P
+        _sys.path.insert(0, str(_P(__file__).resolve().parent))
+        from narrative_generator import build_narrative
+        facts_list = [p for p in facts_blocks if p]
+        narrative = build_narrative(facts_list, briefing_type='evening')
+        narrative_payload += narrative
+    except Exception as _e:
+        # Fallback: ohne Narrative-Generator → kompakte Zusammenfassung
+        narrative_payload += full_briefing[:1500]
 
     if n > 0:
         print(f'Flushing {n} queued events in evening digest...')
-        flush_and_send(header=preamble, clear=True)
+        flush_and_send(header=narrative_payload, clear=True)
     else:
-        _send(preamble)
-    print('Evening digest sent')
+        _send(narrative_payload)
+    print('Evening digest sent (narrative mode)')
 
 
 def main():

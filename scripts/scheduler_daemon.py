@@ -828,11 +828,20 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
                 _is_briefing = _cat != 'job'
 
                 # Phase 45q (Victor 2026-05-06): Briefings duerfen NICHT
-                # gefiltert werden — sie sind selbst der Inhalt. Filter
-                # warf gestern Morgen-Briefing weg ('Debug-Log').
-                # Nur Non-Briefing Job-Outputs filtern.
+                # gefiltert werden — sie sind selbst der Inhalt.
+                # Phase 45an (Victor 2026-05-11): Briefings auf Narrative
+                # reduzieren — Victor will NUR Text-Form auf Discord, keine
+                # Bullet-Tabellen. Wenn Narrativ-Marker gefunden → nur den
+                # Block ab Marker pushen. Volltext bleibt im scheduler.log.
                 if _is_briefing:
+                    _markers = ['📖 **MORGEN-NARRATIV:**', '📖 **US-OPEN-NARRATIV:**',
+                                '📖 **ABEND-NARRATIV:**', '📖 **NARRATIV:**', '📖 **']
                     payload = output
+                    for _mk in _markers:
+                        if _mk in output:
+                            _idx = output.find(_mk)
+                            payload = output[_idx:]
+                            break
                 else:
                     payload = _filter_discord_output(output)
 
