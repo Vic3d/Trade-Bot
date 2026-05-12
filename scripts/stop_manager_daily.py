@@ -106,9 +106,18 @@ def _is_position_flat_too_long(c: sqlite3.Connection, ticker: str,
         ).fetchall()
         if len(rows) < flat_days:
             return False, 0.0
+        # Phase 45ar: FX-sicher (close ist nativ, entry_price ist EUR)
+        try:
+            import sys as _sys
+            from pathlib import Path as _P
+            _sys.path.insert(0, str(_P(__file__).resolve().parent))
+            from position_pnl import to_eur
+        except Exception:
+            to_eur = lambda p, t: p  # Fallback
         max_excursion = 0.0
         for _, close in rows:
-            pct = abs((float(close) - entry_price) / entry_price * 100)
+            close_eur = to_eur(float(close), ticker)
+            pct = abs((close_eur - entry_price) / entry_price * 100)
             max_excursion = max(max_excursion, pct)
         return max_excursion < 2.0, max_excursion
     except Exception:

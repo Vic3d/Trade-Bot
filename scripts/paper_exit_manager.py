@@ -138,6 +138,8 @@ def get_price(ticker: str) -> float | None:
     except Exception:
         pass
     # Fallback: last close from prices table
+    # Phase 45ar (Victor 2026-05-12): FX-Konvertierung Pflicht!
+    # prices.close ist NATIV (USD/NOK), muss zu EUR konvertiert werden.
     try:
         conn = get_db()
         row = conn.execute(
@@ -145,7 +147,14 @@ def get_price(ticker: str) -> float | None:
             (ticker,)
         ).fetchone()
         conn.close()
-        return row['close'] if row else None
+        if row and row['close']:
+            try:
+                _sys.path.insert(0, str(WS / 'scripts'))
+                from position_pnl import to_eur
+                return to_eur(float(row['close']), ticker)
+            except Exception:
+                return row['close']  # last resort
+        return None
     except Exception:
         return None
 

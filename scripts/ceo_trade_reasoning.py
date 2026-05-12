@@ -194,12 +194,17 @@ def explain_trade(query: str) -> str:
             lines.append(f'  **Outcome: {pnl:+.0f}€ ({pct:+.1f}%)** | '
                          f'Exit-Type: {trade.get("exit_type") or "—"}')
         else:
-            # Live Update
-            curr = _get_current_price(ticker)
-            if curr and trade.get('entry_price'):
-                live_pct = (curr - trade['entry_price']) / trade['entry_price'] * 100
-                live_pnl = (curr - trade['entry_price']) * (trade.get('shares') or 0)
-                lines.append(f'  **Aktuell: {live_pnl:+.0f}€ ({live_pct:+.1f}%) live**')
+            # Live Update (Phase 45ar: FX-sicher via Helper)
+            import sys as _sys
+            from pathlib import Path as _P
+            _sys.path.insert(0, str(_P(__file__).resolve().parent))
+            try:
+                from position_pnl import get_position_pnl
+                pnl = get_position_pnl(ticker, trade.get('entry_price', 0), trade.get('shares') or 0)
+                if pnl.get('valid'):
+                    lines.append(f'  **Aktuell: {pnl["pnl_eur"]:+.0f}€ ({pnl["pnl_pct"]:+.1f}%) live**')
+            except Exception:
+                pass
 
     # Original-Reasoning vom Trade-Notes-Field
     if trade and trade.get('notes'):

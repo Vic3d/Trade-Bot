@@ -172,13 +172,16 @@ def _build_overnight_narrative(eurusd: float, vix: float,
     try:
         c = _sql.connect(str(WS / 'data' / 'trading.db'))
         c.row_factory = _sql.Row
+        # Phase 45ar (Victor 2026-05-12): zentraler FX-sicherer Helper
+        import sys as _sys
+        _sys.path.insert(0, str(WS / 'scripts'))
+        from position_pnl import get_position_pnl
         for r in c.execute("SELECT ticker, strategy, entry_price, shares, stop_price, target_price FROM paper_portfolio WHERE status='OPEN'"):
             d = dict(r)
-            pr = c.execute("SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1", (d['ticker'],)).fetchone()
-            if pr and d['entry_price'] and d['shares']:
-                pnl_eur = (pr[0] - d['entry_price']) * d['shares']
-                pnl_pct = (pr[0]/d['entry_price'] - 1) * 100
-                facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f}, last {pr[0]:.2f}, unrealized {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%), stop {d['stop_price']:.2f}, target {d['target_price']:.2f}")
+            if d['entry_price'] and d['shares']:
+                pnl = get_position_pnl(d['ticker'], d['entry_price'], d['shares'])
+                if pnl.get('valid'):
+                    facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f}EUR, last {pnl['live_eur']:.2f}EUR (native {pnl['live_native']}, fx={pnl['fx_factor']}), unrealized {pnl['pnl_eur']:+.0f}EUR ({pnl['pnl_pct']:+.1f}%), stop {d['stop_price']:.2f}, target {d['target_price']:.2f}")
         # 2. Closed gestern
         for r in c.execute("SELECT ticker, strategy, ROUND(pnl_eur,1) pnl, exit_type FROM paper_portfolio WHERE close_date >= date('now','-1 day') AND pnl_eur IS NOT NULL"):
             d = dict(r)
