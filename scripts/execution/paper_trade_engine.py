@@ -1893,18 +1893,39 @@ def _execute_paper_entry_inner(
         }
     # ─────────────────────────────────────────────────────────────────
 
+    # Phase 45at: Jüngste aktive Kohorte ermitteln für cohort_id
+    _cohort_id = None
+    try:
+        _cr = conn.execute(
+            "SELECT cohort_id FROM paper_cohorts WHERE status='ACTIVE' "
+            "ORDER BY started_at DESC LIMIT 1"
+        ).fetchone()
+        _cohort_id = _cr[0] if _cr else None
+    except Exception: pass
+
     conn.execute("""
         INSERT INTO paper_portfolio
         (ticker, strategy, entry_price, entry_date, shares, stop_price, target_price,
-         status, fees, notes, style, conviction, regime_at_entry, sector, tranche_mode)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, ?, ?, ?, ?, ?)
+         status, fees, notes, style, conviction, regime_at_entry, sector, tranche_mode,
+         cohort_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'OPEN', ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         ticker, strategy, entry_price, now, shares,
         stop_price, target_price, fees,
         f'[AUTO-ENTRY {source}] {thesis}', style,
         int(conv_score), regime, sector,
-        _assign_tranche_mode(conn)
+        _assign_tranche_mode(conn), _cohort_id
     ))
+
+    # Phase 45at: Kohort-Cash mitführen (Position-Wert von Kohort-Cash abziehen)
+    if _cohort_id:
+        try:
+            conn.execute(
+                "UPDATE paper_cohorts SET current_cash_eur = current_cash_eur - ? "
+                "WHERE cohort_id=?",
+                (entry_price * shares, _cohort_id)
+            )
+        except Exception: pass
     
     # Cash reduzieren
     conn.execute("""

@@ -22,26 +22,70 @@ WS = Path(os.getenv('TRADEMIND_HOME', str(Path(__file__).resolve().parent.parent
 DB = WS / 'data' / 'trading.db'
 FUND_FILE = WS / 'data' / 'paper_fund.json'
 
-# Defaults
-RISK_PER_TRADE_PCT = 0.01      # 1% Portfolio-Risk pro Trade (max Verlust)
-MAX_POSITION_PCT   = 0.05      # Kelly-Cap: max 5% Portfolio in einer Position
-MAX_ABSOLUTE_EUR   = 2500.0    # Absolute Obergrenze
-MIN_ABSOLUTE_EUR   = 200.0     # Mindestgröße sonst skip
-DEFAULT_ATR_PCT    = 0.03      # Fallback wenn unbekannt
+# Defaults (Phase 1 aggressivierung von Mai 2026)
+# Phase 45at: Kohort-spezifisch konfigurierbar via aggression_profile
+RISK_PER_TRADE_PCT = 0.015     # Phase 1: 1% → 1.5%
+MAX_POSITION_PCT   = 0.07      # Phase 1: 5% → 7%
+MAX_ABSOLUTE_EUR   = 3000.0    # Phase 1: 2500 → 3000
+MIN_ABSOLUTE_EUR   = 200.0
+DEFAULT_ATR_PCT    = 0.03
+
+
+def _load_cohort_profile(cohort_id: str | None) -> dict:
+    """Lade Aggression-Profil aus paper_cohorts. Default wenn keins."""
+    if not cohort_id or not DB.exists():
+        return {'risk_per_trade': RISK_PER_TRADE_PCT,
+                'kelly_cap': MAX_POSITION_PCT,
+                'max_absolute_eur': MAX_ABSOLUTE_EUR}
+    try:
+        c = sqlite3.connect(str(DB))
+        r = c.execute("SELECT aggression_profile, current_cash_eur "
+                      "FROM paper_cohorts WHERE cohort_id=?", (cohort_id,)).fetchone()
+        c.close()
+        if not r: return {}
+        prof = json.loads(r[0]) if r[0] else {}
+        return {
+            'risk_per_trade': prof.get('risk_per_trade', RISK_PER_TRADE_PCT),
+            'kelly_cap': prof.get('kelly_cap', MAX_POSITION_PCT),
+            'max_absolute_eur': prof.get('max_absolute_eur', MAX_ABSOLUTE_EUR),
+            'cohort_cash_eur': r[1],
+        }
+    except Exception:
+        return {}
 
 
 def calculate_position_size(ticker: str, entry_eur: float, stop_eur: float,
                              conviction: float = 0.6,
-                             portfolio_total_eur: float | None = None) -> dict:
+                             portfolio_total_eur: float | None = None,
+                             cohort_id: str | None = None) -> dict:
     """
     Returns dict with: shares, position_eur, max_loss_eur, reasoning.
     """
     if entry_eur <= 0 or stop_eur <= 0 or entry_eur <= stop_eur:
         return {'error': 'invalid_prices', 'shares': 0}
 
-    # Portfolio-Total bestimmen
-    if portfolio_total_eur is None:
+    # Phase 45at: Kohort-spezifisches Profil + Cash
+    profile = _load_cohort_profile(cohort_id)
+    risk_pct = profile.get('risk_per_trade', RISK_PER_TRADE_PCT)
+    kelly_pct = profile.get('kelly_cap', MAX_POSITION_PCT)
+    max_abs = profile.get('max_absolute_eur', MAX_ABSOLUTE_EUR)
+
+    # Portfolio-Total: bei Kohort-Mode = Kohort-Total, sonst global
+    if cohort_id and 'cohort_cash_eur' in profile:
+        # Cohort-Total = Cohort-Cash + Open-Position-Value dieser Kohorte
+        portfolio_total_eur = profile['cohort_cash_eur']
+        try:
+            c = sqlite3.connect(str(DB))
+            opens = c.execute(
+                "SELECT entry_price, shares FROM paper_portfolio "
+                "WHERE cohort_id=? AND status='OPEN'", (cohort_id,)
+            ).fetchall()
+            c.close()
+            portfolio_total_eur += sum((r[0] or 0) * (r[1] or 0) for r in opens)
+        except Exception: pass
+    elif portfolio_total_eur is None:
         portfolio_total_eur = _portfolio_total()
+
     if portfolio_total_eur <= 0:
         return {'error': 'no_portfolio_data', 'shares': 0}
 
@@ -73,8 +117,8 @@ def calculate_position_size(ticker: str, entry_eur: float, stop_eur: float,
                     break
     except Exception: pass
 
-    # Base size aus Risk-Budget
-    risk_budget_eur = portfolio_total_eur * RISK_PER_TRADE_PCT
+    # Base size aus Risk-Budget (Phase 45at: kohort-spezifischer Wert)
+    risk_budget_eur = portfolio_total_eur * risk_pct
     # max_loss_eur = shares * (entry - stop)
     # shares = risk_budget / (entry - stop)
     shares_from_risk = risk_budget_eur / (entry_eur - stop_eur)
@@ -83,9 +127,9 @@ def calculate_position_size(ticker: str, entry_eur: float, stop_eur: float,
     # Adjustierungen anwenden
     adj_eur = base_eur * vol_adj * conv_mult * corr_discount
 
-    # Kelly-Cap
-    max_kelly_eur = portfolio_total_eur * MAX_POSITION_PCT
-    final_eur = min(adj_eur, max_kelly_eur, MAX_ABSOLUTE_EUR)
+    # Kelly-Cap (kohort-spezifisch)
+    max_kelly_eur = portfolio_total_eur * kelly_pct
+    final_eur = min(adj_eur, max_kelly_eur, max_abs)
 
     # Min-Check
     if final_eur < MIN_ABSOLUTE_EUR:

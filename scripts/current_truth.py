@@ -111,6 +111,17 @@ def get_truth() -> dict:
             cash_row = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
             if cash_row:
                 truth['cash_eur'] = round(float(cash_row[0]), 0)
+            # Phase 45at: Kohorten-Status
+            try:
+                truth['cohorts'] = []
+                for r in c.execute(
+                    "SELECT cohort_id, status, initial_capital_eur, current_cash_eur, "
+                    "started_at, min_lifetime_until FROM paper_cohorts "
+                    "WHERE status IN ('ACTIVE','WINDDOWN','PENDING_DECISION') "
+                    "ORDER BY started_at DESC"
+                ):
+                    truth['cohorts'].append(dict(r))
+            except Exception: pass
             # Phase 45k+: closed trades letzte 7d (verhindert dass Claude sie
             # frisch aus der DB ziehen muss bei "Wochen-Zusammenfassung")
             truth['closed_7d'] = []
@@ -229,6 +240,17 @@ def format_for_llm(truth: dict | None = None) -> str:
                       f'{", ".join(truth["active_strategies"])}')
     if truth.get('cash_eur') is not None:
         lines.append(f'CASH: {truth["cash_eur"]:.0f} EUR')
+    # Phase 45at: Kohorten-Übersicht
+    cohorts = truth.get('cohorts') or []
+    if cohorts:
+        lines.append('')
+        lines.append(f'COHORTS ({len(cohorts)}):')
+        for ch in cohorts:
+            lines.append(
+                f'  {ch["cohort_id"]} [{ch["status"]}]  '
+                f'Cash {ch["current_cash_eur"]:.0f}€ / Init {ch["initial_capital_eur"]:.0f}€  '
+                f'(min lifetime bis {ch.get("min_lifetime_until","?")})'
+            )
     lines.append('')
 
     # Phase 45k+: Closed Trades letzte 7 Tage (Wochen-Zusammenfassung Inputs)
