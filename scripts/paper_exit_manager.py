@@ -686,6 +686,13 @@ def run() -> tuple[list, list]:
             pnl = close_position(conn, trade_id, price, 'STOP', entry, shares, fees)
             closed_records.append(f"STOP {ticker} | {entry:.2f}->{price:.2f} | PnL: {pnl:+.2f}EUR | hold={hold_days}d")
             send_alert(f"STOP HIT: {ticker} exited at {price:.2f} (entry={entry:.2f}) | PnL: {pnl:+.2f}EUR")
+            # Phase 45av: Re-Entry-Watchlist hinzufügen (Tradermacher-Lehre)
+            try:
+                import sys as _sys
+                _sys.path.insert(0, str(WS / 'scripts'))
+                from re_entry_watchlist import add_to_watchlist as _add_re
+                _add_re(ticker, entry, stop, strategy=strategy, trade_id=trade_id)
+            except Exception: pass
             continue
 
         # ══════════════════════════════════════════════════════════════════

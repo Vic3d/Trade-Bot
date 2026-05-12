@@ -166,6 +166,8 @@ SCHEDULE = [
     ('Cohort Lifecycle',       'cohort_lifecycle.py',          [],           23, 15, None),
     # Tägliches Performance-Tracking pro Kohorte
     ('Cohort Performance',     'cohort_performance_tracker.py', [],          22, 45, None),
+    # Phase 45av — Re-Entry-Watchlist täglicher Check (Tradermacher-Reclaim)
+    ('Re-Entry Watchlist',     're_entry_watchlist.py',        ['--check'],   22, 50, None),
     # Layer 5: Setup-Patterns alle 30min waehrend US-Markt (15-22 CET)
     ('Setup Pattern Detector', 'setup_pattern_detector.py',    [],     '15-22', '*/30', [0,1,2,3,4]),
     # Layer 6: Live-Trigger alle 15min waehrend US-Markt

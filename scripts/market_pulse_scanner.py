@@ -51,6 +51,7 @@ SECTOR_UNIVERSE = {
     'SMH':  'Semiconductors',
     'TAN':  'Solar',
     'IBIT': 'Bitcoin ETF',
+    'IGV':  'Software (Bottom-Fishing Pool)',
     # Broad
     'SPY':  'S&P 500',
     'QQQ':  'NASDAQ',
@@ -80,6 +81,9 @@ SECTOR_COMPONENTS = {
     'KRE':  ['ZION', 'PNC', 'KEY', 'CFG', 'FITB', 'RF', 'TFC', 'HBAN'],
     'TAN':  ['ENPH', 'FSLR', 'SEDG', 'RUN', 'SHLS', 'CSIQ', 'JKS'],
     'URA':  ['CCJ', 'KAP.IL', 'PALAF', 'UEC', 'DNN', 'NXE'],
+    # Phase 45av: Software-Bottom-Fishing aus IGV (iShares Software ETF Proxy)
+    'IGV':  ['NET', 'RBRK', 'TEAM', 'APP', 'FSLY', 'CRWD', 'ZS', 'DDOG', 'SNOW',
+              'MDB', 'PANW', 'OKTA', 'TWLO', 'CFLT'],
 }
 
 

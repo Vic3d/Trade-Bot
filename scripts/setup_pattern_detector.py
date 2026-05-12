@@ -140,11 +140,80 @@ def detect_patterns(ticker: str) -> list[dict]:
             'stop_hint': f'Stop unter {round(high_20 * 0.97, 2)}',
         })
 
+    # ── Phase 45av (Tradermacher-Bottom-Fishing-Erweiterung) ─────────────
+
+    # 5. INSIDE_DAY (Tagesrange innerhalb Vortag)
+    if len(highs) >= 3:
+        prev_high = highs[-2]
+        prev_low = lows[-2]
+        is_inside = last_high < prev_high and last_low > prev_low
+        if is_inside:
+            # Bonus: Inside Day am Tiefpunkt (Boden-Indikator)
+            is_at_low = last_close < (low_20 * 1.05) if low_20 > 0 else False
+            patterns.append({
+                'pattern': 'INSIDE_DAY' + ('_AT_LOW' if is_at_low else ''),
+                'confidence': 0.6 if is_at_low else 0.5,
+                'last_close': round(last_close, 2),
+                'prev_high': round(prev_high, 2),
+                'prev_low': round(prev_low, 2),
+                'entry_hint': f'Bruch über Vortagshoch {round(prev_high, 2)} mit Volumen',
+                'stop_hint': f'Stop unter Inside-Day-Low {round(last_low, 2)}',
+            })
+
+            # 6. INSIDE_DAY_DOUBLE — zwei aufeinanderfolgende Inside Days
+            if len(highs) >= 4:
+                prev_prev_high = highs[-3]
+                prev_prev_low = lows[-3]
+                prev_is_inside = highs[-2] < prev_prev_high and lows[-2] > prev_prev_low
+                if prev_is_inside:
+                    patterns.append({
+                        'pattern': 'INSIDE_DAY_DOUBLE',
+                        'confidence': 0.7,
+                        'last_close': round(last_close, 2),
+                        'master_high': round(prev_prev_high, 2),
+                        'master_low': round(prev_prev_low, 2),
+                        'entry_hint': f'Bruch über {round(prev_prev_high, 2)} = Master-High',
+                        'stop_hint': f'Stop unter {round(prev_prev_low, 2)} = Master-Low',
+                    })
+
+    # 7. WEDGE_POP — Bruch über EMA50 nach Bodenbildung
+    ema50 = _ema(closes, 50)
+    if ema50[-1] and ema50[-5] and len(closes) >= 50:
+        # Letzte 20 Tage unter EMA50? Heute über? = Wedge-Pop
+        days_below_ema50 = sum(1 for i in range(-20, 0) if closes[i] < (ema50[i] or float('inf')))
+        if days_below_ema50 >= 12 and last_close > ema50[-1] and closes[-2] < ema50[-2]:
+            patterns.append({
+                'pattern': 'WEDGE_POP',
+                'confidence': 0.65,
+                'days_below_ema50': days_below_ema50,
+                'ema50': round(ema50[-1], 2),
+                'last_close': round(last_close, 2),
+                'entry_hint': f'Erst-Pop — warte auf Pullback zurück auf EMA50 ({round(ema50[-1], 2)})',
+                'stop_hint': f'Stop unter EMA50 minus 2% = {round(ema50[-1] * 0.98, 2)}',
+            })
+
+    # 8. UNDERCUT_AND_RALLY — Bruch unter Support + Reversal innerhalb 3 Tagen
+    if len(closes) >= 30:
+        support_20 = low_20  # 20-Tage-Low ohne heute
+        # Hat Kurs in letzten 5 Tagen unter Support geschlossen?
+        undercut = any(closes[-i] < support_20 for i in range(2, 6) if i < len(closes))
+        # Und heute wieder darüber?
+        if undercut and last_close > support_20 * 1.005 and vol_ratio > 1.2:
+            patterns.append({
+                'pattern': 'UNDERCUT_AND_RALLY',
+                'confidence': 0.7,
+                'support_20': round(support_20, 2),
+                'last_close': round(last_close, 2),
+                'vol_ratio': round(vol_ratio, 1),
+                'entry_hint': f'Reclaim über {round(support_20, 2)} bestätigt — Entry mit Volumen',
+                'stop_hint': f'Stop unter neuem Low minus 1%',
+            })
+
     return patterns
 
 
 def get_watchlist_tickers() -> set[str]:
-    """Tickers aus aktiven Strategien + Top-Drilldown-Komponenten."""
+    """Tickers aus aktiven Strategien + Top-Drilldown-Komponenten + Software-Bottom-Fishing."""
     tickers = set()
     # Aus strategies.json
     try:
@@ -163,6 +232,9 @@ def get_watchlist_tickers() -> set[str]:
             for c in comps:
                 tickers.add(c['ticker'].upper())
     except Exception: pass
+    # Phase 45av: Software-Bottom-Fishing-Tickers immer mit dabei (Tradermacher-Pool)
+    tickers.update(['NET', 'RBRK', 'TEAM', 'APP', 'FSLY', 'CRWD', 'ZS', 'DDOG',
+                     'SNOW', 'MDB', 'PANW', 'OKTA', 'TWLO', 'CFLT'])
     return tickers
 
 

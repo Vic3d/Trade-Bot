@@ -44,6 +44,9 @@ SECTOR_CLUSTERS = {
     'HEALTHCARE_PHARMA': {'XLV', 'LLY', 'JNJ', 'UNH', 'ABBV', 'MRK', 'TMO', 'ABT', 'PFE', 'BMY', 'NVO', 'NOVO-B.CO'},
     'UTILITIES':         {'XLU', 'NEE', 'DUK', 'SO', 'D', 'AEP', 'SRE', 'XEL', 'PEG'},
     'AGRI_FERTILIZER':   {'MOS', 'CF', 'NTR', 'SDF.DE'},
+    # Phase 45av (Victor 2026-05-12): Tradermacher-Bottom-Fishing-Sektor
+    'SOFTWARE_BOTTOM_FISHING': {'NET', 'RBRK', 'TEAM', 'APP', 'FSLY', 'CRWD', 'ZS',
+                                 'DDOG', 'SNOW', 'MDB', 'PANW', 'OKTA', 'TWLO', 'CFLT'},
 }
 
 
