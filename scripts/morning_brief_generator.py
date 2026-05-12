@@ -784,9 +784,20 @@ def _morning_narrative() -> str:
             d = dict(r)
             pr = c.execute("SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1", (d['ticker'],)).fetchone()
             if pr and d['entry_price'] and d['shares']:
-                pnl_eur = (pr[0] - d['entry_price']) * d['shares']
-                pnl_pct = (pr[0]/d['entry_price'] - 1) * 100
-                facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f} last {pr[0]:.2f} unreal {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%) stop {d['stop_price']:.2f}")
+                # Phase 45aq Fix (Victor 2026-05-12): FX-Konvertierung Pflicht!
+                # pr[0] ist nativ (USD/NOK), entry_price ist EUR.
+                # Vorher: fake +18% durch direkten USD-vs-EUR-Vergleich.
+                try:
+                    import sys as _sys
+                    _sys.path.insert(0, str(WS / 'scripts' / 'core'))
+                    from live_data import get_fx_factor
+                    _fx = get_fx_factor(d['ticker']) or 1.0
+                except Exception:
+                    _fx = 1.0
+                last_eur = pr[0] * _fx
+                pnl_eur = (last_eur - d['entry_price']) * d['shares']
+                pnl_pct = (last_eur/d['entry_price'] - 1) * 100
+                facts.append(f"OPEN: {d['ticker']} ({d['strategy']}) entry {d['entry_price']:.2f} last_eur {last_eur:.2f} (native {pr[0]:.2f}, fx={_fx:.3f}) unreal {pnl_eur:+.0f}EUR ({pnl_pct:+.1f}%) stop {d['stop_price']:.2f}")
         cash = c.execute("SELECT value FROM paper_fund WHERE key='current_cash'").fetchone()
         if cash: facts.append(f"CASH: {float(cash[0]):.0f} EUR")
         c.close()

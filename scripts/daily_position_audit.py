@@ -93,20 +93,35 @@ def audit_all_open() -> dict:
             results.append(item)
             continue
 
-        # Ratio (currency check)
+        # Phase 45aq Fix (Victor 2026-05-12): FX-Konvertierung Pflicht!
+        # live ist nativ (USD/NOK), entry ist EUR. Currency-Mismatch sonst.
+        try:
+            import sys as _sys
+            from pathlib import Path as _P
+            _sys.path.insert(0, str(_P(__file__).resolve().parent / 'core'))
+            from live_data import get_fx_factor
+            fx = get_fx_factor(ticker) or 1.0
+        except Exception:
+            fx = 1.0
+        live_eur = live * fx
+
+        # Ratio (currency check) — jetzt auf FX-konvertierter Basis
         if entry > 0:
-            ratio = live / entry
+            ratio = live_eur / entry
             item['ratio'] = round(ratio, 3)
+            item['fx_factor'] = round(fx, 4)
+            item['live_native'] = round(live, 2)
+            item['live_eur'] = round(live_eur, 2)
             if ratio < CURRENCY_RATIO_LO or ratio > CURRENCY_RATIO_HI:
                 item['flag'] = 'CURRENCY_MISMATCH'
                 summary['currency_mismatch'] += 1
                 results.append(item)
                 continue
 
-        # PnL
+        # PnL — auf EUR-Basis
         if entry > 0 and shares > 0:
-            move_pct = (live - entry) / entry * 100
-            unrealized_eur = (live - entry) * shares
+            move_pct = (live_eur - entry) / entry * 100
+            unrealized_eur = (live_eur - entry) * shares
             item['move_pct'] = round(move_pct, 2)
             item['unrealized_eur'] = round(unrealized_eur, 2)
             summary['unrealized_pnl_total'] += unrealized_eur
