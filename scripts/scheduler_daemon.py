@@ -182,9 +182,8 @@ SCHEDULE = [
     # DEAKTIVIERT (Victor 2026-05-09): Xetra-Push redundant — US-Open ist der wichtige Pivot
     # ('Xetra Opening',       'us_opening_report.py',       ['--mode', 'xetra'],   9,  30, [0,1,2,3,4]),
     # Phase 45as (Victor 2026-05-12): EU/Mid-Day-Briefing 13:00 CEST.
-    # Nach Morgen-Briefing 08:00 + 5h Stille — DAX gehandelt, news passierte.
-    # Bevor US-Open kommt: Mid-Day-Lage-Check. Nutzt us_opening_report --mode xetra.
-    ('Mid-Day EU-Briefing', 'us_opening_report.py',       ['--mode', 'xetra'],   13,  0, [0,1,2,3,4], True),
+    # Volles Briefing wie Morgen-Briefing — eigenes Script midday_briefing.py.
+    ('Mid-Day Briefing',    'midday_briefing.py',         [],                    13,  0, [0,1,2,3,4], True),
     # 2/3 — US Opening (Übersee-Eröffnung) — Phase 45an: discord=True für Narrative-Push
     ('US Opening',          'us_opening_report.py',       ['--mode', 'us'],      16, 30, [0,1,2,3,4], True),
     # 3/3 — Abend-Digest (Trades + Learnings + Universe-Review) — sendet selbst via _send()
@@ -840,6 +839,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
                 # eigene Categories damit sie die strikte Whitelist passieren.
                 _briefing_map = {
                     'morgen-briefing': 'morning_brief',
+                    'mid-day briefing': 'midday_brief',
                     'us opening':      'us_open_brief',
                     'us-opening':      'us_open_brief',
                     'abend-report':    'evening_brief',

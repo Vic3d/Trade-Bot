@@ -175,31 +175,45 @@ def mark_event_in_db(event_id: int, bundle_name: str, severity_score: float,
 
 
 def push_discord_alert(matches: list[dict]) -> bool:
-    """Sende Critical/High-Events an Discord (via vorhandenen Bot/Webhook)."""
+    """Phase 45as (Victor 2026-05-12): KEIN Discord-Push mehr.
+
+    Macro-Events landen NUR im CEO-Inbox — sie sind für Albert, nicht Victor.
+    Victor will nur die 4 Tages-Briefings + Wochen-Specials.
+
+    Vorher: discord_chat._send_message umging die Discord-Dispatcher-Whitelist
+    komplett und pushte direkt. Das war die Ursache für 'Breaking-Macro'-Spam.
+    """
     try:
-        from discord_chat import _send_message as send_message_to_user
+        from pathlib import Path as _P
+        import sys as _sys
+        _sys.path.insert(0, str(_P(__file__).resolve().parent))
+        from ceo_inbox import write_event
     except Exception as e:
-        print(f'[macro_detector] Discord push not available: {e}', file=sys.stderr)
+        print(f'[macro_detector] ceo_inbox not available: {e}', file=sys.stderr)
         return False
 
-    text_parts = ['🚨 **BREAKING MACRO EVENT DETECTED** 🚨\n']
+    pushed = 0
     for m in matches[:5]:
-        text_parts.append(
-            f"\n**[{m['severity']}] {m['bundle']}**\n"
-            f"   📰 {m['headline'][:140]}\n"
-            f"   📍 Source: {m['source']}\n"
-            f"   🎯 Impact-Tickers: {', '.join(m['impact_tickers'][:6])}\n"
-            f"   🏭 Sectors: {', '.join(m['sectors'])}"
-        )
-    text_parts.append('\n\n_Albert reviewt die betroffenen Open-Positions automatisch im nächsten Cold-Cycle (max 15min)._')
-
-    text = '\n'.join(text_parts)
-    try:
-        send_message_to_user(text)
-        return True
-    except Exception as e:
-        print(f'[macro_detector] Discord push failed: {e}', file=sys.stderr)
-        return False
+        try:
+            write_event(
+                event_type='macro.breaking_event',
+                message=f"[{m.get('severity','?')}] {m.get('bundle','?')}: {m.get('headline','')[:160]}",
+                severity='critical' if m.get('severity') in ('CRITICAL', 'critical') else 'warning',
+                category='macro',
+                user_pinged=False,
+                payload={
+                    'severity': m.get('severity'),
+                    'bundle': m.get('bundle'),
+                    'headline': m.get('headline', '')[:300],
+                    'source': m.get('source'),
+                    'impact_tickers': m.get('impact_tickers', [])[:10],
+                    'sectors': m.get('sectors', [])[:10],
+                },
+            )
+            pushed += 1
+        except Exception as e:
+            print(f'[macro_detector] ceo_inbox write failed: {e}', file=sys.stderr)
+    return pushed > 0
 
 
 def push_to_ceo_event_queue(event_type: str, payload: dict) -> None:

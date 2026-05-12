@@ -120,14 +120,13 @@ def send(message: str, channel_id: str = VICTOR_DM, force: bool = False,
     """
     # Phase 45p: Caller-Whitelist
     BRIEFING_CALLERS = {
-        # Phase 45ah (Victor 2026-05-09): EXAKT 3 DAILY + WEEKLY EXTRAS.
-        # Alles andere → CEO-Inbox.
+        # Phase 45ah/as: 4 DAILY + 2 WEEKLY. Alles andere → CEO-Inbox.
         'morning_brief_generator',     # 08:00 Morgen-Briefing
-        'us_opening_report',           # 16:30 US-Open (Xetra-Job deaktiviert)
-        'daily_digest',                # 20:00 Abend-Digest (8:05-Job deaktiviert)
+        'midday_briefing',             # 13:00 Mid-Day EU (Phase 45as)
+        'us_opening_report',           # 16:30 US-Open
+        'daily_digest',                # 20:00 Abend-Digest
         'friday_improvement_briefing', # Fr 18:00 wöchentlich
         'ceo_week_ahead_briefing',     # So wöchentlich
-        # entfernt: 'evening_report' (Job deaktiviert)
     }
     EMERGENCY_CALLERS = {
         # Wirkliche Notfaelle die sofort raus muessen
