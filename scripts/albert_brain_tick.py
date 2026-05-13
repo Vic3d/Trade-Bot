@@ -235,9 +235,13 @@ ACTIONS: <JSON array oder []>
 """
 
     try:
-        from llm_client import call_llm
-        # Phase 45aj+ (Victor 2026-05-09): sonnet statt haiku — Albert braucht Tiefe
-        text, _ = call_llm(prompt, model_hint='sonnet', max_tokens=500)
+        # Phase 45aw (Victor 2026-05-13): enforce_compliance wraps call_llm
+        # mit Rule-Pflicht + Retry-Mechanik.
+        from self_rule_compliance import enforce_compliance
+        text, compliance_meta = enforce_compliance(
+            prompt=prompt, model_hint='sonnet', max_tokens=500,
+            context='brain_tick'
+        )
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 

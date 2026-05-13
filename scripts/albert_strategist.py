@@ -322,8 +322,12 @@ Sektion 2 muss valides JSON enthalten in einem ```json codeblock.
 """
 
     try:
-        from llm_client import call_llm
-        text, meta = call_llm(prompt, model_hint='opus', max_tokens=3000)
+        # Phase 45aw: enforce_compliance erzwingt Self-Rule-Einhaltung
+        from self_rule_compliance import enforce_compliance
+        text, meta = enforce_compliance(
+            prompt=prompt, model_hint='opus', max_tokens=3000,
+            context='strategist'
+        )
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 

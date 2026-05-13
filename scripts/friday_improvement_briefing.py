@@ -347,6 +347,32 @@ def main() -> int:
         for r in top_recs:
             msg_lines.append(f'• [{r["priority"]}] {r["topic"]}')
             msg_lines.append(f'  → {r["action"]}')
+        # Phase 45aw: Compliance-Stats der Woche zeigen
+        try:
+            from pathlib import Path as _P
+            from datetime import datetime as _dt, timedelta as _td
+            import json as _json
+            log = _P('/opt/trademind/data/compliance_log.jsonl')
+            if log.exists():
+                cutoff = (_dt.now() - _td(days=7)).isoformat()
+                total = 0; compliant_first = 0; retried = 0; failed = 0
+                for line in log.read_text(encoding='utf-8').splitlines():
+                    try:
+                        e = _json.loads(line)
+                        if e.get('ts', '') < cutoff: continue
+                        total += 1
+                        if e.get('retries', 0) == 0 and e.get('compliant'): compliant_first += 1
+                        elif e.get('compliant'): retried += 1
+                        else: failed += 1
+                    except Exception: pass
+                if total > 0:
+                    msg_lines.append('')
+                    msg_lines.append('**Self-Rule-Compliance diese Woche:**')
+                    msg_lines.append(
+                        f'  {compliant_first}/{total} sofort ok  '
+                        f'· {retried} nach Retry  · {failed} aufgegeben'
+                    )
+        except Exception: pass
         msg_lines.append('')
         msg_lines.append(f'_Volle Datei: data/friday_briefings/{data["week_ending"]}.md_')
         push_discord('\n'.join(msg_lines))
