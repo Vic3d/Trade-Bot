@@ -157,6 +157,9 @@ SCHEDULE = [
     ('Sentiment Contrarian',   'sentiment_contrarian.py',      [],            6, 10, None),
     # Layer 3: News-Cross 06:15
     ('Sector News Correlator', 'sector_news_correlator.py',    [],            6, 15, None),
+    # Phase 45bb: Strategie-Haltbarkeitsprüfung 05:30 — Thesen älter als 30d
+    # werden inhaltlich auf Aktualität geprüft (Opus). OUTDATED → retired.
+    ('Strategy Freshness Review','strategy_freshness_review.py',[],            5, 30, None),
     # Layer 4: Genesis 06:20 (OPUS — generiert neue Strategy-Proposals)
     ('Strategy Genesis Engine','strategy_genesis_engine.py',   [],            6, 20, None),
     # Phase 45ba: Genesis-Applier 06:35 — wendet create_strategy-Proposals

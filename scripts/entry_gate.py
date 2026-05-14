@@ -268,6 +268,47 @@ class EntryGate:
                                news_headline, news_source, regime, vix)
             return {'allowed': False, 'reason': _q_reason, 'warnings': warnings, 'tier': None}
 
+        # ─── Gate 0s: Strategie-Haltbarkeit (Phase 45bb) ───────────────
+        # Victor: "Es kann nicht sein, dass nach Strategien von März gehandelt
+        # wird." Eine These hat eine Lebensdauer (30d). Ist eine Strategie
+        # älter UND nicht via strategy_freshness_review.py neu verifiziert
+        # (last_verified fehlt/zu alt) → kein Entry bis sie geprüft wurde.
+        try:
+            from datetime import datetime as _dt, date as _date
+            _LIFESPAN = 30
+            _strats = self._load_strategies() or {}
+            _meta = _strats.get(strategy_upper) or _strats.get(strategy or '')
+            if isinstance(_meta, dict):
+                def _pd(s):
+                    if not s or not isinstance(s, str):
+                        return None
+                    try:
+                        return _dt.fromisoformat(s.replace('Z', '+00:00')).date()
+                    except Exception:
+                        try:
+                            return _dt.strptime(s[:10], '%Y-%m-%d').date()
+                        except Exception:
+                            return None
+                _stamp = _pd(_meta.get('last_verified'))
+                if _stamp is None:
+                    _g = _meta.get('genesis')
+                    if isinstance(_g, dict):
+                        _stamp = _pd(_g.get('created'))
+                _age = (_date.today() - _stamp).days if _stamp else 9999
+                if _age >= _LIFESPAN:
+                    reason = (
+                        f"GATE0s STRATEGIE-ÜBERFÄLLIG: '{strategy}' ist {_age}d alt "
+                        f"und nicht neu verifiziert (Lebensdauer {_LIFESPAN}d). "
+                        f"strategy_freshness_review.py muss die These erst auf "
+                        f"Aktualität prüfen — bis dahin kein Entry."
+                    )
+                    self._log_blocked(ticker, strategy, 'GATE0S_STRATEGY_STALE',
+                                       reason, news_headline, news_source, regime, vix)
+                    return {'allowed': False, 'reason': reason,
+                            'warnings': warnings, 'tier': None}
+        except Exception:
+            pass  # defensiv: Freshness-Check nie hart fehlschlagen lassen
+
         # ─── Gate 1: Duplikat (ticker bereits OPEN?) ───────────────────
         if self._is_ticker_open(ticker):
             reason = f"Ticker {ticker} bereits OPEN im Portfolio"
