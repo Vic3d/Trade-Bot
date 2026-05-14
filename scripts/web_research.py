@@ -27,7 +27,7 @@ from __future__ import annotations
 import json, os, subprocess
 from datetime import datetime, timezone
 
-CLI_TIMEOUT = 240
+CLI_TIMEOUT = 420  # Web-Recherche mit mehreren Suchen dauert — Deep Dive ist gründlich, nicht schnell
 
 
 def _research_prompt(ticker: str, company_hint: str = '') -> str:
@@ -55,6 +55,7 @@ Liefere strukturiert in Stichpunkten, jede Zahl mit Quelle/Datum:
 6. KONKURRENZ: Haupt-Konkurrent, dessen Bewertung/Wachstum im Vergleich —
    gewinnt oder verliert unser Kandidat?
 
+Arbeite effizient: ziele auf ~6-8 gezielte Suchen, nicht mehr.
 Keine Trading-Empfehlung — nur die recherchierten Fakten, kompakt."""
 
 
