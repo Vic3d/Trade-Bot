@@ -1066,6 +1066,20 @@ def _handle_deep_dive(ticker: str) -> str:
     except Exception:
         pass
 
+    # ── Web-Recherche: protokollpflichtige Daten LIVE holen (Phase 45bc) ──
+    # Victor: "Wenn Daten fehlen — recherchier sie. Sowas muss automatisch
+    # passieren." Vorher: nur DB-Daten → bei DAX-Werten ohne Historie kam
+    # "Daten nicht verfügbar". Jetzt: web_search holt Fundamentals,
+    # Analyst-Konsens, Risiken — die Pflicht-Schritte 2/3/4/5b des Protokolls.
+    web_research = ''
+    try:
+        import sys as _wsys
+        _wsys.path.insert(0, str(SCRIPTS))
+        from web_research import research_stock  # type: ignore
+        web_research = research_stock(ticker)
+    except Exception as _wre:
+        web_research = f'[WEB-RECHERCHE FEHLGESCHLAGEN: {_wre}]'
+
     # ── Deepdive-Protokoll als Claude-Prompt ─────────────────────────────
     deepdive_protocol = (MEMORY / 'deepdive-protokoll.md').read_text(encoding='utf-8') \
         if (MEMORY / 'deepdive-protokoll.md').exists() else ''
@@ -1082,8 +1096,11 @@ Ende immer mit dem Trading-Verdict Block.
 TECHNISCHE DATEN (aus DB/Live):
 {tech_summary if tech_summary.strip() else '  Keine technischen Daten in DB verfügbar.'}
 
-RECENT NEWS (letzte 30 Tage):
+RECENT NEWS (letzte 30 Tage, aus DB):
 {news_summary}
+
+WEB-RECHERCHE (live aus dem Netz — Fundamentals, Analyst-Konsens, Risiken):
+{web_research}
 
 STRATEGIE-INFO:
 {strat_info}
@@ -1091,8 +1108,12 @@ STRATEGIE-INFO:
 DEEP DIVE PROTOKOLL (befolge dies exakt):
 {deepdive_protocol[:3000]}
 
-Führe jetzt den Deep Dive durch. Nutze die oben gegebenen Daten als Basis.
-Wo Daten fehlen: sage "Daten fehlen — manuell prüfen: [Quelle]" statt zu halluzinieren.
+Führe jetzt den Deep Dive durch. Nutze die DB-Daten UND die Web-Recherche oben.
+Die Web-Recherche liefert die protokollpflichtigen Fundamentals, den
+Analyst-Konsens und die Risiken — verwende sie für Schritt 2/3/4/5.
+Jede Zahl mit Quelle taggen. Wo auch die Web-Recherche nichts hat: explizit
+"nicht gefunden" sagen statt zu halluzinieren — und das im Verdict
+berücksichtigen (fehlende Pflichtdaten = kein KAUFEN).
 Schritt 4 (Leiche im Keller): Alle 8 Fragen explizit beantworten.
 Abschluss: Trading-Verdict mit KAUFEN / WARTEN / NICHT KAUFEN."""
 
