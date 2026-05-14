@@ -18,6 +18,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -192,6 +193,8 @@ SCHEDULE = [
     # Phase 45as (Victor 2026-05-12): EU/Mid-Day-Briefing 13:00 CEST.
     # Volles Briefing wie Morgen-Briefing — eigenes Script midday_briefing.py.
     ('Mid-Day Briefing',    'midday_briefing.py',         [],                    13,  0, [0,1,2,3,4], True),
+    # Phase 45az: Detector→Action-Bridge 09:45 — eskaliert ignorierte Detector-Findings (vor dem Digest 10:00)
+    ('Detector Action Bridge', 'detector_action_bridge.py', [],                  9, 45, None, False),
     # Phase 45ay: Albert-Verbesserungs-Digest 10:00 — kurze Vorschlags-Zusammenfassung
     ('Albert Improvement Digest', 'albert_improvement_digest.py', [],           10,  0, None, True),
     # 2/3 — US Opening (Übersee-Eröffnung) — Phase 45an: discord=True für Narrative-Push
@@ -898,7 +901,10 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
         log(f'⏱️  {name}: Timeout')
         return False
     except Exception as e:
+        # Phase 45az (Victor 2026-05-14): voller Stack-Trace statt nur Message.
+        # Audit-Befund: ~17 stille Crashes/Tag — ohne Trace nicht debugbar.
         log(f'💥 {name}: Exception — {e}')
+        log(f'   TRACEBACK:\n{traceback.format_exc()}')
         return False
 
 
@@ -1062,34 +1068,49 @@ def scheduler_loop():
         # 08:00-Jobs sequentiell bis 08:01 dauern.
         loop_now = now
         for entry in SCHEDULE:
-            name, script, args, hour, minute, weekdays = entry[:6]
-            discord_send = entry[6] if len(entry) > 6 else False
+            # Phase 45az (Victor 2026-05-14): Per-Job-Guard im Dispatch.
+            # Audit-Befund: ~17 stille Daemon-Crashes/Tag → systemd-Restart-Loop,
+            # kein Stack-Trace. Jetzt: Dispatch-Fehler werden mit vollem Trace
+            # geloggt UND der Daemon läuft weiter (keine Maskierung, keine Crash-Loop).
+            try:
+                name, script, args, hour, minute, weekdays = entry[:6]
+                discord_send = entry[6] if len(entry) > 6 else False
 
-            job_key = f'{name}_{current_key}'
-            if job_key in last_run:
-                continue
+                job_key = f'{name}_{current_key}'
+                if job_key in last_run:
+                    continue
 
-            if should_run(hour, minute, weekdays, now=loop_now):
-                last_run[job_key] = True
-                # Cleanup alter Einträge
-                if len(last_run) > 1000:
-                    old_keys = list(last_run.keys())[:-500]
-                    for k in old_keys:
-                        del last_run[k]
+                if should_run(hour, minute, weekdays, now=loop_now):
+                    last_run[job_key] = True
+                    # Cleanup alter Einträge
+                    if len(last_run) > 1000:
+                        old_keys = list(last_run.keys())[:-500]
+                        for k in old_keys:
+                            del last_run[k]
 
-                success = run_job(name, script, args, discord=discord_send)
+                    success = run_job(name, script, args, discord=discord_send)
 
-                # Bestimmte Jobs senden Discord-Notification bei Fehler
-                if not success:
-                    # TIER_MEDIUM + Dedupe pro Job-Name → max. 1 Alert pro Tag
-                    # (24h-Window im Dispatcher), rest geht in den Digest.
-                    _slug = name.lower().replace(' ', '_')
-                    notify(
-                        f'⚠️ **Scheduler:** {name} fehlgeschlagen — Logs: data/scheduler.log',
-                        tier='MEDIUM',
-                        category='scheduler',
-                        dedupe_key=f'sched_fail_{_slug}',
-                    )
+                    # Bestimmte Jobs senden Discord-Notification bei Fehler
+                    if not success:
+                        # TIER_MEDIUM + Dedupe pro Job-Name → max. 1 Alert pro Tag
+                        # (24h-Window im Dispatcher), rest geht in den Digest.
+                        _slug = name.lower().replace(' ', '_')
+                        notify(
+                            f'⚠️ **Scheduler:** {name} fehlgeschlagen — Logs: data/scheduler.log',
+                            tier='MEDIUM',
+                            category='scheduler',
+                            dedupe_key=f'sched_fail_{_slug}',
+                        )
+            except Exception as _dispatch_err:
+                _ename = entry[0] if entry else '?'
+                log(f'💥 Dispatch-Crash bei Job "{_ename}": {_dispatch_err}')
+                log(f'   TRACEBACK:\n{traceback.format_exc()}')
+                notify(
+                    f'🚨 **Scheduler Dispatch-Crash:** {_ename} — {_dispatch_err}\n'
+                    f'Daemon läuft weiter. Trace in data/scheduler.log',
+                    tier='HIGH', category='scheduler_crash',
+                    dedupe_key=f'dispatch_crash_{type(_dispatch_err).__name__.lower()}',
+                )
 
         # Genau auf nächste Minute warten
         sleep_secs = 60 - datetime.now().second
@@ -1176,6 +1197,7 @@ if __name__ == '__main__':
             PID_FILE.unlink(missing_ok=True)
         except Exception as e:
             log(f'💥 Daemon Crash: {e}')
+            log(f'   TRACEBACK:\n{traceback.format_exc()}')
             # Crash-Notify mit Dedupe: pro Error-Typ max 1× pro Stunde
             # (verhindert Flut wenn systemd in Crash-Restart-Loop steht)
             _err_slug = type(e).__name__.lower()

@@ -207,10 +207,12 @@ def analyze_trailing_stops() -> dict:
             (SELECT COUNT(*) as c FROM trade_tranches GROUP BY trade_id)) as avg_trails
         FROM paper_portfolio p
         WHERE p.status = 'CLOSED'
+          AND (p.exit_type IS NULL OR p.exit_type NOT LIKE 'BUG_ROLLBACK%')
           AND p.id IN (SELECT DISTINCT trade_id FROM trade_tranches)
     """).fetchone()
 
     # Trades ohne Trail-Aktivität (Hard Stop, Manual, Thesis-Invalidated, etc.)
+    # Phase 45az: BUG_ROLLBACK ausfiltern — Phantom-Verluste vergiften sonst das Lernen
     without_trail = conn.execute("""
         SELECT COUNT(*) as n,
         SUM(CASE WHEN p.pnl_eur > 0 THEN 1 ELSE 0 END) as wins,
@@ -218,6 +220,7 @@ def analyze_trailing_stops() -> dict:
         COALESCE(SUM(p.pnl_eur), 0) as total_pnl
         FROM paper_portfolio p
         WHERE p.status = 'CLOSED'
+          AND (p.exit_type IS NULL OR p.exit_type NOT LIKE 'BUG_ROLLBACK%')
           AND p.id NOT IN (SELECT DISTINCT trade_id FROM trade_tranches)
     """).fetchone()
 
@@ -230,6 +233,7 @@ def analyze_trailing_stops() -> dict:
                exit_type
         FROM paper_portfolio
         WHERE status = 'CLOSED'
+          AND (exit_type IS NULL OR exit_type NOT LIKE 'BUG_ROLLBACK%')
           AND expected_exit_price IS NOT NULL
           AND close_price IS NOT NULL
           AND expected_exit_price > close_price
