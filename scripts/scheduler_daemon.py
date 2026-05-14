@@ -159,6 +159,9 @@ SCHEDULE = [
     ('Sector News Correlator', 'sector_news_correlator.py',    [],            6, 15, None),
     # Layer 4: Genesis 06:20 (OPUS — generiert neue Strategy-Proposals)
     ('Strategy Genesis Engine','strategy_genesis_engine.py',   [],            6, 20, None),
+    # Phase 45ba: Genesis-Applier 06:35 — wendet create_strategy-Proposals
+    # tatsächlich auf strategies.json an (vorher: Proposals versandeten ungenutzt).
+    ('Strategy Genesis Applier','strategy_genesis_applier.py', [],            6, 35, None),
     # Phase 45aq Layer E: Story-Tagger 06:25 vor Strategist
     ('Position Story Tagger',  'position_story_tagger.py',     [],            6, 25, None),
     # Phase 45at — Cohort-System: monatlich neue Tranche 1. um 00:01
