@@ -615,6 +615,10 @@ def _execute_paper_entry_inner(
     # Preis 356 NOK → Live-Lookup verglich falsche Listings → Phantom +985%.
     # Defensiv: entry_price MUSS in 50%-Range des letzten Markt-Schluss
     # für diesen ticker liegen. Sonst Ticker-Listing-Mismatch.
+    # Phase 45az (Victor 2026-05-14): conn HIER öffnen — vorher erst bei
+    # Guard 2b (L1279). Folge: Guard 0b3 + Learning-Block warfen still
+    # UnboundLocalError('conn') und wurden komplett übersprungen.
+    conn = get_db()
     try:
         _last_close_row = conn.execute(
             "SELECT close FROM prices WHERE ticker=? ORDER BY date DESC LIMIT 1",
@@ -1276,8 +1280,15 @@ def _execute_paper_entry_inner(
             'blocked_by': 'conviction_error',
         }
     
-    conn = get_db()
-    
+    # conn wurde bereits vor Guard 0b3 geöffnet (Phase 45az). Falls eine
+    # frühere Guard zwischendurch conn.close() gerufen + zurückgegeben hat,
+    # ist das egal — bei Erreichen dieser Zeile ist conn noch offen.
+    # Defensiv: bei Bedarf re-öffnen, falls geschlossen.
+    try:
+        conn.execute("SELECT 1")
+    except Exception:
+        conn = get_db()
+
     # ── Guard 2b: Wöchentliches Trade-Limit (ATOMIC seit P0.2) ──────
     # Phase 18: Erhöht auf 7/Woche (globaler Handel über alle Börsen).
     # Cost-Hurdle Guard 0c3 verhindert trotzdem unnötige Trades.
