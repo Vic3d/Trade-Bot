@@ -10,8 +10,10 @@ DB-Daten. Fehlten Fundamentals/Analyst-Konsens (z.B. bei DAX-Werten ohne
 Preis-Historie), kam "Daten nicht verfügbar" statt einer Recherche — also
 genau die Abkürzung, die das Deep-Dive-Protokoll als Anti-Pattern verbietet.
 
-Dieses Modul schließt die Lücke: research_stock() nutzt das Anthropic
-web_search-Tool und holt die protokollpflichtigen Daten LIVE aus dem Netz:
+Dieses Modul schließt die Lücke: research_stock() ruft die Claude-CLI
+(Max-Subscription, KEIN API-Key — der ist im System ungültig) mit
+freigeschaltetem WebSearch-Tool und holt die protokollpflichtigen Daten
+LIVE aus dem Netz:
   - Technik (Kurs, MA50/200, RSI, 52W-Range, Performance)
   - Fundamentals (KGV/PEG sektorgerecht, Umsatz-/EPS-Trend, Schulden-Trend)
   - Analyst-Konsens NUR letzte 30 Tage (Up-/Downgrades, Kursziel-Range)
@@ -22,91 +24,88 @@ Gibt einen formatierten Text-Block zurück, der in den Deep-Dive-Prompt
 injiziert wird. Schlägt die Recherche fehl → klarer Hinweis statt Stille.
 """
 from __future__ import annotations
-import os
+import json, os, subprocess
 from datetime import datetime, timezone
 
-ANTHROPIC_MODEL = 'claude-sonnet-4-5'
-MAX_SEARCHES = 6
+CLI_TIMEOUT = 240
 
 
 def _research_prompt(ticker: str, company_hint: str = '') -> str:
     today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
     name = f' ({company_hint})' if company_hint else ''
-    return f"""Heute ist {today}. Recherchiere im Web die folgenden Fakten zur
-Aktie {ticker}{name} — für einen Trading-Deep-Dive. Suche aktiv, rate NICHTS.
-Wenn ein Punkt nicht auffindbar ist, schreibe explizit "nicht gefunden".
+    return f"""Heute ist {today}. Recherchiere mit dem WebSearch-Tool die
+folgenden Fakten zur Aktie {ticker}{name} — für einen Trading-Deep-Dive.
+Suche aktiv mehrfach. Rate NICHTS. Wenn ein Punkt nicht auffindbar ist,
+schreibe explizit "nicht gefunden".
 
-Liefere strukturiert:
+Liefere strukturiert in Stichpunkten, jede Zahl mit Quelle/Datum:
 
 1. TECHNIK: aktueller Kurs, MA50, MA200, RSI(14), 52W-Hoch/Tief + Abstand,
    Performance 1M/3M/6M.
-2. FUNDAMENTALS: KGV (aktuelles Jahr + nächstes Jahr e), PEG falls Tech-Wert,
+2. FUNDAMENTALS: KGV (aktuelles + nächstes Jahr e), PEG falls Tech-Wert,
    Umsatz-Trend, EPS-Trend (wächst/fällt — letzte Quartale), Marge,
    Schulden-Trend (steigend/fallend, letzte Jahre), Dividende/Yield.
 3. ANALYST-KONSENS — NUR letzte 30 Tage: Up-/Downgrades, Kursziel-Range
    (min/median/max), Konsens-Rating. Ältere Meldungen ignorieren.
-4. LEICHE IM KELLER: laufende Klagen/Kartellverfahren, Schuldenanstieg-Grund,
-   teure Übernahmen, CEO-Wechsel/Gewinnwarnung letzte 90 Tage,
-   Marktanteilsverluste an Konkurrenten.
-5. REGULATORISCH/POLITISCH (Pflicht): Preisregulierung, staatliche Eingriffe,
-   Zoll-Exposition, politische Sichtbarkeit des Produkts.
+4. LEICHE IM KELLER: laufende Klagen/Kartellverfahren, Grund für
+   Schuldenanstieg, teure Übernahmen, CEO-Wechsel/Gewinnwarnung letzte
+   90 Tage, Marktanteilsverluste an Konkurrenten.
+5. REGULATORISCH/POLITISCH (Pflicht): Preisregulierung, staatliche
+   Eingriffe, Zoll-Exposition, politische Sichtbarkeit des Produkts.
 6. KONKURRENZ: Haupt-Konkurrent, dessen Bewertung/Wachstum im Vergleich —
    gewinnt oder verliert unser Kandidat?
 
-Antworte kompakt in Stichpunkten mit Zahlen. Jede Zahl mit Quelle/Datum.
-Keine Trading-Empfehlung — nur die recherchierten Fakten."""
+Keine Trading-Empfehlung — nur die recherchierten Fakten, kompakt."""
 
 
 def research_stock(ticker: str, company_hint: str = '') -> str:
     """
-    Live-Web-Recherche der Deep-Dive-pflichtigen Daten.
+    Live-Web-Recherche der Deep-Dive-pflichtigen Daten via Claude-CLI
+    (Max-Subscription) mit WebSearch-Tool.
     Returns: formatierter Fakten-Block (str). Bei Fehler: klarer Hinweis-String.
     """
-    api_key = os.getenv('ANTHROPIC_API_KEY')
-    if not api_key:
-        return '[WEB-RECHERCHE FEHLGESCHLAGEN: ANTHROPIC_API_KEY fehlt]'
-    try:
-        import anthropic
-    except Exception as e:
-        return f'[WEB-RECHERCHE FEHLGESCHLAGEN: anthropic SDK — {e}]'
+    cmd = [
+        'claude', '-p',
+        '--model', 'sonnet',
+        '--output-format', 'json',
+        '--allowedTools', 'WebSearch',
+        '--disable-slash-commands',
+        '--setting-sources', 'user',
+        '--no-session-persistence',
+    ]
+    # ANTHROPIC_API_KEY raus → CLI nutzt Subscription-Billing (API-Key ungültig)
+    cli_env = {k: v for k, v in os.environ.items() if k != 'ANTHROPIC_API_KEY'}
+    cli_env['CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC'] = '1'
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        resp = client.messages.create(
-            model=ANTHROPIC_MODEL,
-            max_tokens=3000,
-            messages=[{'role': 'user',
-                       'content': _research_prompt(ticker, company_hint)}],
-            tools=[{
-                'type': 'web_search_20250305',
-                'name': 'web_search',
-                'max_uses': MAX_SEARCHES,
-            }],
+        result = subprocess.run(
+            cmd,
+            input=_research_prompt(ticker, company_hint),
+            capture_output=True, text=True,
+            timeout=CLI_TIMEOUT, check=False, env=cli_env,
         )
+    except subprocess.TimeoutExpired:
+        return f'[WEB-RECHERCHE {ticker} FEHLGESCHLAGEN: CLI-Timeout {CLI_TIMEOUT}s]'
     except Exception as e:
-        return f'[WEB-RECHERCHE FEHLGESCHLAGEN: {str(e)[:200]}]'
+        return f'[WEB-RECHERCHE {ticker} FEHLGESCHLAGEN: {str(e)[:200]}]'
 
-    # Alle Text-Blöcke der Antwort einsammeln (web_search_tool_result-Blöcke
-    # überspringen — die enthalten die Roh-Suchergebnisse, nicht die Synthese).
-    parts = []
-    n_searches = 0
+    if result.returncode != 0:
+        err = (result.stderr or result.stdout or '').strip()[:200]
+        return f'[WEB-RECHERCHE {ticker} FEHLGESCHLAGEN: CLI exit {result.returncode} — {err}]'
+
+    raw = (result.stdout or '').strip()
+    text = ''
     try:
-        for block in resp.content:
-            btype = getattr(block, 'type', None)
-            if btype == 'text':
-                parts.append(block.text)
-            elif btype == 'server_tool_use':
-                n_searches += 1
-    except Exception:
-        pass
+        data = json.loads(raw)
+        text = (data.get('result') or data.get('content') or '').strip()
+    except (json.JSONDecodeError, ValueError, AttributeError):
+        text = raw
 
-    text = '\n'.join(p.strip() for p in parts if p and p.strip())
     if not text:
-        return '[WEB-RECHERCHE: keine verwertbare Antwort erhalten]'
+        return f'[WEB-RECHERCHE {ticker}: keine verwertbare Antwort erhalten]'
 
     stamp = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
-    return (f'[WEB-RECHERCHE {ticker} — {stamp}, {n_searches} Suchen]\n'
-            f'{text}')
+    return f'[WEB-RECHERCHE {ticker} — {stamp}]\n{text}'
 
 
 def main() -> int:
