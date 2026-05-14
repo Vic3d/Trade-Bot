@@ -21,7 +21,9 @@ Dieses Skript = inhaltliche Haltbarkeits-Prüfung:
        OUTDATED       → status = retired (These ist tot)
   4. Report → strategy_freshness_log.jsonl + ceo_inbox.
 
-Run: täglich 05:30 (vor Genesis 06:20 — Genesis sieht den bereinigten Stand).
+Lebensdauer: 7 Tage (Victor 2026-05-14: jede Woche neu verifizieren).
+Run: täglich 05:30 — eine These wird also spätestens am 7. Tag geprüft.
+(vor Genesis 06:20 — Genesis sieht den bereinigten Stand.)
 """
 from __future__ import annotations
 import json, os, re, sys
@@ -34,7 +36,7 @@ MARKET_PULSE = WS / 'data' / 'market_pulse_latest.json'
 MACRO_REGIME = WS / 'data' / 'macro_regime.json'
 LOG = WS / 'data' / 'strategy_freshness_log.jsonl'
 
-LIFESPAN_DAYS = 30          # nach 30 Tagen muss eine These neu verifiziert werden
+LIFESPAN_DAYS = 7           # Victor 2026-05-14: wöchentliche Neu-Verifikation
 DEAD_STATUSES = {'paused', 'retired', 'auto_deprecated', 'ARCHIVED', 'DRAFT'}
 
 

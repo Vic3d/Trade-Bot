@@ -270,12 +270,13 @@ class EntryGate:
 
         # ─── Gate 0s: Strategie-Haltbarkeit (Phase 45bb) ───────────────
         # Victor: "Es kann nicht sein, dass nach Strategien von März gehandelt
-        # wird." Eine These hat eine Lebensdauer (30d). Ist eine Strategie
-        # älter UND nicht via strategy_freshness_review.py neu verifiziert
-        # (last_verified fehlt/zu alt) → kein Entry bis sie geprüft wurde.
+        # wird." Eine These hat eine Lebensdauer (7d, wöchentliche Neu-
+        # Verifikation). Ist eine Strategie älter UND nicht via
+        # strategy_freshness_review.py neu verifiziert (last_verified fehlt/
+        # zu alt) → kein Entry bis sie geprüft wurde.
         try:
             from datetime import datetime as _dt, date as _date
-            _LIFESPAN = 30
+            _LIFESPAN = 7
             _strats = self._load_strategies() or {}
             _meta = _strats.get(strategy_upper) or _strats.get(strategy or '')
             if isinstance(_meta, dict):
