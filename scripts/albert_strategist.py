@@ -331,6 +331,15 @@ Sektion 2 muss valides JSON enthalten in einem ```json codeblock.
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 
+    # Phase 45ax: Bei Compliance-Fail → leerer Strategist-Output, kein Proposal-Spam
+    if meta.get('output_discarded') or not text:
+        return {
+            'skipped': True,
+            'reason': 'compliance_fail_after_retries',
+            'retries': meta.get('retries', 0),
+            'violations': meta.get('violations_per_attempt', [])[-1].get('violations', []),
+        }
+
     # Parse JSON proposals if present
     import re
     proposals_parsed = []

@@ -64,7 +64,21 @@ DEINE AUFGABE:
 
 3. **Welche alte Regel wirfst du raus, weil sie nicht funktioniert hat?**
 
-ANTWORTE in Markdown, max 400 Wörter. Sprich in ICH-Form. Sei selbstkritisch."""
+4. **CAPABILITY-REQUESTS — strukturelle Probleme die KEINE Verhaltensregel lösen kann.**
+   Wenn du ein Problem siehst das NICHT an deinem Willen liegt, sondern an deiner
+   Architektur (z.B. "Brain-Tick kann keine Trades submitten", "ich habe keinen
+   Zugriff auf X"), dann formuliere KEINE Verhaltensregel — die würde scheitern.
+   Schreibe stattdessen einen Capability-Request. Format:
+   ```
+   CAPABILITY-REQUEST: <kurzer Titel>
+   PROBLEM: <was strukturell fehlt, 1-2 Sätze>
+   VORSCHLAG: <konkret was geändert werden müsste>
+   PRIORITÄT: high|med|low
+   ```
+   Diese Requests werden von einem Menschen geprüft und ggf. umgesetzt — du
+   änderst NICHT selbst die Architektur, du diagnostizierst nur präzise.
+
+ANTWORTE in Markdown, max 500 Wörter. Sprich in ICH-Form. Sei selbstkritisch."""
 
     try:
         from llm_client import call_llm
@@ -82,6 +96,26 @@ ANTWORTE in Markdown, max 400 Wörter. Sprich in ICH-Form. Sei selbstkritisch.""
         f"{text}\n"
     )
     RULES.write_text(new_rules, encoding='utf-8')
+
+    # Phase 45ay: Capability-Requests extrahieren → eigene Queue für Human-Review
+    import re as _re
+    cap_file = WS / 'data' / 'albert_capability_requests.jsonl'
+    cap_blocks = _re.findall(
+        r'CAPABILITY-REQUEST:\s*(.+?)\n\s*PROBLEM:\s*(.+?)\n\s*VORSCHLAG:\s*(.+?)\n\s*PRIORITÄT:\s*(\w+)',
+        text, _re.S | _re.I
+    )
+    if cap_blocks:
+        cap_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(cap_file, 'a', encoding='utf-8') as f:
+            for title, problem, vorschlag, prio in cap_blocks:
+                f.write(json.dumps({
+                    'ts': now.isoformat(timespec='seconds'),
+                    'title': title.strip()[:120],
+                    'problem': problem.strip()[:400],
+                    'vorschlag': vorschlag.strip()[:400],
+                    'prioritaet': prio.strip().lower(),
+                    'status': 'PENDING_REVIEW',
+                }, ensure_ascii=False) + '\n')
 
     # Log
     LOG.parent.mkdir(parents=True, exist_ok=True)

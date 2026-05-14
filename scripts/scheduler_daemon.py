@@ -192,6 +192,8 @@ SCHEDULE = [
     # Phase 45as (Victor 2026-05-12): EU/Mid-Day-Briefing 13:00 CEST.
     # Volles Briefing wie Morgen-Briefing — eigenes Script midday_briefing.py.
     ('Mid-Day Briefing',    'midday_briefing.py',         [],                    13,  0, [0,1,2,3,4], True),
+    # Phase 45ay: Albert-Verbesserungs-Digest 10:00 — kurze Vorschlags-Zusammenfassung
+    ('Albert Improvement Digest', 'albert_improvement_digest.py', [],           10,  0, None, True),
     # 2/3 — US Opening (Übersee-Eröffnung) — Phase 45an: discord=True für Narrative-Push
     ('US Opening',          'us_opening_report.py',       ['--mode', 'us'],      16, 30, [0,1,2,3,4], True),
     # 3/3 — Abend-Digest (Trades + Learnings + Universe-Review) — sendet selbst via _send()
@@ -848,6 +850,7 @@ def run_job(name: str, script: str, args: list[str], discord: bool = False) -> b
                 _briefing_map = {
                     'morgen-briefing': 'morning_brief',
                     'mid-day briefing': 'midday_brief',
+                    'albert improvement digest': 'improvement_digest',
                     'us opening':      'us_open_brief',
                     'us-opening':      'us_open_brief',
                     'abend-report':    'evening_brief',

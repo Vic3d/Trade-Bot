@@ -168,6 +168,11 @@ def enforce_compliance(prompt: str, model_hint: str = 'sonnet',
         if attempt >= MAX_RETRIES:
             meta['compliant'] = False
             meta['final_status'] = 'gave_up_after_max_retries'
+            # Phase 45ax (Victor 2026-05-14): HARD-FAIL.
+            # Bei wiederholtem Verstoß wird Output VERWORFEN, nicht verwendet.
+            # Sonst landet trotzdem Regelverstoß im Tagebuch/Strategist.
+            output = ''
+            meta['output_discarded'] = True
             break
 
         # Re-Call mit Reminder

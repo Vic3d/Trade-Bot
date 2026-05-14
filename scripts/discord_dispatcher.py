@@ -162,8 +162,9 @@ def send_alert(
     # echte Notfaelle. ALLES ANDERE wird SILENT (bleibt in ceo_inbox).
     # User-Direktive: "ich will eigentlich nur noch die Briefings haben".
     BRIEFING_CATEGORIES = {
-        'morning_brief', 'us_open_brief', 'evening_brief',
+        'morning_brief', 'midday_brief', 'us_open_brief', 'evening_brief',
         'friday_briefing', 'week_ahead_briefing',
+        'improvement_digest',  # Phase 45ay: Albert-Verbesserungs-Digest 10:00
     }
     EMERGENCY_CATEGORIES = {
         'crash_safety',           # -10% Live-Loss Auto-Exit

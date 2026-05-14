@@ -245,6 +245,16 @@ ACTIONS: <JSON array oder []>
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 
+    # Phase 45ax: Bei Compliance-Fail wird Output verworfen — kein Tagebuch-Eintrag
+    if compliance_meta.get('output_discarded') or not text:
+        _save_tick_ts(now.isoformat(timespec='seconds'))
+        return {
+            'skipped': True,
+            'reason': 'compliance_fail',
+            'retries': compliance_meta.get('retries', 0),
+            'violations': compliance_meta.get('violations_per_attempt', [])[-1].get('violations', []),
+        }
+
     # Parse
     thought, actions = '', []
     if 'GEDANKE:' in text:
