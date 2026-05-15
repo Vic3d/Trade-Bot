@@ -42,6 +42,14 @@ MAX_DIARY_TAIL = 800   # letzte N Zeichen aus diary lesen (Memory)
 MAX_INBOX_NEW  = 30    # letzte N inbox-events seit last tick
 MAX_DIARY_KB   = 500   # diary > 500KB → archive
 
+# Phase 45bd (Victor 2026-05-15): Anti-Wiederholung + Verdict-Auto-Quote
+RECENT_THOUGHTS_N    = 3      # letzte 3 Tagebuch-Gedanken als Anti-Repeat-Kontext
+REPEAT_SIM_THRESHOLD = 0.30   # Jaccard-Token-Overlap > X → Wiederholung
+                              # Kalibriert an realen 06:45-08:30 Repeats (~0.36)
+                              # vs. verschiedene Themen (~0.00-0.03).
+KNOWN_VERDICTS = {'STRONG_EDGE', 'OK', 'INSUFFICIENT', 'CONFLICT',
+                  'WEAK', 'NEGATIVE', 'RETIRED', 'UNKNOWN'}
+
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
@@ -118,6 +126,113 @@ def _archive_diary_if_huge() -> None:
     except Exception: pass
 
 
+# ── Phase 45bd Helpers: Anti-Wiederholung + Verdict-Auto-Quote ───────────
+
+def _last_n_thoughts(n: int = RECENT_THOUGHTS_N) -> list[str]:
+    """Letzte N Tagebuch-Gedanken (Body zwischen `### TS CEST` Headern)."""
+    if not DIARY.exists():
+        return []
+    try:
+        text = DIARY.read_text(encoding='utf-8')
+    except Exception:
+        return []
+    import re
+    blocks = re.split(r'\n### \d{4}-\d{2}-\d{2} \d{2}:\d{2} CEST\n', text)
+    # blocks[0] = vor erstem Header (Müll), Rest = Gedanken-Bodies
+    bodies = [b.strip() for b in blocks[1:] if b.strip()]
+    # Self-actions-Zeile rausstrippen
+    out = []
+    for b in bodies[-n:]:
+        lines = [l for l in b.splitlines() if not l.startswith('_Self-actions:')]
+        out.append('\n'.join(lines).strip())
+    return out
+
+
+def _word_set(s: str) -> set[str]:
+    """Bag-of-words für Jaccard — Lowercase, Tokens ≥ 4 Zeichen, ohne Stopper."""
+    import re
+    stop = {'und', 'oder', 'das', 'ist', 'die', 'der', 'den', 'des', 'dem',
+            'ein', 'eine', 'einer', 'einen', 'einem', 'noch', 'nicht', 'auch',
+            'aber', 'mit', 'von', 'für', 'auf', 'als', 'sich', 'dass', 'wenn',
+            'dann', 'dies', 'diese', 'dieser', 'dieses', 'sind', 'wird', 'werden',
+            'kein', 'keine', 'mehr', 'sein', 'seine', 'hier', 'jetzt', 'heute',
+            'ohne', 'sondern', 'beide', 'beiden'}
+    toks = re.findall(r'[a-z0-9_äöüß]{4,}', s.lower())
+    return {t for t in toks if t not in stop}
+
+
+def _max_similarity(new_text: str, prior: list[str]) -> tuple[float, int]:
+    """Max-Jaccard zu vorherigen Gedanken. Returns (max_sim, idx)."""
+    if not prior or not new_text.strip():
+        return 0.0, -1
+    new_set = _word_set(new_text)
+    if not new_set:
+        return 0.0, -1
+    best = (0.0, -1)
+    for i, p in enumerate(prior):
+        ps = _word_set(p)
+        if not ps:
+            continue
+        inter = len(new_set & ps)
+        union = len(new_set | ps)
+        sim = inter / union if union else 0.0
+        if sim > best[0]:
+            best = (sim, i)
+    return best
+
+
+def _extract_verdict_citations(text: str) -> list[tuple[str, str]]:
+    """Findet '<STRAT_ID> [VERDICT]' und '[VERDICT] <STRAT_ID>' Zitate."""
+    import re
+    ID = r'(?:PS\d+|DT\d|S\d+|PT|AR-\w+|PS_[A-Z0-9_]+)'
+    VR = r'\[(STRONG_EDGE|OK|INSUFFICIENT|CONFLICT|WEAK|NEGATIVE|RETIRED|UNKNOWN)\]'
+    pairs = []
+    for m in re.finditer(rf'({ID})\s*{VR}', text):
+        pairs.append((m.group(1).upper(), m.group(2).upper()))
+    for m in re.finditer(rf'{VR}\s+({ID})', text):
+        pairs.append((m.group(2).upper(), m.group(1).upper()))
+    # Dedupe
+    seen = set()
+    out = []
+    for sid, vr in pairs:
+        if (sid, vr) not in seen:
+            seen.add((sid, vr))
+            out.append((sid, vr))
+    return out
+
+
+def _check_verdict_quotes(text: str) -> list[str]:
+    """Prüft alle zitierten Verdicts gegen Single-Source-of-Truth.
+    Returns Liste der Mismatch-Strings (leer = alles korrekt)."""
+    pairs = _extract_verdict_citations(text)
+    if not pairs:
+        return []
+    try:
+        sys.path.insert(0, str(WS / 'scripts'))
+        from strategy_verdict import strategy_verdict as _sv
+    except Exception:
+        return []  # Fail-open: lieber nicht prüfen als hart fehlschlagen
+    mismatches = []
+    for sid, quoted in pairs:
+        try:
+            real = (_sv(sid).get('verdict') or '').upper()
+        except Exception:
+            continue
+        if not real or real not in KNOWN_VERDICTS:
+            continue
+        if real != quoted:
+            mismatches.append(f"{sid}: zitiert [{quoted}], real [{real}]")
+    return mismatches
+
+
+def _parse_thought(text: str) -> str:
+    if 'GEDANKE:' in text:
+        try:
+            return text.split('GEDANKE:', 1)[1].split('ACTIONS:', 1)[0].strip()
+        except Exception: pass
+    return ''
+
+
 def tick() -> dict:
     now = _now()
     last_ts = _last_tick_ts()
@@ -129,6 +244,11 @@ def tick() -> dict:
     new_events   = _new_inbox_events(last_ts, MAX_INBOX_NEW)
     trades       = _last_3_trades()
     goals        = _read_goals()
+    # Phase 45bd: letzte 3 Gedanken explizit als Anti-Repeat-Kontext
+    recent_thoughts = _last_n_thoughts(RECENT_THOUGHTS_N)
+    recent_block = '\n\n'.join(
+        f'[Tick T-{len(recent_thoughts)-i}] {t}' for i, t in enumerate(recent_thoughts)
+    ) if recent_thoughts else '(noch keine vorigen Ticks)'
 
     # Phase 45ak: Methodik + Phase-Awareness
     methodik = _read_tail(METHODIK, 2000)
@@ -204,6 +324,20 @@ Letzte Trades: {trades_summary}
 ═══ DEINE LETZTEN GEDANKEN (Tagebuch-Ende) ═══
 {diary_tail or '(noch nichts geschrieben)'}
 
+═══ DEINE LETZTEN {RECENT_THOUGHTS_N} TICK-GEDANKEN — NICHT WIEDERHOLEN ═══
+{recent_block}
+
+⚠️ HARTER FILTER: Wenn dieser Gedanke inhaltlich wiederholt, was oben
+schon steht (gleiche Tickers, gleiche Ankündigungen, gleicher Frame),
+wird er verworfen. Schreibe NUR wenn du etwas NEUES sagst — sonst
+einen Satz "Nichts Neues, beobachte weiter" und Actions=[].
+
+⚠️ VERDICT-PFLICHT: Wenn du einen STRATEGY-Verdict zitierst (z.B. "DT2 [OK]"
+oder "PS4 [WEAK]"), MUSS der Verdict-String EXAKT mit der Single Source of
+Truth (strategy_verdict.py) übereinstimmen. Bei Mismatch wird der Tick
+hart verworfen. Im Zweifel kein Verdict zitieren.
+
+
 ═══ DEINE EIGENEN REGELN (aus vergangener Selbstreflexion) ═══
 {rules or '(noch keine entwickelt)'}
 
@@ -234,9 +368,9 @@ ACTIONS: <JSON array oder []>
 ```
 """
 
+    # Phase 45bd: Zwei-Pass — generate, validate (repeat + verdict),
+    # bei Verstoß genau 1× nachschärfen, sonst Tick verwerfen.
     try:
-        # Phase 45aw (Victor 2026-05-13): enforce_compliance wraps call_llm
-        # mit Rule-Pflicht + Retry-Mechanik.
         from self_rule_compliance import enforce_compliance
         text, compliance_meta = enforce_compliance(
             prompt=prompt, model_hint='sonnet', max_tokens=500,
@@ -245,7 +379,6 @@ ACTIONS: <JSON array oder []>
     except Exception as e:
         return {'error': f'llm_fail: {e}'}
 
-    # Phase 45ax: Bei Compliance-Fail wird Output verworfen — kein Tagebuch-Eintrag
     if compliance_meta.get('output_discarded') or not text:
         _save_tick_ts(now.isoformat(timespec='seconds'))
         return {
@@ -254,6 +387,58 @@ ACTIONS: <JSON array oder []>
             'retries': compliance_meta.get('retries', 0),
             'violations': compliance_meta.get('violations_per_attempt', [])[-1].get('violations', []),
         }
+
+    # Validate: Wiederholung + Verdict-Zitate
+    candidate_thought = _parse_thought(text)
+    sim, sim_idx = _max_similarity(candidate_thought, recent_thoughts)
+    verdict_mismatches = _check_verdict_quotes(candidate_thought)
+    bt_violations: list[str] = []
+    if sim >= REPEAT_SIM_THRESHOLD:
+        bt_violations.append(
+            f'WIEDERHOLUNG: Jaccard {sim:.2f} mit Tick T-{len(recent_thoughts)-sim_idx} '
+            f'(Schwelle {REPEAT_SIM_THRESHOLD}). Schreibe etwas NEUES oder "Nichts Neues, beobachte weiter".'
+        )
+    if verdict_mismatches:
+        bt_violations.append(
+            'FALSCHE VERDICT-ZITATE: ' + '; '.join(verdict_mismatches)
+            + '. Nutze die EXAKTEN Werte aus CURRENT TRUTH oder zitiere kein Verdict.'
+        )
+
+    # Retry: einmal mit klarer Korrektur-Anweisung
+    if bt_violations:
+        retry_prompt = (
+            prompt
+            + '\n\n⚠️ DEIN VORIGER VERSUCH WURDE VERWORFEN. Verstöße:\n'
+            + '\n'.join(f'  - {v}' for v in bt_violations)
+            + '\n\nSchreibe einen NEUEN Gedanken, der diese Verstöße vermeidet.'
+        )
+        try:
+            text, compliance_meta = enforce_compliance(
+                prompt=retry_prompt, model_hint='sonnet', max_tokens=500,
+                context='brain_tick_retry'
+            )
+        except Exception as e:
+            _save_tick_ts(now.isoformat(timespec='seconds'))
+            return {'skipped': True, 'reason': 'brain_tick_retry_llm_fail',
+                    'error': str(e)[:200], 'violations': bt_violations}
+        if compliance_meta.get('output_discarded') or not text:
+            _save_tick_ts(now.isoformat(timespec='seconds'))
+            return {'skipped': True, 'reason': 'compliance_fail_after_retry',
+                    'violations': bt_violations}
+        # Re-check after retry — harte Diskard wenn immer noch verletzt
+        candidate_thought = _parse_thought(text)
+        sim2, _ = _max_similarity(candidate_thought, recent_thoughts)
+        vm2 = _check_verdict_quotes(candidate_thought)
+        final_violations: list[str] = []
+        if sim2 >= REPEAT_SIM_THRESHOLD:
+            final_violations.append(f'WIEDERHOLUNG bleibt (Jaccard {sim2:.2f})')
+        if vm2:
+            final_violations.append('VERDICT-MISMATCH bleibt: ' + '; '.join(vm2))
+        if final_violations:
+            _save_tick_ts(now.isoformat(timespec='seconds'))
+            return {'skipped': True, 'reason': 'brain_tick_validation_fail',
+                    'first_pass_violations': bt_violations,
+                    'second_pass_violations': final_violations}
 
     # Parse
     thought, actions = '', []
