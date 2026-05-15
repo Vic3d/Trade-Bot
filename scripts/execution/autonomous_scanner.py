@@ -326,11 +326,30 @@ def load_universe_from_strategies() -> dict:
             elif isinstance(it, str):
                 known.add(it.upper())
 
+        # Phase 45be (Victor 2026-05-15): Kanonische DEAD-Liste aus
+        # strategy_throttle nutzen — vorher fehlten 'archived', 'paused',
+        # 'retired', 'auto_deprecated', 'draft'. Folge: PS19 (ARCHIVED seit
+        # 21.04.) wurde am 11.05. trotzdem getradet → Trade #131 GDX.
+        try:
+            import sys as _sysd
+            from pathlib import Path as _Pd
+            _sysd.path.insert(0, str(_Pd(__file__).resolve().parent.parent))
+            from strategy_throttle import DEAD_STATUSES as _DEAD
+            _DEAD_LOWER = {s.lower() for s in _DEAD}
+        except Exception:
+            _DEAD_LOWER = {'paused', 'retired', 'auto_deprecated',
+                           'archived', 'draft'}
+        # Plus die alten Block-Statuses (Backward-Compat)
+        _DEAD_LOWER = _DEAD_LOWER | {'inactive', 'blocked', 'suspended', 'invalidated'}
+
         for sid, s in strats.items():
             if not isinstance(s, dict):
                 continue
             status = s.get('status', 'active').lower()
-            if status in ('inactive', 'blocked', 'suspended', 'invalidated'):
+            if status in _DEAD_LOWER:
+                continue
+            # Health-Feld (zweite Tot-Quelle: PS19 hatte status=ARCHIVED + health=paused)
+            if str(s.get('health', '')).lower() in _DEAD_LOWER:
                 continue
 
             # Conviction auslesen (int oder "3/5"-Format)
@@ -346,6 +365,25 @@ def load_universe_from_strategies() -> dict:
                 tickers_list = [t.strip() for t in tickers_raw.split(',') if t.strip()]
             else:
                 tickers_list = list(tickers_raw or [])
+
+            # Phase 45be: ambigue ETF-Tickers ohne ISIN-Pin rauswerfen.
+            # Sonst: Trade #131 GDX-Bug — yfinance loest 'GDX' auf US-Listing,
+            # der reale Broker handelt aber UCITS-Variante. Bug-Klasse blockt.
+            try:
+                import sys as _sysq
+                from pathlib import Path as _Pq
+                _sysq.path.insert(0, str(_Pq(__file__).resolve().parent.parent))
+                from etf_listings import check_etf_listing as _chk_etf
+                _filtered = []
+                for _t in tickers_list:
+                    _ok, _msg = _chk_etf(str(_t), s)
+                    if _ok:
+                        _filtered.append(_t)
+                    else:
+                        print(f'[scanner] {sid} skip {_t}: {_msg}', flush=True)
+                tickers_list = _filtered
+            except Exception:
+                pass  # defensiv: nie hart fehlschlagen am ETF-Check
 
             if not tickers_list:
                 continue
