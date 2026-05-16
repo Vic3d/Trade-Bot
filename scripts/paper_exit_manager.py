@@ -602,6 +602,72 @@ def run() -> tuple[list, list]:
     except Exception as _e_q:
         print(f"⚠️  Force-Exit-Queue-Drain Fehler: {_e_q}")
 
+    # ── Phase 45bg (Victor 2026-05-16): Retired-Strategy-Auto-Exit (T2) ───
+    # Hard-Rule: Wenn ein Exit-Proposal (aus retired_position_exit_proposer)
+    # >= RETIRED_AUTO_EXIT_DAYS alt ist und immer noch PENDING_CEO_CONFIRMATION
+    # → automatisch schließen. CEO-Bestätigung als Fenster (3 Tage), nicht
+    # als Pflicht. Wenn Victor das nicht binnen Frist überschreibt, gilt es
+    # als implizit bestätigt. Verhindert dass tote Strategien tagelang bluten.
+    try:
+        import os as _os2, json as _json2
+        from pathlib import Path as _Path2
+        from datetime import datetime as _dt2, timezone as _tz2, timedelta as _td2
+
+        RETIRED_AUTO_EXIT_DAYS = 3
+        _qp = _Path2(_os2.getenv('TRADEMIND_HOME', '/opt/trademind')) / 'data' / 'exit_proposals.jsonl'
+        if _qp.exists():
+            _cutoff = (_dt2.now(_tz2.utc) - _td2(days=RETIRED_AUTO_EXIT_DAYS)).isoformat()
+            _lines = _qp.read_text(encoding='utf-8').splitlines()
+            _open_ids = {_t['id']: _t for _t in open_trades}
+            _to_execute = []
+            _rewritten = []
+            for _ln in _lines:
+                if not _ln.strip():
+                    continue
+                try:
+                    _p = _json2.loads(_ln)
+                except Exception:
+                    _rewritten.append(_ln); continue
+                _status = _p.get('status', '')
+                _tid = _p.get('trade_id')
+                _ts = _p.get('ts', '')
+                if (_status == 'PENDING_CEO_CONFIRMATION'
+                        and _ts and _ts <= _cutoff
+                        and _tid in _open_ids):
+                    _to_execute.append(_p)
+                    _p['status'] = 'AUTO_EXECUTED_T2'
+                    _p['auto_executed_at'] = _dt2.now(_tz2.utc).isoformat(timespec='seconds')
+                _rewritten.append(_json2.dumps(_p, ensure_ascii=False))
+
+            _matched_ids = []
+            for _p in _to_execute:
+                _t = _open_ids[_p['trade_id']]
+                _entry = _t['entry_price'] or 0
+                _shares = _t['shares'] or 1
+                _fees = _t['fees'] or 1.0
+                _price = get_price(_t['ticker']) or _entry
+                _reason = f"strategy_{_p.get('strategy_status', _p.get('strategy_health', 'dead'))}"
+                _pnl = close_position(conn, _t['id'], _price, 'STRATEGY_RETIRED_AUTO',
+                                      _entry, _shares, _fees)
+                closed_records.append(
+                    f"STRATEGY_RETIRED_AUTO {_t['ticker']} ({_p.get('strategy')}) | "
+                    f"{_entry:.2f}->{_price:.2f} | PnL: {_pnl:+.2f}EUR | "
+                    f"Proposal {RETIRED_AUTO_EXIT_DAYS}d ohne CEO-Override"
+                )
+                send_alert(
+                    f"AUTO-EXIT (T2): {_t['ticker']} — Strategy {_p.get('strategy')} "
+                    f"ist {_p.get('strategy_status','?')}. PnL {_pnl:+.2f}EUR"
+                )
+                _matched_ids.append(_t['id'])
+
+            if _matched_ids:
+                # Rewrite jsonl (Status-Update)
+                _qp.write_text('\n'.join(_rewritten) + '\n', encoding='utf-8')
+                # Aus aktueller Iteration entfernen
+                open_trades = [_t for _t in open_trades if _t['id'] not in _matched_ids]
+    except Exception as _re:
+        print(f"⚠️  Retired-Auto-Exit Fehler: {_re}")
+
     for t in open_trades:
         ticker  = t['ticker']
         entry   = t['entry_price'] or 0
