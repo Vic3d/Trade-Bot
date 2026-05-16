@@ -201,6 +201,9 @@ SCHEDULE = [
     ('Mid-Day Briefing',    'midday_briefing.py',         [],                    13,  0, [0,1,2,3,4], True),
     # Phase 45az: Detector→Action-Bridge 09:45 — eskaliert ignorierte Detector-Findings (vor dem Digest 10:00)
     ('Detector Action Bridge', 'detector_action_bridge.py', [],                  9, 45, None, False),
+    # Phase 45bf: Retired-Position-Exit-Proposer 07:30 — detektiert offene
+    # Positionen auf paused/retired/archived Strategien und queued CEO-Exits.
+    ('Retired Position Exit Proposer','retired_position_exit_proposer.py',[],   7, 30, [0,1,2,3,4], False),
     # Phase 45ay: Albert-Verbesserungs-Digest 10:00 — kurze Vorschlags-Zusammenfassung
     ('Albert Improvement Digest', 'albert_improvement_digest.py', [],           10,  0, None, True),
     # 2/3 — US Opening (Übersee-Eröffnung) — Phase 45an: discord=True für Narrative-Push

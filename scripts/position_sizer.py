@@ -30,6 +30,78 @@ MAX_ABSOLUTE_EUR   = 3000.0    # Phase 1: 2500 → 3000
 MIN_ABSOLUTE_EUR   = 200.0
 DEFAULT_ATR_PCT    = 0.03
 
+# Phase 45bf (Victor 2026-05-16): Cash-Utilization-Boost.
+# Albert-Befund: "Submissions ohne Notional-Check → 70%-Deployment-Ziel
+# mathematisch unerreichbar." Wenn Cash-Auslastung der Kohorte unter Zielwert
+# liegt UND die Kohorte mindestens N Tage alt ist → Sizing × Faktor.
+DEPLOYMENT_TARGET_PCT = 0.70   # >= 70 % invested = ok, kein Boost
+UTILIZATION_BOOST_AFTER_DAYS = 7
+UTILIZATION_BOOST_TIERS = [
+    # (max_util, boost_factor) — erste passende Regel gewinnt
+    (0.30, 2.0),   # <30 % invested → 2x
+    (0.50, 1.5),   # 30-50 %      → 1.5x
+    (0.70, 1.2),   # 50-70 %      → 1.2x
+    # >= 70 %                     → 1.0x (kein Boost)
+]
+
+
+def _utilization_boost(cohort_id: str | None) -> tuple[float, dict]:
+    """
+    Returns (boost_factor, info). boost_factor=1.0 = kein Boost.
+    Greift nur wenn (a) Kohorte alt genug, (b) Auslastung unter Ziel.
+    """
+    info = {'utilization_pct': None, 'days_since_start': None,
+            'boost': 1.0, 'reason': 'no_cohort'}
+    if not cohort_id or not DB.exists():
+        return 1.0, info
+    try:
+        c = sqlite3.connect(str(DB))
+        r = c.execute(
+            "SELECT started_at, initial_capital_eur, current_cash_eur "
+            "FROM paper_cohorts WHERE cohort_id=?", (cohort_id,)
+        ).fetchone()
+        if not r:
+            c.close(); return 1.0, info
+        started_at, init_cap, cash = r
+        opens = c.execute(
+            "SELECT entry_price, shares FROM paper_portfolio "
+            "WHERE cohort_id=? AND status='OPEN'", (cohort_id,)
+        ).fetchall()
+        c.close()
+    except Exception:
+        return 1.0, info
+
+    invested = sum((p or 0) * (s or 0) for p, s in opens)
+    total = (cash or 0) + invested
+    if total <= 0:
+        return 1.0, info
+    util = invested / total
+    info['utilization_pct'] = round(util * 100, 1)
+
+    # Days seit Kohort-Start
+    try:
+        from datetime import datetime as _dt
+        ts = _dt.fromisoformat(str(started_at).replace('Z', '+00:00'))
+        days = (_dt.now(ts.tzinfo) - ts).days
+        info['days_since_start'] = days
+    except Exception:
+        days = 0
+
+    if days < UTILIZATION_BOOST_AFTER_DAYS:
+        info['reason'] = f'cohort_too_young ({days}d < {UTILIZATION_BOOST_AFTER_DAYS}d)'
+        return 1.0, info
+    if util >= DEPLOYMENT_TARGET_PCT:
+        info['reason'] = f'target_reached (util {util*100:.1f}% >= {DEPLOYMENT_TARGET_PCT*100:.0f}%)'
+        return 1.0, info
+
+    for max_u, factor in UTILIZATION_BOOST_TIERS:
+        if util <= max_u:
+            info['boost'] = factor
+            info['reason'] = (f'cash_idle (util {util*100:.1f}% <= {max_u*100:.0f}% '
+                              f'after {days}d) → boost {factor}x')
+            return factor, info
+    return 1.0, info
+
 
 def _load_cohort_profile(cohort_id: str | None) -> dict:
     """Lade Aggression-Profil aus paper_cohorts. Default wenn keins."""
@@ -127,9 +199,16 @@ def calculate_position_size(ticker: str, entry_eur: float, stop_eur: float,
     # Adjustierungen anwenden
     adj_eur = base_eur * vol_adj * conv_mult * corr_discount
 
+    # Phase 45bf: Cash-Utilization-Boost.
+    # Wenn Kohort-Auslastung unter 70%-Ziel UND Kohorte mindestens 7d alt,
+    # wird Sizing × Faktor hochskaliert. Max-Cap (Kelly + Absolut) gilt
+    # trotzdem — Boost kann diese Grenzen NICHT überschreiten.
+    util_boost, util_info = _utilization_boost(cohort_id)
+    boosted_eur = adj_eur * util_boost
+
     # Kelly-Cap (kohort-spezifisch)
     max_kelly_eur = portfolio_total_eur * kelly_pct
-    final_eur = min(adj_eur, max_kelly_eur, max_abs)
+    final_eur = min(boosted_eur, max_kelly_eur, max_abs)
 
     # Min-Check
     if final_eur < MIN_ABSOLUTE_EUR:
@@ -157,6 +236,8 @@ def calculate_position_size(ticker: str, entry_eur: float, stop_eur: float,
             'corr_discount': round(corr_discount, 2),
             'base_eur': round(base_eur, 2),
             'adj_eur': round(adj_eur, 2),
+            'util_boost': util_info,
+            'boosted_eur': round(boosted_eur, 2),
             'kelly_cap_eur': round(max_kelly_eur, 2),
             'portfolio_total_eur': round(portfolio_total_eur, 2),
         },

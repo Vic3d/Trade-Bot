@@ -129,6 +129,42 @@ def run() -> dict:
     recent_acts  = _gather_recent_actions()
     perf         = _trade_perf_summary(30)
 
+    # Phase 45bf: Sizing-/Cash-Auslastungs-Block aus position_sizer.
+    # Albert-Befund: "Submissions ohne Notional-Check → 70%-Deployment-Ziel
+    # mathematisch unerreichbar." Strategist sieht den Gap jetzt explizit.
+    sizing_block = '(keine aktive Kohorte)'
+    try:
+        import sqlite3 as _sq
+        _db = WS / 'data' / 'trading.db'
+        if _db.exists():
+            _c = _sq.connect(str(_db))
+            _r = _c.execute(
+                "SELECT cohort_id FROM paper_cohorts WHERE status='ACTIVE' "
+                "ORDER BY started_at DESC LIMIT 1"
+            ).fetchone()
+            _c.close()
+            if _r:
+                import sys as _sysp
+                _sysp.path.insert(0, str(WS / 'scripts'))
+                from position_sizer import _utilization_boost, DEPLOYMENT_TARGET_PCT
+                _boost, _info = _utilization_boost(_r[0])
+                _util = _info.get('utilization_pct')
+                _days = _info.get('days_since_start')
+                if _util is not None:
+                    _gap_pp = max(0.0, DEPLOYMENT_TARGET_PCT * 100 - _util)
+                    sizing_block = (
+                        f"Kohorte {_r[0]} (Tag {_days}):\n"
+                        f"  Cash-Auslastung: {_util:.1f}% "
+                        f"(Ziel >= {DEPLOYMENT_TARGET_PCT*100:.0f}%, "
+                        f"Gap: {_gap_pp:.1f} Prozentpunkte)\n"
+                        f"  Aktueller Sizing-Boost: {_boost}x "
+                        f"({_info.get('reason')})\n"
+                        f"  Default-Sizing pro Trade liegt jetzt entsprechend "
+                        f"hoeher — proposiere AGGRESSIVER bis Ziel erreicht."
+                    )
+    except Exception as _se:
+        sizing_block = f'(sizing-block error: {_se})'
+
     # Phase 45ao: Markt-Puls + News-Correlation als Pflicht-Kontext
     market_pulse_str = '(market_pulse_latest.json nicht gefunden)'
     try:
@@ -263,6 +299,9 @@ Lifecycle-Status: {lifecycle.get('counts', {})}
 WICHTIG: Wenn HIGH_CONVICTION oder STRUCTURAL Sektoren aktiv sind, MUSST du
 sie in deinen Vorschlägen berücksichtigen. Wenn du KEINE Strategie für einen
 Top-5d-Sektor hast (siehe Genesis), proposiere create_strategy.
+
+═══ SIZING-LAGE (Phase 45bf — Cash-Auslastung vs Monatsziel) ═══
+{sizing_block}
 
 ═══ AKTUELLER MODUS ═══
 
