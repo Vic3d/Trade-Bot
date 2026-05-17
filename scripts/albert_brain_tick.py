@@ -47,6 +47,9 @@ RECENT_THOUGHTS_N    = 3      # letzte 3 Tagebuch-Gedanken als Anti-Repeat-Konte
 REPEAT_SIM_THRESHOLD = 0.30   # Jaccard-Token-Overlap > X → Wiederholung
                               # Kalibriert an realen 06:45-08:30 Repeats (~0.36)
                               # vs. verschiedene Themen (~0.00-0.03).
+# Phase 45bi: zweiter Filter — semantische Konzept-Overlap (gegen Synonym-Umgehung)
+CONCEPT_OVERLAP_THRESHOLD = 0.60  # >=60% der NEUEN (Ticker,Aktion)-Konzepte
+                                  # tauchten schon in den letzten 3 Ticks auf
 KNOWN_VERDICTS = {'STRONG_EDGE', 'OK', 'INSUFFICIENT', 'CONFLICT',
                   'WEAK', 'NEGATIVE', 'RETIRED', 'UNKNOWN'}
 
@@ -181,6 +184,80 @@ def _max_similarity(new_text: str, prior: list[str]) -> tuple[float, int]:
     return best
 
 
+# Phase 45bi (Victor 2026-05-17): Semantischer Concept-Dedupe.
+# Wort-Dedupe (Jaccard 0.30) wird durch Synonyme umgangen: "Entry-Level für
+# NVDA" vs "Setup-Marker NVDA" haben fast keine gemeinsamen Tokens, aber
+# meinen dasselbe. Lösung: Konzept-Signatur (Tickers + Strategy-IDs +
+# Aktions-Stems) — wenn der gleiche Ticker mit der gleichen Aktions-Kategorie
+# 2x in Folge auftaucht, ist es eine Wiederholung egal welche Worte drumherum.
+_TICKER_RE = (r'(?:PS\d+|DT\d|S\d+|PT|AR-\w+|PS_[A-Z0-9_]+|'
+              r'[A-Z]{2,5}(?:\.[A-Z]{1,3})?)')
+ACTION_STEMS = [
+    # (canonical_concept, [trigger_substrings])
+    ('ENTRY',     ['entry', 'einstieg', 'kauf', 'breakout', 'ausbruch',
+                   'reissline', 'setup', 'level', 'trigger', 'submit']),
+    ('EXIT',      ['exit', 'verkauf', 'schliess', 'close', 'stop', 'retir']),
+    ('SCAN',      ['scan', 'beobacht', 'monitor', 'watch']),
+    ('NEIN',      ['nein ', ' nein', 'skip', 'ablehnen', 'verwerf',
+                   'kein trade']),
+    ('ANK',       ['ankünd', 'verspr', 'plan', 'todo', 'lesen']),
+    ('SIZE',      ['sizing', 'notional', 'aggressi', 'auslastung', 'cash-quote']),
+    ('REGIME',    ['bull_volat', 'bear_', 'risk-on', 'risk-off', 'vix']),
+]
+
+
+def _concept_signature(text: str) -> set[tuple[str, str]]:
+    """
+    Extrahiert (TICKER, ACTION_CONCEPT)-Paare aus einem Tick-Text.
+    Wenn ein Ticker und eine Action im selben Tick erwähnt werden, wird
+    die Kombination als ein Konzept zählt. Plus generische ('GLOBAL', ACT).
+    """
+    import re
+    if not text or not text.strip():
+        return set()
+    t_lower = text.lower()
+    tickers = set(re.findall(_TICKER_RE, text))
+    # Heuristik: filtere Stopwörter die als ALL-CAPS auftauchen
+    tickers = {x for x in tickers
+               if x not in {'OK', 'CEST', 'CET', 'UTC', 'EUR', 'USD',
+                            'WEAK', 'INSUFFICIENT', 'RETIRED', 'STRONG_EDGE',
+                            'CONFLICT', 'UNKNOWN', 'NEGATIVE'}}
+    actions = set()
+    for concept, triggers in ACTION_STEMS:
+        if any(tr in t_lower for tr in triggers):
+            actions.add(concept)
+    sig: set[tuple[str, str]] = set()
+    if tickers and actions:
+        for tk in tickers:
+            for ac in actions:
+                sig.add((tk, ac))
+    elif actions:
+        for ac in actions:
+            sig.add(('GLOBAL', ac))
+    return sig
+
+
+def _max_concept_overlap(new_text: str, prior: list[str]) -> tuple[float, int, int]:
+    """
+    Returns (overlap_ratio, prior_idx, shared_count).
+    overlap_ratio = |shared| / max(1, |new_sig|)  — wie viel der NEUEN
+    Konzepte schon im prior auftauchten.
+    """
+    new_sig = _concept_signature(new_text)
+    if not new_sig:
+        return 0.0, -1, 0
+    best = (0.0, -1, 0)
+    for i, p in enumerate(prior):
+        ps = _concept_signature(p)
+        if not ps:
+            continue
+        shared = new_sig & ps
+        ratio = len(shared) / len(new_sig)
+        if ratio > best[0]:
+            best = (ratio, i, len(shared))
+    return best
+
+
 def _extract_verdict_citations(text: str) -> list[tuple[str, str]]:
     """Findet '<STRAT_ID> [VERDICT]' und '[VERDICT] <STRAT_ID>' Zitate."""
     import re
@@ -284,6 +361,31 @@ def tick() -> dict:
     # Skip wenn nichts Neues passiert ist
     if not new_events and (now - datetime.fromisoformat(last_ts.replace('Z','+00:00'))).total_seconds() < 600:
         return {'skipped': True, 'reason': 'nothing_new'}
+
+    # Phase 45bi: Wochenend-Event-Gate. Brain-Tick läuft auch am Wochenende
+    # weiter (Nachrichten passieren am Wochenende — Geopolitik, Fed-Reden,
+    # Earnings-Leaks), aber LLM-Call nur wenn ECHTE Events anliegen.
+    # Skip-Bedingung: Sa/So + keine hochwertigen Events (severity >= warning
+    # oder bestimmte action-relevante Event-Types). Spart ~85% Wochenend-Ticks
+    # ohne den Wachschutz aufzugeben.
+    if now.weekday() >= 5:  # 5=Sa, 6=So
+        _high_signal = False
+        _HOT_TYPES = {
+            'macro.breaking_event', 'silence.stale_signal',
+            'detector_finding', 'pre_entry_block', 'concentration_block',
+            'retired_position_exit_proposal', 'thesis_invalidated',
+            'event_auto_exit', 'crash_safety_triggered',
+            'strategy.freshness_review', 'ceo.directive_change',
+        }
+        for e in new_events:
+            sev = str(e.get('severity', '')).lower()
+            etype = str(e.get('event_type', ''))
+            if sev in ('critical', 'warning') or etype in _HOT_TYPES:
+                _high_signal = True; break
+        if not _high_signal:
+            _save_tick_ts(now.isoformat(timespec='seconds'))
+            return {'skipped': True, 'reason': 'weekend_no_hot_events',
+                    'low_events_seen': len(new_events)}
 
     # Event-Kompression
     events_summary = ''
@@ -391,12 +493,21 @@ ACTIONS: <JSON array oder []>
     # Validate: Wiederholung + Verdict-Zitate
     candidate_thought = _parse_thought(text)
     sim, sim_idx = _max_similarity(candidate_thought, recent_thoughts)
+    # Phase 45bi: semantische Konzept-Overlap zusätzlich prüfen
+    co_ratio, co_idx, co_shared = _max_concept_overlap(candidate_thought, recent_thoughts)
     verdict_mismatches = _check_verdict_quotes(candidate_thought)
     bt_violations: list[str] = []
     if sim >= REPEAT_SIM_THRESHOLD:
         bt_violations.append(
             f'WIEDERHOLUNG: Jaccard {sim:.2f} mit Tick T-{len(recent_thoughts)-sim_idx} '
             f'(Schwelle {REPEAT_SIM_THRESHOLD}). Schreibe etwas NEUES oder "Nichts Neues, beobachte weiter".'
+        )
+    if co_ratio >= CONCEPT_OVERLAP_THRESHOLD and co_shared >= 2:
+        bt_violations.append(
+            f'KONZEPT-WIEDERHOLUNG: {co_ratio*100:.0f}% deiner Konzepte '
+            f'(Ticker+Aktion) tauchten schon in Tick T-{len(recent_thoughts)-co_idx} auf '
+            f'(Schwelle {CONCEPT_OVERLAP_THRESHOLD*100:.0f}%). Synonyme zaehlen nicht — '
+            f'andere TICKER oder andere AKTION oder "Nichts Neues".'
         )
     if verdict_mismatches:
         bt_violations.append(
@@ -428,10 +539,13 @@ ACTIONS: <JSON array oder []>
         # Re-check after retry — harte Diskard wenn immer noch verletzt
         candidate_thought = _parse_thought(text)
         sim2, _ = _max_similarity(candidate_thought, recent_thoughts)
+        co2_ratio, _, co2_shared = _max_concept_overlap(candidate_thought, recent_thoughts)
         vm2 = _check_verdict_quotes(candidate_thought)
         final_violations: list[str] = []
         if sim2 >= REPEAT_SIM_THRESHOLD:
             final_violations.append(f'WIEDERHOLUNG bleibt (Jaccard {sim2:.2f})')
+        if co2_ratio >= CONCEPT_OVERLAP_THRESHOLD and co2_shared >= 2:
+            final_violations.append(f'KONZEPT-WIEDERHOLUNG bleibt ({co2_ratio*100:.0f}%)')
         if vm2:
             final_violations.append('VERDICT-MISMATCH bleibt: ' + '; '.join(vm2))
         if final_violations:
