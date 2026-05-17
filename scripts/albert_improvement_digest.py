@@ -42,6 +42,26 @@ def _pending_capability_requests() -> list[dict]:
     return out[-6:]  # max 6
 
 
+def _recently_implemented_capabilities(days: int = 7) -> list[dict]:
+    """Phase 45bh: Was wurde umgesetzt? Damit Albert nicht wiederholt vorschlägt.
+    Zeigt nur Requests mit status=IMPLEMENTED + implemented_at <= N Tage alt."""
+    if not CAP_FILE.exists(): return []
+    cutoff = (datetime.now(timezone.utc).date()
+              - timedelta(days=days)).isoformat()
+    out = []
+    try:
+        with open(CAP_FILE, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    e = json.loads(line)
+                    if (e.get('status') == 'IMPLEMENTED'
+                            and e.get('implemented_at', '') >= cutoff):
+                        out.append(e)
+                except Exception: pass
+    except Exception: pass
+    return out
+
+
 def _compliance_24h() -> dict:
     if not COMPLIANCE_LOG.exists(): return {}
     cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
@@ -91,12 +111,19 @@ def _audit_findings() -> str:
 def build_digest() -> str:
     now = datetime.now()
     caps = _pending_capability_requests()
+    done = _recently_implemented_capabilities(days=7)
     compliance = _compliance_24h()
     new_rules = _new_self_rules_24h()
     audit = _audit_findings()
 
     # Rohdaten sammeln für LLM-Komprimierung
     raw = []
+    if done:
+        raw.append("BEREITS UMGESETZT (letzte 7d) — NICHT WIEDER VORSCHLAGEN:")
+        for d in done:
+            raw.append(f"  ✓ {d.get('title','?')} ({d.get('implemented_phase','?')}, "
+                       f"{d.get('implemented_at','?')}): "
+                       f"{d.get('implementation_ref','')[:120]}")
     if caps:
         raw.append("CAPABILITY-REQUESTS (Albert will Architektur-Änderung):")
         for c in caps:
